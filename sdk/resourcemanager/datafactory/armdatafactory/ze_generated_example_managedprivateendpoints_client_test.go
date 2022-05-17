@@ -24,19 +24,18 @@ func ExampleManagedPrivateEndpointsClient_NewListByFactoryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewManagedPrivateEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("<resource-group-name>",
-		"<factory-name>",
-		"<managed-virtual-network-name>",
+	pager := client.NewListByFactoryPager("exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleManagedVirtualNetworkName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -52,20 +51,20 @@ func ExampleManagedPrivateEndpointsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewManagedPrivateEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<managed-virtual-network-name>",
-		"<managed-private-endpoint-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleManagedVirtualNetworkName",
+		"exampleManagedPrivateEndpointName",
 		armdatafactory.ManagedPrivateEndpointResource{
 			Properties: &armdatafactory.ManagedPrivateEndpoint{
 				Fqdns:                 []*string{},
-				GroupID:               to.Ptr("<group-id>"),
-				PrivateLinkResourceID: to.Ptr("<private-link-resource-id>"),
+				GroupID:               to.Ptr("blob"),
+				PrivateLinkResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.Storage/storageAccounts/exampleBlobStorage"),
 			},
 		},
 		&armdatafactory.ManagedPrivateEndpointsClientCreateOrUpdateOptions{IfMatch: nil})
@@ -83,15 +82,15 @@ func ExampleManagedPrivateEndpointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewManagedPrivateEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<managed-virtual-network-name>",
-		"<managed-private-endpoint-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleManagedVirtualNetworkName",
+		"exampleManagedPrivateEndpointName",
 		&armdatafactory.ManagedPrivateEndpointsClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -107,15 +106,15 @@ func ExampleManagedPrivateEndpointsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewManagedPrivateEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewManagedPrivateEndpointsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<managed-virtual-network-name>",
-		"<managed-private-endpoint-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleManagedVirtualNetworkName",
+		"exampleManagedPrivateEndpointName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

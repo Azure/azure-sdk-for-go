@@ -38,7 +38,7 @@ func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential
 
 // Get - Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -102,7 +103,7 @@ func (client *IntegrationRuntimeObjectMetadataClient) getCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.GetMetadataRequest != nil {
 		return req, runtime.MarshalAsJSON(req, *options.GetMetadataRequest)
 	}
@@ -120,25 +121,27 @@ func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *ht
 
 // BeginRefresh - Refresh a SSIS integration runtime object metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
 // options - IntegrationRuntimeObjectMetadataClientBeginRefreshOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.BeginRefresh
 // method.
-func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*armruntime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error) {
+func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*runtime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.refresh(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationRuntimeObjectMetadataClientRefreshResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimeObjectMetadataClientRefreshResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationRuntimeObjectMetadataClientRefreshResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimeObjectMetadataClientRefreshResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Refresh - Refresh a SSIS integration runtime object metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*http.Response, error) {
 	req, err := client.refreshCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -180,6 +183,6 @@ func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

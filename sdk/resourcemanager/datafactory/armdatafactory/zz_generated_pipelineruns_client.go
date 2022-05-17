@@ -39,7 +39,7 @@ func NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredent
 
 // Cancel - Cancel a pipeline run by its run ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // runID - The pipeline run identifier.
@@ -105,12 +106,13 @@ func (client *PipelineRunsClient) cancelCreateRequest(ctx context.Context, resou
 	}
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a pipeline run by its run ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // runID - The pipeline run identifier.
@@ -156,7 +158,7 @@ func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -171,6 +173,7 @@ func (client *PipelineRunsClient) getHandleResponse(resp *http.Response) (Pipeli
 
 // QueryByFactory - Query pipeline runs in the factory based on input filter conditions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // filterParameters - Parameters to filter the pipeline run.
@@ -213,7 +216,7 @@ func (client *PipelineRunsClient) queryByFactoryCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, filterParameters)
 }
 

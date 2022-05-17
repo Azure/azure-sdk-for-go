@@ -38,7 +38,7 @@ func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,12 +56,13 @@ func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcor
 
 // NewListByFactoryPager - Lists Private endpoint connections
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - PrivateEndPointConnectionsClientListByFactoryOptions contains the optional parameters for the PrivateEndPointConnectionsClient.ListByFactory
 // method.
 func (client *PrivateEndPointConnectionsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsClientListByFactoryOptions) *runtime.Pager[PrivateEndPointConnectionsClientListByFactoryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateEndPointConnectionsClientListByFactoryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndPointConnectionsClientListByFactoryResponse]{
 		More: func(page PrivateEndPointConnectionsClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -110,7 +111,7 @@ func (client *PrivateEndPointConnectionsClient) listByFactoryCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

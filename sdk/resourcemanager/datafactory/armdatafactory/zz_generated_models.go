@@ -59,6 +59,9 @@ type Activity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type Activity.
+func (a *Activity) GetActivity() *Activity { return a }
+
 // ActivityDependency - Activity dependency information.
 type ActivityDependency struct {
 	// REQUIRED; Activity name.
@@ -192,6 +195,18 @@ type AmazonMWSLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type AmazonMWSLinkedService.
+func (a *AmazonMWSLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AmazonMWSLinkedServiceTypeProperties - Amazon Marketplace Web Service linked service properties.
 type AmazonMWSLinkedServiceTypeProperties struct {
 	// REQUIRED; The access key id used to access data.
@@ -262,6 +277,21 @@ type AmazonMWSObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AmazonMWSObjectDataset.
+func (a *AmazonMWSObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AmazonMWSSource - A copy activity Amazon Marketplace Web Service source.
 type AmazonMWSSource struct {
 	// REQUIRED; Copy source type.
@@ -291,6 +321,32 @@ type AmazonMWSSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type AmazonMWSSource.
+func (a *AmazonMWSSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type AmazonMWSSource.
+func (a *AmazonMWSSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             a.QueryTimeout,
+		AdditionalColumns:        a.AdditionalColumns,
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
 }
 
 // AmazonRdsForLinkedServiceTypeProperties - AmazonRdsForOracle database linked service properties.
@@ -328,6 +384,18 @@ type AmazonRdsForOracleLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AmazonRdsForOracleLinkedService.
+func (a *AmazonRdsForOracleLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AmazonRdsForOraclePartitionSettings - The settings that will be leveraged for AmazonRdsForOracle source partitioning.
@@ -386,6 +454,18 @@ type AmazonRdsForOracleSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type AmazonRdsForOracleSource.
+func (a *AmazonRdsForOracleSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AmazonRdsForOracleTableDataset - The AmazonRdsForOracle database dataset.
 type AmazonRdsForOracleTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -420,6 +500,21 @@ type AmazonRdsForOracleTableDataset struct {
 	TypeProperties *AmazonRdsForOracleTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AmazonRdsForOracleTableDataset.
+func (a *AmazonRdsForOracleTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AmazonRdsForOracleTableDatasetTypeProperties - AmazonRdsForOracle dataset properties.
 type AmazonRdsForOracleTableDatasetTypeProperties struct {
 	// The schema name of the AmazonRdsForOracle database. Type: string (or Expression with resultType string).
@@ -451,6 +546,18 @@ type AmazonRdsForSQLServerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AmazonRdsForSQLServerLinkedService.
+func (a *AmazonRdsForSQLServerLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AmazonRdsForSQLServerLinkedServiceTypeProperties - Amazon Rds for SQL Server linked service properties.
@@ -520,6 +627,32 @@ type AmazonRdsForSQLServerSource struct {
 	StoredProcedureParameters map[string]*StoredProcedureParameter `json:"storedProcedureParameters,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type AmazonRdsForSQLServerSource.
+func (a *AmazonRdsForSQLServerSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type AmazonRdsForSQLServerSource.
+func (a *AmazonRdsForSQLServerSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             a.QueryTimeout,
+		AdditionalColumns:        a.AdditionalColumns,
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AmazonRdsForSQLServerTableDataset - The Amazon RDS for SQL Server dataset.
 type AmazonRdsForSQLServerTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -554,6 +687,21 @@ type AmazonRdsForSQLServerTableDataset struct {
 	TypeProperties *AmazonRdsForSQLServerTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AmazonRdsForSQLServerTableDataset.
+func (a *AmazonRdsForSQLServerTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AmazonRdsForSQLServerTableDatasetTypeProperties - The Amazon RDS for SQL Server dataset properties.
 type AmazonRdsForSQLServerTableDatasetTypeProperties struct {
 	// The schema name of the SQL Server dataset. Type: string (or Expression with resultType string).
@@ -585,6 +733,18 @@ type AmazonRedshiftLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AmazonRedshiftLinkedService.
+func (a *AmazonRedshiftLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AmazonRedshiftLinkedServiceTypeProperties - Amazon Redshift linked service properties.
@@ -646,6 +806,32 @@ type AmazonRedshiftSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type AmazonRedshiftSource.
+func (a *AmazonRedshiftSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type AmazonRedshiftSource.
+func (a *AmazonRedshiftSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             a.QueryTimeout,
+		AdditionalColumns:        a.AdditionalColumns,
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AmazonRedshiftTableDataset - The Amazon Redshift table dataset.
 type AmazonRedshiftTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -678,6 +864,21 @@ type AmazonRedshiftTableDataset struct {
 
 	// Amazon Redshift table dataset properties.
 	TypeProperties *AmazonRedshiftTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type AmazonRedshiftTableDataset.
+func (a *AmazonRedshiftTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AmazonRedshiftTableDatasetTypeProperties - Amazon Redshift table dataset properties.
@@ -714,6 +915,18 @@ type AmazonS3CompatibleLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AmazonS3CompatibleLinkedService.
+func (a *AmazonS3CompatibleLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AmazonS3CompatibleLinkedServiceTypeProperties - Amazon S3 Compatible linked service properties.
@@ -758,6 +971,16 @@ type AmazonS3CompatibleLocation struct {
 
 	// Specify the version of Amazon S3 Compatible. Type: string (or Expression with resultType string).
 	Version interface{} `json:"version,omitempty"`
+}
+
+// GetDatasetLocation implements the DatasetLocationClassification interface for type AmazonS3CompatibleLocation.
+func (a *AmazonS3CompatibleLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 a.Type,
+		FolderPath:           a.FolderPath,
+		FileName:             a.FileName,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AmazonS3CompatibleReadSettings - Amazon S3 Compatible read settings.
@@ -808,6 +1031,16 @@ type AmazonS3CompatibleReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AmazonS3CompatibleReadSettings.
+func (a *AmazonS3CompatibleReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AmazonS3Dataset - A single Amazon Simple Storage Service (S3) object or a set of S3 objects.
 type AmazonS3Dataset struct {
 	// REQUIRED; Linked service reference.
@@ -840,6 +1073,21 @@ type AmazonS3Dataset struct {
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
 	Structure interface{} `json:"structure,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type AmazonS3Dataset.
+func (a *AmazonS3Dataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AmazonS3DatasetTypeProperties - Amazon S3 dataset properties.
@@ -893,6 +1141,18 @@ type AmazonS3LinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type AmazonS3LinkedService.
+func (a *AmazonS3LinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AmazonS3LinkedServiceTypeProperties - Amazon S3 linked service properties.
 type AmazonS3LinkedServiceTypeProperties struct {
 	// The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression with
@@ -938,6 +1198,16 @@ type AmazonS3Location struct {
 
 	// Specify the version of amazon S3. Type: string (or Expression with resultType string).
 	Version interface{} `json:"version,omitempty"`
+}
+
+// GetDatasetLocation implements the DatasetLocationClassification interface for type AmazonS3Location.
+func (a *AmazonS3Location) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 a.Type,
+		FolderPath:           a.FolderPath,
+		FileName:             a.FileName,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AmazonS3ReadSettings - Amazon S3 read settings.
@@ -988,6 +1258,16 @@ type AmazonS3ReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AmazonS3ReadSettings.
+func (a *AmazonS3ReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AppFiguresLinkedService - Linked service for AppFigures.
 type AppFiguresLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -1010,6 +1290,18 @@ type AppFiguresLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AppFiguresLinkedService.
+func (a *AppFiguresLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AppFiguresLinkedServiceTypeProperties - AppFigures linked service type properties.
@@ -1046,6 +1338,30 @@ type AppendVariableActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type AppendVariableActivity.
+func (a *AppendVariableActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type AppendVariableActivity.
+func (a *AppendVariableActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AppendVariableActivityTypeProperties - AppendVariable activity properties.
@@ -1085,6 +1401,18 @@ type AsanaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AsanaLinkedService.
+func (a *AsanaLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AsanaLinkedServiceTypeProperties - Asana linked service type properties.
@@ -1131,6 +1459,21 @@ type AvroDataset struct {
 	TypeProperties *AvroDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AvroDataset.
+func (a *AvroDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AvroDatasetTypeProperties - Avro dataset properties.
 type AvroDatasetTypeProperties struct {
 	// REQUIRED; The location of the avro storage.
@@ -1154,6 +1497,16 @@ type AvroFormat struct {
 
 	// Serializer. Type: string (or Expression with resultType string).
 	Serializer interface{} `json:"serializer,omitempty"`
+}
+
+// GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type AvroFormat.
+func (a *AvroFormat) GetDatasetStorageFormat() *DatasetStorageFormat {
+	return &DatasetStorageFormat{
+		Type:                 a.Type,
+		Serializer:           a.Serializer,
+		Deserializer:         a.Deserializer,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AvroSink - A copy activity Avro sink.
@@ -1189,6 +1542,20 @@ type AvroSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AvroSink.
+func (a *AvroSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AvroSource - A copy activity Avro source.
 type AvroSource struct {
 	// REQUIRED; Copy source type.
@@ -1217,6 +1584,18 @@ type AvroSource struct {
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type AvroSource.
+func (a *AvroSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AvroWriteSettings - Avro write settings.
 type AvroWriteSettings struct {
 	// REQUIRED; The write setting type.
@@ -1240,6 +1619,14 @@ type AvroWriteSettings struct {
 	RecordNamespace *string `json:"recordNamespace,omitempty"`
 }
 
+// GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type AvroWriteSettings.
+func (a *AvroWriteSettings) GetFormatWriteSettings() *FormatWriteSettings {
+	return &FormatWriteSettings{
+		Type:                 a.Type,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzPowerShellSetup - The express custom setup of installing Azure PowerShell.
 type AzPowerShellSetup struct {
 	// REQUIRED; The type of custom setup.
@@ -1247,6 +1634,13 @@ type AzPowerShellSetup struct {
 
 	// REQUIRED; Install Azure PowerShell type properties.
 	TypeProperties *AzPowerShellSetupTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetCustomSetupBase implements the CustomSetupBaseClassification interface for type AzPowerShellSetup.
+func (a *AzPowerShellSetup) GetCustomSetupBase() *CustomSetupBase {
+	return &CustomSetupBase{
+		Type: a.Type,
+	}
 }
 
 // AzPowerShellSetupTypeProperties - Installation of Azure PowerShell type properties.
@@ -1277,6 +1671,18 @@ type AzureBatchLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureBatchLinkedService.
+func (a *AzureBatchLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureBatchLinkedServiceTypeProperties - Azure Batch linked service properties.
@@ -1338,6 +1744,21 @@ type AzureBlobDataset struct {
 	TypeProperties *AzureBlobDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureBlobDataset.
+func (a *AzureBlobDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureBlobDatasetTypeProperties - Azure Blob dataset properties.
 type AzureBlobDatasetTypeProperties struct {
 	// The data compression method used for the blob storage.
@@ -1396,6 +1817,21 @@ type AzureBlobFSDataset struct {
 	TypeProperties *AzureBlobFSDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureBlobFSDataset.
+func (a *AzureBlobFSDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureBlobFSDatasetTypeProperties - Azure Data Lake Storage Gen2 dataset properties.
 type AzureBlobFSDatasetTypeProperties struct {
 	// The data compression method used for the blob storage.
@@ -1433,6 +1869,18 @@ type AzureBlobFSLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureBlobFSLinkedService.
+func (a *AzureBlobFSLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureBlobFSLinkedServiceTypeProperties - Azure Data Lake Storage Gen2 linked service properties.
@@ -1495,6 +1943,16 @@ type AzureBlobFSLocation struct {
 	FolderPath interface{} `json:"folderPath,omitempty"`
 }
 
+// GetDatasetLocation implements the DatasetLocationClassification interface for type AzureBlobFSLocation.
+func (a *AzureBlobFSLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 a.Type,
+		FolderPath:           a.FolderPath,
+		FileName:             a.FileName,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureBlobFSReadSettings - Azure blobFS read settings.
 type AzureBlobFSReadSettings struct {
 	// REQUIRED; The read setting type.
@@ -1540,6 +1998,16 @@ type AzureBlobFSReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AzureBlobFSReadSettings.
+func (a *AzureBlobFSReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureBlobFSSink - A copy activity Azure Data Lake Storage Gen2 sink.
 type AzureBlobFSSink struct {
 	// REQUIRED; Copy sink type.
@@ -1573,6 +2041,20 @@ type AzureBlobFSSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzureBlobFSSink.
+func (a *AzureBlobFSSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureBlobFSSource - A copy activity Azure BlobFS source.
 type AzureBlobFSSource struct {
 	// REQUIRED; Copy source type.
@@ -1604,6 +2086,18 @@ type AzureBlobFSSource struct {
 	TreatEmptyAsNull interface{} `json:"treatEmptyAsNull,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type AzureBlobFSSource.
+func (a *AzureBlobFSSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureBlobFSWriteSettings - Azure blobFS write settings.
 type AzureBlobFSWriteSettings struct {
 	// REQUIRED; The write setting type.
@@ -1623,6 +2117,17 @@ type AzureBlobFSWriteSettings struct {
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+}
+
+// GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type AzureBlobFSWriteSettings.
+func (a *AzureBlobFSWriteSettings) GetStoreWriteSettings() *StoreWriteSettings {
+	return &StoreWriteSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		CopyBehavior:             a.CopyBehavior,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
 }
 
 // AzureBlobStorageLinkedService - The azure blob storage linked service.
@@ -1647,6 +2152,18 @@ type AzureBlobStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureBlobStorageLinkedService.
+func (a *AzureBlobStorageLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureBlobStorageLinkedServiceTypeProperties - Azure Blob Storage linked service properties.
@@ -1713,6 +2230,16 @@ type AzureBlobStorageLocation struct {
 	FolderPath interface{} `json:"folderPath,omitempty"`
 }
 
+// GetDatasetLocation implements the DatasetLocationClassification interface for type AzureBlobStorageLocation.
+func (a *AzureBlobStorageLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 a.Type,
+		FolderPath:           a.FolderPath,
+		FileName:             a.FileName,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureBlobStorageReadSettings - Azure blob read settings.
 type AzureBlobStorageReadSettings struct {
 	// REQUIRED; The read setting type.
@@ -1761,6 +2288,16 @@ type AzureBlobStorageReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AzureBlobStorageReadSettings.
+func (a *AzureBlobStorageReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureBlobStorageWriteSettings - Azure blob write settings.
 type AzureBlobStorageWriteSettings struct {
 	// REQUIRED; The write setting type.
@@ -1780,6 +2317,17 @@ type AzureBlobStorageWriteSettings struct {
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+}
+
+// GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type AzureBlobStorageWriteSettings.
+func (a *AzureBlobStorageWriteSettings) GetStoreWriteSettings() *StoreWriteSettings {
+	return &StoreWriteSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		CopyBehavior:             a.CopyBehavior,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
 }
 
 // AzureDataExplorerCommandActivity - Azure Data Explorer command activity.
@@ -1810,6 +2358,32 @@ type AzureDataExplorerCommandActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type AzureDataExplorerCommandActivity.
+func (a *AzureDataExplorerCommandActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type AzureDataExplorerCommandActivity.
+func (a *AzureDataExplorerCommandActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    a.LinkedServiceName,
+		Policy:               a.Policy,
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureDataExplorerCommandActivityTypeProperties - Azure Data Explorer command activity properties.
@@ -1850,6 +2424,18 @@ type AzureDataExplorerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureDataExplorerLinkedService.
+func (a *AzureDataExplorerLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureDataExplorerLinkedServiceTypeProperties - Azure Data Explorer (Kusto) linked service properties.
@@ -1911,6 +2497,20 @@ type AzureDataExplorerSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzureDataExplorerSink.
+func (a *AzureDataExplorerSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureDataExplorerSource - A copy activity Azure Data Explorer (Kusto) source.
 type AzureDataExplorerSource struct {
 	// REQUIRED; Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression with resultType string).
@@ -1944,6 +2544,18 @@ type AzureDataExplorerSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type AzureDataExplorerSource.
+func (a *AzureDataExplorerSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
 }
 
 // AzureDataExplorerTableDataset - The Azure Data Explorer (Kusto) dataset.
@@ -1980,6 +2592,21 @@ type AzureDataExplorerTableDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureDataExplorerTableDataset.
+func (a *AzureDataExplorerTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureDataLakeAnalyticsLinkedService - Azure Data Lake Analytics linked service.
 type AzureDataLakeAnalyticsLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -2002,6 +2629,18 @@ type AzureDataLakeAnalyticsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureDataLakeAnalyticsLinkedService.
+func (a *AzureDataLakeAnalyticsLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureDataLakeAnalyticsLinkedServiceTypeProperties - Azure Data Lake Analytics linked service properties.
@@ -2070,6 +2709,21 @@ type AzureDataLakeStoreDataset struct {
 	TypeProperties *AzureDataLakeStoreDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureDataLakeStoreDataset.
+func (a *AzureDataLakeStoreDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureDataLakeStoreDatasetTypeProperties - Azure Data Lake Store dataset properties.
 type AzureDataLakeStoreDatasetTypeProperties struct {
 	// The data compression method used for the item(s) in the Azure Data Lake Store.
@@ -2107,6 +2761,18 @@ type AzureDataLakeStoreLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureDataLakeStoreLinkedService.
+func (a *AzureDataLakeStoreLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureDataLakeStoreLinkedServiceTypeProperties - Azure Data Lake Store linked service properties.
@@ -2161,6 +2827,16 @@ type AzureDataLakeStoreLocation struct {
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
 	FolderPath interface{} `json:"folderPath,omitempty"`
+}
+
+// GetDatasetLocation implements the DatasetLocationClassification interface for type AzureDataLakeStoreLocation.
+func (a *AzureDataLakeStoreLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 a.Type,
+		FolderPath:           a.FolderPath,
+		FileName:             a.FileName,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureDataLakeStoreReadSettings - Azure data lake store read settings.
@@ -2218,6 +2894,16 @@ type AzureDataLakeStoreReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AzureDataLakeStoreReadSettings.
+func (a *AzureDataLakeStoreReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureDataLakeStoreSink - A copy activity Azure Data Lake Store sink.
 type AzureDataLakeStoreSink struct {
 	// REQUIRED; Copy sink type.
@@ -2251,6 +2937,20 @@ type AzureDataLakeStoreSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzureDataLakeStoreSink.
+func (a *AzureDataLakeStoreSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureDataLakeStoreSource - A copy activity Azure Data Lake source.
 type AzureDataLakeStoreSource struct {
 	// REQUIRED; Copy source type.
@@ -2276,6 +2976,18 @@ type AzureDataLakeStoreSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type AzureDataLakeStoreSource.
+func (a *AzureDataLakeStoreSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureDataLakeStoreWriteSettings - Azure data lake store write settings.
 type AzureDataLakeStoreWriteSettings struct {
 	// REQUIRED; The write setting type.
@@ -2297,6 +3009,17 @@ type AzureDataLakeStoreWriteSettings struct {
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+}
+
+// GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type AzureDataLakeStoreWriteSettings.
+func (a *AzureDataLakeStoreWriteSettings) GetStoreWriteSettings() *StoreWriteSettings {
+	return &StoreWriteSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		CopyBehavior:             a.CopyBehavior,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
 }
 
 // AzureDatabricksDeltaLakeDataset - Azure Databricks Delta Lake dataset.
@@ -2333,6 +3056,21 @@ type AzureDatabricksDeltaLakeDataset struct {
 	TypeProperties *AzureDatabricksDeltaLakeDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureDatabricksDeltaLakeDataset.
+func (a *AzureDatabricksDeltaLakeDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureDatabricksDeltaLakeDatasetTypeProperties - Azure Databricks Delta Lake Dataset Properties
 type AzureDatabricksDeltaLakeDatasetTypeProperties struct {
 	// The database name of delta table. Type: string (or Expression with resultType string).
@@ -2358,6 +3096,14 @@ type AzureDatabricksDeltaLakeExportCommand struct {
 	TimestampFormat interface{} `json:"timestampFormat,omitempty"`
 }
 
+// GetExportSettings implements the ExportSettingsClassification interface for type AzureDatabricksDeltaLakeExportCommand.
+func (a *AzureDatabricksDeltaLakeExportCommand) GetExportSettings() *ExportSettings {
+	return &ExportSettings{
+		Type:                 a.Type,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureDatabricksDeltaLakeImportCommand - Azure Databricks Delta Lake import command settings.
 type AzureDatabricksDeltaLakeImportCommand struct {
 	// REQUIRED; The import setting type.
@@ -2371,6 +3117,14 @@ type AzureDatabricksDeltaLakeImportCommand struct {
 
 	// Specify the timestamp format for csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType string).
 	TimestampFormat interface{} `json:"timestampFormat,omitempty"`
+}
+
+// GetImportSettings implements the ImportSettingsClassification interface for type AzureDatabricksDeltaLakeImportCommand.
+func (a *AzureDatabricksDeltaLakeImportCommand) GetImportSettings() *ImportSettings {
+	return &ImportSettings{
+		Type:                 a.Type,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureDatabricksDeltaLakeLinkedService - Azure Databricks Delta Lake linked service.
@@ -2395,6 +3149,18 @@ type AzureDatabricksDeltaLakeLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureDatabricksDeltaLakeLinkedService.
+func (a *AzureDatabricksDeltaLakeLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureDatabricksDeltaLakeSink - A copy activity Azure Databricks Delta Lake sink.
@@ -2430,6 +3196,20 @@ type AzureDatabricksDeltaLakeSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzureDatabricksDeltaLakeSink.
+func (a *AzureDatabricksDeltaLakeSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureDatabricksDeltaLakeSource - A copy activity Azure Databricks Delta Lake source.
 type AzureDatabricksDeltaLakeSource struct {
 	// REQUIRED; Copy source type.
@@ -2455,6 +3235,18 @@ type AzureDatabricksDeltaLakeSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type AzureDatabricksDeltaLakeSource.
+func (a *AzureDatabricksDeltaLakeSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
 }
 
 // AzureDatabricksDetltaLakeLinkedServiceTypeProperties - Azure Databricks Delta Lake linked service properties.
@@ -2504,6 +3296,18 @@ type AzureDatabricksLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureDatabricksLinkedService.
+func (a *AzureDatabricksLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureDatabricksLinkedServiceTypeProperties - Azure Databricks linked service properties.
@@ -2609,6 +3413,18 @@ type AzureFileStorageLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureFileStorageLinkedService.
+func (a *AzureFileStorageLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureFileStorageLinkedServiceTypeProperties - Azure File Storage linked service properties.
 type AzureFileStorageLinkedServiceTypeProperties struct {
 	// The Azure key vault secret reference of accountKey in connection string.
@@ -2660,6 +3476,16 @@ type AzureFileStorageLocation struct {
 	FolderPath interface{} `json:"folderPath,omitempty"`
 }
 
+// GetDatasetLocation implements the DatasetLocationClassification interface for type AzureFileStorageLocation.
+func (a *AzureFileStorageLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 a.Type,
+		FolderPath:           a.FolderPath,
+		FileName:             a.FileName,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureFileStorageReadSettings - Azure File Storage read settings.
 type AzureFileStorageReadSettings struct {
 	// REQUIRED; The read setting type.
@@ -2708,6 +3534,16 @@ type AzureFileStorageReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type AzureFileStorageReadSettings.
+func (a *AzureFileStorageReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureFileStorageWriteSettings - Azure File Storage write settings.
 type AzureFileStorageWriteSettings struct {
 	// REQUIRED; The write setting type.
@@ -2724,6 +3560,17 @@ type AzureFileStorageWriteSettings struct {
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+}
+
+// GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type AzureFileStorageWriteSettings.
+func (a *AzureFileStorageWriteSettings) GetStoreWriteSettings() *StoreWriteSettings {
+	return &StoreWriteSettings{
+		Type:                     a.Type,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		CopyBehavior:             a.CopyBehavior,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
 }
 
 // AzureFunctionActivity - Azure Function activity.
@@ -2754,6 +3601,32 @@ type AzureFunctionActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type AzureFunctionActivity.
+func (a *AzureFunctionActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type AzureFunctionActivity.
+func (a *AzureFunctionActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    a.LinkedServiceName,
+		Policy:               a.Policy,
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureFunctionActivityTypeProperties - Azure Function activity type properties.
@@ -2797,6 +3670,18 @@ type AzureFunctionLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureFunctionLinkedService.
+func (a *AzureFunctionLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureFunctionLinkedServiceTypeProperties - Azure Function linked service properties.
@@ -2846,6 +3731,18 @@ type AzureKeyVaultLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureKeyVaultLinkedService.
+func (a *AzureKeyVaultLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureKeyVaultLinkedServiceTypeProperties - Azure Key Vault linked service properties.
 type AzureKeyVaultLinkedServiceTypeProperties struct {
 	// REQUIRED; The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with resultType
@@ -2870,6 +3767,13 @@ type AzureKeyVaultSecretReference struct {
 	// The version of the secret in Azure Key Vault. The default value is the latest version of the secret. Type: string (or Expression
 	// with resultType string).
 	SecretVersion interface{} `json:"secretVersion,omitempty"`
+}
+
+// GetSecretBase implements the SecretBaseClassification interface for type AzureKeyVaultSecretReference.
+func (a *AzureKeyVaultSecretReference) GetSecretBase() *SecretBase {
+	return &SecretBase{
+		Type: a.Type,
+	}
 }
 
 // AzureMLBatchExecutionActivity - Azure ML Batch Execution activity.
@@ -2900,6 +3804,32 @@ type AzureMLBatchExecutionActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type AzureMLBatchExecutionActivity.
+func (a *AzureMLBatchExecutionActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type AzureMLBatchExecutionActivity.
+func (a *AzureMLBatchExecutionActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    a.LinkedServiceName,
+		Policy:               a.Policy,
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureMLBatchExecutionActivityTypeProperties - Azure ML Batch Execution activity properties.
@@ -2948,6 +3878,32 @@ type AzureMLExecutePipelineActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type AzureMLExecutePipelineActivity.
+func (a *AzureMLExecutePipelineActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type AzureMLExecutePipelineActivity.
+func (a *AzureMLExecutePipelineActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    a.LinkedServiceName,
+		Policy:               a.Policy,
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureMLExecutePipelineActivityTypeProperties - Azure ML Execute Pipeline activity properties.
@@ -3012,6 +3968,18 @@ type AzureMLLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureMLLinkedService.
+func (a *AzureMLLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureMLLinkedServiceTypeProperties - Azure ML Studio Web Service linked service properties.
 type AzureMLLinkedServiceTypeProperties struct {
 	// REQUIRED; The API key for accessing the Azure ML model endpoint.
@@ -3066,6 +4034,18 @@ type AzureMLServiceLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureMLServiceLinkedService.
+func (a *AzureMLServiceLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureMLServiceLinkedServiceTypeProperties - Azure ML Service linked service properties.
@@ -3124,6 +4104,32 @@ type AzureMLUpdateResourceActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type AzureMLUpdateResourceActivity.
+func (a *AzureMLUpdateResourceActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type AzureMLUpdateResourceActivity.
+func (a *AzureMLUpdateResourceActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    a.LinkedServiceName,
+		Policy:               a.Policy,
+		Name:                 a.Name,
+		Type:                 a.Type,
+		Description:          a.Description,
+		DependsOn:            a.DependsOn,
+		UserProperties:       a.UserProperties,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureMLUpdateResourceActivityTypeProperties - Azure ML Update Resource activity properties.
 type AzureMLUpdateResourceActivityTypeProperties struct {
 	// REQUIRED; The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by
@@ -3172,6 +4178,18 @@ type AzureMariaDBLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureMariaDBLinkedService.
+func (a *AzureMariaDBLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureMariaDBLinkedServiceTypeProperties - Azure Database for MariaDB linked service properties.
 type AzureMariaDBLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
@@ -3216,6 +4234,32 @@ type AzureMariaDBSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type AzureMariaDBSource.
+func (a *AzureMariaDBSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type AzureMariaDBSource.
+func (a *AzureMariaDBSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             a.QueryTimeout,
+		AdditionalColumns:        a.AdditionalColumns,
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureMariaDBTableDataset - Azure Database for MariaDB dataset.
 type AzureMariaDBTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -3250,6 +4294,21 @@ type AzureMariaDBTableDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureMariaDBTableDataset.
+func (a *AzureMariaDBTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureMySQLLinkedService - Azure MySQL database linked service.
 type AzureMySQLLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -3272,6 +4331,18 @@ type AzureMySQLLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureMySQLLinkedService.
+func (a *AzureMySQLLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureMySQLLinkedServiceTypeProperties - Azure MySQL database linked service properties.
@@ -3317,6 +4388,20 @@ type AzureMySQLSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzureMySQLSink.
+func (a *AzureMySQLSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureMySQLSource - A copy activity Azure MySQL source.
 type AzureMySQLSource struct {
 	// REQUIRED; Copy source type.
@@ -3346,6 +4431,32 @@ type AzureMySQLSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type AzureMySQLSource.
+func (a *AzureMySQLSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type AzureMySQLSource.
+func (a *AzureMySQLSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             a.QueryTimeout,
+		AdditionalColumns:        a.AdditionalColumns,
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
 }
 
 // AzureMySQLTableDataset - The Azure MySQL database dataset.
@@ -3382,6 +4493,21 @@ type AzureMySQLTableDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureMySQLTableDataset.
+func (a *AzureMySQLTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureMySQLTableDatasetTypeProperties - Azure MySQL database dataset properties.
 type AzureMySQLTableDatasetTypeProperties struct {
 	// The name of Azure MySQL database table. Type: string (or Expression with resultType string).
@@ -3413,6 +4539,18 @@ type AzurePostgreSQLLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzurePostgreSQLLinkedService.
+func (a *AzurePostgreSQLLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzurePostgreSQLLinkedServiceTypeProperties - Azure PostgreSQL linked service properties.
@@ -3458,6 +4596,20 @@ type AzurePostgreSQLSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzurePostgreSQLSink.
+func (a *AzurePostgreSQLSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzurePostgreSQLSource - A copy activity Azure PostgreSQL source.
 type AzurePostgreSQLSource struct {
 	// REQUIRED; Copy source type.
@@ -3487,6 +4639,32 @@ type AzurePostgreSQLSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type AzurePostgreSQLSource.
+func (a *AzurePostgreSQLSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type AzurePostgreSQLSource.
+func (a *AzurePostgreSQLSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             a.QueryTimeout,
+		AdditionalColumns:        a.AdditionalColumns,
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
 }
 
 // AzurePostgreSQLTableDataset - Azure PostgreSQL dataset.
@@ -3521,6 +4699,21 @@ type AzurePostgreSQLTableDataset struct {
 
 	// Properties specific to this dataset type.
 	TypeProperties *AzurePostgreSQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type AzurePostgreSQLTableDataset.
+func (a *AzurePostgreSQLTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzurePostgreSQLTableDatasetTypeProperties - Azure PostgreSQL dataset properties.
@@ -3563,6 +4756,20 @@ type AzureQueueSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzureQueueSink.
+func (a *AzureQueueSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureSQLDWLinkedService - Azure SQL Data Warehouse linked service.
 type AzureSQLDWLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -3585,6 +4792,18 @@ type AzureSQLDWLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureSQLDWLinkedService.
+func (a *AzureSQLDWLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureSQLDWLinkedServiceTypeProperties - Azure SQL Data Warehouse linked service properties.
@@ -3653,6 +4872,21 @@ type AzureSQLDWTableDataset struct {
 	TypeProperties *AzureSQLDWTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureSQLDWTableDataset.
+func (a *AzureSQLDWTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureSQLDWTableDatasetTypeProperties - Azure SQL Data Warehouse dataset properties.
 type AzureSQLDWTableDatasetTypeProperties struct {
 	// The schema name of the Azure SQL Data Warehouse. Type: string (or Expression with resultType string).
@@ -3687,6 +4921,18 @@ type AzureSQLDatabaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureSQLDatabaseLinkedService.
+func (a *AzureSQLDatabaseLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureSQLDatabaseLinkedServiceTypeProperties - Azure SQL Database linked service properties.
@@ -3745,6 +4991,18 @@ type AzureSQLMILinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureSQLMILinkedService.
+func (a *AzureSQLMILinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureSQLMILinkedServiceTypeProperties - Azure SQL Managed Instance linked service properties.
@@ -3815,6 +5073,21 @@ type AzureSQLMITableDataset struct {
 	TypeProperties *AzureSQLMITableDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureSQLMITableDataset.
+func (a *AzureSQLMITableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureSQLMITableDatasetTypeProperties - Azure SQL Managed Instance dataset properties.
 type AzureSQLMITableDatasetTypeProperties struct {
 	// The schema name of the Azure SQL Managed Instance. Type: string (or Expression with resultType string).
@@ -3882,6 +5155,20 @@ type AzureSQLSink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzureSQLSink.
+func (a *AzureSQLSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureSQLSource - A copy activity Azure SQL source.
 type AzureSQLSource struct {
 	// REQUIRED; Copy source type.
@@ -3930,6 +5217,32 @@ type AzureSQLSource struct {
 	StoredProcedureParameters map[string]*StoredProcedureParameter `json:"storedProcedureParameters,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type AzureSQLSource.
+func (a *AzureSQLSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type AzureSQLSource.
+func (a *AzureSQLSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             a.QueryTimeout,
+		AdditionalColumns:        a.AdditionalColumns,
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureSQLTableDataset - The Azure SQL Server database dataset.
 type AzureSQLTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -3962,6 +5275,21 @@ type AzureSQLTableDataset struct {
 
 	// Azure SQL dataset properties.
 	TypeProperties *AzureSQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type AzureSQLTableDataset.
+func (a *AzureSQLTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureSQLTableDatasetTypeProperties - Azure SQL dataset properties.
@@ -4010,6 +5338,21 @@ type AzureSearchIndexDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureSearchIndexDataset.
+func (a *AzureSearchIndexDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureSearchIndexDatasetTypeProperties - Properties specific to this dataset type.
 type AzureSearchIndexDatasetTypeProperties struct {
 	// REQUIRED; The name of the Azure Search Index. Type: string (or Expression with resultType string).
@@ -4046,6 +5389,20 @@ type AzureSearchIndexSink struct {
 	WriteBehavior *AzureSearchIndexWriteBehaviorType `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzureSearchIndexSink.
+func (a *AzureSearchIndexSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureSearchLinkedService - Linked service for Windows Azure Search Service.
 type AzureSearchLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -4068,6 +5425,18 @@ type AzureSearchLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureSearchLinkedService.
+func (a *AzureSearchLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureSearchLinkedServiceTypeProperties - Windows Azure Search Service linked service properties.
@@ -4105,6 +5474,18 @@ type AzureStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureStorageLinkedService.
+func (a *AzureStorageLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // AzureStorageLinkedServiceTypeProperties - Azure Storage linked service properties.
@@ -4161,6 +5542,21 @@ type AzureTableDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type AzureTableDataset.
+func (a *AzureTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 a.Type,
+		Description:          a.Description,
+		Structure:            a.Structure,
+		Schema:               a.Schema,
+		LinkedServiceName:    a.LinkedServiceName,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		Folder:               a.Folder,
+		AdditionalProperties: a.AdditionalProperties,
+	}
+}
+
 // AzureTableDatasetTypeProperties - Azure Table dataset properties.
 type AzureTableDatasetTypeProperties struct {
 	// REQUIRED; The table name of the Azure Table storage. Type: string (or Expression with resultType string).
@@ -4206,6 +5602,20 @@ type AzureTableSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type AzureTableSink.
+func (a *AzureTableSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     a.Type,
+		WriteBatchSize:           a.WriteBatchSize,
+		WriteBatchTimeout:        a.WriteBatchTimeout,
+		SinkRetryCount:           a.SinkRetryCount,
+		SinkRetryWait:            a.SinkRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureTableSource - A copy activity Azure Table source.
 type AzureTableSource struct {
 	// REQUIRED; Copy source type.
@@ -4240,6 +5650,32 @@ type AzureTableSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type AzureTableSource.
+func (a *AzureTableSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type AzureTableSource.
+func (a *AzureTableSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             a.QueryTimeout,
+		AdditionalColumns:        a.AdditionalColumns,
+		Type:                     a.Type,
+		SourceRetryCount:         a.SourceRetryCount,
+		SourceRetryWait:          a.SourceRetryWait,
+		MaxConcurrentConnections: a.MaxConcurrentConnections,
+		DisableMetricsCollection: a.DisableMetricsCollection,
+		AdditionalProperties:     a.AdditionalProperties,
+	}
+}
+
 // AzureTableStorageLinkedService - The azure table storage linked service.
 type AzureTableStorageLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -4262,6 +5698,18 @@ type AzureTableStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type AzureTableStorageLinkedService.
+func (a *AzureTableStorageLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 a.Type,
+		ConnectVia:           a.ConnectVia,
+		Description:          a.Description,
+		Parameters:           a.Parameters,
+		Annotations:          a.Annotations,
+		AdditionalProperties: a.AdditionalProperties,
+	}
 }
 
 // BinaryDataset - Binary dataset.
@@ -4298,6 +5746,21 @@ type BinaryDataset struct {
 	TypeProperties *BinaryDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type BinaryDataset.
+func (b *BinaryDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 b.Type,
+		Description:          b.Description,
+		Structure:            b.Structure,
+		Schema:               b.Schema,
+		LinkedServiceName:    b.LinkedServiceName,
+		Parameters:           b.Parameters,
+		Annotations:          b.Annotations,
+		Folder:               b.Folder,
+		AdditionalProperties: b.AdditionalProperties,
+	}
+}
+
 // BinaryDatasetTypeProperties - Binary dataset properties.
 type BinaryDatasetTypeProperties struct {
 	// REQUIRED; The location of the Binary storage.
@@ -4317,6 +5780,14 @@ type BinaryReadSettings struct {
 
 	// Compression settings.
 	CompressionProperties CompressionReadSettingsClassification `json:"compressionProperties,omitempty"`
+}
+
+// GetFormatReadSettings implements the FormatReadSettingsClassification interface for type BinaryReadSettings.
+func (b *BinaryReadSettings) GetFormatReadSettings() *FormatReadSettings {
+	return &FormatReadSettings{
+		Type:                 b.Type,
+		AdditionalProperties: b.AdditionalProperties,
+	}
 }
 
 // BinarySink - A copy activity Binary sink.
@@ -4349,6 +5820,20 @@ type BinarySink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type BinarySink.
+func (b *BinarySink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     b.Type,
+		WriteBatchSize:           b.WriteBatchSize,
+		WriteBatchTimeout:        b.WriteBatchTimeout,
+		SinkRetryCount:           b.SinkRetryCount,
+		SinkRetryWait:            b.SinkRetryWait,
+		MaxConcurrentConnections: b.MaxConcurrentConnections,
+		DisableMetricsCollection: b.DisableMetricsCollection,
+		AdditionalProperties:     b.AdditionalProperties,
+	}
+}
+
 // BinarySource - A copy activity Binary source.
 type BinarySource struct {
 	// REQUIRED; Copy source type.
@@ -4376,6 +5861,18 @@ type BinarySource struct {
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type BinarySource.
+func (b *BinarySource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     b.Type,
+		SourceRetryCount:         b.SourceRetryCount,
+		SourceRetryWait:          b.SourceRetryWait,
+		MaxConcurrentConnections: b.MaxConcurrentConnections,
+		DisableMetricsCollection: b.DisableMetricsCollection,
+		AdditionalProperties:     b.AdditionalProperties,
+	}
+}
+
 // BlobEventsTrigger - Trigger that runs every time a Blob event occurs.
 type BlobEventsTrigger struct {
 	// REQUIRED; Trigger type.
@@ -4398,6 +5895,29 @@ type BlobEventsTrigger struct {
 
 	// READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
 	RuntimeState *TriggerRuntimeState `json:"runtimeState,omitempty" azure:"ro"`
+}
+
+// GetMultiplePipelineTrigger implements the MultiplePipelineTriggerClassification interface for type BlobEventsTrigger.
+func (b *BlobEventsTrigger) GetMultiplePipelineTrigger() *MultiplePipelineTrigger {
+	return &MultiplePipelineTrigger{
+		Pipelines:            b.Pipelines,
+		Type:                 b.Type,
+		Description:          b.Description,
+		RuntimeState:         b.RuntimeState,
+		Annotations:          b.Annotations,
+		AdditionalProperties: b.AdditionalProperties,
+	}
+}
+
+// GetTrigger implements the TriggerClassification interface for type BlobEventsTrigger.
+func (b *BlobEventsTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		Type:                 b.Type,
+		Description:          b.Description,
+		RuntimeState:         b.RuntimeState,
+		Annotations:          b.Annotations,
+		AdditionalProperties: b.AdditionalProperties,
+	}
 }
 
 // BlobEventsTriggerTypeProperties - Blob Events Trigger properties.
@@ -4464,6 +5984,20 @@ type BlobSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type BlobSink.
+func (b *BlobSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     b.Type,
+		WriteBatchSize:           b.WriteBatchSize,
+		WriteBatchTimeout:        b.WriteBatchTimeout,
+		SinkRetryCount:           b.SinkRetryCount,
+		SinkRetryWait:            b.SinkRetryWait,
+		MaxConcurrentConnections: b.MaxConcurrentConnections,
+		DisableMetricsCollection: b.DisableMetricsCollection,
+		AdditionalProperties:     b.AdditionalProperties,
+	}
+}
+
 // BlobSource - A copy activity Azure Blob source.
 type BlobSource struct {
 	// REQUIRED; Copy source type.
@@ -4495,6 +6029,18 @@ type BlobSource struct {
 	TreatEmptyAsNull interface{} `json:"treatEmptyAsNull,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type BlobSource.
+func (b *BlobSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     b.Type,
+		SourceRetryCount:         b.SourceRetryCount,
+		SourceRetryWait:          b.SourceRetryWait,
+		MaxConcurrentConnections: b.MaxConcurrentConnections,
+		DisableMetricsCollection: b.DisableMetricsCollection,
+		AdditionalProperties:     b.AdditionalProperties,
+	}
+}
+
 // BlobTrigger - Trigger that runs every time the selected Blob container changes.
 type BlobTrigger struct {
 	// REQUIRED; Trigger type.
@@ -4517,6 +6063,29 @@ type BlobTrigger struct {
 
 	// READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
 	RuntimeState *TriggerRuntimeState `json:"runtimeState,omitempty" azure:"ro"`
+}
+
+// GetMultiplePipelineTrigger implements the MultiplePipelineTriggerClassification interface for type BlobTrigger.
+func (b *BlobTrigger) GetMultiplePipelineTrigger() *MultiplePipelineTrigger {
+	return &MultiplePipelineTrigger{
+		Pipelines:            b.Pipelines,
+		Type:                 b.Type,
+		Description:          b.Description,
+		RuntimeState:         b.RuntimeState,
+		Annotations:          b.Annotations,
+		AdditionalProperties: b.AdditionalProperties,
+	}
+}
+
+// GetTrigger implements the TriggerClassification interface for type BlobTrigger.
+func (b *BlobTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		Type:                 b.Type,
+		Description:          b.Description,
+		RuntimeState:         b.RuntimeState,
+		Annotations:          b.Annotations,
+		AdditionalProperties: b.AdditionalProperties,
+	}
 }
 
 // BlobTriggerTypeProperties - Blob Trigger properties.
@@ -4559,6 +6128,18 @@ type CassandraLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type CassandraLinkedService.
+func (c *CassandraLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 c.Type,
+		ConnectVia:           c.ConnectVia,
+		Description:          c.Description,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CassandraLinkedServiceTypeProperties - Cassandra linked service properties.
@@ -4621,6 +6202,32 @@ type CassandraSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type CassandraSource.
+func (c *CassandraSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     c.Type,
+		SourceRetryCount:         c.SourceRetryCount,
+		SourceRetryWait:          c.SourceRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type CassandraSource.
+func (c *CassandraSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             c.QueryTimeout,
+		AdditionalColumns:        c.AdditionalColumns,
+		Type:                     c.Type,
+		SourceRetryCount:         c.SourceRetryCount,
+		SourceRetryWait:          c.SourceRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
 // CassandraTableDataset - The Cassandra database dataset.
 type CassandraTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -4653,6 +6260,21 @@ type CassandraTableDataset struct {
 
 	// Cassandra dataset properties.
 	TypeProperties *CassandraTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type CassandraTableDataset.
+func (c *CassandraTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 c.Type,
+		Description:          c.Description,
+		Structure:            c.Structure,
+		Schema:               c.Schema,
+		LinkedServiceName:    c.LinkedServiceName,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		Folder:               c.Folder,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CassandraTableDatasetTypeProperties - Cassandra dataset properties.
@@ -4689,6 +6311,17 @@ type ChainingTrigger struct {
 
 	// READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
 	RuntimeState *TriggerRuntimeState `json:"runtimeState,omitempty" azure:"ro"`
+}
+
+// GetTrigger implements the TriggerClassification interface for type ChainingTrigger.
+func (c *ChainingTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		Type:                 c.Type,
+		Description:          c.Description,
+		RuntimeState:         c.RuntimeState,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // ChainingTriggerTypeProperties - Chaining Trigger properties.
@@ -4728,6 +6361,13 @@ type CmdkeySetup struct {
 
 	// REQUIRED; Cmdkey command custom setup type properties.
 	TypeProperties *CmdkeySetupTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetCustomSetupBase implements the CustomSetupBaseClassification interface for type CmdkeySetup.
+func (c *CmdkeySetup) GetCustomSetupBase() *CustomSetupBase {
+	return &CustomSetupBase{
+		Type: c.Type,
+	}
 }
 
 // CmdkeySetupTypeProperties - Cmdkey command custom setup type properties.
@@ -4776,6 +6416,21 @@ type CommonDataServiceForAppsEntityDataset struct {
 	TypeProperties *CommonDataServiceForAppsEntityDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type CommonDataServiceForAppsEntityDataset.
+func (c *CommonDataServiceForAppsEntityDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 c.Type,
+		Description:          c.Description,
+		Structure:            c.Structure,
+		Schema:               c.Schema,
+		LinkedServiceName:    c.LinkedServiceName,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		Folder:               c.Folder,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
 // CommonDataServiceForAppsEntityDatasetTypeProperties - Common Data Service for Apps entity dataset properties.
 type CommonDataServiceForAppsEntityDatasetTypeProperties struct {
 	// The logical name of the entity. Type: string (or Expression with resultType string).
@@ -4804,6 +6459,18 @@ type CommonDataServiceForAppsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type CommonDataServiceForAppsLinkedService.
+func (c *CommonDataServiceForAppsLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 c.Type,
+		ConnectVia:           c.ConnectVia,
+		Description:          c.Description,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CommonDataServiceForAppsLinkedServiceTypeProperties - Common Data Service for Apps linked service properties.
@@ -4900,6 +6567,20 @@ type CommonDataServiceForAppsSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type CommonDataServiceForAppsSink.
+func (c *CommonDataServiceForAppsSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     c.Type,
+		WriteBatchSize:           c.WriteBatchSize,
+		WriteBatchTimeout:        c.WriteBatchTimeout,
+		SinkRetryCount:           c.SinkRetryCount,
+		SinkRetryWait:            c.SinkRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
 // CommonDataServiceForAppsSource - A copy activity Common Data Service for Apps source.
 type CommonDataServiceForAppsSource struct {
 	// REQUIRED; Copy source type.
@@ -4929,6 +6610,18 @@ type CommonDataServiceForAppsSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type CommonDataServiceForAppsSource.
+func (c *CommonDataServiceForAppsSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     c.Type,
+		SourceRetryCount:         c.SourceRetryCount,
+		SourceRetryWait:          c.SourceRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
 // ComponentSetup - The custom setup of installing 3rd party components.
 type ComponentSetup struct {
 	// REQUIRED; The type of custom setup.
@@ -4936,6 +6629,13 @@ type ComponentSetup struct {
 
 	// REQUIRED; Install 3rd party component type properties.
 	TypeProperties *LicensedComponentSetupTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetCustomSetupBase implements the CustomSetupBaseClassification interface for type ComponentSetup.
+func (c *ComponentSetup) GetCustomSetupBase() *CustomSetupBase {
+	return &CustomSetupBase{
+		Type: c.Type,
+	}
 }
 
 // CompressionReadSettingsClassification provides polymorphic access to related types.
@@ -4955,6 +6655,9 @@ type CompressionReadSettings struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]interface{}
 }
+
+// GetCompressionReadSettings implements the CompressionReadSettingsClassification interface for type CompressionReadSettings.
+func (c *CompressionReadSettings) GetCompressionReadSettings() *CompressionReadSettings { return c }
 
 // ConcurLinkedService - Concur Service linked service.
 type ConcurLinkedService struct {
@@ -4978,6 +6681,18 @@ type ConcurLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type ConcurLinkedService.
+func (c *ConcurLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 c.Type,
+		ConnectVia:           c.ConnectVia,
+		Description:          c.Description,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // ConcurLinkedServiceTypeProperties - Concur Service linked service properties.
@@ -5043,6 +6758,21 @@ type ConcurObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type ConcurObjectDataset.
+func (c *ConcurObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 c.Type,
+		Description:          c.Description,
+		Structure:            c.Structure,
+		Schema:               c.Schema,
+		LinkedServiceName:    c.LinkedServiceName,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		Folder:               c.Folder,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
 // ConcurSource - A copy activity Concur Service source.
 type ConcurSource struct {
 	// REQUIRED; Copy source type.
@@ -5072,6 +6802,32 @@ type ConcurSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type ConcurSource.
+func (c *ConcurSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     c.Type,
+		SourceRetryCount:         c.SourceRetryCount,
+		SourceRetryWait:          c.SourceRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type ConcurSource.
+func (c *ConcurSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             c.QueryTimeout,
+		AdditionalColumns:        c.AdditionalColumns,
+		Type:                     c.Type,
+		SourceRetryCount:         c.SourceRetryCount,
+		SourceRetryWait:          c.SourceRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
 }
 
 // ConnectionStateProperties - The connection state of a managed private endpoint
@@ -5118,6 +6874,21 @@ type ControlActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type ControlActivity.
+func (c *ControlActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 c.Name,
+		Type:                 c.Type,
+		Description:          c.Description,
+		DependsOn:            c.DependsOn,
+		UserProperties:       c.UserProperties,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type ControlActivity.
+func (c *ControlActivity) GetControlActivity() *ControlActivity { return c }
+
 // CopyActivity - Copy activity.
 type CopyActivity struct {
 	// REQUIRED; Activity name.
@@ -5152,6 +6923,32 @@ type CopyActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type CopyActivity.
+func (c *CopyActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 c.Name,
+		Type:                 c.Type,
+		Description:          c.Description,
+		DependsOn:            c.DependsOn,
+		UserProperties:       c.UserProperties,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type CopyActivity.
+func (c *CopyActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    c.LinkedServiceName,
+		Policy:               c.Policy,
+		Name:                 c.Name,
+		Type:                 c.Type,
+		Description:          c.Description,
+		DependsOn:            c.DependsOn,
+		UserProperties:       c.UserProperties,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CopyActivityLogSettings - Settings for copy activity log.
@@ -5255,6 +7052,9 @@ type CopySink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type CopySink.
+func (c *CopySink) GetCopySink() *CopySink { return c }
+
 // CopySourceClassification provides polymorphic access to related types.
 // Call the interface's GetCopySource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5298,6 +7098,9 @@ type CopySource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type CopySource.
+func (c *CopySource) GetCopySource() *CopySource { return c }
+
 // CopyTranslatorClassification provides polymorphic access to related types.
 // Call the interface's GetCopyTranslator() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5315,6 +7118,9 @@ type CopyTranslator struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]interface{}
 }
+
+// GetCopyTranslator implements the CopyTranslatorClassification interface for type CopyTranslator.
+func (c *CopyTranslator) GetCopyTranslator() *CopyTranslator { return c }
 
 // CosmosDbLinkedService - Microsoft Azure Cosmos Database (CosmosDB) linked service.
 type CosmosDbLinkedService struct {
@@ -5338,6 +7144,18 @@ type CosmosDbLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type CosmosDbLinkedService.
+func (c *CosmosDbLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 c.Type,
+		ConnectVia:           c.ConnectVia,
+		Description:          c.Description,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CosmosDbLinkedServiceTypeProperties - CosmosDB linked service properties.
@@ -5422,6 +7240,21 @@ type CosmosDbMongoDbAPICollectionDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type CosmosDbMongoDbAPICollectionDataset.
+func (c *CosmosDbMongoDbAPICollectionDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 c.Type,
+		Description:          c.Description,
+		Structure:            c.Structure,
+		Schema:               c.Schema,
+		LinkedServiceName:    c.LinkedServiceName,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		Folder:               c.Folder,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
 // CosmosDbMongoDbAPICollectionDatasetTypeProperties - CosmosDB (MongoDB API) database dataset properties.
 type CosmosDbMongoDbAPICollectionDatasetTypeProperties struct {
 	// REQUIRED; The collection name of the CosmosDB (MongoDB API) database. Type: string (or Expression with resultType string).
@@ -5450,6 +7283,18 @@ type CosmosDbMongoDbAPILinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type CosmosDbMongoDbAPILinkedService.
+func (c *CosmosDbMongoDbAPILinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 c.Type,
+		ConnectVia:           c.ConnectVia,
+		Description:          c.Description,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CosmosDbMongoDbAPILinkedServiceTypeProperties - CosmosDB (MongoDB API) linked service properties.
@@ -5499,6 +7344,20 @@ type CosmosDbMongoDbAPISink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type CosmosDbMongoDbAPISink.
+func (c *CosmosDbMongoDbAPISink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     c.Type,
+		WriteBatchSize:           c.WriteBatchSize,
+		WriteBatchTimeout:        c.WriteBatchTimeout,
+		SinkRetryCount:           c.SinkRetryCount,
+		SinkRetryWait:            c.SinkRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
 // CosmosDbMongoDbAPISource - A copy activity source for a CosmosDB (MongoDB API) database.
 type CosmosDbMongoDbAPISource struct {
 	// REQUIRED; Copy source type.
@@ -5539,6 +7398,18 @@ type CosmosDbMongoDbAPISource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type CosmosDbMongoDbAPISource.
+func (c *CosmosDbMongoDbAPISource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     c.Type,
+		SourceRetryCount:         c.SourceRetryCount,
+		SourceRetryWait:          c.SourceRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
 // CosmosDbSQLAPICollectionDataset - Microsoft Azure CosmosDB (SQL API) Collection dataset.
 type CosmosDbSQLAPICollectionDataset struct {
 	// REQUIRED; Linked service reference.
@@ -5571,6 +7442,21 @@ type CosmosDbSQLAPICollectionDataset struct {
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
 	Structure interface{} `json:"structure,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type CosmosDbSQLAPICollectionDataset.
+func (c *CosmosDbSQLAPICollectionDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 c.Type,
+		Description:          c.Description,
+		Structure:            c.Structure,
+		Schema:               c.Schema,
+		LinkedServiceName:    c.LinkedServiceName,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		Folder:               c.Folder,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CosmosDbSQLAPICollectionDatasetTypeProperties - CosmosDB (SQL API) Collection dataset properties.
@@ -5610,6 +7496,20 @@ type CosmosDbSQLAPISink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type CosmosDbSQLAPISink.
+func (c *CosmosDbSQLAPISink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     c.Type,
+		WriteBatchSize:           c.WriteBatchSize,
+		WriteBatchTimeout:        c.WriteBatchTimeout,
+		SinkRetryCount:           c.SinkRetryCount,
+		SinkRetryWait:            c.SinkRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
 // CosmosDbSQLAPISource - A copy activity Azure CosmosDB (SQL API) Collection source.
 type CosmosDbSQLAPISource struct {
 	// REQUIRED; Copy source type.
@@ -5647,6 +7547,18 @@ type CosmosDbSQLAPISource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type CosmosDbSQLAPISource.
+func (c *CosmosDbSQLAPISource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     c.Type,
+		SourceRetryCount:         c.SourceRetryCount,
+		SourceRetryWait:          c.SourceRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
 // CouchbaseLinkedService - Couchbase server linked service.
 type CouchbaseLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -5669,6 +7581,18 @@ type CouchbaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type CouchbaseLinkedService.
+func (c *CouchbaseLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 c.Type,
+		ConnectVia:           c.ConnectVia,
+		Description:          c.Description,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CouchbaseLinkedServiceTypeProperties - Couchbase server linked service properties.
@@ -5715,6 +7639,32 @@ type CouchbaseSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type CouchbaseSource.
+func (c *CouchbaseSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     c.Type,
+		SourceRetryCount:         c.SourceRetryCount,
+		SourceRetryWait:          c.SourceRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type CouchbaseSource.
+func (c *CouchbaseSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             c.QueryTimeout,
+		AdditionalColumns:        c.AdditionalColumns,
+		Type:                     c.Type,
+		SourceRetryCount:         c.SourceRetryCount,
+		SourceRetryWait:          c.SourceRetryWait,
+		MaxConcurrentConnections: c.MaxConcurrentConnections,
+		DisableMetricsCollection: c.DisableMetricsCollection,
+		AdditionalProperties:     c.AdditionalProperties,
+	}
+}
+
 // CouchbaseTableDataset - Couchbase server dataset.
 type CouchbaseTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -5747,6 +7697,21 @@ type CouchbaseTableDataset struct {
 
 	// Properties specific to this dataset type.
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type CouchbaseTableDataset.
+func (c *CouchbaseTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 c.Type,
+		Description:          c.Description,
+		Structure:            c.Structure,
+		Schema:               c.Schema,
+		LinkedServiceName:    c.LinkedServiceName,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		Folder:               c.Folder,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CreateDataFlowDebugSessionRequest - Request body structure for creating data flow debug session.
@@ -5819,6 +7784,9 @@ type Credential struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// GetCredential implements the CredentialClassification interface for type Credential.
+func (c *Credential) GetCredential() *Credential { return c }
+
 // CredentialReference - Credential reference type.
 type CredentialReference struct {
 	// REQUIRED; Reference credential name.
@@ -5879,6 +7847,32 @@ type CustomActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type CustomActivity.
+func (c *CustomActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 c.Name,
+		Type:                 c.Type,
+		Description:          c.Description,
+		DependsOn:            c.DependsOn,
+		UserProperties:       c.UserProperties,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type CustomActivity.
+func (c *CustomActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    c.LinkedServiceName,
+		Policy:               c.Policy,
+		Name:                 c.Name,
+		Type:                 c.Type,
+		Description:          c.Description,
+		DependsOn:            c.DependsOn,
+		UserProperties:       c.UserProperties,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
 // CustomActivityReferenceObject - Reference objects for custom activity
 type CustomActivityReferenceObject struct {
 	// Dataset references.
@@ -5937,6 +7931,18 @@ type CustomDataSourceLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type CustomDataSourceLinkedService.
+func (c *CustomDataSourceLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 c.Type,
+		ConnectVia:           c.ConnectVia,
+		Description:          c.Description,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
 // CustomDataset - The custom dataset.
 type CustomDataset struct {
 	// REQUIRED; Linked service reference.
@@ -5971,6 +7977,21 @@ type CustomDataset struct {
 	TypeProperties interface{} `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type CustomDataset.
+func (c *CustomDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 c.Type,
+		Description:          c.Description,
+		Structure:            c.Structure,
+		Schema:               c.Schema,
+		LinkedServiceName:    c.LinkedServiceName,
+		Parameters:           c.Parameters,
+		Annotations:          c.Annotations,
+		Folder:               c.Folder,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
 // CustomEventsTrigger - Trigger that runs every time a custom event is received.
 type CustomEventsTrigger struct {
 	// REQUIRED; Trigger type.
@@ -5993,6 +8014,29 @@ type CustomEventsTrigger struct {
 
 	// READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
 	RuntimeState *TriggerRuntimeState `json:"runtimeState,omitempty" azure:"ro"`
+}
+
+// GetMultiplePipelineTrigger implements the MultiplePipelineTriggerClassification interface for type CustomEventsTrigger.
+func (c *CustomEventsTrigger) GetMultiplePipelineTrigger() *MultiplePipelineTrigger {
+	return &MultiplePipelineTrigger{
+		Pipelines:            c.Pipelines,
+		Type:                 c.Type,
+		Description:          c.Description,
+		RuntimeState:         c.RuntimeState,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
+}
+
+// GetTrigger implements the TriggerClassification interface for type CustomEventsTrigger.
+func (c *CustomEventsTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		Type:                 c.Type,
+		Description:          c.Description,
+		RuntimeState:         c.RuntimeState,
+		Annotations:          c.Annotations,
+		AdditionalProperties: c.AdditionalProperties,
+	}
 }
 
 // CustomEventsTriggerTypeProperties - Custom Events Trigger properties.
@@ -6026,6 +8070,9 @@ type CustomSetupBase struct {
 	// REQUIRED; The type of custom setup.
 	Type *string `json:"type,omitempty"`
 }
+
+// GetCustomSetupBase implements the CustomSetupBaseClassification interface for type CustomSetupBase.
+func (c *CustomSetupBase) GetCustomSetupBase() *CustomSetupBase { return c }
 
 // DWCopyCommandDefaultValue - Default value.
 type DWCopyCommandDefaultValue struct {
@@ -6072,6 +8119,9 @@ type DataFlow struct {
 	// The folder that this data flow is in. If not specified, Data flow will appear at the root level.
 	Folder *DataFlowFolder `json:"folder,omitempty"`
 }
+
+// GetDataFlow implements the DataFlowClassification interface for type DataFlow.
+func (d *DataFlow) GetDataFlow() *DataFlow { return d }
 
 // DataFlowDebugCommandPayload - Structure of command payload.
 type DataFlowDebugCommandPayload struct {
@@ -6289,6 +8339,9 @@ type DataFlowSink struct {
 	// Linked service reference.
 	LinkedService *LinkedServiceReference `json:"linkedService,omitempty"`
 
+	// Rejected data linked service reference.
+	RejectedDataLinkedService *LinkedServiceReference `json:"rejectedDataLinkedService,omitempty"`
+
 	// Schema linked service reference.
 	SchemaLinkedService *LinkedServiceReference `json:"schemaLinkedService,omitempty"`
 }
@@ -6389,6 +8442,32 @@ type DataLakeAnalyticsUSQLActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type DataLakeAnalyticsUSQLActivity.
+func (d *DataLakeAnalyticsUSQLActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type DataLakeAnalyticsUSQLActivity.
+func (d *DataLakeAnalyticsUSQLActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    d.LinkedServiceName,
+		Policy:               d.Policy,
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DataLakeAnalyticsUSQLActivityTypeProperties - DataLakeAnalyticsU-SQL activity properties.
 type DataLakeAnalyticsUSQLActivityTypeProperties struct {
 	// REQUIRED; Script linked service reference.
@@ -6447,6 +8526,32 @@ type DatabricksNotebookActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type DatabricksNotebookActivity.
+func (d *DatabricksNotebookActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type DatabricksNotebookActivity.
+func (d *DatabricksNotebookActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    d.LinkedServiceName,
+		Policy:               d.Policy,
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DatabricksNotebookActivityTypeProperties - Databricks Notebook activity properties.
 type DatabricksNotebookActivityTypeProperties struct {
 	// REQUIRED; The absolute path of the notebook to be run in the Databricks Workspace. This path must begin with a slash. Type:
@@ -6491,6 +8596,32 @@ type DatabricksSparkJarActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type DatabricksSparkJarActivity.
+func (d *DatabricksSparkJarActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type DatabricksSparkJarActivity.
+func (d *DatabricksSparkJarActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    d.LinkedServiceName,
+		Policy:               d.Policy,
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DatabricksSparkJarActivityTypeProperties - Databricks SparkJar activity properties.
 type DatabricksSparkJarActivityTypeProperties struct {
 	// REQUIRED; The full name of the class containing the main method to be executed. This class must be contained in a JAR provided
@@ -6532,6 +8663,32 @@ type DatabricksSparkPythonActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type DatabricksSparkPythonActivity.
+func (d *DatabricksSparkPythonActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type DatabricksSparkPythonActivity.
+func (d *DatabricksSparkPythonActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    d.LinkedServiceName,
+		Policy:               d.Policy,
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
 }
 
 // DatabricksSparkPythonActivityTypeProperties - Databricks SparkPython activity properties.
@@ -6606,6 +8763,9 @@ type Dataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type Dataset.
+func (d *Dataset) GetDataset() *Dataset { return d }
+
 // DatasetCompression - The compression method used on a dataset.
 type DatasetCompression struct {
 	// REQUIRED; Type of dataset compression. Type: string (or Expression with resultType string).
@@ -6677,6 +8837,9 @@ type DatasetLocation struct {
 	FolderPath interface{} `json:"folderPath,omitempty"`
 }
 
+// GetDatasetLocation implements the DatasetLocationClassification interface for type DatasetLocation.
+func (d *DatasetLocation) GetDatasetLocation() *DatasetLocation { return d }
+
 // DatasetReference - Dataset reference type.
 type DatasetReference struct {
 	// REQUIRED; Reference dataset name.
@@ -6743,6 +8906,9 @@ type DatasetStorageFormat struct {
 	Serializer interface{} `json:"serializer,omitempty"`
 }
 
+// GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type DatasetStorageFormat.
+func (d *DatasetStorageFormat) GetDatasetStorageFormat() *DatasetStorageFormat { return d }
+
 // DatasetsClientCreateOrUpdateOptions contains the optional parameters for the DatasetsClient.CreateOrUpdate method.
 type DatasetsClientCreateOrUpdateOptions struct {
 	// ETag of the dataset entity. Should only be specified for update, for which it should match existing entity or can be *
@@ -6791,6 +8957,18 @@ type DataworldLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type DataworldLinkedService.
+func (d *DataworldLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 d.Type,
+		ConnectVia:           d.ConnectVia,
+		Description:          d.Description,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DataworldLinkedServiceTypeProperties - Dataworld linked service type properties.
 type DataworldLinkedServiceTypeProperties struct {
 	// REQUIRED; The api token for the Dataworld source.
@@ -6823,6 +9001,18 @@ type Db2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type Db2LinkedService.
+func (d *Db2LinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 d.Type,
+		ConnectVia:           d.ConnectVia,
+		Description:          d.Description,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		AdditionalProperties: d.AdditionalProperties,
+	}
 }
 
 // Db2LinkedServiceTypeProperties - DB2 linked service properties.
@@ -6895,6 +9085,32 @@ type Db2Source struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type Db2Source.
+func (d *Db2Source) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type Db2Source.
+func (d *Db2Source) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             d.QueryTimeout,
+		AdditionalColumns:        d.AdditionalColumns,
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
 // Db2TableDataset - The Db2 table dataset.
 type Db2TableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -6927,6 +9143,21 @@ type Db2TableDataset struct {
 
 	// Db2 table dataset properties.
 	TypeProperties *Db2TableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type Db2TableDataset.
+func (d *Db2TableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 d.Type,
+		Description:          d.Description,
+		Structure:            d.Structure,
+		Schema:               d.Schema,
+		LinkedServiceName:    d.LinkedServiceName,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		Folder:               d.Folder,
+		AdditionalProperties: d.AdditionalProperties,
+	}
 }
 
 // Db2TableDatasetTypeProperties - Db2 table dataset properties.
@@ -6969,6 +9200,32 @@ type DeleteActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type DeleteActivity.
+func (d *DeleteActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type DeleteActivity.
+func (d *DeleteActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    d.LinkedServiceName,
+		Policy:               d.Policy,
+		Name:                 d.Name,
+		Type:                 d.Type,
+		Description:          d.Description,
+		DependsOn:            d.DependsOn,
+		UserProperties:       d.UserProperties,
+		AdditionalProperties: d.AdditionalProperties,
+	}
 }
 
 // DeleteActivityTypeProperties - Delete activity properties.
@@ -7034,6 +9291,21 @@ type DelimitedTextDataset struct {
 	TypeProperties *DelimitedTextDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type DelimitedTextDataset.
+func (d *DelimitedTextDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 d.Type,
+		Description:          d.Description,
+		Structure:            d.Structure,
+		Schema:               d.Schema,
+		LinkedServiceName:    d.LinkedServiceName,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		Folder:               d.Folder,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DelimitedTextDatasetTypeProperties - DelimitedText dataset properties.
 type DelimitedTextDatasetTypeProperties struct {
 	// REQUIRED; The location of the delimited text storage.
@@ -7088,6 +9360,14 @@ type DelimitedTextReadSettings struct {
 	SkipLineCount interface{} `json:"skipLineCount,omitempty"`
 }
 
+// GetFormatReadSettings implements the FormatReadSettingsClassification interface for type DelimitedTextReadSettings.
+func (d *DelimitedTextReadSettings) GetFormatReadSettings() *FormatReadSettings {
+	return &FormatReadSettings{
+		Type:                 d.Type,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DelimitedTextSink - A copy activity DelimitedText sink.
 type DelimitedTextSink struct {
 	// REQUIRED; Copy sink type.
@@ -7121,6 +9401,20 @@ type DelimitedTextSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type DelimitedTextSink.
+func (d *DelimitedTextSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     d.Type,
+		WriteBatchSize:           d.WriteBatchSize,
+		WriteBatchTimeout:        d.WriteBatchTimeout,
+		SinkRetryCount:           d.SinkRetryCount,
+		SinkRetryWait:            d.SinkRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
 // DelimitedTextSource - A copy activity DelimitedText source.
 type DelimitedTextSource struct {
 	// REQUIRED; Copy source type.
@@ -7152,6 +9446,18 @@ type DelimitedTextSource struct {
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type DelimitedTextSource.
+func (d *DelimitedTextSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
 // DelimitedTextWriteSettings - Delimited text write settings.
 type DelimitedTextWriteSettings struct {
 	// REQUIRED; The file extension used to create the files. Type: string (or Expression with resultType string).
@@ -7175,6 +9481,14 @@ type DelimitedTextWriteSettings struct {
 	QuoteAllText interface{} `json:"quoteAllText,omitempty"`
 }
 
+// GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type DelimitedTextWriteSettings.
+func (d *DelimitedTextWriteSettings) GetFormatWriteSettings() *FormatWriteSettings {
+	return &FormatWriteSettings{
+		Type:                 d.Type,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DependencyReferenceClassification provides polymorphic access to related types.
 // Call the interface's GetDependencyReference() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -7189,6 +9503,9 @@ type DependencyReference struct {
 	// REQUIRED; The type of dependency reference.
 	Type *string `json:"type,omitempty"`
 }
+
+// GetDependencyReference implements the DependencyReferenceClassification interface for type DependencyReference.
+func (d *DependencyReference) GetDependencyReference() *DependencyReference { return d }
 
 // DistcpSettings - Distcp settings.
 type DistcpSettings struct {
@@ -7238,6 +9555,21 @@ type DocumentDbCollectionDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type DocumentDbCollectionDataset.
+func (d *DocumentDbCollectionDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 d.Type,
+		Description:          d.Description,
+		Structure:            d.Structure,
+		Schema:               d.Schema,
+		LinkedServiceName:    d.LinkedServiceName,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		Folder:               d.Folder,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DocumentDbCollectionDatasetTypeProperties - DocumentDB Collection dataset properties.
 type DocumentDbCollectionDatasetTypeProperties struct {
 	// REQUIRED; Document Database collection name. Type: string (or Expression with resultType string).
@@ -7278,6 +9610,20 @@ type DocumentDbCollectionSink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type DocumentDbCollectionSink.
+func (d *DocumentDbCollectionSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     d.Type,
+		WriteBatchSize:           d.WriteBatchSize,
+		WriteBatchTimeout:        d.WriteBatchTimeout,
+		SinkRetryCount:           d.SinkRetryCount,
+		SinkRetryWait:            d.SinkRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
 // DocumentDbCollectionSource - A copy activity Document Database Collection source.
 type DocumentDbCollectionSource struct {
 	// REQUIRED; Copy source type.
@@ -7310,6 +9656,18 @@ type DocumentDbCollectionSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type DocumentDbCollectionSource.
+func (d *DocumentDbCollectionSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
 }
 
 // DrillDatasetTypeProperties - Drill Dataset Properties
@@ -7346,6 +9704,18 @@ type DrillLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type DrillLinkedService.
+func (d *DrillLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 d.Type,
+		ConnectVia:           d.ConnectVia,
+		Description:          d.Description,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		AdditionalProperties: d.AdditionalProperties,
+	}
 }
 
 // DrillLinkedServiceTypeProperties - Drill server linked service properties.
@@ -7392,6 +9762,32 @@ type DrillSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type DrillSource.
+func (d *DrillSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type DrillSource.
+func (d *DrillSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             d.QueryTimeout,
+		AdditionalColumns:        d.AdditionalColumns,
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
 // DrillTableDataset - Drill server dataset.
 type DrillTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -7426,6 +9822,21 @@ type DrillTableDataset struct {
 	TypeProperties *DrillDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type DrillTableDataset.
+func (d *DrillTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 d.Type,
+		Description:          d.Description,
+		Structure:            d.Structure,
+		Schema:               d.Schema,
+		LinkedServiceName:    d.LinkedServiceName,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		Folder:               d.Folder,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DynamicsAXLinkedService - Dynamics AX linked service.
 type DynamicsAXLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -7448,6 +9859,18 @@ type DynamicsAXLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type DynamicsAXLinkedService.
+func (d *DynamicsAXLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 d.Type,
+		ConnectVia:           d.ConnectVia,
+		Description:          d.Description,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		AdditionalProperties: d.AdditionalProperties,
+	}
 }
 
 // DynamicsAXLinkedServiceTypeProperties - Dynamics AX linked service properties.
@@ -7510,6 +9933,21 @@ type DynamicsAXResourceDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type DynamicsAXResourceDataset.
+func (d *DynamicsAXResourceDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 d.Type,
+		Description:          d.Description,
+		Structure:            d.Structure,
+		Schema:               d.Schema,
+		LinkedServiceName:    d.LinkedServiceName,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		Folder:               d.Folder,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DynamicsAXResourceDatasetTypeProperties - Dynamics AX OData resource dataset properties.
 type DynamicsAXResourceDatasetTypeProperties struct {
 	// REQUIRED; The path of the Dynamics AX OData entity. Type: string (or Expression with resultType string).
@@ -7552,6 +9990,32 @@ type DynamicsAXSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type DynamicsAXSource.
+func (d *DynamicsAXSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type DynamicsAXSource.
+func (d *DynamicsAXSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             d.QueryTimeout,
+		AdditionalColumns:        d.AdditionalColumns,
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
 // DynamicsCrmEntityDataset - The Dynamics CRM entity dataset.
 type DynamicsCrmEntityDataset struct {
 	// REQUIRED; Linked service reference.
@@ -7586,6 +10050,21 @@ type DynamicsCrmEntityDataset struct {
 	TypeProperties *DynamicsCrmEntityDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type DynamicsCrmEntityDataset.
+func (d *DynamicsCrmEntityDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 d.Type,
+		Description:          d.Description,
+		Structure:            d.Structure,
+		Schema:               d.Schema,
+		LinkedServiceName:    d.LinkedServiceName,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		Folder:               d.Folder,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DynamicsCrmEntityDatasetTypeProperties - Dynamics CRM entity dataset properties.
 type DynamicsCrmEntityDatasetTypeProperties struct {
 	// The logical name of the entity. Type: string (or Expression with resultType string).
@@ -7614,6 +10093,18 @@ type DynamicsCrmLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type DynamicsCrmLinkedService.
+func (d *DynamicsCrmLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 d.Type,
+		ConnectVia:           d.ConnectVia,
+		Description:          d.Description,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		AdditionalProperties: d.AdditionalProperties,
+	}
 }
 
 // DynamicsCrmLinkedServiceTypeProperties - Dynamics CRM linked service properties.
@@ -7708,6 +10199,20 @@ type DynamicsCrmSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type DynamicsCrmSink.
+func (d *DynamicsCrmSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     d.Type,
+		WriteBatchSize:           d.WriteBatchSize,
+		WriteBatchTimeout:        d.WriteBatchTimeout,
+		SinkRetryCount:           d.SinkRetryCount,
+		SinkRetryWait:            d.SinkRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
 // DynamicsCrmSource - A copy activity Dynamics CRM source.
 type DynamicsCrmSource struct {
 	// REQUIRED; Copy source type.
@@ -7735,6 +10240,18 @@ type DynamicsCrmSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type DynamicsCrmSource.
+func (d *DynamicsCrmSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
 }
 
 // DynamicsEntityDataset - The Dynamics entity dataset.
@@ -7771,6 +10288,21 @@ type DynamicsEntityDataset struct {
 	TypeProperties *DynamicsEntityDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type DynamicsEntityDataset.
+func (d *DynamicsEntityDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 d.Type,
+		Description:          d.Description,
+		Structure:            d.Structure,
+		Schema:               d.Schema,
+		LinkedServiceName:    d.LinkedServiceName,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		Folder:               d.Folder,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DynamicsEntityDatasetTypeProperties - Dynamics entity dataset properties.
 type DynamicsEntityDatasetTypeProperties struct {
 	// The logical name of the entity. Type: string (or Expression with resultType string).
@@ -7799,6 +10331,18 @@ type DynamicsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type DynamicsLinkedService.
+func (d *DynamicsLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 d.Type,
+		ConnectVia:           d.ConnectVia,
+		Description:          d.Description,
+		Parameters:           d.Parameters,
+		Annotations:          d.Annotations,
+		AdditionalProperties: d.AdditionalProperties,
+	}
 }
 
 // DynamicsLinkedServiceTypeProperties - Dynamics linked service properties.
@@ -7896,6 +10440,20 @@ type DynamicsSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type DynamicsSink.
+func (d *DynamicsSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     d.Type,
+		WriteBatchSize:           d.WriteBatchSize,
+		WriteBatchTimeout:        d.WriteBatchTimeout,
+		SinkRetryCount:           d.SinkRetryCount,
+		SinkRetryWait:            d.SinkRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
 // DynamicsSource - A copy activity Dynamics source.
 type DynamicsSource struct {
 	// REQUIRED; Copy source type.
@@ -7925,6 +10483,18 @@ type DynamicsSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type DynamicsSource.
+func (d *DynamicsSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     d.Type,
+		SourceRetryCount:         d.SourceRetryCount,
+		SourceRetryWait:          d.SourceRetryWait,
+		MaxConcurrentConnections: d.MaxConcurrentConnections,
+		DisableMetricsCollection: d.DisableMetricsCollection,
+		AdditionalProperties:     d.AdditionalProperties,
+	}
+}
+
 // EloquaLinkedService - Eloqua server linked service.
 type EloquaLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -7947,6 +10517,18 @@ type EloquaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type EloquaLinkedService.
+func (e *EloquaLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 e.Type,
+		ConnectVia:           e.ConnectVia,
+		Description:          e.Description,
+		Parameters:           e.Parameters,
+		Annotations:          e.Annotations,
+		AdditionalProperties: e.AdditionalProperties,
+	}
 }
 
 // EloquaLinkedServiceTypeProperties - Eloqua server linked service properties.
@@ -8009,6 +10591,21 @@ type EloquaObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type EloquaObjectDataset.
+func (e *EloquaObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 e.Type,
+		Description:          e.Description,
+		Structure:            e.Structure,
+		Schema:               e.Schema,
+		LinkedServiceName:    e.LinkedServiceName,
+		Parameters:           e.Parameters,
+		Annotations:          e.Annotations,
+		Folder:               e.Folder,
+		AdditionalProperties: e.AdditionalProperties,
+	}
+}
+
 // EloquaSource - A copy activity Eloqua server source.
 type EloquaSource struct {
 	// REQUIRED; Copy source type.
@@ -8038,6 +10635,32 @@ type EloquaSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type EloquaSource.
+func (e *EloquaSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     e.Type,
+		SourceRetryCount:         e.SourceRetryCount,
+		SourceRetryWait:          e.SourceRetryWait,
+		MaxConcurrentConnections: e.MaxConcurrentConnections,
+		DisableMetricsCollection: e.DisableMetricsCollection,
+		AdditionalProperties:     e.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type EloquaSource.
+func (e *EloquaSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             e.QueryTimeout,
+		AdditionalColumns:        e.AdditionalColumns,
+		Type:                     e.Type,
+		SourceRetryCount:         e.SourceRetryCount,
+		SourceRetryWait:          e.SourceRetryWait,
+		MaxConcurrentConnections: e.MaxConcurrentConnections,
+		DisableMetricsCollection: e.DisableMetricsCollection,
+		AdditionalProperties:     e.AdditionalProperties,
+	}
 }
 
 // EncryptionConfiguration - Definition of CMK for the factory.
@@ -8072,6 +10695,13 @@ type EnvironmentVariableSetup struct {
 
 	// REQUIRED; Add environment variable type properties.
 	TypeProperties *EnvironmentVariableSetupTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetCustomSetupBase implements the CustomSetupBaseClassification interface for type EnvironmentVariableSetup.
+func (e *EnvironmentVariableSetup) GetCustomSetupBase() *CustomSetupBase {
+	return &CustomSetupBase{
+		Type: e.Type,
+	}
 }
 
 // EnvironmentVariableSetupTypeProperties - Environment variable custom setup type properties.
@@ -8115,6 +10745,21 @@ type ExcelDataset struct {
 
 	// Excel dataset properties.
 	TypeProperties *ExcelDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type ExcelDataset.
+func (e *ExcelDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 e.Type,
+		Description:          e.Description,
+		Structure:            e.Structure,
+		Schema:               e.Schema,
+		LinkedServiceName:    e.LinkedServiceName,
+		Parameters:           e.Parameters,
+		Annotations:          e.Annotations,
+		Folder:               e.Folder,
+		AdditionalProperties: e.AdditionalProperties,
+	}
 }
 
 // ExcelDatasetTypeProperties - Excel dataset properties.
@@ -8171,6 +10816,18 @@ type ExcelSource struct {
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type ExcelSource.
+func (e *ExcelSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     e.Type,
+		SourceRetryCount:         e.SourceRetryCount,
+		SourceRetryWait:          e.SourceRetryWait,
+		MaxConcurrentConnections: e.MaxConcurrentConnections,
+		DisableMetricsCollection: e.DisableMetricsCollection,
+		AdditionalProperties:     e.AdditionalProperties,
+	}
+}
+
 // ExecuteDataFlowActivity - Execute data flow activity.
 type ExecuteDataFlowActivity struct {
 	// REQUIRED; Activity name.
@@ -8201,6 +10858,32 @@ type ExecuteDataFlowActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type ExecuteDataFlowActivity.
+func (e *ExecuteDataFlowActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 e.Name,
+		Type:                 e.Type,
+		Description:          e.Description,
+		DependsOn:            e.DependsOn,
+		UserProperties:       e.UserProperties,
+		AdditionalProperties: e.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type ExecuteDataFlowActivity.
+func (e *ExecuteDataFlowActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    e.LinkedServiceName,
+		Policy:               e.Policy,
+		Name:                 e.Name,
+		Type:                 e.Type,
+		Description:          e.Description,
+		DependsOn:            e.DependsOn,
+		UserProperties:       e.UserProperties,
+		AdditionalProperties: e.AdditionalProperties,
+	}
+}
+
 // ExecuteDataFlowActivityTypeProperties - Execute data flow activity properties.
 type ExecuteDataFlowActivityTypeProperties struct {
 	// REQUIRED; Data flow reference.
@@ -8219,6 +10902,9 @@ type ExecuteDataFlowActivityTypeProperties struct {
 	// Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed concurrently.
 	// Type: boolean (or Expression with resultType boolean)
 	RunConcurrently interface{} `json:"runConcurrently,omitempty"`
+
+	// Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with resultType integer)
+	SourceStagingConcurrency interface{} `json:"sourceStagingConcurrency,omitempty"`
 
 	// Staging info for execute data flow activity.
 	Staging *DataFlowStagingInfo `json:"staging,omitempty"`
@@ -8264,6 +10950,30 @@ type ExecutePipelineActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type ExecutePipelineActivity.
+func (e *ExecutePipelineActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 e.Name,
+		Type:                 e.Type,
+		Description:          e.Description,
+		DependsOn:            e.DependsOn,
+		UserProperties:       e.UserProperties,
+		AdditionalProperties: e.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type ExecutePipelineActivity.
+func (e *ExecutePipelineActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 e.Name,
+		Type:                 e.Type,
+		Description:          e.Description,
+		DependsOn:            e.DependsOn,
+		UserProperties:       e.UserProperties,
+		AdditionalProperties: e.AdditionalProperties,
+	}
 }
 
 // ExecutePipelineActivityPolicy - Execution policy for an execute pipeline activity.
@@ -8312,6 +11022,9 @@ type ExecutePowerQueryActivityTypeProperties struct {
 	// (Deprecated. Please use Queries). List of Power Query activity sinks mapped to a queryName.
 	Sinks map[string]*PowerQuerySink `json:"sinks,omitempty"`
 
+	// Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with resultType integer)
+	SourceStagingConcurrency interface{} `json:"sourceStagingConcurrency,omitempty"`
+
 	// Staging info for execute data flow activity.
 	Staging *DataFlowStagingInfo `json:"staging,omitempty"`
 
@@ -8348,6 +11061,32 @@ type ExecuteSSISPackageActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type ExecuteSSISPackageActivity.
+func (e *ExecuteSSISPackageActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 e.Name,
+		Type:                 e.Type,
+		Description:          e.Description,
+		DependsOn:            e.DependsOn,
+		UserProperties:       e.UserProperties,
+		AdditionalProperties: e.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type ExecuteSSISPackageActivity.
+func (e *ExecuteSSISPackageActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    e.LinkedServiceName,
+		Policy:               e.Policy,
+		Name:                 e.Name,
+		Type:                 e.Type,
+		Description:          e.Description,
+		DependsOn:            e.DependsOn,
+		UserProperties:       e.UserProperties,
+		AdditionalProperties: e.AdditionalProperties,
+	}
 }
 
 // ExecuteSSISPackageActivityTypeProperties - Execute SSIS package activity properties.
@@ -8417,6 +11156,18 @@ type ExecuteWranglingDataflowActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type ExecuteWranglingDataflowActivity.
+func (e *ExecuteWranglingDataflowActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 e.Name,
+		Type:                 e.Type,
+		Description:          e.Description,
+		DependsOn:            e.DependsOn,
+		UserProperties:       e.UserProperties,
+		AdditionalProperties: e.AdditionalProperties,
+	}
+}
+
 // ExecutionActivityClassification provides polymorphic access to related types.
 // Call the interface's GetExecutionActivity() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -8459,6 +11210,21 @@ type ExecutionActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type ExecutionActivity.
+func (e *ExecutionActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 e.Name,
+		Type:                 e.Type,
+		Description:          e.Description,
+		DependsOn:            e.DependsOn,
+		UserProperties:       e.UserProperties,
+		AdditionalProperties: e.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type ExecutionActivity.
+func (e *ExecutionActivity) GetExecutionActivity() *ExecutionActivity { return e }
+
 // ExportSettingsClassification provides polymorphic access to related types.
 // Call the interface's GetExportSettings() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -8476,6 +11242,9 @@ type ExportSettings struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]interface{}
 }
+
+// GetExportSettings implements the ExportSettingsClassification interface for type ExportSettings.
+func (e *ExportSettings) GetExportSettings() *ExportSettings { return e }
 
 // ExposureControlBatchRequest - A list of exposure control features.
 type ExposureControlBatchRequest struct {
@@ -8646,6 +11415,18 @@ type FactoryGitHubConfiguration struct {
 	LastCommitID *string `json:"lastCommitId,omitempty"`
 }
 
+// GetFactoryRepoConfiguration implements the FactoryRepoConfigurationClassification interface for type FactoryGitHubConfiguration.
+func (f *FactoryGitHubConfiguration) GetFactoryRepoConfiguration() *FactoryRepoConfiguration {
+	return &FactoryRepoConfiguration{
+		Type:                f.Type,
+		AccountName:         f.AccountName,
+		RepositoryName:      f.RepositoryName,
+		CollaborationBranch: f.CollaborationBranch,
+		RootFolder:          f.RootFolder,
+		LastCommitID:        f.LastCommitID,
+	}
+}
+
 // FactoryIdentity - Identity properties of the factory resource.
 type FactoryIdentity struct {
 	// REQUIRED; The identity type.
@@ -8680,6 +11461,9 @@ type FactoryProperties struct {
 
 	// Whether or not public network access is allowed for the data factory.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
+	// Purview information of the factory.
+	PurviewConfiguration *PurviewConfiguration `json:"purviewConfiguration,omitempty"`
 
 	// Git repo information of the factory.
 	RepoConfiguration FactoryRepoConfigurationClassification `json:"repoConfiguration,omitempty"`
@@ -8723,6 +11507,9 @@ type FactoryRepoConfiguration struct {
 	// Last commit id.
 	LastCommitID *string `json:"lastCommitId,omitempty"`
 }
+
+// GetFactoryRepoConfiguration implements the FactoryRepoConfigurationClassification interface for type FactoryRepoConfiguration.
+func (f *FactoryRepoConfiguration) GetFactoryRepoConfiguration() *FactoryRepoConfiguration { return f }
 
 // FactoryRepoUpdate - Factory's git repo information.
 type FactoryRepoUpdate struct {
@@ -8778,6 +11565,18 @@ type FactoryVSTSConfiguration struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
+// GetFactoryRepoConfiguration implements the FactoryRepoConfigurationClassification interface for type FactoryVSTSConfiguration.
+func (f *FactoryVSTSConfiguration) GetFactoryRepoConfiguration() *FactoryRepoConfiguration {
+	return &FactoryRepoConfiguration{
+		Type:                f.Type,
+		AccountName:         f.AccountName,
+		RepositoryName:      f.RepositoryName,
+		CollaborationBranch: f.CollaborationBranch,
+		RootFolder:          f.RootFolder,
+		LastCommitID:        f.LastCommitID,
+	}
+}
+
 // FailActivity - This activity will fail within its own scope and output a custom error message and error code. The error
 // message and code can provided either as a string literal or as an expression that can be
 // evaluated to a string at runtime. The activity scope can be the whole pipeline or a control activity (e.g. foreach, switch,
@@ -8803,6 +11602,30 @@ type FailActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type FailActivity.
+func (f *FailActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 f.Name,
+		Type:                 f.Type,
+		Description:          f.Description,
+		DependsOn:            f.DependsOn,
+		UserProperties:       f.UserProperties,
+		AdditionalProperties: f.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type FailActivity.
+func (f *FailActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 f.Name,
+		Type:                 f.Type,
+		Description:          f.Description,
+		DependsOn:            f.DependsOn,
+		UserProperties:       f.UserProperties,
+		AdditionalProperties: f.AdditionalProperties,
+	}
 }
 
 // FailActivityTypeProperties - Fail activity properties.
@@ -8841,6 +11664,18 @@ type FileServerLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type FileServerLinkedService.
+func (f *FileServerLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 f.Type,
+		ConnectVia:           f.ConnectVia,
+		Description:          f.Description,
+		Parameters:           f.Parameters,
+		Annotations:          f.Annotations,
+		AdditionalProperties: f.AdditionalProperties,
+	}
+}
+
 // FileServerLinkedServiceTypeProperties - File system linked service properties.
 type FileServerLinkedServiceTypeProperties struct {
 	// REQUIRED; Host name of the server. Type: string (or Expression with resultType string).
@@ -8870,6 +11705,16 @@ type FileServerLocation struct {
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
 	FolderPath interface{} `json:"folderPath,omitempty"`
+}
+
+// GetDatasetLocation implements the DatasetLocationClassification interface for type FileServerLocation.
+func (f *FileServerLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 f.Type,
+		FolderPath:           f.FolderPath,
+		FileName:             f.FileName,
+		AdditionalProperties: f.AdditionalProperties,
+	}
 }
 
 // FileServerReadSettings - File server read settings.
@@ -8921,6 +11766,16 @@ type FileServerReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type FileServerReadSettings.
+func (f *FileServerReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     f.Type,
+		MaxConcurrentConnections: f.MaxConcurrentConnections,
+		DisableMetricsCollection: f.DisableMetricsCollection,
+		AdditionalProperties:     f.AdditionalProperties,
+	}
+}
+
 // FileServerWriteSettings - File server write settings.
 type FileServerWriteSettings struct {
 	// REQUIRED; The write setting type.
@@ -8937,6 +11792,17 @@ type FileServerWriteSettings struct {
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+}
+
+// GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type FileServerWriteSettings.
+func (f *FileServerWriteSettings) GetStoreWriteSettings() *StoreWriteSettings {
+	return &StoreWriteSettings{
+		Type:                     f.Type,
+		MaxConcurrentConnections: f.MaxConcurrentConnections,
+		DisableMetricsCollection: f.DisableMetricsCollection,
+		CopyBehavior:             f.CopyBehavior,
+		AdditionalProperties:     f.AdditionalProperties,
+	}
 }
 
 // FileShareDataset - An on-premises file system dataset.
@@ -8971,6 +11837,21 @@ type FileShareDataset struct {
 
 	// On-premises file system dataset properties.
 	TypeProperties *FileShareDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type FileShareDataset.
+func (f *FileShareDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 f.Type,
+		Description:          f.Description,
+		Structure:            f.Structure,
+		Schema:               f.Schema,
+		LinkedServiceName:    f.LinkedServiceName,
+		Parameters:           f.Parameters,
+		Annotations:          f.Annotations,
+		Folder:               f.Folder,
+		AdditionalProperties: f.AdditionalProperties,
+	}
 }
 
 // FileShareDatasetTypeProperties - On-premises file system dataset properties.
@@ -9028,6 +11909,20 @@ type FileSystemSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type FileSystemSink.
+func (f *FileSystemSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     f.Type,
+		WriteBatchSize:           f.WriteBatchSize,
+		WriteBatchTimeout:        f.WriteBatchTimeout,
+		SinkRetryCount:           f.SinkRetryCount,
+		SinkRetryWait:            f.SinkRetryWait,
+		MaxConcurrentConnections: f.MaxConcurrentConnections,
+		DisableMetricsCollection: f.DisableMetricsCollection,
+		AdditionalProperties:     f.AdditionalProperties,
+	}
+}
+
 // FileSystemSource - A copy activity file system source.
 type FileSystemSource struct {
 	// REQUIRED; Copy source type.
@@ -9057,6 +11952,18 @@ type FileSystemSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type FileSystemSource.
+func (f *FileSystemSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     f.Type,
+		SourceRetryCount:         f.SourceRetryCount,
+		SourceRetryWait:          f.SourceRetryWait,
+		MaxConcurrentConnections: f.MaxConcurrentConnections,
+		DisableMetricsCollection: f.DisableMetricsCollection,
+		AdditionalProperties:     f.AdditionalProperties,
+	}
+}
+
 // FilterActivity - Filter and return results from input array based on the conditions.
 type FilterActivity struct {
 	// REQUIRED; Activity name.
@@ -9079,6 +11986,30 @@ type FilterActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type FilterActivity.
+func (f *FilterActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 f.Name,
+		Type:                 f.Type,
+		Description:          f.Description,
+		DependsOn:            f.DependsOn,
+		UserProperties:       f.UserProperties,
+		AdditionalProperties: f.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type FilterActivity.
+func (f *FilterActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 f.Name,
+		Type:                 f.Type,
+		Description:          f.Description,
+		DependsOn:            f.DependsOn,
+		UserProperties:       f.UserProperties,
+		AdditionalProperties: f.AdditionalProperties,
+	}
 }
 
 // FilterActivityTypeProperties - Filter activity properties.
@@ -9106,6 +12037,16 @@ type Flowlet struct {
 
 	// Flowlet type properties.
 	TypeProperties *FlowletTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataFlow implements the DataFlowClassification interface for type Flowlet.
+func (f *Flowlet) GetDataFlow() *DataFlow {
+	return &DataFlow{
+		Type:        f.Type,
+		Description: f.Description,
+		Annotations: f.Annotations,
+		Folder:      f.Folder,
+	}
 }
 
 // FlowletTypeProperties - Flowlet type properties.
@@ -9150,6 +12091,30 @@ type ForEachActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type ForEachActivity.
+func (f *ForEachActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 f.Name,
+		Type:                 f.Type,
+		Description:          f.Description,
+		DependsOn:            f.DependsOn,
+		UserProperties:       f.UserProperties,
+		AdditionalProperties: f.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type ForEachActivity.
+func (f *ForEachActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 f.Name,
+		Type:                 f.Type,
+		Description:          f.Description,
+		DependsOn:            f.DependsOn,
+		UserProperties:       f.UserProperties,
+		AdditionalProperties: f.AdditionalProperties,
+	}
+}
+
 // ForEachActivityTypeProperties - ForEach activity properties.
 type ForEachActivityTypeProperties struct {
 	// REQUIRED; List of activities to execute .
@@ -9183,6 +12148,9 @@ type FormatReadSettings struct {
 	AdditionalProperties map[string]interface{}
 }
 
+// GetFormatReadSettings implements the FormatReadSettingsClassification interface for type FormatReadSettings.
+func (f *FormatReadSettings) GetFormatReadSettings() *FormatReadSettings { return f }
+
 // FormatWriteSettingsClassification provides polymorphic access to related types.
 // Call the interface's GetFormatWriteSettings() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -9200,6 +12168,9 @@ type FormatWriteSettings struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]interface{}
 }
+
+// GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type FormatWriteSettings.
+func (f *FormatWriteSettings) GetFormatWriteSettings() *FormatWriteSettings { return f }
 
 // FtpReadSettings - Ftp read settings.
 type FtpReadSettings struct {
@@ -9246,6 +12217,16 @@ type FtpReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type FtpReadSettings.
+func (f *FtpReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     f.Type,
+		MaxConcurrentConnections: f.MaxConcurrentConnections,
+		DisableMetricsCollection: f.DisableMetricsCollection,
+		AdditionalProperties:     f.AdditionalProperties,
+	}
+}
+
 // FtpServerLinkedService - A FTP server Linked Service.
 type FtpServerLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -9268,6 +12249,18 @@ type FtpServerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type FtpServerLinkedService.
+func (f *FtpServerLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 f.Type,
+		ConnectVia:           f.ConnectVia,
+		Description:          f.Description,
+		Parameters:           f.Parameters,
+		Annotations:          f.Annotations,
+		AdditionalProperties: f.AdditionalProperties,
+	}
 }
 
 // FtpServerLinkedServiceTypeProperties - Properties specific to this linked service type.
@@ -9316,6 +12309,16 @@ type FtpServerLocation struct {
 	FolderPath interface{} `json:"folderPath,omitempty"`
 }
 
+// GetDatasetLocation implements the DatasetLocationClassification interface for type FtpServerLocation.
+func (f *FtpServerLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 f.Type,
+		FolderPath:           f.FolderPath,
+		FileName:             f.FileName,
+		AdditionalProperties: f.AdditionalProperties,
+	}
+}
+
 // GenericDatasetTypeProperties - Properties specific to this dataset type.
 type GenericDatasetTypeProperties struct {
 	// The table name. Type: string (or Expression with resultType string).
@@ -9359,6 +12362,32 @@ type GetMetadataActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type GetMetadataActivity.
+func (g *GetMetadataActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 g.Name,
+		Type:                 g.Type,
+		Description:          g.Description,
+		DependsOn:            g.DependsOn,
+		UserProperties:       g.UserProperties,
+		AdditionalProperties: g.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type GetMetadataActivity.
+func (g *GetMetadataActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    g.LinkedServiceName,
+		Policy:               g.Policy,
+		Name:                 g.Name,
+		Type:                 g.Type,
+		Description:          g.Description,
+		DependsOn:            g.DependsOn,
+		UserProperties:       g.UserProperties,
+		AdditionalProperties: g.AdditionalProperties,
+	}
 }
 
 // GetMetadataActivityTypeProperties - GetMetadata activity properties.
@@ -9445,6 +12474,18 @@ type GoogleAdWordsLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type GoogleAdWordsLinkedService.
+func (g *GoogleAdWordsLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 g.Type,
+		ConnectVia:           g.ConnectVia,
+		Description:          g.Description,
+		Parameters:           g.Parameters,
+		Annotations:          g.Annotations,
+		AdditionalProperties: g.AdditionalProperties,
+	}
+}
+
 // GoogleAdWordsLinkedServiceTypeProperties - Google AdWords service linked service properties.
 type GoogleAdWordsLinkedServiceTypeProperties struct {
 	// The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on self-hosted IR.
@@ -9525,6 +12566,21 @@ type GoogleAdWordsObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type GoogleAdWordsObjectDataset.
+func (g *GoogleAdWordsObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 g.Type,
+		Description:          g.Description,
+		Structure:            g.Structure,
+		Schema:               g.Schema,
+		LinkedServiceName:    g.LinkedServiceName,
+		Parameters:           g.Parameters,
+		Annotations:          g.Annotations,
+		Folder:               g.Folder,
+		AdditionalProperties: g.AdditionalProperties,
+	}
+}
+
 // GoogleAdWordsSource - A copy activity Google AdWords service source.
 type GoogleAdWordsSource struct {
 	// REQUIRED; Copy source type.
@@ -9554,6 +12610,32 @@ type GoogleAdWordsSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type GoogleAdWordsSource.
+func (g *GoogleAdWordsSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     g.Type,
+		SourceRetryCount:         g.SourceRetryCount,
+		SourceRetryWait:          g.SourceRetryWait,
+		MaxConcurrentConnections: g.MaxConcurrentConnections,
+		DisableMetricsCollection: g.DisableMetricsCollection,
+		AdditionalProperties:     g.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type GoogleAdWordsSource.
+func (g *GoogleAdWordsSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             g.QueryTimeout,
+		AdditionalColumns:        g.AdditionalColumns,
+		Type:                     g.Type,
+		SourceRetryCount:         g.SourceRetryCount,
+		SourceRetryWait:          g.SourceRetryWait,
+		MaxConcurrentConnections: g.MaxConcurrentConnections,
+		DisableMetricsCollection: g.DisableMetricsCollection,
+		AdditionalProperties:     g.AdditionalProperties,
+	}
 }
 
 // GoogleBigQueryDatasetTypeProperties - Google BigQuery Dataset Properties
@@ -9590,6 +12672,18 @@ type GoogleBigQueryLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type GoogleBigQueryLinkedService.
+func (g *GoogleBigQueryLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 g.Type,
+		ConnectVia:           g.ConnectVia,
+		Description:          g.Description,
+		Parameters:           g.Parameters,
+		Annotations:          g.Annotations,
+		AdditionalProperties: g.AdditionalProperties,
+	}
 }
 
 // GoogleBigQueryLinkedServiceTypeProperties - Google BigQuery service linked service properties.
@@ -9673,6 +12767,21 @@ type GoogleBigQueryObjectDataset struct {
 	TypeProperties *GoogleBigQueryDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type GoogleBigQueryObjectDataset.
+func (g *GoogleBigQueryObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 g.Type,
+		Description:          g.Description,
+		Structure:            g.Structure,
+		Schema:               g.Schema,
+		LinkedServiceName:    g.LinkedServiceName,
+		Parameters:           g.Parameters,
+		Annotations:          g.Annotations,
+		Folder:               g.Folder,
+		AdditionalProperties: g.AdditionalProperties,
+	}
+}
+
 // GoogleBigQuerySource - A copy activity Google BigQuery service source.
 type GoogleBigQuerySource struct {
 	// REQUIRED; Copy source type.
@@ -9704,6 +12813,32 @@ type GoogleBigQuerySource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type GoogleBigQuerySource.
+func (g *GoogleBigQuerySource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     g.Type,
+		SourceRetryCount:         g.SourceRetryCount,
+		SourceRetryWait:          g.SourceRetryWait,
+		MaxConcurrentConnections: g.MaxConcurrentConnections,
+		DisableMetricsCollection: g.DisableMetricsCollection,
+		AdditionalProperties:     g.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type GoogleBigQuerySource.
+func (g *GoogleBigQuerySource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             g.QueryTimeout,
+		AdditionalColumns:        g.AdditionalColumns,
+		Type:                     g.Type,
+		SourceRetryCount:         g.SourceRetryCount,
+		SourceRetryWait:          g.SourceRetryWait,
+		MaxConcurrentConnections: g.MaxConcurrentConnections,
+		DisableMetricsCollection: g.DisableMetricsCollection,
+		AdditionalProperties:     g.AdditionalProperties,
+	}
+}
+
 // GoogleCloudStorageLinkedService - Linked service for Google Cloud Storage.
 type GoogleCloudStorageLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -9726,6 +12861,18 @@ type GoogleCloudStorageLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type GoogleCloudStorageLinkedService.
+func (g *GoogleCloudStorageLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 g.Type,
+		ConnectVia:           g.ConnectVia,
+		Description:          g.Description,
+		Parameters:           g.Parameters,
+		Annotations:          g.Annotations,
+		AdditionalProperties: g.AdditionalProperties,
+	}
 }
 
 // GoogleCloudStorageLinkedServiceTypeProperties - Google Cloud Storage linked service properties.
@@ -9766,6 +12913,16 @@ type GoogleCloudStorageLocation struct {
 
 	// Specify the version of Google Cloud Storage. Type: string (or Expression with resultType string).
 	Version interface{} `json:"version,omitempty"`
+}
+
+// GetDatasetLocation implements the DatasetLocationClassification interface for type GoogleCloudStorageLocation.
+func (g *GoogleCloudStorageLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 g.Type,
+		FolderPath:           g.FolderPath,
+		FileName:             g.FileName,
+		AdditionalProperties: g.AdditionalProperties,
+	}
 }
 
 // GoogleCloudStorageReadSettings - Google Cloud Storage read settings.
@@ -9816,6 +12973,16 @@ type GoogleCloudStorageReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type GoogleCloudStorageReadSettings.
+func (g *GoogleCloudStorageReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     g.Type,
+		MaxConcurrentConnections: g.MaxConcurrentConnections,
+		DisableMetricsCollection: g.DisableMetricsCollection,
+		AdditionalProperties:     g.AdditionalProperties,
+	}
+}
+
 // GreenplumDatasetTypeProperties - Greenplum Dataset Properties
 type GreenplumDatasetTypeProperties struct {
 	// The schema name of Greenplum. Type: string (or Expression with resultType string).
@@ -9850,6 +13017,18 @@ type GreenplumLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type GreenplumLinkedService.
+func (g *GreenplumLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 g.Type,
+		ConnectVia:           g.ConnectVia,
+		Description:          g.Description,
+		Parameters:           g.Parameters,
+		Annotations:          g.Annotations,
+		AdditionalProperties: g.AdditionalProperties,
+	}
 }
 
 // GreenplumLinkedServiceTypeProperties - Greenplum Database linked service properties.
@@ -9896,6 +13075,32 @@ type GreenplumSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type GreenplumSource.
+func (g *GreenplumSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     g.Type,
+		SourceRetryCount:         g.SourceRetryCount,
+		SourceRetryWait:          g.SourceRetryWait,
+		MaxConcurrentConnections: g.MaxConcurrentConnections,
+		DisableMetricsCollection: g.DisableMetricsCollection,
+		AdditionalProperties:     g.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type GreenplumSource.
+func (g *GreenplumSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             g.QueryTimeout,
+		AdditionalColumns:        g.AdditionalColumns,
+		Type:                     g.Type,
+		SourceRetryCount:         g.SourceRetryCount,
+		SourceRetryWait:          g.SourceRetryWait,
+		MaxConcurrentConnections: g.MaxConcurrentConnections,
+		DisableMetricsCollection: g.DisableMetricsCollection,
+		AdditionalProperties:     g.AdditionalProperties,
+	}
+}
+
 // GreenplumTableDataset - Greenplum Database dataset.
 type GreenplumTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -9930,6 +13135,21 @@ type GreenplumTableDataset struct {
 	TypeProperties *GreenplumDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type GreenplumTableDataset.
+func (g *GreenplumTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 g.Type,
+		Description:          g.Description,
+		Structure:            g.Structure,
+		Schema:               g.Schema,
+		LinkedServiceName:    g.LinkedServiceName,
+		Parameters:           g.Parameters,
+		Annotations:          g.Annotations,
+		Folder:               g.Folder,
+		AdditionalProperties: g.AdditionalProperties,
+	}
+}
+
 // HBaseLinkedService - HBase server linked service.
 type HBaseLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -9952,6 +13172,18 @@ type HBaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type HBaseLinkedService.
+func (h *HBaseLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 h.Type,
+		ConnectVia:           h.ConnectVia,
+		Description:          h.Description,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HBaseLinkedServiceTypeProperties - HBase server linked service properties.
@@ -10028,6 +13260,21 @@ type HBaseObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type HBaseObjectDataset.
+func (h *HBaseObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 h.Type,
+		Description:          h.Description,
+		Structure:            h.Structure,
+		Schema:               h.Schema,
+		LinkedServiceName:    h.LinkedServiceName,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		Folder:               h.Folder,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
 // HBaseSource - A copy activity HBase server source.
 type HBaseSource struct {
 	// REQUIRED; Copy source type.
@@ -10059,6 +13306,32 @@ type HBaseSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type HBaseSource.
+func (h *HBaseSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     h.Type,
+		SourceRetryCount:         h.SourceRetryCount,
+		SourceRetryWait:          h.SourceRetryWait,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type HBaseSource.
+func (h *HBaseSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             h.QueryTimeout,
+		AdditionalColumns:        h.AdditionalColumns,
+		Type:                     h.Type,
+		SourceRetryCount:         h.SourceRetryCount,
+		SourceRetryWait:          h.SourceRetryWait,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
+}
+
 // HDInsightHiveActivity - HDInsight Hive activity type.
 type HDInsightHiveActivity struct {
 	// REQUIRED; Activity name.
@@ -10087,6 +13360,32 @@ type HDInsightHiveActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type HDInsightHiveActivity.
+func (h *HDInsightHiveActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type HDInsightHiveActivity.
+func (h *HDInsightHiveActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    h.LinkedServiceName,
+		Policy:               h.Policy,
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HDInsightHiveActivityTypeProperties - HDInsight Hive activity properties.
@@ -10138,6 +13437,18 @@ type HDInsightLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type HDInsightLinkedService.
+func (h *HDInsightLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 h.Type,
+		ConnectVia:           h.ConnectVia,
+		Description:          h.Description,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HDInsightLinkedServiceTypeProperties - HDInsight linked service properties.
@@ -10199,6 +13510,32 @@ type HDInsightMapReduceActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type HDInsightMapReduceActivity.
+func (h *HDInsightMapReduceActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type HDInsightMapReduceActivity.
+func (h *HDInsightMapReduceActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    h.LinkedServiceName,
+		Policy:               h.Policy,
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
 // HDInsightMapReduceActivityTypeProperties - HDInsight MapReduce activity properties.
 type HDInsightMapReduceActivityTypeProperties struct {
 	// REQUIRED; Class name. Type: string (or Expression with resultType string).
@@ -10248,6 +13585,18 @@ type HDInsightOnDemandLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type HDInsightOnDemandLinkedService.
+func (h *HDInsightOnDemandLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 h.Type,
+		ConnectVia:           h.ConnectVia,
+		Description:          h.Description,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HDInsightOnDemandLinkedServiceTypeProperties - HDInsight ondemand linked service properties.
@@ -10394,6 +13743,32 @@ type HDInsightPigActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type HDInsightPigActivity.
+func (h *HDInsightPigActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type HDInsightPigActivity.
+func (h *HDInsightPigActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    h.LinkedServiceName,
+		Policy:               h.Policy,
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
 // HDInsightPigActivityTypeProperties - HDInsight Pig activity properties.
 type HDInsightPigActivityTypeProperties struct {
 	// User specified arguments to HDInsightActivity. Type: array (or Expression with resultType array).
@@ -10443,6 +13818,32 @@ type HDInsightSparkActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type HDInsightSparkActivity.
+func (h *HDInsightSparkActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type HDInsightSparkActivity.
+func (h *HDInsightSparkActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    h.LinkedServiceName,
+		Policy:               h.Policy,
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HDInsightSparkActivityTypeProperties - HDInsight spark activity properties.
@@ -10502,6 +13903,32 @@ type HDInsightStreamingActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type HDInsightStreamingActivity.
+func (h *HDInsightStreamingActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type HDInsightStreamingActivity.
+func (h *HDInsightStreamingActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    h.LinkedServiceName,
+		Policy:               h.Policy,
+		Name:                 h.Name,
+		Type:                 h.Type,
+		Description:          h.Description,
+		DependsOn:            h.DependsOn,
+		UserProperties:       h.UserProperties,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HDInsightStreamingActivityTypeProperties - HDInsight streaming activity properties.
@@ -10577,6 +14004,21 @@ type HTTPDataset struct {
 	TypeProperties *HTTPDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type HTTPDataset.
+func (h *HTTPDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 h.Type,
+		Description:          h.Description,
+		Structure:            h.Structure,
+		Schema:               h.Schema,
+		LinkedServiceName:    h.LinkedServiceName,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		Folder:               h.Folder,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
 // HTTPDatasetTypeProperties - Properties specific to this dataset type.
 type HTTPDatasetTypeProperties struct {
 	// The headers for the HTTP Request. e.g. request-header-name-1:request-header-value-1 … request-header-name-n:request-header-value-n
@@ -10622,6 +14064,18 @@ type HTTPLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type HTTPLinkedService.
+func (h *HTTPLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 h.Type,
+		ConnectVia:           h.ConnectVia,
+		Description:          h.Description,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HTTPLinkedServiceTypeProperties - Properties specific to this linked service type.
@@ -10695,6 +14149,16 @@ type HTTPReadSettings struct {
 	RequestTimeout interface{} `json:"requestTimeout,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type HTTPReadSettings.
+func (h *HTTPReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     h.Type,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
+}
+
 // HTTPServerLocation - The location of http server.
 type HTTPServerLocation struct {
 	// REQUIRED; Type of dataset storage location.
@@ -10711,6 +14175,16 @@ type HTTPServerLocation struct {
 
 	// Specify the relativeUrl of http server. Type: string (or Expression with resultType string)
 	RelativeURL interface{} `json:"relativeUrl,omitempty"`
+}
+
+// GetDatasetLocation implements the DatasetLocationClassification interface for type HTTPServerLocation.
+func (h *HTTPServerLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 h.Type,
+		FolderPath:           h.FolderPath,
+		FileName:             h.FileName,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HTTPSource - A copy activity source for an HTTP file.
@@ -10739,6 +14213,18 @@ type HTTPSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type HTTPSource.
+func (h *HTTPSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     h.Type,
+		SourceRetryCount:         h.SourceRetryCount,
+		SourceRetryWait:          h.SourceRetryWait,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
+}
+
 // HdfsLinkedService - Hadoop Distributed File System (HDFS) linked service.
 type HdfsLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -10761,6 +14247,18 @@ type HdfsLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type HdfsLinkedService.
+func (h *HdfsLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 h.Type,
+		ConnectVia:           h.ConnectVia,
+		Description:          h.Description,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HdfsLinkedServiceTypeProperties - HDFS linked service properties.
@@ -10797,6 +14295,16 @@ type HdfsLocation struct {
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
 	FolderPath interface{} `json:"folderPath,omitempty"`
+}
+
+// GetDatasetLocation implements the DatasetLocationClassification interface for type HdfsLocation.
+func (h *HdfsLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 h.Type,
+		FolderPath:           h.FolderPath,
+		FileName:             h.FileName,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HdfsReadSettings - HDFS read settings.
@@ -10847,6 +14355,16 @@ type HdfsReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type HdfsReadSettings.
+func (h *HdfsReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     h.Type,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
+}
+
 // HdfsSource - A copy activity HDFS source.
 type HdfsSource struct {
 	// REQUIRED; Copy source type.
@@ -10873,6 +14391,18 @@ type HdfsSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type HdfsSource.
+func (h *HdfsSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     h.Type,
+		SourceRetryCount:         h.SourceRetryCount,
+		SourceRetryWait:          h.SourceRetryWait,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
 }
 
 // HiveDatasetTypeProperties - Hive Properties
@@ -10909,6 +14439,18 @@ type HiveLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type HiveLinkedService.
+func (h *HiveLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 h.Type,
+		ConnectVia:           h.ConnectVia,
+		Description:          h.Description,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HiveLinkedServiceTypeProperties - Hive Server linked service properties.
@@ -11005,6 +14547,21 @@ type HiveObjectDataset struct {
 	TypeProperties *HiveDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type HiveObjectDataset.
+func (h *HiveObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 h.Type,
+		Description:          h.Description,
+		Structure:            h.Structure,
+		Schema:               h.Schema,
+		LinkedServiceName:    h.LinkedServiceName,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		Folder:               h.Folder,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
 // HiveSource - A copy activity Hive Server source.
 type HiveSource struct {
 	// REQUIRED; Copy source type.
@@ -11036,6 +14593,32 @@ type HiveSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type HiveSource.
+func (h *HiveSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     h.Type,
+		SourceRetryCount:         h.SourceRetryCount,
+		SourceRetryWait:          h.SourceRetryWait,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type HiveSource.
+func (h *HiveSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             h.QueryTimeout,
+		AdditionalColumns:        h.AdditionalColumns,
+		Type:                     h.Type,
+		SourceRetryCount:         h.SourceRetryCount,
+		SourceRetryWait:          h.SourceRetryWait,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
+}
+
 // HubspotLinkedService - Hubspot Service linked service.
 type HubspotLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -11058,6 +14641,18 @@ type HubspotLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type HubspotLinkedService.
+func (h *HubspotLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 h.Type,
+		ConnectVia:           h.ConnectVia,
+		Description:          h.Description,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		AdditionalProperties: h.AdditionalProperties,
+	}
 }
 
 // HubspotLinkedServiceTypeProperties - Hubspot Service linked service properties.
@@ -11123,6 +14718,21 @@ type HubspotObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type HubspotObjectDataset.
+func (h *HubspotObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 h.Type,
+		Description:          h.Description,
+		Structure:            h.Structure,
+		Schema:               h.Schema,
+		LinkedServiceName:    h.LinkedServiceName,
+		Parameters:           h.Parameters,
+		Annotations:          h.Annotations,
+		Folder:               h.Folder,
+		AdditionalProperties: h.AdditionalProperties,
+	}
+}
+
 // HubspotSource - A copy activity Hubspot Service source.
 type HubspotSource struct {
 	// REQUIRED; Copy source type.
@@ -11154,6 +14764,32 @@ type HubspotSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type HubspotSource.
+func (h *HubspotSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     h.Type,
+		SourceRetryCount:         h.SourceRetryCount,
+		SourceRetryWait:          h.SourceRetryWait,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type HubspotSource.
+func (h *HubspotSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             h.QueryTimeout,
+		AdditionalColumns:        h.AdditionalColumns,
+		Type:                     h.Type,
+		SourceRetryCount:         h.SourceRetryCount,
+		SourceRetryWait:          h.SourceRetryWait,
+		MaxConcurrentConnections: h.MaxConcurrentConnections,
+		DisableMetricsCollection: h.DisableMetricsCollection,
+		AdditionalProperties:     h.AdditionalProperties,
+	}
+}
+
 // IfConditionActivity - This activity evaluates a boolean expression and executes either the activities under the ifTrueActivities
 // property or the ifFalseActivities property depending on the result of the expression.
 type IfConditionActivity struct {
@@ -11177,6 +14813,30 @@ type IfConditionActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type IfConditionActivity.
+func (i *IfConditionActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 i.Name,
+		Type:                 i.Type,
+		Description:          i.Description,
+		DependsOn:            i.DependsOn,
+		UserProperties:       i.UserProperties,
+		AdditionalProperties: i.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type IfConditionActivity.
+func (i *IfConditionActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 i.Name,
+		Type:                 i.Type,
+		Description:          i.Description,
+		DependsOn:            i.DependsOn,
+		UserProperties:       i.UserProperties,
+		AdditionalProperties: i.AdditionalProperties,
+	}
 }
 
 // IfConditionActivityTypeProperties - IfCondition activity properties.
@@ -11228,6 +14888,18 @@ type ImpalaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type ImpalaLinkedService.
+func (i *ImpalaLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 i.Type,
+		ConnectVia:           i.ConnectVia,
+		Description:          i.Description,
+		Parameters:           i.Parameters,
+		Annotations:          i.Annotations,
+		AdditionalProperties: i.AdditionalProperties,
+	}
 }
 
 // ImpalaLinkedServiceTypeProperties - Impala server linked service properties.
@@ -11305,6 +14977,21 @@ type ImpalaObjectDataset struct {
 	TypeProperties *ImpalaDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type ImpalaObjectDataset.
+func (i *ImpalaObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 i.Type,
+		Description:          i.Description,
+		Structure:            i.Structure,
+		Schema:               i.Schema,
+		LinkedServiceName:    i.LinkedServiceName,
+		Parameters:           i.Parameters,
+		Annotations:          i.Annotations,
+		Folder:               i.Folder,
+		AdditionalProperties: i.AdditionalProperties,
+	}
+}
+
 // ImpalaSource - A copy activity Impala server source.
 type ImpalaSource struct {
 	// REQUIRED; Copy source type.
@@ -11336,6 +15023,32 @@ type ImpalaSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type ImpalaSource.
+func (i *ImpalaSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     i.Type,
+		SourceRetryCount:         i.SourceRetryCount,
+		SourceRetryWait:          i.SourceRetryWait,
+		MaxConcurrentConnections: i.MaxConcurrentConnections,
+		DisableMetricsCollection: i.DisableMetricsCollection,
+		AdditionalProperties:     i.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type ImpalaSource.
+func (i *ImpalaSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             i.QueryTimeout,
+		AdditionalColumns:        i.AdditionalColumns,
+		Type:                     i.Type,
+		SourceRetryCount:         i.SourceRetryCount,
+		SourceRetryWait:          i.SourceRetryWait,
+		MaxConcurrentConnections: i.MaxConcurrentConnections,
+		DisableMetricsCollection: i.DisableMetricsCollection,
+		AdditionalProperties:     i.AdditionalProperties,
+	}
+}
+
 // ImportSettingsClassification provides polymorphic access to related types.
 // Call the interface's GetImportSettings() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -11353,6 +15066,9 @@ type ImportSettings struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]interface{}
 }
+
+// GetImportSettings implements the ImportSettingsClassification interface for type ImportSettings.
+func (i *ImportSettings) GetImportSettings() *ImportSettings { return i }
 
 // InformixLinkedService - Informix linked service.
 type InformixLinkedService struct {
@@ -11376,6 +15092,18 @@ type InformixLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type InformixLinkedService.
+func (i *InformixLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 i.Type,
+		ConnectVia:           i.ConnectVia,
+		Description:          i.Description,
+		Parameters:           i.Parameters,
+		Annotations:          i.Annotations,
+		AdditionalProperties: i.AdditionalProperties,
+	}
 }
 
 // InformixLinkedServiceTypeProperties - Informix linked service properties.
@@ -11432,6 +15160,20 @@ type InformixSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type InformixSink.
+func (i *InformixSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     i.Type,
+		WriteBatchSize:           i.WriteBatchSize,
+		WriteBatchTimeout:        i.WriteBatchTimeout,
+		SinkRetryCount:           i.SinkRetryCount,
+		SinkRetryWait:            i.SinkRetryWait,
+		MaxConcurrentConnections: i.MaxConcurrentConnections,
+		DisableMetricsCollection: i.DisableMetricsCollection,
+		AdditionalProperties:     i.AdditionalProperties,
+	}
+}
+
 // InformixSource - A copy activity source for Informix.
 type InformixSource struct {
 	// REQUIRED; Copy source type.
@@ -11461,6 +15203,32 @@ type InformixSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type InformixSource.
+func (i *InformixSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     i.Type,
+		SourceRetryCount:         i.SourceRetryCount,
+		SourceRetryWait:          i.SourceRetryWait,
+		MaxConcurrentConnections: i.MaxConcurrentConnections,
+		DisableMetricsCollection: i.DisableMetricsCollection,
+		AdditionalProperties:     i.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type InformixSource.
+func (i *InformixSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             i.QueryTimeout,
+		AdditionalColumns:        i.AdditionalColumns,
+		Type:                     i.Type,
+		SourceRetryCount:         i.SourceRetryCount,
+		SourceRetryWait:          i.SourceRetryWait,
+		MaxConcurrentConnections: i.MaxConcurrentConnections,
+		DisableMetricsCollection: i.DisableMetricsCollection,
+		AdditionalProperties:     i.AdditionalProperties,
+	}
 }
 
 // InformixTableDataset - The Informix table dataset.
@@ -11497,6 +15265,21 @@ type InformixTableDataset struct {
 	TypeProperties *InformixTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type InformixTableDataset.
+func (i *InformixTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 i.Type,
+		Description:          i.Description,
+		Structure:            i.Structure,
+		Schema:               i.Schema,
+		LinkedServiceName:    i.LinkedServiceName,
+		Parameters:           i.Parameters,
+		Annotations:          i.Annotations,
+		Folder:               i.Folder,
+		AdditionalProperties: i.AdditionalProperties,
+	}
+}
+
 // InformixTableDatasetTypeProperties - Informix table dataset properties.
 type InformixTableDatasetTypeProperties struct {
 	// The Informix table name. Type: string (or Expression with resultType string).
@@ -11523,6 +15306,9 @@ type IntegrationRuntime struct {
 	// Integration runtime description.
 	Description *string `json:"description,omitempty"`
 }
+
+// GetIntegrationRuntime implements the IntegrationRuntimeClassification interface for type IntegrationRuntime.
+func (i *IntegrationRuntime) GetIntegrationRuntime() *IntegrationRuntime { return i }
 
 // IntegrationRuntimeAuthKeys - The integration runtime authentication keys.
 type IntegrationRuntimeAuthKeys struct {
@@ -11873,6 +15659,9 @@ type IntegrationRuntimeStatus struct {
 	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
 }
 
+// GetIntegrationRuntimeStatus implements the IntegrationRuntimeStatusClassification interface for type IntegrationRuntimeStatus.
+func (i *IntegrationRuntimeStatus) GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus { return i }
+
 // IntegrationRuntimeStatusListResponse - A list of integration runtime status.
 type IntegrationRuntimeStatusListResponse struct {
 	// REQUIRED; List of integration runtime status.
@@ -12047,6 +15836,21 @@ type JSONDataset struct {
 	TypeProperties *JSONDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type JSONDataset.
+func (j *JSONDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 j.Type,
+		Description:          j.Description,
+		Structure:            j.Structure,
+		Schema:               j.Schema,
+		LinkedServiceName:    j.LinkedServiceName,
+		Parameters:           j.Parameters,
+		Annotations:          j.Annotations,
+		Folder:               j.Folder,
+		AdditionalProperties: j.AdditionalProperties,
+	}
+}
+
 // JSONDatasetTypeProperties - Json dataset properties.
 type JSONDatasetTypeProperties struct {
 	// REQUIRED; The location of the json data storage.
@@ -12101,6 +15905,16 @@ type JSONFormat struct {
 	Serializer interface{} `json:"serializer,omitempty"`
 }
 
+// GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type JSONFormat.
+func (j *JSONFormat) GetDatasetStorageFormat() *DatasetStorageFormat {
+	return &DatasetStorageFormat{
+		Type:                 j.Type,
+		Serializer:           j.Serializer,
+		Deserializer:         j.Deserializer,
+		AdditionalProperties: j.AdditionalProperties,
+	}
+}
+
 // JSONReadSettings - Json read settings.
 type JSONReadSettings struct {
 	// REQUIRED; The read setting type.
@@ -12111,6 +15925,14 @@ type JSONReadSettings struct {
 
 	// Compression settings.
 	CompressionProperties CompressionReadSettingsClassification `json:"compressionProperties,omitempty"`
+}
+
+// GetFormatReadSettings implements the FormatReadSettingsClassification interface for type JSONReadSettings.
+func (j *JSONReadSettings) GetFormatReadSettings() *FormatReadSettings {
+	return &FormatReadSettings{
+		Type:                 j.Type,
+		AdditionalProperties: j.AdditionalProperties,
+	}
 }
 
 // JSONSink - A copy activity Json sink.
@@ -12146,6 +15968,20 @@ type JSONSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type JSONSink.
+func (j *JSONSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     j.Type,
+		WriteBatchSize:           j.WriteBatchSize,
+		WriteBatchTimeout:        j.WriteBatchTimeout,
+		SinkRetryCount:           j.SinkRetryCount,
+		SinkRetryWait:            j.SinkRetryWait,
+		MaxConcurrentConnections: j.MaxConcurrentConnections,
+		DisableMetricsCollection: j.DisableMetricsCollection,
+		AdditionalProperties:     j.AdditionalProperties,
+	}
+}
+
 // JSONSource - A copy activity Json source.
 type JSONSource struct {
 	// REQUIRED; Copy source type.
@@ -12177,6 +16013,18 @@ type JSONSource struct {
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type JSONSource.
+func (j *JSONSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     j.Type,
+		SourceRetryCount:         j.SourceRetryCount,
+		SourceRetryWait:          j.SourceRetryWait,
+		MaxConcurrentConnections: j.MaxConcurrentConnections,
+		DisableMetricsCollection: j.DisableMetricsCollection,
+		AdditionalProperties:     j.AdditionalProperties,
+	}
+}
+
 // JSONWriteSettings - Json write settings.
 type JSONWriteSettings struct {
 	// REQUIRED; The write setting type.
@@ -12188,6 +16036,14 @@ type JSONWriteSettings struct {
 	// File pattern of JSON. This setting controls the way a collection of JSON objects will be treated. The default value is
 	// 'setOfObjects'. It is case-sensitive.
 	FilePattern interface{} `json:"filePattern,omitempty"`
+}
+
+// GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type JSONWriteSettings.
+func (j *JSONWriteSettings) GetFormatWriteSettings() *FormatWriteSettings {
+	return &FormatWriteSettings{
+		Type:                 j.Type,
+		AdditionalProperties: j.AdditionalProperties,
+	}
 }
 
 // JiraLinkedService - Jira Service linked service.
@@ -12212,6 +16068,18 @@ type JiraLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type JiraLinkedService.
+func (j *JiraLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 j.Type,
+		ConnectVia:           j.ConnectVia,
+		Description:          j.Description,
+		Parameters:           j.Parameters,
+		Annotations:          j.Annotations,
+		AdditionalProperties: j.AdditionalProperties,
+	}
 }
 
 // JiraLinkedServiceTypeProperties - Jira Service linked service properties.
@@ -12278,6 +16146,21 @@ type JiraObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type JiraObjectDataset.
+func (j *JiraObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 j.Type,
+		Description:          j.Description,
+		Structure:            j.Structure,
+		Schema:               j.Schema,
+		LinkedServiceName:    j.LinkedServiceName,
+		Parameters:           j.Parameters,
+		Annotations:          j.Annotations,
+		Folder:               j.Folder,
+		AdditionalProperties: j.AdditionalProperties,
+	}
+}
+
 // JiraSource - A copy activity Jira Service source.
 type JiraSource struct {
 	// REQUIRED; Copy source type.
@@ -12307,6 +16190,32 @@ type JiraSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type JiraSource.
+func (j *JiraSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     j.Type,
+		SourceRetryCount:         j.SourceRetryCount,
+		SourceRetryWait:          j.SourceRetryWait,
+		MaxConcurrentConnections: j.MaxConcurrentConnections,
+		DisableMetricsCollection: j.DisableMetricsCollection,
+		AdditionalProperties:     j.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type JiraSource.
+func (j *JiraSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             j.QueryTimeout,
+		AdditionalColumns:        j.AdditionalColumns,
+		Type:                     j.Type,
+		SourceRetryCount:         j.SourceRetryCount,
+		SourceRetryWait:          j.SourceRetryWait,
+		MaxConcurrentConnections: j.MaxConcurrentConnections,
+		DisableMetricsCollection: j.DisableMetricsCollection,
+		AdditionalProperties:     j.AdditionalProperties,
+	}
 }
 
 // LicensedComponentSetupTypeProperties - Installation of licensed component setup type properties.
@@ -12345,6 +16254,13 @@ type LinkedIntegrationRuntimeKeyAuthorization struct {
 	Key *SecureString `json:"key,omitempty"`
 }
 
+// GetLinkedIntegrationRuntimeType implements the LinkedIntegrationRuntimeTypeClassification interface for type LinkedIntegrationRuntimeKeyAuthorization.
+func (l *LinkedIntegrationRuntimeKeyAuthorization) GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType {
+	return &LinkedIntegrationRuntimeType{
+		AuthorizationType: l.AuthorizationType,
+	}
+}
+
 // LinkedIntegrationRuntimeRbacAuthorization - The role based access control (RBAC) authorization type integration runtime.
 type LinkedIntegrationRuntimeRbacAuthorization struct {
 	// REQUIRED; The authorization type for integration runtime sharing.
@@ -12355,6 +16271,13 @@ type LinkedIntegrationRuntimeRbacAuthorization struct {
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
+}
+
+// GetLinkedIntegrationRuntimeType implements the LinkedIntegrationRuntimeTypeClassification interface for type LinkedIntegrationRuntimeRbacAuthorization.
+func (l *LinkedIntegrationRuntimeRbacAuthorization) GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType {
+	return &LinkedIntegrationRuntimeType{
+		AuthorizationType: l.AuthorizationType,
+	}
 }
 
 // LinkedIntegrationRuntimeRequest - Data factory name for linked integration runtime request.
@@ -12376,6 +16299,11 @@ type LinkedIntegrationRuntimeTypeClassification interface {
 type LinkedIntegrationRuntimeType struct {
 	// REQUIRED; The authorization type for integration runtime sharing.
 	AuthorizationType *string `json:"authorizationType,omitempty"`
+}
+
+// GetLinkedIntegrationRuntimeType implements the LinkedIntegrationRuntimeTypeClassification interface for type LinkedIntegrationRuntimeType.
+func (l *LinkedIntegrationRuntimeType) GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType {
+	return l
 }
 
 // LinkedServiceClassification provides polymorphic access to related types.
@@ -12430,6 +16358,9 @@ type LinkedService struct {
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
+
+// GetLinkedService implements the LinkedServiceClassification interface for type LinkedService.
+func (l *LinkedService) GetLinkedService() *LinkedService { return l }
 
 // LinkedServiceDebugResource - Linked service debug resource.
 type LinkedServiceDebugResource struct {
@@ -12573,6 +16504,32 @@ type LookupActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type LookupActivity.
+func (l *LookupActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 l.Name,
+		Type:                 l.Type,
+		Description:          l.Description,
+		DependsOn:            l.DependsOn,
+		UserProperties:       l.UserProperties,
+		AdditionalProperties: l.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type LookupActivity.
+func (l *LookupActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    l.LinkedServiceName,
+		Policy:               l.Policy,
+		Name:                 l.Name,
+		Type:                 l.Type,
+		Description:          l.Description,
+		DependsOn:            l.DependsOn,
+		UserProperties:       l.UserProperties,
+		AdditionalProperties: l.AdditionalProperties,
+	}
+}
+
 // LookupActivityTypeProperties - Lookup activity properties.
 type LookupActivityTypeProperties struct {
 	// REQUIRED; Lookup activity dataset reference.
@@ -12607,6 +16564,18 @@ type MagentoLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type MagentoLinkedService.
+func (m *MagentoLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 m.Type,
+		ConnectVia:           m.ConnectVia,
+		Description:          m.Description,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MagentoLinkedServiceTypeProperties - Magento server linked service properties.
@@ -12666,6 +16635,21 @@ type MagentoObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type MagentoObjectDataset.
+func (m *MagentoObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Structure:            m.Structure,
+		Schema:               m.Schema,
+		LinkedServiceName:    m.LinkedServiceName,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		Folder:               m.Folder,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
 // MagentoSource - A copy activity Magento server source.
 type MagentoSource struct {
 	// REQUIRED; Copy source type.
@@ -12697,6 +16681,32 @@ type MagentoSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type MagentoSource.
+func (m *MagentoSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type MagentoSource.
+func (m *MagentoSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             m.QueryTimeout,
+		AdditionalColumns:        m.AdditionalColumns,
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
 // ManagedIdentityCredential - Managed identity credential.
 type ManagedIdentityCredential struct {
 	// REQUIRED; Type of credential.
@@ -12713,6 +16723,16 @@ type ManagedIdentityCredential struct {
 
 	// Managed identity credential properties.
 	TypeProperties *ManagedIdentityTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetCredential implements the CredentialClassification interface for type ManagedIdentityCredential.
+func (m *ManagedIdentityCredential) GetCredential() *Credential {
+	return &Credential{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // ManagedIdentityTypeProperties - Managed identity type properties.
@@ -12740,6 +16760,15 @@ type ManagedIntegrationRuntime struct {
 
 	// READ-ONLY; Integration runtime state, only valid for managed dedicated integration runtime.
 	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
+}
+
+// GetIntegrationRuntime implements the IntegrationRuntimeClassification interface for type ManagedIntegrationRuntime.
+func (m *ManagedIntegrationRuntime) GetIntegrationRuntime() *IntegrationRuntime {
+	return &IntegrationRuntime{
+		Type:                 m.Type,
+		Description:          m.Description,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // ManagedIntegrationRuntimeError - Error definition for managed integration runtime.
@@ -12815,6 +16844,16 @@ type ManagedIntegrationRuntimeStatus struct {
 
 	// READ-ONLY; The state of integration runtime.
 	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
+}
+
+// GetIntegrationRuntimeStatus implements the IntegrationRuntimeStatusClassification interface for type ManagedIntegrationRuntimeStatus.
+func (m *ManagedIntegrationRuntimeStatus) GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus {
+	return &IntegrationRuntimeStatus{
+		Type:                 m.Type,
+		DataFactoryName:      m.DataFactoryName,
+		State:                m.State,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // ManagedIntegrationRuntimeStatusTypeProperties - Managed integration runtime status type properties.
@@ -13009,6 +17048,16 @@ type MappingDataFlow struct {
 	TypeProperties *MappingDataFlowTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataFlow implements the DataFlowClassification interface for type MappingDataFlow.
+func (m *MappingDataFlow) GetDataFlow() *DataFlow {
+	return &DataFlow{
+		Type:        m.Type,
+		Description: m.Description,
+		Annotations: m.Annotations,
+		Folder:      m.Folder,
+	}
+}
+
 // MappingDataFlowTypeProperties - Mapping data flow type properties.
 type MappingDataFlowTypeProperties struct {
 	// DataFlow script.
@@ -13049,6 +17098,18 @@ type MariaDBLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type MariaDBLinkedService.
+func (m *MariaDBLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 m.Type,
+		ConnectVia:           m.ConnectVia,
+		Description:          m.Description,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MariaDBLinkedServiceTypeProperties - MariaDB server linked service properties.
@@ -13095,6 +17156,32 @@ type MariaDBSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type MariaDBSource.
+func (m *MariaDBSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type MariaDBSource.
+func (m *MariaDBSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             m.QueryTimeout,
+		AdditionalColumns:        m.AdditionalColumns,
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
 // MariaDBTableDataset - MariaDB server dataset.
 type MariaDBTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -13129,6 +17216,21 @@ type MariaDBTableDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type MariaDBTableDataset.
+func (m *MariaDBTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Structure:            m.Structure,
+		Schema:               m.Schema,
+		LinkedServiceName:    m.LinkedServiceName,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		Folder:               m.Folder,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
 // MarketoLinkedService - Marketo server linked service.
 type MarketoLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -13151,6 +17253,18 @@ type MarketoLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type MarketoLinkedService.
+func (m *MarketoLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 m.Type,
+		ConnectVia:           m.ConnectVia,
+		Description:          m.Description,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MarketoLinkedServiceTypeProperties - Marketo server linked service properties.
@@ -13213,6 +17327,21 @@ type MarketoObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type MarketoObjectDataset.
+func (m *MarketoObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Structure:            m.Structure,
+		Schema:               m.Schema,
+		LinkedServiceName:    m.LinkedServiceName,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		Folder:               m.Folder,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
 // MarketoSource - A copy activity Marketo server source.
 type MarketoSource struct {
 	// REQUIRED; Copy source type.
@@ -13242,6 +17371,32 @@ type MarketoSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type MarketoSource.
+func (m *MarketoSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type MarketoSource.
+func (m *MarketoSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             m.QueryTimeout,
+		AdditionalColumns:        m.AdditionalColumns,
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
 }
 
 // MetadataItem - Specify the name and value of custom metadata item.
@@ -13275,6 +17430,18 @@ type MicrosoftAccessLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type MicrosoftAccessLinkedService.
+func (m *MicrosoftAccessLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 m.Type,
+		ConnectVia:           m.ConnectVia,
+		Description:          m.Description,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MicrosoftAccessLinkedServiceTypeProperties - Microsoft Access linked service properties.
@@ -13331,6 +17498,20 @@ type MicrosoftAccessSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type MicrosoftAccessSink.
+func (m *MicrosoftAccessSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     m.Type,
+		WriteBatchSize:           m.WriteBatchSize,
+		WriteBatchTimeout:        m.WriteBatchTimeout,
+		SinkRetryCount:           m.SinkRetryCount,
+		SinkRetryWait:            m.SinkRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
 // MicrosoftAccessSource - A copy activity source for Microsoft Access.
 type MicrosoftAccessSource struct {
 	// REQUIRED; Copy source type.
@@ -13357,6 +17538,18 @@ type MicrosoftAccessSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type MicrosoftAccessSource.
+func (m *MicrosoftAccessSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
 }
 
 // MicrosoftAccessTableDataset - The Microsoft Access table dataset.
@@ -13391,6 +17584,21 @@ type MicrosoftAccessTableDataset struct {
 
 	// Microsoft Access table dataset properties.
 	TypeProperties *MicrosoftAccessTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type MicrosoftAccessTableDataset.
+func (m *MicrosoftAccessTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Structure:            m.Structure,
+		Schema:               m.Schema,
+		LinkedServiceName:    m.LinkedServiceName,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		Folder:               m.Folder,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MicrosoftAccessTableDatasetTypeProperties - Microsoft Access table dataset properties.
@@ -13433,6 +17641,21 @@ type MongoDbAtlasCollectionDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type MongoDbAtlasCollectionDataset.
+func (m *MongoDbAtlasCollectionDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Structure:            m.Structure,
+		Schema:               m.Schema,
+		LinkedServiceName:    m.LinkedServiceName,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		Folder:               m.Folder,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
 // MongoDbAtlasCollectionDatasetTypeProperties - MongoDB Atlas database dataset properties.
 type MongoDbAtlasCollectionDatasetTypeProperties struct {
 	// REQUIRED; The collection name of the MongoDB Atlas database. Type: string (or Expression with resultType string).
@@ -13461,6 +17684,18 @@ type MongoDbAtlasLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type MongoDbAtlasLinkedService.
+func (m *MongoDbAtlasLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 m.Type,
+		ConnectVia:           m.ConnectVia,
+		Description:          m.Description,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MongoDbAtlasLinkedServiceTypeProperties - MongoDB Atlas linked service properties.
@@ -13505,6 +17740,20 @@ type MongoDbAtlasSink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type MongoDbAtlasSink.
+func (m *MongoDbAtlasSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     m.Type,
+		WriteBatchSize:           m.WriteBatchSize,
+		WriteBatchTimeout:        m.WriteBatchTimeout,
+		SinkRetryCount:           m.SinkRetryCount,
+		SinkRetryWait:            m.SinkRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
 // MongoDbAtlasSource - A copy activity source for a MongoDB Atlas database.
 type MongoDbAtlasSource struct {
 	// REQUIRED; Copy source type.
@@ -13545,6 +17794,18 @@ type MongoDbAtlasSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type MongoDbAtlasSource.
+func (m *MongoDbAtlasSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
 // MongoDbCollectionDataset - The MongoDB database dataset.
 type MongoDbCollectionDataset struct {
 	// REQUIRED; Linked service reference.
@@ -13577,6 +17838,21 @@ type MongoDbCollectionDataset struct {
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
 	Structure interface{} `json:"structure,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type MongoDbCollectionDataset.
+func (m *MongoDbCollectionDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Structure:            m.Structure,
+		Schema:               m.Schema,
+		LinkedServiceName:    m.LinkedServiceName,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		Folder:               m.Folder,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MongoDbCollectionDatasetTypeProperties - MongoDB database dataset properties.
@@ -13630,6 +17906,18 @@ type MongoDbLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type MongoDbLinkedService.
+func (m *MongoDbLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 m.Type,
+		ConnectVia:           m.ConnectVia,
+		Description:          m.Description,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MongoDbLinkedServiceTypeProperties - MongoDB linked service properties.
@@ -13697,6 +17985,18 @@ type MongoDbSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type MongoDbSource.
+func (m *MongoDbSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
 // MongoDbV2CollectionDataset - The MongoDB database dataset.
 type MongoDbV2CollectionDataset struct {
 	// REQUIRED; Linked service reference.
@@ -13731,6 +18031,21 @@ type MongoDbV2CollectionDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type MongoDbV2CollectionDataset.
+func (m *MongoDbV2CollectionDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Structure:            m.Structure,
+		Schema:               m.Schema,
+		LinkedServiceName:    m.LinkedServiceName,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		Folder:               m.Folder,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
 // MongoDbV2CollectionDatasetTypeProperties - MongoDB database dataset properties.
 type MongoDbV2CollectionDatasetTypeProperties struct {
 	// REQUIRED; The collection name of the MongoDB database. Type: string (or Expression with resultType string).
@@ -13759,6 +18074,18 @@ type MongoDbV2LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type MongoDbV2LinkedService.
+func (m *MongoDbV2LinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 m.Type,
+		ConnectVia:           m.ConnectVia,
+		Description:          m.Description,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MongoDbV2LinkedServiceTypeProperties - MongoDB linked service properties.
@@ -13803,6 +18130,20 @@ type MongoDbV2Sink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type MongoDbV2Sink.
+func (m *MongoDbV2Sink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     m.Type,
+		WriteBatchSize:           m.WriteBatchSize,
+		WriteBatchTimeout:        m.WriteBatchTimeout,
+		SinkRetryCount:           m.SinkRetryCount,
+		SinkRetryWait:            m.SinkRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
 // MongoDbV2Source - A copy activity source for a MongoDB database.
 type MongoDbV2Source struct {
 	// REQUIRED; Copy source type.
@@ -13843,6 +18184,18 @@ type MongoDbV2Source struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type MongoDbV2Source.
+func (m *MongoDbV2Source) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
 // MultiplePipelineTriggerClassification provides polymorphic access to related types.
 // Call the interface's GetMultiplePipelineTrigger() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -13874,6 +18227,20 @@ type MultiplePipelineTrigger struct {
 	RuntimeState *TriggerRuntimeState `json:"runtimeState,omitempty" azure:"ro"`
 }
 
+// GetMultiplePipelineTrigger implements the MultiplePipelineTriggerClassification interface for type MultiplePipelineTrigger.
+func (m *MultiplePipelineTrigger) GetMultiplePipelineTrigger() *MultiplePipelineTrigger { return m }
+
+// GetTrigger implements the TriggerClassification interface for type MultiplePipelineTrigger.
+func (m *MultiplePipelineTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		Type:                 m.Type,
+		Description:          m.Description,
+		RuntimeState:         m.RuntimeState,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
 // MySQLLinkedService - Linked service for MySQL data source.
 type MySQLLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -13896,6 +18263,18 @@ type MySQLLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type MySQLLinkedService.
+func (m *MySQLLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 m.Type,
+		ConnectVia:           m.ConnectVia,
+		Description:          m.Description,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MySQLLinkedServiceTypeProperties - MySQL linked service properties.
@@ -13942,6 +18321,32 @@ type MySQLSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type MySQLSource.
+func (m *MySQLSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type MySQLSource.
+func (m *MySQLSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             m.QueryTimeout,
+		AdditionalColumns:        m.AdditionalColumns,
+		Type:                     m.Type,
+		SourceRetryCount:         m.SourceRetryCount,
+		SourceRetryWait:          m.SourceRetryWait,
+		MaxConcurrentConnections: m.MaxConcurrentConnections,
+		DisableMetricsCollection: m.DisableMetricsCollection,
+		AdditionalProperties:     m.AdditionalProperties,
+	}
+}
+
 // MySQLTableDataset - The MySQL table dataset.
 type MySQLTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -13976,6 +18381,21 @@ type MySQLTableDataset struct {
 	TypeProperties *MySQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type MySQLTableDataset.
+func (m *MySQLTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 m.Type,
+		Description:          m.Description,
+		Structure:            m.Structure,
+		Schema:               m.Schema,
+		LinkedServiceName:    m.LinkedServiceName,
+		Parameters:           m.Parameters,
+		Annotations:          m.Annotations,
+		Folder:               m.Folder,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
 // MySQLTableDatasetTypeProperties - MySql table dataset properties.
 type MySQLTableDatasetTypeProperties struct {
 	// The MySQL table name. Type: string (or Expression with resultType string).
@@ -14004,6 +18424,18 @@ type NetezzaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type NetezzaLinkedService.
+func (n *NetezzaLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 n.Type,
+		ConnectVia:           n.ConnectVia,
+		Description:          n.Description,
+		Parameters:           n.Parameters,
+		Annotations:          n.Annotations,
+		AdditionalProperties: n.AdditionalProperties,
+	}
 }
 
 // NetezzaLinkedServiceTypeProperties - Netezza linked service properties.
@@ -14071,6 +18503,32 @@ type NetezzaSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type NetezzaSource.
+func (n *NetezzaSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     n.Type,
+		SourceRetryCount:         n.SourceRetryCount,
+		SourceRetryWait:          n.SourceRetryWait,
+		MaxConcurrentConnections: n.MaxConcurrentConnections,
+		DisableMetricsCollection: n.DisableMetricsCollection,
+		AdditionalProperties:     n.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type NetezzaSource.
+func (n *NetezzaSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             n.QueryTimeout,
+		AdditionalColumns:        n.AdditionalColumns,
+		Type:                     n.Type,
+		SourceRetryCount:         n.SourceRetryCount,
+		SourceRetryWait:          n.SourceRetryWait,
+		MaxConcurrentConnections: n.MaxConcurrentConnections,
+		DisableMetricsCollection: n.DisableMetricsCollection,
+		AdditionalProperties:     n.AdditionalProperties,
+	}
+}
+
 // NetezzaTableDataset - Netezza dataset.
 type NetezzaTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -14103,6 +18561,21 @@ type NetezzaTableDataset struct {
 
 	// Properties specific to this dataset type.
 	TypeProperties *NetezzaTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type NetezzaTableDataset.
+func (n *NetezzaTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 n.Type,
+		Description:          n.Description,
+		Structure:            n.Structure,
+		Schema:               n.Schema,
+		LinkedServiceName:    n.LinkedServiceName,
+		Parameters:           n.Parameters,
+		Annotations:          n.Annotations,
+		Folder:               n.Folder,
+		AdditionalProperties: n.AdditionalProperties,
+	}
 }
 
 // NetezzaTableDatasetTypeProperties - Netezza dataset properties.
@@ -14139,6 +18612,18 @@ type ODataLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type ODataLinkedService.
+func (o *ODataLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 o.Type,
+		ConnectVia:           o.ConnectVia,
+		Description:          o.Description,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // ODataLinkedServiceTypeProperties - OData linked service properties.
@@ -14229,6 +18714,21 @@ type ODataResourceDataset struct {
 	TypeProperties *ODataResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type ODataResourceDataset.
+func (o *ODataResourceDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 o.Type,
+		Description:          o.Description,
+		Structure:            o.Structure,
+		Schema:               o.Schema,
+		LinkedServiceName:    o.LinkedServiceName,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		Folder:               o.Folder,
+		AdditionalProperties: o.AdditionalProperties,
+	}
+}
+
 // ODataResourceDatasetTypeProperties - OData dataset properties.
 type ODataResourceDatasetTypeProperties struct {
 	// The OData resource path. Type: string (or Expression with resultType string).
@@ -14268,6 +18768,18 @@ type ODataSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type ODataSource.
+func (o *ODataSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     o.Type,
+		SourceRetryCount:         o.SourceRetryCount,
+		SourceRetryWait:          o.SourceRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
+}
+
 // OdbcLinkedService - Open Database Connectivity (ODBC) linked service.
 type OdbcLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -14290,6 +18802,18 @@ type OdbcLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type OdbcLinkedService.
+func (o *OdbcLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 o.Type,
+		ConnectVia:           o.ConnectVia,
+		Description:          o.Description,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // OdbcLinkedServiceTypeProperties - ODBC linked service properties.
@@ -14346,6 +18870,20 @@ type OdbcSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type OdbcSink.
+func (o *OdbcSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     o.Type,
+		WriteBatchSize:           o.WriteBatchSize,
+		WriteBatchTimeout:        o.WriteBatchTimeout,
+		SinkRetryCount:           o.SinkRetryCount,
+		SinkRetryWait:            o.SinkRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
+}
+
 // OdbcSource - A copy activity source for ODBC databases.
 type OdbcSource struct {
 	// REQUIRED; Copy source type.
@@ -14375,6 +18913,32 @@ type OdbcSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type OdbcSource.
+func (o *OdbcSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     o.Type,
+		SourceRetryCount:         o.SourceRetryCount,
+		SourceRetryWait:          o.SourceRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type OdbcSource.
+func (o *OdbcSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             o.QueryTimeout,
+		AdditionalColumns:        o.AdditionalColumns,
+		Type:                     o.Type,
+		SourceRetryCount:         o.SourceRetryCount,
+		SourceRetryWait:          o.SourceRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
 }
 
 // OdbcTableDataset - The ODBC table dataset.
@@ -14409,6 +18973,21 @@ type OdbcTableDataset struct {
 
 	// ODBC table dataset properties.
 	TypeProperties *OdbcTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type OdbcTableDataset.
+func (o *OdbcTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 o.Type,
+		Description:          o.Description,
+		Structure:            o.Structure,
+		Schema:               o.Schema,
+		LinkedServiceName:    o.LinkedServiceName,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		Folder:               o.Folder,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // OdbcTableDatasetTypeProperties - ODBC table dataset properties.
@@ -14451,6 +19030,21 @@ type Office365Dataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type Office365Dataset.
+func (o *Office365Dataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 o.Type,
+		Description:          o.Description,
+		Structure:            o.Structure,
+		Schema:               o.Schema,
+		LinkedServiceName:    o.LinkedServiceName,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		Folder:               o.Folder,
+		AdditionalProperties: o.AdditionalProperties,
+	}
+}
+
 // Office365DatasetTypeProperties - Office365 dataset properties.
 type Office365DatasetTypeProperties struct {
 	// REQUIRED; Name of the dataset to extract from Office 365. Type: string (or Expression with resultType string).
@@ -14483,6 +19077,18 @@ type Office365LinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type Office365LinkedService.
+func (o *Office365LinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 o.Type,
+		ConnectVia:           o.ConnectVia,
+		Description:          o.Description,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // Office365LinkedServiceTypeProperties - Office365 linked service properties.
@@ -14543,6 +19149,18 @@ type Office365Source struct {
 
 	// The user scope uri. Type: string (or Expression with resultType string).
 	UserScopeFilterURI interface{} `json:"userScopeFilterUri,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type Office365Source.
+func (o *Office365Source) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     o.Type,
+		SourceRetryCount:         o.SourceRetryCount,
+		SourceRetryWait:          o.SourceRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
 }
 
 // Operation - Azure Data Factory API operation definition.
@@ -14694,6 +19312,18 @@ type OracleCloudStorageLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type OracleCloudStorageLinkedService.
+func (o *OracleCloudStorageLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 o.Type,
+		ConnectVia:           o.ConnectVia,
+		Description:          o.Description,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		AdditionalProperties: o.AdditionalProperties,
+	}
+}
+
 // OracleCloudStorageLinkedServiceTypeProperties - Oracle Cloud Storage linked service properties.
 type OracleCloudStorageLinkedServiceTypeProperties struct {
 	// The access key identifier of the Oracle Cloud Storage Identity and Access Management (IAM) user. Type: string (or Expression
@@ -14732,6 +19362,16 @@ type OracleCloudStorageLocation struct {
 
 	// Specify the version of Oracle Cloud Storage. Type: string (or Expression with resultType string).
 	Version interface{} `json:"version,omitempty"`
+}
+
+// GetDatasetLocation implements the DatasetLocationClassification interface for type OracleCloudStorageLocation.
+func (o *OracleCloudStorageLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 o.Type,
+		FolderPath:           o.FolderPath,
+		FileName:             o.FileName,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // OracleCloudStorageReadSettings - Oracle Cloud Storage read settings.
@@ -14782,6 +19422,16 @@ type OracleCloudStorageReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type OracleCloudStorageReadSettings.
+func (o *OracleCloudStorageReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     o.Type,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
+}
+
 // OracleLinkedService - Oracle database.
 type OracleLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -14804,6 +19454,18 @@ type OracleLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type OracleLinkedService.
+func (o *OracleLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 o.Type,
+		ConnectVia:           o.ConnectVia,
+		Description:          o.Description,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // OracleLinkedServiceTypeProperties - Oracle database linked service properties.
@@ -14859,6 +19521,18 @@ type OracleServiceCloudLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type OracleServiceCloudLinkedService.
+func (o *OracleServiceCloudLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 o.Type,
+		ConnectVia:           o.ConnectVia,
+		Description:          o.Description,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // OracleServiceCloudLinkedServiceTypeProperties - Oracle Service Cloud linked service properties.
@@ -14924,6 +19598,21 @@ type OracleServiceCloudObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type OracleServiceCloudObjectDataset.
+func (o *OracleServiceCloudObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 o.Type,
+		Description:          o.Description,
+		Structure:            o.Structure,
+		Schema:               o.Schema,
+		LinkedServiceName:    o.LinkedServiceName,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		Folder:               o.Folder,
+		AdditionalProperties: o.AdditionalProperties,
+	}
+}
+
 // OracleServiceCloudSource - A copy activity Oracle Service Cloud source.
 type OracleServiceCloudSource struct {
 	// REQUIRED; Copy source type.
@@ -14955,6 +19644,32 @@ type OracleServiceCloudSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type OracleServiceCloudSource.
+func (o *OracleServiceCloudSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     o.Type,
+		SourceRetryCount:         o.SourceRetryCount,
+		SourceRetryWait:          o.SourceRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type OracleServiceCloudSource.
+func (o *OracleServiceCloudSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             o.QueryTimeout,
+		AdditionalColumns:        o.AdditionalColumns,
+		Type:                     o.Type,
+		SourceRetryCount:         o.SourceRetryCount,
+		SourceRetryWait:          o.SourceRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
+}
+
 // OracleSink - A copy activity Oracle sink.
 type OracleSink struct {
 	// REQUIRED; Copy sink type.
@@ -14983,6 +19698,20 @@ type OracleSink struct {
 
 	// Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
+}
+
+// GetCopySink implements the CopySinkClassification interface for type OracleSink.
+func (o *OracleSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     o.Type,
+		WriteBatchSize:           o.WriteBatchSize,
+		WriteBatchTimeout:        o.WriteBatchTimeout,
+		SinkRetryCount:           o.SinkRetryCount,
+		SinkRetryWait:            o.SinkRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
 }
 
 // OracleSource - A copy activity Oracle source.
@@ -15023,6 +19752,18 @@ type OracleSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type OracleSource.
+func (o *OracleSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     o.Type,
+		SourceRetryCount:         o.SourceRetryCount,
+		SourceRetryWait:          o.SourceRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
+}
+
 // OracleTableDataset - The on-premises Oracle database dataset.
 type OracleTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -15055,6 +19796,21 @@ type OracleTableDataset struct {
 
 	// On-premises Oracle dataset properties.
 	TypeProperties *OracleTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type OracleTableDataset.
+func (o *OracleTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 o.Type,
+		Description:          o.Description,
+		Structure:            o.Structure,
+		Schema:               o.Schema,
+		LinkedServiceName:    o.LinkedServiceName,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		Folder:               o.Folder,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // OracleTableDatasetTypeProperties - On-premises Oracle dataset properties.
@@ -15103,6 +19859,21 @@ type OrcDataset struct {
 	TypeProperties *OrcDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type OrcDataset.
+func (o *OrcDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 o.Type,
+		Description:          o.Description,
+		Structure:            o.Structure,
+		Schema:               o.Schema,
+		LinkedServiceName:    o.LinkedServiceName,
+		Parameters:           o.Parameters,
+		Annotations:          o.Annotations,
+		Folder:               o.Folder,
+		AdditionalProperties: o.AdditionalProperties,
+	}
+}
+
 // OrcDatasetTypeProperties - ORC dataset properties.
 type OrcDatasetTypeProperties struct {
 	// REQUIRED; The location of the ORC data storage.
@@ -15125,6 +19896,16 @@ type OrcFormat struct {
 
 	// Serializer. Type: string (or Expression with resultType string).
 	Serializer interface{} `json:"serializer,omitempty"`
+}
+
+// GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type OrcFormat.
+func (o *OrcFormat) GetDatasetStorageFormat() *DatasetStorageFormat {
+	return &DatasetStorageFormat{
+		Type:                 o.Type,
+		Serializer:           o.Serializer,
+		Deserializer:         o.Deserializer,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // OrcSink - A copy activity ORC sink.
@@ -15160,6 +19941,20 @@ type OrcSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type OrcSink.
+func (o *OrcSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     o.Type,
+		WriteBatchSize:           o.WriteBatchSize,
+		WriteBatchTimeout:        o.WriteBatchTimeout,
+		SinkRetryCount:           o.SinkRetryCount,
+		SinkRetryWait:            o.SinkRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
+}
+
 // OrcSource - A copy activity ORC source.
 type OrcSource struct {
 	// REQUIRED; Copy source type.
@@ -15188,6 +19983,18 @@ type OrcSource struct {
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type OrcSource.
+func (o *OrcSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     o.Type,
+		SourceRetryCount:         o.SourceRetryCount,
+		SourceRetryWait:          o.SourceRetryWait,
+		MaxConcurrentConnections: o.MaxConcurrentConnections,
+		DisableMetricsCollection: o.DisableMetricsCollection,
+		AdditionalProperties:     o.AdditionalProperties,
+	}
+}
+
 // OrcWriteSettings - Orc write settings.
 type OrcWriteSettings struct {
 	// REQUIRED; The write setting type.
@@ -15203,6 +20010,14 @@ type OrcWriteSettings struct {
 	// Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with
 	// resultType integer).
 	MaxRowsPerFile interface{} `json:"maxRowsPerFile,omitempty"`
+}
+
+// GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type OrcWriteSettings.
+func (o *OrcWriteSettings) GetFormatWriteSettings() *FormatWriteSettings {
+	return &FormatWriteSettings{
+		Type:                 o.Type,
+		AdditionalProperties: o.AdditionalProperties,
+	}
 }
 
 // PackageStore - Package store for the SSIS integration runtime.
@@ -15257,6 +20072,21 @@ type ParquetDataset struct {
 	TypeProperties *ParquetDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type ParquetDataset.
+func (p *ParquetDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 p.Type,
+		Description:          p.Description,
+		Structure:            p.Structure,
+		Schema:               p.Schema,
+		LinkedServiceName:    p.LinkedServiceName,
+		Parameters:           p.Parameters,
+		Annotations:          p.Annotations,
+		Folder:               p.Folder,
+		AdditionalProperties: p.AdditionalProperties,
+	}
+}
+
 // ParquetDatasetTypeProperties - Parquet dataset properties.
 type ParquetDatasetTypeProperties struct {
 	// REQUIRED; The location of the parquet storage.
@@ -15279,6 +20109,16 @@ type ParquetFormat struct {
 
 	// Serializer. Type: string (or Expression with resultType string).
 	Serializer interface{} `json:"serializer,omitempty"`
+}
+
+// GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type ParquetFormat.
+func (p *ParquetFormat) GetDatasetStorageFormat() *DatasetStorageFormat {
+	return &DatasetStorageFormat{
+		Type:                 p.Type,
+		Serializer:           p.Serializer,
+		Deserializer:         p.Deserializer,
+		AdditionalProperties: p.AdditionalProperties,
+	}
 }
 
 // ParquetSink - A copy activity Parquet sink.
@@ -15314,6 +20154,20 @@ type ParquetSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type ParquetSink.
+func (p *ParquetSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     p.Type,
+		WriteBatchSize:           p.WriteBatchSize,
+		WriteBatchTimeout:        p.WriteBatchTimeout,
+		SinkRetryCount:           p.SinkRetryCount,
+		SinkRetryWait:            p.SinkRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
+}
+
 // ParquetSource - A copy activity Parquet source.
 type ParquetSource struct {
 	// REQUIRED; Copy source type.
@@ -15342,6 +20196,18 @@ type ParquetSource struct {
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type ParquetSource.
+func (p *ParquetSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     p.Type,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
+}
+
 // ParquetWriteSettings - Parquet write settings.
 type ParquetWriteSettings struct {
 	// REQUIRED; The write setting type.
@@ -15357,6 +20223,14 @@ type ParquetWriteSettings struct {
 	// Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or Expression with
 	// resultType integer).
 	MaxRowsPerFile interface{} `json:"maxRowsPerFile,omitempty"`
+}
+
+// GetFormatWriteSettings implements the FormatWriteSettingsClassification interface for type ParquetWriteSettings.
+func (p *ParquetWriteSettings) GetFormatWriteSettings() *FormatWriteSettings {
+	return &FormatWriteSettings{
+		Type:                 p.Type,
+		AdditionalProperties: p.AdditionalProperties,
+	}
 }
 
 // PaypalLinkedService - Paypal Service linked service.
@@ -15381,6 +20255,18 @@ type PaypalLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type PaypalLinkedService.
+func (p *PaypalLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 p.Type,
+		ConnectVia:           p.ConnectVia,
+		Description:          p.Description,
+		Parameters:           p.Parameters,
+		Annotations:          p.Annotations,
+		AdditionalProperties: p.AdditionalProperties,
+	}
 }
 
 // PaypalLinkedServiceTypeProperties - Paypal Service linked service properties.
@@ -15443,6 +20329,21 @@ type PaypalObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type PaypalObjectDataset.
+func (p *PaypalObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 p.Type,
+		Description:          p.Description,
+		Structure:            p.Structure,
+		Schema:               p.Schema,
+		LinkedServiceName:    p.LinkedServiceName,
+		Parameters:           p.Parameters,
+		Annotations:          p.Annotations,
+		Folder:               p.Folder,
+		AdditionalProperties: p.AdditionalProperties,
+	}
+}
+
 // PaypalSource - A copy activity Paypal Service source.
 type PaypalSource struct {
 	// REQUIRED; Copy source type.
@@ -15472,6 +20373,32 @@ type PaypalSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type PaypalSource.
+func (p *PaypalSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     p.Type,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type PaypalSource.
+func (p *PaypalSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             p.QueryTimeout,
+		AdditionalColumns:        p.AdditionalColumns,
+		Type:                     p.Type,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
 }
 
 // PhoenixDatasetTypeProperties - Phoenix Dataset Properties
@@ -15508,6 +20435,18 @@ type PhoenixLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type PhoenixLinkedService.
+func (p *PhoenixLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 p.Type,
+		ConnectVia:           p.ConnectVia,
+		Description:          p.Description,
+		Parameters:           p.Parameters,
+		Annotations:          p.Annotations,
+		AdditionalProperties: p.AdditionalProperties,
+	}
 }
 
 // PhoenixLinkedServiceTypeProperties - Phoenix server linked service properties.
@@ -15589,6 +20528,21 @@ type PhoenixObjectDataset struct {
 	TypeProperties *PhoenixDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type PhoenixObjectDataset.
+func (p *PhoenixObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 p.Type,
+		Description:          p.Description,
+		Structure:            p.Structure,
+		Schema:               p.Schema,
+		LinkedServiceName:    p.LinkedServiceName,
+		Parameters:           p.Parameters,
+		Annotations:          p.Annotations,
+		Folder:               p.Folder,
+		AdditionalProperties: p.AdditionalProperties,
+	}
+}
+
 // PhoenixSource - A copy activity Phoenix server source.
 type PhoenixSource struct {
 	// REQUIRED; Copy source type.
@@ -15618,6 +20572,32 @@ type PhoenixSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type PhoenixSource.
+func (p *PhoenixSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     p.Type,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type PhoenixSource.
+func (p *PhoenixSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             p.QueryTimeout,
+		AdditionalColumns:        p.AdditionalColumns,
+		Type:                     p.Type,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
 }
 
 // Pipeline - A data factory pipeline.
@@ -15883,6 +20863,18 @@ type PostgreSQLLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type PostgreSQLLinkedService.
+func (p *PostgreSQLLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 p.Type,
+		ConnectVia:           p.ConnectVia,
+		Description:          p.Description,
+		Parameters:           p.Parameters,
+		Annotations:          p.Annotations,
+		AdditionalProperties: p.AdditionalProperties,
+	}
+}
+
 // PostgreSQLLinkedServiceTypeProperties - PostgreSQL linked service properties.
 type PostgreSQLLinkedServiceTypeProperties struct {
 	// REQUIRED; The connection string.
@@ -15927,6 +20919,32 @@ type PostgreSQLSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type PostgreSQLSource.
+func (p *PostgreSQLSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     p.Type,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type PostgreSQLSource.
+func (p *PostgreSQLSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             p.QueryTimeout,
+		AdditionalColumns:        p.AdditionalColumns,
+		Type:                     p.Type,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
+}
+
 // PostgreSQLTableDataset - The PostgreSQL table dataset.
 type PostgreSQLTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -15961,6 +20979,21 @@ type PostgreSQLTableDataset struct {
 	TypeProperties *PostgreSQLTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type PostgreSQLTableDataset.
+func (p *PostgreSQLTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 p.Type,
+		Description:          p.Description,
+		Structure:            p.Structure,
+		Schema:               p.Schema,
+		LinkedServiceName:    p.LinkedServiceName,
+		Parameters:           p.Parameters,
+		Annotations:          p.Annotations,
+		Folder:               p.Folder,
+		AdditionalProperties: p.AdditionalProperties,
+	}
+}
+
 // PostgreSQLTableDatasetTypeProperties - PostgreSQL table dataset properties.
 type PostgreSQLTableDatasetTypeProperties struct {
 	// The PostgreSQL schema name. Type: string (or Expression with resultType string).
@@ -15989,6 +21022,9 @@ type PowerQuerySink struct {
 
 	// Linked service reference.
 	LinkedService *LinkedServiceReference `json:"linkedService,omitempty"`
+
+	// Rejected data linked service reference.
+	RejectedDataLinkedService *LinkedServiceReference `json:"rejectedDataLinkedService,omitempty"`
 
 	// Schema linked service reference.
 	SchemaLinkedService *LinkedServiceReference `json:"schemaLinkedService,omitempty"`
@@ -16078,6 +21114,18 @@ type PrestoLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type PrestoLinkedService.
+func (p *PrestoLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 p.Type,
+		ConnectVia:           p.ConnectVia,
+		Description:          p.Description,
+		Parameters:           p.Parameters,
+		Annotations:          p.Annotations,
+		AdditionalProperties: p.AdditionalProperties,
+	}
+}
+
 // PrestoLinkedServiceTypeProperties - Presto server linked service properties.
 type PrestoLinkedServiceTypeProperties struct {
 	// REQUIRED; The authentication mechanism used to connect to the Presto server.
@@ -16163,6 +21211,21 @@ type PrestoObjectDataset struct {
 	TypeProperties *PrestoDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type PrestoObjectDataset.
+func (p *PrestoObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 p.Type,
+		Description:          p.Description,
+		Structure:            p.Structure,
+		Schema:               p.Schema,
+		LinkedServiceName:    p.LinkedServiceName,
+		Parameters:           p.Parameters,
+		Annotations:          p.Annotations,
+		Folder:               p.Folder,
+		AdditionalProperties: p.AdditionalProperties,
+	}
+}
+
 // PrestoSource - A copy activity Presto server source.
 type PrestoSource struct {
 	// REQUIRED; Copy source type.
@@ -16194,10 +21257,42 @@ type PrestoSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type PrestoSource.
+func (p *PrestoSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     p.Type,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type PrestoSource.
+func (p *PrestoSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             p.QueryTimeout,
+		AdditionalColumns:        p.AdditionalColumns,
+		Type:                     p.Type,
+		SourceRetryCount:         p.SourceRetryCount,
+		SourceRetryWait:          p.SourceRetryWait,
+		MaxConcurrentConnections: p.MaxConcurrentConnections,
+		DisableMetricsCollection: p.DisableMetricsCollection,
+		AdditionalProperties:     p.AdditionalProperties,
+	}
+}
+
 // PrivateEndPointConnectionsClientListByFactoryOptions contains the optional parameters for the PrivateEndPointConnectionsClient.ListByFactory
 // method.
 type PrivateEndPointConnectionsClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PrivateEndpoint - Private endpoint which a connection belongs to.
+type PrivateEndpoint struct {
+	// The resource Id for private endpoint
+	ID *string `json:"id,omitempty"`
 }
 
 // PrivateEndpointConnectionClientCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.CreateOrUpdate
@@ -16251,6 +21346,9 @@ type PrivateEndpointConnectionResource struct {
 
 // PrivateLinkConnectionApprovalRequest - A request to approve or reject a private endpoint connection
 type PrivateLinkConnectionApprovalRequest struct {
+	// The resource of private endpoint.
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+
 	// The state of a private link connection
 	PrivateLinkServiceConnectionState *PrivateLinkConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
 }
@@ -16326,6 +21424,12 @@ type PrivateLinkResourcesWrapper struct {
 	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
+// PurviewConfiguration - Purview configuration.
+type PurviewConfiguration struct {
+	// Purview resource id.
+	PurviewResourceID *string `json:"purviewResourceId,omitempty"`
+}
+
 // QueryDataFlowDebugSessionsResponse - A list of active debug sessions.
 type QueryDataFlowDebugSessionsResponse struct {
 	// The link to the next page of results, if any remaining results exist.
@@ -16357,6 +21461,18 @@ type QuickBooksLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type QuickBooksLinkedService.
+func (q *QuickBooksLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 q.Type,
+		ConnectVia:           q.ConnectVia,
+		Description:          q.Description,
+		Parameters:           q.Parameters,
+		Annotations:          q.Annotations,
+		AdditionalProperties: q.AdditionalProperties,
+	}
 }
 
 // QuickBooksLinkedServiceTypeProperties - QuickBooks server linked service properties.
@@ -16425,6 +21541,21 @@ type QuickBooksObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type QuickBooksObjectDataset.
+func (q *QuickBooksObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 q.Type,
+		Description:          q.Description,
+		Structure:            q.Structure,
+		Schema:               q.Schema,
+		LinkedServiceName:    q.LinkedServiceName,
+		Parameters:           q.Parameters,
+		Annotations:          q.Annotations,
+		Folder:               q.Folder,
+		AdditionalProperties: q.AdditionalProperties,
+	}
+}
+
 // QuickBooksSource - A copy activity QuickBooks server source.
 type QuickBooksSource struct {
 	// REQUIRED; Copy source type.
@@ -16456,6 +21587,32 @@ type QuickBooksSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type QuickBooksSource.
+func (q *QuickBooksSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     q.Type,
+		SourceRetryCount:         q.SourceRetryCount,
+		SourceRetryWait:          q.SourceRetryWait,
+		MaxConcurrentConnections: q.MaxConcurrentConnections,
+		DisableMetricsCollection: q.DisableMetricsCollection,
+		AdditionalProperties:     q.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type QuickBooksSource.
+func (q *QuickBooksSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             q.QueryTimeout,
+		AdditionalColumns:        q.AdditionalColumns,
+		Type:                     q.Type,
+		SourceRetryCount:         q.SourceRetryCount,
+		SourceRetryWait:          q.SourceRetryWait,
+		MaxConcurrentConnections: q.MaxConcurrentConnections,
+		DisableMetricsCollection: q.DisableMetricsCollection,
+		AdditionalProperties:     q.AdditionalProperties,
+	}
+}
+
 // QuickbaseLinkedService - Linked service for Quickbase.
 type QuickbaseLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -16478,6 +21635,18 @@ type QuickbaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type QuickbaseLinkedService.
+func (q *QuickbaseLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 q.Type,
+		ConnectVia:           q.ConnectVia,
+		Description:          q.Description,
+		Parameters:           q.Parameters,
+		Annotations:          q.Annotations,
+		AdditionalProperties: q.AdditionalProperties,
+	}
 }
 
 // QuickbaseLinkedServiceTypeProperties - Quickbase linked service type properties.
@@ -16582,6 +21751,18 @@ type RelationalSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type RelationalSource.
+func (r *RelationalSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     r.Type,
+		SourceRetryCount:         r.SourceRetryCount,
+		SourceRetryWait:          r.SourceRetryWait,
+		MaxConcurrentConnections: r.MaxConcurrentConnections,
+		DisableMetricsCollection: r.DisableMetricsCollection,
+		AdditionalProperties:     r.AdditionalProperties,
+	}
+}
+
 // RelationalTableDataset - The relational table dataset.
 type RelationalTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -16614,6 +21795,21 @@ type RelationalTableDataset struct {
 
 	// Relational table dataset properties.
 	TypeProperties *RelationalTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type RelationalTableDataset.
+func (r *RelationalTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 r.Type,
+		Description:          r.Description,
+		Structure:            r.Structure,
+		Schema:               r.Schema,
+		LinkedServiceName:    r.LinkedServiceName,
+		Parameters:           r.Parameters,
+		Annotations:          r.Annotations,
+		Folder:               r.Folder,
+		AdditionalProperties: r.AdditionalProperties,
+	}
 }
 
 // RelationalTableDatasetTypeProperties - Relational table dataset properties.
@@ -16654,6 +21850,17 @@ type RerunTumblingWindowTrigger struct {
 
 	// READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
 	RuntimeState *TriggerRuntimeState `json:"runtimeState,omitempty" azure:"ro"`
+}
+
+// GetTrigger implements the TriggerClassification interface for type RerunTumblingWindowTrigger.
+func (r *RerunTumblingWindowTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		Type:                 r.Type,
+		Description:          r.Description,
+		RuntimeState:         r.RuntimeState,
+		Annotations:          r.Annotations,
+		AdditionalProperties: r.AdditionalProperties,
+	}
 }
 
 // RerunTumblingWindowTriggerTypeProperties - Rerun Trigger properties.
@@ -16714,6 +21921,18 @@ type ResponsysLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type ResponsysLinkedService.
+func (r *ResponsysLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 r.Type,
+		ConnectVia:           r.ConnectVia,
+		Description:          r.Description,
+		Parameters:           r.Parameters,
+		Annotations:          r.Annotations,
+		AdditionalProperties: r.AdditionalProperties,
+	}
 }
 
 // ResponsysLinkedServiceTypeProperties - Responsys linked service properties.
@@ -16779,6 +21998,21 @@ type ResponsysObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type ResponsysObjectDataset.
+func (r *ResponsysObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 r.Type,
+		Description:          r.Description,
+		Structure:            r.Structure,
+		Schema:               r.Schema,
+		LinkedServiceName:    r.LinkedServiceName,
+		Parameters:           r.Parameters,
+		Annotations:          r.Annotations,
+		Folder:               r.Folder,
+		AdditionalProperties: r.AdditionalProperties,
+	}
+}
+
 // ResponsysSource - A copy activity Responsys source.
 type ResponsysSource struct {
 	// REQUIRED; Copy source type.
@@ -16808,6 +22042,32 @@ type ResponsysSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type ResponsysSource.
+func (r *ResponsysSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     r.Type,
+		SourceRetryCount:         r.SourceRetryCount,
+		SourceRetryWait:          r.SourceRetryWait,
+		MaxConcurrentConnections: r.MaxConcurrentConnections,
+		DisableMetricsCollection: r.DisableMetricsCollection,
+		AdditionalProperties:     r.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type ResponsysSource.
+func (r *ResponsysSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             r.QueryTimeout,
+		AdditionalColumns:        r.AdditionalColumns,
+		Type:                     r.Type,
+		SourceRetryCount:         r.SourceRetryCount,
+		SourceRetryWait:          r.SourceRetryWait,
+		MaxConcurrentConnections: r.MaxConcurrentConnections,
+		DisableMetricsCollection: r.DisableMetricsCollection,
+		AdditionalProperties:     r.AdditionalProperties,
+	}
 }
 
 // RestResourceDataset - A Rest service dataset.
@@ -16842,6 +22102,21 @@ type RestResourceDataset struct {
 
 	// Properties specific to this dataset type.
 	TypeProperties *RestResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type RestResourceDataset.
+func (r *RestResourceDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 r.Type,
+		Description:          r.Description,
+		Structure:            r.Structure,
+		Schema:               r.Schema,
+		LinkedServiceName:    r.LinkedServiceName,
+		Parameters:           r.Parameters,
+		Annotations:          r.Annotations,
+		Folder:               r.Folder,
+		AdditionalProperties: r.AdditionalProperties,
+	}
 }
 
 // RestResourceDatasetTypeProperties - Properties specific to this dataset type.
@@ -16884,6 +22159,18 @@ type RestServiceLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type RestServiceLinkedService.
+func (r *RestServiceLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 r.Type,
+		ConnectVia:           r.ConnectVia,
+		Description:          r.Description,
+		Parameters:           r.Parameters,
+		Annotations:          r.Annotations,
+		AdditionalProperties: r.AdditionalProperties,
+	}
 }
 
 // RestServiceLinkedServiceTypeProperties - Rest Service linked service properties.
@@ -16979,6 +22266,20 @@ type RestSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type RestSink.
+func (r *RestSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     r.Type,
+		WriteBatchSize:           r.WriteBatchSize,
+		WriteBatchTimeout:        r.WriteBatchTimeout,
+		SinkRetryCount:           r.SinkRetryCount,
+		SinkRetryWait:            r.SinkRetryWait,
+		MaxConcurrentConnections: r.MaxConcurrentConnections,
+		DisableMetricsCollection: r.DisableMetricsCollection,
+		AdditionalProperties:     r.AdditionalProperties,
+	}
+}
+
 // RestSource - A copy activity Rest service source.
 type RestSource struct {
 	// REQUIRED; Copy source type.
@@ -17022,6 +22323,18 @@ type RestSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type RestSource.
+func (r *RestSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     r.Type,
+		SourceRetryCount:         r.SourceRetryCount,
+		SourceRetryWait:          r.SourceRetryWait,
+		MaxConcurrentConnections: r.MaxConcurrentConnections,
+		DisableMetricsCollection: r.DisableMetricsCollection,
+		AdditionalProperties:     r.AdditionalProperties,
+	}
 }
 
 // RetryPolicy - Execution policy for an activity.
@@ -17148,6 +22461,20 @@ type SQLDWSink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type SQLDWSink.
+func (s *SQLDWSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     s.Type,
+		WriteBatchSize:           s.WriteBatchSize,
+		WriteBatchTimeout:        s.WriteBatchTimeout,
+		SinkRetryCount:           s.SinkRetryCount,
+		SinkRetryWait:            s.SinkRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SQLDWSource - A copy activity SQL Data Warehouse source.
 type SQLDWSource struct {
 	// REQUIRED; Copy source type.
@@ -17192,6 +22519,32 @@ type SQLDWSource struct {
 	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}". Type: object
 	// (or Expression with resultType object), itemType: StoredProcedureParameter.
 	StoredProcedureParameters interface{} `json:"storedProcedureParameters,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type SQLDWSource.
+func (s *SQLDWSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SQLDWSource.
+func (s *SQLDWSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
 }
 
 // SQLDWUpsertSettings - Sql DW upsert option settings
@@ -17258,6 +22611,20 @@ type SQLMISink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type SQLMISink.
+func (s *SQLMISink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     s.Type,
+		WriteBatchSize:           s.WriteBatchSize,
+		WriteBatchTimeout:        s.WriteBatchTimeout,
+		SinkRetryCount:           s.SinkRetryCount,
+		SinkRetryWait:            s.SinkRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SQLMISource - A copy activity Azure SQL Managed Instance source.
 type SQLMISource struct {
 	// REQUIRED; Copy source type.
@@ -17306,6 +22673,32 @@ type SQLMISource struct {
 	StoredProcedureParameters map[string]*StoredProcedureParameter `json:"storedProcedureParameters,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SQLMISource.
+func (s *SQLMISource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SQLMISource.
+func (s *SQLMISource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SQLPartitionSettings - The settings that will be leveraged for Sql source partitioning.
 type SQLPartitionSettings struct {
 	// The name of the column in integer or datetime type that will be used for proceeding partitioning. If not specified, the
@@ -17346,6 +22739,18 @@ type SQLServerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SQLServerLinkedService.
+func (s *SQLServerLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SQLServerLinkedServiceTypeProperties - SQL Server linked service properties.
@@ -17422,6 +22827,20 @@ type SQLServerSink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type SQLServerSink.
+func (s *SQLServerSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     s.Type,
+		WriteBatchSize:           s.WriteBatchSize,
+		WriteBatchTimeout:        s.WriteBatchTimeout,
+		SinkRetryCount:           s.SinkRetryCount,
+		SinkRetryWait:            s.SinkRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SQLServerSource - A copy activity SQL server source.
 type SQLServerSource struct {
 	// REQUIRED; Copy source type.
@@ -17470,6 +22889,32 @@ type SQLServerSource struct {
 	StoredProcedureParameters map[string]*StoredProcedureParameter `json:"storedProcedureParameters,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SQLServerSource.
+func (s *SQLServerSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SQLServerSource.
+func (s *SQLServerSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SQLServerStoredProcedureActivity - SQL stored procedure activity type.
 type SQLServerStoredProcedureActivity struct {
 	// REQUIRED; Activity name.
@@ -17498,6 +22943,32 @@ type SQLServerStoredProcedureActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type SQLServerStoredProcedureActivity.
+func (s *SQLServerStoredProcedureActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 s.Name,
+		Type:                 s.Type,
+		Description:          s.Description,
+		DependsOn:            s.DependsOn,
+		UserProperties:       s.UserProperties,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type SQLServerStoredProcedureActivity.
+func (s *SQLServerStoredProcedureActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    s.LinkedServiceName,
+		Policy:               s.Policy,
+		Name:                 s.Name,
+		Type:                 s.Type,
+		Description:          s.Description,
+		DependsOn:            s.DependsOn,
+		UserProperties:       s.UserProperties,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SQLServerStoredProcedureActivityTypeProperties - SQL stored procedure activity properties.
@@ -17541,6 +23012,21 @@ type SQLServerTableDataset struct {
 
 	// On-premises SQL Server dataset properties.
 	TypeProperties *SQLServerTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type SQLServerTableDataset.
+func (s *SQLServerTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SQLServerTableDatasetTypeProperties - On-premises SQL Server dataset properties.
@@ -17610,6 +23096,20 @@ type SQLSink struct {
 	WriteBehavior interface{} `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type SQLSink.
+func (s *SQLSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     s.Type,
+		WriteBatchSize:           s.WriteBatchSize,
+		WriteBatchTimeout:        s.WriteBatchTimeout,
+		SinkRetryCount:           s.SinkRetryCount,
+		SinkRetryWait:            s.SinkRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SQLSource - A copy activity SQL source.
 type SQLSource struct {
 	// REQUIRED; Copy source type.
@@ -17658,6 +23158,32 @@ type SQLSource struct {
 
 	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
 	StoredProcedureParameters map[string]*StoredProcedureParameter `json:"storedProcedureParameters,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type SQLSource.
+func (s *SQLSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SQLSource.
+func (s *SQLSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
 }
 
 // SQLUpsertSettings - Sql upsert option settings
@@ -17811,6 +23337,18 @@ type SalesforceLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type SalesforceLinkedService.
+func (s *SalesforceLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SalesforceLinkedServiceTypeProperties - Salesforce linked service properties.
 type SalesforceLinkedServiceTypeProperties struct {
 	// The Salesforce API version used in ADF. Type: string (or Expression with resultType string).
@@ -17857,6 +23395,18 @@ type SalesforceMarketingCloudLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SalesforceMarketingCloudLinkedService.
+func (s *SalesforceMarketingCloudLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SalesforceMarketingCloudLinkedServiceTypeProperties - Salesforce Marketing Cloud linked service properties.
@@ -17924,6 +23474,21 @@ type SalesforceMarketingCloudObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SalesforceMarketingCloudObjectDataset.
+func (s *SalesforceMarketingCloudObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SalesforceMarketingCloudSource - A copy activity Salesforce Marketing Cloud source.
 type SalesforceMarketingCloudSource struct {
 	// REQUIRED; Copy source type.
@@ -17953,6 +23518,32 @@ type SalesforceMarketingCloudSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type SalesforceMarketingCloudSource.
+func (s *SalesforceMarketingCloudSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SalesforceMarketingCloudSource.
+func (s *SalesforceMarketingCloudSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
 }
 
 // SalesforceObjectDataset - The Salesforce object dataset.
@@ -17989,6 +23580,21 @@ type SalesforceObjectDataset struct {
 	TypeProperties *SalesforceObjectDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SalesforceObjectDataset.
+func (s *SalesforceObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SalesforceObjectDatasetTypeProperties - Salesforce object dataset properties.
 type SalesforceObjectDatasetTypeProperties struct {
 	// The Salesforce object API name. Type: string (or Expression with resultType string).
@@ -18017,6 +23623,18 @@ type SalesforceServiceCloudLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SalesforceServiceCloudLinkedService.
+func (s *SalesforceServiceCloudLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SalesforceServiceCloudLinkedServiceTypeProperties - Salesforce Service Cloud linked service properties.
@@ -18080,6 +23698,21 @@ type SalesforceServiceCloudObjectDataset struct {
 	TypeProperties *SalesforceServiceCloudObjectDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SalesforceServiceCloudObjectDataset.
+func (s *SalesforceServiceCloudObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SalesforceServiceCloudObjectDatasetTypeProperties - Salesforce Service Cloud object dataset properties.
 type SalesforceServiceCloudObjectDatasetTypeProperties struct {
 	// The Salesforce Service Cloud object API name. Type: string (or Expression with resultType string).
@@ -18128,6 +23761,20 @@ type SalesforceServiceCloudSink struct {
 	WriteBehavior *SalesforceSinkWriteBehavior `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type SalesforceServiceCloudSink.
+func (s *SalesforceServiceCloudSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     s.Type,
+		WriteBatchSize:           s.WriteBatchSize,
+		WriteBatchTimeout:        s.WriteBatchTimeout,
+		SinkRetryCount:           s.SinkRetryCount,
+		SinkRetryWait:            s.SinkRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SalesforceServiceCloudSource - A copy activity Salesforce Service Cloud source.
 type SalesforceServiceCloudSource struct {
 	// REQUIRED; Copy source type.
@@ -18157,6 +23804,18 @@ type SalesforceServiceCloudSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type SalesforceServiceCloudSource.
+func (s *SalesforceServiceCloudSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
 }
 
 // SalesforceSink - A copy activity Salesforce sink.
@@ -18201,6 +23860,20 @@ type SalesforceSink struct {
 	WriteBehavior *SalesforceSinkWriteBehavior `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type SalesforceSink.
+func (s *SalesforceSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     s.Type,
+		WriteBatchSize:           s.WriteBatchSize,
+		WriteBatchTimeout:        s.WriteBatchTimeout,
+		SinkRetryCount:           s.SinkRetryCount,
+		SinkRetryWait:            s.SinkRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SalesforceSource - A copy activity Salesforce source.
 type SalesforceSource struct {
 	// REQUIRED; Copy source type.
@@ -18235,6 +23908,32 @@ type SalesforceSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SalesforceSource.
+func (s *SalesforceSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SalesforceSource.
+func (s *SalesforceSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SapBWLinkedService - SAP Business Warehouse Linked Service.
 type SapBWLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -18257,6 +23956,18 @@ type SapBWLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SapBWLinkedService.
+func (s *SapBWLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SapBWLinkedServiceTypeProperties - Properties specific to this linked service type.
@@ -18314,6 +24025,21 @@ type SapBwCubeDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SapBwCubeDataset.
+func (s *SapBwCubeDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SapBwSource - A copy activity source for SapBW server via MDX.
 type SapBwSource struct {
 	// REQUIRED; Copy source type.
@@ -18345,6 +24071,32 @@ type SapBwSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SapBwSource.
+func (s *SapBwSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SapBwSource.
+func (s *SapBwSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SapCloudForCustomerLinkedService - Linked service for SAP Cloud for Customer.
 type SapCloudForCustomerLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -18367,6 +24119,18 @@ type SapCloudForCustomerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SapCloudForCustomerLinkedService.
+func (s *SapCloudForCustomerLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SapCloudForCustomerLinkedServiceTypeProperties - SAP Cloud for Customer linked service properties.
@@ -18421,6 +24185,21 @@ type SapCloudForCustomerResourceDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SapCloudForCustomerResourceDataset.
+func (s *SapCloudForCustomerResourceDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SapCloudForCustomerResourceDatasetTypeProperties - Sap Cloud For Customer OData resource dataset properties.
 type SapCloudForCustomerResourceDatasetTypeProperties struct {
 	// REQUIRED; The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with resultType string).
@@ -18462,6 +24241,20 @@ type SapCloudForCustomerSink struct {
 	WriteBehavior *SapCloudForCustomerSinkWriteBehavior `json:"writeBehavior,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type SapCloudForCustomerSink.
+func (s *SapCloudForCustomerSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     s.Type,
+		WriteBatchSize:           s.WriteBatchSize,
+		WriteBatchTimeout:        s.WriteBatchTimeout,
+		SinkRetryCount:           s.SinkRetryCount,
+		SinkRetryWait:            s.SinkRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SapCloudForCustomerSource - A copy activity source for SAP Cloud for Customer source.
 type SapCloudForCustomerSource struct {
 	// REQUIRED; Copy source type.
@@ -18498,6 +24291,32 @@ type SapCloudForCustomerSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SapCloudForCustomerSource.
+func (s *SapCloudForCustomerSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SapCloudForCustomerSource.
+func (s *SapCloudForCustomerSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SapEccLinkedService - Linked service for SAP ERP Central Component(SAP ECC).
 type SapEccLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -18520,6 +24339,18 @@ type SapEccLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SapEccLinkedService.
+func (s *SapEccLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SapEccLinkedServiceTypeProperties - SAP ECC linked service properties.
@@ -18574,6 +24405,21 @@ type SapEccResourceDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SapEccResourceDataset.
+func (s *SapEccResourceDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SapEccResourceDatasetTypeProperties - Sap ECC OData resource dataset properties.
 type SapEccResourceDatasetTypeProperties struct {
 	// REQUIRED; The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
@@ -18616,6 +24462,32 @@ type SapEccSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SapEccSource.
+func (s *SapEccSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SapEccSource.
+func (s *SapEccSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SapHanaLinkedService - SAP HANA Linked Service.
 type SapHanaLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -18638,6 +24510,18 @@ type SapHanaLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SapHanaLinkedService.
+func (s *SapHanaLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SapHanaLinkedServiceProperties - Properties specific to this linked service type.
@@ -18710,6 +24594,32 @@ type SapHanaSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SapHanaSource.
+func (s *SapHanaSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SapHanaSource.
+func (s *SapHanaSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SapHanaTableDataset - SAP HANA Table properties.
 type SapHanaTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -18744,6 +24654,21 @@ type SapHanaTableDataset struct {
 	TypeProperties *SapHanaTableDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SapHanaTableDataset.
+func (s *SapHanaTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SapHanaTableDatasetTypeProperties - SAP HANA Table properties.
 type SapHanaTableDatasetTypeProperties struct {
 	// The schema name of SAP HANA. Type: string (or Expression with resultType string).
@@ -18775,6 +24700,18 @@ type SapOpenHubLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SapOpenHubLinkedService.
+func (s *SapOpenHubLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SapOpenHubLinkedServiceTypeProperties - Properties specific to SAP Business Warehouse Open Hub Destination linked service
@@ -18865,6 +24802,32 @@ type SapOpenHubSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SapOpenHubSource.
+func (s *SapOpenHubSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SapOpenHubSource.
+func (s *SapOpenHubSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SapOpenHubTableDataset - Sap Business Warehouse Open Hub Destination Table properties.
 type SapOpenHubTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -18897,6 +24860,21 @@ type SapOpenHubTableDataset struct {
 
 	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
 	Structure interface{} `json:"structure,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type SapOpenHubTableDataset.
+func (s *SapOpenHubTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SapOpenHubTableDatasetTypeProperties - Sap Business Warehouse Open Hub Destination Table properties.
@@ -18937,6 +24915,18 @@ type SapTableLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SapTableLinkedService.
+func (s *SapTableLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SapTableLinkedServiceTypeProperties - Properties specific to this linked service type.
@@ -19049,6 +25039,21 @@ type SapTableResourceDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SapTableResourceDataset.
+func (s *SapTableResourceDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SapTableResourceDatasetTypeProperties - SAP Table Resource properties.
 type SapTableResourceDatasetTypeProperties struct {
 	// REQUIRED; The name of the SAP Table. Type: string (or Expression with resultType string).
@@ -19117,6 +25122,32 @@ type SapTableSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SapTableSource.
+func (s *SapTableSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SapTableSource.
+func (s *SapTableSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // ScheduleTrigger - Trigger that creates pipeline runs periodically, on schedule.
 type ScheduleTrigger struct {
 	// REQUIRED; Trigger type.
@@ -19139,6 +25170,29 @@ type ScheduleTrigger struct {
 
 	// READ-ONLY; Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
 	RuntimeState *TriggerRuntimeState `json:"runtimeState,omitempty" azure:"ro"`
+}
+
+// GetMultiplePipelineTrigger implements the MultiplePipelineTriggerClassification interface for type ScheduleTrigger.
+func (s *ScheduleTrigger) GetMultiplePipelineTrigger() *MultiplePipelineTrigger {
+	return &MultiplePipelineTrigger{
+		Pipelines:            s.Pipelines,
+		Type:                 s.Type,
+		Description:          s.Description,
+		RuntimeState:         s.RuntimeState,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
+// GetTrigger implements the TriggerClassification interface for type ScheduleTrigger.
+func (s *ScheduleTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		Type:                 s.Type,
+		Description:          s.Description,
+		RuntimeState:         s.RuntimeState,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // ScheduleTriggerRecurrence - The workflow trigger recurrence.
@@ -19216,6 +25270,32 @@ type ScriptActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type ScriptActivity.
+func (s *ScriptActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 s.Name,
+		Type:                 s.Type,
+		Description:          s.Description,
+		DependsOn:            s.DependsOn,
+		UserProperties:       s.UserProperties,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type ScriptActivity.
+func (s *ScriptActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    s.LinkedServiceName,
+		Policy:               s.Policy,
+		Name:                 s.Name,
+		Type:                 s.Type,
+		Description:          s.Description,
+		DependsOn:            s.DependsOn,
+		UserProperties:       s.UserProperties,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // ScriptActivityParameter - Parameters of a script block.
 type ScriptActivityParameter struct {
 	// The direction of the parameter.
@@ -19279,6 +25359,9 @@ type SecretBase struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// GetSecretBase implements the SecretBaseClassification interface for type SecretBase.
+func (s *SecretBase) GetSecretBase() *SecretBase { return s }
+
 // SecureString - Azure Data Factory secure string definition. The string value will be masked with asterisks '*' during Get
 // or List API calls.
 type SecureString struct {
@@ -19287,6 +25370,13 @@ type SecureString struct {
 
 	// REQUIRED; Value of secure string.
 	Value *string `json:"value,omitempty"`
+}
+
+// GetSecretBase implements the SecretBaseClassification interface for type SecureString.
+func (s *SecureString) GetSecretBase() *SecretBase {
+	return &SecretBase{
+		Type: s.Type,
+	}
 }
 
 // SelfDependencyTumblingWindowTriggerReference - Self referenced tumbling window trigger dependency.
@@ -19299,6 +25389,13 @@ type SelfDependencyTumblingWindowTriggerReference struct {
 
 	// The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
 	Size *string `json:"size,omitempty"`
+}
+
+// GetDependencyReference implements the DependencyReferenceClassification interface for type SelfDependencyTumblingWindowTriggerReference.
+func (s *SelfDependencyTumblingWindowTriggerReference) GetDependencyReference() *DependencyReference {
+	return &DependencyReference{
+		Type: s.Type,
+	}
 }
 
 // SelfHostedIntegrationRuntime - Self-hosted integration runtime.
@@ -19315,6 +25412,15 @@ type SelfHostedIntegrationRuntime struct {
 	// When this property is not null, means this is a linked integration runtime. The property is used to access original integration
 	// runtime.
 	TypeProperties *SelfHostedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetIntegrationRuntime implements the IntegrationRuntimeClassification interface for type SelfHostedIntegrationRuntime.
+func (s *SelfHostedIntegrationRuntime) GetIntegrationRuntime() *IntegrationRuntime {
+	return &IntegrationRuntime{
+		Type:                 s.Type,
+		Description:          s.Description,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SelfHostedIntegrationRuntimeNode - Properties of Self-hosted integration runtime node.
@@ -19393,6 +25499,16 @@ type SelfHostedIntegrationRuntimeStatus struct {
 
 	// READ-ONLY; The state of integration runtime.
 	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
+}
+
+// GetIntegrationRuntimeStatus implements the IntegrationRuntimeStatusClassification interface for type SelfHostedIntegrationRuntimeStatus.
+func (s *SelfHostedIntegrationRuntimeStatus) GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus {
+	return &IntegrationRuntimeStatus{
+		Type:                 s.Type,
+		DataFactoryName:      s.DataFactoryName,
+		State:                s.State,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SelfHostedIntegrationRuntimeStatusTypeProperties - Self-hosted integration runtime status type properties.
@@ -19477,6 +25593,18 @@ type ServiceNowLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type ServiceNowLinkedService.
+func (s *ServiceNowLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // ServiceNowLinkedServiceTypeProperties - ServiceNow server linked service properties.
 type ServiceNowLinkedServiceTypeProperties struct {
 	// REQUIRED; The authentication type to use.
@@ -19546,6 +25674,21 @@ type ServiceNowObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type ServiceNowObjectDataset.
+func (s *ServiceNowObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // ServiceNowSource - A copy activity ServiceNow server source.
 type ServiceNowSource struct {
 	// REQUIRED; Copy source type.
@@ -19577,6 +25720,32 @@ type ServiceNowSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type ServiceNowSource.
+func (s *ServiceNowSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type ServiceNowSource.
+func (s *ServiceNowSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // ServicePrincipalCredential - Service principal credential.
 type ServicePrincipalCredential struct {
 	// REQUIRED; Type of credential.
@@ -19593,6 +25762,16 @@ type ServicePrincipalCredential struct {
 
 	// Credential description.
 	Description *string `json:"description,omitempty"`
+}
+
+// GetCredential implements the CredentialClassification interface for type ServicePrincipalCredential.
+func (s *ServicePrincipalCredential) GetCredential() *Credential {
+	return &Credential{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // ServicePrincipalCredentialTypeProperties - Service Principal credential type properties.
@@ -19631,6 +25810,30 @@ type SetVariableActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type SetVariableActivity.
+func (s *SetVariableActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 s.Name,
+		Type:                 s.Type,
+		Description:          s.Description,
+		DependsOn:            s.DependsOn,
+		UserProperties:       s.UserProperties,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type SetVariableActivity.
+func (s *SetVariableActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 s.Name,
+		Type:                 s.Type,
+		Description:          s.Description,
+		DependsOn:            s.DependsOn,
+		UserProperties:       s.UserProperties,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SetVariableActivityTypeProperties - SetVariable activity properties.
 type SetVariableActivityTypeProperties struct {
 	// Value to be set. Could be a static value or Expression
@@ -19653,6 +25856,16 @@ type SftpLocation struct {
 
 	// Specify the folder path of dataset. Type: string (or Expression with resultType string)
 	FolderPath interface{} `json:"folderPath,omitempty"`
+}
+
+// GetDatasetLocation implements the DatasetLocationClassification interface for type SftpLocation.
+func (s *SftpLocation) GetDatasetLocation() *DatasetLocation {
+	return &DatasetLocation{
+		Type:                 s.Type,
+		FolderPath:           s.FolderPath,
+		FileName:             s.FileName,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SftpReadSettings - Sftp read settings.
@@ -19703,6 +25916,16 @@ type SftpReadSettings struct {
 	WildcardFolderPath interface{} `json:"wildcardFolderPath,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type SftpReadSettings.
+func (s *SftpReadSettings) GetStoreReadSettings() *StoreReadSettings {
+	return &StoreReadSettings{
+		Type:                     s.Type,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SftpServerLinkedService - A linked service for an SSH File Transfer Protocol (SFTP) server.
 type SftpServerLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -19725,6 +25948,18 @@ type SftpServerLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SftpServerLinkedService.
+func (s *SftpServerLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SftpServerLinkedServiceTypeProperties - Properties specific to this linked service type.
@@ -19796,6 +26031,17 @@ type SftpWriteSettings struct {
 	UseTempFileRename interface{} `json:"useTempFileRename,omitempty"`
 }
 
+// GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type SftpWriteSettings.
+func (s *SftpWriteSettings) GetStoreWriteSettings() *StoreWriteSettings {
+	return &StoreWriteSettings{
+		Type:                     s.Type,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		CopyBehavior:             s.CopyBehavior,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SharePointOnlineListDatasetTypeProperties - Sharepoint online list dataset properties.
 type SharePointOnlineListDatasetTypeProperties struct {
 	// The name of the SharePoint Online list. Type: string (or Expression with resultType string).
@@ -19824,6 +26070,18 @@ type SharePointOnlineListLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SharePointOnlineListLinkedService.
+func (s *SharePointOnlineListLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SharePointOnlineListLinkedServiceTypeProperties - SharePoint Online List linked service properties.
@@ -19884,6 +26142,21 @@ type SharePointOnlineListResourceDataset struct {
 	TypeProperties *SharePointOnlineListDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SharePointOnlineListResourceDataset.
+func (s *SharePointOnlineListResourceDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SharePointOnlineListSource - A copy activity source for sharePoint online list source.
 type SharePointOnlineListSource struct {
 	// REQUIRED; Copy source type.
@@ -19914,6 +26187,18 @@ type SharePointOnlineListSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SharePointOnlineListSource.
+func (s *SharePointOnlineListSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // ShopifyLinkedService - Shopify Service linked service.
 type ShopifyLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -19936,6 +26221,18 @@ type ShopifyLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type ShopifyLinkedService.
+func (s *ShopifyLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // ShopifyLinkedServiceTypeProperties - Shopify Service linked service properties.
@@ -19995,6 +26292,21 @@ type ShopifyObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type ShopifyObjectDataset.
+func (s *ShopifyObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // ShopifySource - A copy activity Shopify Service source.
 type ShopifySource struct {
 	// REQUIRED; Copy source type.
@@ -20024,6 +26336,32 @@ type ShopifySource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type ShopifySource.
+func (s *ShopifySource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type ShopifySource.
+func (s *ShopifySource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
 }
 
 // SkipErrorFile - Skip error file.
@@ -20058,6 +26396,18 @@ type SmartsheetLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SmartsheetLinkedService.
+func (s *SmartsheetLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SmartsheetLinkedServiceTypeProperties - Smartsheet linked service type properties.
@@ -20104,6 +26454,21 @@ type SnowflakeDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SnowflakeDataset.
+func (s *SnowflakeDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SnowflakeDatasetTypeProperties - Snowflake dataset properties.
 type SnowflakeDatasetTypeProperties struct {
 	// The schema name of the Snowflake database. Type: string (or Expression with resultType string).
@@ -20132,6 +26497,14 @@ type SnowflakeExportCopyCommand struct {
 	AdditionalProperties map[string]interface{}
 }
 
+// GetExportSettings implements the ExportSettingsClassification interface for type SnowflakeExportCopyCommand.
+func (s *SnowflakeExportCopyCommand) GetExportSettings() *ExportSettings {
+	return &ExportSettings{
+		Type:                 s.Type,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SnowflakeImportCopyCommand - Snowflake import command settings.
 type SnowflakeImportCopyCommand struct {
 	// REQUIRED; The import setting type.
@@ -20149,6 +26522,14 @@ type SnowflakeImportCopyCommand struct {
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]interface{}
+}
+
+// GetImportSettings implements the ImportSettingsClassification interface for type SnowflakeImportCopyCommand.
+func (s *SnowflakeImportCopyCommand) GetImportSettings() *ImportSettings {
+	return &ImportSettings{
+		Type:                 s.Type,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SnowflakeLinkedService - Snowflake linked service.
@@ -20173,6 +26554,18 @@ type SnowflakeLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SnowflakeLinkedService.
+func (s *SnowflakeLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SnowflakeLinkedServiceTypeProperties - Snowflake linked service properties.
@@ -20221,6 +26614,20 @@ type SnowflakeSink struct {
 	WriteBatchTimeout interface{} `json:"writeBatchTimeout,omitempty"`
 }
 
+// GetCopySink implements the CopySinkClassification interface for type SnowflakeSink.
+func (s *SnowflakeSink) GetCopySink() *CopySink {
+	return &CopySink{
+		Type:                     s.Type,
+		WriteBatchSize:           s.WriteBatchSize,
+		WriteBatchTimeout:        s.WriteBatchTimeout,
+		SinkRetryCount:           s.SinkRetryCount,
+		SinkRetryWait:            s.SinkRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SnowflakeSource - A copy activity snowflake source.
 type SnowflakeSource struct {
 	// REQUIRED; Copy source type.
@@ -20246,6 +26653,18 @@ type SnowflakeSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type SnowflakeSource.
+func (s *SnowflakeSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
 }
 
 // SparkDatasetTypeProperties - Spark Properties
@@ -20282,6 +26701,18 @@ type SparkLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SparkLinkedService.
+func (s *SparkLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SparkLinkedServiceTypeProperties - Spark Server linked service properties.
@@ -20368,6 +26799,21 @@ type SparkObjectDataset struct {
 	TypeProperties *SparkDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SparkObjectDataset.
+func (s *SparkObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SparkSource - A copy activity Spark Server source.
 type SparkSource struct {
 	// REQUIRED; Copy source type.
@@ -20399,6 +26845,32 @@ type SparkSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SparkSource.
+func (s *SparkSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SparkSource.
+func (s *SparkSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SquareLinkedService - Square Service linked service.
 type SquareLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -20421,6 +26893,18 @@ type SquareLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SquareLinkedService.
+func (s *SquareLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SquareLinkedServiceTypeProperties - Square Service linked service properties.
@@ -20489,6 +26973,21 @@ type SquareObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type SquareObjectDataset.
+func (s *SquareObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SquareSource - A copy activity Square Service source.
 type SquareSource struct {
 	// REQUIRED; Copy source type.
@@ -20520,6 +27019,32 @@ type SquareSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SquareSource.
+func (s *SquareSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SquareSource.
+func (s *SquareSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SsisEnvironment - Ssis environment.
 type SsisEnvironment struct {
 	// REQUIRED; Type of metadata.
@@ -20539,6 +27064,16 @@ type SsisEnvironment struct {
 
 	// Variable in environment
 	Variables []*SsisVariable `json:"variables,omitempty"`
+}
+
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisEnvironment.
+func (s *SsisEnvironment) GetSsisObjectMetadata() *SsisObjectMetadata {
+	return &SsisObjectMetadata{
+		Type:        s.Type,
+		ID:          s.ID,
+		Name:        s.Name,
+		Description: s.Description,
+	}
 }
 
 // SsisEnvironmentReference - Ssis environment reference.
@@ -20571,6 +27106,16 @@ type SsisFolder struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisFolder.
+func (s *SsisFolder) GetSsisObjectMetadata() *SsisObjectMetadata {
+	return &SsisObjectMetadata{
+		Type:        s.Type,
+		ID:          s.ID,
+		Name:        s.Name,
+		Description: s.Description,
+	}
+}
+
 // SsisObjectMetadataClassification provides polymorphic access to related types.
 // Call the interface's GetSsisObjectMetadata() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -20594,6 +27139,9 @@ type SsisObjectMetadata struct {
 	// Metadata name.
 	Name *string `json:"name,omitempty"`
 }
+
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisObjectMetadata.
+func (s *SsisObjectMetadata) GetSsisObjectMetadata() *SsisObjectMetadata { return s }
 
 // SsisObjectMetadataListResponse - A list of SSIS object metadata.
 type SsisObjectMetadataListResponse struct {
@@ -20644,6 +27192,16 @@ type SsisPackage struct {
 
 	// Project version which contains package.
 	ProjectVersion *int64 `json:"projectVersion,omitempty"`
+}
+
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisPackage.
+func (s *SsisPackage) GetSsisObjectMetadata() *SsisObjectMetadata {
+	return &SsisObjectMetadata{
+		Type:        s.Type,
+		ID:          s.ID,
+		Name:        s.Name,
+		Description: s.Description,
+	}
 }
 
 // SsisParameter - Ssis parameter.
@@ -20712,6 +27270,16 @@ type SsisProject struct {
 	Version *int64 `json:"version,omitempty"`
 }
 
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisProject.
+func (s *SsisProject) GetSsisObjectMetadata() *SsisObjectMetadata {
+	return &SsisObjectMetadata{
+		Type:        s.Type,
+		ID:          s.ID,
+		Name:        s.Name,
+		Description: s.Description,
+	}
+}
+
 // SsisVariable - Ssis variable.
 type SsisVariable struct {
 	// Variable type.
@@ -20778,6 +27346,9 @@ type StoreReadSettings struct {
 	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
 }
 
+// GetStoreReadSettings implements the StoreReadSettingsClassification interface for type StoreReadSettings.
+func (s *StoreReadSettings) GetStoreReadSettings() *StoreReadSettings { return s }
+
 // StoreWriteSettingsClassification provides polymorphic access to related types.
 // Call the interface's GetStoreWriteSettings() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -20805,6 +27376,9 @@ type StoreWriteSettings struct {
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
 }
+
+// GetStoreWriteSettings implements the StoreWriteSettingsClassification interface for type StoreWriteSettings.
+func (s *StoreWriteSettings) GetStoreWriteSettings() *StoreWriteSettings { return s }
 
 // StoredProcedureParameter - SQL stored procedure parameter.
 type StoredProcedureParameter struct {
@@ -20861,6 +27435,30 @@ type SwitchActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type SwitchActivity.
+func (s *SwitchActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 s.Name,
+		Type:                 s.Type,
+		Description:          s.Description,
+		DependsOn:            s.DependsOn,
+		UserProperties:       s.UserProperties,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type SwitchActivity.
+func (s *SwitchActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 s.Name,
+		Type:                 s.Type,
+		Description:          s.Description,
+		DependsOn:            s.DependsOn,
+		UserProperties:       s.UserProperties,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
 // SwitchActivityTypeProperties - Switch activity properties.
 type SwitchActivityTypeProperties struct {
 	// REQUIRED; An expression that would evaluate to a string or integer. This is used to determine the block of activities in
@@ -20907,6 +27505,18 @@ type SybaseLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SybaseLinkedService.
+func (s *SybaseLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SybaseLinkedServiceTypeProperties - Sybase linked service properties.
@@ -20965,6 +27575,32 @@ type SybaseSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type SybaseSource.
+func (s *SybaseSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SybaseSource.
+func (s *SybaseSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
 // SybaseTableDataset - The Sybase table dataset.
 type SybaseTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -20997,6 +27633,21 @@ type SybaseTableDataset struct {
 
 	// Sybase table dataset properties.
 	TypeProperties *SybaseTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type SybaseTableDataset.
+func (s *SybaseTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SybaseTableDatasetTypeProperties - Sybase table dataset properties.
@@ -21051,6 +27702,21 @@ type TabularSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type TabularSource.
+func (t *TabularSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     t.Type,
+		SourceRetryCount:         t.SourceRetryCount,
+		SourceRetryWait:          t.SourceRetryWait,
+		MaxConcurrentConnections: t.MaxConcurrentConnections,
+		DisableMetricsCollection: t.DisableMetricsCollection,
+		AdditionalProperties:     t.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type TabularSource.
+func (t *TabularSource) GetTabularSource() *TabularSource { return t }
+
 // TabularTranslator - A copy activity tabular translator.
 type TabularTranslator struct {
 	// REQUIRED; Copy translator type.
@@ -21090,6 +27756,14 @@ type TabularTranslator struct {
 	TypeConversionSettings *TypeConversionSettings `json:"typeConversionSettings,omitempty"`
 }
 
+// GetCopyTranslator implements the CopyTranslatorClassification interface for type TabularTranslator.
+func (t *TabularTranslator) GetCopyTranslator() *CopyTranslator {
+	return &CopyTranslator{
+		Type:                 t.Type,
+		AdditionalProperties: t.AdditionalProperties,
+	}
+}
+
 // TarGZipReadSettings - The TarGZip compression read settings.
 type TarGZipReadSettings struct {
 	// REQUIRED; The Compression setting type.
@@ -21102,6 +27776,14 @@ type TarGZipReadSettings struct {
 	PreserveCompressionFileNameAsFolder interface{} `json:"preserveCompressionFileNameAsFolder,omitempty"`
 }
 
+// GetCompressionReadSettings implements the CompressionReadSettingsClassification interface for type TarGZipReadSettings.
+func (t *TarGZipReadSettings) GetCompressionReadSettings() *CompressionReadSettings {
+	return &CompressionReadSettings{
+		Type:                 t.Type,
+		AdditionalProperties: t.AdditionalProperties,
+	}
+}
+
 // TarReadSettings - The Tar compression read settings.
 type TarReadSettings struct {
 	// REQUIRED; The Compression setting type.
@@ -21112,6 +27794,14 @@ type TarReadSettings struct {
 
 	// Preserve the compression file name as folder path. Type: boolean (or Expression with resultType boolean).
 	PreserveCompressionFileNameAsFolder interface{} `json:"preserveCompressionFileNameAsFolder,omitempty"`
+}
+
+// GetCompressionReadSettings implements the CompressionReadSettingsClassification interface for type TarReadSettings.
+func (t *TarReadSettings) GetCompressionReadSettings() *CompressionReadSettings {
+	return &CompressionReadSettings{
+		Type:                 t.Type,
+		AdditionalProperties: t.AdditionalProperties,
+	}
 }
 
 // TeamDeskLinkedService - Linked service for TeamDesk.
@@ -21136,6 +27826,18 @@ type TeamDeskLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type TeamDeskLinkedService.
+func (t *TeamDeskLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 t.Type,
+		ConnectVia:           t.ConnectVia,
+		Description:          t.Description,
+		Parameters:           t.Parameters,
+		Annotations:          t.Annotations,
+		AdditionalProperties: t.AdditionalProperties,
+	}
 }
 
 // TeamDeskLinkedServiceTypeProperties - TeamDesk linked service type properties.
@@ -21182,6 +27884,18 @@ type TeradataLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type TeradataLinkedService.
+func (t *TeradataLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 t.Type,
+		ConnectVia:           t.ConnectVia,
+		Description:          t.Description,
+		Parameters:           t.Parameters,
+		Annotations:          t.Annotations,
+		AdditionalProperties: t.AdditionalProperties,
+	}
 }
 
 // TeradataLinkedServiceTypeProperties - Teradata linked service properties.
@@ -21258,6 +27972,32 @@ type TeradataSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type TeradataSource.
+func (t *TeradataSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     t.Type,
+		SourceRetryCount:         t.SourceRetryCount,
+		SourceRetryWait:          t.SourceRetryWait,
+		MaxConcurrentConnections: t.MaxConcurrentConnections,
+		DisableMetricsCollection: t.DisableMetricsCollection,
+		AdditionalProperties:     t.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type TeradataSource.
+func (t *TeradataSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             t.QueryTimeout,
+		AdditionalColumns:        t.AdditionalColumns,
+		Type:                     t.Type,
+		SourceRetryCount:         t.SourceRetryCount,
+		SourceRetryWait:          t.SourceRetryWait,
+		MaxConcurrentConnections: t.MaxConcurrentConnections,
+		DisableMetricsCollection: t.DisableMetricsCollection,
+		AdditionalProperties:     t.AdditionalProperties,
+	}
+}
+
 // TeradataTableDataset - The Teradata database dataset.
 type TeradataTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -21290,6 +28030,21 @@ type TeradataTableDataset struct {
 
 	// Teradata dataset properties.
 	TypeProperties *TeradataTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type TeradataTableDataset.
+func (t *TeradataTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 t.Type,
+		Description:          t.Description,
+		Structure:            t.Structure,
+		Schema:               t.Schema,
+		LinkedServiceName:    t.LinkedServiceName,
+		Parameters:           t.Parameters,
+		Annotations:          t.Annotations,
+		Folder:               t.Folder,
+		AdditionalProperties: t.AdditionalProperties,
+	}
 }
 
 // TeradataTableDatasetTypeProperties - Teradata dataset properties.
@@ -21350,6 +28105,16 @@ type TextFormat struct {
 	TreatEmptyAsNull interface{} `json:"treatEmptyAsNull,omitempty"`
 }
 
+// GetDatasetStorageFormat implements the DatasetStorageFormatClassification interface for type TextFormat.
+func (t *TextFormat) GetDatasetStorageFormat() *DatasetStorageFormat {
+	return &DatasetStorageFormat{
+		Type:                 t.Type,
+		Serializer:           t.Serializer,
+		Deserializer:         t.Deserializer,
+		AdditionalProperties: t.AdditionalProperties,
+	}
+}
+
 // Transformation - A data flow transformation.
 type Transformation struct {
 	// REQUIRED; Transformation name.
@@ -21396,6 +28161,9 @@ type Trigger struct {
 	RuntimeState *TriggerRuntimeState `json:"runtimeState,omitempty" azure:"ro"`
 }
 
+// GetTrigger implements the TriggerClassification interface for type Trigger.
+func (t *Trigger) GetTrigger() *Trigger { return t }
+
 // TriggerDependencyReferenceClassification provides polymorphic access to related types.
 // Call the interface's GetTriggerDependencyReference() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -21413,6 +28181,18 @@ type TriggerDependencyReference struct {
 
 	// REQUIRED; The type of dependency reference.
 	Type *string `json:"type,omitempty"`
+}
+
+// GetDependencyReference implements the DependencyReferenceClassification interface for type TriggerDependencyReference.
+func (t *TriggerDependencyReference) GetDependencyReference() *DependencyReference {
+	return &DependencyReference{
+		Type: t.Type,
+	}
+}
+
+// GetTriggerDependencyReference implements the TriggerDependencyReferenceClassification interface for type TriggerDependencyReference.
+func (t *TriggerDependencyReference) GetTriggerDependencyReference() *TriggerDependencyReference {
+	return t
 }
 
 // TriggerFilterParameters - Query parameters for triggers.
@@ -21633,6 +28413,17 @@ type TumblingWindowTrigger struct {
 	RuntimeState *TriggerRuntimeState `json:"runtimeState,omitempty" azure:"ro"`
 }
 
+// GetTrigger implements the TriggerClassification interface for type TumblingWindowTrigger.
+func (t *TumblingWindowTrigger) GetTrigger() *Trigger {
+	return &Trigger{
+		Type:                 t.Type,
+		Description:          t.Description,
+		RuntimeState:         t.RuntimeState,
+		Annotations:          t.Annotations,
+		AdditionalProperties: t.AdditionalProperties,
+	}
+}
+
 // TumblingWindowTriggerDependencyReference - Referenced tumbling window trigger dependency.
 type TumblingWindowTriggerDependencyReference struct {
 	// REQUIRED; Referenced trigger.
@@ -21646,6 +28437,21 @@ type TumblingWindowTriggerDependencyReference struct {
 
 	// The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
 	Size *string `json:"size,omitempty"`
+}
+
+// GetDependencyReference implements the DependencyReferenceClassification interface for type TumblingWindowTriggerDependencyReference.
+func (t *TumblingWindowTriggerDependencyReference) GetDependencyReference() *DependencyReference {
+	return &DependencyReference{
+		Type: t.Type,
+	}
+}
+
+// GetTriggerDependencyReference implements the TriggerDependencyReferenceClassification interface for type TumblingWindowTriggerDependencyReference.
+func (t *TumblingWindowTriggerDependencyReference) GetTriggerDependencyReference() *TriggerDependencyReference {
+	return &TriggerDependencyReference{
+		ReferenceTrigger: t.ReferenceTrigger,
+		Type:             t.Type,
+	}
 }
 
 // TumblingWindowTriggerTypeProperties - Tumbling Window Trigger properties.
@@ -21703,6 +28509,18 @@ type TwilioLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type TwilioLinkedService.
+func (t *TwilioLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 t.Type,
+		ConnectVia:           t.ConnectVia,
+		Description:          t.Description,
+		Parameters:           t.Parameters,
+		Annotations:          t.Annotations,
+		AdditionalProperties: t.AdditionalProperties,
+	}
+}
+
 // TwilioLinkedServiceTypeProperties - Twilio linked service type properties.
 type TwilioLinkedServiceTypeProperties struct {
 	// REQUIRED; The auth token of Twilio service.
@@ -21756,6 +28574,30 @@ type UntilActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type UntilActivity.
+func (u *UntilActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 u.Name,
+		Type:                 u.Type,
+		Description:          u.Description,
+		DependsOn:            u.DependsOn,
+		UserProperties:       u.UserProperties,
+		AdditionalProperties: u.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type UntilActivity.
+func (u *UntilActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 u.Name,
+		Type:                 u.Type,
+		Description:          u.Description,
+		DependsOn:            u.DependsOn,
+		UserProperties:       u.UserProperties,
+		AdditionalProperties: u.AdditionalProperties,
+	}
 }
 
 // UntilActivityTypeProperties - Until activity properties.
@@ -21843,6 +28685,30 @@ type ValidationActivity struct {
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
 }
 
+// GetActivity implements the ActivityClassification interface for type ValidationActivity.
+func (v *ValidationActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 v.Name,
+		Type:                 v.Type,
+		Description:          v.Description,
+		DependsOn:            v.DependsOn,
+		UserProperties:       v.UserProperties,
+		AdditionalProperties: v.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type ValidationActivity.
+func (v *ValidationActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 v.Name,
+		Type:                 v.Type,
+		Description:          v.Description,
+		DependsOn:            v.DependsOn,
+		UserProperties:       v.UserProperties,
+		AdditionalProperties: v.AdditionalProperties,
+	}
+}
+
 // ValidationActivityTypeProperties - Validation activity properties.
 type ValidationActivityTypeProperties struct {
 	// REQUIRED; Validation activity dataset reference.
@@ -21911,6 +28777,18 @@ type VerticaLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type VerticaLinkedService.
+func (v *VerticaLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 v.Type,
+		ConnectVia:           v.ConnectVia,
+		Description:          v.Description,
+		Parameters:           v.Parameters,
+		Annotations:          v.Annotations,
+		AdditionalProperties: v.AdditionalProperties,
+	}
+}
+
 // VerticaLinkedServiceTypeProperties - Vertica linked service properties.
 type VerticaLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
@@ -21955,6 +28833,32 @@ type VerticaSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type VerticaSource.
+func (v *VerticaSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     v.Type,
+		SourceRetryCount:         v.SourceRetryCount,
+		SourceRetryWait:          v.SourceRetryWait,
+		MaxConcurrentConnections: v.MaxConcurrentConnections,
+		DisableMetricsCollection: v.DisableMetricsCollection,
+		AdditionalProperties:     v.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type VerticaSource.
+func (v *VerticaSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             v.QueryTimeout,
+		AdditionalColumns:        v.AdditionalColumns,
+		Type:                     v.Type,
+		SourceRetryCount:         v.SourceRetryCount,
+		SourceRetryWait:          v.SourceRetryWait,
+		MaxConcurrentConnections: v.MaxConcurrentConnections,
+		DisableMetricsCollection: v.DisableMetricsCollection,
+		AdditionalProperties:     v.AdditionalProperties,
+	}
+}
+
 // VerticaTableDataset - Vertica dataset.
 type VerticaTableDataset struct {
 	// REQUIRED; Linked service reference.
@@ -21989,6 +28893,21 @@ type VerticaTableDataset struct {
 	TypeProperties *VerticaDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type VerticaTableDataset.
+func (v *VerticaTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 v.Type,
+		Description:          v.Description,
+		Structure:            v.Structure,
+		Schema:               v.Schema,
+		LinkedServiceName:    v.LinkedServiceName,
+		Parameters:           v.Parameters,
+		Annotations:          v.Annotations,
+		Folder:               v.Folder,
+		AdditionalProperties: v.AdditionalProperties,
+	}
+}
+
 // WaitActivity - This activity suspends pipeline execution for the specified interval.
 type WaitActivity struct {
 	// REQUIRED; Activity name.
@@ -22011,6 +28930,30 @@ type WaitActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type WaitActivity.
+func (w *WaitActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 w.Name,
+		Type:                 w.Type,
+		Description:          w.Description,
+		DependsOn:            w.DependsOn,
+		UserProperties:       w.UserProperties,
+		AdditionalProperties: w.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type WaitActivity.
+func (w *WaitActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 w.Name,
+		Type:                 w.Type,
+		Description:          w.Description,
+		DependsOn:            w.DependsOn,
+		UserProperties:       w.UserProperties,
+		AdditionalProperties: w.AdditionalProperties,
+	}
 }
 
 // WaitActivityTypeProperties - Wait activity properties.
@@ -22047,6 +28990,32 @@ type WebActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type WebActivity.
+func (w *WebActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 w.Name,
+		Type:                 w.Type,
+		Description:          w.Description,
+		DependsOn:            w.DependsOn,
+		UserProperties:       w.UserProperties,
+		AdditionalProperties: w.AdditionalProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type WebActivity.
+func (w *WebActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		LinkedServiceName:    w.LinkedServiceName,
+		Policy:               w.Policy,
+		Name:                 w.Name,
+		Type:                 w.Type,
+		Description:          w.Description,
+		DependsOn:            w.DependsOn,
+		UserProperties:       w.UserProperties,
+		AdditionalProperties: w.AdditionalProperties,
+	}
 }
 
 // WebActivityAuthentication - Web activity authentication properties.
@@ -22119,6 +29088,14 @@ type WebAnonymousAuthentication struct {
 	URL interface{} `json:"url,omitempty"`
 }
 
+// GetWebLinkedServiceTypeProperties implements the WebLinkedServiceTypePropertiesClassification interface for type WebAnonymousAuthentication.
+func (w *WebAnonymousAuthentication) GetWebLinkedServiceTypeProperties() *WebLinkedServiceTypeProperties {
+	return &WebLinkedServiceTypeProperties{
+		URL:                w.URL,
+		AuthenticationType: w.AuthenticationType,
+	}
+}
+
 // WebBasicAuthentication - A WebLinkedService that uses basic authentication to communicate with an HTTP endpoint.
 type WebBasicAuthentication struct {
 	// REQUIRED; Type of authentication used to connect to the web table source.
@@ -22133,6 +29110,14 @@ type WebBasicAuthentication struct {
 
 	// REQUIRED; User name for Basic authentication. Type: string (or Expression with resultType string).
 	Username interface{} `json:"username,omitempty"`
+}
+
+// GetWebLinkedServiceTypeProperties implements the WebLinkedServiceTypePropertiesClassification interface for type WebBasicAuthentication.
+func (w *WebBasicAuthentication) GetWebLinkedServiceTypeProperties() *WebLinkedServiceTypeProperties {
+	return &WebLinkedServiceTypeProperties{
+		URL:                w.URL,
+		AuthenticationType: w.AuthenticationType,
+	}
 }
 
 // WebClientCertificateAuthentication - A WebLinkedService that uses client certificate based authentication to communicate
@@ -22151,6 +29136,14 @@ type WebClientCertificateAuthentication struct {
 	// REQUIRED; The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or Expression with resultType
 	// string).
 	URL interface{} `json:"url,omitempty"`
+}
+
+// GetWebLinkedServiceTypeProperties implements the WebLinkedServiceTypePropertiesClassification interface for type WebClientCertificateAuthentication.
+func (w *WebClientCertificateAuthentication) GetWebLinkedServiceTypeProperties() *WebLinkedServiceTypeProperties {
+	return &WebLinkedServiceTypeProperties{
+		URL:                w.URL,
+		AuthenticationType: w.AuthenticationType,
+	}
 }
 
 // WebHookActivity - WebHook activity.
@@ -22175,6 +29168,30 @@ type WebHookActivity struct {
 
 	// Activity user properties.
 	UserProperties []*UserProperty `json:"userProperties,omitempty"`
+}
+
+// GetActivity implements the ActivityClassification interface for type WebHookActivity.
+func (w *WebHookActivity) GetActivity() *Activity {
+	return &Activity{
+		Name:                 w.Name,
+		Type:                 w.Type,
+		Description:          w.Description,
+		DependsOn:            w.DependsOn,
+		UserProperties:       w.UserProperties,
+		AdditionalProperties: w.AdditionalProperties,
+	}
+}
+
+// GetControlActivity implements the ControlActivityClassification interface for type WebHookActivity.
+func (w *WebHookActivity) GetControlActivity() *ControlActivity {
+	return &ControlActivity{
+		Name:                 w.Name,
+		Type:                 w.Type,
+		Description:          w.Description,
+		DependsOn:            w.DependsOn,
+		UserProperties:       w.UserProperties,
+		AdditionalProperties: w.AdditionalProperties,
+	}
 }
 
 // WebHookActivityTypeProperties - WebHook activity type properties.
@@ -22231,6 +29248,18 @@ type WebLinkedService struct {
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
 }
 
+// GetLinkedService implements the LinkedServiceClassification interface for type WebLinkedService.
+func (w *WebLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 w.Type,
+		ConnectVia:           w.ConnectVia,
+		Description:          w.Description,
+		Parameters:           w.Parameters,
+		Annotations:          w.Annotations,
+		AdditionalProperties: w.AdditionalProperties,
+	}
+}
+
 // WebLinkedServiceTypePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetWebLinkedServiceTypeProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -22249,6 +29278,11 @@ type WebLinkedServiceTypeProperties struct {
 	// REQUIRED; The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or Expression with resultType
 	// string).
 	URL interface{} `json:"url,omitempty"`
+}
+
+// GetWebLinkedServiceTypeProperties implements the WebLinkedServiceTypePropertiesClassification interface for type WebLinkedServiceTypeProperties.
+func (w *WebLinkedServiceTypeProperties) GetWebLinkedServiceTypeProperties() *WebLinkedServiceTypeProperties {
+	return w
 }
 
 // WebSource - A copy activity source for web page table.
@@ -22274,6 +29308,18 @@ type WebSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type WebSource.
+func (w *WebSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     w.Type,
+		SourceRetryCount:         w.SourceRetryCount,
+		SourceRetryWait:          w.SourceRetryWait,
+		MaxConcurrentConnections: w.MaxConcurrentConnections,
+		DisableMetricsCollection: w.DisableMetricsCollection,
+		AdditionalProperties:     w.AdditionalProperties,
+	}
 }
 
 // WebTableDataset - The dataset points to a HTML table in the web page.
@@ -22310,6 +29356,21 @@ type WebTableDataset struct {
 	Structure interface{} `json:"structure,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type WebTableDataset.
+func (w *WebTableDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 w.Type,
+		Description:          w.Description,
+		Structure:            w.Structure,
+		Schema:               w.Schema,
+		LinkedServiceName:    w.LinkedServiceName,
+		Parameters:           w.Parameters,
+		Annotations:          w.Annotations,
+		Folder:               w.Folder,
+		AdditionalProperties: w.AdditionalProperties,
+	}
+}
+
 // WebTableDatasetTypeProperties - Web table dataset properties.
 type WebTableDatasetTypeProperties struct {
 	// REQUIRED; The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer), minimum:
@@ -22336,6 +29397,16 @@ type WranglingDataFlow struct {
 
 	// PowerQuery data flow type properties.
 	TypeProperties *PowerQueryTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataFlow implements the DataFlowClassification interface for type WranglingDataFlow.
+func (w *WranglingDataFlow) GetDataFlow() *DataFlow {
+	return &DataFlow{
+		Type:        w.Type,
+		Description: w.Description,
+		Annotations: w.Annotations,
+		Folder:      w.Folder,
+	}
 }
 
 // XMLDataset - Xml dataset.
@@ -22370,6 +29441,21 @@ type XMLDataset struct {
 
 	// Xml dataset properties.
 	TypeProperties *XMLDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type XMLDataset.
+func (x *XMLDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 x.Type,
+		Description:          x.Description,
+		Structure:            x.Structure,
+		Schema:               x.Schema,
+		LinkedServiceName:    x.LinkedServiceName,
+		Parameters:           x.Parameters,
+		Annotations:          x.Annotations,
+		Folder:               x.Folder,
+		AdditionalProperties: x.AdditionalProperties,
+	}
 }
 
 // XMLDatasetTypeProperties - Xml dataset properties.
@@ -22418,6 +29504,14 @@ type XMLReadSettings struct {
 	ValidationMode interface{} `json:"validationMode,omitempty"`
 }
 
+// GetFormatReadSettings implements the FormatReadSettingsClassification interface for type XMLReadSettings.
+func (x *XMLReadSettings) GetFormatReadSettings() *FormatReadSettings {
+	return &FormatReadSettings{
+		Type:                 x.Type,
+		AdditionalProperties: x.AdditionalProperties,
+	}
+}
+
 // XMLSource - A copy activity Xml source.
 type XMLSource struct {
 	// REQUIRED; Copy source type.
@@ -22449,6 +29543,18 @@ type XMLSource struct {
 	StoreSettings StoreReadSettingsClassification `json:"storeSettings,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type XMLSource.
+func (x *XMLSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     x.Type,
+		SourceRetryCount:         x.SourceRetryCount,
+		SourceRetryWait:          x.SourceRetryWait,
+		MaxConcurrentConnections: x.MaxConcurrentConnections,
+		DisableMetricsCollection: x.DisableMetricsCollection,
+		AdditionalProperties:     x.AdditionalProperties,
+	}
+}
+
 // XeroLinkedService - Xero Service linked service.
 type XeroLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -22471,6 +29577,18 @@ type XeroLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type XeroLinkedService.
+func (x *XeroLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 x.Type,
+		ConnectVia:           x.ConnectVia,
+		Description:          x.Description,
+		Parameters:           x.Parameters,
+		Annotations:          x.Annotations,
+		AdditionalProperties: x.AdditionalProperties,
+	}
 }
 
 // XeroLinkedServiceTypeProperties - Xero Service linked service properties.
@@ -22537,6 +29655,21 @@ type XeroObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type XeroObjectDataset.
+func (x *XeroObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 x.Type,
+		Description:          x.Description,
+		Structure:            x.Structure,
+		Schema:               x.Schema,
+		LinkedServiceName:    x.LinkedServiceName,
+		Parameters:           x.Parameters,
+		Annotations:          x.Annotations,
+		Folder:               x.Folder,
+		AdditionalProperties: x.AdditionalProperties,
+	}
+}
+
 // XeroSource - A copy activity Xero Service source.
 type XeroSource struct {
 	// REQUIRED; Copy source type.
@@ -22568,6 +29701,32 @@ type XeroSource struct {
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
 }
 
+// GetCopySource implements the CopySourceClassification interface for type XeroSource.
+func (x *XeroSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     x.Type,
+		SourceRetryCount:         x.SourceRetryCount,
+		SourceRetryWait:          x.SourceRetryWait,
+		MaxConcurrentConnections: x.MaxConcurrentConnections,
+		DisableMetricsCollection: x.DisableMetricsCollection,
+		AdditionalProperties:     x.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type XeroSource.
+func (x *XeroSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             x.QueryTimeout,
+		AdditionalColumns:        x.AdditionalColumns,
+		Type:                     x.Type,
+		SourceRetryCount:         x.SourceRetryCount,
+		SourceRetryWait:          x.SourceRetryWait,
+		MaxConcurrentConnections: x.MaxConcurrentConnections,
+		DisableMetricsCollection: x.DisableMetricsCollection,
+		AdditionalProperties:     x.AdditionalProperties,
+	}
+}
+
 // ZendeskLinkedService - Linked service for Zendesk.
 type ZendeskLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -22590,6 +29749,18 @@ type ZendeskLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type ZendeskLinkedService.
+func (z *ZendeskLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 z.Type,
+		ConnectVia:           z.ConnectVia,
+		Description:          z.Description,
+		Parameters:           z.Parameters,
+		Annotations:          z.Annotations,
+		AdditionalProperties: z.AdditionalProperties,
+	}
 }
 
 // ZendeskLinkedServiceTypeProperties - Zendesk linked service type properties.
@@ -22626,6 +29797,14 @@ type ZipDeflateReadSettings struct {
 	PreserveZipFileNameAsFolder interface{} `json:"preserveZipFileNameAsFolder,omitempty"`
 }
 
+// GetCompressionReadSettings implements the CompressionReadSettingsClassification interface for type ZipDeflateReadSettings.
+func (z *ZipDeflateReadSettings) GetCompressionReadSettings() *CompressionReadSettings {
+	return &CompressionReadSettings{
+		Type:                 z.Type,
+		AdditionalProperties: z.AdditionalProperties,
+	}
+}
+
 // ZohoLinkedService - Zoho server linked service.
 type ZohoLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -22648,6 +29827,18 @@ type ZohoLinkedService struct {
 
 	// Parameters for linked service.
 	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type ZohoLinkedService.
+func (z *ZohoLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 z.Type,
+		ConnectVia:           z.ConnectVia,
+		Description:          z.Description,
+		Parameters:           z.Parameters,
+		Annotations:          z.Annotations,
+		AdditionalProperties: z.AdditionalProperties,
+	}
 }
 
 // ZohoLinkedServiceTypeProperties - Zoho server linked service properties.
@@ -22710,6 +29901,21 @@ type ZohoObjectDataset struct {
 	TypeProperties *GenericDatasetTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetDataset implements the DatasetClassification interface for type ZohoObjectDataset.
+func (z *ZohoObjectDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 z.Type,
+		Description:          z.Description,
+		Structure:            z.Structure,
+		Schema:               z.Schema,
+		LinkedServiceName:    z.LinkedServiceName,
+		Parameters:           z.Parameters,
+		Annotations:          z.Annotations,
+		Folder:               z.Folder,
+		AdditionalProperties: z.AdditionalProperties,
+	}
+}
+
 // ZohoSource - A copy activity Zoho server source.
 type ZohoSource struct {
 	// REQUIRED; Copy source type.
@@ -22739,4 +29945,30 @@ type ZohoSource struct {
 
 	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
 	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type ZohoSource.
+func (z *ZohoSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     z.Type,
+		SourceRetryCount:         z.SourceRetryCount,
+		SourceRetryWait:          z.SourceRetryWait,
+		MaxConcurrentConnections: z.MaxConcurrentConnections,
+		DisableMetricsCollection: z.DisableMetricsCollection,
+		AdditionalProperties:     z.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type ZohoSource.
+func (z *ZohoSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             z.QueryTimeout,
+		AdditionalColumns:        z.AdditionalColumns,
+		Type:                     z.Type,
+		SourceRetryCount:         z.SourceRetryCount,
+		SourceRetryWait:          z.SourceRetryWait,
+		MaxConcurrentConnections: z.MaxConcurrentConnections,
+		DisableMetricsCollection: z.DisableMetricsCollection,
+		AdditionalProperties:     z.AdditionalProperties,
+	}
 }

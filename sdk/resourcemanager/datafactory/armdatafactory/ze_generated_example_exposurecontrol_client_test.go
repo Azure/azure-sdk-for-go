@@ -24,15 +24,15 @@ func ExampleExposureControlClient_GetFeatureValue() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewExposureControlClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewExposureControlClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetFeatureValue(ctx,
-		"<location-id>",
+		"WestEurope",
 		armdatafactory.ExposureControlRequest{
-			FeatureName: to.Ptr("<feature-name>"),
-			FeatureType: to.Ptr("<feature-type>"),
+			FeatureName: to.Ptr("ADFIntegrationRuntimeSharingRbac"),
+			FeatureType: to.Ptr("Feature"),
 		},
 		nil)
 	if err != nil {
@@ -49,16 +49,16 @@ func ExampleExposureControlClient_GetFeatureValueByFactory() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewExposureControlClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewExposureControlClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetFeatureValueByFactory(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		armdatafactory.ExposureControlRequest{
-			FeatureName: to.Ptr("<feature-name>"),
-			FeatureType: to.Ptr("<feature-type>"),
+			FeatureName: to.Ptr("ADFIntegrationRuntimeSharingRbac"),
+			FeatureType: to.Ptr("Feature"),
 		},
 		nil)
 	if err != nil {
@@ -75,22 +75,22 @@ func ExampleExposureControlClient_QueryFeatureValuesByFactory() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewExposureControlClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewExposureControlClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.QueryFeatureValuesByFactory(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		armdatafactory.ExposureControlBatchRequest{
 			ExposureControlRequests: []*armdatafactory.ExposureControlRequest{
 				{
-					FeatureName: to.Ptr("<feature-name>"),
-					FeatureType: to.Ptr("<feature-type>"),
+					FeatureName: to.Ptr("ADFIntegrationRuntimeSharingRbac"),
+					FeatureType: to.Ptr("Feature"),
 				},
 				{
-					FeatureName: to.Ptr("<feature-name>"),
-					FeatureType: to.Ptr("<feature-type>"),
+					FeatureName: to.Ptr("ADFSampleFeature"),
+					FeatureType: to.Ptr("Feature"),
 				}},
 		},
 		nil)

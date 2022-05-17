@@ -38,7 +38,7 @@ func NewDatasetsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDatasetsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Creates or updates a dataset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // datasetName - The dataset name.
@@ -103,9 +104,9 @@ func (client *DatasetsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dataset)
 }
 
@@ -120,6 +121,7 @@ func (client *DatasetsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a dataset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // datasetName - The dataset name.
@@ -165,12 +167,13 @@ func (client *DatasetsClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a dataset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // datasetName - The dataset name.
@@ -217,9 +220,9 @@ func (client *DatasetsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,11 +237,12 @@ func (client *DatasetsClient) getHandleResponse(resp *http.Response) (DatasetsCl
 
 // NewListByFactoryPager - Lists datasets.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - DatasetsClientListByFactoryOptions contains the optional parameters for the DatasetsClient.ListByFactory method.
 func (client *DatasetsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *DatasetsClientListByFactoryOptions) *runtime.Pager[DatasetsClientListByFactoryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DatasetsClientListByFactoryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DatasetsClientListByFactoryResponse]{
 		More: func(page DatasetsClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -287,7 +291,7 @@ func (client *DatasetsClient) listByFactoryCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -10,7 +10,7 @@ package armdatafactory
 
 const (
 	moduleName    = "armdatafactory"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v1.0.0"
 )
 
 type AmazonRdsForOraclePartitionOption string

@@ -24,15 +24,15 @@ func ExampleIntegrationRuntimeNodesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimeNodesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimeNodesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
-		"<node-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
+		"Node_1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,15 +48,15 @@ func ExampleIntegrationRuntimeNodesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimeNodesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimeNodesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
-		"<node-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
+		"Node_1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,15 +70,15 @@ func ExampleIntegrationRuntimeNodesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimeNodesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimeNodesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
-		"<node-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
+		"Node_1",
 		armdatafactory.UpdateIntegrationRuntimeNodeRequest{
 			ConcurrentJobsLimit: to.Ptr[int32](2),
 		},

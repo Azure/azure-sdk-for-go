@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
@@ -26,18 +24,17 @@ func ExampleIntegrationRuntimesClient_NewListByFactoryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("<resource-group-name>",
-		"<factory-name>",
+	pager := client.NewListByFactoryPager("exampleResourceGroup",
+		"exampleFactoryName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,18 +50,18 @@ func ExampleIntegrationRuntimesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		armdatafactory.IntegrationRuntimeResource{
 			Properties: &armdatafactory.SelfHostedIntegrationRuntime{
 				Type:        to.Ptr(armdatafactory.IntegrationRuntimeTypeSelfHosted),
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("A selfhosted integration runtime"),
 			},
 		},
 		&armdatafactory.IntegrationRuntimesClientCreateOrUpdateOptions{IfMatch: nil})
@@ -82,14 +79,14 @@ func ExampleIntegrationRuntimesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		&armdatafactory.IntegrationRuntimesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,17 +102,17 @@ func ExampleIntegrationRuntimesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		armdatafactory.UpdateIntegrationRuntimeRequest{
 			AutoUpdate:        to.Ptr(armdatafactory.IntegrationRuntimeAutoUpdateOff),
-			UpdateDelayOffset: to.Ptr("<update-delay-offset>"),
+			UpdateDelayOffset: to.Ptr("\"PT3H\""),
 		},
 		nil)
 	if err != nil {
@@ -132,14 +129,14 @@ func ExampleIntegrationRuntimesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -153,14 +150,14 @@ func ExampleIntegrationRuntimesClient_GetStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetStatus(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -176,14 +173,14 @@ func ExampleIntegrationRuntimesClient_ListOutboundNetworkDependenciesEndpoints()
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("7ad7c73b-38b8-4df3-84ee-52ff91092f61", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListOutboundNetworkDependenciesEndpoints(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -199,14 +196,14 @@ func ExampleIntegrationRuntimesClient_GetConnectionInfo() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetConnectionInfo(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -222,14 +219,14 @@ func ExampleIntegrationRuntimesClient_RegenerateAuthKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateAuthKey(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		armdatafactory.IntegrationRuntimeRegenerateKeyParameters{
 			KeyName: to.Ptr(armdatafactory.IntegrationRuntimeAuthKeyNameAuthKey2),
 		},
@@ -248,14 +245,14 @@ func ExampleIntegrationRuntimesClient_ListAuthKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListAuthKeys(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -271,19 +268,19 @@ func ExampleIntegrationRuntimesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
-		&armdatafactory.IntegrationRuntimesClientBeginStartOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleManagedIntegrationRuntime",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -298,19 +295,19 @@ func ExampleIntegrationRuntimesClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
-		&armdatafactory.IntegrationRuntimesClientBeginStopOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleManagedIntegrationRuntime",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -323,14 +320,14 @@ func ExampleIntegrationRuntimesClient_SyncCredentials() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.SyncCredentials(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -344,14 +341,14 @@ func ExampleIntegrationRuntimesClient_GetMonitoringData() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetMonitoringData(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -367,14 +364,14 @@ func ExampleIntegrationRuntimesClient_Upgrade() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Upgrade(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -388,16 +385,16 @@ func ExampleIntegrationRuntimesClient_RemoveLinks() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RemoveLinks(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		armdatafactory.LinkedIntegrationRuntimeRequest{
-			LinkedFactoryName: to.Ptr("<linked-factory-name>"),
+			LinkedFactoryName: to.Ptr("exampleFactoryName-linked"),
 		},
 		nil)
 	if err != nil {
@@ -412,19 +409,19 @@ func ExampleIntegrationRuntimesClient_CreateLinkedIntegrationRuntime() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateLinkedIntegrationRuntime(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleIntegrationRuntime",
 		armdatafactory.CreateLinkedIntegrationRuntimeRequest{
-			Name:                to.Ptr("<name>"),
-			DataFactoryLocation: to.Ptr("<data-factory-location>"),
-			DataFactoryName:     to.Ptr("<data-factory-name>"),
-			SubscriptionID:      to.Ptr("<subscription-id>"),
+			Name:                to.Ptr("bfa92911-9fb6-4fbe-8f23-beae87bc1c83"),
+			DataFactoryLocation: to.Ptr("West US"),
+			DataFactoryName:     to.Ptr("e9955d6d-56ea-4be3-841c-52a12c1a9981"),
+			SubscriptionID:      to.Ptr("061774c7-4b5a-4159-a55b-365581830283"),
 		},
 		nil)
 	if err != nil {

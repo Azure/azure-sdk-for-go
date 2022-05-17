@@ -38,7 +38,7 @@ func NewIntegrationRuntimesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewIntegrationRuntimesClient(subscriptionID string, credential azcore.Token
 
 // CreateLinkedIntegrationRuntime - Create a linked integration runtime entry in a shared integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -103,7 +104,7 @@ func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeCreateReq
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, createLinkedIntegrationRuntimeRequest)
 }
 
@@ -118,6 +119,7 @@ func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeHandleRes
 
 // CreateOrUpdate - Creates or updates an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -166,9 +168,9 @@ func (client *IntegrationRuntimesClient) createOrUpdateCreateRequest(ctx context
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, integrationRuntime)
 }
 
@@ -183,6 +185,7 @@ func (client *IntegrationRuntimesClient) createOrUpdateHandleResponse(resp *http
 
 // Delete - Deletes an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -229,12 +232,13 @@ func (client *IntegrationRuntimesClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -281,9 +285,9 @@ func (client *IntegrationRuntimesClient) getCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -299,6 +303,7 @@ func (client *IntegrationRuntimesClient) getHandleResponse(resp *http.Response) 
 // GetConnectionInfo - Gets the on-premises integration runtime connection information for encrypting the on-premises data
 // source credentials.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -345,7 +350,7 @@ func (client *IntegrationRuntimesClient) getConnectionInfoCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -361,6 +366,7 @@ func (client *IntegrationRuntimesClient) getConnectionInfoHandleResponse(resp *h
 // GetMonitoringData - Get the integration runtime monitoring data, which includes the monitor data for all the nodes under
 // this integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -407,7 +413,7 @@ func (client *IntegrationRuntimesClient) getMonitoringDataCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -422,6 +428,7 @@ func (client *IntegrationRuntimesClient) getMonitoringDataHandleResponse(resp *h
 
 // GetStatus - Gets detailed status information for an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -468,7 +475,7 @@ func (client *IntegrationRuntimesClient) getStatusCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -483,6 +490,7 @@ func (client *IntegrationRuntimesClient) getStatusHandleResponse(resp *http.Resp
 
 // ListAuthKeys - Retrieves the authentication keys for an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -529,7 +537,7 @@ func (client *IntegrationRuntimesClient) listAuthKeysCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -544,12 +552,13 @@ func (client *IntegrationRuntimesClient) listAuthKeysHandleResponse(resp *http.R
 
 // NewListByFactoryPager - Lists integration runtimes.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - IntegrationRuntimesClientListByFactoryOptions contains the optional parameters for the IntegrationRuntimesClient.ListByFactory
 // method.
 func (client *IntegrationRuntimesClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *IntegrationRuntimesClientListByFactoryOptions) *runtime.Pager[IntegrationRuntimesClientListByFactoryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationRuntimesClientListByFactoryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationRuntimesClientListByFactoryResponse]{
 		More: func(page IntegrationRuntimesClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -598,7 +607,7 @@ func (client *IntegrationRuntimesClient) listByFactoryCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -614,6 +623,7 @@ func (client *IntegrationRuntimesClient) listByFactoryHandleResponse(resp *http.
 // ListOutboundNetworkDependenciesEndpoints - Gets the list of outbound network dependencies for a given Azure-SSIS integration
 // runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -660,7 +670,7 @@ func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpoint
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -675,6 +685,7 @@ func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpoint
 
 // RegenerateAuthKey - Regenerates the authentication key for an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -722,7 +733,7 @@ func (client *IntegrationRuntimesClient) regenerateAuthKeyCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regenerateKeyParameters)
 }
 
@@ -737,6 +748,7 @@ func (client *IntegrationRuntimesClient) regenerateAuthKeyHandleResponse(resp *h
 
 // RemoveLinks - Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -784,31 +796,33 @@ func (client *IntegrationRuntimesClient) removeLinksCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, linkedIntegrationRuntimeRequest)
 }
 
 // BeginStart - Starts a ManagedReserved type integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
 // options - IntegrationRuntimesClientBeginStartOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStart
 // method.
-func (client *IntegrationRuntimesClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*armruntime.Poller[IntegrationRuntimesClientStartResponse], error) {
+func (client *IntegrationRuntimesClient) BeginStart(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*runtime.Poller[IntegrationRuntimesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationRuntimesClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimesClientStartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationRuntimesClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Starts a ManagedReserved type integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *IntegrationRuntimesClient) start(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -850,31 +864,33 @@ func (client *IntegrationRuntimesClient) startCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Stops a ManagedReserved type integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
 // options - IntegrationRuntimesClientBeginStopOptions contains the optional parameters for the IntegrationRuntimesClient.BeginStop
 // method.
-func (client *IntegrationRuntimesClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*armruntime.Poller[IntegrationRuntimesClientStopResponse], error) {
+func (client *IntegrationRuntimesClient) BeginStop(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*runtime.Poller[IntegrationRuntimesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IntegrationRuntimesClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimesClientStopResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IntegrationRuntimesClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimesClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Stop - Stops a ManagedReserved type integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *IntegrationRuntimesClient) stop(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
@@ -916,7 +932,7 @@ func (client *IntegrationRuntimesClient) stopCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -925,6 +941,7 @@ func (client *IntegrationRuntimesClient) stopCreateRequest(ctx context.Context, 
 // If you already have the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
 // runtime node than using this API directly.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -971,12 +988,13 @@ func (client *IntegrationRuntimesClient) syncCredentialsCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Update - Updates an integration runtime.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -1024,7 +1042,7 @@ func (client *IntegrationRuntimesClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, updateIntegrationRuntimeRequest)
 }
 
@@ -1039,6 +1057,7 @@ func (client *IntegrationRuntimesClient) updateHandleResponse(resp *http.Respons
 
 // Upgrade - Upgrade self-hosted integration runtime to latest version if availability.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // integrationRuntimeName - The integration runtime name.
@@ -1085,6 +1104,6 @@ func (client *IntegrationRuntimesClient) upgradeCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

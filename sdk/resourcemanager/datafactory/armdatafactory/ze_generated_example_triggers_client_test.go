@@ -26,18 +26,17 @@ func ExampleTriggersClient_NewListByFactoryPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByFactoryPager("<resource-group-name>",
-		"<factory-name>",
+	pager := client.NewListByFactoryPager("exampleResourceGroup",
+		"exampleFactoryName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,15 +52,15 @@ func ExampleTriggersClient_QueryByFactory() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.QueryByFactory(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		armdatafactory.TriggerFilterParameters{
-			ParentTriggerName: to.Ptr("<parent-trigger-name>"),
+			ParentTriggerName: to.Ptr("exampleTrigger"),
 		},
 		nil)
 	if err != nil {
@@ -78,17 +77,17 @@ func ExampleTriggersClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
 		armdatafactory.TriggerResource{
 			Properties: &armdatafactory.ScheduleTrigger{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("ScheduleTrigger"),
 				Pipelines: []*armdatafactory.TriggerPipelineReference{
 					{
 						Parameters: map[string]interface{}{
@@ -98,7 +97,7 @@ func ExampleTriggersClient_CreateOrUpdate() {
 						},
 						PipelineReference: &armdatafactory.PipelineReference{
 							Type:          to.Ptr(armdatafactory.PipelineReferenceTypePipelineReference),
-							ReferenceName: to.Ptr("<reference-name>"),
+							ReferenceName: to.Ptr("examplePipeline"),
 						},
 					}},
 				TypeProperties: &armdatafactory.ScheduleTriggerTypeProperties{
@@ -107,7 +106,7 @@ func ExampleTriggersClient_CreateOrUpdate() {
 						Frequency: to.Ptr(armdatafactory.RecurrenceFrequencyMinute),
 						Interval:  to.Ptr[int32](4),
 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:39:13.8441801Z"); return t }()),
-						TimeZone:  to.Ptr("<time-zone>"),
+						TimeZone:  to.Ptr("UTC"),
 					},
 				},
 			},
@@ -127,14 +126,14 @@ func ExampleTriggersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
 		&armdatafactory.TriggersClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -150,14 +149,14 @@ func ExampleTriggersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -171,19 +170,19 @@ func ExampleTriggersClient_BeginSubscribeToEvents() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSubscribeToEvents(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
-		&armdatafactory.TriggersClientBeginSubscribeToEventsOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -198,14 +197,14 @@ func ExampleTriggersClient_GetEventSubscriptionStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetEventSubscriptionStatus(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -221,19 +220,19 @@ func ExampleTriggersClient_BeginUnsubscribeFromEvents() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUnsubscribeFromEvents(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
-		&armdatafactory.TriggersClientBeginUnsubscribeFromEventsOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -248,19 +247,19 @@ func ExampleTriggersClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
-		&armdatafactory.TriggersClientBeginStartOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -273,19 +272,19 @@ func ExampleTriggersClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggersClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggersClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
-		&armdatafactory.TriggersClientBeginStopOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

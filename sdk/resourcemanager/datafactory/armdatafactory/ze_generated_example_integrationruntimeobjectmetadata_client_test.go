@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
@@ -26,19 +24,19 @@ func ExampleIntegrationRuntimeObjectMetadataClient_BeginRefresh() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimeObjectMetadataClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimeObjectMetadataClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRefresh(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
-		&armdatafactory.IntegrationRuntimeObjectMetadataClientBeginRefreshOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"testactivityv2",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -53,16 +51,16 @@ func ExampleIntegrationRuntimeObjectMetadataClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewIntegrationRuntimeObjectMetadataClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewIntegrationRuntimeObjectMetadataClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"testactivityv2",
 		&armdatafactory.IntegrationRuntimeObjectMetadataClientGetOptions{GetMetadataRequest: &armdatafactory.GetSsisObjectMetadataRequest{
-			MetadataPath: to.Ptr("<metadata-path>"),
+			MetadataPath: to.Ptr("ssisFolders"),
 		},
 		})
 	if err != nil {

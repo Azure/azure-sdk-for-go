@@ -10,7 +10,7 @@ package armblueprint
 
 const (
 	moduleName    = "armblueprint"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // ArtifactKind - Specifies the kind of blueprint artifact.

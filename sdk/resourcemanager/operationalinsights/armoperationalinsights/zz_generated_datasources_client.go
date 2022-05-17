@@ -38,7 +38,7 @@ func NewDataSourcesClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataSourcesClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Create or update a data source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataSourceName - The name of the datasource resource.
@@ -103,7 +104,7 @@ func (client *DataSourcesClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -118,6 +119,7 @@ func (client *DataSourcesClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Deletes a data source instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataSourceName - Name of the datasource.
@@ -168,6 +170,7 @@ func (client *DataSourcesClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Gets a datasource instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataSourceName - Name of the datasource
@@ -213,7 +216,7 @@ func (client *DataSourcesClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -228,13 +231,14 @@ func (client *DataSourcesClient) getHandleResponse(resp *http.Response) (DataSou
 
 // NewListByWorkspacePager - Gets the first page of data source instances in a workspace with the link to the next page.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // filter - The filter to apply on the operation.
 // options - DataSourcesClientListByWorkspaceOptions contains the optional parameters for the DataSourcesClient.ListByWorkspace
 // method.
 func (client *DataSourcesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, filter string, options *DataSourcesClientListByWorkspaceOptions) *runtime.Pager[DataSourcesClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataSourcesClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataSourcesClientListByWorkspaceResponse]{
 		More: func(page DataSourcesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -287,7 +291,7 @@ func (client *DataSourcesClient) listByWorkspaceCreateRequest(ctx context.Contex
 	}
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

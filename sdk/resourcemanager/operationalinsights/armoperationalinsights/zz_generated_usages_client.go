@@ -38,7 +38,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,11 +56,12 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - Gets a list of usage metrics for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
 func (client *UsagesClient) NewListPager(resourceGroupName string, workspaceName string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UsagesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UsagesClientListResponse]{
 		More: func(page UsagesClientListResponse) bool {
 			return false
 		},
@@ -103,7 +104,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewWorkspacePurgeClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkspacePurgeClient(subscriptionID string, credential azcore.TokenCrede
 
 // GetPurgeStatus - Gets status of an ongoing purge operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // purgeID - In a purge status request, this is the Id of the operation the status of which is returned.
@@ -102,7 +103,7 @@ func (client *WorkspacePurgeClient) getPurgeStatusCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -121,6 +122,7 @@ func (client *WorkspacePurgeClient) getPurgeStatusHandleResponse(resp *http.Resp
 // user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior
 // to using for a purge request to verify that the results are expected.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // body - Describes the body of a request to purge data in a single table of an Log Analytics Workspace
@@ -162,7 +164,7 @@ func (client *WorkspacePurgeClient) purgeCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

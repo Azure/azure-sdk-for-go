@@ -24,14 +24,14 @@ func ExampleSavedSearchesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewSavedSearchesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewSavedSearchesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<saved-search-id>",
+		"TestRG",
+		"TestWS",
+		"00000000-0000-0000-0000-00000000000",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,25 +45,25 @@ func ExampleSavedSearchesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewSavedSearchesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewSavedSearchesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<saved-search-id>",
+		"TestRG",
+		"TestWS",
+		"00000000-0000-0000-0000-00000000000",
 		armoperationalinsights.SavedSearch{
 			Properties: &armoperationalinsights.SavedSearchProperties{
-				Category:           to.Ptr("<category>"),
-				DisplayName:        to.Ptr("<display-name>"),
-				FunctionAlias:      to.Ptr("<function-alias>"),
-				FunctionParameters: to.Ptr("<function-parameters>"),
-				Query:              to.Ptr("<query>"),
+				Category:           to.Ptr("Saved Search Test Category"),
+				DisplayName:        to.Ptr("Create or Update Saved Search Test"),
+				FunctionAlias:      to.Ptr("heartbeat_func"),
+				FunctionParameters: to.Ptr("a:int=1"),
+				Query:              to.Ptr("Heartbeat | summarize Count() by Computer | take a"),
 				Tags: []*armoperationalinsights.Tag{
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("Group"),
+						Value: to.Ptr("Computer"),
 					}},
 				Version: to.Ptr[int64](2),
 			},
@@ -83,14 +83,14 @@ func ExampleSavedSearchesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewSavedSearchesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewSavedSearchesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<saved-search-id>",
+		"TestRG",
+		"TestWS",
+		"00000000-0000-0000-0000-00000000000",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -106,13 +106,13 @@ func ExampleSavedSearchesClient_ListByWorkspace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewSavedSearchesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewSavedSearchesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByWorkspace(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"TestRG",
+		"TestWS",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

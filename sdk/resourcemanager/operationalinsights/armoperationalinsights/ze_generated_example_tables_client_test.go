@@ -12,32 +12,29 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/TablesList.json
 func ExampleTablesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewTablesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewTablesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListByWorkspacePager("oiautorest6685",
+		"oiautorest6685",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -46,153 +43,53 @@ func ExampleTablesClient_NewListByWorkspacePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesUpsert.json
-func ExampleTablesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/TablesUpdate.json
+func ExampleTablesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewTablesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewTablesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<table-name>",
+	res, err := client.Update(ctx,
+		"oiautorest6685",
+		"oiautorest6685",
+		"table1",
 		armoperationalinsights.Table{
 			Properties: &armoperationalinsights.TableProperties{
-				Schema: &armoperationalinsights.Schema{
-					Name: to.Ptr("<name>"),
-					Columns: []*armoperationalinsights.Column{
-						{
-							Name: to.Ptr("<name>"),
-							Type: to.Ptr(armoperationalinsights.ColumnTypeEnumGUID),
-						}},
-				},
-				RetentionInDays:      to.Ptr[int32](45),
-				TotalRetentionInDays: to.Ptr[int32](70),
+				RetentionInDays: to.Ptr[int32](30),
 			},
 		},
-		&armoperationalinsights.TablesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// TODO: use response item
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesUpsert.json
-func ExampleTablesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armoperationalinsights.NewTablesClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<table-name>",
-		armoperationalinsights.Table{
-			Properties: &armoperationalinsights.TableProperties{
-				Schema: &armoperationalinsights.Schema{
-					Name: to.Ptr("<name>"),
-					Columns: []*armoperationalinsights.Column{
-						{
-							Name: to.Ptr("<name>"),
-							Type: to.Ptr(armoperationalinsights.ColumnTypeEnumGUID),
-						}},
-				},
-				RetentionInDays:      to.Ptr[int32](45),
-				TotalRetentionInDays: to.Ptr[int32](70),
-			},
-		},
-		&armoperationalinsights.TablesClientBeginUpdateOptions{ResumeToken: ""})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/TablesGet.json
 func ExampleTablesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewTablesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewTablesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<table-name>",
+		"oiautorest6685",
+		"oiautorest6685",
+		"table1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// TODO: use response item
 	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesDelete.json
-func ExampleTablesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armoperationalinsights.NewTablesClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<table-name>",
-		&armoperationalinsights.TablesClientBeginDeleteOptions{ResumeToken: ""})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesMigrate.json
-func ExampleTablesClient_Migrate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armoperationalinsights.NewTablesClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = client.Migrate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<table-name>",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
 }

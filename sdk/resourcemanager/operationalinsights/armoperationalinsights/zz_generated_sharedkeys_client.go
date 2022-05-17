@@ -38,7 +38,7 @@ func NewSharedKeysClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSharedKeysClient(subscriptionID string, credential azcore.TokenCredentia
 
 // GetSharedKeys - Gets the shared keys for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - SharedKeysClientGetSharedKeysOptions contains the optional parameters for the SharedKeysClient.GetSharedKeys
@@ -97,7 +98,7 @@ func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -113,6 +114,7 @@ func (client *SharedKeysClient) getSharedKeysHandleResponse(resp *http.Response)
 // Regenerate - Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
 // Insights agents to the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - SharedKeysClientRegenerateOptions contains the optional parameters for the SharedKeysClient.Regenerate method.
@@ -153,7 +155,7 @@ func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

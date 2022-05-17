@@ -23,14 +23,14 @@ func ExampleIntelligencePacksClient_Disable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewIntelligencePacksClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewIntelligencePacksClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Disable(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<intelligence-pack-name>",
+		"rg1",
+		"TestLinkWS",
+		"ChangeTracking",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,14 +44,14 @@ func ExampleIntelligencePacksClient_Enable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewIntelligencePacksClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewIntelligencePacksClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Enable(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<intelligence-pack-name>",
+		"rg1",
+		"TestLinkWS",
+		"ChangeTracking",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,13 +65,13 @@ func ExampleIntelligencePacksClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewIntelligencePacksClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewIntelligencePacksClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"rg1",
+		"TestLinkWS",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

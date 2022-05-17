@@ -38,7 +38,7 @@ func NewSQLServersClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSQLServersClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CreateOrUpdate - Creates or updates a SQL Server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlServerRegistrationName - Name of the SQL Server registration.
@@ -104,7 +105,7 @@ func (client *SQLServersClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *SQLServersClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes a SQL Server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlServerRegistrationName - Name of the SQL Server registration.
@@ -165,12 +167,13 @@ func (client *SQLServersClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a SQL Server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlServerRegistrationName - Name of the SQL Server registration.
@@ -220,7 +223,7 @@ func (client *SQLServersClient) getCreateRequest(ctx context.Context, resourceGr
 	}
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -235,13 +238,14 @@ func (client *SQLServersClient) getHandleResponse(resp *http.Response) (SQLServe
 
 // NewListByResourceGroupPager - Gets all SQL Servers in a SQL Server Registration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-07-24-preview
 // resourceGroupName - Name of the resource group that contains the resource. You can obtain this value from the Azure Resource
 // Manager API or the portal.
 // sqlServerRegistrationName - Name of the SQL Server registration.
 // options - SQLServersClientListByResourceGroupOptions contains the optional parameters for the SQLServersClient.ListByResourceGroup
 // method.
 func (client *SQLServersClient) NewListByResourceGroupPager(resourceGroupName string, sqlServerRegistrationName string, options *SQLServersClientListByResourceGroupOptions) *runtime.Pager[SQLServersClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLServersClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLServersClientListByResourceGroupResponse]{
 		More: func(page SQLServersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -293,7 +297,7 @@ func (client *SQLServersClient) listByResourceGroupCreateRequest(ctx context.Con
 	}
 	reqQP.Set("api-version", "2019-07-24-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

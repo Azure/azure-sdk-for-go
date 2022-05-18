@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
@@ -26,19 +24,19 @@ func ExampleServicesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<service-name>",
-		&armmobilenetwork.ServicesClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"testMobileNetwork",
+		"TestService",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -51,14 +49,14 @@ func ExampleServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<service-name>",
+		"rg1",
+		"testMobileNetwork",
+		"TestService",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,27 +72,27 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<service-name>",
+		"rg1",
+		"testMobileNetwork",
+		"TestService",
 		armmobilenetwork.Service{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armmobilenetwork.ServicePropertiesFormat{
 				PccRules: []*armmobilenetwork.PccRuleConfiguration{
 					{
-						RuleName:       to.Ptr("<rule-name>"),
+						RuleName:       to.Ptr("default-rule"),
 						RulePrecedence: to.Ptr[int32](255),
 						RuleQosPolicy: &armmobilenetwork.PccRuleQosPolicy{
 							FiveQi:                              to.Ptr[int32](9),
 							AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 							MaximumBitRate: &armmobilenetwork.Ambr{
-								Downlink: to.Ptr("<downlink>"),
-								Uplink:   to.Ptr("<uplink>"),
+								Downlink: to.Ptr("1 Gbps"),
+								Uplink:   to.Ptr("500 Mbps"),
 							},
 							PreemptionCapability:    to.Ptr(armmobilenetwork.PreemptionCapabilityNotPreempt),
 							PreemptionVulnerability: to.Ptr(armmobilenetwork.PreemptionVulnerabilityPreemptable),
@@ -105,7 +103,7 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 								Ports:     []*string{},
 								RemoteIPList: []*string{
 									to.Ptr("10.3.4.0/24")},
-								TemplateName: to.Ptr("<template-name>"),
+								TemplateName: to.Ptr("IP-to-server"),
 								Protocol: []*string{
 									to.Ptr("ip")},
 							}},
@@ -116,19 +114,19 @@ func ExampleServicesClient_BeginCreateOrUpdate() {
 					FiveQi:                              to.Ptr[int32](9),
 					AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 					MaximumBitRate: &armmobilenetwork.Ambr{
-						Downlink: to.Ptr("<downlink>"),
-						Uplink:   to.Ptr("<uplink>"),
+						Downlink: to.Ptr("1 Gbps"),
+						Uplink:   to.Ptr("500 Mbps"),
 					},
 					PreemptionCapability:    to.Ptr(armmobilenetwork.PreemptionCapabilityNotPreempt),
 					PreemptionVulnerability: to.Ptr(armmobilenetwork.PreemptionVulnerabilityPreemptable),
 				},
 			},
 		},
-		&armmobilenetwork.ServicesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -143,14 +141,14 @@ func ExampleServicesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<service-name>",
+		"rg1",
+		"testMobileNetwork",
+		"TestService",
 		armmobilenetwork.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -172,18 +170,17 @@ func ExampleServicesClient_NewListByMobileNetworkPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewServicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByMobileNetworkPager("<resource-group-name>",
-		"<mobile-network-name>",
+	pager := client.NewListByMobileNetworkPager("testResourceGroupName",
+		"testMobileNetwork",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

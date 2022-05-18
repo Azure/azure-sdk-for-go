@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
@@ -26,20 +24,20 @@ func ExampleAttachedDataNetworksClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<packet-core-control-plane-name>",
-		"<packet-core-data-plane-name>",
-		"<attached-data-network-name>",
-		&armmobilenetwork.AttachedDataNetworksClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"TestPacketCoreCP",
+		"TestPacketCoreDP",
+		"TestAttachedDataNetwork",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -52,15 +50,15 @@ func ExampleAttachedDataNetworksClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<packet-core-control-plane-name>",
-		"<packet-core-data-plane-name>",
-		"<attached-data-network-name>",
+		"rg1",
+		"TestPacketCoreCP",
+		"TestPacketCoreDP",
+		"TestAttachedDataNetwork",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,17 +74,17 @@ func ExampleAttachedDataNetworksClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<packet-core-control-plane-name>",
-		"<packet-core-data-plane-name>",
-		"<attached-data-network-name>",
+		"rg1",
+		"TestPacketCoreCP",
+		"TestPacketCoreDP",
+		"TestAttachedDataNetwork",
 		armmobilenetwork.AttachedDataNetwork{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armmobilenetwork.AttachedDataNetworkPropertiesFormat{
 				NaptConfiguration: &armmobilenetwork.NaptConfiguration{
 					Enabled:       to.Ptr(armmobilenetwork.NaptEnabledEnabled),
@@ -110,15 +108,15 @@ func ExampleAttachedDataNetworksClient_BeginCreateOrUpdate() {
 				UserEquipmentStaticAddressPoolPrefix: []*string{
 					to.Ptr("2.4.0.0/16")},
 				UserPlaneDataInterface: &armmobilenetwork.InterfaceProperties{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("N6"),
 				},
 			},
 		},
-		&armmobilenetwork.AttachedDataNetworksClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -133,15 +131,15 @@ func ExampleAttachedDataNetworksClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<packet-core-control-plane-name>",
-		"<packet-core-data-plane-name>",
-		"<attached-data-network-name>",
+		"rg1",
+		"TestPacketCoreCP",
+		"TestPacketCoreDP",
+		"TestAttachedDataNetwork",
 		armmobilenetwork.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -163,19 +161,18 @@ func ExampleAttachedDataNetworksClient_NewListByPacketCoreDataPlanePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewAttachedDataNetworksClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewAttachedDataNetworksClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPacketCoreDataPlanePager("<resource-group-name>",
-		"<packet-core-control-plane-name>",
-		"<packet-core-data-plane-name>",
+	pager := client.NewListByPacketCoreDataPlanePager("rg1",
+		"TestPacketCoreCP",
+		"TestPacketCoreDP",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

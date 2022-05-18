@@ -1,5 +1,44 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `*SlicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SlicesClientDeleteResponse], error)` to `(*runtime.Poller[SlicesClientDeleteResponse], error)`
+- Function `*MobileNetworksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MobileNetworksClientDeleteResponse], error)` to `(*runtime.Poller[MobileNetworksClientDeleteResponse], error)`
+- Function `*SlicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SlicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SlicesClientCreateOrUpdateResponse], error)`
+- Function `*SimPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SimPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[SimPoliciesClientDeleteResponse], error)`
+- Function `*DataNetworksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DataNetworksClientDeleteResponse], error)` to `(*runtime.Poller[DataNetworksClientDeleteResponse], error)`
+- Function `*PacketCoreControlPlanesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PacketCoreControlPlanesClientDeleteResponse], error)` to `(*runtime.Poller[PacketCoreControlPlanesClientDeleteResponse], error)`
+- Function `*SimsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SimsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SimsClientCreateOrUpdateResponse], error)`
+- Function `*PacketCoreDataPlanesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PacketCoreDataPlanesClientDeleteResponse], error)` to `(*runtime.Poller[PacketCoreDataPlanesClientDeleteResponse], error)`
+- Function `*MobileNetworksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[MobileNetworksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[MobileNetworksClientCreateOrUpdateResponse], error)`
+- Function `*SimPoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SimPoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SimPoliciesClientCreateOrUpdateResponse], error)`
+- Function `*PacketCoreDataPlanesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PacketCoreDataPlanesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PacketCoreDataPlanesClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServicesClientDeleteResponse], error)` to `(*runtime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*DataNetworksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DataNetworksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DataNetworksClientCreateOrUpdateResponse], error)`
+- Function `*AttachedDataNetworksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AttachedDataNetworksClientDeleteResponse], error)` to `(*runtime.Poller[AttachedDataNetworksClientDeleteResponse], error)`
+- Function `*AttachedDataNetworksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AttachedDataNetworksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AttachedDataNetworksClientCreateOrUpdateResponse], error)`
+- Function `*SitesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SitesClientDeleteResponse], error)` to `(*runtime.Poller[SitesClientDeleteResponse], error)`
+- Function `*MobileNetworksClient.BeginListSimIDs` return value(s) have been changed from `(*armruntime.Poller[MobileNetworksClientListSimIDsResponse], error)` to `(*runtime.Poller[MobileNetworksClientListSimIDsResponse], error)`
+- Function `*PacketCoreControlPlanesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PacketCoreControlPlanesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PacketCoreControlPlanesClientCreateOrUpdateResponse], error)`
+- Function `*SitesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SitesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SitesClientCreateOrUpdateResponse], error)`
+- Function `*SimsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SimsClientDeleteResponse], error)` to `(*runtime.Poller[SimsClientDeleteResponse], error)`
+- Function `DataNetworkListResult.MarshalJSON` has been removed
+- Function `SimListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `SimPolicyListResult.MarshalJSON` has been removed
+- Function `AttachedDataNetworkListResult.MarshalJSON` has been removed
+- Function `SiteListResult.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `ListResult.MarshalJSON` has been removed
+- Function `SliceListResult.MarshalJSON` has been removed
+- Function `SimIDListResult.MarshalJSON` has been removed
+- Function `PacketCoreControlPlaneListResult.MarshalJSON` has been removed
+- Function `PacketCoreDataPlaneListResult.MarshalJSON` has been removed
+- Function `ServiceListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

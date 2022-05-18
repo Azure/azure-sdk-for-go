@@ -26,13 +26,13 @@ func ExampleClustersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"resRg",
+		"myCluster",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,15 +48,15 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"resRg",
+		"myCluster",
 		armservicefabric.Cluster{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Tags:     map[string]*string{},
 			Properties: &armservicefabric.ClusterProperties{
 				AddOnFeatures: []*armservicefabric.AddOnFeatures{
@@ -68,52 +68,52 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 					MaxUnusedVersionsToKeep: to.Ptr[int64](2),
 				},
 				AzureActiveDirectory: &armservicefabric.AzureActiveDirectory{
-					ClientApplication:  to.Ptr("<client-application>"),
-					ClusterApplication: to.Ptr("<cluster-application>"),
-					TenantID:           to.Ptr("<tenant-id>"),
+					ClientApplication:  to.Ptr("d151ad89-4bce-4ae8-b3d1-1dc79679fa75"),
+					ClusterApplication: to.Ptr("5886372e-7bf4-4878-a497-8098aba608ae"),
+					TenantID:           to.Ptr("6abcc6a0-8666-43f1-87b8-172cf86a9f9c"),
 				},
 				CertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
 					CommonNames: []*armservicefabric.ServerCertificateCommonName{
 						{
-							CertificateCommonName:       to.Ptr("<certificate-common-name>"),
-							CertificateIssuerThumbprint: to.Ptr("<certificate-issuer-thumbprint>"),
+							CertificateCommonName:       to.Ptr("abc.com"),
+							CertificateIssuerThumbprint: to.Ptr("12599211F8F14C90AFA9532AD79A6F2CA1C00622"),
 						}},
 					X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
 				},
 				ClientCertificateCommonNames: []*armservicefabric.ClientCertificateCommonName{
 					{
-						CertificateCommonName:       to.Ptr("<certificate-common-name>"),
-						CertificateIssuerThumbprint: to.Ptr("<certificate-issuer-thumbprint>"),
+						CertificateCommonName:       to.Ptr("abc.com"),
+						CertificateIssuerThumbprint: to.Ptr("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A"),
 						IsAdmin:                     to.Ptr(true),
 					}},
 				ClientCertificateThumbprints: []*armservicefabric.ClientCertificateThumbprint{
 					{
-						CertificateThumbprint: to.Ptr("<certificate-thumbprint>"),
+						CertificateThumbprint: to.Ptr("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A"),
 						IsAdmin:               to.Ptr(true),
 					}},
-				ClusterCodeVersion: to.Ptr("<cluster-code-version>"),
+				ClusterCodeVersion: to.Ptr("7.0.470.9590"),
 				DiagnosticsStorageAccountConfig: &armservicefabric.DiagnosticsStorageAccountConfig{
-					BlobEndpoint:            to.Ptr("<blob-endpoint>"),
-					ProtectedAccountKeyName: to.Ptr("<protected-account-key-name>"),
-					QueueEndpoint:           to.Ptr("<queue-endpoint>"),
-					StorageAccountName:      to.Ptr("<storage-account-name>"),
-					TableEndpoint:           to.Ptr("<table-endpoint>"),
+					BlobEndpoint:            to.Ptr("https://diag.blob.core.windows.net/"),
+					ProtectedAccountKeyName: to.Ptr("StorageAccountKey1"),
+					QueueEndpoint:           to.Ptr("https://diag.queue.core.windows.net/"),
+					StorageAccountName:      to.Ptr("diag"),
+					TableEndpoint:           to.Ptr("https://diag.table.core.windows.net/"),
 				},
 				EventStoreServiceEnabled: to.Ptr(true),
 				FabricSettings: []*armservicefabric.SettingsSectionDescription{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("UpgradeService"),
 						Parameters: []*armservicefabric.SettingsParameterDescription{
 							{
-								Name:  to.Ptr("<name>"),
-								Value: to.Ptr("<value>"),
+								Name:  to.Ptr("AppPollIntervalInSeconds"),
+								Value: to.Ptr("60"),
 							}},
 					}},
 				InfrastructureServiceManager: to.Ptr(true),
-				ManagementEndpoint:           to.Ptr("<management-endpoint>"),
+				ManagementEndpoint:           to.Ptr("https://myCluster.eastus.cloudapp.azure.com:19080"),
 				NodeTypes: []*armservicefabric.NodeTypeDescription{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("nt1vm"),
 						ApplicationPorts: &armservicefabric.EndpointRangeDescription{
 							EndPort:   to.Ptr[int32](30000),
 							StartPort: to.Ptr[int32](20000),
@@ -171,8 +171,8 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 				ReverseProxyCertificateCommonNames: &armservicefabric.ServerCertificateCommonNames{
 					CommonNames: []*armservicefabric.ServerCertificateCommonName{
 						{
-							CertificateCommonName:       to.Ptr("<certificate-common-name>"),
-							CertificateIssuerThumbprint: to.Ptr("<certificate-issuer-thumbprint>"),
+							CertificateCommonName:       to.Ptr("abc.com"),
+							CertificateIssuerThumbprint: to.Ptr("12599211F8F14C90AFA9532AD79A6F2CA1C00622"),
 						}},
 					X509StoreName: to.Ptr(armservicefabric.StoreNameMy),
 				},
@@ -196,9 +196,9 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 						MaxPercentUpgradeDomainDeltaUnhealthyNodes: to.Ptr[int32](0),
 					},
 					ForceRestart:              to.Ptr(false),
-					HealthCheckRetryTimeout:   to.Ptr("<health-check-retry-timeout>"),
-					HealthCheckStableDuration: to.Ptr("<health-check-stable-duration>"),
-					HealthCheckWaitDuration:   to.Ptr("<health-check-wait-duration>"),
+					HealthCheckRetryTimeout:   to.Ptr("00:05:00"),
+					HealthCheckStableDuration: to.Ptr("00:00:30"),
+					HealthCheckWaitDuration:   to.Ptr("00:00:30"),
 					HealthPolicy: &armservicefabric.ClusterHealthPolicy{
 						ApplicationHealthPolicies: map[string]*armservicefabric.ApplicationHealthPolicy{
 							"fabric:/myApp1": {
@@ -215,23 +215,23 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 						MaxPercentUnhealthyApplications: to.Ptr[int32](0),
 						MaxPercentUnhealthyNodes:        to.Ptr[int32](0),
 					},
-					UpgradeDomainTimeout:          to.Ptr("<upgrade-domain-timeout>"),
-					UpgradeReplicaSetCheckTimeout: to.Ptr("<upgrade-replica-set-check-timeout>"),
-					UpgradeTimeout:                to.Ptr("<upgrade-timeout>"),
+					UpgradeDomainTimeout:          to.Ptr("00:15:00"),
+					UpgradeReplicaSetCheckTimeout: to.Ptr("00:10:00"),
+					UpgradeTimeout:                to.Ptr("01:00:00"),
 				},
 				UpgradeMode:                   to.Ptr(armservicefabric.UpgradeModeManual),
 				UpgradePauseEndTimestampUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-25T22:00:00Z"); return t }()),
 				UpgradePauseStartTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-21T22:00:00Z"); return t }()),
 				UpgradeWave:                   to.Ptr(armservicefabric.ClusterUpgradeCadenceWave1),
-				VMImage:                       to.Ptr("<vmimage>"),
+				VMImage:                       to.Ptr("Windows"),
 				VmssZonalUpgradeMode:          to.Ptr(armservicefabric.VmssZonalUpgradeModeParallel),
 			},
 		},
-		&armservicefabric.ClustersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -246,19 +246,19 @@ func ExampleClustersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"resRg",
+		"myCluster",
 		armservicefabric.ClusterUpdateParameters{
 			Properties: &armservicefabric.ClusterPropertiesUpdateParameters{
 				EventStoreServiceEnabled: to.Ptr(true),
 				NodeTypes: []*armservicefabric.NodeTypeDescription{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("nt1vm"),
 						ApplicationPorts: &armservicefabric.EndpointRangeDescription{
 							EndPort:   to.Ptr[int32](30000),
 							StartPort: to.Ptr[int32](20000),
@@ -274,7 +274,7 @@ func ExampleClustersClient_BeginUpdate() {
 						VMInstanceCount:         to.Ptr[int32](5),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("testnt1"),
 						ApplicationPorts: &armservicefabric.EndpointRangeDescription{
 							EndPort:   to.Ptr[int32](2000),
 							StartPort: to.Ptr[int32](1000),
@@ -299,11 +299,11 @@ func ExampleClustersClient_BeginUpdate() {
 				"a": to.Ptr("b"),
 			},
 		},
-		&armservicefabric.ClustersClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -318,13 +318,13 @@ func ExampleClustersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"resRg",
+		"myCluster",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -338,12 +338,12 @@ func ExampleClustersClient_ListByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
+		"resRg",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -359,7 +359,7 @@ func ExampleClustersClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -379,13 +379,13 @@ func ExampleClustersClient_ListUpgradableVersions() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewClustersClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListUpgradableVersions(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"resRg",
+		"myCluster",
 		&armservicefabric.ClustersClientListUpgradableVersionsOptions{VersionsDescription: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

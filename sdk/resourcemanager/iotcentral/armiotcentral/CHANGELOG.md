@@ -1,5 +1,111 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*AppsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AppsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AppsClientCreateOrUpdateResponse], error)`
+- Function `*AppsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AppsClientUpdateResponse], error)` to `(*runtime.Poller[AppsClientUpdateResponse], error)`
+- Function `*AppsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AppsClientDeleteResponse], error)` to `(*runtime.Poller[AppsClientDeleteResponse], error)`
+- Const `ProvisioningStateDeleting` has been removed
+- Const `PrivateEndpointConnectionProvisioningStateFailed` has been removed
+- Const `ProvisioningStateCanceled` has been removed
+- Const `PrivateEndpointServiceConnectionStatusApproved` has been removed
+- Const `NetworkActionAllow` has been removed
+- Const `CreatedByTypeManagedIdentity` has been removed
+- Const `CreatedByTypeUser` has been removed
+- Const `PrivateEndpointConnectionProvisioningStateSucceeded` has been removed
+- Const `ProvisioningStateFailed` has been removed
+- Const `ProvisioningStateCreating` has been removed
+- Const `PrivateEndpointServiceConnectionStatusRejected` has been removed
+- Const `PrivateEndpointConnectionProvisioningStateCreating` has been removed
+- Const `CreatedByTypeApplication` has been removed
+- Const `ProvisioningStateUpdating` has been removed
+- Const `PrivateEndpointConnectionProvisioningStateDeleting` has been removed
+- Const `CreatedByTypeKey` has been removed
+- Const `PublicNetworkAccessEnabled` has been removed
+- Const `PrivateEndpointServiceConnectionStatusPending` has been removed
+- Const `NetworkActionDeny` has been removed
+- Const `ProvisioningStateSucceeded` has been removed
+- Const `PublicNetworkAccessDisabled` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `NewPrivateLinksClient` has been removed
+- Function `NewPrivateEndpointConnectionsClient` has been removed
+- Function `timeRFC3339.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsClient.Get` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `AppProperties.MarshalJSON` has been removed
+- Function `*PrivateLinksClient.NewListPager` has been removed
+- Function `PossibleProvisioningStateValues` has been removed
+- Function `*SystemData.UnmarshalJSON` has been removed
+- Function `AppTemplate.MarshalJSON` has been removed
+- Function `PossibleNetworkActionValues` has been removed
+- Function `PrivateEndpointConnectionProperties.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` has been removed
+- Function `AppTemplatesResult.MarshalJSON` has been removed
+- Function `timeRFC3339.MarshalText` has been removed
+- Function `*timeRFC3339.Parse` has been removed
+- Function `*PrivateLinksClient.Get` has been removed
+- Function `AppListResult.MarshalJSON` has been removed
+- Function `PossiblePublicNetworkAccessValues` has been removed
+- Function `PossiblePrivateEndpointServiceConnectionStatusValues` has been removed
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` has been removed
+- Function `PossibleCreatedByTypeValues` has been removed
+- Function `*timeRFC3339.UnmarshalText` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `SystemData.MarshalJSON` has been removed
+- Function `TrackedResource.MarshalJSON` has been removed
+- Function `NetworkRuleSets.MarshalJSON` has been removed
+- Function `PossiblePrivateEndpointConnectionProvisioningStateValues` has been removed
+- Function `*PrivateEndpointConnectionsClient.NewListPager` has been removed
+- Function `*timeRFC3339.UnmarshalJSON` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `NetworkRuleSetIPRule` has been removed
+- Struct `NetworkRuleSets` has been removed
+- Struct `PrivateEndpoint` has been removed
+- Struct `PrivateEndpointConnection` has been removed
+- Struct `PrivateEndpointConnectionListResult` has been removed
+- Struct `PrivateEndpointConnectionProperties` has been removed
+- Struct `PrivateEndpointConnectionsClient` has been removed
+- Struct `PrivateEndpointConnectionsClientBeginCreateOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientListOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientListResponse` has been removed
+- Struct `PrivateLinkResource` has been removed
+- Struct `PrivateLinkResourceListResult` has been removed
+- Struct `PrivateLinkResourceProperties` has been removed
+- Struct `PrivateLinkServiceConnectionState` has been removed
+- Struct `PrivateLinksClient` has been removed
+- Struct `PrivateLinksClientGetOptions` has been removed
+- Struct `PrivateLinksClientGetResponse` has been removed
+- Struct `PrivateLinksClientListOptions` has been removed
+- Struct `PrivateLinksClientListResponse` has been removed
+- Struct `SystemData` has been removed
+- Struct `TrackedResource` has been removed
+- Field `ProvisioningState` of struct `AppProperties` has been removed
+- Field `NetworkRuleSets` of struct `AppProperties` has been removed
+- Field `PublicNetworkAccess` of struct `AppProperties` has been removed
+- Field `PrivateEndpointConnections` of struct `AppProperties` has been removed
+- Field `SystemData` of struct `App` has been removed
+- Field `SystemData` of struct `Resource` has been removed
+
+### Features Added
+
+- New function `Resource.MarshalJSON() ([]byte, error)`
+- New struct `CloudError`
+- New struct `CloudErrorBody`
+- New anonymous field `App` in struct `AppsClientUpdateResponse`
+- New field `Location` in struct `Resource`
+- New field `Tags` in struct `Resource`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

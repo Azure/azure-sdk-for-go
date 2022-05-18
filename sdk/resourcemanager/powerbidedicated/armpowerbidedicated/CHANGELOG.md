@@ -1,5 +1,22 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*CapacitiesClient.BeginSuspend` return value(s) have been changed from `(*armruntime.Poller[CapacitiesClientSuspendResponse], error)` to `(*runtime.Poller[CapacitiesClientSuspendResponse], error)`
+- Function `*CapacitiesClient.BeginResume` return value(s) have been changed from `(*armruntime.Poller[CapacitiesClientResumeResponse], error)` to `(*runtime.Poller[CapacitiesClientResumeResponse], error)`
+- Function `*CapacitiesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CapacitiesClientDeleteResponse], error)` to `(*runtime.Poller[CapacitiesClientDeleteResponse], error)`
+- Function `*CapacitiesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[CapacitiesClientCreateResponse], error)` to `(*runtime.Poller[CapacitiesClientCreateResponse], error)`
+- Function `*CapacitiesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[CapacitiesClientUpdateResponse], error)` to `(*runtime.Poller[CapacitiesClientUpdateResponse], error)`
+- Function `AutoScaleVCoreListResult.MarshalJSON` has been removed
+- Function `SKUEnumerationForExistingResourceResult.MarshalJSON` has been removed
+- Function `DedicatedCapacities.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `SKUEnumerationForNewResourceResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

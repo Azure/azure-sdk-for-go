@@ -233,8 +233,8 @@ azlog.SetEvents(azidentity.EventAuthentication)
 ```
 
 ### Raw HTTP response
+
 - You can always get the raw HTTP response from request context regardless of request result.
-- When there is an error in the SDK request, you can also convert the error to the `azcore.ResponseError` interface to get the raw HTTP response.
 
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -247,18 +247,31 @@ ctx := context.TODO() // your context
 ctxWithResp := runtime.WithCaptureResponse(ctx, &rawResponse)
 resp, err := resourceGroupsClient.CreateOrUpdate(ctxWithResp, resourceGroupName, resourceGroupParameters, nil)
 if err != nil {
-    // with error, you can get RawResponse from context
     log.Printf("Status code: %d", rawResponse.StatusCode)
+    log.Fatalf("Error occurred: %+v", err)
+}
+log.Printf("Status code: %d", rawResponse.StatusCode)
+```
+
+- When there is an error in the SDK request, you can also convert the error to the `azcore.ResponseError` interface to get the raw HTTP response.
+
+```go
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+```
+
+```go
+ctx := context.TODO() // your context
+resp, err := resourceGroupsClient.CreateOrUpdate(ctx, resourceGroupName, resourceGroupParameters, nil)
+if err != nil {
     var respErr *azcore.ResponseError
     if errors.As(err, &respErr) {
-        // with error, you can also get RawResponse from error
         log.Fatalf("Status code: %d", respErr.RawResponse.StatusCode)
     } else {
         log.Fatalf("Other error: %+v", err)
     }
 }
-// without error, you can get RawResponse from context
-log.Printf("Status code: %d", rawResponse.StatusCode)
+// dealing with `resp`
 ```
 
 ## Need help?

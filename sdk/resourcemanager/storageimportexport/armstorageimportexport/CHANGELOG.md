@@ -1,5 +1,17 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `LocationsResponse.MarshalJSON` has been removed
+- Function `LocationProperties.MarshalJSON` has been removed
+- Function `SystemData.MarshalJSON` has been removed
+- Function `ErrorResponseError.MarshalJSON` has been removed
+- Function `ListOperationsResponse.MarshalJSON` has been removed
+- Function `ListJobsResponse.MarshalJSON` has been removed
+- Function `GetBitLockerKeysResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

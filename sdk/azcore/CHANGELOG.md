@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* Added a placeholder `Claims` field to `TokenRequestOptions` to allow consumers to start passing the value.
+
 ## 1.0.0 (2022-05-12)
 
 ### Features Added

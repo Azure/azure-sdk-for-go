@@ -1,5 +1,20 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `ServiceResourceDescriptionList.MarshalJSON` has been removed
+- Function `VolumeResourceDescriptionList.MarshalJSON` has been removed
+- Function `SecretValueResourceDescriptionList.MarshalJSON` has been removed
+- Function `ApplicationResourceDescriptionList.MarshalJSON` has been removed
+- Function `ServiceReplicaDescriptionList.MarshalJSON` has been removed
+- Function `GatewayResourceDescriptionList.MarshalJSON` has been removed
+- Function `ErrorErrorModel.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `NetworkResourceDescriptionList.MarshalJSON` has been removed
+- Function `SecretResourceDescriptionList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

@@ -38,7 +38,7 @@ func NewNetworkClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewNetworkClient(subscriptionID string, credential azcore.TokenCredential, 
 // Create - Creates a network resource with the specified name, description and properties. If a network resource with the
 // same name exists, then it is updated with the specified description and properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // networkResourceName - The identity of the network.
 // networkResourceDescription - Description for creating a Network resource.
@@ -95,7 +96,7 @@ func (client *NetworkClient) createCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, networkResourceDescription)
 }
 
@@ -110,6 +111,7 @@ func (client *NetworkClient) createHandleResponse(resp *http.Response) (NetworkC
 
 // Delete - Deletes the network resource identified by the name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // networkResourceName - The identity of the network.
 // options - NetworkClientDeleteOptions contains the optional parameters for the NetworkClient.Delete method.
@@ -147,13 +149,14 @@ func (client *NetworkClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the information about the network resource with the given name. The information include the description and
 // other properties of the network.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // networkResourceName - The identity of the network.
 // options - NetworkClientGetOptions contains the optional parameters for the NetworkClient.Get method.
@@ -191,7 +194,7 @@ func (client *NetworkClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -207,11 +210,12 @@ func (client *NetworkClient) getHandleResponse(resp *http.Response) (NetworkClie
 // NewListByResourceGroupPager - Gets the information about all network resources in a given resource group. The information
 // include the description and other properties of the Network.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // options - NetworkClientListByResourceGroupOptions contains the optional parameters for the NetworkClient.ListByResourceGroup
 // method.
 func (client *NetworkClient) NewListByResourceGroupPager(resourceGroupName string, options *NetworkClientListByResourceGroupOptions) *runtime.Pager[NetworkClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[NetworkClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[NetworkClientListByResourceGroupResponse]{
 		More: func(page NetworkClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -256,7 +260,7 @@ func (client *NetworkClient) listByResourceGroupCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -272,10 +276,11 @@ func (client *NetworkClient) listByResourceGroupHandleResponse(resp *http.Respon
 // NewListBySubscriptionPager - Gets the information about all network resources in a given resource group. The information
 // include the description and other properties of the network.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // options - NetworkClientListBySubscriptionOptions contains the optional parameters for the NetworkClient.ListBySubscription
 // method.
 func (client *NetworkClient) NewListBySubscriptionPager(options *NetworkClientListBySubscriptionOptions) *runtime.Pager[NetworkClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[NetworkClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[NetworkClientListBySubscriptionResponse]{
 		More: func(page NetworkClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -316,7 +321,7 @@ func (client *NetworkClient) listBySubscriptionCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewSecretValueClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSecretValueClient(subscriptionID string, credential azcore.TokenCredenti
 // Create - Creates a new value of the specified secret resource. The name of the value is typically the version identifier.
 // Once created the value cannot be changed.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // secretResourceName - The name of the secret resource.
 // secretValueResourceName - The name of the secret resource value which is typically the version identifier for the value.
@@ -97,7 +98,7 @@ func (client *SecretValueClient) createCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, secretValueResourceDescription)
 }
 
@@ -113,6 +114,7 @@ func (client *SecretValueClient) createHandleResponse(resp *http.Response) (Secr
 // Delete - Deletes the secret value resource identified by the name. The name of the resource is typically the version associated
 // with that value. Deletion will fail if the specified value is in use.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // secretResourceName - The name of the secret resource.
 // secretValueResourceName - The name of the secret resource value which is typically the version identifier for the value.
@@ -152,13 +154,14 @@ func (client *SecretValueClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the information about the specified named secret value resources. The information does not include the actual
 // value of the secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // secretResourceName - The name of the secret resource.
 // secretValueResourceName - The name of the secret resource value which is typically the version identifier for the value.
@@ -198,7 +201,7 @@ func (client *SecretValueClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -214,11 +217,12 @@ func (client *SecretValueClient) getHandleResponse(resp *http.Response) (SecretV
 // NewListPager - Gets information about all secret value resources of the specified secret resource. The information includes
 // the names of the secret value resources, but not the actual values.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // secretResourceName - The name of the secret resource.
 // options - SecretValueClientListOptions contains the optional parameters for the SecretValueClient.List method.
 func (client *SecretValueClient) NewListPager(resourceGroupName string, secretResourceName string, options *SecretValueClientListOptions) *runtime.Pager[SecretValueClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecretValueClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecretValueClientListResponse]{
 		More: func(page SecretValueClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -264,7 +268,7 @@ func (client *SecretValueClient) listCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -279,6 +283,7 @@ func (client *SecretValueClient) listHandleResponse(resp *http.Response) (Secret
 
 // ListValue - Lists the decrypted value of the specified named value of the secret resource. This is a privileged operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // secretResourceName - The name of the secret resource.
 // secretValueResourceName - The name of the secret resource value which is typically the version identifier for the value.
@@ -318,7 +323,7 @@ func (client *SecretValueClient) listValueCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
@@ -26,25 +24,25 @@ func ExampleOutputsClient_CreateOrReplace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewOutputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewOutputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrReplace(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<output-name>",
+		"sjrg7983",
+		"sj2331",
+		"output3022",
 		armstreamanalytics.Output{
 			Properties: &armstreamanalytics.OutputProperties{
 				Datasource: &armstreamanalytics.DocumentDbOutputDataSource{
-					Type: to.Ptr("<type>"),
+					Type: to.Ptr("Microsoft.Storage/DocumentDB"),
 					Properties: &armstreamanalytics.DocumentDbOutputDataSourceProperties{
-						AccountID:             to.Ptr("<account-id>"),
-						AccountKey:            to.Ptr("<account-key>"),
-						CollectionNamePattern: to.Ptr("<collection-name-pattern>"),
-						Database:              to.Ptr("<database>"),
-						DocumentID:            to.Ptr("<document-id>"),
-						PartitionKey:          to.Ptr("<partition-key>"),
+						AccountID:             to.Ptr("someAccountId"),
+						AccountKey:            to.Ptr("accountKey=="),
+						CollectionNamePattern: to.Ptr("collection"),
+						Database:              to.Ptr("db01"),
+						DocumentID:            to.Ptr("documentId"),
+						PartitionKey:          to.Ptr("key"),
 					},
 				},
 			},
@@ -66,20 +64,20 @@ func ExampleOutputsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewOutputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewOutputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<output-name>",
+		"sjrg7983",
+		"sj2331",
+		"output3022",
 		armstreamanalytics.Output{
 			Properties: &armstreamanalytics.OutputProperties{
 				Datasource: &armstreamanalytics.DocumentDbOutputDataSource{
-					Type: to.Ptr("<type>"),
+					Type: to.Ptr("Microsoft.Storage/DocumentDB"),
 					Properties: &armstreamanalytics.DocumentDbOutputDataSourceProperties{
-						PartitionKey: to.Ptr("<partition-key>"),
+						PartitionKey: to.Ptr("differentPartitionKey"),
 					},
 				},
 			},
@@ -99,14 +97,14 @@ func ExampleOutputsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewOutputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewOutputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<output-name>",
+		"sjrg2157",
+		"sj6458",
+		"output1755",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -120,14 +118,14 @@ func ExampleOutputsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewOutputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewOutputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<output-name>",
+		"sjrg7983",
+		"sj2331",
+		"output3022",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -143,18 +141,17 @@ func ExampleOutputsClient_NewListByStreamingJobPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewOutputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewOutputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByStreamingJobPager("<resource-group-name>",
-		"<job-name>",
+	pager := client.NewListByStreamingJobPager("sjrg2157",
+		"sj6458",
 		&armstreamanalytics.OutputsClientListByStreamingJobOptions{Select: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -170,21 +167,19 @@ func ExampleOutputsClient_BeginTest() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewOutputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewOutputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTest(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<output-name>",
-		&armstreamanalytics.OutputsClientBeginTestOptions{Output: nil,
-			ResumeToken: "",
-		})
+		"sjrg2157",
+		"sj6458",
+		"output1755",
+		&armstreamanalytics.OutputsClientBeginTestOptions{Output: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

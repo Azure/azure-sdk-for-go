@@ -38,7 +38,7 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Creates a Stream Analytics Cluster or replaces an already existing cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // cluster - The definition of the cluster that will be used to create a new cluster or replace the existing one.
 // options - ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate
 // method.
-func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error) {
+func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClustersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, cluster, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClustersClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClustersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a Stream Analytics Cluster or replaces an already existing cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, cluster, options)
 	if err != nil {
@@ -113,34 +115,36 @@ func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, cluster)
 }
 
 // BeginDelete - Deletes the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
-func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*armruntime.Poller[ClustersClientDeleteResponse], error) {
+func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*runtime.Poller[ClustersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClustersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
@@ -178,12 +182,13 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
@@ -224,7 +229,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,11 +244,12 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 
 // NewListByResourceGroupPager - Lists all of the clusters in the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
 // method.
 func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClustersClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListByResourceGroupResponse]{
 		More: func(page ClustersClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -288,7 +294,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -303,10 +309,11 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Lists all of the clusters in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // options - ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.ListBySubscription
 // method.
 func (client *ClustersClient) NewListBySubscriptionPager(options *ClustersClientListBySubscriptionOptions) *runtime.Pager[ClustersClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClustersClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListBySubscriptionResponse]{
 		More: func(page ClustersClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -347,7 +354,7 @@ func (client *ClustersClient) listBySubscriptionCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -362,12 +369,13 @@ func (client *ClustersClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // NewListStreamingJobsPager - Lists all of the streaming jobs in the given cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // options - ClustersClientListStreamingJobsOptions contains the optional parameters for the ClustersClient.ListStreamingJobs
 // method.
 func (client *ClustersClient) NewListStreamingJobsPager(resourceGroupName string, clusterName string, options *ClustersClientListStreamingJobsOptions) *runtime.Pager[ClustersClientListStreamingJobsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ClustersClientListStreamingJobsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ClustersClientListStreamingJobsResponse]{
 		More: func(page ClustersClientListStreamingJobsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -416,7 +424,7 @@ func (client *ClustersClient) listStreamingJobsCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -432,26 +440,28 @@ func (client *ClustersClient) listStreamingJobsHandleResponse(resp *http.Respons
 // BeginUpdate - Updates an existing cluster. This can be used to partially update (ie. update one or two properties) a cluster
 // without affecting the rest of the cluster definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // clusterName - The name of the cluster.
 // cluster - The properties specified here will overwrite the corresponding properties in the existing cluster (ie. Those
 // properties will be updated).
 // options - ClustersClientBeginUpdateOptions contains the optional parameters for the ClustersClient.BeginUpdate method.
-func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginUpdateOptions) (*armruntime.Poller[ClustersClientUpdateResponse], error) {
+func (client *ClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginUpdateOptions) (*runtime.Poller[ClustersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, clusterName, cluster, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ClustersClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an existing cluster. This can be used to partially update (ie. update one or two properties) a cluster
 // without affecting the rest of the cluster definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 func (client *ClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, cluster Cluster, options *ClustersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, cluster, options)
 	if err != nil {
@@ -490,8 +500,8 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, cluster)
 }

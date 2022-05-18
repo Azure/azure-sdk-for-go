@@ -38,7 +38,7 @@ func NewInputsClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewInputsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // CreateOrReplace - Creates an input or replaces an already existing input under an existing streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // inputName - The name of the input.
@@ -104,12 +105,12 @@ func (client *InputsClient) createOrReplaceCreateRequest(ctx context.Context, re
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)
 }
 
@@ -127,6 +128,7 @@ func (client *InputsClient) createOrReplaceHandleResponse(resp *http.Response) (
 
 // Delete - Deletes an input from the streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // inputName - The name of the input.
@@ -172,12 +174,13 @@ func (client *InputsClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets details about the specified input.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // inputName - The name of the input.
@@ -223,7 +226,7 @@ func (client *InputsClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -241,12 +244,13 @@ func (client *InputsClient) getHandleResponse(resp *http.Response) (InputsClient
 
 // NewListByStreamingJobPager - Lists all of the inputs under the specified streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // options - InputsClientListByStreamingJobOptions contains the optional parameters for the InputsClient.ListByStreamingJob
 // method.
 func (client *InputsClient) NewListByStreamingJobPager(resourceGroupName string, jobName string, options *InputsClientListByStreamingJobOptions) *runtime.Pager[InputsClientListByStreamingJobResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InputsClientListByStreamingJobResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InputsClientListByStreamingJobResponse]{
 		More: func(page InputsClientListByStreamingJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -298,7 +302,7 @@ func (client *InputsClient) listByStreamingJobCreateRequest(ctx context.Context,
 	}
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -313,24 +317,26 @@ func (client *InputsClient) listByStreamingJobHandleResponse(resp *http.Response
 
 // BeginTest - Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // inputName - The name of the input.
 // options - InputsClientBeginTestOptions contains the optional parameters for the InputsClient.BeginTest method.
-func (client *InputsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, inputName string, options *InputsClientBeginTestOptions) (*armruntime.Poller[InputsClientTestResponse], error) {
+func (client *InputsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, inputName string, options *InputsClientBeginTestOptions) (*runtime.Poller[InputsClientTestResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.test(ctx, resourceGroupName, jobName, inputName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[InputsClientTestResponse](resp, client.pl, nil)
+		return runtime.NewPoller[InputsClientTestResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[InputsClientTestResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InputsClientTestResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Test - Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 func (client *InputsClient) test(ctx context.Context, resourceGroupName string, jobName string, inputName string, options *InputsClientBeginTestOptions) (*http.Response, error) {
 	req, err := client.testCreateRequest(ctx, resourceGroupName, jobName, inputName, options)
 	if err != nil {
@@ -372,7 +378,7 @@ func (client *InputsClient) testCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Input != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Input)
 	}
@@ -382,6 +388,7 @@ func (client *InputsClient) testCreateRequest(ctx context.Context, resourceGroup
 // Update - Updates an existing input under an existing streaming job. This can be used to partially update (ie. update one
 // or two properties) an input without affecting the rest the job or input definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // inputName - The name of the input.
@@ -432,9 +439,9 @@ func (client *InputsClient) updateCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)
 }
 

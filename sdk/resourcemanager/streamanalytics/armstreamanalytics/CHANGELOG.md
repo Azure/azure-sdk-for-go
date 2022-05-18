@@ -1,5 +1,32 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*StreamingJobsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[StreamingJobsClientStopResponse], error)` to `(*runtime.Poller[StreamingJobsClientStopResponse], error)`
+- Function `*InputsClient.BeginTest` return value(s) have been changed from `(*armruntime.Poller[InputsClientTestResponse], error)` to `(*runtime.Poller[InputsClientTestResponse], error)`
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClustersClientCreateOrUpdateResponse], error)`
+- Function `*StreamingJobsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[StreamingJobsClientStartResponse], error)` to `(*runtime.Poller[StreamingJobsClientStartResponse], error)`
+- Function `*FunctionsClient.BeginTest` return value(s) have been changed from `(*armruntime.Poller[FunctionsClientTestResponse], error)` to `(*runtime.Poller[FunctionsClientTestResponse], error)`
+- Function `*StreamingJobsClient.BeginCreateOrReplace` return value(s) have been changed from `(*armruntime.Poller[StreamingJobsClientCreateOrReplaceResponse], error)` to `(*runtime.Poller[StreamingJobsClientCreateOrReplaceResponse], error)`
+- Function `*StreamingJobsClient.BeginScale` return value(s) have been changed from `(*armruntime.Poller[StreamingJobsClientScaleResponse], error)` to `(*runtime.Poller[StreamingJobsClientScaleResponse], error)`
+- Function `*OutputsClient.BeginTest` return value(s) have been changed from `(*armruntime.Poller[OutputsClientTestResponse], error)` to `(*runtime.Poller[OutputsClientTestResponse], error)`
+- Function `*ClustersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUpdateResponse], error)` to `(*runtime.Poller[ClustersClientUpdateResponse], error)`
+- Function `*StreamingJobsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[StreamingJobsClientDeleteResponse], error)` to `(*runtime.Poller[StreamingJobsClientDeleteResponse], error)`
+- Function `*ClustersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClustersClientDeleteResponse], error)` to `(*runtime.Poller[ClustersClientDeleteResponse], error)`
+- Function `*PrivateEndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointsClientDeleteResponse], error)`
+- Function `InputListResult.MarshalJSON` has been removed
+- Function `ErrorError.MarshalJSON` has been removed
+- Function `FunctionListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ClusterListResult.MarshalJSON` has been removed
+- Function `OutputListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointListResult.MarshalJSON` has been removed
+- Function `ClusterJobListResult.MarshalJSON` has been removed
+- Function `SubscriptionQuotasListResult.MarshalJSON` has been removed
+- Function `StreamingJobListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

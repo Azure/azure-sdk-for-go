@@ -26,15 +26,15 @@ func ExampleStreamingJobsClient_BeginCreateOrReplace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewStreamingJobsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewStreamingJobsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrReplace(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+		"sjrg3276",
+		"sj7804",
 		armstreamanalytics.StreamingJob{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags: map[string]*string{
 				"key1":      to.Ptr("value1"),
 				"key3":      to.Ptr("value3"),
@@ -42,16 +42,16 @@ func ExampleStreamingJobsClient_BeginCreateOrReplace() {
 			},
 			Properties: &armstreamanalytics.StreamingJobProperties{
 				CompatibilityLevel:                 to.Ptr(armstreamanalytics.CompatibilityLevelOne0),
-				DataLocale:                         to.Ptr("<data-locale>"),
+				DataLocale:                         to.Ptr("en-US"),
 				EventsLateArrivalMaxDelayInSeconds: to.Ptr[int32](5),
 				EventsOutOfOrderMaxDelayInSeconds:  to.Ptr[int32](0),
 				EventsOutOfOrderPolicy:             to.Ptr(armstreamanalytics.EventsOutOfOrderPolicyDrop),
 				Functions:                          []*armstreamanalytics.Function{},
 				Inputs: []*armstreamanalytics.Input{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("inputtest"),
 						Properties: &armstreamanalytics.StreamInputProperties{
-							Type: to.Ptr("<type>"),
+							Type: to.Ptr("Stream"),
 							Serialization: &armstreamanalytics.JSONSerialization{
 								Type: to.Ptr(armstreamanalytics.EventSerializationTypeJSON),
 								Properties: &armstreamanalytics.JSONSerializationProperties{
@@ -59,14 +59,14 @@ func ExampleStreamingJobsClient_BeginCreateOrReplace() {
 								},
 							},
 							Datasource: &armstreamanalytics.BlobStreamInputDataSource{
-								Type: to.Ptr("<type>"),
+								Type: to.Ptr("Microsoft.Storage/Blob"),
 								Properties: &armstreamanalytics.BlobStreamInputDataSourceProperties{
-									Container:   to.Ptr("<container>"),
-									PathPattern: to.Ptr("<path-pattern>"),
+									Container:   to.Ptr("containerName"),
+									PathPattern: to.Ptr(""),
 									StorageAccounts: []*armstreamanalytics.StorageAccount{
 										{
-											AccountKey:  to.Ptr("<account-key>"),
-											AccountName: to.Ptr("<account-name>"),
+											AccountKey:  to.Ptr("yourAccountKey=="),
+											AccountName: to.Ptr("yourAccountName"),
 										}},
 								},
 							},
@@ -75,15 +75,15 @@ func ExampleStreamingJobsClient_BeginCreateOrReplace() {
 				OutputErrorPolicy: to.Ptr(armstreamanalytics.OutputErrorPolicyDrop),
 				Outputs: []*armstreamanalytics.Output{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("outputtest"),
 						Properties: &armstreamanalytics.OutputProperties{
 							Datasource: &armstreamanalytics.AzureSQLDatabaseOutputDataSource{
-								Type: to.Ptr("<type>"),
+								Type: to.Ptr("Microsoft.Sql/Server/Database"),
 								Properties: &armstreamanalytics.AzureSQLDatabaseOutputDataSourceProperties{
-									Database: to.Ptr("<database>"),
-									Password: to.Ptr("<password>"),
-									Server:   to.Ptr("<server>"),
-									Table:    to.Ptr("<table>"),
+									Database: to.Ptr("databaseName"),
+									Password: to.Ptr("userPassword"),
+									Server:   to.Ptr("serverName"),
+									Table:    to.Ptr("tableName"),
 									User:     to.Ptr("<user>"),
 								},
 							},
@@ -93,9 +93,9 @@ func ExampleStreamingJobsClient_BeginCreateOrReplace() {
 					Name: to.Ptr(armstreamanalytics.SKUNameStandard),
 				},
 				Transformation: &armstreamanalytics.Transformation{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("transformationtest"),
 					Properties: &armstreamanalytics.TransformationProperties{
-						Query:          to.Ptr("<query>"),
+						Query:          to.Ptr("Select Id, Name from inputtest"),
 						StreamingUnits: to.Ptr[int32](1),
 					},
 				},
@@ -103,12 +103,11 @@ func ExampleStreamingJobsClient_BeginCreateOrReplace() {
 		},
 		&armstreamanalytics.StreamingJobsClientBeginCreateOrReplaceOptions{IfMatch: nil,
 			IfNoneMatch: nil,
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -123,13 +122,13 @@ func ExampleStreamingJobsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewStreamingJobsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewStreamingJobsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+		"sjrg6936",
+		"sj59",
 		armstreamanalytics.StreamingJob{
 			Properties: &armstreamanalytics.StreamingJobProperties{
 				EventsLateArrivalMaxDelayInSeconds: to.Ptr[int32](13),
@@ -151,18 +150,18 @@ func ExampleStreamingJobsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewStreamingJobsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewStreamingJobsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		&armstreamanalytics.StreamingJobsClientBeginDeleteOptions{ResumeToken: ""})
+		"sjrg6936",
+		"sj59",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -175,13 +174,13 @@ func ExampleStreamingJobsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewStreamingJobsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewStreamingJobsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+		"sjrg6936",
+		"sj59",
 		&armstreamanalytics.StreamingJobsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -197,17 +196,16 @@ func ExampleStreamingJobsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewStreamingJobsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewStreamingJobsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("sjrg6936",
 		&armstreamanalytics.StreamingJobsClientListByResourceGroupOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -223,7 +221,7 @@ func ExampleStreamingJobsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewStreamingJobsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewStreamingJobsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -232,7 +230,6 @@ func ExampleStreamingJobsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -248,23 +245,22 @@ func ExampleStreamingJobsClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewStreamingJobsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewStreamingJobsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+		"sjrg6936",
+		"sj59",
 		&armstreamanalytics.StreamingJobsClientBeginStartOptions{StartJobParameters: &armstreamanalytics.StartStreamingJobParameters{
 			OutputStartMode: to.Ptr(armstreamanalytics.OutputStartModeCustomTime),
 			OutputStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2012-12-12T12:12:12Z"); return t }()),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -277,18 +273,18 @@ func ExampleStreamingJobsClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewStreamingJobsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewStreamingJobsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		&armstreamanalytics.StreamingJobsClientBeginStopOptions{ResumeToken: ""})
+		"sjrg6936",
+		"sj59",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -301,22 +297,21 @@ func ExampleStreamingJobsClient_BeginScale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewStreamingJobsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewStreamingJobsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginScale(ctx,
-		"<resource-group-name>",
-		"<job-name>",
+		"sjrg6936",
+		"sj59",
 		&armstreamanalytics.StreamingJobsClientBeginScaleOptions{ScaleJobParameters: &armstreamanalytics.ScaleStreamingJobParameters{
 			StreamingUnits: to.Ptr[int32](36),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

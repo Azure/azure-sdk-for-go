@@ -30,11 +30,11 @@ func ExampleHealthMonitorsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<subscription-id>",
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-collection-name>",
-		"<resource-name>",
+	pager := client.NewListPager("bc27da3b-3ba2-4e00-a6ec-1fde64aa1e21",
+		"tugamidiAlerts",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"linuxEUS",
 		&armworkloadmonitor.HealthMonitorsClientListOptions{Filter: nil,
 			Expand: nil,
 		})
@@ -42,7 +42,6 @@ func ExampleHealthMonitorsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -63,12 +62,12 @@ func ExampleHealthMonitorsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<subscription-id>",
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-collection-name>",
-		"<resource-name>",
-		"<monitor-id>",
+		"bc27da3b-3ba2-4e00-a6ec-1fde64aa1e21",
+		"tugamidiAlerts",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"linuxEUS",
+		"logical-disks|C@3A|free-space",
 		&armworkloadmonitor.HealthMonitorsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -88,12 +87,12 @@ func ExampleHealthMonitorsClient_NewListStateChangesPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListStateChangesPager("<subscription-id>",
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-collection-name>",
-		"<resource-name>",
-		"<monitor-id>",
+	pager := client.NewListStateChangesPager("bc27da3b-3ba2-4e00-a6ec-1fde64aa1e21",
+		"tugamidiAlerts",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"linuxEUS",
+		"logical-disks|C@3A",
 		&armworkloadmonitor.HealthMonitorsClientListStateChangesOptions{Filter: nil,
 			Expand:            nil,
 			StartTimestampUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-19T19:24:14Z"); return t }()),
@@ -103,7 +102,6 @@ func ExampleHealthMonitorsClient_NewListStateChangesPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -124,13 +122,13 @@ func ExampleHealthMonitorsClient_GetStateChange() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetStateChange(ctx,
-		"<subscription-id>",
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-collection-name>",
-		"<resource-name>",
-		"<monitor-id>",
-		"<timestamp-unix>",
+		"bc27da3b-3ba2-4e00-a6ec-1fde64aa1e21",
+		"tugamidiAlerts",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"linuxEUS",
+		"logical-disks|C@3A",
+		"1584316800",
 		&armworkloadmonitor.HealthMonitorsClientGetStateChangeOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

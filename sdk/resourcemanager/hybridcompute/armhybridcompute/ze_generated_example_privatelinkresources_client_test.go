@@ -16,25 +16,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/PrivateLinkScopePrivateLinkResourceListGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/PrivateLinkScopePrivateLinkResourceListGet.json
 func ExamplePrivateLinkResourcesClient_NewListByPrivateLinkScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewPrivateLinkResourcesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPrivateLinkScopePager("<resource-group-name>",
-		"<scope-name>",
+	pager := client.NewListByPrivateLinkScopePager("myResourceGroup",
+		"myPrivateLinkScope",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -43,21 +42,21 @@ func ExamplePrivateLinkResourcesClient_NewListByPrivateLinkScopePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/PrivateLinkScopePrivateLinkResourceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/PrivateLinkScopePrivateLinkResourceGet.json
 func ExamplePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewPrivateLinkResourcesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<scope-name>",
-		"<group-name>",
+		"myResourceGroup",
+		"myPrivateLinkScope",
+		"hybridcompute",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

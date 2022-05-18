@@ -12,44 +12,42 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/PUTExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/PUTExtension.json
 func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachineExtensionsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<machine-name>",
-		"<extension-name>",
+		"myResourceGroup",
+		"myMachine",
+		"CustomScriptExtension",
 		armhybridcompute.MachineExtension{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus2euap"),
 			Properties: &armhybridcompute.MachineExtensionProperties{
-				Type:      to.Ptr("<type>"),
-				Publisher: to.Ptr("<publisher>"),
+				Type:      to.Ptr("CustomScriptExtension"),
+				Publisher: to.Ptr("Microsoft.Compute"),
 				Settings: map[string]interface{}{
 					"commandToExecute": "powershell.exe -c \"Get-Process | Where-Object { $_.CPU -gt 10000 }\"",
 				},
-				TypeHandlerVersion: to.Ptr("<type-handler-version>"),
+				TypeHandlerVersion: to.Ptr("1.10"),
 			},
 		},
-		&armhybridcompute.MachineExtensionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -57,36 +55,36 @@ func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/UpdateExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/UpdateExtension.json
 func ExampleMachineExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachineExtensionsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<machine-name>",
-		"<extension-name>",
+		"myResourceGroup",
+		"myMachine",
+		"CustomScriptExtension",
 		armhybridcompute.MachineExtensionUpdate{
 			Properties: &armhybridcompute.MachineExtensionUpdateProperties{
-				Type:      to.Ptr("<type>"),
-				Publisher: to.Ptr("<publisher>"),
+				Type:      to.Ptr("CustomScriptExtension"),
+				Publisher: to.Ptr("Microsoft.Compute"),
 				Settings: map[string]interface{}{
 					"commandToExecute": "powershell.exe -c \"Get-Process | Where-Object { $_.CPU -lt 100 }\"",
 				},
-				TypeHandlerVersion: to.Ptr("<type-handler-version>"),
+				TypeHandlerVersion: to.Ptr("1.10"),
 			},
 		},
-		&armhybridcompute.MachineExtensionsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -94,46 +92,46 @@ func ExampleMachineExtensionsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/DELETEExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/DELETEExtension.json
 func ExampleMachineExtensionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachineExtensionsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<machine-name>",
-		"<extension-name>",
-		&armhybridcompute.MachineExtensionsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myMachine",
+		"MMA",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/GETExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/GETExtension.json
 func ExampleMachineExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachineExtensionsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<machine-name>",
-		"<extension-name>",
+		"myResourceGroup",
+		"myMachine",
+		"CustomScriptExtension",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -142,25 +140,24 @@ func ExampleMachineExtensionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-12-10-preview/examples/LISTExtension.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2022-03-10/examples/LISTExtension.json
 func ExampleMachineExtensionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybridcompute.NewMachineExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armhybridcompute.NewMachineExtensionsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<machine-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myMachine",
 		&armhybridcompute.MachineExtensionsClientListOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

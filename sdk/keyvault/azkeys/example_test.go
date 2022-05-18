@@ -12,6 +12,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
@@ -133,7 +134,7 @@ func ExampleClient_BeginDeleteKey() {
 	if err != nil {
 		panic(err)
 	}
-	pollResp, err := resp.PollUntilDone(context.TODO(), 1*time.Second)
+	pollResp, err := resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		panic(err)
 	}

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.5.2 (Unreleased)
+## 0.6.0 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,9 @@
   * `ListDeletedKeys` to `NewListDeletedKeysPager`
   * `ListPropertiesOfKeys` to `NewListPropertiesOfKeysPager`
   * `ListPropertiesOfKeyVersions` to `NewListPropertiesOfKeyVersionsPager`
+* Removed types `DeleteKeyPoller` and `RecoverDeletedKeyPoller`.
+* Methods `BeginDeleteKey` and `BeginRecoverDeletedKey` now return a `*runtime.Poller[T]` with their respective response types.
+* Option types with a `ResumeToken` field now take the token by value.
 
 ### Bugs Fixed
 

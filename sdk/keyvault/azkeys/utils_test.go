@@ -18,6 +18,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -157,11 +158,8 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 	return NewClient(vaultUrl, cred, options)
 }
 
-func delay() time.Duration {
-	if recording.GetRecordMode() == "playback" {
-		return 1 * time.Microsecond
-	}
-	return 250 * time.Millisecond
+func delay() *runtime.PollUntilDoneOptions {
+	return &runtime.PollUntilDoneOptions{Frequency: time.Second}
 }
 
 func cleanUpKey(t *testing.T, client *Client, key string) {

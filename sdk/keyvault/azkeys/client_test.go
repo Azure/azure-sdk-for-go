@@ -9,14 +9,12 @@ package azkeys
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -236,9 +234,9 @@ func TestDeleteKey(t *testing.T) {
 			require.NoError(t, err)
 			validateKey(t, to.Ptr(r.Key))
 
-			resp, err := client.BeginDeleteKey(ctx, key, nil)
+			poller, err := client.BeginDeleteKey(ctx, key, nil)
 			require.NoError(t, err)
-			deleteResp, err := resp.PollUntilDone(ctx, delay())
+			deleteResp, err := poller.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
 			require.NotNil(t, deleteResp.Key)
 			require.NotNil(t, deleteResp.Key.ID)
@@ -261,7 +259,7 @@ func TestDeleteKey(t *testing.T) {
 			_, err = client.GetDeletedKey(ctx, key, nil)
 			require.Error(t, err)
 
-			_, err = resp.FinalResponse(ctx)
+			_, err = poller.Result(ctx)
 			require.NoError(t, err)
 
 			_, err = client.BeginDeleteKey(ctx, "nonexistent", nil)
@@ -291,7 +289,7 @@ func TestBeginDeleteKeyRehydrate(t *testing.T) {
 	rt, err := deletePoller.ResumeToken()
 	require.NoError(t, err)
 
-	rehydrated, err := client.BeginDeleteKey(ctx, key, &BeginDeleteKeyOptions{ResumeToken: &rt})
+	rehydrated, err := client.BeginDeleteKey(ctx, key, &BeginDeleteKeyOptions{ResumeToken: rt})
 	require.NoError(t, err)
 
 	_, err = rehydrated.PollUntilDone(ctx, delay())
@@ -308,7 +306,7 @@ func TestBeginDeleteKeyRehydrate(t *testing.T) {
 	rt, err = recover.ResumeToken()
 	require.NoError(t, err)
 
-	rehydratedRecover, err := client.BeginRecoverDeletedKey(ctx, key, &BeginRecoverDeletedKeyOptions{ResumeToken: &rt})
+	rehydratedRecover, err := client.BeginRecoverDeletedKey(ctx, key, &BeginRecoverDeletedKeyOptions{ResumeToken: rt})
 	require.NoError(t, err)
 
 	_, err = rehydratedRecover.PollUntilDone(ctx, delay())
@@ -348,28 +346,23 @@ func TestBackupKey(t *testing.T) {
 			_, err = client.PurgeDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
 
-			_, err = client.GetKey(ctx, key, nil)
-			var httpErr *azcore.ResponseError
-			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
-
-			_, err = client.GetDeletedKey(ctx, key, nil)
-			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
-
-			time.Sleep(30 * delay())
-			// Poll this operation manually
-			var restoreResp RestoreKeyBackupResponse
-			var i int
-			for i = 0; i < 10; i++ {
-				restoreResp, err = client.RestoreKeyBackup(ctx, backupResp.Value, nil)
-				if err == nil {
-					break
+			const retries = 5
+			for i := 0; i < retries; i++ {
+				// unfortunately purging a deleted key is non-deterministic so we
+				// need to retry until we either succeed or hit the retry cap.
+				restoreResp, err := client.RestoreKeyBackup(ctx, backupResp.Value, nil)
+				if err != nil && i+1 == retries {
+					t.Fatal("retry limit reached")
+				} else if err != nil {
+					if recording.GetRecordMode() != recording.PlaybackMode {
+						time.Sleep(time.Minute)
+					}
+					continue
 				}
-				time.Sleep(delay())
+				require.NoError(t, err)
+				require.NotNil(t, restoreResp.Key)
+				break
 			}
-			require.NoError(t, err)
-			require.NotNil(t, restoreResp.Key)
 
 			// Now the Key should be Get-able
 			_, err = client.GetKey(ctx, key, nil)
@@ -717,8 +710,6 @@ func TestGetDeletedKey(t *testing.T) {
 			require.NoError(t, err)
 			_, err = poller.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
-
-			time.Sleep(10 * delay())
 
 			resp, err := client.GetDeletedKey(ctx, key, nil)
 			require.NoError(t, err)

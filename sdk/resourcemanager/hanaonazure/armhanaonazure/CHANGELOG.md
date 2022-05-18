@@ -1,5 +1,17 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*SapMonitorsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SapMonitorsClientCreateResponse], error)` to `(*runtime.Poller[SapMonitorsClientCreateResponse], error)`
+- Function `*SapMonitorsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SapMonitorsClientDeleteResponse], error)` to `(*runtime.Poller[SapMonitorsClientDeleteResponse], error)`
+- Function `*ProviderInstancesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ProviderInstancesClientCreateResponse], error)` to `(*runtime.Poller[ProviderInstancesClientCreateResponse], error)`
+- Function `*ProviderInstancesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ProviderInstancesClientDeleteResponse], error)` to `(*runtime.Poller[ProviderInstancesClientDeleteResponse], error)`
+- Function `ProviderInstanceListResult.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `SapMonitorListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

@@ -38,7 +38,7 @@ func NewObjectAnchorsAccountsClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewObjectAnchorsAccountsClient(subscriptionID string, credential azcore.Tok
 
 // Create - Creating or Updating an object anchors Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // objectAnchorsAccount - Object Anchors Account parameter.
@@ -98,7 +99,7 @@ func (client *ObjectAnchorsAccountsClient) createCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, objectAnchorsAccount)
 }
 
@@ -113,6 +114,7 @@ func (client *ObjectAnchorsAccountsClient) createHandleResponse(resp *http.Respo
 
 // Delete - Delete an Object Anchors Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // options - ObjectAnchorsAccountsClientDeleteOptions contains the optional parameters for the ObjectAnchorsAccountsClient.Delete
@@ -154,12 +156,13 @@ func (client *ObjectAnchorsAccountsClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieve an Object Anchors Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // options - ObjectAnchorsAccountsClientGetOptions contains the optional parameters for the ObjectAnchorsAccountsClient.Get
@@ -201,7 +204,7 @@ func (client *ObjectAnchorsAccountsClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -216,11 +219,12 @@ func (client *ObjectAnchorsAccountsClient) getHandleResponse(resp *http.Response
 
 // NewListByResourceGroupPager - List Resources by Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // options - ObjectAnchorsAccountsClientListByResourceGroupOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListByResourceGroup
 // method.
 func (client *ObjectAnchorsAccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *ObjectAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[ObjectAnchorsAccountsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ObjectAnchorsAccountsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ObjectAnchorsAccountsClientListByResourceGroupResponse]{
 		More: func(page ObjectAnchorsAccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -265,7 +269,7 @@ func (client *ObjectAnchorsAccountsClient) listByResourceGroupCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -280,10 +284,11 @@ func (client *ObjectAnchorsAccountsClient) listByResourceGroupHandleResponse(res
 
 // NewListBySubscriptionPager - List Object Anchors Accounts by Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // options - ObjectAnchorsAccountsClientListBySubscriptionOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListBySubscription
 // method.
 func (client *ObjectAnchorsAccountsClient) NewListBySubscriptionPager(options *ObjectAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[ObjectAnchorsAccountsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ObjectAnchorsAccountsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ObjectAnchorsAccountsClientListBySubscriptionResponse]{
 		More: func(page ObjectAnchorsAccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -324,7 +329,7 @@ func (client *ObjectAnchorsAccountsClient) listBySubscriptionCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -339,6 +344,7 @@ func (client *ObjectAnchorsAccountsClient) listBySubscriptionHandleResponse(resp
 
 // ListKeys - List Both of the 2 Keys of an object anchors Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // options - ObjectAnchorsAccountsClientListKeysOptions contains the optional parameters for the ObjectAnchorsAccountsClient.ListKeys
@@ -380,7 +386,7 @@ func (client *ObjectAnchorsAccountsClient) listKeysCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -395,6 +401,7 @@ func (client *ObjectAnchorsAccountsClient) listKeysHandleResponse(resp *http.Res
 
 // RegenerateKeys - Regenerate specified Key of an object anchors Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // regenerate - Required information for key regeneration.
@@ -437,7 +444,7 @@ func (client *ObjectAnchorsAccountsClient) regenerateKeysCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regenerate)
 }
 
@@ -452,6 +459,7 @@ func (client *ObjectAnchorsAccountsClient) regenerateKeysHandleResponse(resp *ht
 
 // Update - Updating an Object Anchors Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // objectAnchorsAccount - Object Anchors Account parameter.
@@ -494,7 +502,7 @@ func (client *ObjectAnchorsAccountsClient) updateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, objectAnchorsAccount)
 }
 

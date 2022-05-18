@@ -1,5 +1,25 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `WorkspaceList.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `SessionHostList.MarshalJSON` has been removed
+- Function `HostPoolList.MarshalJSON` has been removed
+- Function `StartMenuItemList.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResultWithSystemData.MarshalJSON` has been removed
+- Function `DesktopList.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `ScalingPlanList.MarshalJSON` has been removed
+- Function `ApplicationGroupList.MarshalJSON` has been removed
+- Function `ExpandMsixImageList.MarshalJSON` has been removed
+- Function `ApplicationList.MarshalJSON` has been removed
+- Function `UserSessionList.MarshalJSON` has been removed
+- Function `ResourceProviderOperationList.MarshalJSON` has been removed
+- Function `MSIXPackageList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

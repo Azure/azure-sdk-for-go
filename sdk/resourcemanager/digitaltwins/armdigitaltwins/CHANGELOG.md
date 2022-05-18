@@ -1,5 +1,28 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*EndpointClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[EndpointClientDeleteResponse], error)` to `(*runtime.Poller[EndpointClientDeleteResponse], error)`
+- Function `*EndpointClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[EndpointClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[EndpointClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClientDeleteResponse], error)` to `(*runtime.Poller[ClientDeleteResponse], error)`
+- Function `*TimeSeriesDatabaseConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[TimeSeriesDatabaseConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[TimeSeriesDatabaseConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*TimeSeriesDatabaseConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[TimeSeriesDatabaseConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[TimeSeriesDatabaseConnectionsClientDeleteResponse], error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientUpdateResponse], error)` to `(*runtime.Poller[ClientUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `PrivateEndpointConnectionsResponse.MarshalJSON` has been removed
+- Function `ErrorDefinition.MarshalJSON` has been removed
+- Function `Operation.MarshalJSON` has been removed
+- Function `DescriptionListResult.MarshalJSON` has been removed
+- Function `TimeSeriesDatabaseConnectionListResult.MarshalJSON` has been removed
+- Function `GroupIDInformationProperties.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `EndpointResourceListResult.MarshalJSON` has been removed
+- Function `GroupIDInformationResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

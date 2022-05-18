@@ -1,5 +1,13 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ADCCatalogsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ADCCatalogsClientDeleteResponse], error)` to `(*runtime.Poller[ADCCatalogsClientDeleteResponse], error)`
+- Function `OperationEntityListResult.MarshalJSON` has been removed
+- Function `ADCCatalogsListResult.MarshalJSON` has been removed
+
+
 ## 0.3.0 (2022-04-11)
 ### Breaking Changes
 

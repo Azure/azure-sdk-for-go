@@ -10,7 +10,7 @@ package armdatacatalog
 
 const (
 	moduleName    = "armdatacatalog"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v1.0.0"
 )
 
 // SKUType - Azure data catalog SKU.

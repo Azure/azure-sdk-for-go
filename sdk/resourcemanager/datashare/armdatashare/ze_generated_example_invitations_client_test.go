@@ -26,15 +26,15 @@ func ExampleInvitationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewInvitationsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewInvitationsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<invitation-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"Invitation1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,19 +50,19 @@ func ExampleInvitationsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewInvitationsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewInvitationsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<invitation-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"Invitation1",
 		armdatashare.Invitation{
 			Properties: &armdatashare.InvitationProperties{
 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-26T22:33:24.5785265Z"); return t }()),
-				TargetEmail:    to.Ptr("<target-email>"),
+				TargetEmail:    to.Ptr("receiver@microsoft.com"),
 			},
 		},
 		nil)
@@ -80,15 +80,15 @@ func ExampleInvitationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewInvitationsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewInvitationsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<invitation-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"Invitation1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,13 +102,13 @@ func ExampleInvitationsClient_NewListBySharePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewInvitationsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewInvitationsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySharePager("<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+	pager := client.NewListBySharePager("SampleResourceGroup",
+		"Account1",
+		"Share1",
 		&armdatashare.InvitationsClientListByShareOptions{SkipToken: nil,
 			Filter:  nil,
 			Orderby: nil,
@@ -117,7 +117,6 @@ func ExampleInvitationsClient_NewListBySharePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

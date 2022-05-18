@@ -1,5 +1,65 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*SnapshotsClient.BeginRestoreFiles` return value(s) have been changed from `(*armruntime.Poller[SnapshotsClientRestoreFilesResponse], error)` to `(*runtime.Poller[SnapshotsClientRestoreFilesResponse], error)`
+- Function `*SubvolumesClient.BeginGetMetadata` return value(s) have been changed from `(*armruntime.Poller[SubvolumesClientGetMetadataResponse], error)` to `(*runtime.Poller[SubvolumesClientGetMetadataResponse], error)`
+- Function `*PoolsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PoolsClientDeleteResponse], error)` to `(*runtime.Poller[PoolsClientDeleteResponse], error)`
+- Function `*VolumesClient.BeginPoolChange` return value(s) have been changed from `(*armruntime.Poller[VolumesClientPoolChangeResponse], error)` to `(*runtime.Poller[VolumesClientPoolChangeResponse], error)`
+- Function `*SnapshotsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SnapshotsClientDeleteResponse], error)` to `(*runtime.Poller[SnapshotsClientDeleteResponse], error)`
+- Function `*VolumesClient.BeginAuthorizeReplication` return value(s) have been changed from `(*armruntime.Poller[VolumesClientAuthorizeReplicationResponse], error)` to `(*runtime.Poller[VolumesClientAuthorizeReplicationResponse], error)`
+- Function `*VolumeGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VolumeGroupsClientDeleteResponse], error)` to `(*runtime.Poller[VolumeGroupsClientDeleteResponse], error)`
+- Function `*VolumesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VolumesClientDeleteResponse], error)` to `(*runtime.Poller[VolumesClientDeleteResponse], error)`
+- Function `*SubvolumesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SubvolumesClientDeleteResponse], error)` to `(*runtime.Poller[SubvolumesClientDeleteResponse], error)`
+- Function `*VolumesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VolumesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VolumesClientCreateOrUpdateResponse], error)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountsClientDeleteResponse], error)` to `(*runtime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*BackupPoliciesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[BackupPoliciesClientCreateResponse], error)` to `(*runtime.Poller[BackupPoliciesClientCreateResponse], error)`
+- Function `*SnapshotsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SnapshotsClientCreateResponse], error)` to `(*runtime.Poller[SnapshotsClientCreateResponse], error)`
+- Function `*BackupsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[BackupsClientUpdateResponse], error)` to `(*runtime.Poller[BackupsClientUpdateResponse], error)`
+- Function `*VolumesClient.BeginBreakReplication` return value(s) have been changed from `(*armruntime.Poller[VolumesClientBreakReplicationResponse], error)` to `(*runtime.Poller[VolumesClientBreakReplicationResponse], error)`
+- Function `*SubvolumesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[SubvolumesClientUpdateResponse], error)` to `(*runtime.Poller[SubvolumesClientUpdateResponse], error)`
+- Function `*BackupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BackupsClientDeleteResponse], error)` to `(*runtime.Poller[BackupsClientDeleteResponse], error)`
+- Function `*VolumesClient.BeginReInitializeReplication` return value(s) have been changed from `(*armruntime.Poller[VolumesClientReInitializeReplicationResponse], error)` to `(*runtime.Poller[VolumesClientReInitializeReplicationResponse], error)`
+- Function `*SnapshotPoliciesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[SnapshotPoliciesClientUpdateResponse], error)` to `(*runtime.Poller[SnapshotPoliciesClientUpdateResponse], error)`
+- Function `*BackupPoliciesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[BackupPoliciesClientUpdateResponse], error)` to `(*runtime.Poller[BackupPoliciesClientUpdateResponse], error)`
+- Function `*VolumesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VolumesClientUpdateResponse], error)` to `(*runtime.Poller[VolumesClientUpdateResponse], error)`
+- Function `*PoolsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PoolsClientUpdateResponse], error)` to `(*runtime.Poller[PoolsClientUpdateResponse], error)`
+- Function `*BackupsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[BackupsClientCreateResponse], error)` to `(*runtime.Poller[BackupsClientCreateResponse], error)`
+- Function `*BackupPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BackupPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[BackupPoliciesClientDeleteResponse], error)`
+- Function `*PoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PoolsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PoolsClientCreateOrUpdateResponse], error)`
+- Function `*AccountsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AccountsClientCreateOrUpdateResponse], error)`
+- Function `*VolumesClient.BeginResyncReplication` return value(s) have been changed from `(*armruntime.Poller[VolumesClientResyncReplicationResponse], error)` to `(*runtime.Poller[VolumesClientResyncReplicationResponse], error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientUpdateResponse], error)` to `(*runtime.Poller[AccountsClientUpdateResponse], error)`
+- Function `*VolumesClient.BeginDeleteReplication` return value(s) have been changed from `(*armruntime.Poller[VolumesClientDeleteReplicationResponse], error)` to `(*runtime.Poller[VolumesClientDeleteReplicationResponse], error)`
+- Function `*AccountBackupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountBackupsClientDeleteResponse], error)` to `(*runtime.Poller[AccountBackupsClientDeleteResponse], error)`
+- Function `*SnapshotPoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SnapshotPoliciesClientDeleteResponse], error)` to `(*runtime.Poller[SnapshotPoliciesClientDeleteResponse], error)`
+- Function `*SnapshotsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[SnapshotsClientUpdateResponse], error)` to `(*runtime.Poller[SnapshotsClientUpdateResponse], error)`
+- Function `*VolumesClient.BeginRevert` return value(s) have been changed from `(*armruntime.Poller[VolumesClientRevertResponse], error)` to `(*runtime.Poller[VolumesClientRevertResponse], error)`
+- Function `*VolumeGroupsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[VolumeGroupsClientCreateResponse], error)` to `(*runtime.Poller[VolumeGroupsClientCreateResponse], error)`
+- Function `*SubvolumesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SubvolumesClientCreateResponse], error)` to `(*runtime.Poller[SubvolumesClientCreateResponse], error)`
+- Function `SnapshotsList.MarshalJSON` has been removed
+- Function `BackupPolicyDetails.MarshalJSON` has been removed
+- Function `AccountList.MarshalJSON` has been removed
+- Function `SnapshotPoliciesList.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `SnapshotPolicyVolumeList.MarshalJSON` has been removed
+- Function `BackupsList.MarshalJSON` has been removed
+- Function `VolumeGroup.MarshalJSON` has been removed
+- Function `BackupPoliciesList.MarshalJSON` has been removed
+- Function `SubvolumesList.MarshalJSON` has been removed
+- Function `SnapshotPolicyDetails.MarshalJSON` has been removed
+- Function `CapacityPoolList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `VaultList.MarshalJSON` has been removed
+- Function `VolumeGroupList.MarshalJSON` has been removed
+- Function `SubscriptionQuotaItemList.MarshalJSON` has been removed
+- Function `VolumeList.MarshalJSON` has been removed
+- Function `MountTarget.MarshalJSON` has been removed
+- Function `SubvolumeModelProperties.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

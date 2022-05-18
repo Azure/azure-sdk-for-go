@@ -39,7 +39,7 @@ func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,28 +57,30 @@ func NewBackupPoliciesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreate - Create a backup policy for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // backupPolicyName - Backup policy Name which uniquely identify backup policy.
 // body - Backup policy object supplied in the body of the operation.
 // options - BackupPoliciesClientBeginCreateOptions contains the optional parameters for the BackupPoliciesClient.BeginCreate
 // method.
-func (client *BackupPoliciesClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicy, options *BackupPoliciesClientBeginCreateOptions) (*armruntime.Poller[BackupPoliciesClientCreateResponse], error) {
+func (client *BackupPoliciesClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicy, options *BackupPoliciesClientBeginCreateOptions) (*runtime.Poller[BackupPoliciesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, backupPolicyName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BackupPoliciesClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[BackupPoliciesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[BackupPoliciesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupPoliciesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create a backup policy for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *BackupPoliciesClient) create(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicy, options *BackupPoliciesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, backupPolicyName, body, options)
 	if err != nil {
@@ -120,33 +122,35 @@ func (client *BackupPoliciesClient) createCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginDelete - Delete backup policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // backupPolicyName - Backup policy Name which uniquely identify backup policy.
 // options - BackupPoliciesClientBeginDeleteOptions contains the optional parameters for the BackupPoliciesClient.BeginDelete
 // method.
-func (client *BackupPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, options *BackupPoliciesClientBeginDeleteOptions) (*armruntime.Poller[BackupPoliciesClientDeleteResponse], error) {
+func (client *BackupPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, options *BackupPoliciesClientBeginDeleteOptions) (*runtime.Poller[BackupPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, backupPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BackupPoliciesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[BackupPoliciesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[BackupPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete backup policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *BackupPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, options *BackupPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, backupPolicyName, options)
 	if err != nil {
@@ -193,6 +197,7 @@ func (client *BackupPoliciesClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Get a particular backup Policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // backupPolicyName - Backup policy Name which uniquely identify backup policy.
@@ -238,7 +243,7 @@ func (client *BackupPoliciesClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -253,11 +258,12 @@ func (client *BackupPoliciesClient) getHandleResponse(resp *http.Response) (Back
 
 // NewListPager - List backup policies for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - BackupPoliciesClientListOptions contains the optional parameters for the BackupPoliciesClient.List method.
 func (client *BackupPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *BackupPoliciesClientListOptions) *runtime.Pager[BackupPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BackupPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BackupPoliciesClientListResponse]{
 		More: func(page BackupPoliciesClientListResponse) bool {
 			return false
 		},
@@ -300,7 +306,7 @@ func (client *BackupPoliciesClient) listCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -315,28 +321,30 @@ func (client *BackupPoliciesClient) listHandleResponse(resp *http.Response) (Bac
 
 // BeginUpdate - Patch a backup policy for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // backupPolicyName - Backup policy Name which uniquely identify backup policy.
 // body - Backup policy object supplied in the body of the operation.
 // options - BackupPoliciesClientBeginUpdateOptions contains the optional parameters for the BackupPoliciesClient.BeginUpdate
 // method.
-func (client *BackupPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicyPatch, options *BackupPoliciesClientBeginUpdateOptions) (*armruntime.Poller[BackupPoliciesClientUpdateResponse], error) {
+func (client *BackupPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicyPatch, options *BackupPoliciesClientBeginUpdateOptions) (*runtime.Poller[BackupPoliciesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, backupPolicyName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[BackupPoliciesClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[BackupPoliciesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[BackupPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[BackupPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch a backup policy for Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *BackupPoliciesClient) update(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body BackupPolicyPatch, options *BackupPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, backupPolicyName, body, options)
 	if err != nil {
@@ -378,6 +386,6 @@ func (client *BackupPoliciesClient) updateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
@@ -26,19 +24,18 @@ func ExampleVolumesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
+	pager := client.NewListPager("myRG",
+		"account1",
+		"pool1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleVolumesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,31 +75,31 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		armnetapp.Volume{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armnetapp.VolumeProperties{
-				CreationToken:       to.Ptr("<creation-token>"),
-				EncryptionKeySource: to.Ptr("<encryption-key-source>"),
+				CreationToken:       to.Ptr("my-unique-file-path"),
+				EncryptionKeySource: to.Ptr("Microsoft.KeyVault"),
 				ServiceLevel:        to.Ptr(armnetapp.ServiceLevelPremium),
-				SubnetID:            to.Ptr("<subnet-id>"),
+				SubnetID:            to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 				ThroughputMibps:     to.Ptr[float32](128),
 				UsageThreshold:      to.Ptr[int64](107374182400),
 			},
 		},
-		&armnetapp.VolumesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -117,21 +114,21 @@ func ExampleVolumesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		armnetapp.VolumePatch{},
-		&armnetapp.VolumesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -146,22 +143,20 @@ func ExampleVolumesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
-		&armnetapp.VolumesClientBeginDeleteOptions{ForceDelete: nil,
-			ResumeToken: "",
-		})
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
+		&armnetapp.VolumesClientBeginDeleteOptions{ForceDelete: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -174,23 +169,23 @@ func ExampleVolumesClient_BeginRevert() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRevert(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		armnetapp.VolumeRevert{
-			SnapshotID: to.Ptr("<snapshot-id>"),
+			SnapshotID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
 		},
-		&armnetapp.VolumesClientBeginRevertOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -203,24 +198,23 @@ func ExampleVolumesClient_BeginBreakReplication() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginBreakReplication(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		&armnetapp.VolumesClientBeginBreakReplicationOptions{Body: &armnetapp.BreakReplicationRequest{
 			ForceBreakReplication: to.Ptr(false),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -233,15 +227,15 @@ func ExampleVolumesClient_ReplicationStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ReplicationStatus(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -257,20 +251,20 @@ func ExampleVolumesClient_BeginResyncReplication() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResyncReplication(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
-		&armnetapp.VolumesClientBeginResyncReplicationOptions{ResumeToken: ""})
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -283,20 +277,20 @@ func ExampleVolumesClient_BeginDeleteReplication() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeleteReplication(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
-		&armnetapp.VolumesClientBeginDeleteReplicationOptions{ResumeToken: ""})
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -309,23 +303,23 @@ func ExampleVolumesClient_BeginAuthorizeReplication() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginAuthorizeReplication(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		armnetapp.AuthorizeRequest{
-			RemoteVolumeResourceID: to.Ptr("<remote-volume-resource-id>"),
+			RemoteVolumeResourceID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRemoteRG/providers/Microsoft.NetApp/netAppAccounts/remoteAccount1/capacityPools/remotePool1/volumes/remoteVolume1"),
 		},
-		&armnetapp.VolumesClientBeginAuthorizeReplicationOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -338,20 +332,20 @@ func ExampleVolumesClient_BeginReInitializeReplication() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginReInitializeReplication(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
-		&armnetapp.VolumesClientBeginReInitializeReplicationOptions{ResumeToken: ""})
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -364,23 +358,23 @@ func ExampleVolumesClient_BeginPoolChange() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumesClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPoolChange(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		armnetapp.PoolChangeRequest{
-			NewPoolResourceID: to.Ptr("<new-pool-resource-id>"),
+			NewPoolResourceID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
 		},
-		&armnetapp.VolumesClientBeginPoolChangeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

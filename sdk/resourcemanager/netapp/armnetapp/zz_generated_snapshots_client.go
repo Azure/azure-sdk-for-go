@@ -39,7 +39,7 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreate - Create the specified snapshot within the given volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -64,22 +65,23 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 // snapshotName - The name of the snapshot
 // body - Snapshot object supplied in the body of the operation.
 // options - SnapshotsClientBeginCreateOptions contains the optional parameters for the SnapshotsClient.BeginCreate method.
-func (client *SnapshotsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body Snapshot, options *SnapshotsClientBeginCreateOptions) (*armruntime.Poller[SnapshotsClientCreateResponse], error) {
+func (client *SnapshotsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body Snapshot, options *SnapshotsClientBeginCreateOptions) (*runtime.Poller[SnapshotsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SnapshotsClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SnapshotsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SnapshotsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SnapshotsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create the specified snapshot within the given volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *SnapshotsClient) create(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body Snapshot, options *SnapshotsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, body, options)
 	if err != nil {
@@ -129,34 +131,36 @@ func (client *SnapshotsClient) createCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginDelete - Delete snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // snapshotName - The name of the snapshot
 // options - SnapshotsClientBeginDeleteOptions contains the optional parameters for the SnapshotsClient.BeginDelete method.
-func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*armruntime.Poller[SnapshotsClientDeleteResponse], error) {
+func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*runtime.Poller[SnapshotsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SnapshotsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SnapshotsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SnapshotsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SnapshotsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *SnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, options *SnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, options)
 	if err != nil {
@@ -211,6 +215,7 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Get details of the specified snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -266,7 +271,7 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -281,13 +286,14 @@ func (client *SnapshotsClient) getHandleResponse(resp *http.Response) (Snapshots
 
 // NewListPager - List all snapshots associated with the volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.List method.
 func (client *SnapshotsClient) NewListPager(resourceGroupName string, accountName string, poolName string, volumeName string, options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SnapshotsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListResponse]{
 		More: func(page SnapshotsClientListResponse) bool {
 			return false
 		},
@@ -338,7 +344,7 @@ func (client *SnapshotsClient) listCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -353,6 +359,7 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 
 // BeginRestoreFiles - Restore the specified files from the specified snapshot to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -361,20 +368,21 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 // body - Restore payload supplied in the body of the operation.
 // options - SnapshotsClientBeginRestoreFilesOptions contains the optional parameters for the SnapshotsClient.BeginRestoreFiles
 // method.
-func (client *SnapshotsClient) BeginRestoreFiles(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body SnapshotRestoreFiles, options *SnapshotsClientBeginRestoreFilesOptions) (*armruntime.Poller[SnapshotsClientRestoreFilesResponse], error) {
+func (client *SnapshotsClient) BeginRestoreFiles(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body SnapshotRestoreFiles, options *SnapshotsClientBeginRestoreFilesOptions) (*runtime.Poller[SnapshotsClientRestoreFilesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restoreFiles(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SnapshotsClientRestoreFilesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SnapshotsClientRestoreFilesResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SnapshotsClientRestoreFilesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SnapshotsClientRestoreFilesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // RestoreFiles - Restore the specified files from the specified snapshot to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *SnapshotsClient) restoreFiles(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body SnapshotRestoreFiles, options *SnapshotsClientBeginRestoreFilesOptions) (*http.Response, error) {
 	req, err := client.restoreFilesCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, body, options)
 	if err != nil {
@@ -429,6 +437,7 @@ func (client *SnapshotsClient) restoreFilesCreateRequest(ctx context.Context, re
 
 // BeginUpdate - Patch a snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -436,22 +445,23 @@ func (client *SnapshotsClient) restoreFilesCreateRequest(ctx context.Context, re
 // snapshotName - The name of the snapshot
 // body - Snapshot object supplied in the body of the operation.
 // options - SnapshotsClientBeginUpdateOptions contains the optional parameters for the SnapshotsClient.BeginUpdate method.
-func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body interface{}, options *SnapshotsClientBeginUpdateOptions) (*armruntime.Poller[SnapshotsClientUpdateResponse], error) {
+func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body interface{}, options *SnapshotsClientBeginUpdateOptions) (*runtime.Poller[SnapshotsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SnapshotsClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SnapshotsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SnapshotsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SnapshotsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch a snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *SnapshotsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string, body interface{}, options *SnapshotsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName, body, options)
 	if err != nil {
@@ -501,6 +511,6 @@ func (client *SnapshotsClient) updateCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

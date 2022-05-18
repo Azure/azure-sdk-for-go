@@ -39,7 +39,7 @@ func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,28 +57,30 @@ func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // BeginCreateOrUpdate - Create or Update a capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // body - Capacity pool object supplied in the body of the operation.
 // options - PoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the PoolsClient.BeginCreateOrUpdate
 // method.
-func (client *PoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPool, options *PoolsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PoolsClientCreateOrUpdateResponse], error) {
+func (client *PoolsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPool, options *PoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PoolsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, poolName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PoolsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PoolsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PoolsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PoolsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or Update a capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *PoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPool, options *PoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, poolName, body, options)
 	if err != nil {
@@ -120,32 +122,34 @@ func (client *PoolsClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginDelete - Delete the specified capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // options - PoolsClientBeginDeleteOptions contains the optional parameters for the PoolsClient.BeginDelete method.
-func (client *PoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolsClientBeginDeleteOptions) (*armruntime.Poller[PoolsClientDeleteResponse], error) {
+func (client *PoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolsClientBeginDeleteOptions) (*runtime.Poller[PoolsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PoolsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PoolsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PoolsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PoolsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete the specified capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, options)
 	if err != nil {
@@ -192,6 +196,7 @@ func (client *PoolsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 
 // Get - Get details of the specified capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -237,7 +242,7 @@ func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,11 +257,12 @@ func (client *PoolsClient) getHandleResponse(resp *http.Response) (PoolsClientGe
 
 // NewListPager - List all capacity pools in the NetApp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - PoolsClientListOptions contains the optional parameters for the PoolsClient.List method.
 func (client *PoolsClient) NewListPager(resourceGroupName string, accountName string, options *PoolsClientListOptions) *runtime.Pager[PoolsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PoolsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PoolsClientListResponse]{
 		More: func(page PoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -305,7 +311,7 @@ func (client *PoolsClient) listCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -320,27 +326,29 @@ func (client *PoolsClient) listHandleResponse(resp *http.Response) (PoolsClientL
 
 // BeginUpdate - Patch the specified capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // body - Capacity pool object supplied in the body of the operation.
 // options - PoolsClientBeginUpdateOptions contains the optional parameters for the PoolsClient.BeginUpdate method.
-func (client *PoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPoolPatch, options *PoolsClientBeginUpdateOptions) (*armruntime.Poller[PoolsClientUpdateResponse], error) {
+func (client *PoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPoolPatch, options *PoolsClientBeginUpdateOptions) (*runtime.Poller[PoolsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PoolsClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PoolsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PoolsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PoolsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch the specified capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *PoolsClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, body CapacityPoolPatch, options *PoolsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, body, options)
 	if err != nil {
@@ -382,6 +390,6 @@ func (client *PoolsClient) updateCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

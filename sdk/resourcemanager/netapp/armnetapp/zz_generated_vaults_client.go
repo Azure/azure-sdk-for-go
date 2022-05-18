@@ -39,7 +39,7 @@ func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,11 +57,12 @@ func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - List vaults for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - VaultsClientListOptions contains the optional parameters for the VaultsClient.List method.
 func (client *VaultsClient) NewListPager(resourceGroupName string, accountName string, options *VaultsClientListOptions) *runtime.Pager[VaultsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VaultsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VaultsClientListResponse]{
 		More: func(page VaultsClientListResponse) bool {
 			return false
 		},
@@ -104,7 +105,7 @@ func (client *VaultsClient) listCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

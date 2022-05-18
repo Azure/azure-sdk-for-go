@@ -39,7 +39,7 @@ func NewAccountBackupsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,27 +57,29 @@ func NewAccountBackupsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginDelete - Delete the specified Backup for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // backupName - The name of the backup
 // options - AccountBackupsClientBeginDeleteOptions contains the optional parameters for the AccountBackupsClient.BeginDelete
 // method.
-func (client *AccountBackupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientBeginDeleteOptions) (*armruntime.Poller[AccountBackupsClientDeleteResponse], error) {
+func (client *AccountBackupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientBeginDeleteOptions) (*runtime.Poller[AccountBackupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, backupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountBackupsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountBackupsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AccountBackupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountBackupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete the specified Backup for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *AccountBackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupName string, options *AccountBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, backupName, options)
 	if err != nil {
@@ -124,6 +126,7 @@ func (client *AccountBackupsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets the specified backup for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // backupName - The name of the backup
@@ -169,7 +172,7 @@ func (client *AccountBackupsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -184,11 +187,12 @@ func (client *AccountBackupsClient) getHandleResponse(resp *http.Response) (Acco
 
 // NewListPager - List all Backups for a Netapp Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - AccountBackupsClientListOptions contains the optional parameters for the AccountBackupsClient.List method.
 func (client *AccountBackupsClient) NewListPager(resourceGroupName string, accountName string, options *AccountBackupsClientListOptions) *runtime.Pager[AccountBackupsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountBackupsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountBackupsClientListResponse]{
 		More: func(page AccountBackupsClientListResponse) bool {
 			return false
 		},
@@ -231,7 +235,7 @@ func (client *AccountBackupsClient) listCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

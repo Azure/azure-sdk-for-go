@@ -39,7 +39,7 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CheckFilePathAvailability - Check if a file path is available.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // location - The location
 // body - File path availability request.
 // options - ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
@@ -94,7 +95,7 @@ func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -109,6 +110,7 @@ func (client *ResourceClient) checkFilePathAvailabilityHandleResponse(resp *http
 
 // CheckNameAvailability - Check if a resource name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // location - The location
 // body - Name availability request.
 // options - ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
@@ -146,7 +148,7 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -161,6 +163,7 @@ func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Res
 
 // CheckQuotaAvailability - Check if a quota is available.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // location - The location
 // body - Quota availability request.
 // options - ResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the ResourceClient.CheckQuotaAvailability
@@ -198,7 +201,7 @@ func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

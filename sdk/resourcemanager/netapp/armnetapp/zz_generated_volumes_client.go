@@ -40,7 +40,7 @@ func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginAuthorizeReplication - Authorize the replication connection on the source volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -65,22 +66,23 @@ func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, 
 // body - Authorize request object supplied in the body of the operation.
 // options - VolumesClientBeginAuthorizeReplicationOptions contains the optional parameters for the VolumesClient.BeginAuthorizeReplication
 // method.
-func (client *VolumesClient) BeginAuthorizeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body AuthorizeRequest, options *VolumesClientBeginAuthorizeReplicationOptions) (*armruntime.Poller[VolumesClientAuthorizeReplicationResponse], error) {
+func (client *VolumesClient) BeginAuthorizeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body AuthorizeRequest, options *VolumesClientBeginAuthorizeReplicationOptions) (*runtime.Poller[VolumesClientAuthorizeReplicationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.authorizeReplication(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientAuthorizeReplicationResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientAuthorizeReplicationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientAuthorizeReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientAuthorizeReplicationResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // AuthorizeReplication - Authorize the replication connection on the source volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) authorizeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body AuthorizeRequest, options *VolumesClientBeginAuthorizeReplicationOptions) (*http.Response, error) {
 	req, err := client.authorizeReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -131,28 +133,30 @@ func (client *VolumesClient) authorizeReplicationCreateRequest(ctx context.Conte
 
 // BeginBreakReplication - Break the replication connection on the destination volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - VolumesClientBeginBreakReplicationOptions contains the optional parameters for the VolumesClient.BeginBreakReplication
 // method.
-func (client *VolumesClient) BeginBreakReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakReplicationOptions) (*armruntime.Poller[VolumesClientBreakReplicationResponse], error) {
+func (client *VolumesClient) BeginBreakReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakReplicationOptions) (*runtime.Poller[VolumesClientBreakReplicationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.breakReplication(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientBreakReplicationResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientBreakReplicationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientBreakReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientBreakReplicationResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // BreakReplication - Break the replication connection on the destination volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) breakReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginBreakReplicationOptions) (*http.Response, error) {
 	req, err := client.breakReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -206,6 +210,7 @@ func (client *VolumesClient) breakReplicationCreateRequest(ctx context.Context, 
 
 // BeginCreateOrUpdate - Create or update the specified volume within the capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -213,22 +218,23 @@ func (client *VolumesClient) breakReplicationCreateRequest(ctx context.Context, 
 // body - Volume object supplied in the body of the operation.
 // options - VolumesClientBeginCreateOrUpdateOptions contains the optional parameters for the VolumesClient.BeginCreateOrUpdate
 // method.
-func (client *VolumesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body Volume, options *VolumesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VolumesClientCreateOrUpdateResponse], error) {
+func (client *VolumesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body Volume, options *VolumesClientBeginCreateOrUpdateOptions) (*runtime.Poller[VolumesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update the specified volume within the capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body Volume, options *VolumesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -274,33 +280,35 @@ func (client *VolumesClient) createOrUpdateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginDelete - Delete the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - VolumesClientBeginDeleteOptions contains the optional parameters for the VolumesClient.BeginDelete method.
-func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*armruntime.Poller[VolumesClientDeleteResponse], error) {
+func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*runtime.Poller[VolumesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -354,28 +362,30 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // BeginDeleteReplication - Delete the replication connection on the destination volume, and send release to the source replication
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - VolumesClientBeginDeleteReplicationOptions contains the optional parameters for the VolumesClient.BeginDeleteReplication
 // method.
-func (client *VolumesClient) BeginDeleteReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteReplicationOptions) (*armruntime.Poller[VolumesClientDeleteReplicationResponse], error) {
+func (client *VolumesClient) BeginDeleteReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteReplicationOptions) (*runtime.Poller[VolumesClientDeleteReplicationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteReplication(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientDeleteReplicationResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientDeleteReplicationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientDeleteReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientDeleteReplicationResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeleteReplication - Delete the replication connection on the destination volume, and send release to the source replication
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) deleteReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginDeleteReplicationOptions) (*http.Response, error) {
 	req, err := client.deleteReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -426,6 +436,7 @@ func (client *VolumesClient) deleteReplicationCreateRequest(ctx context.Context,
 
 // Get - Get the details of the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -476,7 +487,7 @@ func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -491,12 +502,13 @@ func (client *VolumesClient) getHandleResponse(resp *http.Response) (VolumesClie
 
 // NewListPager - List all volumes within the capacity pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // options - VolumesClientListOptions contains the optional parameters for the VolumesClient.List method.
 func (client *VolumesClient) NewListPager(resourceGroupName string, accountName string, poolName string, options *VolumesClientListOptions) *runtime.Pager[VolumesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VolumesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VolumesClientListResponse]{
 		More: func(page VolumesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -549,7 +561,7 @@ func (client *VolumesClient) listCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -564,28 +576,30 @@ func (client *VolumesClient) listHandleResponse(resp *http.Response) (VolumesCli
 
 // BeginPoolChange - Moves volume to another pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // body - Move volume to the pool supplied in the body of the operation.
 // options - VolumesClientBeginPoolChangeOptions contains the optional parameters for the VolumesClient.BeginPoolChange method.
-func (client *VolumesClient) BeginPoolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, options *VolumesClientBeginPoolChangeOptions) (*armruntime.Poller[VolumesClientPoolChangeResponse], error) {
+func (client *VolumesClient) BeginPoolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, options *VolumesClientBeginPoolChangeOptions) (*runtime.Poller[VolumesClientPoolChangeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.poolChange(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientPoolChangeResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientPoolChangeResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientPoolChangeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientPoolChangeResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // PoolChange - Moves volume to another pool
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) poolChange(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body PoolChangeRequest, options *VolumesClientBeginPoolChangeOptions) (*http.Response, error) {
 	req, err := client.poolChangeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -636,28 +650,30 @@ func (client *VolumesClient) poolChangeCreateRequest(ctx context.Context, resour
 
 // BeginReInitializeReplication - Re-Initializes the replication connection on the destination volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - VolumesClientBeginReInitializeReplicationOptions contains the optional parameters for the VolumesClient.BeginReInitializeReplication
 // method.
-func (client *VolumesClient) BeginReInitializeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginReInitializeReplicationOptions) (*armruntime.Poller[VolumesClientReInitializeReplicationResponse], error) {
+func (client *VolumesClient) BeginReInitializeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginReInitializeReplicationOptions) (*runtime.Poller[VolumesClientReInitializeReplicationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.reInitializeReplication(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientReInitializeReplicationResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientReInitializeReplicationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientReInitializeReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientReInitializeReplicationResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ReInitializeReplication - Re-Initializes the replication connection on the destination volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) reInitializeReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginReInitializeReplicationOptions) (*http.Response, error) {
 	req, err := client.reInitializeReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -708,6 +724,7 @@ func (client *VolumesClient) reInitializeReplicationCreateRequest(ctx context.Co
 
 // ReplicationStatus - Get the status of the replication
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
@@ -759,7 +776,7 @@ func (client *VolumesClient) replicationStatusCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -775,29 +792,31 @@ func (client *VolumesClient) replicationStatusHandleResponse(resp *http.Response
 // BeginResyncReplication - Resync the connection on the destination volume. If the operation is ran on the source volume
 // it will reverse-resync the connection and sync from destination to source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // options - VolumesClientBeginResyncReplicationOptions contains the optional parameters for the VolumesClient.BeginResyncReplication
 // method.
-func (client *VolumesClient) BeginResyncReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResyncReplicationOptions) (*armruntime.Poller[VolumesClientResyncReplicationResponse], error) {
+func (client *VolumesClient) BeginResyncReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResyncReplicationOptions) (*runtime.Poller[VolumesClientResyncReplicationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.resyncReplication(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientResyncReplicationResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientResyncReplicationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientResyncReplicationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientResyncReplicationResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ResyncReplication - Resync the connection on the destination volume. If the operation is ran on the source volume it will
 // reverse-resync the connection and sync from destination to source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) resyncReplication(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginResyncReplicationOptions) (*http.Response, error) {
 	req, err := client.resyncReplicationCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
 	if err != nil {
@@ -848,28 +867,30 @@ func (client *VolumesClient) resyncReplicationCreateRequest(ctx context.Context,
 
 // BeginRevert - Revert a volume to the snapshot specified in the body
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // body - Object for snapshot to revert supplied in the body of the operation.
 // options - VolumesClientBeginRevertOptions contains the optional parameters for the VolumesClient.BeginRevert method.
-func (client *VolumesClient) BeginRevert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, options *VolumesClientBeginRevertOptions) (*armruntime.Poller[VolumesClientRevertResponse], error) {
+func (client *VolumesClient) BeginRevert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, options *VolumesClientBeginRevertOptions) (*runtime.Poller[VolumesClientRevertResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.revert(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientRevertResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientRevertResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientRevertResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientRevertResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Revert - Revert a volume to the snapshot specified in the body
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) revert(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumeRevert, options *VolumesClientBeginRevertOptions) (*http.Response, error) {
 	req, err := client.revertCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -920,28 +941,30 @@ func (client *VolumesClient) revertCreateRequest(ctx context.Context, resourceGr
 
 // BeginUpdate - Patch the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // poolName - The name of the capacity pool
 // volumeName - The name of the volume
 // body - Volume object supplied in the body of the operation.
 // options - VolumesClientBeginUpdateOptions contains the optional parameters for the VolumesClient.BeginUpdate method.
-func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, options *VolumesClientBeginUpdateOptions) (*armruntime.Poller[VolumesClientUpdateResponse], error) {
+func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, options *VolumesClientBeginUpdateOptions) (*runtime.Poller[VolumesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VolumesClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VolumesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch the specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumesClient) update(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body VolumePatch, options *VolumesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, body, options)
 	if err != nil {
@@ -987,6 +1010,6 @@ func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

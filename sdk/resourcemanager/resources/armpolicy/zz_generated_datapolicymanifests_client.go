@@ -36,7 +36,7 @@ func NewDataPolicyManifestsClient(credential azcore.TokenCredential, options *ar
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewDataPolicyManifestsClient(credential azcore.TokenCredential, options *ar
 
 // GetByPolicyMode - This operation retrieves the data policy manifest with the given policy mode.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // policyMode - The policy mode of the data policy manifest to get.
 // options - DataPolicyManifestsClientGetByPolicyModeOptions contains the optional parameters for the DataPolicyManifestsClient.GetByPolicyMode
 // method.
@@ -85,7 +86,7 @@ func (client *DataPolicyManifestsClient) getByPolicyModeCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -104,10 +105,11 @@ func (client *DataPolicyManifestsClient) getByPolicyModeHandleResponse(resp *htt
 // list only includes all data policy manifests that have a namespace matching
 // the provided value.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // options - DataPolicyManifestsClientListOptions contains the optional parameters for the DataPolicyManifestsClient.List
 // method.
 func (client *DataPolicyManifestsClient) NewListPager(options *DataPolicyManifestsClientListOptions) *runtime.Pager[DataPolicyManifestsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataPolicyManifestsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataPolicyManifestsClientListResponse]{
 		More: func(page DataPolicyManifestsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -149,7 +151,7 @@ func (client *DataPolicyManifestsClient) listCreateRequest(ctx context.Context, 
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

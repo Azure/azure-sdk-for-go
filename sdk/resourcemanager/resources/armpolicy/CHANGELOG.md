@@ -1,5 +1,22 @@
 # Release History
 
+## 0.6.0 (2022-05-18)
+### Breaking Changes
+
+- Function `AssignmentListResult.MarshalJSON` has been removed
+- Function `ExemptionListResult.MarshalJSON` has been removed
+- Function `DataPolicyManifestProperties.MarshalJSON` has been removed
+- Function `SetDefinitionListResult.MarshalJSON` has been removed
+- Function `AliasPath.MarshalJSON` has been removed
+- Function `ResourceTypeAliases.MarshalJSON` has been removed
+- Function `DataManifestResourceFunctionsDefinition.MarshalJSON` has been removed
+- Function `DataPolicyManifestListResult.MarshalJSON` has been removed
+- Function `Alias.MarshalJSON` has been removed
+- Function `DefinitionListResult.MarshalJSON` has been removed
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Function `DataManifestCustomResourceFunctionDefinition.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

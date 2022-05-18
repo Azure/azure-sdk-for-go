@@ -33,7 +33,7 @@ func NewExchangeClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,24 +50,26 @@ func NewExchangeClient(credential azcore.TokenCredential, options *arm.ClientOpt
 
 // BeginPost - Returns one or more Reservations in exchange for one or more Reservation purchases.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // body - Request containing the refunds and purchases that need to be executed.
 // options - ExchangeClientBeginPostOptions contains the optional parameters for the ExchangeClient.BeginPost method.
-func (client *ExchangeClient) BeginPost(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*armruntime.Poller[ExchangeClientPostResponse], error) {
+func (client *ExchangeClient) BeginPost(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*runtime.Poller[ExchangeClientPostResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.post(ctx, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ExchangeClientPostResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ExchangeClientPostResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ExchangeClientPostResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ExchangeClientPostResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Post - Returns one or more Reservations in exchange for one or more Reservation purchases.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *ExchangeClient) post(ctx context.Context, body ExchangeRequest, options *ExchangeClientBeginPostOptions) (*http.Response, error) {
 	req, err := client.postCreateRequest(ctx, body, options)
 	if err != nil {
@@ -93,6 +95,6 @@ func (client *ExchangeClient) postCreateRequest(ctx context.Context, body Exchan
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

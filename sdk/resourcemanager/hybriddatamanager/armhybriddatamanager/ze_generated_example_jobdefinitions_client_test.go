@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager"
@@ -26,19 +24,18 @@ func ExampleJobDefinitionsClient_NewListByDataServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewJobDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewJobDefinitionsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataServicePager("<data-service-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
+	pager := client.NewListByDataServicePager("DataTransformation",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		&armhybriddatamanager.JobDefinitionsClientListByDataServiceOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleJobDefinitionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewJobDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewJobDefinitionsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<data-service-name>",
-		"<job-definition-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
+		"DataTransformation",
+		"jobdeffromtestcode1",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,15 +75,15 @@ func ExampleJobDefinitionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewJobDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewJobDefinitionsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<data-service-name>",
-		"<job-definition-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
+		"DataTransformation",
+		"jobdeffromtestcode1",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		armhybriddatamanager.JobDefinition{
 			Properties: &armhybriddatamanager.JobDefinitionProperties{
 				DataServiceInput: map[string]interface{}{
@@ -103,18 +100,18 @@ func ExampleJobDefinitionsClient_BeginCreateOrUpdate() {
 						"TestAutomation",
 					},
 				},
-				DataSinkID:       to.Ptr("<data-sink-id>"),
-				DataSourceID:     to.Ptr("<data-source-id>"),
+				DataSinkID:       to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestAzureStorage1"),
+				DataSourceID:     to.Ptr("/subscriptions/6e0219f5-327a-4365-904f-05eed4227ad7/resourceGroups/ResourceGroupForSDKTest/providers/Microsoft.HybridData/dataManagers/TestAzureSDKOperations/dataStores/TestStorSimpleSource1"),
 				RunLocation:      to.Ptr(armhybriddatamanager.RunLocationWestus),
 				State:            to.Ptr(armhybriddatamanager.StateEnabled),
 				UserConfirmation: to.Ptr(armhybriddatamanager.UserConfirmationRequired),
 			},
 		},
-		&armhybriddatamanager.JobDefinitionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -129,20 +126,20 @@ func ExampleJobDefinitionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewJobDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewJobDefinitionsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<data-service-name>",
-		"<job-definition-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
-		&armhybriddatamanager.JobDefinitionsClientBeginDeleteOptions{ResumeToken: ""})
+		"DataTransformation",
+		"jobdeffromtestcode1",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -155,15 +152,15 @@ func ExampleJobDefinitionsClient_BeginRun() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewJobDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewJobDefinitionsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRun(ctx,
-		"<data-service-name>",
-		"<job-definition-name>",
-		"<resource-group-name>",
-		"<data-manager-name>",
+		"DataTransformation",
+		"jobdeffromtestcode1",
+		"ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		armhybriddatamanager.RunParameters{
 			CustomerSecrets: []*armhybriddatamanager.CustomerSecret{},
 			DataServiceInput: map[string]interface{}{
@@ -182,11 +179,11 @@ func ExampleJobDefinitionsClient_BeginRun() {
 			},
 			UserConfirmation: to.Ptr(armhybriddatamanager.UserConfirmationNotRequired),
 		},
-		&armhybriddatamanager.JobDefinitionsClientBeginRunOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -199,18 +196,17 @@ func ExampleJobDefinitionsClient_NewListByDataManagerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhybriddatamanager.NewJobDefinitionsClient("<subscription-id>", cred, nil)
+	client, err := armhybriddatamanager.NewJobDefinitionsClient("6e0219f5-327a-4365-904f-05eed4227ad7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataManagerPager("<resource-group-name>",
-		"<data-manager-name>",
+	pager := client.NewListByDataManagerPager("ResourceGroupForSDKTest",
+		"TestAzureSDKOperations",
 		&armhybriddatamanager.JobDefinitionsClientListByDataManagerOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -1,5 +1,30 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*DataStoresClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DataStoresClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DataStoresClientCreateOrUpdateResponse], error)`
+- Function `*JobDefinitionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[JobDefinitionsClientDeleteResponse], error)` to `(*runtime.Poller[JobDefinitionsClientDeleteResponse], error)`
+- Function `*JobsClient.BeginCancel` return value(s) have been changed from `(*armruntime.Poller[JobsClientCancelResponse], error)` to `(*runtime.Poller[JobsClientCancelResponse], error)`
+- Function `*DataManagersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DataManagersClientUpdateResponse], error)` to `(*runtime.Poller[DataManagersClientUpdateResponse], error)`
+- Function `*DataManagersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[DataManagersClientCreateResponse], error)` to `(*runtime.Poller[DataManagersClientCreateResponse], error)`
+- Function `*DataStoresClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DataStoresClientDeleteResponse], error)` to `(*runtime.Poller[DataStoresClientDeleteResponse], error)`
+- Function `*JobsClient.BeginResume` return value(s) have been changed from `(*armruntime.Poller[JobsClientResumeResponse], error)` to `(*runtime.Poller[JobsClientResumeResponse], error)`
+- Function `*JobDefinitionsClient.BeginRun` return value(s) have been changed from `(*armruntime.Poller[JobDefinitionsClientRunResponse], error)` to `(*runtime.Poller[JobDefinitionsClientRunResponse], error)`
+- Function `*DataManagersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DataManagersClientDeleteResponse], error)` to `(*runtime.Poller[DataManagersClientDeleteResponse], error)`
+- Function `*JobDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[JobDefinitionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[JobDefinitionsClientCreateOrUpdateResponse], error)`
+- Function `AvailableProviderOperations.MarshalJSON` has been removed
+- Function `JobDefinitionFilter.MarshalJSON` has been removed
+- Function `JobFilter.MarshalJSON` has been removed
+- Function `PublicKeyList.MarshalJSON` has been removed
+- Function `DataManagerList.MarshalJSON` has been removed
+- Function `DataStoreTypeList.MarshalJSON` has been removed
+- Function `DataServiceList.MarshalJSON` has been removed
+- Function `JobDefinitionList.MarshalJSON` has been removed
+- Function `DataStoreList.MarshalJSON` has been removed
+- Function `JobList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

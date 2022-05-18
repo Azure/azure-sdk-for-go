@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*CustomLocationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CustomLocationsClientDeleteResponse], error)` to `(*runtime.Poller[CustomLocationsClientDeleteResponse], error)`
+- Function `*CustomLocationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomLocationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CustomLocationsClientCreateOrUpdateResponse], error)`
+- Function `EnabledResourceTypesListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `CustomLocationListResult.MarshalJSON` has been removed
+- Function `CustomLocationOperationsList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

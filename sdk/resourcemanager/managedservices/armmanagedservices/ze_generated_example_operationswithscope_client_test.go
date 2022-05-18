@@ -28,7 +28,7 @@ func ExampleOperationsWithScopeClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<scope>",
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

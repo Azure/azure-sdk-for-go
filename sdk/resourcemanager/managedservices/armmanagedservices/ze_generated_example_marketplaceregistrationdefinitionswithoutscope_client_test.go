@@ -28,12 +28,11 @@ func ExampleMarketplaceRegistrationDefinitionsWithoutScopeClient_NewListPager() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(&armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListPager(&armmanagedservices.MarketplaceRegistrationDefinitionsWithoutScopeClientListOptions{Filter: to.Ptr("planIdentifier eq 'publisher.offerIdentifier.planName.version'")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,7 +53,7 @@ func ExampleMarketplaceRegistrationDefinitionsWithoutScopeClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<marketplace-identifier>",
+		"publisher.product.planName.version",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

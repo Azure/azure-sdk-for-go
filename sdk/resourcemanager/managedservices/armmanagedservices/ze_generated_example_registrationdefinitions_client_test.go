@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices"
@@ -31,8 +29,8 @@ func ExampleRegistrationDefinitionsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<registration-definition-id>",
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
+		"26c128c2-fefa-4340-9bb1-6e081c90ada2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -53,8 +51,8 @@ func ExampleRegistrationDefinitionsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<registration-definition-id>",
-		"<scope>",
+		"26c128c2-fefa-4340-9bb1-6e081c90ada2",
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,54 +71,54 @@ func ExampleRegistrationDefinitionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<registration-definition-id>",
-		"<scope>",
+		"26c128c2-fefa-4340-9bb1-6e081c90ada2",
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
 		armmanagedservices.RegistrationDefinition{
 			Plan: &armmanagedservices.Plan{
-				Name:      to.Ptr("<name>"),
-				Product:   to.Ptr("<product>"),
-				Publisher: to.Ptr("<publisher>"),
-				Version:   to.Ptr("<version>"),
+				Name:      to.Ptr("addesai-plan"),
+				Product:   to.Ptr("test"),
+				Publisher: to.Ptr("marketplace-test"),
+				Version:   to.Ptr("1.0.0"),
 			},
 			Properties: &armmanagedservices.RegistrationDefinitionProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Tes1t"),
 				Authorizations: []*armmanagedservices.Authorization{
 					{
-						PrincipalID:            to.Ptr("<principal-id>"),
-						PrincipalIDDisplayName: to.Ptr("<principal-iddisplay-name>"),
-						RoleDefinitionID:       to.Ptr("<role-definition-id>"),
+						PrincipalID:            to.Ptr("f98d86a2-4cc4-4e9d-ad47-b3e80a1bcdfc"),
+						PrincipalIDDisplayName: to.Ptr("Support User"),
+						RoleDefinitionID:       to.Ptr("acdd72a7-3385-48ef-bd42-f606fba81ae7"),
 					},
 					{
 						DelegatedRoleDefinitionIDs: []*string{
 							to.Ptr("b24988ac-6180-42a0-ab88-20f7382dd24c")},
-						PrincipalID:            to.Ptr("<principal-id>"),
-						PrincipalIDDisplayName: to.Ptr("<principal-iddisplay-name>"),
-						RoleDefinitionID:       to.Ptr("<role-definition-id>"),
+						PrincipalID:            to.Ptr("f98d86a2-4cc4-4e9d-ad47-b3e80a1bcdfc"),
+						PrincipalIDDisplayName: to.Ptr("User Access Administrator"),
+						RoleDefinitionID:       to.Ptr("18d7d88d-d35e-4fb5-a5c3-7773c20a72d9"),
 					}},
 				EligibleAuthorizations: []*armmanagedservices.EligibleAuthorization{
 					{
 						JustInTimeAccessPolicy: &armmanagedservices.JustInTimeAccessPolicy{
 							ManagedByTenantApprovers: []*armmanagedservices.EligibleApprover{
 								{
-									PrincipalID:            to.Ptr("<principal-id>"),
-									PrincipalIDDisplayName: to.Ptr("<principal-iddisplay-name>"),
+									PrincipalID:            to.Ptr("d9b22cd6-6407-43cc-8c60-07c56df0b51a"),
+									PrincipalIDDisplayName: to.Ptr("Approver Group"),
 								}},
-							MaximumActivationDuration: to.Ptr("<maximum-activation-duration>"),
+							MaximumActivationDuration: to.Ptr("PT8H"),
 							MultiFactorAuthProvider:   to.Ptr(armmanagedservices.MultiFactorAuthProviderAzure),
 						},
-						PrincipalID:            to.Ptr("<principal-id>"),
-						PrincipalIDDisplayName: to.Ptr("<principal-iddisplay-name>"),
-						RoleDefinitionID:       to.Ptr("<role-definition-id>"),
+						PrincipalID:            to.Ptr("3e0ed8c6-e902-4fc5-863c-e3ddbb2ae2a2"),
+						PrincipalIDDisplayName: to.Ptr("Support User"),
+						RoleDefinitionID:       to.Ptr("ae349356-3a1b-4a5e-921d-050484c6347e"),
 					}},
-				ManagedByTenantID:          to.Ptr("<managed-by-tenant-id>"),
-				RegistrationDefinitionName: to.Ptr("<registration-definition-name>"),
+				ManagedByTenantID:          to.Ptr("83abe5cd-bcc3-441a-bd86-e6a75360cecc"),
+				RegistrationDefinitionName: to.Ptr("DefinitionName"),
 			},
 		},
-		&armmanagedservices.RegistrationDefinitionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -139,13 +137,12 @@ func ExampleRegistrationDefinitionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
+	pager := client.NewListPager("subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
 		&armmanagedservices.RegistrationDefinitionsClientListOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

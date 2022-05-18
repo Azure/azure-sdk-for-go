@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*OrganizationClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[OrganizationClientCreateResponse], error)` to `(*runtime.Poller[OrganizationClientCreateResponse], error)`
+- Function `*OrganizationClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[OrganizationClientDeleteResponse], error)` to `(*runtime.Poller[OrganizationClientDeleteResponse], error)`
+- Function `ErrorResponseBody.MarshalJSON` has been removed
+- Function `OrganizationResourceListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `AgreementResourceListResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

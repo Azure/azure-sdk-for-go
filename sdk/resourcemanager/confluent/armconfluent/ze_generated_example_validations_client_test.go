@@ -24,27 +24,27 @@ func ExampleValidationsClient_ValidateOrganization() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armconfluent.NewValidationsClient("<subscription-id>", cred, nil)
+	client, err := armconfluent.NewValidationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ValidateOrganization(ctx,
-		"<resource-group-name>",
-		"<organization-name>",
+		"myResourceGroup",
+		"myOrganization",
 		armconfluent.OrganizationResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Properties: &armconfluent.OrganizationResourceProperties{
 				OfferDetail: &armconfluent.OfferDetail{
-					ID:          to.Ptr("<id>"),
-					PlanID:      to.Ptr("<plan-id>"),
-					PlanName:    to.Ptr("<plan-name>"),
-					PublisherID: to.Ptr("<publisher-id>"),
-					TermUnit:    to.Ptr("<term-unit>"),
+					ID:          to.Ptr("string"),
+					PlanID:      to.Ptr("string"),
+					PlanName:    to.Ptr("string"),
+					PublisherID: to.Ptr("string"),
+					TermUnit:    to.Ptr("string"),
 				},
 				UserDetail: &armconfluent.UserDetail{
-					EmailAddress: to.Ptr("<email-address>"),
-					FirstName:    to.Ptr("<first-name>"),
-					LastName:     to.Ptr("<last-name>"),
+					EmailAddress: to.Ptr("abc@microsoft.com"),
+					FirstName:    to.Ptr("string"),
+					LastName:     to.Ptr("string"),
 				},
 			},
 			Tags: map[string]*string{

@@ -39,7 +39,7 @@ func NewVirtualMachineImageTemplatesClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewVirtualMachineImageTemplatesClient(subscriptionID string, credential azc
 
 // BeginCancel - Cancel the long running image build based on the image template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // imageTemplateName - The name of the image Template
 // options - VirtualMachineImageTemplatesClientBeginCancelOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCancel
 // method.
-func (client *VirtualMachineImageTemplatesClient) BeginCancel(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginCancelOptions) (*armruntime.Poller[VirtualMachineImageTemplatesClientCancelResponse], error) {
+func (client *VirtualMachineImageTemplatesClient) BeginCancel(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginCancelOptions) (*runtime.Poller[VirtualMachineImageTemplatesClientCancelResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.cancel(ctx, resourceGroupName, imageTemplateName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachineImageTemplatesClientCancelResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachineImageTemplatesClientCancelResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientCancelResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientCancelResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Cancel - Cancel the long running image build based on the image template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VirtualMachineImageTemplatesClient) cancel(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginCancelOptions) (*http.Response, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
@@ -114,33 +116,35 @@ func (client *VirtualMachineImageTemplatesClient) cancelCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginCreateOrUpdate - Create or update a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // imageTemplateName - The name of the image Template
 // parameters - Parameters supplied to the CreateImageTemplate operation
 // options - VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginCreateOrUpdate
 // method.
-func (client *VirtualMachineImageTemplatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VirtualMachineImageTemplatesClientCreateOrUpdateResponse], error) {
+func (client *VirtualMachineImageTemplatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualMachineImageTemplatesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, imageTemplateName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachineImageTemplatesClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachineImageTemplatesClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VirtualMachineImageTemplatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplate, options *VirtualMachineImageTemplatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, imageTemplateName, parameters, options)
 	if err != nil {
@@ -178,32 +182,34 @@ func (client *VirtualMachineImageTemplatesClient) createOrUpdateCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Delete a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // imageTemplateName - The name of the image Template
 // options - VirtualMachineImageTemplatesClientBeginDeleteOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginDelete
 // method.
-func (client *VirtualMachineImageTemplatesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginDeleteOptions) (*armruntime.Poller[VirtualMachineImageTemplatesClientDeleteResponse], error) {
+func (client *VirtualMachineImageTemplatesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginDeleteOptions) (*runtime.Poller[VirtualMachineImageTemplatesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, imageTemplateName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachineImageTemplatesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachineImageTemplatesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VirtualMachineImageTemplatesClient) deleteOperation(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
@@ -241,12 +247,13 @@ func (client *VirtualMachineImageTemplatesClient) deleteCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get information about a virtual machine image template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // imageTemplateName - The name of the image Template
 // options - VirtualMachineImageTemplatesClientGetOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.Get
@@ -288,7 +295,7 @@ func (client *VirtualMachineImageTemplatesClient) getCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -303,6 +310,7 @@ func (client *VirtualMachineImageTemplatesClient) getHandleResponse(resp *http.R
 
 // GetRunOutput - Get the specified run output for the specified image template resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // imageTemplateName - The name of the image Template
 // runOutputName - The name of the run output
@@ -349,7 +357,7 @@ func (client *VirtualMachineImageTemplatesClient) getRunOutputCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -364,10 +372,11 @@ func (client *VirtualMachineImageTemplatesClient) getRunOutputHandleResponse(res
 
 // NewListPager - Gets information about the VM image templates associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // options - VirtualMachineImageTemplatesClientListOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.List
 // method.
 func (client *VirtualMachineImageTemplatesClient) NewListPager(options *VirtualMachineImageTemplatesClientListOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachineImageTemplatesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineImageTemplatesClientListResponse]{
 		More: func(page VirtualMachineImageTemplatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -408,7 +417,7 @@ func (client *VirtualMachineImageTemplatesClient) listCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -423,11 +432,12 @@ func (client *VirtualMachineImageTemplatesClient) listHandleResponse(resp *http.
 
 // NewListByResourceGroupPager - Gets information about the VM image templates associated with the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // options - VirtualMachineImageTemplatesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.ListByResourceGroup
 // method.
 func (client *VirtualMachineImageTemplatesClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualMachineImageTemplatesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachineImageTemplatesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineImageTemplatesClientListByResourceGroupResponse]{
 		More: func(page VirtualMachineImageTemplatesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -472,7 +482,7 @@ func (client *VirtualMachineImageTemplatesClient) listByResourceGroupCreateReque
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -487,12 +497,13 @@ func (client *VirtualMachineImageTemplatesClient) listByResourceGroupHandleRespo
 
 // NewListRunOutputsPager - List all run outputs for the specified Image Template resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // imageTemplateName - The name of the image Template
 // options - VirtualMachineImageTemplatesClientListRunOutputsOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.ListRunOutputs
 // method.
 func (client *VirtualMachineImageTemplatesClient) NewListRunOutputsPager(resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientListRunOutputsOptions) *runtime.Pager[VirtualMachineImageTemplatesClientListRunOutputsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachineImageTemplatesClientListRunOutputsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineImageTemplatesClientListRunOutputsResponse]{
 		More: func(page VirtualMachineImageTemplatesClientListRunOutputsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -541,7 +552,7 @@ func (client *VirtualMachineImageTemplatesClient) listRunOutputsCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -556,26 +567,28 @@ func (client *VirtualMachineImageTemplatesClient) listRunOutputsHandleResponse(r
 
 // BeginRun - Create artifacts from a existing image template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // imageTemplateName - The name of the image Template
 // options - VirtualMachineImageTemplatesClientBeginRunOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginRun
 // method.
-func (client *VirtualMachineImageTemplatesClient) BeginRun(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginRunOptions) (*armruntime.Poller[VirtualMachineImageTemplatesClientRunResponse], error) {
+func (client *VirtualMachineImageTemplatesClient) BeginRun(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginRunOptions) (*runtime.Poller[VirtualMachineImageTemplatesClientRunResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.run(ctx, resourceGroupName, imageTemplateName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachineImageTemplatesClientRunResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachineImageTemplatesClientRunResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientRunResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientRunResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Run - Create artifacts from a existing image template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VirtualMachineImageTemplatesClient) run(ctx context.Context, resourceGroupName string, imageTemplateName string, options *VirtualMachineImageTemplatesClientBeginRunOptions) (*http.Response, error) {
 	req, err := client.runCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
 	if err != nil {
@@ -613,33 +626,35 @@ func (client *VirtualMachineImageTemplatesClient) runCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Update the tags for this Virtual Machine Image Template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // imageTemplateName - The name of the image Template
 // parameters - Additional parameters for Image Template update.
 // options - VirtualMachineImageTemplatesClientBeginUpdateOptions contains the optional parameters for the VirtualMachineImageTemplatesClient.BeginUpdate
 // method.
-func (client *VirtualMachineImageTemplatesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesClientBeginUpdateOptions) (*armruntime.Poller[VirtualMachineImageTemplatesClientUpdateResponse], error) {
+func (client *VirtualMachineImageTemplatesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineImageTemplatesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, imageTemplateName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachineImageTemplatesClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachineImageTemplatesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachineImageTemplatesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update the tags for this Virtual Machine Image Template
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VirtualMachineImageTemplatesClient) update(ctx context.Context, resourceGroupName string, imageTemplateName string, parameters ImageTemplateUpdateParameters, options *VirtualMachineImageTemplatesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, imageTemplateName, parameters, options)
 	if err != nil {
@@ -677,6 +692,6 @@ func (client *VirtualMachineImageTemplatesClient) updateCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

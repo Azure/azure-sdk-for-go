@@ -23,18 +23,17 @@ func ExampleWorkflowsClient_NewListByStorageSyncServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewWorkflowsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewWorkflowsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByStorageSyncServicePager("<resource-group-name>",
-		"<storage-sync-service-name>",
+	pager := client.NewListByStorageSyncServicePager("SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleWorkflowsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewWorkflowsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewWorkflowsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<workflow-id>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"828219ea-083e-48b5-89ea-8fd9991b2e75",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,14 +72,14 @@ func ExampleWorkflowsClient_Abort() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewWorkflowsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewWorkflowsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Abort(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<workflow-id>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"7ffd50b3-5574-478d-9ff2-9371bc42ce68",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

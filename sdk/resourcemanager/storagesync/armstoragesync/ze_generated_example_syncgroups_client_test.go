@@ -23,18 +23,17 @@ func ExampleSyncGroupsClient_NewListByStorageSyncServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewSyncGroupsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByStorageSyncServicePager("<resource-group-name>",
-		"<storage-sync-service-name>",
+	pager := client.NewListByStorageSyncServicePager("SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleSyncGroupsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewSyncGroupsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
 		armstoragesync.SyncGroupCreateParameters{
 			Properties: map[string]interface{}{},
 		},
@@ -76,14 +75,14 @@ func ExampleSyncGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewSyncGroupsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,14 +98,14 @@ func ExampleSyncGroupsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragesync.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armstoragesync.NewSyncGroupsClient("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<storage-sync-service-name>",
-		"<sync-group-name>",
+		"SampleResourceGroup_1",
+		"SampleStorageSyncService_1",
+		"SampleSyncGroup_1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -23,12 +23,12 @@ func ExampleSubscriptionsClient_ListQuotas() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewSubscriptionsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListQuotas(ctx,
-		"<location>",
+		"West US",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

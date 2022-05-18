@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/streamanalytics/armstreamanalytics"
@@ -26,36 +24,36 @@ func ExampleInputsClient_CreateOrReplace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewInputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewInputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrReplace(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<input-name>",
+		"sjrg8440",
+		"sj9597",
+		"input7225",
 		armstreamanalytics.Input{
 			Properties: &armstreamanalytics.ReferenceInputProperties{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("Reference"),
 				Serialization: &armstreamanalytics.CSVSerialization{
 					Type: to.Ptr(armstreamanalytics.EventSerializationTypeCSV),
 					Properties: &armstreamanalytics.CSVSerializationProperties{
 						Encoding:       to.Ptr(armstreamanalytics.EncodingUTF8),
-						FieldDelimiter: to.Ptr("<field-delimiter>"),
+						FieldDelimiter: to.Ptr(","),
 					},
 				},
 				Datasource: &armstreamanalytics.BlobReferenceInputDataSource{
-					Type: to.Ptr("<type>"),
+					Type: to.Ptr("Microsoft.Storage/Blob"),
 					Properties: &armstreamanalytics.BlobReferenceInputDataSourceProperties{
-						Container:   to.Ptr("<container>"),
-						DateFormat:  to.Ptr("<date-format>"),
-						PathPattern: to.Ptr("<path-pattern>"),
+						Container:   to.Ptr("state"),
+						DateFormat:  to.Ptr("yyyy/MM/dd"),
+						PathPattern: to.Ptr("{date}/{time}"),
 						StorageAccounts: []*armstreamanalytics.StorageAccount{
 							{
-								AccountKey:  to.Ptr("<account-key>"),
-								AccountName: to.Ptr("<account-name>"),
+								AccountKey:  to.Ptr("someAccountKey=="),
+								AccountName: to.Ptr("someAccountName"),
 							}},
-						TimeFormat: to.Ptr("<time-format>"),
+						TimeFormat: to.Ptr("HH"),
 					},
 				},
 			},
@@ -77,28 +75,28 @@ func ExampleInputsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewInputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewInputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<input-name>",
+		"sjrg8440",
+		"sj9597",
+		"input7225",
 		armstreamanalytics.Input{
 			Properties: &armstreamanalytics.ReferenceInputProperties{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("Reference"),
 				Serialization: &armstreamanalytics.CSVSerialization{
 					Type: to.Ptr(armstreamanalytics.EventSerializationTypeCSV),
 					Properties: &armstreamanalytics.CSVSerializationProperties{
 						Encoding:       to.Ptr(armstreamanalytics.EncodingUTF8),
-						FieldDelimiter: to.Ptr("<field-delimiter>"),
+						FieldDelimiter: to.Ptr("|"),
 					},
 				},
 				Datasource: &armstreamanalytics.BlobReferenceInputDataSource{
-					Type: to.Ptr("<type>"),
+					Type: to.Ptr("Microsoft.Storage/Blob"),
 					Properties: &armstreamanalytics.BlobReferenceInputDataSourceProperties{
-						Container: to.Ptr("<container>"),
+						Container: to.Ptr("differentContainer"),
 					},
 				},
 			},
@@ -118,14 +116,14 @@ func ExampleInputsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewInputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewInputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<input-name>",
+		"sjrg8440",
+		"sj9597",
+		"input7225",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -139,14 +137,14 @@ func ExampleInputsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewInputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewInputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<input-name>",
+		"sjrg8440",
+		"sj9597",
+		"input7225",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -162,18 +160,17 @@ func ExampleInputsClient_NewListByStreamingJobPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewInputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewInputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByStreamingJobPager("<resource-group-name>",
-		"<job-name>",
+	pager := client.NewListByStreamingJobPager("sjrg8440",
+		"sj9597",
 		&armstreamanalytics.InputsClientListByStreamingJobOptions{Select: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -189,21 +186,19 @@ func ExampleInputsClient_BeginTest() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewInputsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewInputsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTest(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<input-name>",
-		&armstreamanalytics.InputsClientBeginTestOptions{Input: nil,
-			ResumeToken: "",
-		})
+		"sjrg8440",
+		"sj9597",
+		"input7225",
+		&armstreamanalytics.InputsClientBeginTestOptions{Input: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

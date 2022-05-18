@@ -39,7 +39,7 @@ func NewWorkflowRunActionsClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewWorkflowRunActionsClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Gets a workflow run action.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
@@ -107,7 +108,7 @@ func (client *WorkflowRunActionsClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -122,12 +123,13 @@ func (client *WorkflowRunActionsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - Gets a list of workflow run actions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
 // options - WorkflowRunActionsClientListOptions contains the optional parameters for the WorkflowRunActionsClient.List method.
 func (client *WorkflowRunActionsClient) NewListPager(resourceGroupName string, workflowName string, runName string, options *WorkflowRunActionsClientListOptions) *runtime.Pager[WorkflowRunActionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionsClientListResponse]{
 		More: func(page WorkflowRunActionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -186,7 +188,7 @@ func (client *WorkflowRunActionsClient) listCreateRequest(ctx context.Context, r
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -201,6 +203,7 @@ func (client *WorkflowRunActionsClient) listHandleResponse(resp *http.Response) 
 
 // NewListExpressionTracesPager - Lists a workflow run expression trace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
@@ -208,7 +211,7 @@ func (client *WorkflowRunActionsClient) listHandleResponse(resp *http.Response) 
 // options - WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.ListExpressionTraces
 // method.
 func (client *WorkflowRunActionsClient) NewListExpressionTracesPager(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionsClientListExpressionTracesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionsClientListExpressionTracesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionsClientListExpressionTracesResponse]{
 		More: func(page WorkflowRunActionsClientListExpressionTracesResponse) bool {
 			return false
 		},
@@ -259,7 +262,7 @@ func (client *WorkflowRunActionsClient) listExpressionTracesCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

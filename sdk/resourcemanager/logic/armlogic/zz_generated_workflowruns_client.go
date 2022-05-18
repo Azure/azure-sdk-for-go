@@ -39,7 +39,7 @@ func NewWorkflowRunsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewWorkflowRunsClient(subscriptionID string, credential azcore.TokenCredent
 
 // Cancel - Cancels a workflow run.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
@@ -102,12 +103,13 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a workflow run.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
@@ -153,7 +155,7 @@ func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -168,11 +170,12 @@ func (client *WorkflowRunsClient) getHandleResponse(resp *http.Response) (Workfl
 
 // NewListPager - Gets a list of workflow runs.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // options - WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.List method.
 func (client *WorkflowRunsClient) NewListPager(resourceGroupName string, workflowName string, options *WorkflowRunsClientListOptions) *runtime.Pager[WorkflowRunsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowRunsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowRunsClientListResponse]{
 		More: func(page WorkflowRunsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -227,7 +230,7 @@ func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourc
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

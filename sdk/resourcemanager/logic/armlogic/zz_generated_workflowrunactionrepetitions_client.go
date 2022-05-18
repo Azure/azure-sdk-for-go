@@ -38,7 +38,7 @@ func NewWorkflowRunActionRepetitionsClient(subscriptionID string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkflowRunActionRepetitionsClient(subscriptionID string, credential azc
 
 // Get - Get a workflow run action repetition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
@@ -112,7 +113,7 @@ func (client *WorkflowRunActionRepetitionsClient) getCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -127,6 +128,7 @@ func (client *WorkflowRunActionRepetitionsClient) getHandleResponse(resp *http.R
 
 // NewListPager - Get all of a workflow run action repetitions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
@@ -134,7 +136,7 @@ func (client *WorkflowRunActionRepetitionsClient) getHandleResponse(resp *http.R
 // options - WorkflowRunActionRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.List
 // method.
 func (client *WorkflowRunActionRepetitionsClient) NewListPager(resourceGroupName string, workflowName string, runName string, actionName string, options *WorkflowRunActionRepetitionsClientListOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionRepetitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionRepetitionsClientListResponse]{
 		More: func(page WorkflowRunActionRepetitionsClientListResponse) bool {
 			return false
 		},
@@ -185,7 +187,7 @@ func (client *WorkflowRunActionRepetitionsClient) listCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -200,6 +202,7 @@ func (client *WorkflowRunActionRepetitionsClient) listHandleResponse(resp *http.
 
 // NewListExpressionTracesPager - Lists a workflow run expression trace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // runName - The workflow run name.
@@ -208,7 +211,7 @@ func (client *WorkflowRunActionRepetitionsClient) listHandleResponse(resp *http.
 // options - WorkflowRunActionRepetitionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.ListExpressionTraces
 // method.
 func (client *WorkflowRunActionRepetitionsClient) NewListExpressionTracesPager(resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string, options *WorkflowRunActionRepetitionsClientListExpressionTracesOptions) *runtime.Pager[WorkflowRunActionRepetitionsClientListExpressionTracesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowRunActionRepetitionsClientListExpressionTracesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowRunActionRepetitionsClientListExpressionTracesResponse]{
 		More: func(page WorkflowRunActionRepetitionsClientListExpressionTracesResponse) bool {
 			return false
 		},
@@ -263,7 +266,7 @@ func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

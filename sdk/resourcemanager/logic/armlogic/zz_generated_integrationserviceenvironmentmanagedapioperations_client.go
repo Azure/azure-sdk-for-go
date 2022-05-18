@@ -38,7 +38,7 @@ func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID s
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,13 +56,14 @@ func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID s
 
 // NewListPager - Gets the managed Api operations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // apiName - The api name.
 // options - IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedAPIOperationsClient.List
 // method.
 func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) NewListPager(resourceGroup string, integrationServiceEnvironmentName string, apiName string, options *IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse]{
 		More: func(page IntegrationServiceEnvironmentManagedAPIOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -115,7 +116,7 @@ func (client *IntegrationServiceEnvironmentManagedAPIOperationsClient) listCreat
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

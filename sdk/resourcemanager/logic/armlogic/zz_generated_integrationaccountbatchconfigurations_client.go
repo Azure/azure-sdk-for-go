@@ -38,7 +38,7 @@ func NewIntegrationAccountBatchConfigurationsClient(subscriptionID string, crede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewIntegrationAccountBatchConfigurationsClient(subscriptionID string, crede
 
 // CreateOrUpdate - Create or update a batch configuration for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // batchConfigurationName - The batch configuration name.
@@ -103,7 +104,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateCreateR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, batchConfiguration)
 }
 
@@ -118,6 +119,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateHandleR
 
 // Delete - Delete a batch configuration for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // batchConfigurationName - The batch configuration name.
@@ -164,12 +166,13 @@ func (client *IntegrationAccountBatchConfigurationsClient) deleteCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a batch configuration for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // batchConfigurationName - The batch configuration name.
@@ -216,7 +219,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) getCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,12 +234,13 @@ func (client *IntegrationAccountBatchConfigurationsClient) getHandleResponse(res
 
 // NewListPager - List the batch configurations for an integration account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountBatchConfigurationsClientListOptions contains the optional parameters for the IntegrationAccountBatchConfigurationsClient.List
 // method.
 func (client *IntegrationAccountBatchConfigurationsClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountBatchConfigurationsClientListOptions) *runtime.Pager[IntegrationAccountBatchConfigurationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountBatchConfigurationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationAccountBatchConfigurationsClientListResponse]{
 		More: func(page IntegrationAccountBatchConfigurationsClientListResponse) bool {
 			return false
 		},
@@ -279,7 +283,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) listCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

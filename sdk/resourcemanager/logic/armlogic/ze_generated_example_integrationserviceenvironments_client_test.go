@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/logic/armlogic"
@@ -26,7 +24,7 @@ func ExampleIntegrationServiceEnvironmentsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("f34b22a3-2202-4fb1-b040-1332bd928c84", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleIntegrationServiceEnvironmentsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleIntegrationServiceEnvironmentsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("f34b22a3-2202-4fb1-b040-1332bd928c84", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group>",
+	pager := client.NewListByResourceGroupPager("testResourceGroup",
 		&armlogic.IntegrationServiceEnvironmentsClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExampleIntegrationServiceEnvironmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("f34b22a3-2202-4fb1-b040-1332bd928c84", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group>",
-		"<integration-service-environment-name>",
+		"testResourceGroup",
+		"testIntegrationServiceEnvironment",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,23 +95,23 @@ func ExampleIntegrationServiceEnvironmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("f34b22a3-2202-4fb1-b040-1332bd928c84", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group>",
-		"<integration-service-environment-name>",
+		"testResourceGroup",
+		"testIntegrationServiceEnvironment",
 		armlogic.IntegrationServiceEnvironment{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("brazilsouth"),
 			Properties: &armlogic.IntegrationServiceEnvironmentProperties{
 				EncryptionConfiguration: &armlogic.IntegrationServiceEnvironmenEncryptionConfiguration{
 					EncryptionKeyReference: &armlogic.IntegrationServiceEnvironmenEncryptionKeyReference{
-						KeyName: to.Ptr("<key-name>"),
+						KeyName: to.Ptr("testKeyName"),
 						KeyVault: &armlogic.ResourceReference{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/f34b22a3-2202-4fb1-b040-1332bd928c84/resourceGroups/testResourceGroup/providers/Microsoft.KeyVault/vaults/testKeyVault"),
 						},
-						KeyVersion: to.Ptr("<key-version>"),
+						KeyVersion: to.Ptr("13b261d30b984753869902d7f47f4d55"),
 					},
 				},
 				NetworkConfiguration: &armlogic.NetworkConfiguration{
@@ -124,16 +120,16 @@ func ExampleIntegrationServiceEnvironmentsClient_BeginCreateOrUpdate() {
 					},
 					Subnets: []*armlogic.ResourceReference{
 						{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/f34b22a3-2202-4fb1-b040-1332bd928c84/resourceGroups/testResourceGroup/providers/Microsoft.Network/virtualNetworks/testVNET/subnets/s1"),
 						},
 						{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/f34b22a3-2202-4fb1-b040-1332bd928c84/resourceGroups/testResourceGroup/providers/Microsoft.Network/virtualNetworks/testVNET/subnets/s2"),
 						},
 						{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/f34b22a3-2202-4fb1-b040-1332bd928c84/resourceGroups/testResourceGroup/providers/Microsoft.Network/virtualNetworks/testVNET/subnets/s3"),
 						},
 						{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/f34b22a3-2202-4fb1-b040-1332bd928c84/resourceGroups/testResourceGroup/providers/Microsoft.Network/virtualNetworks/testVNET/subnets/s4"),
 						}},
 				},
 			},
@@ -142,11 +138,11 @@ func ExampleIntegrationServiceEnvironmentsClient_BeginCreateOrUpdate() {
 				Capacity: to.Ptr[int32](2),
 			},
 		},
-		&armlogic.IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -161,13 +157,13 @@ func ExampleIntegrationServiceEnvironmentsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("f34b22a3-2202-4fb1-b040-1332bd928c84", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group>",
-		"<integration-service-environment-name>",
+		"testResourceGroup",
+		"testIntegrationServiceEnvironment",
 		armlogic.IntegrationServiceEnvironment{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -177,11 +173,11 @@ func ExampleIntegrationServiceEnvironmentsClient_BeginUpdate() {
 				Capacity: to.Ptr[int32](0),
 			},
 		},
-		&armlogic.IntegrationServiceEnvironmentsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -196,13 +192,13 @@ func ExampleIntegrationServiceEnvironmentsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group>",
-		"<integration-service-environment-name>",
+		"testResourceGroup",
+		"testIntegrationServiceEnvironment",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -216,13 +212,13 @@ func ExampleIntegrationServiceEnvironmentsClient_Restart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationServiceEnvironmentsClient("f34b22a3-2202-4fb1-b040-1332bd928c84", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Restart(ctx,
-		"<resource-group>",
-		"<integration-service-environment-name>",
+		"testResourceGroup",
+		"testIntegrationServiceEnvironment",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

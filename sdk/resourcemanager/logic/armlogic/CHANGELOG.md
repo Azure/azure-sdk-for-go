@@ -1,5 +1,54 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*IntegrationServiceEnvironmentManagedApisClient.BeginPut` return value(s) have been changed from `(*armruntime.Poller[IntegrationServiceEnvironmentManagedApisClientPutResponse], error)` to `(*runtime.Poller[IntegrationServiceEnvironmentManagedApisClientPutResponse], error)`
+- Function `*IntegrationServiceEnvironmentsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[IntegrationServiceEnvironmentsClientUpdateResponse], error)` to `(*runtime.Poller[IntegrationServiceEnvironmentsClientUpdateResponse], error)`
+- Function `*IntegrationServiceEnvironmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[IntegrationServiceEnvironmentsClientCreateOrUpdateResponse], error)`
+- Function `*IntegrationServiceEnvironmentManagedApisClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[IntegrationServiceEnvironmentManagedApisClientDeleteResponse], error)` to `(*runtime.Poller[IntegrationServiceEnvironmentManagedApisClientDeleteResponse], error)`
+- Function `*WorkflowsClient.BeginMove` return value(s) have been changed from `(*armruntime.Poller[WorkflowsClientMoveResponse], error)` to `(*runtime.Poller[WorkflowsClientMoveResponse], error)`
+- Function `WorkflowTriggerProperties.MarshalJSON` has been removed
+- Function `IntegrationAccountSchemaListResult.MarshalJSON` has been removed
+- Function `WorkflowTriggerHistoryListResult.MarshalJSON` has been removed
+- Function `KeyVaultKeyCollection.MarshalJSON` has been removed
+- Function `IntegrationAccountListResult.MarshalJSON` has been removed
+- Function `APIOperationListResult.MarshalJSON` has been removed
+- Function `RequestHistoryListResult.MarshalJSON` has been removed
+- Function `WorkflowRunActionListResult.MarshalJSON` has been removed
+- Function `WorkflowRunListResult.MarshalJSON` has been removed
+- Function `IntegrationAccountPartnerListResult.MarshalJSON` has been removed
+- Function `ExpressionTraces.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `WorkflowVersionListResult.MarshalJSON` has been removed
+- Function `IntegrationServiceEnvironmentSubnetNetworkHealth.MarshalJSON` has been removed
+- Function `AssemblyCollection.MarshalJSON` has been removed
+- Function `IntegrationAccountMapListResult.MarshalJSON` has been removed
+- Function `WorkflowTriggerListResult.MarshalJSON` has been removed
+- Function `WorkflowRunActionProperties.MarshalJSON` has been removed
+- Function `IntegrationServiceEnvironmentManagedAPIListResult.MarshalJSON` has been removed
+- Function `ExtendedErrorInfo.MarshalJSON` has been removed
+- Function `IntegrationServiceEnvironmentListResult.MarshalJSON` has been removed
+- Function `IntegrationServiceEnvironmentSKUList.MarshalJSON` has been removed
+- Function `ManagedAPIListResult.MarshalJSON` has been removed
+- Function `WorkflowRunTrigger.MarshalJSON` has been removed
+- Function `IntegrationServiceEnvironmentNetworkEndpoint.MarshalJSON` has been removed
+- Function `Expression.MarshalJSON` has been removed
+- Function `AzureResourceErrorInfo.MarshalJSON` has been removed
+- Function `WorkflowTriggerHistoryProperties.MarshalJSON` has been removed
+- Function `ExpressionRoot.MarshalJSON` has been removed
+- Function `IntegrationAccountCertificateListResult.MarshalJSON` has been removed
+- Function `WorkflowTriggerCallbackURL.MarshalJSON` has been removed
+- Function `IntegrationAccountSessionFilter.MarshalJSON` has been removed
+- Function `IntegrationAccountAgreementListResult.MarshalJSON` has been removed
+- Function `BatchConfigurationCollection.MarshalJSON` has been removed
+- Function `IntegrationAccountSessionListResult.MarshalJSON` has been removed
+- Function `WorkflowListResult.MarshalJSON` has been removed
+- Function `IntegrationServiceEnvironmentNetworkDependency.MarshalJSON` has been removed
+- Function `WorkflowRunActionRepetitionDefinitionCollection.MarshalJSON` has been removed
+- Function `WorkflowRunProperties.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

@@ -39,7 +39,7 @@ func NewIntegrationAccountSessionsClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewIntegrationAccountSessionsClient(subscriptionID string, credential azcor
 
 // CreateOrUpdate - Creates or updates an integration account session.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // sessionName - The integration account session name.
@@ -104,7 +105,7 @@ func (client *IntegrationAccountSessionsClient) createOrUpdateCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, session)
 }
 
@@ -119,6 +120,7 @@ func (client *IntegrationAccountSessionsClient) createOrUpdateHandleResponse(res
 
 // Delete - Deletes an integration account session.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // sessionName - The integration account session name.
@@ -165,12 +167,13 @@ func (client *IntegrationAccountSessionsClient) deleteCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an integration account session.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // sessionName - The integration account session name.
@@ -217,7 +220,7 @@ func (client *IntegrationAccountSessionsClient) getCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -232,12 +235,13 @@ func (client *IntegrationAccountSessionsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - Gets a list of integration account sessions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // integrationAccountName - The integration account name.
 // options - IntegrationAccountSessionsClientListOptions contains the optional parameters for the IntegrationAccountSessionsClient.List
 // method.
 func (client *IntegrationAccountSessionsClient) NewListPager(resourceGroupName string, integrationAccountName string, options *IntegrationAccountSessionsClientListOptions) *runtime.Pager[IntegrationAccountSessionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationAccountSessionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationAccountSessionsClientListResponse]{
 		More: func(page IntegrationAccountSessionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -292,7 +296,7 @@ func (client *IntegrationAccountSessionsClient) listCreateRequest(ctx context.Co
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

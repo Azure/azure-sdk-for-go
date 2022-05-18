@@ -26,7 +26,7 @@ func ExampleIntegrationAccountsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +35,6 @@ func ExampleIntegrationAccountsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +50,16 @@ func ExampleIntegrationAccountsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testResourceGroup",
 		&armlogic.IntegrationAccountsClientListByResourceGroupOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +75,13 @@ func ExampleIntegrationAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,15 +97,15 @@ func ExampleIntegrationAccountsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
 		armlogic.IntegrationAccount{
-			Location:   to.Ptr("<location>"),
+			Location:   to.Ptr("westus"),
 			Properties: &armlogic.IntegrationAccountProperties{},
 			SKU: &armlogic.IntegrationAccountSKU{
 				Name: to.Ptr(armlogic.IntegrationAccountSKUNameStandard),
@@ -128,15 +126,15 @@ func ExampleIntegrationAccountsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
 		armlogic.IntegrationAccount{
-			Location:   to.Ptr("<location>"),
+			Location:   to.Ptr("westus"),
 			Properties: &armlogic.IntegrationAccountProperties{},
 			SKU: &armlogic.IntegrationAccountSKU{
 				Name: to.Ptr(armlogic.IntegrationAccountSKUNameStandard),
@@ -157,13 +155,13 @@ func ExampleIntegrationAccountsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -177,24 +175,23 @@ func ExampleIntegrationAccountsClient_NewListKeyVaultKeysPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListKeyVaultKeysPager("<resource-group-name>",
-		"<integration-account-name>",
+	pager := client.NewListKeyVaultKeysPager("testResourceGroup",
+		"testIntegrationAccount",
 		armlogic.ListKeyVaultKeysDefinition{
 			KeyVault: &armlogic.KeyVaultReference{
-				ID: to.Ptr("<id>"),
+				ID: to.Ptr("subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testResourceGroup/providers/Microsoft.KeyVault/vaults/testKeyVault"),
 			},
-			SkipToken: to.Ptr("<skip-token>"),
+			SkipToken: to.Ptr("testSkipToken"),
 		},
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -210,19 +207,19 @@ func ExampleIntegrationAccountsClient_LogTrackingEvents() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.LogTrackingEvents(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
 		armlogic.TrackingEventsDefinition{
 			Events: []*armlogic.TrackingEvent{
 				{
 					Error: &armlogic.TrackingEventErrorInfo{
-						Code:    to.Ptr("<code>"),
-						Message: to.Ptr("<message>"),
+						Code:    to.Ptr("NotFound"),
+						Message: to.Ptr("Some error occurred"),
 					},
 					EventLevel: to.Ptr(armlogic.EventLevelInformational),
 					EventTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-05T01:54:49.505567Z"); return t }()),
@@ -251,7 +248,7 @@ func ExampleIntegrationAccountsClient_LogTrackingEvents() {
 					},
 					RecordType: to.Ptr(armlogic.TrackingRecordTypeAS2Message),
 				}},
-			SourceType: to.Ptr("<source-type>"),
+			SourceType: to.Ptr("Microsoft.Logic/workflows"),
 		},
 		nil)
 	if err != nil {
@@ -266,13 +263,13 @@ func ExampleIntegrationAccountsClient_RegenerateAccessKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewIntegrationAccountsClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewIntegrationAccountsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateAccessKey(ctx,
-		"<resource-group-name>",
-		"<integration-account-name>",
+		"testResourceGroup",
+		"testIntegrationAccount",
 		armlogic.RegenerateActionParameter{
 			KeyType: to.Ptr(armlogic.KeyTypePrimary),
 		},

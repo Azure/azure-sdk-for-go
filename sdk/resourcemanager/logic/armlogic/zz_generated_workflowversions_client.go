@@ -39,7 +39,7 @@ func NewWorkflowVersionsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewWorkflowVersionsClient(subscriptionID string, credential azcore.TokenCre
 
 // Get - Gets a workflow version.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // versionID - The workflow versionId.
@@ -102,7 +103,7 @@ func (client *WorkflowVersionsClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,11 +118,12 @@ func (client *WorkflowVersionsClient) getHandleResponse(resp *http.Response) (Wo
 
 // NewListPager - Gets a list of workflow versions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroupName - The resource group name.
 // workflowName - The workflow name.
 // options - WorkflowVersionsClientListOptions contains the optional parameters for the WorkflowVersionsClient.List method.
 func (client *WorkflowVersionsClient) NewListPager(resourceGroupName string, workflowName string, options *WorkflowVersionsClientListOptions) *runtime.Pager[WorkflowVersionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkflowVersionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkflowVersionsClientListResponse]{
 		More: func(page WorkflowVersionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -173,7 +175,7 @@ func (client *WorkflowVersionsClient) listCreateRequest(ctx context.Context, res
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

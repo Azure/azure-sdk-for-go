@@ -240,36 +240,32 @@ func (s *azfileLiveTestSuite) TestAccountHourMetrics() {
 //		}
 //	}
 //}
-//
-//func (s *azfileLiveTestSuite) TestAccountListSharesInvalidMaxResults() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
-//
-//	shareName := generateShareName(sharePrefix, testName)
-//	srClient := createNewShare(_require, shareName, svcClient)
-//	defer delShare(_require, srClient, nil)
-//
-//	pager := svcClient.ListShares(&ServiceListSharesOptions{MaxResults: to.Ptr(int32(-2))})
-//	i := 0
-//	for pager.More() {
-//		println("Mohit: I'm here!")
-//		_, err := pager.NextPage(ctx)
-//		_require.NotNil(err)
-//		_require.Contains(err.Error(), "OutOfRangeQueryParameterValue")
-//		i += 1
-//		if i >= 10 {
-//			break
-//		}
-//	}
-//
-//	pager2 := svcClient.ListShares(&ServiceListSharesOptions{MaxResults: to.Ptr(int32(0))})
-//	for pager2.More() {
-//		_, err := pager2.NextPage(ctx)
-//		_require.NotNil(err)
-//		_require.Contains(err.Error(), "OutOfRangeQueryParameterValue")
-//	}
-//}
+
+func (s *azfileLiveTestSuite) TestAccountListSharesInvalidMaxResults() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(sharePrefix, testName)
+	srClient := createNewShare(_require, shareName, svcClient)
+	defer delShare(_require, srClient, nil)
+
+	pager := svcClient.ListShares(&ServiceListSharesOptions{MaxResults: to.Ptr(int32(-2))})
+	for pager.More() {
+		_, err := pager.NextPage(ctx)
+		_require.NotNil(err)
+		_require.Contains(err.Error(), "OutOfRangeQueryParameterValue")
+		break
+	}
+
+	pager2 := svcClient.ListShares(&ServiceListSharesOptions{MaxResults: to.Ptr(int32(0))})
+	for pager2.More() {
+		_, err := pager2.NextPage(ctx)
+		_require.NotNil(err)
+		_require.Contains(err.Error(), "OutOfRangeQueryParameterValue")
+		break
+	}
+}
 
 //
 //func (s *azfileLiveTestSuite) TestAccountSAS() {

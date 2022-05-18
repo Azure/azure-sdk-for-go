@@ -28,8 +28,8 @@ func ExampleCreditsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<billing-account-id>",
-		"<billing-profile-id>",
+		"1234:5678",
+		"2468",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

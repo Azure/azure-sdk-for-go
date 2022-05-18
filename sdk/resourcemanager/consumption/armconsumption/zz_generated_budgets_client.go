@@ -36,7 +36,7 @@ func NewBudgetsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,6 +55,7 @@ func NewBudgetsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 // concurrency control. To obtain the latest eTag for a given budget, perform a get operation prior
 // to your put operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with budget operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 // resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
@@ -97,7 +98,7 @@ func (client *BudgetsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -112,6 +113,7 @@ func (client *BudgetsClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - The operation to delete a budget.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with budget operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 // resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
@@ -153,12 +155,13 @@ func (client *BudgetsClient) deleteCreateRequest(ctx context.Context, scope stri
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the budget for the scope by budget name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with budget operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 // resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
@@ -200,7 +203,7 @@ func (client *BudgetsClient) getCreateRequest(ctx context.Context, scope string,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,6 +218,7 @@ func (client *BudgetsClient) getHandleResponse(resp *http.Response) (BudgetsClie
 
 // NewListPager - Lists all budgets for the defined scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with budget operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
 // resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
@@ -226,7 +230,7 @@ func (client *BudgetsClient) getHandleResponse(resp *http.Response) (BudgetsClie
 // for invoiceSection scope.
 // options - BudgetsClientListOptions contains the optional parameters for the BudgetsClient.List method.
 func (client *BudgetsClient) NewListPager(scope string, options *BudgetsClientListOptions) *runtime.Pager[BudgetsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[BudgetsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[BudgetsClientListResponse]{
 		More: func(page BudgetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -264,7 +268,7 @@ func (client *BudgetsClient) listCreateRequest(ctx context.Context, scope string
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

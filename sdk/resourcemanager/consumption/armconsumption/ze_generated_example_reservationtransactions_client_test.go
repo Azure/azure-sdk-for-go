@@ -28,13 +28,12 @@ func ExampleReservationTransactionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<billing-account-id>",
-		&armconsumption.ReservationTransactionsClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListPager("123456",
+		&armconsumption.ReservationTransactionsClientListOptions{Filter: to.Ptr("properties/eventDate+ge+2020-05-20+AND+properties/eventDate+le+2020-05-30")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,13 @@ func ExampleReservationTransactionsClient_NewListByBillingProfilePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBillingProfilePager("<billing-account-id>",
-		"<billing-profile-id>",
-		&armconsumption.ReservationTransactionsClientListByBillingProfileOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListByBillingProfilePager("fcebaabc-fced-4284-a83d-79f83dee183c:45796ba8-988f-45ad-bea9-7b71fc6c7513_2018-09-30",
+		"Z76D-SGAF-BG7-TGB",
+		&armconsumption.ReservationTransactionsClientListByBillingProfileOptions{Filter: to.Ptr("properties/eventDate+ge+2020-05-20+AND+properties/eventDate+le+2020-05-30")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

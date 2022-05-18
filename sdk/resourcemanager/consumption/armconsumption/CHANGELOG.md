@@ -1,5 +1,59 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ReservationRecommendationDetailsClient.Get` parameter(s) have been changed from `(context.Context, string, string, Term, LookBackPeriod, string, *ReservationRecommendationDetailsClientGetOptions)` to `(context.Context, string, Scope, string, Term, LookBackPeriod, string, *ReservationRecommendationDetailsClientGetOptions)`
+- Function `ReservationRecommendationDetailsSavingsProperties.MarshalJSON` has been removed
+- Function `LegacySingleScopeReservationRecommendationProperties.MarshalJSON` has been removed
+- Function `ModernReservationTransactionProperties.MarshalJSON` has been removed
+- Function `ModernUsageDetailProperties.MarshalJSON` has been removed
+- Function `Marketplace.MarshalJSON` has been removed
+- Function `ReservationTransactionResource.MarshalJSON` has been removed
+- Function `LegacySharedScopeReservationRecommendationProperties.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ManagementGroupAggregatedCostProperties.MarshalJSON` has been removed
+- Function `ReservationDetailsListResult.MarshalJSON` has been removed
+- Function `Events.MarshalJSON` has been removed
+- Function `CreditSummary.MarshalJSON` has been removed
+- Function `BudgetsListResult.MarshalJSON` has been removed
+- Function `Lots.MarshalJSON` has been removed
+- Function `LegacyReservationTransaction.MarshalJSON` has been removed
+- Function `ReservationRecommendationDetailsModel.MarshalJSON` has been removed
+- Function `UsageDetailsListResult.MarshalJSON` has been removed
+- Function `ReservationSummary.MarshalJSON` has been removed
+- Function `ModernReservationTransaction.MarshalJSON` has been removed
+- Function `ReservationRecommendation.MarshalJSON` has been removed
+- Function `LegacyReservationTransactionProperties.MarshalJSON` has been removed
+- Function `ReservationRecommendationDetailsUsageProperties.MarshalJSON` has been removed
+- Function `ReservationDetail.MarshalJSON` has been removed
+- Function `BalanceProperties.MarshalJSON` has been removed
+- Function `MarketplacesListResult.MarshalJSON` has been removed
+- Function `UsageDetail.MarshalJSON` has been removed
+- Function `LegacyUsageDetailProperties.MarshalJSON` has been removed
+- Function `Balance.MarshalJSON` has been removed
+- Function `ReservationTransaction.MarshalJSON` has been removed
+- Function `ChargesListResult.MarshalJSON` has been removed
+- Function `LegacyReservationRecommendation.MarshalJSON` has been removed
+- Function `ReservationRecommendationDetailsResourceProperties.MarshalJSON` has been removed
+- Function `LegacyUsageDetail.MarshalJSON` has been removed
+- Function `ModernReservationRecommendationProperties.MarshalJSON` has been removed
+- Function `ModernReservationTransactionsListResult.MarshalJSON` has been removed
+- Function `Resource.MarshalJSON` has been removed
+- Function `ReservationRecommendationsListResult.MarshalJSON` has been removed
+- Function `ReservationSummaryProperties.MarshalJSON` has been removed
+- Function `LegacyReservationRecommendationProperties.MarshalJSON` has been removed
+- Function `MarketplaceProperties.MarshalJSON` has been removed
+- Function `PriceSheetModel.MarshalJSON` has been removed
+- Function `ReservationDetailProperties.MarshalJSON` has been removed
+- Function `ReservationTransactionsListResult.MarshalJSON` has been removed
+- Function `ModernUsageDetail.MarshalJSON` has been removed
+- Function `PriceSheetResult.MarshalJSON` has been removed
+- Function `ReservationSummariesListResult.MarshalJSON` has been removed
+- Function `ManagementGroupAggregatedCostResult.MarshalJSON` has been removed
+- Function `ModernReservationRecommendation.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

@@ -1,5 +1,12 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `OperationList.MarshalJSON` has been removed
+- Function `PartnerProperties.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

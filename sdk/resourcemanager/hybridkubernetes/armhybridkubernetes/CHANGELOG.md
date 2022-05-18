@@ -1,5 +1,17 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ConnectedClusterClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ConnectedClusterClientCreateResponse], error)` to `(*runtime.Poller[ConnectedClusterClientCreateResponse], error)`
+- Function `*ConnectedClusterClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ConnectedClusterClientDeleteResponse], error)` to `(*runtime.Poller[ConnectedClusterClientDeleteResponse], error)`
+- Function `CredentialResults.MarshalJSON` has been removed
+- Function `ConnectedClusterList.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `CredentialResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

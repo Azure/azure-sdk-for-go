@@ -1,5 +1,12 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `DeviceServiceDescriptionListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

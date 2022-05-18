@@ -1,5 +1,18 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*CustomResourceProviderClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomResourceProviderClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CustomResourceProviderClientCreateOrUpdateResponse], error)`
+- Function `*CustomResourceProviderClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CustomResourceProviderClientDeleteResponse], error)` to `(*runtime.Poller[CustomResourceProviderClientDeleteResponse], error)`
+- Function `*AssociationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AssociationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AssociationsClientCreateOrUpdateResponse], error)`
+- Function `*AssociationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AssociationsClientDeleteResponse], error)` to `(*runtime.Poller[AssociationsClientDeleteResponse], error)`
+- Function `AssociationsList.MarshalJSON` has been removed
+- Function `ResourceProviderOperationList.MarshalJSON` has been removed
+- Function `ListByCustomRPManifest.MarshalJSON` has been removed
+- Function `ErrorDefinition.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

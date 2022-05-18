@@ -32,7 +32,7 @@ func ExampleClient_Resources() {
 	}
 	res, err := client.Resources(ctx,
 		armresourcegraph.QueryRequest{
-			Query: to.Ptr("<query>"),
+			Query: to.Ptr("Resources | where type =~ 'Microsoft.Compute/virtualMachines' | summarize count() by tostring(properties.storageProfile.osDisk.osType)"),
 			Subscriptions: []*string{
 				to.Ptr("cfbbd179-59d2-4052-aa06-9270a38aa9d6")},
 		},
@@ -66,7 +66,7 @@ func ExampleClient_ResourcesHistory() {
 					Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-12T01:00:00.0000000Z"); return t }()),
 				},
 			},
-			Query: to.Ptr("<query>"),
+			Query: to.Ptr("where name =~ 'cpu-utilization' | project id, name, properties"),
 		},
 		nil)
 	if err != nil {

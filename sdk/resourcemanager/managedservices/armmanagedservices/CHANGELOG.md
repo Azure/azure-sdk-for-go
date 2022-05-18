@@ -1,5 +1,19 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*RegistrationAssignmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RegistrationAssignmentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RegistrationAssignmentsClientCreateOrUpdateResponse], error)`
+- Function `*RegistrationAssignmentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RegistrationAssignmentsClientDeleteResponse], error)` to `(*runtime.Poller[RegistrationAssignmentsClientDeleteResponse], error)`
+- Function `*RegistrationDefinitionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RegistrationDefinitionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RegistrationDefinitionsClientCreateOrUpdateResponse], error)`
+- Function `MarketplaceRegistrationDefinitionProperties.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `ErrorDefinition.MarshalJSON` has been removed
+- Function `MarketplaceRegistrationDefinitionList.MarshalJSON` has been removed
+- Function `RegistrationDefinitionList.MarshalJSON` has been removed
+- Function `RegistrationAssignmentList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

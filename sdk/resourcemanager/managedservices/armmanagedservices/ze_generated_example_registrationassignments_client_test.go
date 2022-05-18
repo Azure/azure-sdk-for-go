@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedservices/armmanagedservices"
@@ -31,8 +29,8 @@ func ExampleRegistrationAssignmentsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<registration-assignment-id>",
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
+		"26c128c2-fefa-4340-9bb1-6e081c90ada2",
 		&armmanagedservices.RegistrationAssignmentsClientGetOptions{ExpandRegistrationDefinition: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -53,13 +51,13 @@ func ExampleRegistrationAssignmentsClient_BeginDelete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<scope>",
-		"<registration-assignment-id>",
-		&armmanagedservices.RegistrationAssignmentsClientBeginDeleteOptions{ResumeToken: ""})
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
+		"26c128c2-fefa-4340-9bb1-6e081c90ada2",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -77,18 +75,18 @@ func ExampleRegistrationAssignmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<scope>",
-		"<registration-assignment-id>",
+		"subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
+		"26c128c2-fefa-4340-9bb1-6e081c90ada2",
 		armmanagedservices.RegistrationAssignment{
 			Properties: &armmanagedservices.RegistrationAssignmentProperties{
-				RegistrationDefinitionID: to.Ptr("<registration-definition-id>"),
+				RegistrationDefinitionID: to.Ptr("/subscriptions/0afefe50-734e-4610-8a82-a144ahf49dea/providers/Microsoft.ManagedServices/registrationDefinitions/26c128c2-fefa-4340-9bb1-6e081c90ada2"),
 			},
 		},
-		&armmanagedservices.RegistrationAssignmentsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -107,7 +105,7 @@ func ExampleRegistrationAssignmentsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
+	pager := client.NewListPager("subscription/0afefe50-734e-4610-8a82-a144ahf49dea",
 		&armmanagedservices.RegistrationAssignmentsClientListOptions{ExpandRegistrationDefinition: nil,
 			Filter: nil,
 		})
@@ -115,7 +113,6 @@ func ExampleRegistrationAssignmentsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

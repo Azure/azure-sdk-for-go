@@ -29,7 +29,7 @@
 /sdk/internal/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft
 
 # PRLabel: %App Configuration
-/sdk/appconfig/               @antkmsft @jhendrixMSFT
+/sdk/data/azappconfig/        @antkmsft @jhendrixMSFT
 
 # PRLabel: %Cosmos
 /sdk/data/azcosmos/           @ealsur @kirankumarkolli

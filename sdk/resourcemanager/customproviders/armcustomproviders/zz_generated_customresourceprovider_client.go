@@ -38,7 +38,7 @@ func NewCustomResourceProviderClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewCustomResourceProviderClient(subscriptionID string, credential azcore.To
 
 // BeginCreateOrUpdate - Creates or updates the custom resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - The name of the resource group.
 // resourceProviderName - The name of the resource provider.
 // resourceProvider - The parameters required to create or update a custom resource provider definition.
 // options - CustomResourceProviderClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomResourceProviderClient.BeginCreateOrUpdate
 // method.
-func (client *CustomResourceProviderClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderName string, resourceProvider CustomRPManifest, options *CustomResourceProviderClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CustomResourceProviderClientCreateOrUpdateResponse], error) {
+func (client *CustomResourceProviderClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderName string, resourceProvider CustomRPManifest, options *CustomResourceProviderClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomResourceProviderClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceProviderName, resourceProvider, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CustomResourceProviderClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CustomResourceProviderClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CustomResourceProviderClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomResourceProviderClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates the custom resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 func (client *CustomResourceProviderClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderName string, resourceProvider CustomRPManifest, options *CustomResourceProviderClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceProviderName, resourceProvider, options)
 	if err != nil {
@@ -112,30 +114,32 @@ func (client *CustomResourceProviderClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resourceProvider)
 }
 
 // BeginDelete - Deletes the custom resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - The name of the resource group.
 // resourceProviderName - The name of the resource provider.
 // options - CustomResourceProviderClientBeginDeleteOptions contains the optional parameters for the CustomResourceProviderClient.BeginDelete
 // method.
-func (client *CustomResourceProviderClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderName string, options *CustomResourceProviderClientBeginDeleteOptions) (*armruntime.Poller[CustomResourceProviderClientDeleteResponse], error) {
+func (client *CustomResourceProviderClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderName string, options *CustomResourceProviderClientBeginDeleteOptions) (*runtime.Poller[CustomResourceProviderClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceProviderName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CustomResourceProviderClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CustomResourceProviderClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CustomResourceProviderClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomResourceProviderClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the custom resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 func (client *CustomResourceProviderClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceProviderName string, options *CustomResourceProviderClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceProviderName, options)
 	if err != nil {
@@ -173,12 +177,13 @@ func (client *CustomResourceProviderClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the custom resource provider manifest.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - The name of the resource group.
 // resourceProviderName - The name of the resource provider.
 // options - CustomResourceProviderClientGetOptions contains the optional parameters for the CustomResourceProviderClient.Get
@@ -220,7 +225,7 @@ func (client *CustomResourceProviderClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -235,11 +240,12 @@ func (client *CustomResourceProviderClient) getHandleResponse(resp *http.Respons
 
 // NewListByResourceGroupPager - Gets all the custom resource providers within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - The name of the resource group.
 // options - CustomResourceProviderClientListByResourceGroupOptions contains the optional parameters for the CustomResourceProviderClient.ListByResourceGroup
 // method.
 func (client *CustomResourceProviderClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomResourceProviderClientListByResourceGroupOptions) *runtime.Pager[CustomResourceProviderClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomResourceProviderClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomResourceProviderClientListByResourceGroupResponse]{
 		More: func(page CustomResourceProviderClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,7 +290,7 @@ func (client *CustomResourceProviderClient) listByResourceGroupCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -299,10 +305,11 @@ func (client *CustomResourceProviderClient) listByResourceGroupHandleResponse(re
 
 // NewListBySubscriptionPager - Gets all the custom resource providers within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // options - CustomResourceProviderClientListBySubscriptionOptions contains the optional parameters for the CustomResourceProviderClient.ListBySubscription
 // method.
 func (client *CustomResourceProviderClient) NewListBySubscriptionPager(options *CustomResourceProviderClientListBySubscriptionOptions) *runtime.Pager[CustomResourceProviderClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomResourceProviderClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomResourceProviderClientListBySubscriptionResponse]{
 		More: func(page CustomResourceProviderClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -343,7 +350,7 @@ func (client *CustomResourceProviderClient) listBySubscriptionCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -358,6 +365,7 @@ func (client *CustomResourceProviderClient) listBySubscriptionHandleResponse(res
 
 // Update - Updates an existing custom resource provider. The only value that can be updated via PATCH currently is the tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - The name of the resource group.
 // resourceProviderName - The name of the resource provider.
 // patchableResource - The updatable fields of a custom resource provider.
@@ -400,7 +408,7 @@ func (client *CustomResourceProviderClient) updateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, patchableResource)
 }
 

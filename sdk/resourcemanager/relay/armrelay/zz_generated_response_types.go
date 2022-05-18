@@ -68,6 +68,11 @@ type NamespacesClientCreateOrUpdateAuthorizationRuleResponse struct {
 	AuthorizationRule
 }
 
+// NamespacesClientCreateOrUpdateNetworkRuleSetResponse contains the response from method NamespacesClient.CreateOrUpdateNetworkRuleSet.
+type NamespacesClientCreateOrUpdateNetworkRuleSetResponse struct {
+	NetworkRuleSet
+}
+
 // NamespacesClientCreateOrUpdateResponse contains the response from method NamespacesClient.CreateOrUpdate.
 type NamespacesClientCreateOrUpdateResponse struct {
 	Namespace
@@ -86,6 +91,11 @@ type NamespacesClientDeleteResponse struct {
 // NamespacesClientGetAuthorizationRuleResponse contains the response from method NamespacesClient.GetAuthorizationRule.
 type NamespacesClientGetAuthorizationRuleResponse struct {
 	AuthorizationRule
+}
+
+// NamespacesClientGetNetworkRuleSetResponse contains the response from method NamespacesClient.GetNetworkRuleSet.
+type NamespacesClientGetNetworkRuleSetResponse struct {
+	NetworkRuleSet
 }
 
 // NamespacesClientGetResponse contains the response from method NamespacesClient.Get.
@@ -126,6 +136,36 @@ type NamespacesClientUpdateResponse struct {
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationListResult
+}
+
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+type PrivateLinkResourcesClientListResponse struct {
+	PrivateLinkResourcesListResult
 }
 
 // WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse contains the response from method WCFRelaysClient.CreateOrUpdateAuthorizationRule.

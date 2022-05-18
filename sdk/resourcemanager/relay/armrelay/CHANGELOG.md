@@ -1,5 +1,113 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*NamespacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[NamespacesClientDeleteResponse], error)` to `(*runtime.Poller[NamespacesClientDeleteResponse], error)`
+- Function `*NamespacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[NamespacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[NamespacesClientCreateOrUpdateResponse], error)`
+- Type of `SKU.Name` has been changed from `*string` to `*SKUName`
+- Type of `SKU.Tier` has been changed from `*string` to `*SKUTier`
+- Type of `NamespaceProperties.ProvisioningState` has been changed from `*ProvisioningStateEnum` to `*string`
+- Const `ProvisioningStateEnumUpdating` has been removed
+- Const `ProvisioningStateEnumSucceeded` has been removed
+- Const `ProvisioningStateEnumFailed` has been removed
+- Const `ProvisioningStateEnumUnknown` has been removed
+- Const `ProvisioningStateEnumCreated` has been removed
+- Const `ProvisioningStateEnumDeleted` has been removed
+- Function `NamespaceListResult.MarshalJSON` has been removed
+- Function `WcfRelaysListResult.MarshalJSON` has been removed
+- Function `PossibleProvisioningStateEnumValues` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `AuthorizationRuleListResult.MarshalJSON` has been removed
+- Function `HybridConnectionListResult.MarshalJSON` has been removed
+- Field `Code` of struct `ErrorResponse` has been removed
+- Field `Message` of struct `ErrorResponse` has been removed
+
+### Features Added
+
+- New const `EndPointProvisioningStateCreating`
+- New const `DefaultActionAllow`
+- New const `CreatedByTypeApplication`
+- New const `CreatedByTypeManagedIdentity`
+- New const `EndPointProvisioningStateUpdating`
+- New const `EndPointProvisioningStateSucceeded`
+- New const `SKUNameStandard`
+- New const `PrivateLinkConnectionStatusRejected`
+- New const `PrivateLinkConnectionStatusPending`
+- New const `EndPointProvisioningStateDeleting`
+- New const `EndPointProvisioningStateCanceled`
+- New const `CreatedByTypeKey`
+- New const `CreatedByTypeUser`
+- New const `DefaultActionDeny`
+- New const `EndPointProvisioningStateFailed`
+- New const `PublicNetworkAccessDisabled`
+- New const `PrivateLinkConnectionStatusApproved`
+- New const `SKUTierStandard`
+- New const `PrivateLinkConnectionStatusDisconnected`
+- New const `PublicNetworkAccessEnabled`
+- New const `PublicNetworkAccessSecuredByPerimeter`
+- New const `NetworkRuleIPActionAllow`
+- New function `PossiblePublicNetworkAccessValues() []PublicNetworkAccess`
+- New function `*NamespacesClient.CreateOrUpdateNetworkRuleSet(context.Context, string, string, NetworkRuleSet, *NamespacesClientCreateOrUpdateNetworkRuleSetOptions) (NamespacesClientCreateOrUpdateNetworkRuleSetResponse, error)`
+- New function `PossibleEndPointProvisioningStateValues() []EndPointProvisioningState`
+- New function `PossiblePrivateLinkConnectionStatusValues() []PrivateLinkConnectionStatus`
+- New function `*NamespacesClient.GetNetworkRuleSet(context.Context, string, string, *NamespacesClientGetNetworkRuleSetOptions) (NamespacesClientGetNetworkRuleSetResponse, error)`
+- New function `NetworkRuleSetProperties.MarshalJSON() ([]byte, error)`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `PossibleSKUNameValues() []SKUName`
+- New function `PossibleDefaultActionValues() []DefaultAction`
+- New function `PossibleSKUTierValues() []SKUTier`
+- New function `PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New struct `ConnectionState`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `NWRuleSetIPRules`
+- New struct `NamespacesClientCreateOrUpdateNetworkRuleSetOptions`
+- New struct `NamespacesClientCreateOrUpdateNetworkRuleSetResponse`
+- New struct `NamespacesClientGetNetworkRuleSetOptions`
+- New struct `NamespacesClientGetNetworkRuleSetResponse`
+- New struct `NetworkRuleSet`
+- New struct `NetworkRuleSetProperties`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateEndpointConnectionsClientBeginDeleteOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateOptions`
+- New struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse`
+- New struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New struct `PrivateEndpointConnectionsClientGetOptions`
+- New struct `PrivateEndpointConnectionsClientGetResponse`
+- New struct `PrivateEndpointConnectionsClientListOptions`
+- New struct `PrivateEndpointConnectionsClientListResponse`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkResourcesClientGetOptions`
+- New struct `PrivateLinkResourcesClientGetResponse`
+- New struct `PrivateLinkResourcesClientListOptions`
+- New struct `PrivateLinkResourcesClientListResponse`
+- New struct `PrivateLinkResourcesListResult`
+- New struct `ProxyResource`
+- New struct `SystemData`
+- New field `SystemData` in struct `Namespace`
+- New field `Error` in struct `ErrorResponse`
+- New field `Location` in struct `WcfRelay`
+- New field `SystemData` in struct `WcfRelay`
+- New field `Location` in struct `AuthorizationRule`
+- New field `SystemData` in struct `AuthorizationRule`
+- New field `Status` in struct `NamespaceProperties`
+- New field `PrivateEndpointConnections` in struct `NamespaceProperties`
+- New field `PublicNetworkAccess` in struct `NamespaceProperties`
+- New field `Description` in struct `OperationDisplay`
+- New field `Origin` in struct `Operation`
+- New field `Properties` in struct `Operation`
+- New field `IsDataAction` in struct `Operation`
+- New field `Location` in struct `HybridConnection`
+- New field `SystemData` in struct `HybridConnection`
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

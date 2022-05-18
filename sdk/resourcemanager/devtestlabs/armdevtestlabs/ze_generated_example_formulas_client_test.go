@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
@@ -26,12 +24,12 @@ func ExampleFormulasClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewFormulasClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewFormulasClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<lab-name>",
+	pager := client.NewListPager("resourceGroupName",
+		"{labName}",
 		&armdevtestlabs.FormulasClientListOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -41,7 +39,6 @@ func ExampleFormulasClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,14 +54,14 @@ func ExampleFormulasClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewFormulasClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewFormulasClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{formulaName}",
 		&armdevtestlabs.FormulasClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,38 +77,38 @@ func ExampleFormulasClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewFormulasClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewFormulasClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{formulaName}",
 		armdevtestlabs.Formula{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("{location}"),
 			Properties: &armdevtestlabs.FormulaProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Formula using a Linux base"),
 				FormulaContent: &armdevtestlabs.LabVirtualMachineCreationParameter{
-					Location: to.Ptr("<location>"),
+					Location: to.Ptr("{location}"),
 					Properties: &armdevtestlabs.LabVirtualMachineCreationParameterProperties{
 						AllowClaim: to.Ptr(false),
 						Artifacts: []*armdevtestlabs.ArtifactInstallProperties{
 							{
-								ArtifactID: to.Ptr("<artifact-id>"),
+								ArtifactID: to.Ptr("/artifactsources/{artifactSourceName}/artifacts/linux-install-nodejs"),
 								Parameters: []*armdevtestlabs.ArtifactParameterProperties{},
 							}},
 						DisallowPublicIPAddress: to.Ptr(true),
 						GalleryImageReference: &armdevtestlabs.GalleryImageReference{
-							Offer:     to.Ptr("<offer>"),
-							OSType:    to.Ptr("<ostype>"),
-							Publisher: to.Ptr("<publisher>"),
-							SKU:       to.Ptr("<sku>"),
-							Version:   to.Ptr("<version>"),
+							Offer:     to.Ptr("0001-com-ubuntu-server-groovy"),
+							OSType:    to.Ptr("Linux"),
+							Publisher: to.Ptr("canonical"),
+							SKU:       to.Ptr("20_10"),
+							Version:   to.Ptr("latest"),
 						},
 						IsAuthenticationWithSSHKey: to.Ptr(false),
-						LabSubnetName:              to.Ptr("<lab-subnet-name>"),
-						LabVirtualNetworkID:        to.Ptr("<lab-virtual-network-id>"),
+						LabSubnetName:              to.Ptr("Dtl{labName}Subnet"),
+						LabVirtualNetworkID:        to.Ptr("/virtualnetworks/dtl{labName}"),
 						NetworkInterface: &armdevtestlabs.NetworkInterfaceProperties{
 							SharedPublicIPAddressConfiguration: &armdevtestlabs.SharedPublicIPAddressConfiguration{
 								InboundNatRules: []*armdevtestlabs.InboundNatRule{
@@ -121,19 +118,19 @@ func ExampleFormulasClient_BeginCreateOrUpdate() {
 									}},
 							},
 						},
-						Notes:       to.Ptr("<notes>"),
-						Size:        to.Ptr("<size>"),
-						StorageType: to.Ptr("<storage-type>"),
-						UserName:    to.Ptr("<user-name>"),
+						Notes:       to.Ptr("Ubuntu Server 20.10"),
+						Size:        to.Ptr("Standard_B1ms"),
+						StorageType: to.Ptr("Standard"),
+						UserName:    to.Ptr("user"),
 					},
 				},
 			},
 		},
-		&armdevtestlabs.FormulasClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -148,14 +145,14 @@ func ExampleFormulasClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewFormulasClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewFormulasClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{formulaName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -169,14 +166,14 @@ func ExampleFormulasClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewFormulasClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewFormulasClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{formulaName}",
 		armdevtestlabs.FormulaFragment{
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),

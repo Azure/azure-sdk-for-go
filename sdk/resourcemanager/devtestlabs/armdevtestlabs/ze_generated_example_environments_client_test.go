@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
@@ -26,13 +24,13 @@ func ExampleEnvironmentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewEnvironmentsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
+	pager := client.NewListPager("resourceGroupName",
+		"{labName}",
+		"@me",
 		&armdevtestlabs.EnvironmentsClientListOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -42,7 +40,6 @@ func ExampleEnvironmentsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,15 +55,15 @@ func ExampleEnvironmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewEnvironmentsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"@me",
+		"{environmentName}",
 		&armdevtestlabs.EnvironmentsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -82,28 +79,28 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewEnvironmentsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"@me",
+		"{environmentName}",
 		armdevtestlabs.DtlEnvironment{
 			Properties: &armdevtestlabs.EnvironmentProperties{
 				DeploymentProperties: &armdevtestlabs.EnvironmentDeploymentProperties{
-					ArmTemplateID: to.Ptr("<arm-template-id>"),
+					ArmTemplateID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/resourceGroupName/providers/Microsoft.DevTestLab/labs/{labName}/artifactSources/{artifactSourceName}/armTemplates/{armTemplateName}"),
 					Parameters:    []*armdevtestlabs.ArmTemplateParameterProperties{},
 				},
 			},
 		},
-		&armdevtestlabs.EnvironmentsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -118,20 +115,20 @@ func ExampleEnvironmentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewEnvironmentsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
-		&armdevtestlabs.EnvironmentsClientBeginDeleteOptions{ResumeToken: ""})
+		"resourceGroupName",
+		"{labName}",
+		"@me",
+		"{environmentName}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -144,15 +141,15 @@ func ExampleEnvironmentsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewEnvironmentsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewEnvironmentsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<user-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"@me",
+		"{environmentName}",
 		armdevtestlabs.DtlEnvironmentFragment{
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),

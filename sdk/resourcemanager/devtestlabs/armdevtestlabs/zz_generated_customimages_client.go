@@ -39,7 +39,7 @@ func NewCustomImagesClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewCustomImagesClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdate - Create or replace an existing custom image. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the custom image.
 // customImage - A custom image.
 // options - CustomImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomImagesClient.BeginCreateOrUpdate
 // method.
-func (client *CustomImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImage, options *CustomImagesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CustomImagesClientCreateOrUpdateResponse], error) {
+func (client *CustomImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImage, options *CustomImagesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomImagesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, name, customImage, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CustomImagesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CustomImagesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CustomImagesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomImagesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or replace an existing custom image. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *CustomImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, customImage CustomImage, options *CustomImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, name, customImage, options)
 	if err != nil {
@@ -118,31 +120,33 @@ func (client *CustomImagesClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, customImage)
 }
 
 // BeginDelete - Delete custom image. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the custom image.
 // options - CustomImagesClientBeginDeleteOptions contains the optional parameters for the CustomImagesClient.BeginDelete
 // method.
-func (client *CustomImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesClientBeginDeleteOptions) (*armruntime.Poller[CustomImagesClientDeleteResponse], error) {
+func (client *CustomImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesClientBeginDeleteOptions) (*runtime.Poller[CustomImagesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, labName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[CustomImagesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CustomImagesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[CustomImagesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomImagesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete custom image. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *CustomImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, labName string, name string, options *CustomImagesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, labName, name, options)
 	if err != nil {
@@ -184,12 +188,13 @@ func (client *CustomImagesClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get custom image.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the custom image.
@@ -238,7 +243,7 @@ func (client *CustomImagesClient) getCreateRequest(ctx context.Context, resource
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -253,11 +258,12 @@ func (client *CustomImagesClient) getHandleResponse(resp *http.Response) (Custom
 
 // NewListPager - List custom images in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - CustomImagesClientListOptions contains the optional parameters for the CustomImagesClient.List method.
 func (client *CustomImagesClient) NewListPager(resourceGroupName string, labName string, options *CustomImagesClientListOptions) *runtime.Pager[CustomImagesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomImagesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomImagesClientListResponse]{
 		More: func(page CustomImagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -318,7 +324,7 @@ func (client *CustomImagesClient) listCreateRequest(ctx context.Context, resourc
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -333,6 +339,7 @@ func (client *CustomImagesClient) listHandleResponse(resp *http.Response) (Custo
 
 // Update - Allows modifying tags of custom images. All other properties will be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the custom image.
@@ -379,7 +386,7 @@ func (client *CustomImagesClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, customImage)
 }
 

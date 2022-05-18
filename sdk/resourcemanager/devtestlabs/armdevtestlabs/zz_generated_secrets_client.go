@@ -39,7 +39,7 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginCreateOrUpdate - Create or replace an existing secret. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -64,20 +65,21 @@ func NewSecretsClient(subscriptionID string, credential azcore.TokenCredential, 
 // secret - A secret.
 // options - SecretsClientBeginCreateOrUpdateOptions contains the optional parameters for the SecretsClient.BeginCreateOrUpdate
 // method.
-func (client *SecretsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, secret Secret, options *SecretsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[SecretsClientCreateOrUpdateResponse], error) {
+func (client *SecretsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, secret Secret, options *SecretsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SecretsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, labName, userName, name, secret, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SecretsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SecretsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SecretsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SecretsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or replace an existing secret. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *SecretsClient) createOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, secret Secret, options *SecretsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, labName, userName, name, secret, options)
 	if err != nil {
@@ -123,12 +125,13 @@ func (client *SecretsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, secret)
 }
 
 // Delete - Delete secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -179,12 +182,13 @@ func (client *SecretsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -238,7 +242,7 @@ func (client *SecretsClient) getCreateRequest(ctx context.Context, resourceGroup
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -253,12 +257,13 @@ func (client *SecretsClient) getHandleResponse(resp *http.Response) (SecretsClie
 
 // NewListPager - List secrets in a given user profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
 // options - SecretsClientListOptions contains the optional parameters for the SecretsClient.List method.
 func (client *SecretsClient) NewListPager(resourceGroupName string, labName string, userName string, options *SecretsClientListOptions) *runtime.Pager[SecretsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecretsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecretsClientListResponse]{
 		More: func(page SecretsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -323,7 +328,7 @@ func (client *SecretsClient) listCreateRequest(ctx context.Context, resourceGrou
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -338,6 +343,7 @@ func (client *SecretsClient) listHandleResponse(resp *http.Response) (SecretsCli
 
 // Update - Allows modifying tags of secrets. All other properties will be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -389,7 +395,7 @@ func (client *SecretsClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, secret)
 }
 

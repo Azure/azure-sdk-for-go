@@ -26,7 +26,7 @@ func ExampleLabsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -39,7 +39,6 @@ func ExampleLabsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,11 +54,11 @@ func ExampleLabsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("resourceGroupName",
 		&armdevtestlabs.LabsClientListByResourceGroupOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -69,7 +68,6 @@ func ExampleLabsClient_NewListByResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -85,13 +83,13 @@ func ExampleLabsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
 		&armdevtestlabs.LabsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -107,15 +105,15 @@ func ExampleLabsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
 		armdevtestlabs.Lab{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("{location}"),
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),
 			},
@@ -123,11 +121,11 @@ func ExampleLabsClient_BeginCreateOrUpdate() {
 				LabStorageType: to.Ptr(armdevtestlabs.StorageType("{Standard|Premium}")),
 			},
 		},
-		&armdevtestlabs.LabsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -142,18 +140,18 @@ func ExampleLabsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<name>",
-		&armdevtestlabs.LabsClientBeginDeleteOptions{ResumeToken: ""})
+		"resourceGroupName",
+		"{labName}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -166,13 +164,13 @@ func ExampleLabsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
 		armdevtestlabs.LabFragment{},
 		nil)
 	if err != nil {
@@ -189,42 +187,42 @@ func ExampleLabsClient_BeginCreateEnvironment() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateEnvironment(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
 		armdevtestlabs.LabVirtualMachineCreationParameter{
-			Name:     to.Ptr("<name>"),
-			Location: to.Ptr("<location>"),
+			Name:     to.Ptr("{vmName}"),
+			Location: to.Ptr("{location}"),
 			Properties: &armdevtestlabs.LabVirtualMachineCreationParameterProperties{
 				AllowClaim:              to.Ptr(true),
 				DisallowPublicIPAddress: to.Ptr(true),
 				GalleryImageReference: &armdevtestlabs.GalleryImageReference{
-					Offer:     to.Ptr("<offer>"),
-					OSType:    to.Ptr("<ostype>"),
-					Publisher: to.Ptr("<publisher>"),
-					SKU:       to.Ptr("<sku>"),
-					Version:   to.Ptr("<version>"),
+					Offer:     to.Ptr("UbuntuServer"),
+					OSType:    to.Ptr("Linux"),
+					Publisher: to.Ptr("Canonical"),
+					SKU:       to.Ptr("16.04-LTS"),
+					Version:   to.Ptr("Latest"),
 				},
-				LabSubnetName:       to.Ptr("<lab-subnet-name>"),
-				LabVirtualNetworkID: to.Ptr("<lab-virtual-network-id>"),
-				Password:            to.Ptr("<password>"),
-				Size:                to.Ptr("<size>"),
-				StorageType:         to.Ptr("<storage-type>"),
-				UserName:            to.Ptr("<user-name>"),
+				LabSubnetName:       to.Ptr("{virtualnetwork-subnet-name}"),
+				LabVirtualNetworkID: to.Ptr("/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}/virtualnetworks/{virtualNetworkName}"),
+				Password:            to.Ptr("{userPassword}"),
+				Size:                to.Ptr("Standard_A2_v2"),
+				StorageType:         to.Ptr("Standard"),
+				UserName:            to.Ptr("{userName}"),
 			},
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),
 			},
 		},
-		&armdevtestlabs.LabsClientBeginCreateEnvironmentOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -237,22 +235,22 @@ func ExampleLabsClient_BeginExportResourceUsage() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginExportResourceUsage(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
 		armdevtestlabs.ExportResourceUsageParameters{
-			BlobStorageAbsoluteSasURI: to.Ptr("<blob-storage-absolute-sas-uri>"),
+			BlobStorageAbsoluteSasURI: to.Ptr("https://invalid.blob.core.windows.net/export.blob?sv=2015-07-08&sig={sas}&sp=rcw"),
 			UsageStartDate:            to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T00:00:00Z"); return t }()),
 		},
-		&armdevtestlabs.LabsClientBeginExportResourceUsageOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -265,22 +263,22 @@ func ExampleLabsClient_BeginImportVirtualMachine() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginImportVirtualMachine(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
 		armdevtestlabs.ImportLabVirtualMachineRequest{
-			DestinationVirtualMachineName:  to.Ptr("<destination-virtual-machine-name>"),
-			SourceVirtualMachineResourceID: to.Ptr("<source-virtual-machine-resource-id>"),
+			DestinationVirtualMachineName:  to.Ptr("{vmName}"),
+			SourceVirtualMachineResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{otherResourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}"),
 		},
-		&armdevtestlabs.LabsClientBeginImportVirtualMachineOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -293,18 +291,17 @@ func ExampleLabsClient_NewListVhdsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewLabsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewLabsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListVhdsPager("<resource-group-name>",
-		"<name>",
+	pager := client.NewListVhdsPager("resourceGroupName",
+		"{labName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -39,7 +39,7 @@ func NewServiceFabricSchedulesClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewServiceFabricSchedulesClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Create or replace an existing schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -114,7 +115,7 @@ func (client *ServiceFabricSchedulesClient) createOrUpdateCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, schedule)
 }
 
@@ -129,6 +130,7 @@ func (client *ServiceFabricSchedulesClient) createOrUpdateHandleResponse(resp *h
 
 // Delete - Delete schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -185,12 +187,13 @@ func (client *ServiceFabricSchedulesClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginExecute - Execute a schedule. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -198,20 +201,21 @@ func (client *ServiceFabricSchedulesClient) deleteCreateRequest(ctx context.Cont
 // name - The name of the schedule.
 // options - ServiceFabricSchedulesClientBeginExecuteOptions contains the optional parameters for the ServiceFabricSchedulesClient.BeginExecute
 // method.
-func (client *ServiceFabricSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string, options *ServiceFabricSchedulesClientBeginExecuteOptions) (*armruntime.Poller[ServiceFabricSchedulesClientExecuteResponse], error) {
+func (client *ServiceFabricSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string, options *ServiceFabricSchedulesClientBeginExecuteOptions) (*runtime.Poller[ServiceFabricSchedulesClientExecuteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.execute(ctx, resourceGroupName, labName, userName, serviceFabricName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServiceFabricSchedulesClientExecuteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServiceFabricSchedulesClientExecuteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServiceFabricSchedulesClientExecuteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServiceFabricSchedulesClientExecuteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Execute - Execute a schedule. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *ServiceFabricSchedulesClient) execute(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string, options *ServiceFabricSchedulesClientBeginExecuteOptions) (*http.Response, error) {
 	req, err := client.executeCreateRequest(ctx, resourceGroupName, labName, userName, serviceFabricName, name, options)
 	if err != nil {
@@ -261,12 +265,13 @@ func (client *ServiceFabricSchedulesClient) executeCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -326,7 +331,7 @@ func (client *ServiceFabricSchedulesClient) getCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -341,6 +346,7 @@ func (client *ServiceFabricSchedulesClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - List schedules in a given service fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -348,7 +354,7 @@ func (client *ServiceFabricSchedulesClient) getHandleResponse(resp *http.Respons
 // options - ServiceFabricSchedulesClientListOptions contains the optional parameters for the ServiceFabricSchedulesClient.List
 // method.
 func (client *ServiceFabricSchedulesClient) NewListPager(resourceGroupName string, labName string, userName string, serviceFabricName string, options *ServiceFabricSchedulesClientListOptions) *runtime.Pager[ServiceFabricSchedulesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServiceFabricSchedulesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServiceFabricSchedulesClientListResponse]{
 		More: func(page ServiceFabricSchedulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -417,7 +423,7 @@ func (client *ServiceFabricSchedulesClient) listCreateRequest(ctx context.Contex
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -432,6 +438,7 @@ func (client *ServiceFabricSchedulesClient) listHandleResponse(resp *http.Respon
 
 // Update - Allows modifying tags of schedules. All other properties will be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // userName - The name of the user profile.
@@ -489,7 +496,7 @@ func (client *ServiceFabricSchedulesClient) updateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, schedule)
 }
 

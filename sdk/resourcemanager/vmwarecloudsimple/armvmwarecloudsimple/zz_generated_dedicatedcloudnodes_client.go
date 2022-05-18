@@ -39,7 +39,7 @@ func NewDedicatedCloudNodesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewDedicatedCloudNodesClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Returns dedicated cloud node by its name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // referer - referer url
 // dedicatedCloudNodeName - dedicated cloud node name
 // dedicatedCloudNodeRequest - Create Dedicated Cloud Node request
 // options - DedicatedCloudNodesClientBeginCreateOrUpdateOptions contains the optional parameters for the DedicatedCloudNodesClient.BeginCreateOrUpdate
 // method.
-func (client *DedicatedCloudNodesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, referer string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode, options *DedicatedCloudNodesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DedicatedCloudNodesClientCreateOrUpdateResponse], error) {
+func (client *DedicatedCloudNodesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, referer string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode, options *DedicatedCloudNodesClientBeginCreateOrUpdateOptions) (*runtime.Poller[DedicatedCloudNodesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DedicatedCloudNodesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DedicatedCloudNodesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DedicatedCloudNodesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DedicatedCloudNodesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Returns dedicated cloud node by its name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 func (client *DedicatedCloudNodesClient) createOrUpdate(ctx context.Context, resourceGroupName string, referer string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode, options *DedicatedCloudNodesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, referer, dedicatedCloudNodeName, dedicatedCloudNodeRequest, options)
 	if err != nil {
@@ -114,13 +116,14 @@ func (client *DedicatedCloudNodesClient) createOrUpdateCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Referer", referer)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Referer"] = []string{referer}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dedicatedCloudNodeRequest)
 }
 
 // Delete - Delete dedicated cloud node
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // dedicatedCloudNodeName - dedicated cloud node name
 // options - DedicatedCloudNodesClientDeleteOptions contains the optional parameters for the DedicatedCloudNodesClient.Delete
@@ -162,12 +165,13 @@ func (client *DedicatedCloudNodesClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns dedicated cloud node
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // dedicatedCloudNodeName - dedicated cloud node name
 // options - DedicatedCloudNodesClientGetOptions contains the optional parameters for the DedicatedCloudNodesClient.Get method.
@@ -208,7 +212,7 @@ func (client *DedicatedCloudNodesClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -223,11 +227,12 @@ func (client *DedicatedCloudNodesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - Returns list of dedicate cloud nodes within resource group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // options - DedicatedCloudNodesClientListByResourceGroupOptions contains the optional parameters for the DedicatedCloudNodesClient.ListByResourceGroup
 // method.
 func (client *DedicatedCloudNodesClient) NewListByResourceGroupPager(resourceGroupName string, options *DedicatedCloudNodesClientListByResourceGroupOptions) *runtime.Pager[DedicatedCloudNodesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DedicatedCloudNodesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DedicatedCloudNodesClientListByResourceGroupResponse]{
 		More: func(page DedicatedCloudNodesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -281,7 +286,7 @@ func (client *DedicatedCloudNodesClient) listByResourceGroupCreateRequest(ctx co
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -296,10 +301,11 @@ func (client *DedicatedCloudNodesClient) listByResourceGroupHandleResponse(resp 
 
 // NewListBySubscriptionPager - Returns list of dedicate cloud nodes within subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // options - DedicatedCloudNodesClientListBySubscriptionOptions contains the optional parameters for the DedicatedCloudNodesClient.ListBySubscription
 // method.
 func (client *DedicatedCloudNodesClient) NewListBySubscriptionPager(options *DedicatedCloudNodesClientListBySubscriptionOptions) *runtime.Pager[DedicatedCloudNodesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DedicatedCloudNodesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DedicatedCloudNodesClientListBySubscriptionResponse]{
 		More: func(page DedicatedCloudNodesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -349,7 +355,7 @@ func (client *DedicatedCloudNodesClient) listBySubscriptionCreateRequest(ctx con
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -364,6 +370,7 @@ func (client *DedicatedCloudNodesClient) listBySubscriptionHandleResponse(resp *
 
 // Update - Patches dedicated node properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // resourceGroupName - The name of the resource group
 // dedicatedCloudNodeName - dedicated cloud node name
 // dedicatedCloudNodeRequest - Patch Dedicated Cloud Node request
@@ -406,7 +413,7 @@ func (client *DedicatedCloudNodesClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dedicatedCloudNodeRequest)
 }
 

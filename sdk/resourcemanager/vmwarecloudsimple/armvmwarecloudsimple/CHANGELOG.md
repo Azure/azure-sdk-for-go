@@ -1,5 +1,35 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*VirtualMachinesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachinesClientUpdateResponse], error)`
+- Function `*DedicatedCloudNodesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DedicatedCloudNodesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DedicatedCloudNodesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientStopResponse], error)` to `(*runtime.Poller[VirtualMachinesClientStopResponse], error)`
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientStartResponse], error)` to `(*runtime.Poller[VirtualMachinesClientStartResponse], error)`
+- Function `*VirtualMachinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachinesClientDeleteResponse], error)`
+- Function `*DedicatedCloudServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DedicatedCloudServicesClientDeleteResponse], error)` to `(*runtime.Poller[DedicatedCloudServicesClientDeleteResponse], error)`
+- Function `VirtualMachineTemplateListResponse.MarshalJSON` has been removed
+- Function `CustomizationPoliciesListResponse.MarshalJSON` has been removed
+- Function `DedicatedCloudServiceListResponse.MarshalJSON` has been removed
+- Function `DedicatedCloudNodeListResponse.MarshalJSON` has been removed
+- Function `SKUAvailabilityListResponse.MarshalJSON` has been removed
+- Function `PrivateCloudProperties.MarshalJSON` has been removed
+- Function `CustomizationIPSettings.MarshalJSON` has been removed
+- Function `AvailableOperationDisplayPropertyServiceSpecificationMetricsList.MarshalJSON` has been removed
+- Function `CSRPErrorBody.MarshalJSON` has been removed
+- Function `VirtualMachineTemplateProperties.MarshalJSON` has been removed
+- Function `PrivateCloudList.MarshalJSON` has been removed
+- Function `AvailableOperationsListResponse.MarshalJSON` has been removed
+- Function `ResourcePoolsListResponse.MarshalJSON` has been removed
+- Function `CustomizationSpecification.MarshalJSON` has been removed
+- Function `OperationResource.MarshalJSON` has been removed
+- Function `VirtualNetworkListResponse.MarshalJSON` has been removed
+- Function `UsageListResponse.MarshalJSON` has been removed
+- Function `VirtualMachineListResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

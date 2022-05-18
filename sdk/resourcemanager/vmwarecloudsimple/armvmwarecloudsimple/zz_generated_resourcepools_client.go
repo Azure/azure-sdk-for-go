@@ -38,7 +38,7 @@ func NewResourcePoolsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewResourcePoolsClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Returns resource pool templates by its name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // resourcePoolName - resource pool id (vsphereId)
@@ -101,7 +102,7 @@ func (client *ResourcePoolsClient) getCreateRequest(ctx context.Context, regionI
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,11 +117,12 @@ func (client *ResourcePoolsClient) getHandleResponse(resp *http.Response) (Resou
 
 // NewListPager - Returns list of resource pools in region for private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // options - ResourcePoolsClientListOptions contains the optional parameters for the ResourcePoolsClient.List method.
 func (client *ResourcePoolsClient) NewListPager(regionID string, pcName string, options *ResourcePoolsClientListOptions) *runtime.Pager[ResourcePoolsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourcePoolsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourcePoolsClientListResponse]{
 		More: func(page ResourcePoolsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -169,7 +171,7 @@ func (client *ResourcePoolsClient) listCreateRequest(ctx context.Context, region
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewVirtualMachineTemplatesClient(subscriptionID string, credential azcore.T
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewVirtualMachineTemplatesClient(subscriptionID string, credential azcore.T
 
 // Get - Returns virtual machine templates by its name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // regionID - The region Id (westus, eastus)
 // pcName - The private cloud name
 // virtualMachineTemplateName - virtual machine template id (vsphereId)
@@ -102,7 +103,7 @@ func (client *VirtualMachineTemplatesClient) getCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,13 +118,14 @@ func (client *VirtualMachineTemplatesClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - Returns list of virtual machine templates in region for private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // pcName - The private cloud name
 // regionID - The region Id (westus, eastus)
 // resourcePoolName - Resource pool used to derive vSphere cluster which contains VM templates
 // options - VirtualMachineTemplatesClientListOptions contains the optional parameters for the VirtualMachineTemplatesClient.List
 // method.
 func (client *VirtualMachineTemplatesClient) NewListPager(pcName string, regionID string, resourcePoolName string, options *VirtualMachineTemplatesClientListOptions) *runtime.Pager[VirtualMachineTemplatesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachineTemplatesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineTemplatesClientListResponse]{
 		More: func(page VirtualMachineTemplatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -173,7 +175,7 @@ func (client *VirtualMachineTemplatesClient) listCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2019-04-01")
 	reqQP.Set("resourcePoolName", resourcePoolName)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

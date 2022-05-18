@@ -1,5 +1,13 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*Client.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ClientCreateResponse], error)` to `(*runtime.Poller[ClientCreateResponse], error)`
+- Function `DeploymentScriptListResult.MarshalJSON` has been removed
+- Function `ScriptLogsList.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

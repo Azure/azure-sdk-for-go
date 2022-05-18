@@ -39,7 +39,7 @@ func NewCloudsClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,27 +57,29 @@ func NewCloudsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Onboards the ScVmm fabric cloud as an Azure cloud resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // cloudName - Name of the Cloud.
 // body - Request payload.
 // options - CloudsClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudsClient.BeginCreateOrUpdate
 // method.
-func (client *CloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudName string, body Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CloudsClientCreateOrUpdateResponse], error) {
+func (client *CloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudName string, body Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CloudsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[CloudsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CloudsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Onboards the ScVmm fabric cloud as an Azure cloud resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *CloudsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudName string, body Cloud, options *CloudsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudName, body, options)
 	if err != nil {
@@ -115,31 +117,33 @@ func (client *CloudsClient) createOrUpdateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginDelete - Deregisters the ScVmm fabric cloud from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // cloudName - Name of the Cloud.
 // options - CloudsClientBeginDeleteOptions contains the optional parameters for the CloudsClient.BeginDelete method.
-func (client *CloudsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientBeginDeleteOptions) (*armruntime.Poller[CloudsClientDeleteResponse], error) {
+func (client *CloudsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientBeginDeleteOptions) (*runtime.Poller[CloudsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[CloudsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CloudsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deregisters the ScVmm fabric cloud from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *CloudsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudName string, options *CloudsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudName, options)
 	if err != nil {
@@ -180,12 +184,13 @@ func (client *CloudsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Implements Cloud GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // cloudName - Name of the Cloud.
 // options - CloudsClientGetOptions contains the optional parameters for the CloudsClient.Get method.
@@ -226,7 +231,7 @@ func (client *CloudsClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -241,11 +246,12 @@ func (client *CloudsClient) getHandleResponse(resp *http.Response) (CloudsClient
 
 // NewListByResourceGroupPager - List of Clouds in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // options - CloudsClientListByResourceGroupOptions contains the optional parameters for the CloudsClient.ListByResourceGroup
 // method.
 func (client *CloudsClient) NewListByResourceGroupPager(resourceGroupName string, options *CloudsClientListByResourceGroupOptions) *runtime.Pager[CloudsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CloudsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CloudsClientListByResourceGroupResponse]{
 		More: func(page CloudsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -290,7 +296,7 @@ func (client *CloudsClient) listByResourceGroupCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -305,10 +311,11 @@ func (client *CloudsClient) listByResourceGroupHandleResponse(resp *http.Respons
 
 // NewListBySubscriptionPager - List of Clouds in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // options - CloudsClientListBySubscriptionOptions contains the optional parameters for the CloudsClient.ListBySubscription
 // method.
 func (client *CloudsClient) NewListBySubscriptionPager(options *CloudsClientListBySubscriptionOptions) *runtime.Pager[CloudsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CloudsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CloudsClientListBySubscriptionResponse]{
 		More: func(page CloudsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -349,7 +356,7 @@ func (client *CloudsClient) listBySubscriptionCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -364,26 +371,28 @@ func (client *CloudsClient) listBySubscriptionHandleResponse(resp *http.Response
 
 // BeginUpdate - Updates the Clouds resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // cloudName - Name of the Cloud.
 // body - Clouds patch payload.
 // options - CloudsClientBeginUpdateOptions contains the optional parameters for the CloudsClient.BeginUpdate method.
-func (client *CloudsClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudName string, body ResourcePatch, options *CloudsClientBeginUpdateOptions) (*armruntime.Poller[CloudsClientUpdateResponse], error) {
+func (client *CloudsClient) BeginUpdate(ctx context.Context, resourceGroupName string, cloudName string, body ResourcePatch, options *CloudsClientBeginUpdateOptions) (*runtime.Poller[CloudsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, cloudName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[CloudsClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CloudsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[CloudsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CloudsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates the Clouds resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *CloudsClient) update(ctx context.Context, resourceGroupName string, cloudName string, body ResourcePatch, options *CloudsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, cloudName, body, options)
 	if err != nil {
@@ -421,6 +430,6 @@ func (client *CloudsClient) updateCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

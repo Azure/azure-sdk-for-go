@@ -10,6 +10,7 @@ package armscvmm
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
@@ -28,14 +29,6 @@ func (a AvailabilitySet) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AvailabilitySetListResult.
-func (a AvailabilitySetListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type Cloud.
 func (c Cloud) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -48,17 +41,6 @@ func (c Cloud) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "tags", c.Tags)
 	populate(objectMap, "type", c.Type)
 	return json.Marshal(objectMap)
-}
-
-// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type CloudInventoryItem.
-func (c *CloudInventoryItem) GetInventoryItemProperties() *InventoryItemProperties {
-	return &InventoryItemProperties{
-		InventoryType:     c.InventoryType,
-		ManagedResourceID: c.ManagedResourceID,
-		UUID:              c.UUID,
-		InventoryItemName: c.InventoryItemName,
-		ProvisioningState: c.ProvisioningState,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CloudInventoryItem.
@@ -76,40 +58,32 @@ func (c CloudInventoryItem) MarshalJSON() ([]byte, error) {
 func (c *CloudInventoryItem) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "inventoryItemName":
-			err = unpopulate(val, &c.InventoryItemName)
+			err = unpopulate(val, "InventoryItemName", &c.InventoryItemName)
 			delete(rawMsg, key)
 		case "inventoryType":
-			err = unpopulate(val, &c.InventoryType)
+			err = unpopulate(val, "InventoryType", &c.InventoryType)
 			delete(rawMsg, key)
 		case "managedResourceId":
-			err = unpopulate(val, &c.ManagedResourceID)
+			err = unpopulate(val, "ManagedResourceID", &c.ManagedResourceID)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &c.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
 			delete(rawMsg, key)
 		case "uuid":
-			err = unpopulate(val, &c.UUID)
+			err = unpopulate(val, "UUID", &c.UUID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CloudListResult.
-func (c CloudListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CloudProperties.
@@ -122,15 +96,6 @@ func (c CloudProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "storageQoSPolicies", c.StorageQoSPolicies)
 	populate(objectMap, "uuid", c.UUID)
 	populate(objectMap, "vmmServerId", c.VmmServerID)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDefinition.
-func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
 	return json.Marshal(objectMap)
 }
 
@@ -150,46 +115,35 @@ func (i InventoryItem) MarshalJSON() ([]byte, error) {
 func (i *InventoryItem) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "id":
-			err = unpopulate(val, &i.ID)
+			err = unpopulate(val, "ID", &i.ID)
 			delete(rawMsg, key)
 		case "kind":
-			err = unpopulate(val, &i.Kind)
+			err = unpopulate(val, "Kind", &i.Kind)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &i.Name)
+			err = unpopulate(val, "Name", &i.Name)
 			delete(rawMsg, key)
 		case "properties":
 			i.Properties, err = unmarshalInventoryItemPropertiesClassification(val)
 			delete(rawMsg, key)
 		case "systemData":
-			err = unpopulate(val, &i.SystemData)
+			err = unpopulate(val, "SystemData", &i.SystemData)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &i.Type)
+			err = unpopulate(val, "Type", &i.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
 		}
 	}
 	return nil
-}
-
-// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type InventoryItemProperties.
-func (i *InventoryItemProperties) GetInventoryItemProperties() *InventoryItemProperties { return i }
-
-// MarshalJSON implements the json.Marshaller interface for type InventoryItemsList.
-func (i InventoryItemsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", i.NextLink)
-	populate(objectMap, "value", i.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type NetworkInterfaces.
@@ -230,14 +184,6 @@ func (r ResourcePatch) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationList.
-func (r ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type StorageProfile.
 func (s StorageProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -268,32 +214,32 @@ func (s SystemData) MarshalJSON() ([]byte, error) {
 func (s *SystemData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
+			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
+			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
 			delete(rawMsg, key)
 		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
+			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
+			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
+			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
 			delete(rawMsg, key)
 		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
+			err = unpopulate(val, "LastModifiedByType", &s.LastModifiedByType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
@@ -313,14 +259,6 @@ func (v VMMServer) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VMMServerListResult.
-func (v VMMServerListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachine.
 func (v VirtualMachine) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -333,17 +271,6 @@ func (v VirtualMachine) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "tags", v.Tags)
 	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
-}
-
-// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type VirtualMachineInventoryItem.
-func (v *VirtualMachineInventoryItem) GetInventoryItemProperties() *InventoryItemProperties {
-	return &InventoryItemProperties{
-		InventoryType:     v.InventoryType,
-		ManagedResourceID: v.ManagedResourceID,
-		UUID:              v.UUID,
-		InventoryItemName: v.InventoryItemName,
-		ProvisioningState: v.ProvisioningState,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineInventoryItem.
@@ -366,55 +293,47 @@ func (v VirtualMachineInventoryItem) MarshalJSON() ([]byte, error) {
 func (v *VirtualMachineInventoryItem) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "cloud":
-			err = unpopulate(val, &v.Cloud)
+			err = unpopulate(val, "Cloud", &v.Cloud)
 			delete(rawMsg, key)
 		case "ipAddresses":
-			err = unpopulate(val, &v.IPAddresses)
+			err = unpopulate(val, "IPAddresses", &v.IPAddresses)
 			delete(rawMsg, key)
 		case "inventoryItemName":
-			err = unpopulate(val, &v.InventoryItemName)
+			err = unpopulate(val, "InventoryItemName", &v.InventoryItemName)
 			delete(rawMsg, key)
 		case "inventoryType":
-			err = unpopulate(val, &v.InventoryType)
+			err = unpopulate(val, "InventoryType", &v.InventoryType)
 			delete(rawMsg, key)
 		case "managedResourceId":
-			err = unpopulate(val, &v.ManagedResourceID)
+			err = unpopulate(val, "ManagedResourceID", &v.ManagedResourceID)
 			delete(rawMsg, key)
 		case "osName":
-			err = unpopulate(val, &v.OSName)
+			err = unpopulate(val, "OSName", &v.OSName)
 			delete(rawMsg, key)
 		case "osType":
-			err = unpopulate(val, &v.OSType)
+			err = unpopulate(val, "OSType", &v.OSType)
 			delete(rawMsg, key)
 		case "powerState":
-			err = unpopulate(val, &v.PowerState)
+			err = unpopulate(val, "PowerState", &v.PowerState)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &v.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)
 			delete(rawMsg, key)
 		case "uuid":
-			err = unpopulate(val, &v.UUID)
+			err = unpopulate(val, "UUID", &v.UUID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineListResult.
-func (v VirtualMachineListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineProperties.
@@ -453,17 +372,6 @@ func (v VirtualMachineTemplate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type VirtualMachineTemplateInventoryItem.
-func (v *VirtualMachineTemplateInventoryItem) GetInventoryItemProperties() *InventoryItemProperties {
-	return &InventoryItemProperties{
-		InventoryType:     v.InventoryType,
-		ManagedResourceID: v.ManagedResourceID,
-		UUID:              v.UUID,
-		InventoryItemName: v.InventoryItemName,
-		ProvisioningState: v.ProvisioningState,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineTemplateInventoryItem.
 func (v VirtualMachineTemplateInventoryItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -483,52 +391,44 @@ func (v VirtualMachineTemplateInventoryItem) MarshalJSON() ([]byte, error) {
 func (v *VirtualMachineTemplateInventoryItem) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "cpuCount":
-			err = unpopulate(val, &v.CPUCount)
+			err = unpopulate(val, "CPUCount", &v.CPUCount)
 			delete(rawMsg, key)
 		case "inventoryItemName":
-			err = unpopulate(val, &v.InventoryItemName)
+			err = unpopulate(val, "InventoryItemName", &v.InventoryItemName)
 			delete(rawMsg, key)
 		case "inventoryType":
-			err = unpopulate(val, &v.InventoryType)
+			err = unpopulate(val, "InventoryType", &v.InventoryType)
 			delete(rawMsg, key)
 		case "managedResourceId":
-			err = unpopulate(val, &v.ManagedResourceID)
+			err = unpopulate(val, "ManagedResourceID", &v.ManagedResourceID)
 			delete(rawMsg, key)
 		case "memoryMB":
-			err = unpopulate(val, &v.MemoryMB)
+			err = unpopulate(val, "MemoryMB", &v.MemoryMB)
 			delete(rawMsg, key)
 		case "osName":
-			err = unpopulate(val, &v.OSName)
+			err = unpopulate(val, "OSName", &v.OSName)
 			delete(rawMsg, key)
 		case "osType":
-			err = unpopulate(val, &v.OSType)
+			err = unpopulate(val, "OSType", &v.OSType)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &v.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)
 			delete(rawMsg, key)
 		case "uuid":
-			err = unpopulate(val, &v.UUID)
+			err = unpopulate(val, "UUID", &v.UUID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualMachineTemplateListResult.
-func (v VirtualMachineTemplateListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineTemplateProperties.
@@ -587,17 +487,6 @@ func (v VirtualNetwork) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type VirtualNetworkInventoryItem.
-func (v *VirtualNetworkInventoryItem) GetInventoryItemProperties() *InventoryItemProperties {
-	return &InventoryItemProperties{
-		InventoryType:     v.InventoryType,
-		ManagedResourceID: v.ManagedResourceID,
-		UUID:              v.UUID,
-		InventoryItemName: v.InventoryItemName,
-		ProvisioningState: v.ProvisioningState,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type VirtualNetworkInventoryItem.
 func (v VirtualNetworkInventoryItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -613,40 +502,32 @@ func (v VirtualNetworkInventoryItem) MarshalJSON() ([]byte, error) {
 func (v *VirtualNetworkInventoryItem) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "inventoryItemName":
-			err = unpopulate(val, &v.InventoryItemName)
+			err = unpopulate(val, "InventoryItemName", &v.InventoryItemName)
 			delete(rawMsg, key)
 		case "inventoryType":
-			err = unpopulate(val, &v.InventoryType)
+			err = unpopulate(val, "InventoryType", &v.InventoryType)
 			delete(rawMsg, key)
 		case "managedResourceId":
-			err = unpopulate(val, &v.ManagedResourceID)
+			err = unpopulate(val, "ManagedResourceID", &v.ManagedResourceID)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &v.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)
 			delete(rawMsg, key)
 		case "uuid":
-			err = unpopulate(val, &v.UUID)
+			err = unpopulate(val, "UUID", &v.UUID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkListResult.
-func (v VirtualNetworkListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {
@@ -659,9 +540,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

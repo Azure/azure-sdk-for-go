@@ -24,14 +24,14 @@ func ExampleInventoryItemsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewInventoryItemsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewInventoryItemsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<vmm-server-name>",
-		"<inventory-item-name>",
+		"testrg",
+		"ContosoVMMServer",
+		"12345678-1234-1234-1234-123456789abc",
 		&armscvmm.InventoryItemsClientCreateOptions{Body: &armscvmm.InventoryItem{
 			Properties: &armscvmm.CloudInventoryItem{
 				InventoryType: to.Ptr(armscvmm.InventoryTypeCloud),
@@ -52,14 +52,14 @@ func ExampleInventoryItemsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewInventoryItemsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewInventoryItemsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vmm-server-name>",
-		"<inventory-item-name>",
+		"testrg",
+		"ContosoVMMServer",
+		"12345678-1234-1234-1234-123456789abc",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,14 +75,14 @@ func ExampleInventoryItemsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewInventoryItemsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewInventoryItemsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<vmm-server-name>",
-		"<inventory-item-name>",
+		"testrg",
+		"ContosoVMMServer",
+		"12345678-1234-1234-1234-123456789abc",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -96,12 +96,12 @@ func ExampleInventoryItemsClient_NewListByVMMServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewInventoryItemsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewInventoryItemsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByVMMServerPager("<resource-group-name>",
-		"<vmm-server-name>",
+	pager := client.NewListByVMMServerPager("testrg",
+		"ContosoVMMServer",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

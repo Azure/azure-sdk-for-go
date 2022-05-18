@@ -38,7 +38,7 @@ func NewUnresolvedDependenciesClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,12 +56,13 @@ func NewUnresolvedDependenciesClient(subscriptionID string, credential azcore.To
 
 // NewGetPager - Gets a list of unresolved dependencies.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The Resource Group Name.
 // moveCollectionName - The Move Collection Name.
 // options - UnresolvedDependenciesClientGetOptions contains the optional parameters for the UnresolvedDependenciesClient.Get
 // method.
 func (client *UnresolvedDependenciesClient) NewGetPager(resourceGroupName string, moveCollectionName string, options *UnresolvedDependenciesClientGetOptions) *runtime.Pager[UnresolvedDependenciesClientGetResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UnresolvedDependenciesClientGetResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UnresolvedDependenciesClientGetResponse]{
 		More: func(page UnresolvedDependenciesClientGetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -119,7 +120,7 @@ func (client *UnresolvedDependenciesClient) getCreateRequest(ctx context.Context
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

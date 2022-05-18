@@ -1,5 +1,25 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*SingleSignOnConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SingleSignOnConfigurationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SingleSignOnConfigurationsClientCreateOrUpdateResponse], error)`
+- Function `*MonitorsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[MonitorsClientUpdateResponse], error)` to `(*runtime.Poller[MonitorsClientUpdateResponse], error)`
+- Function `*MonitorsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[MonitorsClientCreateResponse], error)` to `(*runtime.Poller[MonitorsClientCreateResponse], error)`
+- Function `*MonitorsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MonitorsClientDeleteResponse], error)` to `(*runtime.Poller[MonitorsClientDeleteResponse], error)`
+- Function `AgreementResourceListResponse.MarshalJSON` has been removed
+- Function `APIKeyListResponse.MarshalJSON` has been removed
+- Function `Host.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `HostListResponse.MarshalJSON` has been removed
+- Function `LinkedResourceListResponse.MarshalJSON` has been removed
+- Function `MonitoringTagRulesListResponse.MarshalJSON` has been removed
+- Function `MonitoredResourceListResponse.MarshalJSON` has been removed
+- Function `MonitorResourceListResponse.MarshalJSON` has been removed
+- Function `SingleSignOnResourceListResponse.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

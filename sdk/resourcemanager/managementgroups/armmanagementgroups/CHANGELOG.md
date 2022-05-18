@@ -1,5 +1,23 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*Client.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClientDeleteResponse], error)` to `(*runtime.Poller[ClientDeleteResponse], error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `ManagementGroupDetails.MarshalJSON` has been removed
+- Function `EntityListResult.MarshalJSON` has been removed
+- Function `ManagementGroupProperties.MarshalJSON` has been removed
+- Function `HierarchySettingsList.MarshalJSON` has been removed
+- Function `ListSubscriptionUnderManagementGroup.MarshalJSON` has been removed
+- Function `ManagementGroupListResult.MarshalJSON` has been removed
+- Function `ManagementGroupChildInfo.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `EntityHierarchyItemProperties.MarshalJSON` has been removed
+- Function `DescendantListResult.MarshalJSON` has been removed
+- Function `EntityInfoProperties.MarshalJSON` has been removed
+
+
 ## 0.6.0 (2022-04-18)
 ### Breaking Changes
 

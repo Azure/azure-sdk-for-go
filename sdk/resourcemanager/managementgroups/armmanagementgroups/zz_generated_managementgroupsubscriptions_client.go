@@ -36,7 +36,7 @@ func NewManagementGroupSubscriptionsClient(credential azcore.TokenCredential, op
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewManagementGroupSubscriptionsClient(credential azcore.TokenCredential, op
 
 // Create - Associates existing subscription with the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // groupID - Management Group ID.
 // subscriptionID - Subscription ID.
 // options - ManagementGroupSubscriptionsClientCreateOptions contains the optional parameters for the ManagementGroupSubscriptionsClient.Create
@@ -91,9 +92,9 @@ func (client *ManagementGroupSubscriptionsClient) createCreateRequest(ctx contex
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
-		req.Raw().Header.Set("Cache-Control", *options.CacheControl)
+		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,6 +109,7 @@ func (client *ManagementGroupSubscriptionsClient) createHandleResponse(resp *htt
 
 // Delete - De-associates subscription from the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // groupID - Management Group ID.
 // subscriptionID - Subscription ID.
 // options - ManagementGroupSubscriptionsClientDeleteOptions contains the optional parameters for the ManagementGroupSubscriptionsClient.Delete
@@ -146,14 +148,15 @@ func (client *ManagementGroupSubscriptionsClient) deleteCreateRequest(ctx contex
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
-		req.Raw().Header.Set("Cache-Control", *options.CacheControl)
+		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GetSubscription - Retrieves details about given subscription which is associated with the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // groupID - Management Group ID.
 // subscriptionID - Subscription ID.
 // options - ManagementGroupSubscriptionsClientGetSubscriptionOptions contains the optional parameters for the ManagementGroupSubscriptionsClient.GetSubscription
@@ -192,9 +195,9 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionCreateRequest(c
 	reqQP.Set("api-version", "2021-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.CacheControl != nil {
-		req.Raw().Header.Set("Cache-Control", *options.CacheControl)
+		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -210,11 +213,12 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionHandleResponse(
 // NewGetSubscriptionsUnderManagementGroupPager - Retrieves details about all subscriptions which are associated with the
 // management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01
 // groupID - Management Group ID.
 // options - ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions contains the optional parameters
 // for the ManagementGroupSubscriptionsClient.GetSubscriptionsUnderManagementGroup method.
 func (client *ManagementGroupSubscriptionsClient) NewGetSubscriptionsUnderManagementGroupPager(groupID string, options *ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions) *runtime.Pager[ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse]{
 		More: func(page ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -258,7 +262,7 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionsUnderManagemen
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, creden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewOutboundNetworkDependenciesEndpointsClient(subscriptionID string, creden
 // outbound access with these endpoints. For more information, see
 // https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - OutboundNetworkDependenciesEndpointsClientListOptions contains the optional parameters for the OutboundNetworkDependenciesEndpointsClient.List
@@ -99,7 +100,7 @@ func (client *OutboundNetworkDependenciesEndpointsClient) listCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

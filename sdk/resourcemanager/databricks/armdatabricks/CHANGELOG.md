@@ -1,5 +1,25 @@
 # Release History
 
+## 0.6.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*WorkspacesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientUpdateResponse], error)` to `(*runtime.Poller[WorkspacesClientUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)` to `(*runtime.Poller[WorkspacesClientDeleteResponse], error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)`
+- Function `*VNetPeeringClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VNetPeeringClientDeleteResponse], error)` to `(*runtime.Poller[VNetPeeringClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*VNetPeeringClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VNetPeeringClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VNetPeeringClientCreateOrUpdateResponse], error)`
+- Function `WorkspaceListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpoint.MarshalJSON` has been removed
+- Function `PrivateLinkResourcesList.MarshalJSON` has been removed
+- Function `EndpointDependency.MarshalJSON` has been removed
+- Function `ErrorInfo.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionsList.MarshalJSON` has been removed
+- Function `VirtualNetworkPeeringList.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

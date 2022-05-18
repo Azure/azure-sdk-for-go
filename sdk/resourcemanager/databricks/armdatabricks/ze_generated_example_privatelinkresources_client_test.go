@@ -23,18 +23,17 @@ func ExamplePrivateLinkResourcesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatabricks.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armdatabricks.NewPrivateLinkResourcesClient("11111111-1111-1111-1111-111111111111", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myWorkspace",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExamplePrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatabricks.NewPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armdatabricks.NewPrivateLinkResourcesClient("11111111-1111-1111-1111-111111111111", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<group-id>",
+		"myResourceGroup",
+		"myWorkspace",
+		"databricks_ui_api",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

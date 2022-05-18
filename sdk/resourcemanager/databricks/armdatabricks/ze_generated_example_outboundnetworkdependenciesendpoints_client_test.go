@@ -23,13 +23,13 @@ func ExampleOutboundNetworkDependenciesEndpointsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatabricks.NewOutboundNetworkDependenciesEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdatabricks.NewOutboundNetworkDependenciesEndpointsClient("11111111-1111-1111-1111-111111111111", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"myResourceGroup",
+		"myWorkspace",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

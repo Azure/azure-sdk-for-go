@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool"
@@ -26,7 +24,7 @@ func ExampleDiskPoolsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleDiskPoolsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleDiskPoolsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,40 +73,40 @@ func ExampleDiskPoolsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
+		"myResourceGroup",
+		"myDiskPool",
 		armstoragepool.DiskPoolCreate{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armstoragepool.DiskPoolCreateProperties{
 				AvailabilityZones: []*string{
 					to.Ptr("1")},
 				Disks: []*armstoragepool.Disk{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_0"),
 					},
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_1"),
 					}},
-				SubnetID: to.Ptr("<subnet-id>"),
+				SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myvnet/subnets/mysubnet"),
 			},
 			SKU: &armstoragepool.SKU{
-				Name: to.Ptr("<name>"),
-				Tier: to.Ptr("<tier>"),
+				Name: to.Ptr("Basic_V1"),
+				Tier: to.Ptr("Basic"),
 			},
 			Tags: map[string]*string{
 				"key": to.Ptr("value"),
 			},
 		},
-		&armstoragepool.DiskPoolsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -125,36 +121,36 @@ func ExampleDiskPoolsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
+		"myResourceGroup",
+		"myDiskPool",
 		armstoragepool.DiskPoolUpdate{
 			Properties: &armstoragepool.DiskPoolUpdateProperties{
 				Disks: []*armstoragepool.Disk{
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_0"),
 					},
 					{
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vm-name_DataDisk_1"),
 					}},
 			},
 			SKU: &armstoragepool.SKU{
-				Name: to.Ptr("<name>"),
-				Tier: to.Ptr("<tier>"),
+				Name: to.Ptr("Basic_B1"),
+				Tier: to.Ptr("Basic"),
 			},
 			Tags: map[string]*string{
 				"key": to.Ptr("value"),
 			},
 		},
-		&armstoragepool.DiskPoolsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -169,18 +165,18 @@ func ExampleDiskPoolsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
-		&armstoragepool.DiskPoolsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myDiskPool",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -193,13 +189,13 @@ func ExampleDiskPoolsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
+		"myResourceGroup",
+		"myDiskPool",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -215,18 +211,17 @@ func ExampleDiskPoolsClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOutboundNetworkDependenciesEndpointsPager("<resource-group-name>",
-		"<disk-pool-name>",
+	pager := client.NewListOutboundNetworkDependenciesEndpointsPager("Sample-WestUSResourceGroup",
+		"SampleAse",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -242,18 +237,18 @@ func ExampleDiskPoolsClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
-		&armstoragepool.DiskPoolsClientBeginStartOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myDiskPool",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -266,18 +261,18 @@ func ExampleDiskPoolsClient_BeginDeallocate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeallocate(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
-		&armstoragepool.DiskPoolsClientBeginDeallocateOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myDiskPool",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -290,18 +285,18 @@ func ExampleDiskPoolsClient_BeginUpgrade() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragepool.NewDiskPoolsClient("<subscription-id>", cred, nil)
+	client, err := armstoragepool.NewDiskPoolsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpgrade(ctx,
-		"<resource-group-name>",
-		"<disk-pool-name>",
-		&armstoragepool.DiskPoolsClientBeginUpgradeOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myDiskPool",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

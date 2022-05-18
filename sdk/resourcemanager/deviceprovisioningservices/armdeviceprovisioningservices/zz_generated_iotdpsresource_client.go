@@ -38,7 +38,7 @@ func NewIotDpsResourceClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewIotDpsResourceClient(subscriptionID string, credential azcore.TokenCrede
 // CheckProvisioningServiceNameAvailability - Check if a provisioning service name is available. This will validate if the
 // name is syntactically valid and if the name is usable
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // arguments - Set the name parameter in the OperationInputs structure to the name of the provisioning service to check.
 // options - IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions contains the optional parameters for the
 // IotDpsResourceClient.CheckProvisioningServiceNameAvailability method.
@@ -87,9 +88,9 @@ func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, arguments)
 }
 
@@ -106,20 +107,21 @@ func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityHand
 // is to retrieve the provisioning service metadata and security metadata, and then combine them with the
 // modified values in a new body to update the provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - Resource group identifier.
 // provisioningServiceName - Name of provisioning service to create or update.
 // iotDpsDescription - Description of the provisioning service to create or update.
 // options - IotDpsResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginCreateOrUpdate
 // method.
-func (client *IotDpsResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*armruntime.Poller[IotDpsResourceClientCreateOrUpdateResponse], error) {
+func (client *IotDpsResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*runtime.Poller[IotDpsResourceClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IotDpsResourceClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IotDpsResourceClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IotDpsResourceClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -127,6 +129,7 @@ func (client *IotDpsResourceClient) BeginCreateOrUpdate(ctx context.Context, res
 // retrieve the provisioning service metadata and security metadata, and then combine them with the
 // modified values in a new body to update the provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 func (client *IotDpsResourceClient) createOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, options *IotDpsResourceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, provisioningServiceName, iotDpsDescription, options)
 	if err != nil {
@@ -162,36 +165,38 @@ func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, iotDpsDescription)
 }
 
 // BeginCreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified
 // name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - The name of the resource group that contains the provisioning service.
 // resourceName - The name of the provisioning service.
 // privateEndpointConnectionName - The name of the private endpoint connection
 // privateEndpointConnection - The private endpoint connection with updated properties
 // options - IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions contains the optional parameters for
 // the IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection method.
-func (client *IotDpsResourceClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*armruntime.Poller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse], error) {
+func (client *IotDpsResourceClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*runtime.Poller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdatePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdatePrivateEndpointConnection - Create or update the status of a private endpoint connection with the specified
 // name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.createOrUpdatePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
@@ -231,32 +236,34 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnection)
 }
 
 // BeginDelete - Deletes the Provisioning Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // provisioningServiceName - Name of provisioning service to delete.
 // resourceGroupName - Resource group identifier.
 // options - IotDpsResourceClientBeginDeleteOptions contains the optional parameters for the IotDpsResourceClient.BeginDelete
 // method.
-func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*armruntime.Poller[IotDpsResourceClientDeleteResponse], error) {
+func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*runtime.Poller[IotDpsResourceClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, provisioningServiceName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IotDpsResourceClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IotDpsResourceClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IotDpsResourceClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the Provisioning Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, provisioningServiceName, resourceGroupName, options)
 	if err != nil {
@@ -292,33 +299,35 @@ func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, pro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDeletePrivateEndpointConnection - Delete private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - The name of the resource group that contains the provisioning service.
 // resourceName - The name of the provisioning service.
 // privateEndpointConnectionName - The name of the private endpoint connection
 // options - IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions contains the optional parameters for the IotDpsResourceClient.BeginDeletePrivateEndpointConnection
 // method.
-func (client *IotDpsResourceClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*armruntime.Poller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse], error) {
+func (client *IotDpsResourceClient) BeginDeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*runtime.Poller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deletePrivateEndpointConnection(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IotDpsResourceClientDeletePrivateEndpointConnectionResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeletePrivateEndpointConnection - Delete private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 func (client *IotDpsResourceClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -358,14 +367,15 @@ func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the metadata of the provisioning service without SAS keys.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // provisioningServiceName - Name of the provisioning service to retrieve.
 // resourceGroupName - Resource group name.
 // options - IotDpsResourceClientGetOptions contains the optional parameters for the IotDpsResourceClient.Get method.
@@ -404,9 +414,9 @@ func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provis
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -421,6 +431,7 @@ func (client *IotDpsResourceClient) getHandleResponse(resp *http.Response) (IotD
 
 // GetOperationResult - Gets the status of a long running operation, such as create, update or delete a provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // operationID - Operation id corresponding to long running operation. Use this to poll for the status.
 // resourceGroupName - Resource group identifier.
 // provisioningServiceName - Name of provisioning service that the operation is running on.
@@ -467,9 +478,9 @@ func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("asyncinfo", asyncinfo)
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -484,6 +495,7 @@ func (client *IotDpsResourceClient) getOperationResultHandleResponse(resp *http.
 
 // GetPrivateEndpointConnection - Get private endpoint connection properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - The name of the resource group that contains the provisioning service.
 // resourceName - The name of the provisioning service.
 // privateEndpointConnectionName - The name of the private endpoint connection
@@ -528,9 +540,9 @@ func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -545,6 +557,7 @@ func (client *IotDpsResourceClient) getPrivateEndpointConnectionHandleResponse(r
 
 // GetPrivateLinkResources - Get the specified private link resource for the given provisioning service
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - The name of the resource group that contains the provisioning service.
 // resourceName - The name of the provisioning service.
 // groupID - The name of the private link resource
@@ -589,9 +602,9 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -606,11 +619,12 @@ func (client *IotDpsResourceClient) getPrivateLinkResourcesHandleResponse(resp *
 
 // NewListByResourceGroupPager - Get a list of all provisioning services in the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - Resource group identifier.
 // options - IotDpsResourceClientListByResourceGroupOptions contains the optional parameters for the IotDpsResourceClient.ListByResourceGroup
 // method.
 func (client *IotDpsResourceClient) NewListByResourceGroupPager(resourceGroupName string, options *IotDpsResourceClientListByResourceGroupOptions) *runtime.Pager[IotDpsResourceClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IotDpsResourceClientListByResourceGroupResponse]{
 		More: func(page IotDpsResourceClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -653,9 +667,9 @@ func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -670,10 +684,11 @@ func (client *IotDpsResourceClient) listByResourceGroupHandleResponse(resp *http
 
 // NewListBySubscriptionPager - List all the provisioning services for a given subscription id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // options - IotDpsResourceClientListBySubscriptionOptions contains the optional parameters for the IotDpsResourceClient.ListBySubscription
 // method.
 func (client *IotDpsResourceClient) NewListBySubscriptionPager(options *IotDpsResourceClientListBySubscriptionOptions) *runtime.Pager[IotDpsResourceClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IotDpsResourceClientListBySubscriptionResponse]{
 		More: func(page IotDpsResourceClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -712,9 +727,9 @@ func (client *IotDpsResourceClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -729,11 +744,12 @@ func (client *IotDpsResourceClient) listBySubscriptionHandleResponse(resp *http.
 
 // NewListKeysPager - List the primary and secondary keys for a provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // provisioningServiceName - The provisioning service name to get the shared access keys for.
 // resourceGroupName - resource group name
 // options - IotDpsResourceClientListKeysOptions contains the optional parameters for the IotDpsResourceClient.ListKeys method.
 func (client *IotDpsResourceClient) NewListKeysPager(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListKeysOptions) *runtime.Pager[IotDpsResourceClientListKeysResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListKeysResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IotDpsResourceClientListKeysResponse]{
 		More: func(page IotDpsResourceClientListKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -780,9 +796,9 @@ func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -797,6 +813,7 @@ func (client *IotDpsResourceClient) listKeysHandleResponse(resp *http.Response) 
 
 // ListKeysForKeyName - List primary and secondary keys for a specific key name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // provisioningServiceName - Name of the provisioning service.
 // keyName - Logical key name to get key-values for.
 // resourceGroupName - The name of the resource group that contains the provisioning service.
@@ -841,9 +858,9 @@ func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -858,6 +875,7 @@ func (client *IotDpsResourceClient) listKeysForKeyNameHandleResponse(resp *http.
 
 // ListPrivateEndpointConnections - List private endpoint connection properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - The name of the resource group that contains the provisioning service.
 // resourceName - The name of the provisioning service.
 // options - IotDpsResourceClientListPrivateEndpointConnectionsOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateEndpointConnections
@@ -897,9 +915,9 @@ func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -914,6 +932,7 @@ func (client *IotDpsResourceClient) listPrivateEndpointConnectionsHandleResponse
 
 // ListPrivateLinkResources - List private link resources for the given provisioning service
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - The name of the resource group that contains the provisioning service.
 // resourceName - The name of the provisioning service.
 // options - IotDpsResourceClientListPrivateLinkResourcesOptions contains the optional parameters for the IotDpsResourceClient.ListPrivateLinkResources
@@ -953,9 +972,9 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -970,12 +989,13 @@ func (client *IotDpsResourceClient) listPrivateLinkResourcesHandleResponse(resp 
 
 // NewListValidSKUsPager - Gets the list of valid SKUs and tiers for a provisioning service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // provisioningServiceName - Name of provisioning service.
 // resourceGroupName - Name of resource group.
 // options - IotDpsResourceClientListValidSKUsOptions contains the optional parameters for the IotDpsResourceClient.ListValidSKUs
 // method.
 func (client *IotDpsResourceClient) NewListValidSKUsPager(provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientListValidSKUsOptions) *runtime.Pager[IotDpsResourceClientListValidSKUsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IotDpsResourceClientListValidSKUsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IotDpsResourceClientListValidSKUsResponse]{
 		More: func(page IotDpsResourceClientListValidSKUsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -1022,9 +1042,9 @@ func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1039,25 +1059,27 @@ func (client *IotDpsResourceClient) listValidSKUsHandleResponse(resp *http.Respo
 
 // BeginUpdate - Update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 // resourceGroupName - Resource group identifier.
 // provisioningServiceName - Name of provisioning service to create or update.
 // provisioningServiceTags - Updated tag information to set into the provisioning service instance.
 // options - IotDpsResourceClientBeginUpdateOptions contains the optional parameters for the IotDpsResourceClient.BeginUpdate
 // method.
-func (client *IotDpsResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*armruntime.Poller[IotDpsResourceClientUpdateResponse], error) {
+func (client *IotDpsResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*runtime.Poller[IotDpsResourceClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IotDpsResourceClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IotDpsResourceClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IotDpsResourceClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IotDpsResourceClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update an existing provisioning service's tags. to update other fields use the CreateOrUpdate method
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-05
 func (client *IotDpsResourceClient) update(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, options *IotDpsResourceClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, provisioningServiceName, provisioningServiceTags, options)
 	if err != nil {
@@ -1093,8 +1115,8 @@ func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-05")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, provisioningServiceTags)
 }

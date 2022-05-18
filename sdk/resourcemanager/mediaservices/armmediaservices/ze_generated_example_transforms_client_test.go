@@ -24,12 +24,12 @@ func ExampleTransformsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("contosoresources",
+		"contosomedia",
 		&armmediaservices.TransformsClientListOptions{Filter: nil,
 			Orderby: nil,
 		})
@@ -37,7 +37,6 @@ func ExampleTransformsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +52,14 @@ func ExampleTransformsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
+		"contosoresources",
+		"contosomedia",
+		"sampleTransform",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,21 +75,21 @@ func ExampleTransformsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
+		"contosoresources",
+		"contosomedia",
+		"createdTransform",
 		armmediaservices.Transform{
 			Properties: &armmediaservices.TransformProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Example Transform to illustrate create and update."),
 				Outputs: []*armmediaservices.TransformOutput{
 					{
 						Preset: &armmediaservices.BuiltInStandardEncoderPreset{
-							ODataType:  to.Ptr("<odata-type>"),
+							ODataType:  to.Ptr("#Microsoft.Media.BuiltInStandardEncoderPreset"),
 							PresetName: to.Ptr(armmediaservices.EncoderNamedPresetAdaptiveStreaming),
 						},
 					}},
@@ -111,14 +110,14 @@ func ExampleTransformsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
+		"contosoresources",
+		"contosomedia",
+		"sampleTransform",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -132,21 +131,21 @@ func ExampleTransformsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTransformsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTransformsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
+		"contosoresources",
+		"contosomedia",
+		"transformToUpdate",
 		armmediaservices.Transform{
 			Properties: &armmediaservices.TransformProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Example transform to illustrate update."),
 				Outputs: []*armmediaservices.TransformOutput{
 					{
 						Preset: &armmediaservices.BuiltInStandardEncoderPreset{
-							ODataType:  to.Ptr("<odata-type>"),
+							ODataType:  to.Ptr("#Microsoft.Media.BuiltInStandardEncoderPreset"),
 							PresetName: to.Ptr(armmediaservices.EncoderNamedPresetH264MultipleBitrate720P),
 						},
 						RelativePriority: to.Ptr(armmediaservices.PriorityHigh),

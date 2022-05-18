@@ -39,7 +39,7 @@ func NewAssetsClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAssetsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // CreateOrUpdate - Creates or updates an Asset in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -103,7 +104,7 @@ func (client *AssetsClient) createOrUpdateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -118,6 +119,7 @@ func (client *AssetsClient) createOrUpdateHandleResponse(resp *http.Response) (A
 
 // Delete - Deletes an Asset in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -163,12 +165,13 @@ func (client *AssetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the details of an Asset in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -214,7 +217,7 @@ func (client *AssetsClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,6 +233,7 @@ func (client *AssetsClient) getHandleResponse(resp *http.Response) (AssetsClient
 // GetEncryptionKey - Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services
 // API
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -275,7 +279,7 @@ func (client *AssetsClient) getEncryptionKeyCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -290,11 +294,12 @@ func (client *AssetsClient) getEncryptionKeyHandleResponse(resp *http.Response) 
 
 // NewListPager - List Assets in the Media Services account with optional filtering and ordering
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - AssetsClientListOptions contains the optional parameters for the AssetsClient.List method.
 func (client *AssetsClient) NewListPager(resourceGroupName string, accountName string, options *AssetsClientListOptions) *runtime.Pager[AssetsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssetsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssetsClientListResponse]{
 		More: func(page AssetsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -352,7 +357,7 @@ func (client *AssetsClient) listCreateRequest(ctx context.Context, resourceGroup
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -368,6 +373,7 @@ func (client *AssetsClient) listHandleResponse(resp *http.Response) (AssetsClien
 // ListContainerSas - Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset
 // content. The signatures are derived from the storage account keys.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -414,7 +420,7 @@ func (client *AssetsClient) listContainerSasCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -429,6 +435,7 @@ func (client *AssetsClient) listContainerSasHandleResponse(resp *http.Response) 
 
 // ListStreamingLocators - Lists Streaming Locators which are associated with this asset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -475,7 +482,7 @@ func (client *AssetsClient) listStreamingLocatorsCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -490,6 +497,7 @@ func (client *AssetsClient) listStreamingLocatorsHandleResponse(resp *http.Respo
 
 // Update - Updates an existing Asset in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -536,7 +544,7 @@ func (client *AssetsClient) updateCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

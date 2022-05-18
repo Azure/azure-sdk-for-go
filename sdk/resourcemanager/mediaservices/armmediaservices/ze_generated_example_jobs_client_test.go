@@ -24,21 +24,20 @@ func ExampleJobsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
-		&armmediaservices.JobsClientListOptions{Filter: to.Ptr("<filter>"),
-			Orderby: to.Ptr("<orderby>"),
+	pager := client.NewListPager("contosoresources",
+		"contosomedia",
+		"exampleTransform",
+		&armmediaservices.JobsClientListOptions{Filter: to.Ptr("properties/created ge 2021-11-01T00:00:10.0000000Z and properties/created le 2021-11-01T00:00:20.0000000Z"),
+			Orderby: to.Ptr("properties/created"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +53,15 @@ func ExampleJobsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
-		"<job-name>",
+		"contosoresources",
+		"contosomedia",
+		"exampleTransform",
+		"job1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,15 +77,15 @@ func ExampleJobsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
-		"<job-name>",
+		"contosoresources",
+		"contosomedia",
+		"exampleTransform",
+		"job1",
 		armmediaservices.Job{
 			Properties: &armmediaservices.JobProperties{
 				CorrelationData: map[string]*string{
@@ -94,13 +93,13 @@ func ExampleJobsClient_Create() {
 					"key1":  to.Ptr("value1"),
 				},
 				Input: &armmediaservices.JobInputAsset{
-					ODataType: to.Ptr("<odata-type>"),
-					AssetName: to.Ptr("<asset-name>"),
+					ODataType: to.Ptr("#Microsoft.Media.JobInputAsset"),
+					AssetName: to.Ptr("job1-InputAsset"),
 				},
 				Outputs: []armmediaservices.JobOutputClassification{
 					&armmediaservices.JobOutputAsset{
-						ODataType: to.Ptr("<odata-type>"),
-						AssetName: to.Ptr("<asset-name>"),
+						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
+						AssetName: to.Ptr("job1-OutputAsset"),
 					}},
 			},
 		},
@@ -117,15 +116,15 @@ func ExampleJobsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
-		"<job-name>",
+		"contosoresources",
+		"contosomedia",
+		"exampleTransform",
+		"jobToDelete",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -139,26 +138,26 @@ func ExampleJobsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
-		"<job-name>",
+		"contosoresources",
+		"contosomedia",
+		"exampleTransform",
+		"job1",
 		armmediaservices.Job{
 			Properties: &armmediaservices.JobProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Example job to illustrate update."),
 				Input: &armmediaservices.JobInputAsset{
-					ODataType: to.Ptr("<odata-type>"),
-					AssetName: to.Ptr("<asset-name>"),
+					ODataType: to.Ptr("#Microsoft.Media.JobInputAsset"),
+					AssetName: to.Ptr("job1-InputAsset"),
 				},
 				Outputs: []armmediaservices.JobOutputClassification{
 					&armmediaservices.JobOutputAsset{
-						ODataType: to.Ptr("<odata-type>"),
-						AssetName: to.Ptr("<asset-name>"),
+						ODataType: to.Ptr("#Microsoft.Media.JobOutputAsset"),
+						AssetName: to.Ptr("job1-OutputAsset"),
 					}},
 				Priority: to.Ptr(armmediaservices.PriorityHigh),
 			},
@@ -178,15 +177,15 @@ func ExampleJobsClient_CancelJob() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewJobsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CancelJob(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<transform-name>",
-		"<job-name>",
+		"contosoresources",
+		"contosomedia",
+		"exampleTransform",
+		"job1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

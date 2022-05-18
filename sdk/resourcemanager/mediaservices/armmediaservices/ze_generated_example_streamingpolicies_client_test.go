@@ -24,12 +24,12 @@ func ExampleStreamingPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("contoso",
+		"contosomedia",
 		&armmediaservices.StreamingPoliciesClientListOptions{Filter: nil,
 			Top:     nil,
 			Orderby: nil,
@@ -38,7 +38,6 @@ func ExampleStreamingPoliciesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,14 @@ func ExampleStreamingPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-policy-name>",
+		"contoso",
+		"contosomedia",
+		"clearStreamingPolicy",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,14 +76,14 @@ func ExampleStreamingPoliciesClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-policy-name>",
+		"contoso",
+		"contosomedia",
+		"UserCreatedClearStreamingPolicy",
 		armmediaservices.StreamingPolicy{
 			Properties: &armmediaservices.StreamingPolicyProperties{
 				NoEncryption: &armmediaservices.NoEncryption{
@@ -110,14 +109,14 @@ func ExampleStreamingPoliciesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-policy-name>",
+		"contoso",
+		"contosomedia",
+		"secureStreamingPolicyWithCommonEncryptionCbcsOnly",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

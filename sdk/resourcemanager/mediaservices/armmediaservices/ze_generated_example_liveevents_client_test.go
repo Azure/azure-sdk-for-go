@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices"
@@ -26,18 +24,17 @@ func ExampleLiveEventsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveEventsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveEventsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("mediaresources",
+		"slitestmedia10",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleLiveEventsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveEventsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveEventsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,34 +73,34 @@ func ExampleLiveEventsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveEventsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveEventsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
 		armmediaservices.LiveEvent{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armmediaservices.LiveEventProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("test event 1"),
 				Input: &armmediaservices.LiveEventInput{
 					AccessControl: &armmediaservices.LiveEventInputAccessControl{
 						IP: &armmediaservices.IPAccessControl{
 							Allow: []*armmediaservices.IPRange{
 								{
-									Name:               to.Ptr("<name>"),
-									Address:            to.Ptr("<address>"),
+									Name:               to.Ptr("AllowAll"),
+									Address:            to.Ptr("0.0.0.0"),
 									SubnetPrefixLength: to.Ptr[int32](0),
 								}},
 						},
 					},
-					KeyFrameIntervalDuration: to.Ptr("<key-frame-interval-duration>"),
+					KeyFrameIntervalDuration: to.Ptr("PT6S"),
 					StreamingProtocol:        to.Ptr(armmediaservices.LiveEventInputProtocolRTMP),
 				},
 				Preview: &armmediaservices.LiveEventPreview{
@@ -111,8 +108,8 @@ func ExampleLiveEventsClient_BeginCreate() {
 						IP: &armmediaservices.IPAccessControl{
 							Allow: []*armmediaservices.IPRange{
 								{
-									Name:               to.Ptr("<name>"),
-									Address:            to.Ptr("<address>"),
+									Name:               to.Ptr("AllowAll"),
+									Address:            to.Ptr("0.0.0.0"),
 									SubnetPrefixLength: to.Ptr[int32](0),
 								}},
 						},
@@ -120,13 +117,11 @@ func ExampleLiveEventsClient_BeginCreate() {
 				},
 			},
 		},
-		&armmediaservices.LiveEventsClientBeginCreateOptions{AutoStart: nil,
-			ResumeToken: "",
-		})
+		&armmediaservices.LiveEventsClientBeginCreateOptions{AutoStart: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -141,34 +136,34 @@ func ExampleLiveEventsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveEventsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveEventsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
 		armmediaservices.LiveEvent{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 				"tag3": to.Ptr("value3"),
 			},
 			Properties: &armmediaservices.LiveEventProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("test event updated"),
 				Input: &armmediaservices.LiveEventInput{
 					AccessControl: &armmediaservices.LiveEventInputAccessControl{
 						IP: &armmediaservices.IPAccessControl{
 							Allow: []*armmediaservices.IPRange{
 								{
-									Name:    to.Ptr("<name>"),
-									Address: to.Ptr("<address>"),
+									Name:    to.Ptr("AllowOne"),
+									Address: to.Ptr("192.1.1.0"),
 								}},
 						},
 					},
-					KeyFrameIntervalDuration: to.Ptr("<key-frame-interval-duration>"),
+					KeyFrameIntervalDuration: to.Ptr("PT6S"),
 					StreamingProtocol:        to.Ptr(armmediaservices.LiveEventInputProtocolFragmentedMP4),
 				},
 				Preview: &armmediaservices.LiveEventPreview{
@@ -176,19 +171,19 @@ func ExampleLiveEventsClient_BeginUpdate() {
 						IP: &armmediaservices.IPAccessControl{
 							Allow: []*armmediaservices.IPRange{
 								{
-									Name:    to.Ptr("<name>"),
-									Address: to.Ptr("<address>"),
+									Name:    to.Ptr("AllowOne"),
+									Address: to.Ptr("192.1.1.0"),
 								}},
 						},
 					},
 				},
 			},
 		},
-		&armmediaservices.LiveEventsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -203,19 +198,19 @@ func ExampleLiveEventsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveEventsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveEventsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
-		&armmediaservices.LiveEventsClientBeginDeleteOptions{ResumeToken: ""})
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -228,19 +223,19 @@ func ExampleLiveEventsClient_BeginAllocate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveEventsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveEventsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginAllocate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
-		&armmediaservices.LiveEventsClientBeginAllocateOptions{ResumeToken: ""})
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -253,19 +248,19 @@ func ExampleLiveEventsClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveEventsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveEventsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
-		&armmediaservices.LiveEventsClientBeginStartOptions{ResumeToken: ""})
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -278,22 +273,22 @@ func ExampleLiveEventsClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveEventsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveEventsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
 		armmediaservices.LiveEventActionInput{
 			RemoveOutputsOnStop: to.Ptr(false),
 		},
-		&armmediaservices.LiveEventsClientBeginStopOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -306,19 +301,19 @@ func ExampleLiveEventsClient_BeginReset() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveEventsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveEventsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginReset(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
-		&armmediaservices.LiveEventsClientBeginResetOptions{ResumeToken: ""})
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

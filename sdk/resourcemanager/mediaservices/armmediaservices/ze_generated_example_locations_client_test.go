@@ -24,15 +24,15 @@ func ExampleLocationsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLocationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<location-name>",
+		"japanwest",
 		armmediaservices.CheckNameAvailabilityInput{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("contosotv"),
+			Type: to.Ptr("videoAnalyzers"),
 		},
 		nil)
 	if err != nil {

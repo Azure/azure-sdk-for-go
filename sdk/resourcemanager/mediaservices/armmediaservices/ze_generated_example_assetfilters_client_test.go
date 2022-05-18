@@ -24,19 +24,18 @@ func ExampleAssetFiltersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
+	pager := client.NewListPager("contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -52,15 +51,15 @@ func ExampleAssetFiltersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<filter-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"assetFilterWithTimeWindowAndTrack",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,15 +75,15 @@ func ExampleAssetFiltersClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<filter-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"newAssetFilter",
 		armmediaservices.AssetFilter{
 			Properties: &armmediaservices.MediaFilterProperties{
 				FirstQuality: &armmediaservices.FirstQuality{
@@ -104,17 +103,17 @@ func ExampleAssetFiltersClient_CreateOrUpdate() {
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("Audio"),
 							},
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeLanguage),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("en"),
 							},
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeFourCC),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("EC-3"),
 							}},
 					},
 					{
@@ -122,12 +121,12 @@ func ExampleAssetFiltersClient_CreateOrUpdate() {
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("Video"),
 							},
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeBitrate),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("3000000-5000000"),
 							}},
 					}},
 			},
@@ -147,15 +146,15 @@ func ExampleAssetFiltersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<filter-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"assetFilterWithTimeWindowAndTrack",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -169,15 +168,15 @@ func ExampleAssetFiltersClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<filter-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"assetFilterWithTimeWindowAndTrack",
 		armmediaservices.AssetFilter{
 			Properties: &armmediaservices.MediaFilterProperties{
 				FirstQuality: &armmediaservices.FirstQuality{

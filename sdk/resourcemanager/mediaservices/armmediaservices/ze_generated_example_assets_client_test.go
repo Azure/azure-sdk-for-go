@@ -26,21 +26,20 @@ func ExampleAssetsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
-		&armmediaservices.AssetsClientListOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListPager("contoso",
+		"contosomedia",
+		&armmediaservices.AssetsClientListOptions{Filter: to.Ptr("properties/created gt 2012-06-01 and properties/created lt 2013-07-01"),
 			Top:     nil,
-			Orderby: to.Ptr("<orderby>"),
+			Orderby: to.Ptr("properties/created"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,14 +55,14 @@ func ExampleAssetsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountAdams",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,18 +78,18 @@ func ExampleAssetsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountLogan",
 		armmediaservices.Asset{
 			Properties: &armmediaservices.AssetProperties{
-				Description:        to.Ptr("<description>"),
-				StorageAccountName: to.Ptr("<storage-account-name>"),
+				Description:        to.Ptr("A documentary showing the ascent of Mount Logan"),
+				StorageAccountName: to.Ptr("storage0"),
 			},
 		},
 		nil)
@@ -108,14 +107,14 @@ func ExampleAssetsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountAdams",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -129,17 +128,17 @@ func ExampleAssetsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountBaker",
 		armmediaservices.Asset{
 			Properties: &armmediaservices.AssetProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("A documentary showing the ascent of Mount Baker in HD"),
 			},
 		},
 		nil)
@@ -157,14 +156,14 @@ func ExampleAssetsClient_ListContainerSas() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListContainerSas(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountBaker",
 		armmediaservices.ListContainerSasInput{
 			ExpiryTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T10:00:00.007Z"); return t }()),
 			Permissions: to.Ptr(armmediaservices.AssetContainerPermissionReadWrite),
@@ -184,14 +183,14 @@ func ExampleAssetsClient_GetEncryptionKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetEncryptionKey(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountSaintHelens",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -207,14 +206,14 @@ func ExampleAssetsClient_ListStreamingLocators() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAssetsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAssetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListStreamingLocators(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountSaintHelens",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

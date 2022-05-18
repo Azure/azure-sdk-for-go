@@ -38,7 +38,7 @@ func NewLiveOutputsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewLiveOutputsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreate - Creates a new live output.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // liveEventName - The name of the live event, maximum length is 32.
 // liveOutputName - The name of the live output.
 // parameters - Live Output properties needed for creation.
 // options - LiveOutputsClientBeginCreateOptions contains the optional parameters for the LiveOutputsClient.BeginCreate method.
-func (client *LiveOutputsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsClientBeginCreateOptions) (*armruntime.Poller[LiveOutputsClientCreateResponse], error) {
+func (client *LiveOutputsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsClientBeginCreateOptions) (*runtime.Poller[LiveOutputsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LiveOutputsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LiveOutputsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LiveOutputsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LiveOutputsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new live output.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *LiveOutputsClient) create(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, parameters LiveOutput, options *LiveOutputsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, parameters, options)
 	if err != nil {
@@ -121,31 +123,33 @@ func (client *LiveOutputsClient) createCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // liveEventName - The name of the live event, maximum length is 32.
 // liveOutputName - The name of the live output.
 // options - LiveOutputsClientBeginDeleteOptions contains the optional parameters for the LiveOutputsClient.BeginDelete method.
-func (client *LiveOutputsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientBeginDeleteOptions) (*armruntime.Poller[LiveOutputsClientDeleteResponse], error) {
+func (client *LiveOutputsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientBeginDeleteOptions) (*runtime.Poller[LiveOutputsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LiveOutputsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LiveOutputsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LiveOutputsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LiveOutputsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *LiveOutputsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, liveEventName string, liveOutputName string, options *LiveOutputsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, liveEventName, liveOutputName, options)
 	if err != nil {
@@ -191,12 +195,13 @@ func (client *LiveOutputsClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a live output.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // liveEventName - The name of the live event, maximum length is 32.
@@ -247,7 +252,7 @@ func (client *LiveOutputsClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -262,12 +267,13 @@ func (client *LiveOutputsClient) getHandleResponse(resp *http.Response) (LiveOut
 
 // NewListPager - Lists the live outputs of a live event.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // liveEventName - The name of the live event, maximum length is 32.
 // options - LiveOutputsClientListOptions contains the optional parameters for the LiveOutputsClient.List method.
 func (client *LiveOutputsClient) NewListPager(resourceGroupName string, accountName string, liveEventName string, options *LiveOutputsClientListOptions) *runtime.Pager[LiveOutputsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LiveOutputsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LiveOutputsClientListResponse]{
 		More: func(page LiveOutputsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -320,7 +326,7 @@ func (client *LiveOutputsClient) listCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

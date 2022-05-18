@@ -38,7 +38,7 @@ func NewDicomServicesClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewDicomServicesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreateOrUpdate - Creates or updates a DICOM Service resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // dicomServiceName - The name of DICOM Service resource.
 // dicomservice - The parameters for creating or updating a Dicom Service resource.
 // options - DicomServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the DicomServicesClient.BeginCreateOrUpdate
 // method.
-func (client *DicomServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DicomServicesClientCreateOrUpdateResponse], error) {
+func (client *DicomServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[DicomServicesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, dicomServiceName, dicomservice, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DicomServicesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DicomServicesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DicomServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DicomServicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a DICOM Service resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *DicomServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dicomServiceName string, dicomservice DicomService, options *DicomServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, dicomServiceName, dicomservice, options)
 	if err != nil {
@@ -117,31 +119,33 @@ func (client *DicomServicesClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dicomservice)
 }
 
 // BeginDelete - Deletes a DICOM Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // dicomServiceName - The name of DICOM Service resource.
 // workspaceName - The name of workspace resource.
 // options - DicomServicesClientBeginDeleteOptions contains the optional parameters for the DicomServicesClient.BeginDelete
 // method.
-func (client *DicomServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesClientBeginDeleteOptions) (*armruntime.Poller[DicomServicesClientDeleteResponse], error) {
+func (client *DicomServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesClientBeginDeleteOptions) (*runtime.Poller[DicomServicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, dicomServiceName, workspaceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DicomServicesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DicomServicesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DicomServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DicomServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a DICOM Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *DicomServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, options *DicomServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dicomServiceName, workspaceName, options)
 	if err != nil {
@@ -183,12 +187,13 @@ func (client *DicomServicesClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the properties of the specified DICOM Service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // dicomServiceName - The name of DICOM Service resource.
@@ -234,7 +239,7 @@ func (client *DicomServicesClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,12 +254,13 @@ func (client *DicomServicesClient) getHandleResponse(resp *http.Response) (Dicom
 
 // NewListByWorkspacePager - Lists all DICOM Services for the given workspace
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - DicomServicesClientListByWorkspaceOptions contains the optional parameters for the DicomServicesClient.ListByWorkspace
 // method.
 func (client *DicomServicesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *DicomServicesClientListByWorkspaceOptions) *runtime.Pager[DicomServicesClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DicomServicesClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DicomServicesClientListByWorkspaceResponse]{
 		More: func(page DicomServicesClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -303,7 +309,7 @@ func (client *DicomServicesClient) listByWorkspaceCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -318,26 +324,28 @@ func (client *DicomServicesClient) listByWorkspaceHandleResponse(resp *http.Resp
 
 // BeginUpdate - Patch DICOM Service details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // dicomServiceName - The name of DICOM Service resource.
 // workspaceName - The name of workspace resource.
 // dicomservicePatchResource - The parameters for updating a Dicom Service.
 // options - DicomServicesClientBeginUpdateOptions contains the optional parameters for the DicomServicesClient.BeginUpdate
 // method.
-func (client *DicomServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions) (*armruntime.Poller[DicomServicesClientUpdateResponse], error) {
+func (client *DicomServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions) (*runtime.Poller[DicomServicesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DicomServicesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DicomServicesClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DicomServicesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DicomServicesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch DICOM Service details.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *DicomServicesClient) update(ctx context.Context, resourceGroupName string, dicomServiceName string, workspaceName string, dicomservicePatchResource DicomServicePatchResource, options *DicomServicesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dicomServiceName, workspaceName, dicomservicePatchResource, options)
 	if err != nil {
@@ -379,6 +387,6 @@ func (client *DicomServicesClient) updateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dicomservicePatchResource)
 }

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis"
@@ -26,7 +24,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testRG",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExampleWorkspacesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"testRG",
+		"workspace1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,22 +95,22 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"testRG",
+		"workspace1",
 		armhealthcareapis.Workspace{
-			Location:   to.Ptr("<location>"),
+			Location:   to.Ptr("westus"),
 			Properties: &armhealthcareapis.WorkspaceProperties{},
 		},
-		&armhealthcareapis.WorkspacesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -129,23 +125,23 @@ func ExampleWorkspacesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"testRG",
+		"workspace1",
 		armhealthcareapis.WorkspacePatchResource{
 			Tags: map[string]*string{
 				"tagKey": to.Ptr("tagValue"),
 			},
 		},
-		&armhealthcareapis.WorkspacesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -160,18 +156,18 @@ func ExampleWorkspacesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		&armhealthcareapis.WorkspacesClientBeginDeleteOptions{ResumeToken: ""})
+		"testRG",
+		"workspace1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

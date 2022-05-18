@@ -38,7 +38,7 @@ func NewFhirDestinationsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,13 +56,14 @@ func NewFhirDestinationsClient(subscriptionID string, credential azcore.TokenCre
 
 // NewListByIotConnectorPager - Lists all FHIR destinations for the given IoT Connector
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // iotConnectorName - The name of IoT Connector resource.
 // options - FhirDestinationsClientListByIotConnectorOptions contains the optional parameters for the FhirDestinationsClient.ListByIotConnector
 // method.
 func (client *FhirDestinationsClient) NewListByIotConnectorPager(resourceGroupName string, workspaceName string, iotConnectorName string, options *FhirDestinationsClientListByIotConnectorOptions) *runtime.Pager[FhirDestinationsClientListByIotConnectorResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FhirDestinationsClientListByIotConnectorResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FhirDestinationsClientListByIotConnectorResponse]{
 		More: func(page FhirDestinationsClientListByIotConnectorResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -115,7 +116,7 @@ func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -1,5 +1,43 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*DicomServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DicomServicesClientDeleteResponse], error)` to `(*runtime.Poller[DicomServicesClientDeleteResponse], error)`
+- Function `*IotConnectorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[IotConnectorsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[IotConnectorsClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientUpdateResponse], error)` to `(*runtime.Poller[ServicesClientUpdateResponse], error)`
+- Function `*FhirServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FhirServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FhirServicesClientCreateOrUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*FhirServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[FhirServicesClientDeleteResponse], error)` to `(*runtime.Poller[FhirServicesClientDeleteResponse], error)`
+- Function `*IotConnectorFhirDestinationClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[IotConnectorFhirDestinationClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[IotConnectorFhirDestinationClientCreateOrUpdateResponse], error)`
+- Function `*IotConnectorFhirDestinationClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[IotConnectorFhirDestinationClientDeleteResponse], error)` to `(*runtime.Poller[IotConnectorFhirDestinationClientDeleteResponse], error)`
+- Function `*WorkspacesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientUpdateResponse], error)` to `(*runtime.Poller[WorkspacesClientUpdateResponse], error)`
+- Function `*IotConnectorsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[IotConnectorsClientDeleteResponse], error)` to `(*runtime.Poller[IotConnectorsClientDeleteResponse], error)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)` to `(*runtime.Poller[WorkspacesClientDeleteResponse], error)`
+- Function `*WorkspacePrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspacePrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[WorkspacePrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*IotConnectorsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[IotConnectorsClientUpdateResponse], error)` to `(*runtime.Poller[IotConnectorsClientUpdateResponse], error)`
+- Function `*DicomServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DicomServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DicomServicesClientCreateOrUpdateResponse], error)`
+- Function `*WorkspacePrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*DicomServicesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DicomServicesClientUpdateResponse], error)` to `(*runtime.Poller[DicomServicesClientUpdateResponse], error)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServicesClientDeleteResponse], error)` to `(*runtime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*FhirServicesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[FhirServicesClientUpdateResponse], error)` to `(*runtime.Poller[FhirServicesClientUpdateResponse], error)`
+- Function `ListOperations.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResultDescription.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `WorkspaceList.MarshalJSON` has been removed
+- Function `IotFhirDestinationCollection.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResultDescription.MarshalJSON` has been removed
+- Function `IotConnectorCollection.MarshalJSON` has been removed
+- Function `ServicesDescriptionListResult.MarshalJSON` has been removed
+- Function `DicomServiceCollection.MarshalJSON` has been removed
+- Function `FhirServiceCollection.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

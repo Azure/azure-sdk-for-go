@@ -38,7 +38,7 @@ func NewIotConnectorsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewIotConnectorsClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreateOrUpdate - Creates or updates an IoT Connector resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // iotConnectorName - The name of IoT Connector resource.
 // iotConnector - The parameters for creating or updating an IoT Connectors resource.
 // options - IotConnectorsClientBeginCreateOrUpdateOptions contains the optional parameters for the IotConnectorsClient.BeginCreateOrUpdate
 // method.
-func (client *IotConnectorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, iotConnector IotConnector, options *IotConnectorsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[IotConnectorsClientCreateOrUpdateResponse], error) {
+func (client *IotConnectorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, iotConnector IotConnector, options *IotConnectorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IotConnectorsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, iotConnectorName, iotConnector, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IotConnectorsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IotConnectorsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IotConnectorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IotConnectorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an IoT Connector resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *IotConnectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, iotConnector IotConnector, options *IotConnectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, iotConnectorName, iotConnector, options)
 	if err != nil {
@@ -117,31 +119,33 @@ func (client *IotConnectorsClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, iotConnector)
 }
 
 // BeginDelete - Deletes an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // iotConnectorName - The name of IoT Connector resource.
 // workspaceName - The name of workspace resource.
 // options - IotConnectorsClientBeginDeleteOptions contains the optional parameters for the IotConnectorsClient.BeginDelete
 // method.
-func (client *IotConnectorsClient) BeginDelete(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, options *IotConnectorsClientBeginDeleteOptions) (*armruntime.Poller[IotConnectorsClientDeleteResponse], error) {
+func (client *IotConnectorsClient) BeginDelete(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, options *IotConnectorsClientBeginDeleteOptions) (*runtime.Poller[IotConnectorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, iotConnectorName, workspaceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IotConnectorsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IotConnectorsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IotConnectorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IotConnectorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *IotConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, options *IotConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, iotConnectorName, workspaceName, options)
 	if err != nil {
@@ -183,12 +187,13 @@ func (client *IotConnectorsClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the properties of the specified IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // iotConnectorName - The name of IoT Connector resource.
@@ -234,7 +239,7 @@ func (client *IotConnectorsClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,12 +254,13 @@ func (client *IotConnectorsClient) getHandleResponse(resp *http.Response) (IotCo
 
 // NewListByWorkspacePager - Lists all IoT Connectors for the given workspace
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - IotConnectorsClientListByWorkspaceOptions contains the optional parameters for the IotConnectorsClient.ListByWorkspace
 // method.
 func (client *IotConnectorsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *IotConnectorsClientListByWorkspaceOptions) *runtime.Pager[IotConnectorsClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IotConnectorsClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IotConnectorsClientListByWorkspaceResponse]{
 		More: func(page IotConnectorsClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -303,7 +309,7 @@ func (client *IotConnectorsClient) listByWorkspaceCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -318,26 +324,28 @@ func (client *IotConnectorsClient) listByWorkspaceHandleResponse(resp *http.Resp
 
 // BeginUpdate - Patch an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // iotConnectorName - The name of IoT Connector resource.
 // workspaceName - The name of workspace resource.
 // iotConnectorPatchResource - The parameters for updating an IoT Connector.
 // options - IotConnectorsClientBeginUpdateOptions contains the optional parameters for the IotConnectorsClient.BeginUpdate
 // method.
-func (client *IotConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource IotConnectorPatchResource, options *IotConnectorsClientBeginUpdateOptions) (*armruntime.Poller[IotConnectorsClientUpdateResponse], error) {
+func (client *IotConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource IotConnectorPatchResource, options *IotConnectorsClientBeginUpdateOptions) (*runtime.Poller[IotConnectorsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[IotConnectorsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IotConnectorsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[IotConnectorsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IotConnectorsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch an IoT Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *IotConnectorsClient) update(ctx context.Context, resourceGroupName string, iotConnectorName string, workspaceName string, iotConnectorPatchResource IotConnectorPatchResource, options *IotConnectorsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource, options)
 	if err != nil {
@@ -379,6 +387,6 @@ func (client *IotConnectorsClient) updateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, iotConnectorPatchResource)
 }

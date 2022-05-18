@@ -1,5 +1,17 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `ObjectAnchorsAccountPage.MarshalJSON` has been removed
+- Function `RemoteRenderingAccountPage.MarshalJSON` has been removed
+- Function `SpatialAnchorsAccountPage.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `OperationPage.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

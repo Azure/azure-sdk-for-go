@@ -38,7 +38,7 @@ func NewPeerAsnsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPeerAsnsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // peerAsnName - The peer ASN name.
 // peerAsn - The peer ASN.
 // options - PeerAsnsClientCreateOrUpdateOptions contains the optional parameters for the PeerAsnsClient.CreateOrUpdate method.
@@ -92,7 +93,7 @@ func (client *PeerAsnsClient) createOrUpdateCreateRequest(ctx context.Context, p
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, peerAsn)
 }
 
@@ -107,6 +108,7 @@ func (client *PeerAsnsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes an existing peer ASN with the specified name under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // peerAsnName - The peer ASN name.
 // options - PeerAsnsClientDeleteOptions contains the optional parameters for the PeerAsnsClient.Delete method.
 func (client *PeerAsnsClient) Delete(ctx context.Context, peerAsnName string, options *PeerAsnsClientDeleteOptions) (PeerAsnsClientDeleteResponse, error) {
@@ -142,12 +144,13 @@ func (client *PeerAsnsClient) deleteCreateRequest(ctx context.Context, peerAsnNa
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the peer ASN with the specified name under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // peerAsnName - The peer ASN name.
 // options - PeerAsnsClientGetOptions contains the optional parameters for the PeerAsnsClient.Get method.
 func (client *PeerAsnsClient) Get(ctx context.Context, peerAsnName string, options *PeerAsnsClientGetOptions) (PeerAsnsClientGetResponse, error) {
@@ -183,7 +186,7 @@ func (client *PeerAsnsClient) getCreateRequest(ctx context.Context, peerAsnName 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -198,10 +201,11 @@ func (client *PeerAsnsClient) getHandleResponse(resp *http.Response) (PeerAsnsCl
 
 // NewListBySubscriptionPager - Lists all of the peer ASNs under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // options - PeerAsnsClientListBySubscriptionOptions contains the optional parameters for the PeerAsnsClient.ListBySubscription
 // method.
 func (client *PeerAsnsClient) NewListBySubscriptionPager(options *PeerAsnsClientListBySubscriptionOptions) *runtime.Pager[PeerAsnsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PeerAsnsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PeerAsnsClientListBySubscriptionResponse]{
 		More: func(page PeerAsnsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -242,7 +246,7 @@ func (client *PeerAsnsClient) listBySubscriptionCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewPeeringsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPeeringsClient(subscriptionID string, credential azcore.TokenCredential,
 // CreateOrUpdate - Creates a new peering or updates an existing peering with the specified name under the given subscription
 // and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // peering - The properties needed to create or update a peering.
@@ -98,7 +99,7 @@ func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, peering)
 }
 
@@ -113,6 +114,7 @@ func (client *PeeringsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes an existing peering with the specified name under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // options - PeeringsClientDeleteOptions contains the optional parameters for the PeeringsClient.Delete method.
@@ -153,12 +155,13 @@ func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing peering with the specified name under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // options - PeeringsClientGetOptions contains the optional parameters for the PeeringsClient.Get method.
@@ -199,7 +202,7 @@ func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -214,11 +217,12 @@ func (client *PeeringsClient) getHandleResponse(resp *http.Response) (PeeringsCl
 
 // NewListByResourceGroupPager - Lists all of the peerings under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // options - PeeringsClientListByResourceGroupOptions contains the optional parameters for the PeeringsClient.ListByResourceGroup
 // method.
 func (client *PeeringsClient) NewListByResourceGroupPager(resourceGroupName string, options *PeeringsClientListByResourceGroupOptions) *runtime.Pager[PeeringsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PeeringsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PeeringsClientListByResourceGroupResponse]{
 		More: func(page PeeringsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -263,7 +267,7 @@ func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -278,10 +282,11 @@ func (client *PeeringsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Lists all of the peerings under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // options - PeeringsClientListBySubscriptionOptions contains the optional parameters for the PeeringsClient.ListBySubscription
 // method.
 func (client *PeeringsClient) NewListBySubscriptionPager(options *PeeringsClientListBySubscriptionOptions) *runtime.Pager[PeeringsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PeeringsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PeeringsClientListBySubscriptionResponse]{
 		More: func(page PeeringsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -322,7 +327,7 @@ func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -337,6 +342,7 @@ func (client *PeeringsClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // Update - Updates tags for a peering with the specified name under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // tags - The resource tags.
@@ -378,7 +384,7 @@ func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, tags)
 }
 

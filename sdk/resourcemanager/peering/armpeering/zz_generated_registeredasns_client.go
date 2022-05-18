@@ -38,7 +38,7 @@ func NewRegisteredAsnsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewRegisteredAsnsClient(subscriptionID string, credential azcore.TokenCrede
 // CreateOrUpdate - Creates a new registered ASN with the specified name under the given subscription, resource group and
 // peering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // registeredAsnName - The name of the ASN.
@@ -104,7 +105,7 @@ func (client *RegisteredAsnsClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, registeredAsn)
 }
 
@@ -119,6 +120,7 @@ func (client *RegisteredAsnsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes an existing registered ASN with the specified name under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // registeredAsnName - The name of the registered ASN.
@@ -164,12 +166,13 @@ func (client *RegisteredAsnsClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing registered ASN with the specified name under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // registeredAsnName - The name of the registered ASN.
@@ -215,7 +218,7 @@ func (client *RegisteredAsnsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,12 +233,13 @@ func (client *RegisteredAsnsClient) getHandleResponse(resp *http.Response) (Regi
 
 // NewListByPeeringPager - Lists all registered ASNs under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
 // peeringName - The name of the peering.
 // options - RegisteredAsnsClientListByPeeringOptions contains the optional parameters for the RegisteredAsnsClient.ListByPeering
 // method.
 func (client *RegisteredAsnsClient) NewListByPeeringPager(resourceGroupName string, peeringName string, options *RegisteredAsnsClientListByPeeringOptions) *runtime.Pager[RegisteredAsnsClientListByPeeringResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RegisteredAsnsClientListByPeeringResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RegisteredAsnsClientListByPeeringResponse]{
 		More: func(page RegisteredAsnsClientListByPeeringResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,7 +288,7 @@ func (client *RegisteredAsnsClient) listByPeeringCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

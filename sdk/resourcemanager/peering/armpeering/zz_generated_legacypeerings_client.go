@@ -39,7 +39,7 @@ func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,11 +57,12 @@ func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCrede
 
 // NewListPager - Lists all of the legacy peerings under the given subscription matching the specified kind and location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // peeringLocation - The location of the peering.
 // kind - The kind of the peering.
 // options - LegacyPeeringsClientListOptions contains the optional parameters for the LegacyPeeringsClient.List method.
 func (client *LegacyPeeringsClient) NewListPager(peeringLocation string, kind LegacyPeeringsKind, options *LegacyPeeringsClientListOptions) *runtime.Pager[LegacyPeeringsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LegacyPeeringsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LegacyPeeringsClientListResponse]{
 		More: func(page LegacyPeeringsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -107,7 +108,7 @@ func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeri
 	}
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

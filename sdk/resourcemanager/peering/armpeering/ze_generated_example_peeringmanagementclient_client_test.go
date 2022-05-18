@@ -24,14 +24,14 @@ func ExampleManagementClient_CheckServiceProviderAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewManagementClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckServiceProviderAvailability(ctx,
 		armpeering.CheckServiceProviderAvailabilityInput{
-			PeeringServiceLocation: to.Ptr("<peering-service-location>"),
-			PeeringServiceProvider: to.Ptr("<peering-service-provider>"),
+			PeeringServiceLocation: to.Ptr("peeringServiceLocation1"),
+			PeeringServiceProvider: to.Ptr("peeringServiceProvider1"),
 		},
 		nil)
 	if err != nil {

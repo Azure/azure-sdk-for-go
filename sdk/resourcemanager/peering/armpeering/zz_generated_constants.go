@@ -10,7 +10,7 @@ package armpeering
 
 const (
 	moduleName    = "armpeering"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v1.0.0"
 )
 
 // Command - Invoked command

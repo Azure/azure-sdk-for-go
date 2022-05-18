@@ -38,7 +38,7 @@ func NewServersClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewServersClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // Get - Gets information about a server in server group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // serverName - The name of the server.
@@ -101,7 +102,7 @@ func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,12 +117,13 @@ func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersClie
 
 // NewListByServerGroupPager - Lists servers of a server group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // options - ServersClientListByServerGroupOptions contains the optional parameters for the ServersClient.ListByServerGroup
 // method.
 func (client *ServersClient) NewListByServerGroupPager(resourceGroupName string, serverGroupName string, options *ServersClientListByServerGroupOptions) *runtime.Pager[ServersClientListByServerGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServersClientListByServerGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServersClientListByServerGroupResponse]{
 		More: func(page ServersClientListByServerGroupResponse) bool {
 			return false
 		},
@@ -164,7 +166,7 @@ func (client *ServersClient) listByServerGroupCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

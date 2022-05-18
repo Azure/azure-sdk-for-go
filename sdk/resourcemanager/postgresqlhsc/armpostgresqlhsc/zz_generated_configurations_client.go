@@ -38,7 +38,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Gets information about single server group configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // configurationName - The name of the server group configuration.
@@ -101,7 +102,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,13 +117,14 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 
 // NewListByServerPager - List all the configurations of a server in server group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // serverName - The name of the server.
 // options - ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.ListByServer
 // method.
 func (client *ConfigurationsClient) NewListByServerPager(resourceGroupName string, serverGroupName string, serverName string, options *ConfigurationsClientListByServerOptions) *runtime.Pager[ConfigurationsClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListByServerResponse]{
 		More: func(page ConfigurationsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -175,7 +177,7 @@ func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -190,12 +192,13 @@ func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Respon
 
 // NewListByServerGroupPager - List all the configurations of a server group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // options - ConfigurationsClientListByServerGroupOptions contains the optional parameters for the ConfigurationsClient.ListByServerGroup
 // method.
 func (client *ConfigurationsClient) NewListByServerGroupPager(resourceGroupName string, serverGroupName string, options *ConfigurationsClientListByServerGroupOptions) *runtime.Pager[ConfigurationsClientListByServerGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ConfigurationsClientListByServerGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListByServerGroupResponse]{
 		More: func(page ConfigurationsClientListByServerGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -244,7 +247,7 @@ func (client *ConfigurationsClient) listByServerGroupCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -259,26 +262,28 @@ func (client *ConfigurationsClient) listByServerGroupHandleResponse(resp *http.R
 
 // BeginUpdate - Updates configuration of server role groups in a server group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverGroupName - The name of the server group.
 // configurationName - The name of the server group configuration.
 // parameters - The required parameters for updating a server group configuration.
 // options - ConfigurationsClientBeginUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginUpdate
 // method.
-func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, parameters ServerGroupConfiguration, options *ConfigurationsClientBeginUpdateOptions) (*armruntime.Poller[ConfigurationsClientUpdateResponse], error) {
+func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, parameters ServerGroupConfiguration, options *ConfigurationsClientBeginUpdateOptions) (*runtime.Poller[ConfigurationsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, serverGroupName, configurationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ConfigurationsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ConfigurationsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ConfigurationsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ConfigurationsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates configuration of server role groups in a server group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-05-privatepreview
 func (client *ConfigurationsClient) update(ctx context.Context, resourceGroupName string, serverGroupName string, configurationName string, parameters ServerGroupConfiguration, options *ConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverGroupName, configurationName, parameters, options)
 	if err != nil {
@@ -320,6 +325,6 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-05-privatepreview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

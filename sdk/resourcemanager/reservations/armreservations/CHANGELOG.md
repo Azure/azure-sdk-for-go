@@ -1,5 +1,47 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*CalculateExchangeClient.BeginPost` return value(s) have been changed from `(*armruntime.Poller[CalculateExchangeClientPostResponse], error)` to `(*runtime.Poller[CalculateExchangeClientPostResponse], error)`
+- Function `*ReservationClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ReservationClientUpdateResponse], error)` to `(*runtime.Poller[ReservationClientUpdateResponse], error)`
+- Function `*ReservationOrderClient.BeginPurchase` return value(s) have been changed from `(*armruntime.Poller[ReservationOrderClientPurchaseResponse], error)` to `(*runtime.Poller[ReservationOrderClientPurchaseResponse], error)`
+- Function `*QuotaClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[QuotaClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[QuotaClientCreateOrUpdateResponse], error)`
+- Function `*ReservationClient.BeginAvailableScopes` return value(s) have been changed from `(*armruntime.Poller[ReservationClientAvailableScopesResponse], error)` to `(*runtime.Poller[ReservationClientAvailableScopesResponse], error)`
+- Function `*ReservationClient.BeginSplit` return value(s) have been changed from `(*armruntime.Poller[ReservationClientSplitResponse], error)` to `(*runtime.Poller[ReservationClientSplitResponse], error)`
+- Function `*ReservationClient.BeginMerge` return value(s) have been changed from `(*armruntime.Poller[ReservationClientMergeResponse], error)` to `(*runtime.Poller[ReservationClientMergeResponse], error)`
+- Function `*QuotaClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[QuotaClientUpdateResponse], error)` to `(*runtime.Poller[QuotaClientUpdateResponse], error)`
+- Function `*ExchangeClient.BeginPost` return value(s) have been changed from `(*armruntime.Poller[ExchangeClientPostResponse], error)` to `(*runtime.Poller[ExchangeClientPostResponse], error)`
+- Function `PaymentDetail.MarshalJSON` has been removed
+- Function `SKURestriction.MarshalJSON` has been removed
+- Function `ReservationList.MarshalJSON` has been removed
+- Function `Properties.MarshalJSON` has been removed
+- Function `ServiceError.MarshalJSON` has been removed
+- Function `Catalog.MarshalJSON` has been removed
+- Function `ReservationOrderList.MarshalJSON` has been removed
+- Function `CalculatePriceResponseProperties.MarshalJSON` has been removed
+- Function `SubscriptionScopeProperties.MarshalJSON` has been removed
+- Function `ExchangeResponseProperties.MarshalJSON` has been removed
+- Function `ReservationMergeProperties.MarshalJSON` has been removed
+- Function `CalculateExchangeResponseProperties.MarshalJSON` has been removed
+- Function `CreateGenericQuotaRequestParameters.MarshalJSON` has been removed
+- Function `ReservationSplitProperties.MarshalJSON` has been removed
+- Function `QuotaRequestProperties.MarshalJSON` has been removed
+- Function `QuotaRequestOneResourceProperties.MarshalJSON` has been removed
+- Function `PropertiesUtilization.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `QuotaLimits.MarshalJSON` has been removed
+- Function `QuotaRequestDetailsList.MarshalJSON` has been removed
+- Function `ExchangePolicyErrors.MarshalJSON` has been removed
+- Function `ReservationOrderProperties.MarshalJSON` has been removed
+- Function `ReservationOrderBillingPlanInformation.MarshalJSON` has been removed
+- Function `SystemData.MarshalJSON` has been removed
+- Function `ChangeDirectoryResponse.MarshalJSON` has been removed
+- Function `AppliedReservationList.MarshalJSON` has been removed
+- Function `ListResult.MarshalJSON` has been removed
+- Function `QuotaLimitsResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

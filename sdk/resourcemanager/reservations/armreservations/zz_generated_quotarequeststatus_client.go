@@ -37,7 +37,7 @@ func NewQuotaRequestStatusClient(credential azcore.TokenCredential, options *arm
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewQuotaRequestStatusClient(credential azcore.TokenCredential, options *arm
 // for the resources of the resource provider. The PUT request for the quota (service
 // limit) returns a response with the requestId parameter.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-25
 // subscriptionID - Azure subscription ID.
 // providerID - Azure resource provider ID.
 // location - Azure region.
@@ -102,7 +103,7 @@ func (client *QuotaRequestStatusClient) getCreateRequest(ctx context.Context, su
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-25")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,12 +119,13 @@ func (client *QuotaRequestStatusClient) getHandleResponse(resp *http.Response) (
 // NewListPager - For the specified Azure region (location), subscription, and resource provider, get the history of the quota
 // requests for the past year. To select specific quota requests, use the oData filter.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-25
 // subscriptionID - Azure subscription ID.
 // providerID - Azure resource provider ID.
 // location - Azure region.
 // options - QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.List method.
 func (client *QuotaRequestStatusClient) NewListPager(subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions) *runtime.Pager[QuotaRequestStatusClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[QuotaRequestStatusClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[QuotaRequestStatusClientListResponse]{
 		More: func(page QuotaRequestStatusClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -181,7 +183,7 @@ func (client *QuotaRequestStatusClient) listCreateRequest(ctx context.Context, s
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -33,7 +33,7 @@ func NewCalculateExchangeClient(credential azcore.TokenCredential, options *arm.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,25 +50,27 @@ func NewCalculateExchangeClient(credential azcore.TokenCredential, options *arm.
 
 // BeginPost - Calculates price for exchanging Reservations if there are no policy errors.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // body - Request containing purchases and refunds that need to be executed.
 // options - CalculateExchangeClientBeginPostOptions contains the optional parameters for the CalculateExchangeClient.BeginPost
 // method.
-func (client *CalculateExchangeClient) BeginPost(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeClientBeginPostOptions) (*armruntime.Poller[CalculateExchangeClientPostResponse], error) {
+func (client *CalculateExchangeClient) BeginPost(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeClientBeginPostOptions) (*runtime.Poller[CalculateExchangeClientPostResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.post(ctx, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[CalculateExchangeClientPostResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CalculateExchangeClientPostResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[CalculateExchangeClientPostResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CalculateExchangeClientPostResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Post - Calculates price for exchanging Reservations if there are no policy errors.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *CalculateExchangeClient) post(ctx context.Context, body CalculateExchangeRequest, options *CalculateExchangeClientBeginPostOptions) (*http.Response, error) {
 	req, err := client.postCreateRequest(ctx, body, options)
 	if err != nil {
@@ -94,6 +96,6 @@ func (client *CalculateExchangeClient) postCreateRequest(ctx context.Context, bo
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

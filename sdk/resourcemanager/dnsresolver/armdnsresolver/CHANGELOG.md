@@ -1,5 +1,34 @@
 # Release History
 
+## 0.4.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*DNSResolversClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DNSResolversClientDeleteResponse], error)` to `(*runtime.Poller[DNSResolversClientDeleteResponse], error)`
+- Function `*OutboundEndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[OutboundEndpointsClientDeleteResponse], error)` to `(*runtime.Poller[OutboundEndpointsClientDeleteResponse], error)`
+- Function `*VirtualNetworkLinksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkLinksClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworkLinksClientDeleteResponse], error)`
+- Function `*DNSResolversClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DNSResolversClientUpdateResponse], error)` to `(*runtime.Poller[DNSResolversClientUpdateResponse], error)`
+- Function `*InboundEndpointsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[InboundEndpointsClientUpdateResponse], error)` to `(*runtime.Poller[InboundEndpointsClientUpdateResponse], error)`
+- Function `*DNSResolversClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DNSResolversClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DNSResolversClientCreateOrUpdateResponse], error)`
+- Function `*DNSForwardingRulesetsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DNSForwardingRulesetsClientUpdateResponse], error)` to `(*runtime.Poller[DNSForwardingRulesetsClientUpdateResponse], error)`
+- Function `*OutboundEndpointsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[OutboundEndpointsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[OutboundEndpointsClientCreateOrUpdateResponse], error)`
+- Function `*OutboundEndpointsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[OutboundEndpointsClientUpdateResponse], error)` to `(*runtime.Poller[OutboundEndpointsClientUpdateResponse], error)`
+- Function `*DNSForwardingRulesetsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DNSForwardingRulesetsClientDeleteResponse], error)` to `(*runtime.Poller[DNSForwardingRulesetsClientDeleteResponse], error)`
+- Function `*VirtualNetworkLinksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkLinksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkLinksClientCreateOrUpdateResponse], error)`
+- Function `*InboundEndpointsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[InboundEndpointsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[InboundEndpointsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkLinksClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkLinksClientUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkLinksClientUpdateResponse], error)`
+- Function `*InboundEndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[InboundEndpointsClientDeleteResponse], error)` to `(*runtime.Poller[InboundEndpointsClientDeleteResponse], error)`
+- Function `*DNSForwardingRulesetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DNSForwardingRulesetsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DNSForwardingRulesetsClientCreateOrUpdateResponse], error)`
+- Function `SubResourceListResult.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `InboundEndpointListResult.MarshalJSON` has been removed
+- Function `DNSForwardingRulesetListResult.MarshalJSON` has been removed
+- Function `VirtualNetworkDNSForwardingRulesetListResult.MarshalJSON` has been removed
+- Function `OutboundEndpointListResult.MarshalJSON` has been removed
+- Function `ListResult.MarshalJSON` has been removed
+- Function `ForwardingRuleListResult.MarshalJSON` has been removed
+- Function `VirtualNetworkLinkListResult.MarshalJSON` has been removed
+
+
 ## 0.3.0 (2022-04-15)
 ### Breaking Changes
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
@@ -26,38 +24,37 @@ func ExampleInboundEndpointsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewInboundEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewInboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<dns-resolver-name>",
-		"<inbound-endpoint-name>",
+		"sampleResourceGroup",
+		"sampleDnsResolver",
+		"sampleInboundEndpoint",
 		armdnsresolver.InboundEndpoint{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus2"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
 			Properties: &armdnsresolver.InboundEndpointProperties{
 				IPConfigurations: []*armdnsresolver.IPConfiguration{
 					{
-						PrivateIPAddress:          to.Ptr("<private-ipaddress>"),
+						PrivateIPAddress:          to.Ptr("255.255.255.255"),
 						PrivateIPAllocationMethod: to.Ptr(armdnsresolver.IPAllocationMethodStatic),
 						Subnet: &armdnsresolver.SubResource{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"),
 						},
 					}},
 			},
 		},
 		&armdnsresolver.InboundEndpointsClientBeginCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -72,26 +69,24 @@ func ExampleInboundEndpointsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewInboundEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewInboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<dns-resolver-name>",
-		"<inbound-endpoint-name>",
+		"sampleResourceGroup",
+		"sampleDnsResolver",
+		"sampleInboundEndpoint",
 		armdnsresolver.InboundEndpointPatch{
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 			},
 		},
-		&armdnsresolver.InboundEndpointsClientBeginUpdateOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armdnsresolver.InboundEndpointsClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -106,21 +101,19 @@ func ExampleInboundEndpointsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewInboundEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewInboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<dns-resolver-name>",
-		"<inbound-endpoint-name>",
-		&armdnsresolver.InboundEndpointsClientBeginDeleteOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		"sampleResourceGroup",
+		"sampleDnsResolver",
+		"sampleInboundEndpoint",
+		&armdnsresolver.InboundEndpointsClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -133,14 +126,14 @@ func ExampleInboundEndpointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewInboundEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewInboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<dns-resolver-name>",
-		"<inbound-endpoint-name>",
+		"sampleResourceGroup",
+		"sampleDnsResolver",
+		"sampleInboundEndpoint",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -156,18 +149,17 @@ func ExampleInboundEndpointsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewInboundEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewInboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<dns-resolver-name>",
+	pager := client.NewListPager("sampleResourceGroup",
+		"sampleDnsResolver",
 		&armdnsresolver.InboundEndpointsClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

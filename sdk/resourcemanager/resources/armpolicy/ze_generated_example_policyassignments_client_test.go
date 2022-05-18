@@ -29,8 +29,8 @@ func ExampleAssignmentsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<scope>",
-		"<policy-assignment-name>",
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
+		"EnforceNaming",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -51,18 +51,18 @@ func ExampleAssignmentsClient_Create() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Create(ctx,
-		"<scope>",
-		"<policy-assignment-name>",
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
+		"EnforceNaming",
 		armpolicy.Assignment{
 			Properties: &armpolicy.AssignmentProperties{
-				Description: to.Ptr("<description>"),
-				DisplayName: to.Ptr("<display-name>"),
+				Description: to.Ptr("Force resource names to begin with given DeptA and end with -LC"),
+				DisplayName: to.Ptr("Enforce resource naming rules"),
 				Metadata: map[string]interface{}{
 					"assignedBy": "Special Someone",
 				},
 				NonComplianceMessages: []*armpolicy.NonComplianceMessage{
 					{
-						Message: to.Ptr("<message>"),
+						Message: to.Ptr("Resource names must start with 'DeptA' and end with '-LC'."),
 					}},
 				Parameters: map[string]*armpolicy.ParameterValuesValue{
 					"prefix": {
@@ -72,7 +72,7 @@ func ExampleAssignmentsClient_Create() {
 						Value: "-LC",
 					},
 				},
-				PolicyDefinitionID: to.Ptr("<policy-definition-id>"),
+				PolicyDefinitionID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 			},
 		},
 		nil)
@@ -93,8 +93,8 @@ func ExampleAssignmentsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<policy-assignment-name>",
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
+		"EnforceNaming",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -115,13 +115,13 @@ func ExampleAssignmentsClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<scope>",
-		"<policy-assignment-name>",
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
+		"EnforceNaming",
 		armpolicy.AssignmentUpdate{
 			Identity: &armpolicy.Identity{
 				Type: to.Ptr(armpolicy.ResourceIdentityTypeSystemAssigned),
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 		},
 		nil)
 	if err != nil {
@@ -138,19 +138,18 @@ func ExampleAssignmentsClient_NewListForResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForResourceGroupPager("<resource-group-name>",
-		&armpolicy.AssignmentsClientListForResourceGroupOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListForResourceGroupPager("TestResourceGroup",
+		&armpolicy.AssignmentsClientListForResourceGroupOptions{Filter: to.Ptr("atScope()"),
 			Top: nil,
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -166,15 +165,15 @@ func ExampleAssignmentsClient_NewListForResourcePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForResourcePager("<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-path>",
-		"<resource-type>",
-		"<resource-name>",
+	pager := client.NewListForResourcePager("TestResourceGroup",
+		"Microsoft.Compute",
+		"virtualMachines/MyTestVm",
+		"domainNames",
+		"MyTestComputer.cloudapp.net",
 		&armpolicy.AssignmentsClientListForResourceOptions{Filter: nil,
 			Top: nil,
 		})
@@ -182,7 +181,6 @@ func ExampleAssignmentsClient_NewListForResourcePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -202,15 +200,14 @@ func ExampleAssignmentsClient_NewListForManagementGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForManagementGroupPager("<management-group-id>",
-		&armpolicy.AssignmentsClientListForManagementGroupOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListForManagementGroupPager("TestManagementGroup",
+		&armpolicy.AssignmentsClientListForManagementGroupOptions{Filter: to.Ptr("atScope()"),
 			Top: nil,
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -226,18 +223,17 @@ func ExampleAssignmentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewAssignmentsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(&armpolicy.AssignmentsClientListOptions{Filter: to.Ptr("<filter>"),
+	pager := client.NewListPager(&armpolicy.AssignmentsClientListOptions{Filter: to.Ptr("atScope()"),
 		Top: nil,
 	})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

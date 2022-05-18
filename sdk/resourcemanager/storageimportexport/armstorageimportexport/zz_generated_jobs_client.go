@@ -41,7 +41,7 @@ func NewJobsClient(subscriptionID string, acceptLanguage *string, credential azc
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -60,6 +60,7 @@ func NewJobsClient(subscriptionID string, acceptLanguage *string, credential azc
 
 // Create - Creates a new job or updates an existing job in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // jobName - The name of the import/export job.
 // resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 // body - The parameters used for creating the job
@@ -102,12 +103,12 @@ func (client *JobsClient) createCreateRequest(ctx context.Context, jobName strin
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.acceptLanguage != nil {
-		req.Raw().Header.Set("Accept-Language", *client.acceptLanguage)
+		req.Raw().Header["Accept-Language"] = []string{*client.acceptLanguage}
 	}
 	if options != nil && options.ClientTenantID != nil {
-		req.Raw().Header.Set("x-ms-client-tenant-id", *options.ClientTenantID)
+		req.Raw().Header["x-ms-client-tenant-id"] = []string{*options.ClientTenantID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -122,6 +123,7 @@ func (client *JobsClient) createHandleResponse(resp *http.Response) (JobsClientC
 
 // Delete - Deletes an existing job. Only jobs in the Creating or Completed states can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // jobName - The name of the import/export job.
 // resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 // options - JobsClientDeleteOptions contains the optional parameters for the JobsClient.Delete method.
@@ -163,14 +165,15 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, jobName strin
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.acceptLanguage != nil {
-		req.Raw().Header.Set("Accept-Language", *client.acceptLanguage)
+		req.Raw().Header["Accept-Language"] = []string{*client.acceptLanguage}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about an existing job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // jobName - The name of the import/export job.
 // resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 // options - JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
@@ -212,9 +215,9 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, jobName string, 
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.acceptLanguage != nil {
-		req.Raw().Header.Set("Accept-Language", *client.acceptLanguage)
+		req.Raw().Header["Accept-Language"] = []string{*client.acceptLanguage}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -229,11 +232,12 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 
 // NewListByResourceGroupPager - Returns all active and completed jobs in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 // options - JobsClientListByResourceGroupOptions contains the optional parameters for the JobsClient.ListByResourceGroup
 // method.
 func (client *JobsClient) NewListByResourceGroupPager(resourceGroupName string, options *JobsClientListByResourceGroupOptions) *runtime.Pager[JobsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListByResourceGroupResponse]{
 		More: func(page JobsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -285,9 +289,9 @@ func (client *JobsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.acceptLanguage != nil {
-		req.Raw().Header.Set("Accept-Language", *client.acceptLanguage)
+		req.Raw().Header["Accept-Language"] = []string{*client.acceptLanguage}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -302,9 +306,10 @@ func (client *JobsClient) listByResourceGroupHandleResponse(resp *http.Response)
 
 // NewListBySubscriptionPager - Returns all active and completed jobs in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // options - JobsClientListBySubscriptionOptions contains the optional parameters for the JobsClient.ListBySubscription method.
 func (client *JobsClient) NewListBySubscriptionPager(options *JobsClientListBySubscriptionOptions) *runtime.Pager[JobsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListBySubscriptionResponse]{
 		More: func(page JobsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -352,9 +357,9 @@ func (client *JobsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.acceptLanguage != nil {
-		req.Raw().Header.Set("Accept-Language", *client.acceptLanguage)
+		req.Raw().Header["Accept-Language"] = []string{*client.acceptLanguage}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -371,6 +376,7 @@ func (client *JobsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 // hard drives comprising the import or export job have been shipped to the Microsoft data
 // center. It can also be used to cancel an existing job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // jobName - The name of the import/export job.
 // resourceGroupName - The resource group name uniquely identifies the resource group within the user subscription.
 // body - The parameters to update in the job
@@ -413,9 +419,9 @@ func (client *JobsClient) updateCreateRequest(ctx context.Context, jobName strin
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if client.acceptLanguage != nil {
-		req.Raw().Header.Set("Accept-Language", *client.acceptLanguage)
+		req.Raw().Header["Accept-Language"] = []string{*client.acceptLanguage}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

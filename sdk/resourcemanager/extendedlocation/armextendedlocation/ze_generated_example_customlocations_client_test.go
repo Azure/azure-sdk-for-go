@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/extendedlocation/armextendedlocation"
@@ -35,7 +33,6 @@ func ExampleCustomLocationsClient_NewListOperationsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,7 +48,7 @@ func ExampleCustomLocationsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
+	client, err := armextendedlocation.NewCustomLocationsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -60,7 +57,6 @@ func ExampleCustomLocationsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -76,17 +72,16 @@ func ExampleCustomLocationsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
+	client, err := armextendedlocation.NewCustomLocationsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testresourcegroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -102,13 +97,13 @@ func ExampleCustomLocationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
+	client, err := armextendedlocation.NewCustomLocationsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"testresourcegroup",
+		"customLocation01",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -124,35 +119,35 @@ func ExampleCustomLocationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
+	client, err := armextendedlocation.NewCustomLocationsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"testresourcegroup",
+		"customLocation01",
 		armextendedlocation.CustomLocation{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Identity: &armextendedlocation.Identity{
 				Type: to.Ptr(armextendedlocation.ResourceIdentityTypeSystemAssigned),
 			},
 			Properties: &armextendedlocation.CustomLocationProperties{
 				Authentication: &armextendedlocation.CustomLocationPropertiesAuthentication{
-					Type:  to.Ptr("<type>"),
-					Value: to.Ptr("<value>"),
+					Type:  to.Ptr("KubeConfig"),
+					Value: to.Ptr("<base64 KubeConfig>"),
 				},
 				ClusterExtensionIDs: []*string{
 					to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kubernetes/connectedCluster/someCluster/Microsoft.KubernetesConfiguration/clusterExtensions/fooExtension")},
-				DisplayName:    to.Ptr("<display-name>"),
-				HostResourceID: to.Ptr("<host-resource-id>"),
-				Namespace:      to.Ptr("<namespace>"),
+				DisplayName:    to.Ptr("customLocationLocation01"),
+				HostResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ContainerService/managedClusters/cluster01"),
+				Namespace:      to.Ptr("namespace01"),
 			},
 		},
-		&armextendedlocation.CustomLocationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -167,18 +162,18 @@ func ExampleCustomLocationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
+	client, err := armextendedlocation.NewCustomLocationsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		&armextendedlocation.CustomLocationsClientBeginDeleteOptions{ResumeToken: ""})
+		"testresourcegroup",
+		"customLocation01",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -191,13 +186,13 @@ func ExampleCustomLocationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
+	client, err := armextendedlocation.NewCustomLocationsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"testresourcegroup",
+		"customLocation01",
 		armextendedlocation.PatchableCustomLocations{
 			Identity: &armextendedlocation.Identity{
 				Type: to.Ptr(armextendedlocation.ResourceIdentityTypeSystemAssigned),
@@ -227,18 +222,17 @@ func ExampleCustomLocationsClient_NewListEnabledResourceTypesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armextendedlocation.NewCustomLocationsClient("<subscription-id>", cred, nil)
+	client, err := armextendedlocation.NewCustomLocationsClient("11111111-2222-3333-4444-555555555555", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListEnabledResourceTypesPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListEnabledResourceTypesPager("testresourcegroup",
+		"customLocation01",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -38,7 +38,7 @@ func NewCustomLocationsClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewCustomLocationsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Creates or updates a Custom Location in the specified Subscription and Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Custom Locations name.
 // parameters - Parameters supplied to create or update a Custom Location.
 // options - CustomLocationsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomLocationsClient.BeginCreateOrUpdate
 // method.
-func (client *CustomLocationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, options *CustomLocationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[CustomLocationsClientCreateOrUpdateResponse], error) {
+func (client *CustomLocationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, options *CustomLocationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomLocationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[CustomLocationsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CustomLocationsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[CustomLocationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomLocationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a Custom Location in the specified Subscription and Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 func (client *CustomLocationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocation, options *CustomLocationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
@@ -114,32 +116,34 @@ func (client *CustomLocationsClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the Custom Location with the specified Resource Name, Resource Group, and Subscription Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Custom Locations name.
 // options - CustomLocationsClientBeginDeleteOptions contains the optional parameters for the CustomLocationsClient.BeginDelete
 // method.
-func (client *CustomLocationsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientBeginDeleteOptions) (*armruntime.Poller[CustomLocationsClientDeleteResponse], error) {
+func (client *CustomLocationsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientBeginDeleteOptions) (*runtime.Poller[CustomLocationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[CustomLocationsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CustomLocationsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[CustomLocationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CustomLocationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the Custom Location with the specified Resource Name, Resource Group, and Subscription Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 func (client *CustomLocationsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *CustomLocationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
@@ -177,12 +181,13 @@ func (client *CustomLocationsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the details of the customLocation with a specified resource group and name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Custom Locations name.
 // options - CustomLocationsClientGetOptions contains the optional parameters for the CustomLocationsClient.Get method.
@@ -223,7 +228,7 @@ func (client *CustomLocationsClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,11 +244,12 @@ func (client *CustomLocationsClient) getHandleResponse(resp *http.Response) (Cus
 // NewListByResourceGroupPager - Gets a list of Custom Locations in the specified subscription and resource group. The operation
 // returns properties of each Custom Location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - CustomLocationsClientListByResourceGroupOptions contains the optional parameters for the CustomLocationsClient.ListByResourceGroup
 // method.
 func (client *CustomLocationsClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomLocationsClientListByResourceGroupOptions) *runtime.Pager[CustomLocationsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomLocationsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListByResourceGroupResponse]{
 		More: func(page CustomLocationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -288,7 +294,7 @@ func (client *CustomLocationsClient) listByResourceGroupCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -304,10 +310,11 @@ func (client *CustomLocationsClient) listByResourceGroupHandleResponse(resp *htt
 // NewListBySubscriptionPager - Gets a list of Custom Locations in the specified subscription. The operation returns properties
 // of each Custom Location
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 // options - CustomLocationsClientListBySubscriptionOptions contains the optional parameters for the CustomLocationsClient.ListBySubscription
 // method.
 func (client *CustomLocationsClient) NewListBySubscriptionPager(options *CustomLocationsClientListBySubscriptionOptions) *runtime.Pager[CustomLocationsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomLocationsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListBySubscriptionResponse]{
 		More: func(page CustomLocationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -348,7 +355,7 @@ func (client *CustomLocationsClient) listBySubscriptionCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -363,12 +370,13 @@ func (client *CustomLocationsClient) listBySubscriptionHandleResponse(resp *http
 
 // NewListEnabledResourceTypesPager - Gets the list of the Enabled Resource Types.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Custom Locations name.
 // options - CustomLocationsClientListEnabledResourceTypesOptions contains the optional parameters for the CustomLocationsClient.ListEnabledResourceTypes
 // method.
 func (client *CustomLocationsClient) NewListEnabledResourceTypesPager(resourceGroupName string, resourceName string, options *CustomLocationsClientListEnabledResourceTypesOptions) *runtime.Pager[CustomLocationsClientListEnabledResourceTypesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomLocationsClientListEnabledResourceTypesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListEnabledResourceTypesResponse]{
 		More: func(page CustomLocationsClientListEnabledResourceTypesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -417,7 +425,7 @@ func (client *CustomLocationsClient) listEnabledResourceTypesCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -432,10 +440,11 @@ func (client *CustomLocationsClient) listEnabledResourceTypesHandleResponse(resp
 
 // NewListOperationsPager - Lists all available Custom Locations operations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 // options - CustomLocationsClientListOperationsOptions contains the optional parameters for the CustomLocationsClient.ListOperations
 // method.
 func (client *CustomLocationsClient) NewListOperationsPager(options *CustomLocationsClientListOperationsOptions) *runtime.Pager[CustomLocationsClientListOperationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CustomLocationsClientListOperationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CustomLocationsClientListOperationsResponse]{
 		More: func(page CustomLocationsClientListOperationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -472,7 +481,7 @@ func (client *CustomLocationsClient) listOperationsCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -487,6 +496,7 @@ func (client *CustomLocationsClient) listOperationsHandleResponse(resp *http.Res
 
 // Update - Updates a Custom Location with the specified Resource Name in the specified Resource Group and Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-15
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - Custom Locations name.
 // parameters - The updatable fields of an existing Custom Location.
@@ -528,7 +538,7 @@ func (client *CustomLocationsClient) updateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

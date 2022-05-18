@@ -38,7 +38,7 @@ func NewTracksClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTracksClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Create or update a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -63,20 +64,21 @@ func NewTracksClient(subscriptionID string, credential azcore.TokenCredential, o
 // parameters - The request parameters
 // options - TracksClientBeginCreateOrUpdateOptions contains the optional parameters for the TracksClient.BeginCreateOrUpdate
 // method.
-func (client *TracksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginCreateOrUpdateOptions) (*armruntime.Poller[TracksClientCreateOrUpdateResponse], error) {
+func (client *TracksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginCreateOrUpdateOptions) (*runtime.Poller[TracksClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TracksClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TracksClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TracksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TracksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *TracksClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
 	if err != nil {
@@ -122,31 +124,33 @@ func (client *TracksClient) createOrUpdateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
 // trackName - The Asset Track name.
 // options - TracksClientBeginDeleteOptions contains the optional parameters for the TracksClient.BeginDelete method.
-func (client *TracksClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginDeleteOptions) (*armruntime.Poller[TracksClientDeleteResponse], error) {
+func (client *TracksClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginDeleteOptions) (*runtime.Poller[TracksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, assetName, trackName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TracksClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TracksClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TracksClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TracksClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *TracksClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, options)
 	if err != nil {
@@ -192,12 +196,13 @@ func (client *TracksClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the details of a Track in the Asset
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -248,7 +253,7 @@ func (client *TracksClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -263,12 +268,13 @@ func (client *TracksClient) getHandleResponse(resp *http.Response) (TracksClient
 
 // NewListPager - Lists the Tracks in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
 // options - TracksClientListOptions contains the optional parameters for the TracksClient.List method.
 func (client *TracksClient) NewListPager(resourceGroupName string, accountName string, assetName string, options *TracksClientListOptions) *runtime.Pager[TracksClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TracksClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TracksClientListResponse]{
 		More: func(page TracksClientListResponse) bool {
 			return false
 		},
@@ -315,7 +321,7 @@ func (client *TracksClient) listCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -330,26 +336,28 @@ func (client *TracksClient) listHandleResponse(resp *http.Response) (TracksClien
 
 // BeginUpdate - Updates an existing Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
 // trackName - The Asset Track name.
 // parameters - The request parameters
 // options - TracksClientBeginUpdateOptions contains the optional parameters for the TracksClient.BeginUpdate method.
-func (client *TracksClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginUpdateOptions) (*armruntime.Poller[TracksClientUpdateResponse], error) {
+func (client *TracksClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginUpdateOptions) (*runtime.Poller[TracksClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TracksClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TracksClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TracksClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TracksClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an existing Track in the asset
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *TracksClient) update(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, parameters AssetTrack, options *TracksClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, parameters, options)
 	if err != nil {
@@ -395,7 +403,7 @@ func (client *TracksClient) updateCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -405,21 +413,22 @@ func (client *TracksClient) updateCreateRequest(ctx context.Context, resourceGro
 // may not be reflected immediately. CDN cache may also need to be purged if
 // applicable.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
 // trackName - The Asset Track name.
 // options - TracksClientBeginUpdateTrackDataOptions contains the optional parameters for the TracksClient.BeginUpdateTrackData
 // method.
-func (client *TracksClient) BeginUpdateTrackData(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginUpdateTrackDataOptions) (*armruntime.Poller[TracksClientUpdateTrackDataResponse], error) {
+func (client *TracksClient) BeginUpdateTrackData(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginUpdateTrackDataOptions) (*runtime.Poller[TracksClientUpdateTrackDataResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateTrackData(ctx, resourceGroupName, accountName, assetName, trackName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TracksClientUpdateTrackDataResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TracksClientUpdateTrackDataResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TracksClientUpdateTrackDataResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TracksClientUpdateTrackDataResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -429,6 +438,7 @@ func (client *TracksClient) BeginUpdateTrackData(ctx context.Context, resourceGr
 // may not be reflected immediately. CDN cache may also need to be purged if
 // applicable.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *TracksClient) updateTrackData(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, options *TracksClientBeginUpdateTrackDataOptions) (*http.Response, error) {
 	req, err := client.updateTrackDataCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, options)
 	if err != nil {
@@ -474,6 +484,6 @@ func (client *TracksClient) updateTrackDataCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -1,5 +1,57 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*LiveOutputsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LiveOutputsClientDeleteResponse], error)` to `(*runtime.Poller[LiveOutputsClientDeleteResponse], error)`
+- Function `*StreamingEndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[StreamingEndpointsClientDeleteResponse], error)` to `(*runtime.Poller[StreamingEndpointsClientDeleteResponse], error)`
+- Function `*StreamingEndpointsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[StreamingEndpointsClientUpdateResponse], error)` to `(*runtime.Poller[StreamingEndpointsClientUpdateResponse], error)`
+- Function `*LiveEventsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LiveEventsClientDeleteResponse], error)` to `(*runtime.Poller[LiveEventsClientDeleteResponse], error)`
+- Function `*TracksClient.BeginUpdateTrackData` return value(s) have been changed from `(*armruntime.Poller[TracksClientUpdateTrackDataResponse], error)` to `(*runtime.Poller[TracksClientUpdateTrackDataResponse], error)`
+- Function `*LiveEventsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[LiveEventsClientCreateResponse], error)` to `(*runtime.Poller[LiveEventsClientCreateResponse], error)`
+- Function `*LiveEventsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[LiveEventsClientStopResponse], error)` to `(*runtime.Poller[LiveEventsClientStopResponse], error)`
+- Function `*LiveEventsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[LiveEventsClientUpdateResponse], error)` to `(*runtime.Poller[LiveEventsClientUpdateResponse], error)`
+- Function `*LiveEventsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[LiveEventsClientStartResponse], error)` to `(*runtime.Poller[LiveEventsClientStartResponse], error)`
+- Function `*StreamingEndpointsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[StreamingEndpointsClientCreateResponse], error)` to `(*runtime.Poller[StreamingEndpointsClientCreateResponse], error)`
+- Function `*StreamingEndpointsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[StreamingEndpointsClientStartResponse], error)` to `(*runtime.Poller[StreamingEndpointsClientStartResponse], error)`
+- Function `*TracksClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[TracksClientUpdateResponse], error)` to `(*runtime.Poller[TracksClientUpdateResponse], error)`
+- Function `*TracksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[TracksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[TracksClientCreateOrUpdateResponse], error)`
+- Function `*StreamingEndpointsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[StreamingEndpointsClientStopResponse], error)` to `(*runtime.Poller[StreamingEndpointsClientStopResponse], error)`
+- Function `*LiveEventsClient.BeginAllocate` return value(s) have been changed from `(*armruntime.Poller[LiveEventsClientAllocateResponse], error)` to `(*runtime.Poller[LiveEventsClientAllocateResponse], error)`
+- Function `*LiveOutputsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[LiveOutputsClientCreateResponse], error)` to `(*runtime.Poller[LiveOutputsClientCreateResponse], error)`
+- Function `*StreamingEndpointsClient.BeginScale` return value(s) have been changed from `(*armruntime.Poller[StreamingEndpointsClientScaleResponse], error)` to `(*runtime.Poller[StreamingEndpointsClientScaleResponse], error)`
+- Function `*TracksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[TracksClientDeleteResponse], error)` to `(*runtime.Poller[TracksClientDeleteResponse], error)`
+- Function `*LiveEventsClient.BeginReset` return value(s) have been changed from `(*armruntime.Poller[LiveEventsClientResetResponse], error)` to `(*runtime.Poller[LiveEventsClientResetResponse], error)`
+- Function `LiveOutputListResult.MarshalJSON` has been removed
+- Function `ListContentKeysResponse.MarshalJSON` has been removed
+- Function `StreamingPolicyCollection.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `LiveEventListResult.MarshalJSON` has been removed
+- Function `ContentKeyPolicyCollection.MarshalJSON` has been removed
+- Function `JobCollection.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `StreamingEndpointListResult.MarshalJSON` has been removed
+- Function `AssetFilterCollection.MarshalJSON` has been removed
+- Function `MediaServiceCollection.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `AssetStreamingLocator.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `AccountFilterCollection.MarshalJSON` has been removed
+- Function `AssetCollection.MarshalJSON` has been removed
+- Function `StorageEncryptedAssetDecryptionData.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `TransformCollection.MarshalJSON` has been removed
+- Function `StreamingLocatorCollection.MarshalJSON` has been removed
+- Function `StreamingEndpointSKUInfoListResult.MarshalJSON` has been removed
+- Function `ListStreamingLocatorsResponse.MarshalJSON` has been removed
+- Function `AssetTrackOperationStatus.MarshalJSON` has been removed
+- Function `OperationCollection.MarshalJSON` has been removed
+- Function `AssetTrackCollection.MarshalJSON` has been removed
+- Function `ListPathsResponse.MarshalJSON` has been removed
+- Function `StreamingPath.MarshalJSON` has been removed
+- Function `AssetContainerSas.MarshalJSON` has been removed
+
+
 ## 0.6.0 (2022-04-18)
 ### Breaking Changes
 

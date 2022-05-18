@@ -26,18 +26,17 @@ func ExampleStreamingEndpointsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("mediaresources",
+		"slitestmedia10",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +52,14 @@ func ExampleStreamingEndpointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-endpoint-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myStreamingEndpoint1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,56 +75,54 @@ func ExampleStreamingEndpointsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-endpoint-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myStreamingEndpoint1",
 		armmediaservices.StreamingEndpoint{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armmediaservices.StreamingEndpointProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("test event 1"),
 				AccessControl: &armmediaservices.StreamingEndpointAccessControl{
 					Akamai: &armmediaservices.AkamaiAccessControl{
 						AkamaiSignatureHeaderAuthenticationKeyList: []*armmediaservices.AkamaiSignatureHeaderAuthenticationKey{
 							{
-								Base64Key:  to.Ptr("<base64key>"),
+								Base64Key:  to.Ptr("dGVzdGlkMQ=="),
 								Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2029-12-31T16:00:00-08:00"); return t }()),
-								Identifier: to.Ptr("<identifier>"),
+								Identifier: to.Ptr("id1"),
 							},
 							{
-								Base64Key:  to.Ptr("<base64key>"),
+								Base64Key:  to.Ptr("dGVzdGlkMQ=="),
 								Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2030-12-31T16:00:00-08:00"); return t }()),
-								Identifier: to.Ptr("<identifier>"),
+								Identifier: to.Ptr("id2"),
 							}},
 					},
 					IP: &armmediaservices.IPAccessControl{
 						Allow: []*armmediaservices.IPRange{
 							{
-								Name:    to.Ptr("<name>"),
-								Address: to.Ptr("<address>"),
+								Name:    to.Ptr("AllowedIp"),
+								Address: to.Ptr("192.168.1.1"),
 							}},
 					},
 				},
-				AvailabilitySetName: to.Ptr("<availability-set-name>"),
+				AvailabilitySetName: to.Ptr("availableset"),
 				CdnEnabled:          to.Ptr(false),
 				ScaleUnits:          to.Ptr[int32](1),
 			},
 		},
-		&armmediaservices.StreamingEndpointsClientBeginCreateOptions{AutoStart: nil,
-			ResumeToken: "",
-		})
+		&armmediaservices.StreamingEndpointsClientBeginCreateOptions{AutoStart: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -140,31 +137,31 @@ func ExampleStreamingEndpointsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-endpoint-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myStreamingEndpoint1",
 		armmediaservices.StreamingEndpoint{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags: map[string]*string{
 				"tag3": to.Ptr("value3"),
 				"tag5": to.Ptr("value5"),
 			},
 			Properties: &armmediaservices.StreamingEndpointProperties{
-				Description:         to.Ptr("<description>"),
-				AvailabilitySetName: to.Ptr("<availability-set-name>"),
+				Description:         to.Ptr("test event 2"),
+				AvailabilitySetName: to.Ptr("availableset"),
 				ScaleUnits:          to.Ptr[int32](5),
 			},
 		},
-		&armmediaservices.StreamingEndpointsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -179,19 +176,19 @@ func ExampleStreamingEndpointsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-endpoint-name>",
-		&armmediaservices.StreamingEndpointsClientBeginDeleteOptions{ResumeToken: ""})
+		"mediaresources",
+		"slitestmedia10",
+		"myStreamingEndpoint1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -204,19 +201,19 @@ func ExampleStreamingEndpointsClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-endpoint-name>",
-		&armmediaservices.StreamingEndpointsClientBeginStartOptions{ResumeToken: ""})
+		"mediaresources",
+		"slitestmedia10",
+		"myStreamingEndpoint1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -229,19 +226,19 @@ func ExampleStreamingEndpointsClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-endpoint-name>",
-		&armmediaservices.StreamingEndpointsClientBeginStopOptions{ResumeToken: ""})
+		"mediaresources",
+		"slitestmedia10",
+		"myStreamingEndpoint1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -254,22 +251,22 @@ func ExampleStreamingEndpointsClient_BeginScale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingEndpointsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingEndpointsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginScale(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-endpoint-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myStreamingEndpoint1",
 		armmediaservices.StreamingEntityScaleUnit{
 			ScaleUnit: to.Ptr[int32](5),
 		},
-		&armmediaservices.StreamingEndpointsClientBeginScaleOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

@@ -24,21 +24,20 @@ func ExampleContentKeyPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewContentKeyPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewContentKeyPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("contoso",
+		"contosomedia",
 		&armmediaservices.ContentKeyPoliciesClientListOptions{Filter: nil,
 			Top:     nil,
-			Orderby: to.Ptr("<orderby>"),
+			Orderby: to.Ptr("properties/lastModified"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,14 @@ func ExampleContentKeyPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewContentKeyPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewContentKeyPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<content-key-policy-name>",
+		"contoso",
+		"contosomedia",
+		"PolicyWithMultipleOptions",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,29 +76,29 @@ func ExampleContentKeyPoliciesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewContentKeyPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewContentKeyPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<content-key-policy-name>",
+		"contoso",
+		"contosomedia",
+		"PolicyWithClearKeyOptionAndSwtTokenRestriction",
 		armmediaservices.ContentKeyPolicy{
 			Properties: &armmediaservices.ContentKeyPolicyProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("ArmPolicyDescription"),
 				Options: []*armmediaservices.ContentKeyPolicyOption{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("ClearKeyOption"),
 						Configuration: &armmediaservices.ContentKeyPolicyClearKeyConfiguration{
-							ODataType: to.Ptr("<odata-type>"),
+							ODataType: to.Ptr("#Microsoft.Media.ContentKeyPolicyClearKeyConfiguration"),
 						},
 						Restriction: &armmediaservices.ContentKeyPolicyTokenRestriction{
-							ODataType: to.Ptr("<odata-type>"),
-							Audience:  to.Ptr("<audience>"),
-							Issuer:    to.Ptr("<issuer>"),
+							ODataType: to.Ptr("#Microsoft.Media.ContentKeyPolicyTokenRestriction"),
+							Audience:  to.Ptr("urn:audience"),
+							Issuer:    to.Ptr("urn:issuer"),
 							PrimaryVerificationKey: &armmediaservices.ContentKeyPolicySymmetricTokenKey{
-								ODataType: to.Ptr("<odata-type>"),
+								ODataType: to.Ptr("#Microsoft.Media.ContentKeyPolicySymmetricTokenKey"),
 								KeyValue:  []byte("AAAAAAAAAAAAAAAAAAAAAA=="),
 							},
 							RestrictionTokenType: to.Ptr(armmediaservices.ContentKeyPolicyRestrictionTokenTypeSwt),
@@ -122,14 +121,14 @@ func ExampleContentKeyPoliciesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewContentKeyPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewContentKeyPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<content-key-policy-name>",
+		"contoso",
+		"contosomedia",
+		"PolicyWithPlayReadyOptionAndOpenRestriction",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -143,25 +142,25 @@ func ExampleContentKeyPoliciesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewContentKeyPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewContentKeyPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<content-key-policy-name>",
+		"contoso",
+		"contosomedia",
+		"PolicyWithClearKeyOptionAndTokenRestriction",
 		armmediaservices.ContentKeyPolicy{
 			Properties: &armmediaservices.ContentKeyPolicyProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Updated Policy"),
 				Options: []*armmediaservices.ContentKeyPolicyOption{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("ClearKeyOption"),
 						Configuration: &armmediaservices.ContentKeyPolicyClearKeyConfiguration{
-							ODataType: to.Ptr("<odata-type>"),
+							ODataType: to.Ptr("#Microsoft.Media.ContentKeyPolicyClearKeyConfiguration"),
 						},
 						Restriction: &armmediaservices.ContentKeyPolicyOpenRestriction{
-							ODataType: to.Ptr("<odata-type>"),
+							ODataType: to.Ptr("#Microsoft.Media.ContentKeyPolicyOpenRestriction"),
 						},
 					}},
 			},
@@ -181,14 +180,14 @@ func ExampleContentKeyPoliciesClient_GetPolicyPropertiesWithSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewContentKeyPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewContentKeyPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPolicyPropertiesWithSecrets(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<content-key-policy-name>",
+		"contoso",
+		"contosomedia",
+		"PolicyWithMultipleOptions",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

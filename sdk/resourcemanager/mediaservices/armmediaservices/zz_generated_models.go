@@ -31,6 +31,25 @@ type AacAudio struct {
 	SamplingRate *int32 `json:"samplingRate,omitempty"`
 }
 
+// GetAudio implements the AudioClassification interface for type AacAudio.
+func (a *AacAudio) GetAudio() *Audio {
+	return &Audio{
+		Channels:     a.Channels,
+		SamplingRate: a.SamplingRate,
+		Bitrate:      a.Bitrate,
+		ODataType:    a.ODataType,
+		Label:        a.Label,
+	}
+}
+
+// GetCodec implements the CodecClassification interface for type AacAudio.
+func (a *AacAudio) GetCodec() *Codec {
+	return &Codec{
+		ODataType: a.ODataType,
+		Label:     a.Label,
+	}
+}
+
 // AbsoluteClipTime - Specifies the clip time as an absolute time position in the media file. The absolute time can point
 // to a different position depending on whether the media file starts from a timestamp of zero or not.
 type AbsoluteClipTime struct {
@@ -40,6 +59,13 @@ type AbsoluteClipTime struct {
 	// REQUIRED; The time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S
 	// for 30 seconds.
 	Time *string `json:"time,omitempty"`
+}
+
+// GetClipTime implements the ClipTimeClassification interface for type AbsoluteClipTime.
+func (a *AbsoluteClipTime) GetClipTime() *ClipTime {
+	return &ClipTime{
+		ODataType: a.ODataType,
+	}
 }
 
 type AccessControl struct {
@@ -451,6 +477,17 @@ type Audio struct {
 	SamplingRate *int32 `json:"samplingRate,omitempty"`
 }
 
+// GetAudio implements the AudioClassification interface for type Audio.
+func (a *Audio) GetAudio() *Audio { return a }
+
+// GetCodec implements the CodecClassification interface for type Audio.
+func (a *Audio) GetCodec() *Codec {
+	return &Codec{
+		ODataType: a.ODataType,
+		Label:     a.Label,
+	}
+}
+
 // AudioAnalyzerPresetClassification provides polymorphic access to related types.
 // Call the interface's GetAudioAnalyzerPreset() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -484,6 +521,16 @@ type AudioAnalyzerPreset struct {
 	// Determines the set of audio analysis operations to be performed. If unspecified, the Standard AudioAnalysisMode would be
 	// chosen.
 	Mode *AudioAnalysisMode `json:"mode,omitempty"`
+}
+
+// GetAudioAnalyzerPreset implements the AudioAnalyzerPresetClassification interface for type AudioAnalyzerPreset.
+func (a *AudioAnalyzerPreset) GetAudioAnalyzerPreset() *AudioAnalyzerPreset { return a }
+
+// GetPreset implements the PresetClassification interface for type AudioAnalyzerPreset.
+func (a *AudioAnalyzerPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: a.ODataType,
+	}
 }
 
 // AudioOverlay - Describes the properties of an audio overlay.
@@ -521,10 +568,30 @@ type AudioOverlay struct {
 	Start *string `json:"start,omitempty"`
 }
 
+// GetOverlay implements the OverlayClassification interface for type AudioOverlay.
+func (a *AudioOverlay) GetOverlay() *Overlay {
+	return &Overlay{
+		ODataType:       a.ODataType,
+		InputLabel:      a.InputLabel,
+		Start:           a.Start,
+		End:             a.End,
+		FadeInDuration:  a.FadeInDuration,
+		FadeOutDuration: a.FadeOutDuration,
+		AudioGainLevel:  a.AudioGainLevel,
+	}
+}
+
 // AudioTrack - Represents an audio track in the asset.
 type AudioTrack struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetTrackBase implements the TrackBaseClassification interface for type AudioTrack.
+func (a *AudioTrack) GetTrackBase() *TrackBase {
+	return &TrackBase{
+		ODataType: a.ODataType,
+	}
 }
 
 // AudioTrackDescriptorClassification provides polymorphic access to related types.
@@ -547,6 +614,16 @@ type AudioTrackDescriptor struct {
 	ChannelMapping *ChannelMapping `json:"channelMapping,omitempty"`
 }
 
+// GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type AudioTrackDescriptor.
+func (a *AudioTrackDescriptor) GetAudioTrackDescriptor() *AudioTrackDescriptor { return a }
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type AudioTrackDescriptor.
+func (a *AudioTrackDescriptor) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: a.ODataType,
+	}
+}
+
 // BuiltInStandardEncoderPreset - Describes a built-in preset for encoding the input video with the Standard Encoder.
 type BuiltInStandardEncoderPreset struct {
 	// REQUIRED; The discriminator for derived types.
@@ -558,6 +635,13 @@ type BuiltInStandardEncoderPreset struct {
 	// Optional configuration settings for encoder. Configurations is only supported for ContentAwareEncoding and H265ContentAwareEncoding
 	// BuiltInStandardEncoderPreset.
 	Configurations *PresetConfigurations `json:"configurations,omitempty"`
+}
+
+// GetPreset implements the PresetClassification interface for type BuiltInStandardEncoderPreset.
+func (b *BuiltInStandardEncoderPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: b.ODataType,
+	}
 }
 
 // CbcsDrmConfiguration - Class to specify DRM configurations of CommonEncryptionCbcs scheme in Streaming Policy
@@ -645,6 +729,9 @@ type ClipTime struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetClipTime implements the ClipTimeClassification interface for type ClipTime.
+func (c *ClipTime) GetClipTime() *ClipTime { return c }
+
 // CodecClassification provides polymorphic access to related types.
 // Call the interface's GetCodec() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -662,6 +749,9 @@ type Codec struct {
 	// An optional label for the codec. The label can be used to control muxing behavior.
 	Label *string `json:"label,omitempty"`
 }
+
+// GetCodec implements the CodecClassification interface for type Codec.
+func (c *Codec) GetCodec() *Codec { return c }
 
 // CommonEncryptionCbcs - Class for CommonEncryptionCbcs encryption scheme
 type CommonEncryptionCbcs struct {
@@ -755,6 +845,13 @@ type ContentKeyPolicyClearKeyConfiguration struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyClearKeyConfiguration.
+func (c *ContentKeyPolicyClearKeyConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
+}
+
 // ContentKeyPolicyCollection - A collection of ContentKeyPolicy items.
 type ContentKeyPolicyCollection struct {
 	// A link to the next page of the collection (when the collection contains too many results to return in one response).
@@ -781,6 +878,11 @@ type ContentKeyPolicyConfiguration struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyConfiguration.
+func (c *ContentKeyPolicyConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return c
+}
+
 // ContentKeyPolicyFairPlayConfiguration - Specifies a configuration for FairPlay licenses.
 type ContentKeyPolicyFairPlayConfiguration struct {
 	// REQUIRED; The key that must be used as FairPlay Application Secret key.
@@ -805,6 +907,13 @@ type ContentKeyPolicyFairPlayConfiguration struct {
 	OfflineRentalConfiguration *ContentKeyPolicyFairPlayOfflineRentalConfiguration `json:"offlineRentalConfiguration,omitempty"`
 }
 
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyFairPlayConfiguration.
+func (c *ContentKeyPolicyFairPlayConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
+}
+
 type ContentKeyPolicyFairPlayOfflineRentalConfiguration struct {
 	// REQUIRED; Playback duration
 	PlaybackDurationSeconds *int64 `json:"playbackDurationSeconds,omitempty"`
@@ -817,6 +926,13 @@ type ContentKeyPolicyFairPlayOfflineRentalConfiguration struct {
 type ContentKeyPolicyOpenRestriction struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyOpenRestriction.
+func (c *ContentKeyPolicyOpenRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
+	return &ContentKeyPolicyRestriction{
+		ODataType: c.ODataType,
+	}
 }
 
 // ContentKeyPolicyOption - Represents a policy option.
@@ -846,10 +962,25 @@ type ContentKeyPolicyPlayReadyConfiguration struct {
 	ResponseCustomData *string `json:"responseCustomData,omitempty"`
 }
 
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyPlayReadyConfiguration.
+func (c *ContentKeyPolicyPlayReadyConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
+}
+
 // ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader - Specifies that the content key ID is in the PlayReady header.
 type ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
+// interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.
+func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader) GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation {
+	return &ContentKeyPolicyPlayReadyContentKeyLocation{
+		ODataType: c.ODataType,
+	}
 }
 
 // ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier - Specifies that the content key ID is specified in the
@@ -860,6 +991,14 @@ type ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier struct {
 
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
+// interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.
+func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier) GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation {
+	return &ContentKeyPolicyPlayReadyContentKeyLocation{
+		ODataType: c.ODataType,
+	}
 }
 
 // ContentKeyPolicyPlayReadyContentKeyLocationClassification provides polymorphic access to related types.
@@ -877,6 +1016,12 @@ type ContentKeyPolicyPlayReadyContentKeyLocationClassification interface {
 type ContentKeyPolicyPlayReadyContentKeyLocation struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
+// interface for type ContentKeyPolicyPlayReadyContentKeyLocation.
+func (c *ContentKeyPolicyPlayReadyContentKeyLocation) GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation {
+	return c
 }
 
 // ContentKeyPolicyPlayReadyExplicitAnalogTelevisionRestriction - Configures the Explicit Analog Television Output Restriction
@@ -999,6 +1144,11 @@ type ContentKeyPolicyRestriction struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyRestriction.
+func (c *ContentKeyPolicyRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
+	return c
+}
+
 // ContentKeyPolicyRestrictionTokenKeyClassification provides polymorphic access to related types.
 // Call the interface's GetContentKeyPolicyRestrictionTokenKey() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1015,6 +1165,12 @@ type ContentKeyPolicyRestrictionTokenKey struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
+// ContentKeyPolicyRestrictionTokenKey.
+func (c *ContentKeyPolicyRestrictionTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
+	return c
+}
+
 // ContentKeyPolicyRsaTokenKey - Specifies a RSA key for token validation
 type ContentKeyPolicyRsaTokenKey struct {
 	// REQUIRED; The RSA Parameter exponent
@@ -1027,6 +1183,14 @@ type ContentKeyPolicyRsaTokenKey struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
+// ContentKeyPolicyRsaTokenKey.
+func (c *ContentKeyPolicyRsaTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
+	return &ContentKeyPolicyRestrictionTokenKey{
+		ODataType: c.ODataType,
+	}
+}
+
 // ContentKeyPolicySymmetricTokenKey - Specifies a symmetric key for token validation.
 type ContentKeyPolicySymmetricTokenKey struct {
 	// REQUIRED; The key value of the key
@@ -1034,6 +1198,14 @@ type ContentKeyPolicySymmetricTokenKey struct {
 
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
+// ContentKeyPolicySymmetricTokenKey.
+func (c *ContentKeyPolicySymmetricTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
+	return &ContentKeyPolicyRestrictionTokenKey{
+		ODataType: c.ODataType,
+	}
 }
 
 // ContentKeyPolicyTokenClaim - Represents a token claim.
@@ -1073,6 +1245,13 @@ type ContentKeyPolicyTokenRestriction struct {
 	RequiredClaims []*ContentKeyPolicyTokenClaim `json:"requiredClaims,omitempty"`
 }
 
+// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyTokenRestriction.
+func (c *ContentKeyPolicyTokenRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
+	return &ContentKeyPolicyRestriction{
+		ODataType: c.ODataType,
+	}
+}
+
 // ContentKeyPolicyUnknownConfiguration - Represents a ContentKeyPolicyConfiguration that is unavailable in the current API
 // version.
 type ContentKeyPolicyUnknownConfiguration struct {
@@ -1080,10 +1259,24 @@ type ContentKeyPolicyUnknownConfiguration struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyUnknownConfiguration.
+func (c *ContentKeyPolicyUnknownConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
+}
+
 // ContentKeyPolicyUnknownRestriction - Represents a ContentKeyPolicyRestriction that is unavailable in the current API version.
 type ContentKeyPolicyUnknownRestriction struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyUnknownRestriction.
+func (c *ContentKeyPolicyUnknownRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
+	return &ContentKeyPolicyRestriction{
+		ODataType: c.ODataType,
+	}
 }
 
 // ContentKeyPolicyWidevineConfiguration - Specifies a configuration for Widevine licenses.
@@ -1095,6 +1288,13 @@ type ContentKeyPolicyWidevineConfiguration struct {
 	WidevineTemplate *string `json:"widevineTemplate,omitempty"`
 }
 
+// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyWidevineConfiguration.
+func (c *ContentKeyPolicyWidevineConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
+	return &ContentKeyPolicyConfiguration{
+		ODataType: c.ODataType,
+	}
+}
+
 // ContentKeyPolicyX509CertificateTokenKey - Specifies a certificate for token validation.
 type ContentKeyPolicyX509CertificateTokenKey struct {
 	// REQUIRED; The discriminator for derived types.
@@ -1102,6 +1302,14 @@ type ContentKeyPolicyX509CertificateTokenKey struct {
 
 	// REQUIRED; The raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET)
 	RawBody []byte `json:"rawBody,omitempty"`
+}
+
+// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
+// ContentKeyPolicyX509CertificateTokenKey.
+func (c *ContentKeyPolicyX509CertificateTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
+	return &ContentKeyPolicyRestrictionTokenKey{
+		ODataType: c.ODataType,
+	}
 }
 
 // CopyAudio - A codec flag, which tells the encoder to copy the input audio bitstream.
@@ -1113,6 +1321,14 @@ type CopyAudio struct {
 	Label *string `json:"label,omitempty"`
 }
 
+// GetCodec implements the CodecClassification interface for type CopyAudio.
+func (c *CopyAudio) GetCodec() *Codec {
+	return &Codec{
+		ODataType: c.ODataType,
+		Label:     c.Label,
+	}
+}
+
 // CopyVideo - A codec flag, which tells the encoder to copy the input video bitstream without re-encoding.
 type CopyVideo struct {
 	// REQUIRED; The discriminator for derived types.
@@ -1120,6 +1336,14 @@ type CopyVideo struct {
 
 	// An optional label for the codec. The label can be used to control muxing behavior.
 	Label *string `json:"label,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type CopyVideo.
+func (c *CopyVideo) GetCodec() *Codec {
+	return &Codec{
+		ODataType: c.ODataType,
+		Label:     c.Label,
+	}
 }
 
 // CrossSiteAccessPolicies - The client access policy.
@@ -1289,6 +1513,13 @@ type FaceDetectorPreset struct {
 	Resolution *AnalysisResolution `json:"resolution,omitempty"`
 }
 
+// GetPreset implements the PresetClassification interface for type FaceDetectorPreset.
+func (f *FaceDetectorPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: f.ODataType,
+	}
+}
+
 // FilterTrackPropertyCondition - The class to specify one track property condition.
 type FilterTrackPropertyCondition struct {
 	// REQUIRED; The track property condition operation.
@@ -1356,6 +1587,9 @@ type Format struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetFormat implements the FormatClassification interface for type Format.
+func (f *Format) GetFormat() *Format { return f }
+
 // FromAllInputFile - An InputDefinition that looks across all of the files provided to select tracks specified by the IncludedTracks
 // property. Generally used with the AudioTrackByAttribute and VideoTrackByAttribute to
 // allow selection of a single track across a set of input files.
@@ -1367,6 +1601,14 @@ type FromAllInputFile struct {
 	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
 }
 
+// GetInputDefinition implements the InputDefinitionClassification interface for type FromAllInputFile.
+func (f *FromAllInputFile) GetInputDefinition() *InputDefinition {
+	return &InputDefinition{
+		ODataType:      f.ODataType,
+		IncludedTracks: f.IncludedTracks,
+	}
+}
+
 // FromEachInputFile - An InputDefinition that looks at each input file provided to select tracks specified by the IncludedTracks
 // property. Generally used with the AudioTrackByAttribute and VideoTrackByAttribute to select
 // tracks from each file given.
@@ -1376,6 +1618,14 @@ type FromEachInputFile struct {
 
 	// The list of TrackDescriptors which define the metadata and selection of tracks in the input.
 	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
+}
+
+// GetInputDefinition implements the InputDefinitionClassification interface for type FromEachInputFile.
+func (f *FromEachInputFile) GetInputDefinition() *InputDefinition {
+	return &InputDefinition{
+		ODataType:      f.ODataType,
+		IncludedTracks: f.IncludedTracks,
+	}
 }
 
 // H264Layer - Describes the settings to be used when encoding the input video into a desired output bitrate layer with the
@@ -1480,6 +1730,25 @@ type H264Video struct {
 	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
 }
 
+// GetCodec implements the CodecClassification interface for type H264Video.
+func (h *H264Video) GetCodec() *Codec {
+	return &Codec{
+		ODataType: h.ODataType,
+		Label:     h.Label,
+	}
+}
+
+// GetVideo implements the VideoClassification interface for type H264Video.
+func (h *H264Video) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: h.KeyFrameInterval,
+		StretchMode:      h.StretchMode,
+		SyncMode:         h.SyncMode,
+		ODataType:        h.ODataType,
+		Label:            h.Label,
+	}
+}
+
 // H265Layer - Describes the settings to be used when encoding the input video into a desired output bitrate layer with the
 // H.265 video codec.
 type H265Layer struct {
@@ -1576,6 +1845,25 @@ type H265Video struct {
 
 	// The Video Sync Mode
 	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type H265Video.
+func (h *H265Video) GetCodec() *Codec {
+	return &Codec{
+		ODataType: h.ODataType,
+		Label:     h.Label,
+	}
+}
+
+// GetVideo implements the VideoClassification interface for type H265Video.
+func (h *H265Video) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: h.KeyFrameInterval,
+		StretchMode:      h.StretchMode,
+		SyncMode:         h.SyncMode,
+		ODataType:        h.ODataType,
+		Label:            h.Label,
+	}
 }
 
 // H265VideoLayer - Describes the settings to be used when encoding the input video into a desired output bitrate layer.
@@ -1714,6 +2002,28 @@ type Image struct {
 	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
 }
 
+// GetCodec implements the CodecClassification interface for type Image.
+func (i *Image) GetCodec() *Codec {
+	return &Codec{
+		ODataType: i.ODataType,
+		Label:     i.Label,
+	}
+}
+
+// GetImage implements the ImageClassification interface for type Image.
+func (i *Image) GetImage() *Image { return i }
+
+// GetVideo implements the VideoClassification interface for type Image.
+func (i *Image) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: i.KeyFrameInterval,
+		StretchMode:      i.StretchMode,
+		SyncMode:         i.SyncMode,
+		ODataType:        i.ODataType,
+		Label:            i.Label,
+	}
+}
+
 // ImageFormatClassification provides polymorphic access to related types.
 // Call the interface's GetImageFormat() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1741,6 +2051,17 @@ type ImageFormat struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetFormat implements the FormatClassification interface for type ImageFormat.
+func (i *ImageFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       i.ODataType,
+		FilenamePattern: i.FilenamePattern,
+	}
+}
+
+// GetImageFormat implements the ImageFormatClassification interface for type ImageFormat.
+func (i *ImageFormat) GetImageFormat() *ImageFormat { return i }
+
 // InputDefinitionClassification provides polymorphic access to related types.
 // Call the interface's GetInputDefinition() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1760,6 +2081,9 @@ type InputDefinition struct {
 	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
 }
 
+// GetInputDefinition implements the InputDefinitionClassification interface for type InputDefinition.
+func (i *InputDefinition) GetInputDefinition() *InputDefinition { return i }
+
 // InputFile - An InputDefinition for a single file. TrackSelections are scoped to the file specified.
 type InputFile struct {
 	// REQUIRED; The discriminator for derived types.
@@ -1770,6 +2094,14 @@ type InputFile struct {
 
 	// The list of TrackDescriptors which define the metadata and selection of tracks in the input.
 	IncludedTracks []TrackDescriptorClassification `json:"includedTracks,omitempty"`
+}
+
+// GetInputDefinition implements the InputDefinitionClassification interface for type InputFile.
+func (i *InputFile) GetInputDefinition() *InputDefinition {
+	return &InputDefinition{
+		ODataType:      i.ODataType,
+		IncludedTracks: i.IncludedTracks,
+	}
 }
 
 // Job - A Job resource type. The progress and state can be obtained by polling a Job or subscribing to events using EventGrid.
@@ -1842,6 +2174,9 @@ type JobInput struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetJobInput implements the JobInputClassification interface for type JobInput.
+func (j *JobInput) GetJobInput() *JobInput { return j }
+
 // JobInputAsset - Represents an Asset for input into a Job.
 type JobInputAsset struct {
 	// REQUIRED; The name of the input Asset.
@@ -1869,6 +2204,25 @@ type JobInputAsset struct {
 	// Defines a point on the timeline of the input media at which processing will start. Defaults to the beginning of the input
 	// media.
 	Start ClipTimeClassification `json:"start,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type JobInputAsset.
+func (j *JobInputAsset) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
+}
+
+// GetJobInputClip implements the JobInputClipClassification interface for type JobInputAsset.
+func (j *JobInputAsset) GetJobInputClip() *JobInputClip {
+	return &JobInputClip{
+		Files:            j.Files,
+		Start:            j.Start,
+		End:              j.End,
+		Label:            j.Label,
+		InputDefinitions: j.InputDefinitions,
+		ODataType:        j.ODataType,
+	}
 }
 
 // JobInputClipClassification provides polymorphic access to related types.
@@ -1907,6 +2261,16 @@ type JobInputClip struct {
 	Start ClipTimeClassification `json:"start,omitempty"`
 }
 
+// GetJobInput implements the JobInputClassification interface for type JobInputClip.
+func (j *JobInputClip) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
+}
+
+// GetJobInputClip implements the JobInputClipClassification interface for type JobInputClip.
+func (j *JobInputClip) GetJobInputClip() *JobInputClip { return j }
+
 // JobInputHTTP - Represents HTTPS job input.
 type JobInputHTTP struct {
 	// REQUIRED; The discriminator for derived types.
@@ -1938,6 +2302,25 @@ type JobInputHTTP struct {
 	Start ClipTimeClassification `json:"start,omitempty"`
 }
 
+// GetJobInput implements the JobInputClassification interface for type JobInputHTTP.
+func (j *JobInputHTTP) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
+}
+
+// GetJobInputClip implements the JobInputClipClassification interface for type JobInputHTTP.
+func (j *JobInputHTTP) GetJobInputClip() *JobInputClip {
+	return &JobInputClip{
+		Files:            j.Files,
+		Start:            j.Start,
+		End:              j.End,
+		Label:            j.Label,
+		InputDefinitions: j.InputDefinitions,
+		ODataType:        j.ODataType,
+	}
+}
+
 // JobInputSequence - A Sequence contains an ordered list of Clips where each clip is a JobInput. The Sequence will be treated
 // as a single input.
 type JobInputSequence struct {
@@ -1948,6 +2331,13 @@ type JobInputSequence struct {
 	Inputs []JobInputClipClassification `json:"inputs,omitempty"`
 }
 
+// GetJobInput implements the JobInputClassification interface for type JobInputSequence.
+func (j *JobInputSequence) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
+}
+
 // JobInputs - Describes a list of inputs to a Job.
 type JobInputs struct {
 	// REQUIRED; The discriminator for derived types.
@@ -1955,6 +2345,13 @@ type JobInputs struct {
 
 	// List of inputs to a Job.
 	Inputs []JobInputClassification `json:"inputs,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type JobInputs.
+func (j *JobInputs) GetJobInput() *JobInput {
+	return &JobInput{
+		ODataType: j.ODataType,
+	}
 }
 
 // JobOutputClassification provides polymorphic access to related types.
@@ -2003,6 +2400,9 @@ type JobOutput struct {
 	State *JobState `json:"state,omitempty" azure:"ro"`
 }
 
+// GetJobOutput implements the JobOutputClassification interface for type JobOutput.
+func (j *JobOutput) GetJobOutput() *JobOutput { return j }
+
 // JobOutputAsset - Represents an Asset used as a JobOutput.
 type JobOutputAsset struct {
 	// REQUIRED; The name of the output Asset.
@@ -2041,6 +2441,20 @@ type JobOutputAsset struct {
 
 	// READ-ONLY; Describes the state of the JobOutput.
 	State *JobState `json:"state,omitempty" azure:"ro"`
+}
+
+// GetJobOutput implements the JobOutputClassification interface for type JobOutputAsset.
+func (j *JobOutputAsset) GetJobOutput() *JobOutput {
+	return &JobOutput{
+		ODataType:      j.ODataType,
+		Error:          j.Error,
+		PresetOverride: j.PresetOverride,
+		State:          j.State,
+		Progress:       j.Progress,
+		Label:          j.Label,
+		StartTime:      j.StartTime,
+		EndTime:        j.EndTime,
+	}
 }
 
 // JobProperties - Properties of the Job.
@@ -2127,6 +2541,22 @@ type JpgFormat struct {
 	ODataType *string `json:"@odata.type,omitempty"`
 }
 
+// GetFormat implements the FormatClassification interface for type JpgFormat.
+func (j *JpgFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       j.ODataType,
+		FilenamePattern: j.FilenamePattern,
+	}
+}
+
+// GetImageFormat implements the ImageFormatClassification interface for type JpgFormat.
+func (j *JpgFormat) GetImageFormat() *ImageFormat {
+	return &ImageFormat{
+		ODataType:       j.ODataType,
+		FilenamePattern: j.FilenamePattern,
+	}
+}
+
 // JpgImage - Describes the properties for producing a series of JPEG images from the input video.
 type JpgImage struct {
 	// REQUIRED; The discriminator for derived types.
@@ -2181,6 +2611,39 @@ type JpgImage struct {
 
 	// The Video Sync Mode
 	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
+}
+
+// GetCodec implements the CodecClassification interface for type JpgImage.
+func (j *JpgImage) GetCodec() *Codec {
+	return &Codec{
+		ODataType: j.ODataType,
+		Label:     j.Label,
+	}
+}
+
+// GetImage implements the ImageClassification interface for type JpgImage.
+func (j *JpgImage) GetImage() *Image {
+	return &Image{
+		Start:            j.Start,
+		Step:             j.Step,
+		Range:            j.Range,
+		KeyFrameInterval: j.KeyFrameInterval,
+		StretchMode:      j.StretchMode,
+		SyncMode:         j.SyncMode,
+		ODataType:        j.ODataType,
+		Label:            j.Label,
+	}
+}
+
+// GetVideo implements the VideoClassification interface for type JpgImage.
+func (j *JpgImage) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: j.KeyFrameInterval,
+		StretchMode:      j.StretchMode,
+		SyncMode:         j.SyncMode,
+		ODataType:        j.ODataType,
+		Label:            j.Label,
+	}
 }
 
 // JpgLayer - Describes the settings to produce a JPEG image from the input video.
@@ -2814,6 +3277,23 @@ type Mp4Format struct {
 	OutputFiles []*OutputFile `json:"outputFiles,omitempty"`
 }
 
+// GetFormat implements the FormatClassification interface for type Mp4Format.
+func (m *Mp4Format) GetFormat() *Format {
+	return &Format{
+		ODataType:       m.ODataType,
+		FilenamePattern: m.FilenamePattern,
+	}
+}
+
+// GetMultiBitrateFormat implements the MultiBitrateFormatClassification interface for type Mp4Format.
+func (m *Mp4Format) GetMultiBitrateFormat() *MultiBitrateFormat {
+	return &MultiBitrateFormat{
+		OutputFiles:     m.OutputFiles,
+		ODataType:       m.ODataType,
+		FilenamePattern: m.FilenamePattern,
+	}
+}
+
 // MultiBitrateFormatClassification provides polymorphic access to related types.
 // Call the interface's GetMultiBitrateFormat() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2846,6 +3326,17 @@ type MultiBitrateFormat struct {
 	// .
 	OutputFiles []*OutputFile `json:"outputFiles,omitempty"`
 }
+
+// GetFormat implements the FormatClassification interface for type MultiBitrateFormat.
+func (m *MultiBitrateFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       m.ODataType,
+		FilenamePattern: m.FilenamePattern,
+	}
+}
+
+// GetMultiBitrateFormat implements the MultiBitrateFormatClassification interface for type MultiBitrateFormat.
+func (m *MultiBitrateFormat) GetMultiBitrateFormat() *MultiBitrateFormat { return m }
 
 // NoEncryption - Class for NoEncryption scheme
 type NoEncryption struct {
@@ -2963,6 +3454,9 @@ type Overlay struct {
 	Start *string `json:"start,omitempty"`
 }
 
+// GetOverlay implements the OverlayClassification interface for type Overlay.
+func (o *Overlay) GetOverlay() *Overlay { return o }
+
 // PNGFormat - Describes the settings for producing PNG thumbnails.
 type PNGFormat struct {
 	// REQUIRED; The pattern of the file names for the generated output files. The following macros are supported in the file
@@ -2978,6 +3472,22 @@ type PNGFormat struct {
 
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetFormat implements the FormatClassification interface for type PNGFormat.
+func (p *PNGFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       p.ODataType,
+		FilenamePattern: p.FilenamePattern,
+	}
+}
+
+// GetImageFormat implements the ImageFormatClassification interface for type PNGFormat.
+func (p *PNGFormat) GetImageFormat() *ImageFormat {
+	return &ImageFormat{
+		ODataType:       p.ODataType,
+		FilenamePattern: p.FilenamePattern,
+	}
 }
 
 // PNGImage - Describes the properties for producing a series of PNG images from the input video.
@@ -3030,6 +3540,39 @@ type PNGImage struct {
 	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
 }
 
+// GetCodec implements the CodecClassification interface for type PNGImage.
+func (p *PNGImage) GetCodec() *Codec {
+	return &Codec{
+		ODataType: p.ODataType,
+		Label:     p.Label,
+	}
+}
+
+// GetImage implements the ImageClassification interface for type PNGImage.
+func (p *PNGImage) GetImage() *Image {
+	return &Image{
+		Start:            p.Start,
+		Step:             p.Step,
+		Range:            p.Range,
+		KeyFrameInterval: p.KeyFrameInterval,
+		StretchMode:      p.StretchMode,
+		SyncMode:         p.SyncMode,
+		ODataType:        p.ODataType,
+		Label:            p.Label,
+	}
+}
+
+// GetVideo implements the VideoClassification interface for type PNGImage.
+func (p *PNGImage) GetVideo() *Video {
+	return &Video{
+		KeyFrameInterval: p.KeyFrameInterval,
+		StretchMode:      p.StretchMode,
+		SyncMode:         p.SyncMode,
+		ODataType:        p.ODataType,
+		Label:            p.Label,
+	}
+}
+
 // PNGLayer - Describes the settings to produce a PNG image from the input video.
 type PNGLayer struct {
 	// The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example
@@ -3080,6 +3623,9 @@ type Preset struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
 }
+
+// GetPreset implements the PresetClassification interface for type Preset.
+func (p *Preset) GetPreset() *Preset { return p }
 
 // PresetConfigurations - An object of optional configuration settings for encoder.
 type PresetConfigurations struct {
@@ -3313,6 +3859,21 @@ type SelectAudioTrackByAttribute struct {
 	FilterValue *string `json:"filterValue,omitempty"`
 }
 
+// GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type SelectAudioTrackByAttribute.
+func (s *SelectAudioTrackByAttribute) GetAudioTrackDescriptor() *AudioTrackDescriptor {
+	return &AudioTrackDescriptor{
+		ChannelMapping: s.ChannelMapping,
+		ODataType:      s.ODataType,
+	}
+}
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectAudioTrackByAttribute.
+func (s *SelectAudioTrackByAttribute) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: s.ODataType,
+	}
+}
+
 // SelectAudioTrackByID - Select audio tracks from the input by specifying a track identifier.
 type SelectAudioTrackByID struct {
 	// REQUIRED; The discriminator for derived types.
@@ -3324,6 +3885,21 @@ type SelectAudioTrackByID struct {
 	// Optional designation for single channel audio tracks. Can be used to combine the tracks into stereo or multi-channel audio
 	// tracks.
 	ChannelMapping *ChannelMapping `json:"channelMapping,omitempty"`
+}
+
+// GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type SelectAudioTrackByID.
+func (s *SelectAudioTrackByID) GetAudioTrackDescriptor() *AudioTrackDescriptor {
+	return &AudioTrackDescriptor{
+		ChannelMapping: s.ChannelMapping,
+		ODataType:      s.ODataType,
+	}
+}
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectAudioTrackByID.
+func (s *SelectAudioTrackByID) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: s.ODataType,
+	}
 }
 
 // SelectVideoTrackByAttribute - Select video tracks from the input by specifying an attribute and an attribute filter.
@@ -3343,6 +3919,20 @@ type SelectVideoTrackByAttribute struct {
 	FilterValue *string `json:"filterValue,omitempty"`
 }
 
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectVideoTrackByAttribute.
+func (s *SelectVideoTrackByAttribute) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: s.ODataType,
+	}
+}
+
+// GetVideoTrackDescriptor implements the VideoTrackDescriptorClassification interface for type SelectVideoTrackByAttribute.
+func (s *SelectVideoTrackByAttribute) GetVideoTrackDescriptor() *VideoTrackDescriptor {
+	return &VideoTrackDescriptor{
+		ODataType: s.ODataType,
+	}
+}
+
 // SelectVideoTrackByID - Select video tracks from the input by specifying a track identifier.
 type SelectVideoTrackByID struct {
 	// REQUIRED; The discriminator for derived types.
@@ -3350,6 +3940,20 @@ type SelectVideoTrackByID struct {
 
 	// REQUIRED; Track identifier to select
 	TrackID *int64 `json:"trackId,omitempty"`
+}
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectVideoTrackByID.
+func (s *SelectVideoTrackByID) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: s.ODataType,
+	}
+}
+
+// GetVideoTrackDescriptor implements the VideoTrackDescriptorClassification interface for type SelectVideoTrackByID.
+func (s *SelectVideoTrackByID) GetVideoTrackDescriptor() *VideoTrackDescriptor {
+	return &VideoTrackDescriptor{
+		ODataType: s.ODataType,
+	}
 }
 
 // ServiceSpecification - The service metric specifications.
@@ -3374,6 +3978,13 @@ type StandardEncoderPreset struct {
 
 	// One or more filtering operations that are applied to the input media before encoding.
 	Filters *Filters `json:"filters,omitempty"`
+}
+
+// GetPreset implements the PresetClassification interface for type StandardEncoderPreset.
+func (s *StandardEncoderPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: s.ODataType,
+	}
 }
 
 // StorageAccount - The storage account details.
@@ -3889,6 +4500,13 @@ type TextTrack struct {
 	LanguageCode *string `json:"languageCode,omitempty" azure:"ro"`
 }
 
+// GetTrackBase implements the TrackBaseClassification interface for type TextTrack.
+func (t *TextTrack) GetTrackBase() *TrackBase {
+	return &TrackBase{
+		ODataType: t.ODataType,
+	}
+}
+
 // TrackBaseClassification provides polymorphic access to related types.
 // Call the interface's GetTrackBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -3903,6 +4521,9 @@ type TrackBase struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
 }
+
+// GetTrackBase implements the TrackBaseClassification interface for type TrackBase.
+func (t *TrackBase) GetTrackBase() *TrackBase { return t }
 
 // TrackDescriptorClassification provides polymorphic access to related types.
 // Call the interface's GetTrackDescriptor() method to access the common type.
@@ -3920,6 +4541,9 @@ type TrackDescriptor struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
 }
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type TrackDescriptor.
+func (t *TrackDescriptor) GetTrackDescriptor() *TrackDescriptor { return t }
 
 // TrackPropertyCondition - Class to specify one track property condition
 type TrackPropertyCondition struct {
@@ -4103,6 +4727,23 @@ type TransportStreamFormat struct {
 	OutputFiles []*OutputFile `json:"outputFiles,omitempty"`
 }
 
+// GetFormat implements the FormatClassification interface for type TransportStreamFormat.
+func (t *TransportStreamFormat) GetFormat() *Format {
+	return &Format{
+		ODataType:       t.ODataType,
+		FilenamePattern: t.FilenamePattern,
+	}
+}
+
+// GetMultiBitrateFormat implements the MultiBitrateFormatClassification interface for type TransportStreamFormat.
+func (t *TransportStreamFormat) GetMultiBitrateFormat() *MultiBitrateFormat {
+	return &MultiBitrateFormat{
+		OutputFiles:     t.OutputFiles,
+		ODataType:       t.ODataType,
+		FilenamePattern: t.FilenamePattern,
+	}
+}
+
 // UTCClipTime - Specifies the clip time as a Utc time position in the media file. The Utc time can point to a different position
 // depending on whether the media file starts from a timestamp of zero or not.
 type UTCClipTime struct {
@@ -4111,6 +4752,13 @@ type UTCClipTime struct {
 
 	// REQUIRED; The time position on the timeline of the input media based on Utc time.
 	Time *time.Time `json:"time,omitempty"`
+}
+
+// GetClipTime implements the ClipTimeClassification interface for type UTCClipTime.
+func (u *UTCClipTime) GetClipTime() *ClipTime {
+	return &ClipTime{
+		ODataType: u.ODataType,
+	}
 }
 
 type UserAssignedManagedIdentity struct {
@@ -4151,6 +4799,17 @@ type Video struct {
 	SyncMode *VideoSyncMode `json:"syncMode,omitempty"`
 }
 
+// GetCodec implements the CodecClassification interface for type Video.
+func (v *Video) GetCodec() *Codec {
+	return &Codec{
+		ODataType: v.ODataType,
+		Label:     v.Label,
+	}
+}
+
+// GetVideo implements the VideoClassification interface for type Video.
+func (v *Video) GetVideo() *Video { return v }
+
 // VideoAnalyzerPreset - A video analyzer preset that extracts insights (rich metadata) from both audio and video, and outputs
 // a JSON format file.
 type VideoAnalyzerPreset struct {
@@ -4182,6 +4841,23 @@ type VideoAnalyzerPreset struct {
 	// Determines the set of audio analysis operations to be performed. If unspecified, the Standard AudioAnalysisMode would be
 	// chosen.
 	Mode *AudioAnalysisMode `json:"mode,omitempty"`
+}
+
+// GetAudioAnalyzerPreset implements the AudioAnalyzerPresetClassification interface for type VideoAnalyzerPreset.
+func (v *VideoAnalyzerPreset) GetAudioAnalyzerPreset() *AudioAnalyzerPreset {
+	return &AudioAnalyzerPreset{
+		AudioLanguage:       v.AudioLanguage,
+		Mode:                v.Mode,
+		ExperimentalOptions: v.ExperimentalOptions,
+		ODataType:           v.ODataType,
+	}
+}
+
+// GetPreset implements the PresetClassification interface for type VideoAnalyzerPreset.
+func (v *VideoAnalyzerPreset) GetPreset() *Preset {
+	return &Preset{
+		ODataType: v.ODataType,
+	}
 }
 
 // VideoLayer - Describes the settings to be used when encoding the input video into a desired output bitrate layer.
@@ -4269,10 +4945,30 @@ type VideoOverlay struct {
 	Start *string `json:"start,omitempty"`
 }
 
+// GetOverlay implements the OverlayClassification interface for type VideoOverlay.
+func (v *VideoOverlay) GetOverlay() *Overlay {
+	return &Overlay{
+		ODataType:       v.ODataType,
+		InputLabel:      v.InputLabel,
+		Start:           v.Start,
+		End:             v.End,
+		FadeInDuration:  v.FadeInDuration,
+		FadeOutDuration: v.FadeOutDuration,
+		AudioGainLevel:  v.AudioGainLevel,
+	}
+}
+
 // VideoTrack - Represents a video track in the asset.
 type VideoTrack struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
+}
+
+// GetTrackBase implements the TrackBaseClassification interface for type VideoTrack.
+func (v *VideoTrack) GetTrackBase() *TrackBase {
+	return &TrackBase{
+		ODataType: v.ODataType,
+	}
 }
 
 // VideoTrackDescriptorClassification provides polymorphic access to related types.
@@ -4290,3 +4986,13 @@ type VideoTrackDescriptor struct {
 	// REQUIRED; The discriminator for derived types.
 	ODataType *string `json:"@odata.type,omitempty"`
 }
+
+// GetTrackDescriptor implements the TrackDescriptorClassification interface for type VideoTrackDescriptor.
+func (v *VideoTrackDescriptor) GetTrackDescriptor() *TrackDescriptor {
+	return &TrackDescriptor{
+		ODataType: v.ODataType,
+	}
+}
+
+// GetVideoTrackDescriptor implements the VideoTrackDescriptorClassification interface for type VideoTrackDescriptor.
+func (v *VideoTrackDescriptor) GetVideoTrackDescriptor() *VideoTrackDescriptor { return v }

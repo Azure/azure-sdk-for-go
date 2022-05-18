@@ -10,29 +10,11 @@ package armmediaservices
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"reflect"
 )
-
-// GetAudio implements the AudioClassification interface for type AacAudio.
-func (a *AacAudio) GetAudio() *Audio {
-	return &Audio{
-		Channels:     a.Channels,
-		SamplingRate: a.SamplingRate,
-		Bitrate:      a.Bitrate,
-		ODataType:    a.ODataType,
-		Label:        a.Label,
-	}
-}
-
-// GetCodec implements the CodecClassification interface for type AacAudio.
-func (a *AacAudio) GetCodec() *Codec {
-	return &Codec{
-		ODataType: a.ODataType,
-		Label:     a.Label,
-	}
-}
 
 // MarshalJSON implements the json.Marshaller interface for type AacAudio.
 func (a AacAudio) MarshalJSON() ([]byte, error) {
@@ -50,42 +32,35 @@ func (a AacAudio) MarshalJSON() ([]byte, error) {
 func (a *AacAudio) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "bitrate":
-			err = unpopulate(val, &a.Bitrate)
+			err = unpopulate(val, "Bitrate", &a.Bitrate)
 			delete(rawMsg, key)
 		case "channels":
-			err = unpopulate(val, &a.Channels)
+			err = unpopulate(val, "Channels", &a.Channels)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &a.Label)
+			err = unpopulate(val, "Label", &a.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &a.ODataType)
+			err = unpopulate(val, "ODataType", &a.ODataType)
 			delete(rawMsg, key)
 		case "profile":
-			err = unpopulate(val, &a.Profile)
+			err = unpopulate(val, "Profile", &a.Profile)
 			delete(rawMsg, key)
 		case "samplingRate":
-			err = unpopulate(val, &a.SamplingRate)
+			err = unpopulate(val, "SamplingRate", &a.SamplingRate)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetClipTime implements the ClipTimeClassification interface for type AbsoluteClipTime.
-func (a *AbsoluteClipTime) GetClipTime() *ClipTime {
-	return &ClipTime{
-		ODataType: a.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AbsoluteClipTime.
@@ -100,20 +75,20 @@ func (a AbsoluteClipTime) MarshalJSON() ([]byte, error) {
 func (a *AbsoluteClipTime) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &a.ODataType)
+			err = unpopulate(val, "ODataType", &a.ODataType)
 			delete(rawMsg, key)
 		case "time":
-			err = unpopulate(val, &a.Time)
+			err = unpopulate(val, "Time", &a.Time)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -138,14 +113,6 @@ func (a AccountFilter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountFilterCollection.
-func (a AccountFilterCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", a.ODataNextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type AkamaiAccessControl.
 func (a AkamaiAccessControl) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -166,23 +133,23 @@ func (a AkamaiSignatureHeaderAuthenticationKey) MarshalJSON() ([]byte, error) {
 func (a *AkamaiSignatureHeaderAuthenticationKey) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "base64Key":
-			err = unpopulate(val, &a.Base64Key)
+			err = unpopulate(val, "Base64Key", &a.Base64Key)
 			delete(rawMsg, key)
 		case "expiration":
-			err = unpopulateTimeRFC3339(val, &a.Expiration)
+			err = unpopulateTimeRFC3339(val, "Expiration", &a.Expiration)
 			delete(rawMsg, key)
 		case "identifier":
-			err = unpopulate(val, &a.Identifier)
+			err = unpopulate(val, "Identifier", &a.Identifier)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -199,21 +166,6 @@ func (a Asset) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssetCollection.
-func (a AssetCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", a.ODataNextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssetContainerSas.
-func (a AssetContainerSas) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assetContainerSasUrls", a.AssetContainerSasUrls)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type AssetFilter.
 func (a AssetFilter) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -222,14 +174,6 @@ func (a AssetFilter) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "systemData", a.SystemData)
 	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssetFilterCollection.
-func (a AssetFilterCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", a.ODataNextLink)
-	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -251,93 +195,79 @@ func (a AssetProperties) MarshalJSON() ([]byte, error) {
 func (a *AssetProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "alternateId":
-			err = unpopulate(val, &a.AlternateID)
+			err = unpopulate(val, "AlternateID", &a.AlternateID)
 			delete(rawMsg, key)
 		case "assetId":
-			err = unpopulate(val, &a.AssetID)
+			err = unpopulate(val, "AssetID", &a.AssetID)
 			delete(rawMsg, key)
 		case "container":
-			err = unpopulate(val, &a.Container)
+			err = unpopulate(val, "Container", &a.Container)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTimeRFC3339(val, &a.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &a.Created)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &a.Description)
+			err = unpopulate(val, "Description", &a.Description)
 			delete(rawMsg, key)
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &a.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &a.LastModified)
 			delete(rawMsg, key)
 		case "storageAccountName":
-			err = unpopulate(val, &a.StorageAccountName)
+			err = unpopulate(val, "StorageAccountName", &a.StorageAccountName)
 			delete(rawMsg, key)
 		case "storageEncryptionFormat":
-			err = unpopulate(val, &a.StorageEncryptionFormat)
+			err = unpopulate(val, "StorageEncryptionFormat", &a.StorageEncryptionFormat)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssetStreamingLocator.
-func (a AssetStreamingLocator) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assetName", a.AssetName)
-	populateTimeRFC3339(objectMap, "created", a.Created)
-	populate(objectMap, "defaultContentKeyPolicyName", a.DefaultContentKeyPolicyName)
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
-	populate(objectMap, "name", a.Name)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
-	populate(objectMap, "streamingLocatorId", a.StreamingLocatorID)
-	populate(objectMap, "streamingPolicyName", a.StreamingPolicyName)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AssetStreamingLocator.
 func (a *AssetStreamingLocator) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "assetName":
-			err = unpopulate(val, &a.AssetName)
+			err = unpopulate(val, "AssetName", &a.AssetName)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTimeRFC3339(val, &a.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &a.Created)
 			delete(rawMsg, key)
 		case "defaultContentKeyPolicyName":
-			err = unpopulate(val, &a.DefaultContentKeyPolicyName)
+			err = unpopulate(val, "DefaultContentKeyPolicyName", &a.DefaultContentKeyPolicyName)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, &a.EndTime)
+			err = unpopulateTimeRFC3339(val, "EndTime", &a.EndTime)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &a.Name)
+			err = unpopulate(val, "Name", &a.Name)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &a.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		case "streamingLocatorId":
-			err = unpopulate(val, &a.StreamingLocatorID)
+			err = unpopulate(val, "StreamingLocatorID", &a.StreamingLocatorID)
 			delete(rawMsg, key)
 		case "streamingPolicyName":
-			err = unpopulate(val, &a.StreamingPolicyName)
+			err = unpopulate(val, "StreamingPolicyName", &a.StreamingPolicyName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -353,55 +283,36 @@ func (a AssetTrack) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AssetTrackCollection.
-func (a AssetTrackCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AssetTrackOperationStatus.
-func (a AssetTrackOperationStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
-	populate(objectMap, "error", a.Error)
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "name", a.Name)
-	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
-	populate(objectMap, "status", a.Status)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type AssetTrackOperationStatus.
 func (a *AssetTrackOperationStatus) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, &a.EndTime)
+			err = unpopulateTimeRFC3339(val, "EndTime", &a.EndTime)
 			delete(rawMsg, key)
 		case "error":
-			err = unpopulate(val, &a.Error)
+			err = unpopulate(val, "Error", &a.Error)
 			delete(rawMsg, key)
 		case "id":
-			err = unpopulate(val, &a.ID)
+			err = unpopulate(val, "ID", &a.ID)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &a.Name)
+			err = unpopulate(val, "Name", &a.Name)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &a.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &a.StartTime)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &a.Status)
+			err = unpopulate(val, "Status", &a.Status)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
@@ -419,34 +330,23 @@ func (a AssetTrackProperties) MarshalJSON() ([]byte, error) {
 func (a *AssetTrackProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
 			delete(rawMsg, key)
 		case "track":
 			a.Track, err = unmarshalTrackBaseClassification(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetAudio implements the AudioClassification interface for type Audio.
-func (a *Audio) GetAudio() *Audio { return a }
-
-// GetCodec implements the CodecClassification interface for type Audio.
-func (a *Audio) GetCodec() *Codec {
-	return &Codec{
-		ODataType: a.ODataType,
-		Label:     a.Label,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Audio.
@@ -464,42 +364,32 @@ func (a Audio) MarshalJSON() ([]byte, error) {
 func (a *Audio) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "bitrate":
-			err = unpopulate(val, &a.Bitrate)
+			err = unpopulate(val, "Bitrate", &a.Bitrate)
 			delete(rawMsg, key)
 		case "channels":
-			err = unpopulate(val, &a.Channels)
+			err = unpopulate(val, "Channels", &a.Channels)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &a.Label)
+			err = unpopulate(val, "Label", &a.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &a.ODataType)
+			err = unpopulate(val, "ODataType", &a.ODataType)
 			delete(rawMsg, key)
 		case "samplingRate":
-			err = unpopulate(val, &a.SamplingRate)
+			err = unpopulate(val, "SamplingRate", &a.SamplingRate)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetAudioAnalyzerPreset implements the AudioAnalyzerPresetClassification interface for type AudioAnalyzerPreset.
-func (a *AudioAnalyzerPreset) GetAudioAnalyzerPreset() *AudioAnalyzerPreset { return a }
-
-// GetPreset implements the PresetClassification interface for type AudioAnalyzerPreset.
-func (a *AudioAnalyzerPreset) GetPreset() *Preset {
-	return &Preset{
-		ODataType: a.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AudioAnalyzerPreset.
@@ -516,42 +406,29 @@ func (a AudioAnalyzerPreset) MarshalJSON() ([]byte, error) {
 func (a *AudioAnalyzerPreset) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "audioLanguage":
-			err = unpopulate(val, &a.AudioLanguage)
+			err = unpopulate(val, "AudioLanguage", &a.AudioLanguage)
 			delete(rawMsg, key)
 		case "experimentalOptions":
-			err = unpopulate(val, &a.ExperimentalOptions)
+			err = unpopulate(val, "ExperimentalOptions", &a.ExperimentalOptions)
 			delete(rawMsg, key)
 		case "mode":
-			err = unpopulate(val, &a.Mode)
+			err = unpopulate(val, "Mode", &a.Mode)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &a.ODataType)
+			err = unpopulate(val, "ODataType", &a.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetOverlay implements the OverlayClassification interface for type AudioOverlay.
-func (a *AudioOverlay) GetOverlay() *Overlay {
-	return &Overlay{
-		ODataType:       a.ODataType,
-		InputLabel:      a.InputLabel,
-		Start:           a.Start,
-		End:             a.End,
-		FadeInDuration:  a.FadeInDuration,
-		FadeOutDuration: a.FadeOutDuration,
-		AudioGainLevel:  a.AudioGainLevel,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AudioOverlay.
@@ -571,45 +448,38 @@ func (a AudioOverlay) MarshalJSON() ([]byte, error) {
 func (a *AudioOverlay) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "audioGainLevel":
-			err = unpopulate(val, &a.AudioGainLevel)
+			err = unpopulate(val, "AudioGainLevel", &a.AudioGainLevel)
 			delete(rawMsg, key)
 		case "end":
-			err = unpopulate(val, &a.End)
+			err = unpopulate(val, "End", &a.End)
 			delete(rawMsg, key)
 		case "fadeInDuration":
-			err = unpopulate(val, &a.FadeInDuration)
+			err = unpopulate(val, "FadeInDuration", &a.FadeInDuration)
 			delete(rawMsg, key)
 		case "fadeOutDuration":
-			err = unpopulate(val, &a.FadeOutDuration)
+			err = unpopulate(val, "FadeOutDuration", &a.FadeOutDuration)
 			delete(rawMsg, key)
 		case "inputLabel":
-			err = unpopulate(val, &a.InputLabel)
+			err = unpopulate(val, "InputLabel", &a.InputLabel)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &a.ODataType)
+			err = unpopulate(val, "ODataType", &a.ODataType)
 			delete(rawMsg, key)
 		case "start":
-			err = unpopulate(val, &a.Start)
+			err = unpopulate(val, "Start", &a.Start)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetTrackBase implements the TrackBaseClassification interface for type AudioTrack.
-func (a *AudioTrack) GetTrackBase() *TrackBase {
-	return &TrackBase{
-		ODataType: a.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AudioTrack.
@@ -623,30 +493,20 @@ func (a AudioTrack) MarshalJSON() ([]byte, error) {
 func (a *AudioTrack) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &a.ODataType)
+			err = unpopulate(val, "ODataType", &a.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type AudioTrackDescriptor.
-func (a *AudioTrackDescriptor) GetAudioTrackDescriptor() *AudioTrackDescriptor { return a }
-
-// GetTrackDescriptor implements the TrackDescriptorClassification interface for type AudioTrackDescriptor.
-func (a *AudioTrackDescriptor) GetTrackDescriptor() *TrackDescriptor {
-	return &TrackDescriptor{
-		ODataType: a.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AudioTrackDescriptor.
@@ -661,30 +521,23 @@ func (a AudioTrackDescriptor) MarshalJSON() ([]byte, error) {
 func (a *AudioTrackDescriptor) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelMapping":
-			err = unpopulate(val, &a.ChannelMapping)
+			err = unpopulate(val, "ChannelMapping", &a.ChannelMapping)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &a.ODataType)
+			err = unpopulate(val, "ODataType", &a.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// GetPreset implements the PresetClassification interface for type BuiltInStandardEncoderPreset.
-func (b *BuiltInStandardEncoderPreset) GetPreset() *Preset {
-	return &Preset{
-		ODataType: b.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BuiltInStandardEncoderPreset.
@@ -700,33 +553,27 @@ func (b BuiltInStandardEncoderPreset) MarshalJSON() ([]byte, error) {
 func (b *BuiltInStandardEncoderPreset) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", b, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "configurations":
-			err = unpopulate(val, &b.Configurations)
+			err = unpopulate(val, "Configurations", &b.Configurations)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &b.ODataType)
+			err = unpopulate(val, "ODataType", &b.ODataType)
 			delete(rawMsg, key)
 		case "presetName":
-			err = unpopulate(val, &b.PresetName)
+			err = unpopulate(val, "PresetName", &b.PresetName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", b, err)
 		}
 	}
 	return nil
 }
-
-// GetClipTime implements the ClipTimeClassification interface for type ClipTime.
-func (c *ClipTime) GetClipTime() *ClipTime { return c }
-
-// GetCodec implements the CodecClassification interface for type Codec.
-func (c *Codec) GetCodec() *Codec { return c }
 
 // MarshalJSON implements the json.Marshaller interface for type CommonEncryptionCbcs.
 func (c CommonEncryptionCbcs) MarshalJSON() ([]byte, error) {
@@ -759,13 +606,6 @@ func (c ContentKeyPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyClearKeyConfiguration.
-func (c *ContentKeyPolicyClearKeyConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
-	return &ContentKeyPolicyConfiguration{
-		ODataType: c.ODataType,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyClearKeyConfiguration.
 func (c ContentKeyPolicyClearKeyConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -777,40 +617,20 @@ func (c ContentKeyPolicyClearKeyConfiguration) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyClearKeyConfiguration) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyCollection.
-func (c ContentKeyPolicyCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", c.ODataNextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
-// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyConfiguration.
-func (c *ContentKeyPolicyConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
-	return c
-}
-
-// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyFairPlayConfiguration.
-func (c *ContentKeyPolicyFairPlayConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
-	return &ContentKeyPolicyConfiguration{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyFairPlayConfiguration.
@@ -830,7 +650,7 @@ func (c ContentKeyPolicyFairPlayConfiguration) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyFairPlayConfiguration) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -839,36 +659,29 @@ func (c *ContentKeyPolicyFairPlayConfiguration) UnmarshalJSON(data []byte) error
 			err = runtime.DecodeByteArray(string(val), &c.Ask, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		case "fairPlayPfx":
-			err = unpopulate(val, &c.FairPlayPfx)
+			err = unpopulate(val, "FairPlayPfx", &c.FairPlayPfx)
 			delete(rawMsg, key)
 		case "fairPlayPfxPassword":
-			err = unpopulate(val, &c.FairPlayPfxPassword)
+			err = unpopulate(val, "FairPlayPfxPassword", &c.FairPlayPfxPassword)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		case "offlineRentalConfiguration":
-			err = unpopulate(val, &c.OfflineRentalConfiguration)
+			err = unpopulate(val, "OfflineRentalConfiguration", &c.OfflineRentalConfiguration)
 			delete(rawMsg, key)
 		case "rentalAndLeaseKeyType":
-			err = unpopulate(val, &c.RentalAndLeaseKeyType)
+			err = unpopulate(val, "RentalAndLeaseKeyType", &c.RentalAndLeaseKeyType)
 			delete(rawMsg, key)
 		case "rentalDuration":
-			err = unpopulate(val, &c.RentalDuration)
+			err = unpopulate(val, "RentalDuration", &c.RentalDuration)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyOpenRestriction.
-func (c *ContentKeyPolicyOpenRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
-	return &ContentKeyPolicyRestriction{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyOpenRestriction.
@@ -882,17 +695,17 @@ func (c ContentKeyPolicyOpenRestriction) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyOpenRestriction) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
@@ -912,7 +725,7 @@ func (c ContentKeyPolicyOption) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyOption) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -921,27 +734,20 @@ func (c *ContentKeyPolicyOption) UnmarshalJSON(data []byte) error {
 			c.Configuration, err = unmarshalContentKeyPolicyConfigurationClassification(val)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &c.Name)
+			err = unpopulate(val, "Name", &c.Name)
 			delete(rawMsg, key)
 		case "policyOptionId":
-			err = unpopulate(val, &c.PolicyOptionID)
+			err = unpopulate(val, "PolicyOptionID", &c.PolicyOptionID)
 			delete(rawMsg, key)
 		case "restriction":
 			c.Restriction, err = unmarshalContentKeyPolicyRestrictionClassification(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyPlayReadyConfiguration.
-func (c *ContentKeyPolicyPlayReadyConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
-	return &ContentKeyPolicyConfiguration{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyPlayReadyConfiguration.
@@ -957,34 +763,26 @@ func (c ContentKeyPolicyPlayReadyConfiguration) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyPlayReadyConfiguration) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "licenses":
-			err = unpopulate(val, &c.Licenses)
+			err = unpopulate(val, "Licenses", &c.Licenses)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		case "responseCustomData":
-			err = unpopulate(val, &c.ResponseCustomData)
+			err = unpopulate(val, "ResponseCustomData", &c.ResponseCustomData)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
-// interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.
-func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader) GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation {
-	return &ContentKeyPolicyPlayReadyContentKeyLocation{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.
@@ -998,28 +796,20 @@ func (c ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader) MarshalJSON() (
 func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
-// interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.
-func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier) GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation {
-	return &ContentKeyPolicyPlayReadyContentKeyLocation{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.
@@ -1034,29 +824,23 @@ func (c ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier) MarshalJ
 func (c *ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "keyId":
-			err = unpopulate(val, &c.KeyID)
+			err = unpopulate(val, "KeyID", &c.KeyID)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyPlayReadyContentKeyLocation implements the ContentKeyPolicyPlayReadyContentKeyLocationClassification
-// interface for type ContentKeyPolicyPlayReadyContentKeyLocation.
-func (c *ContentKeyPolicyPlayReadyContentKeyLocation) GetContentKeyPolicyPlayReadyContentKeyLocation() *ContentKeyPolicyPlayReadyContentKeyLocation {
-	return c
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyPlayReadyLicense.
@@ -1079,44 +863,44 @@ func (c ContentKeyPolicyPlayReadyLicense) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyPlayReadyLicense) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "allowTestDevices":
-			err = unpopulate(val, &c.AllowTestDevices)
+			err = unpopulate(val, "AllowTestDevices", &c.AllowTestDevices)
 			delete(rawMsg, key)
 		case "beginDate":
-			err = unpopulateTimeRFC3339(val, &c.BeginDate)
+			err = unpopulateTimeRFC3339(val, "BeginDate", &c.BeginDate)
 			delete(rawMsg, key)
 		case "contentKeyLocation":
 			c.ContentKeyLocation, err = unmarshalContentKeyPolicyPlayReadyContentKeyLocationClassification(val)
 			delete(rawMsg, key)
 		case "contentType":
-			err = unpopulate(val, &c.ContentType)
+			err = unpopulate(val, "ContentType", &c.ContentType)
 			delete(rawMsg, key)
 		case "expirationDate":
-			err = unpopulateTimeRFC3339(val, &c.ExpirationDate)
+			err = unpopulateTimeRFC3339(val, "ExpirationDate", &c.ExpirationDate)
 			delete(rawMsg, key)
 		case "gracePeriod":
-			err = unpopulate(val, &c.GracePeriod)
+			err = unpopulate(val, "GracePeriod", &c.GracePeriod)
 			delete(rawMsg, key)
 		case "licenseType":
-			err = unpopulate(val, &c.LicenseType)
+			err = unpopulate(val, "LicenseType", &c.LicenseType)
 			delete(rawMsg, key)
 		case "playRight":
-			err = unpopulate(val, &c.PlayRight)
+			err = unpopulate(val, "PlayRight", &c.PlayRight)
 			delete(rawMsg, key)
 		case "relativeBeginDate":
-			err = unpopulate(val, &c.RelativeBeginDate)
+			err = unpopulate(val, "RelativeBeginDate", &c.RelativeBeginDate)
 			delete(rawMsg, key)
 		case "relativeExpirationDate":
-			err = unpopulate(val, &c.RelativeExpirationDate)
+			err = unpopulate(val, "RelativeExpirationDate", &c.RelativeExpirationDate)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
@@ -1137,51 +921,32 @@ func (c ContentKeyPolicyProperties) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeRFC3339(val, &c.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &c.Created)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &c.Description)
+			err = unpopulate(val, "Description", &c.Description)
 			delete(rawMsg, key)
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &c.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &c.LastModified)
 			delete(rawMsg, key)
 		case "options":
-			err = unpopulate(val, &c.Options)
+			err = unpopulate(val, "Options", &c.Options)
 			delete(rawMsg, key)
 		case "policyId":
-			err = unpopulate(val, &c.PolicyID)
+			err = unpopulate(val, "PolicyID", &c.PolicyID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyRestriction.
-func (c *ContentKeyPolicyRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
-	return c
-}
-
-// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
-// ContentKeyPolicyRestrictionTokenKey.
-func (c *ContentKeyPolicyRestrictionTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
-	return c
-}
-
-// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
-// ContentKeyPolicyRsaTokenKey.
-func (c *ContentKeyPolicyRsaTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
-	return &ContentKeyPolicyRestrictionTokenKey{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyRsaTokenKey.
@@ -1197,7 +962,7 @@ func (c ContentKeyPolicyRsaTokenKey) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyRsaTokenKey) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -1209,22 +974,14 @@ func (c *ContentKeyPolicyRsaTokenKey) UnmarshalJSON(data []byte) error {
 			err = runtime.DecodeByteArray(string(val), &c.Modulus, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
-// ContentKeyPolicySymmetricTokenKey.
-func (c *ContentKeyPolicySymmetricTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
-	return &ContentKeyPolicyRestrictionTokenKey{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicySymmetricTokenKey.
@@ -1239,7 +996,7 @@ func (c ContentKeyPolicySymmetricTokenKey) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicySymmetricTokenKey) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -1248,21 +1005,14 @@ func (c *ContentKeyPolicySymmetricTokenKey) UnmarshalJSON(data []byte) error {
 			err = runtime.DecodeByteArray(string(val), &c.KeyValue, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyTokenRestriction.
-func (c *ContentKeyPolicyTokenRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
-	return &ContentKeyPolicyRestriction{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyTokenRestriction.
@@ -1283,7 +1033,7 @@ func (c ContentKeyPolicyTokenRestriction) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyTokenRestriction) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -1292,39 +1042,32 @@ func (c *ContentKeyPolicyTokenRestriction) UnmarshalJSON(data []byte) error {
 			c.AlternateVerificationKeys, err = unmarshalContentKeyPolicyRestrictionTokenKeyClassificationArray(val)
 			delete(rawMsg, key)
 		case "audience":
-			err = unpopulate(val, &c.Audience)
+			err = unpopulate(val, "Audience", &c.Audience)
 			delete(rawMsg, key)
 		case "issuer":
-			err = unpopulate(val, &c.Issuer)
+			err = unpopulate(val, "Issuer", &c.Issuer)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		case "openIdConnectDiscoveryDocument":
-			err = unpopulate(val, &c.OpenIDConnectDiscoveryDocument)
+			err = unpopulate(val, "OpenIDConnectDiscoveryDocument", &c.OpenIDConnectDiscoveryDocument)
 			delete(rawMsg, key)
 		case "primaryVerificationKey":
 			c.PrimaryVerificationKey, err = unmarshalContentKeyPolicyRestrictionTokenKeyClassification(val)
 			delete(rawMsg, key)
 		case "requiredClaims":
-			err = unpopulate(val, &c.RequiredClaims)
+			err = unpopulate(val, "RequiredClaims", &c.RequiredClaims)
 			delete(rawMsg, key)
 		case "restrictionTokenType":
-			err = unpopulate(val, &c.RestrictionTokenType)
+			err = unpopulate(val, "RestrictionTokenType", &c.RestrictionTokenType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyUnknownConfiguration.
-func (c *ContentKeyPolicyUnknownConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
-	return &ContentKeyPolicyConfiguration{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyUnknownConfiguration.
@@ -1338,27 +1081,20 @@ func (c ContentKeyPolicyUnknownConfiguration) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyUnknownConfiguration) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyRestriction implements the ContentKeyPolicyRestrictionClassification interface for type ContentKeyPolicyUnknownRestriction.
-func (c *ContentKeyPolicyUnknownRestriction) GetContentKeyPolicyRestriction() *ContentKeyPolicyRestriction {
-	return &ContentKeyPolicyRestriction{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyUnknownRestriction.
@@ -1372,27 +1108,20 @@ func (c ContentKeyPolicyUnknownRestriction) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyUnknownRestriction) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyConfiguration implements the ContentKeyPolicyConfigurationClassification interface for type ContentKeyPolicyWidevineConfiguration.
-func (c *ContentKeyPolicyWidevineConfiguration) GetContentKeyPolicyConfiguration() *ContentKeyPolicyConfiguration {
-	return &ContentKeyPolicyConfiguration{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyWidevineConfiguration.
@@ -1407,31 +1136,23 @@ func (c ContentKeyPolicyWidevineConfiguration) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyWidevineConfiguration) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		case "widevineTemplate":
-			err = unpopulate(val, &c.WidevineTemplate)
+			err = unpopulate(val, "WidevineTemplate", &c.WidevineTemplate)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetContentKeyPolicyRestrictionTokenKey implements the ContentKeyPolicyRestrictionTokenKeyClassification interface for type
-// ContentKeyPolicyX509CertificateTokenKey.
-func (c *ContentKeyPolicyX509CertificateTokenKey) GetContentKeyPolicyRestrictionTokenKey() *ContentKeyPolicyRestrictionTokenKey {
-	return &ContentKeyPolicyRestrictionTokenKey{
-		ODataType: c.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ContentKeyPolicyX509CertificateTokenKey.
@@ -1446,31 +1167,23 @@ func (c ContentKeyPolicyX509CertificateTokenKey) MarshalJSON() ([]byte, error) {
 func (c *ContentKeyPolicyX509CertificateTokenKey) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		case "rawBody":
 			err = runtime.DecodeByteArray(string(val), &c.RawBody, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetCodec implements the CodecClassification interface for type CopyAudio.
-func (c *CopyAudio) GetCodec() *Codec {
-	return &Codec{
-		ODataType: c.ODataType,
-		Label:     c.Label,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CopyAudio.
@@ -1485,31 +1198,23 @@ func (c CopyAudio) MarshalJSON() ([]byte, error) {
 func (c *CopyAudio) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "label":
-			err = unpopulate(val, &c.Label)
+			err = unpopulate(val, "Label", &c.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// GetCodec implements the CodecClassification interface for type CopyVideo.
-func (c *CopyVideo) GetCodec() *Codec {
-	return &Codec{
-		ODataType: c.ODataType,
-		Label:     c.Label,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CopyVideo.
@@ -1524,20 +1229,20 @@ func (c CopyVideo) MarshalJSON() ([]byte, error) {
 func (c *CopyVideo) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "label":
-			err = unpopulate(val, &c.Label)
+			err = unpopulate(val, "Label", &c.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &c.ODataType)
+			err = unpopulate(val, "ODataType", &c.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
@@ -1551,24 +1256,6 @@ func (e EnvelopeEncryption) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "customKeyAcquisitionUrlTemplate", e.CustomKeyAcquisitionURLTemplate)
 	populate(objectMap, "enabledProtocols", e.EnabledProtocols)
 	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// GetPreset implements the PresetClassification interface for type FaceDetectorPreset.
-func (f *FaceDetectorPreset) GetPreset() *Preset {
-	return &Preset{
-		ODataType: f.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FaceDetectorPreset.
@@ -1586,29 +1273,29 @@ func (f FaceDetectorPreset) MarshalJSON() ([]byte, error) {
 func (f *FaceDetectorPreset) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "blurType":
-			err = unpopulate(val, &f.BlurType)
+			err = unpopulate(val, "BlurType", &f.BlurType)
 			delete(rawMsg, key)
 		case "experimentalOptions":
-			err = unpopulate(val, &f.ExperimentalOptions)
+			err = unpopulate(val, "ExperimentalOptions", &f.ExperimentalOptions)
 			delete(rawMsg, key)
 		case "mode":
-			err = unpopulate(val, &f.Mode)
+			err = unpopulate(val, "Mode", &f.Mode)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &f.ODataType)
+			err = unpopulate(val, "ODataType", &f.ODataType)
 			delete(rawMsg, key)
 		case "resolution":
-			err = unpopulate(val, &f.Resolution)
+			err = unpopulate(val, "Resolution", &f.Resolution)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
 		}
 	}
 	return nil
@@ -1635,40 +1322,29 @@ func (f Filters) MarshalJSON() ([]byte, error) {
 func (f *Filters) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "crop":
-			err = unpopulate(val, &f.Crop)
+			err = unpopulate(val, "Crop", &f.Crop)
 			delete(rawMsg, key)
 		case "deinterlace":
-			err = unpopulate(val, &f.Deinterlace)
+			err = unpopulate(val, "Deinterlace", &f.Deinterlace)
 			delete(rawMsg, key)
 		case "overlays":
 			f.Overlays, err = unmarshalOverlayClassificationArray(val)
 			delete(rawMsg, key)
 		case "rotation":
-			err = unpopulate(val, &f.Rotation)
+			err = unpopulate(val, "Rotation", &f.Rotation)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
 		}
 	}
 	return nil
-}
-
-// GetFormat implements the FormatClassification interface for type Format.
-func (f *Format) GetFormat() *Format { return f }
-
-// GetInputDefinition implements the InputDefinitionClassification interface for type FromAllInputFile.
-func (f *FromAllInputFile) GetInputDefinition() *InputDefinition {
-	return &InputDefinition{
-		ODataType:      f.ODataType,
-		IncludedTracks: f.IncludedTracks,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FromAllInputFile.
@@ -1683,7 +1359,7 @@ func (f FromAllInputFile) MarshalJSON() ([]byte, error) {
 func (f *FromAllInputFile) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -1692,22 +1368,14 @@ func (f *FromAllInputFile) UnmarshalJSON(data []byte) error {
 			f.IncludedTracks, err = unmarshalTrackDescriptorClassificationArray(val)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &f.ODataType)
+			err = unpopulate(val, "ODataType", &f.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
 		}
 	}
 	return nil
-}
-
-// GetInputDefinition implements the InputDefinitionClassification interface for type FromEachInputFile.
-func (f *FromEachInputFile) GetInputDefinition() *InputDefinition {
-	return &InputDefinition{
-		ODataType:      f.ODataType,
-		IncludedTracks: f.IncludedTracks,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FromEachInputFile.
@@ -1722,7 +1390,7 @@ func (f FromEachInputFile) MarshalJSON() ([]byte, error) {
 func (f *FromEachInputFile) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -1731,33 +1399,14 @@ func (f *FromEachInputFile) UnmarshalJSON(data []byte) error {
 			f.IncludedTracks, err = unmarshalTrackDescriptorClassificationArray(val)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &f.ODataType)
+			err = unpopulate(val, "ODataType", &f.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
 		}
 	}
 	return nil
-}
-
-// GetCodec implements the CodecClassification interface for type H264Video.
-func (h *H264Video) GetCodec() *Codec {
-	return &Codec{
-		ODataType: h.ODataType,
-		Label:     h.Label,
-	}
-}
-
-// GetVideo implements the VideoClassification interface for type H264Video.
-func (h *H264Video) GetVideo() *Video {
-	return &Video{
-		KeyFrameInterval: h.KeyFrameInterval,
-		StretchMode:      h.StretchMode,
-		SyncMode:         h.SyncMode,
-		ODataType:        h.ODataType,
-		Label:            h.Label,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type H264Video.
@@ -1779,63 +1428,44 @@ func (h H264Video) MarshalJSON() ([]byte, error) {
 func (h *H264Video) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", h, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "complexity":
-			err = unpopulate(val, &h.Complexity)
+			err = unpopulate(val, "Complexity", &h.Complexity)
 			delete(rawMsg, key)
 		case "keyFrameInterval":
-			err = unpopulate(val, &h.KeyFrameInterval)
+			err = unpopulate(val, "KeyFrameInterval", &h.KeyFrameInterval)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &h.Label)
+			err = unpopulate(val, "Label", &h.Label)
 			delete(rawMsg, key)
 		case "layers":
-			err = unpopulate(val, &h.Layers)
+			err = unpopulate(val, "Layers", &h.Layers)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &h.ODataType)
+			err = unpopulate(val, "ODataType", &h.ODataType)
 			delete(rawMsg, key)
 		case "rateControlMode":
-			err = unpopulate(val, &h.RateControlMode)
+			err = unpopulate(val, "RateControlMode", &h.RateControlMode)
 			delete(rawMsg, key)
 		case "sceneChangeDetection":
-			err = unpopulate(val, &h.SceneChangeDetection)
+			err = unpopulate(val, "SceneChangeDetection", &h.SceneChangeDetection)
 			delete(rawMsg, key)
 		case "stretchMode":
-			err = unpopulate(val, &h.StretchMode)
+			err = unpopulate(val, "StretchMode", &h.StretchMode)
 			delete(rawMsg, key)
 		case "syncMode":
-			err = unpopulate(val, &h.SyncMode)
+			err = unpopulate(val, "SyncMode", &h.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", h, err)
 		}
 	}
 	return nil
-}
-
-// GetCodec implements the CodecClassification interface for type H265Video.
-func (h *H265Video) GetCodec() *Codec {
-	return &Codec{
-		ODataType: h.ODataType,
-		Label:     h.Label,
-	}
-}
-
-// GetVideo implements the VideoClassification interface for type H265Video.
-func (h *H265Video) GetVideo() *Video {
-	return &Video{
-		KeyFrameInterval: h.KeyFrameInterval,
-		StretchMode:      h.StretchMode,
-		SyncMode:         h.SyncMode,
-		ODataType:        h.ODataType,
-		Label:            h.Label,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type H265Video.
@@ -1856,38 +1486,38 @@ func (h H265Video) MarshalJSON() ([]byte, error) {
 func (h *H265Video) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", h, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "complexity":
-			err = unpopulate(val, &h.Complexity)
+			err = unpopulate(val, "Complexity", &h.Complexity)
 			delete(rawMsg, key)
 		case "keyFrameInterval":
-			err = unpopulate(val, &h.KeyFrameInterval)
+			err = unpopulate(val, "KeyFrameInterval", &h.KeyFrameInterval)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &h.Label)
+			err = unpopulate(val, "Label", &h.Label)
 			delete(rawMsg, key)
 		case "layers":
-			err = unpopulate(val, &h.Layers)
+			err = unpopulate(val, "Layers", &h.Layers)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &h.ODataType)
+			err = unpopulate(val, "ODataType", &h.ODataType)
 			delete(rawMsg, key)
 		case "sceneChangeDetection":
-			err = unpopulate(val, &h.SceneChangeDetection)
+			err = unpopulate(val, "SceneChangeDetection", &h.SceneChangeDetection)
 			delete(rawMsg, key)
 		case "stretchMode":
-			err = unpopulate(val, &h.StretchMode)
+			err = unpopulate(val, "StretchMode", &h.StretchMode)
 			delete(rawMsg, key)
 		case "syncMode":
-			err = unpopulate(val, &h.SyncMode)
+			err = unpopulate(val, "SyncMode", &h.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", h, err)
 		}
 	}
 	return nil
@@ -1898,28 +1528,6 @@ func (i IPAccessControl) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "allow", i.Allow)
 	return json.Marshal(objectMap)
-}
-
-// GetCodec implements the CodecClassification interface for type Image.
-func (i *Image) GetCodec() *Codec {
-	return &Codec{
-		ODataType: i.ODataType,
-		Label:     i.Label,
-	}
-}
-
-// GetImage implements the ImageClassification interface for type Image.
-func (i *Image) GetImage() *Image { return i }
-
-// GetVideo implements the VideoClassification interface for type Image.
-func (i *Image) GetVideo() *Video {
-	return &Video{
-		KeyFrameInterval: i.KeyFrameInterval,
-		StretchMode:      i.StretchMode,
-		SyncMode:         i.SyncMode,
-		ODataType:        i.ODataType,
-		Label:            i.Label,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Image.
@@ -1940,53 +1548,42 @@ func (i Image) MarshalJSON() ([]byte, error) {
 func (i *Image) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "keyFrameInterval":
-			err = unpopulate(val, &i.KeyFrameInterval)
+			err = unpopulate(val, "KeyFrameInterval", &i.KeyFrameInterval)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &i.Label)
+			err = unpopulate(val, "Label", &i.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &i.ODataType)
+			err = unpopulate(val, "ODataType", &i.ODataType)
 			delete(rawMsg, key)
 		case "range":
-			err = unpopulate(val, &i.Range)
+			err = unpopulate(val, "Range", &i.Range)
 			delete(rawMsg, key)
 		case "start":
-			err = unpopulate(val, &i.Start)
+			err = unpopulate(val, "Start", &i.Start)
 			delete(rawMsg, key)
 		case "step":
-			err = unpopulate(val, &i.Step)
+			err = unpopulate(val, "Step", &i.Step)
 			delete(rawMsg, key)
 		case "stretchMode":
-			err = unpopulate(val, &i.StretchMode)
+			err = unpopulate(val, "StretchMode", &i.StretchMode)
 			delete(rawMsg, key)
 		case "syncMode":
-			err = unpopulate(val, &i.SyncMode)
+			err = unpopulate(val, "SyncMode", &i.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
 		}
 	}
 	return nil
 }
-
-// GetFormat implements the FormatClassification interface for type ImageFormat.
-func (i *ImageFormat) GetFormat() *Format {
-	return &Format{
-		ODataType:       i.ODataType,
-		FilenamePattern: i.FilenamePattern,
-	}
-}
-
-// GetImageFormat implements the ImageFormatClassification interface for type ImageFormat.
-func (i *ImageFormat) GetImageFormat() *ImageFormat { return i }
 
 // MarshalJSON implements the json.Marshaller interface for type ImageFormat.
 func (i ImageFormat) MarshalJSON() ([]byte, error) {
@@ -2000,27 +1597,24 @@ func (i ImageFormat) MarshalJSON() ([]byte, error) {
 func (i *ImageFormat) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "filenamePattern":
-			err = unpopulate(val, &i.FilenamePattern)
+			err = unpopulate(val, "FilenamePattern", &i.FilenamePattern)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &i.ODataType)
+			err = unpopulate(val, "ODataType", &i.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
 		}
 	}
 	return nil
 }
-
-// GetInputDefinition implements the InputDefinitionClassification interface for type InputDefinition.
-func (i *InputDefinition) GetInputDefinition() *InputDefinition { return i }
 
 // MarshalJSON implements the json.Marshaller interface for type InputDefinition.
 func (i InputDefinition) MarshalJSON() ([]byte, error) {
@@ -2034,7 +1628,7 @@ func (i InputDefinition) MarshalJSON() ([]byte, error) {
 func (i *InputDefinition) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -2043,22 +1637,14 @@ func (i *InputDefinition) UnmarshalJSON(data []byte) error {
 			i.IncludedTracks, err = unmarshalTrackDescriptorClassificationArray(val)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &i.ODataType)
+			err = unpopulate(val, "ODataType", &i.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
 		}
 	}
 	return nil
-}
-
-// GetInputDefinition implements the InputDefinitionClassification interface for type InputFile.
-func (i *InputFile) GetInputDefinition() *InputDefinition {
-	return &InputDefinition{
-		ODataType:      i.ODataType,
-		IncludedTracks: i.IncludedTracks,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type InputFile.
@@ -2074,23 +1660,23 @@ func (i InputFile) MarshalJSON() ([]byte, error) {
 func (i *InputFile) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "filename":
-			err = unpopulate(val, &i.Filename)
+			err = unpopulate(val, "Filename", &i.Filename)
 			delete(rawMsg, key)
 		case "includedTracks":
 			i.IncludedTracks, err = unmarshalTrackDescriptorClassificationArray(val)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &i.ODataType)
+			err = unpopulate(val, "ODataType", &i.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
 		}
 	}
 	return nil
@@ -2107,14 +1693,6 @@ func (j Job) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type JobCollection.
-func (j JobCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", j.ODataNextLink)
-	populate(objectMap, "value", j.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type JobError.
 func (j JobError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -2124,28 +1702,6 @@ func (j JobError) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "message", j.Message)
 	populate(objectMap, "retry", j.Retry)
 	return json.Marshal(objectMap)
-}
-
-// GetJobInput implements the JobInputClassification interface for type JobInput.
-func (j *JobInput) GetJobInput() *JobInput { return j }
-
-// GetJobInput implements the JobInputClassification interface for type JobInputAsset.
-func (j *JobInputAsset) GetJobInput() *JobInput {
-	return &JobInput{
-		ODataType: j.ODataType,
-	}
-}
-
-// GetJobInputClip implements the JobInputClipClassification interface for type JobInputAsset.
-func (j *JobInputAsset) GetJobInputClip() *JobInputClip {
-	return &JobInputClip{
-		Files:            j.Files,
-		Start:            j.Start,
-		End:              j.End,
-		Label:            j.Label,
-		InputDefinitions: j.InputDefinitions,
-		ODataType:        j.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobInputAsset.
@@ -2165,49 +1721,39 @@ func (j JobInputAsset) MarshalJSON() ([]byte, error) {
 func (j *JobInputAsset) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "assetName":
-			err = unpopulate(val, &j.AssetName)
+			err = unpopulate(val, "AssetName", &j.AssetName)
 			delete(rawMsg, key)
 		case "end":
 			j.End, err = unmarshalClipTimeClassification(val)
 			delete(rawMsg, key)
 		case "files":
-			err = unpopulate(val, &j.Files)
+			err = unpopulate(val, "Files", &j.Files)
 			delete(rawMsg, key)
 		case "inputDefinitions":
 			j.InputDefinitions, err = unmarshalInputDefinitionClassificationArray(val)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &j.Label)
+			err = unpopulate(val, "Label", &j.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
+			err = unpopulate(val, "ODataType", &j.ODataType)
 			delete(rawMsg, key)
 		case "start":
 			j.Start, err = unmarshalClipTimeClassification(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
 }
-
-// GetJobInput implements the JobInputClassification interface for type JobInputClip.
-func (j *JobInputClip) GetJobInput() *JobInput {
-	return &JobInput{
-		ODataType: j.ODataType,
-	}
-}
-
-// GetJobInputClip implements the JobInputClipClassification interface for type JobInputClip.
-func (j *JobInputClip) GetJobInputClip() *JobInputClip { return j }
 
 // MarshalJSON implements the json.Marshaller interface for type JobInputClip.
 func (j JobInputClip) MarshalJSON() ([]byte, error) {
@@ -2225,7 +1771,7 @@ func (j JobInputClip) MarshalJSON() ([]byte, error) {
 func (j *JobInputClip) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -2234,45 +1780,26 @@ func (j *JobInputClip) UnmarshalJSON(data []byte) error {
 			j.End, err = unmarshalClipTimeClassification(val)
 			delete(rawMsg, key)
 		case "files":
-			err = unpopulate(val, &j.Files)
+			err = unpopulate(val, "Files", &j.Files)
 			delete(rawMsg, key)
 		case "inputDefinitions":
 			j.InputDefinitions, err = unmarshalInputDefinitionClassificationArray(val)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &j.Label)
+			err = unpopulate(val, "Label", &j.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
+			err = unpopulate(val, "ODataType", &j.ODataType)
 			delete(rawMsg, key)
 		case "start":
 			j.Start, err = unmarshalClipTimeClassification(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
-}
-
-// GetJobInput implements the JobInputClassification interface for type JobInputHTTP.
-func (j *JobInputHTTP) GetJobInput() *JobInput {
-	return &JobInput{
-		ODataType: j.ODataType,
-	}
-}
-
-// GetJobInputClip implements the JobInputClipClassification interface for type JobInputHTTP.
-func (j *JobInputHTTP) GetJobInputClip() *JobInputClip {
-	return &JobInputClip{
-		Files:            j.Files,
-		Start:            j.Start,
-		End:              j.End,
-		Label:            j.Label,
-		InputDefinitions: j.InputDefinitions,
-		ODataType:        j.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobInputHTTP.
@@ -2292,45 +1819,38 @@ func (j JobInputHTTP) MarshalJSON() ([]byte, error) {
 func (j *JobInputHTTP) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "baseUri":
-			err = unpopulate(val, &j.BaseURI)
+			err = unpopulate(val, "BaseURI", &j.BaseURI)
 			delete(rawMsg, key)
 		case "end":
 			j.End, err = unmarshalClipTimeClassification(val)
 			delete(rawMsg, key)
 		case "files":
-			err = unpopulate(val, &j.Files)
+			err = unpopulate(val, "Files", &j.Files)
 			delete(rawMsg, key)
 		case "inputDefinitions":
 			j.InputDefinitions, err = unmarshalInputDefinitionClassificationArray(val)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &j.Label)
+			err = unpopulate(val, "Label", &j.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
+			err = unpopulate(val, "ODataType", &j.ODataType)
 			delete(rawMsg, key)
 		case "start":
 			j.Start, err = unmarshalClipTimeClassification(val)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
-}
-
-// GetJobInput implements the JobInputClassification interface for type JobInputSequence.
-func (j *JobInputSequence) GetJobInput() *JobInput {
-	return &JobInput{
-		ODataType: j.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobInputSequence.
@@ -2345,7 +1865,7 @@ func (j JobInputSequence) MarshalJSON() ([]byte, error) {
 func (j *JobInputSequence) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -2354,21 +1874,14 @@ func (j *JobInputSequence) UnmarshalJSON(data []byte) error {
 			j.Inputs, err = unmarshalJobInputClipClassificationArray(val)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
+			err = unpopulate(val, "ODataType", &j.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
-}
-
-// GetJobInput implements the JobInputClassification interface for type JobInputs.
-func (j *JobInputs) GetJobInput() *JobInput {
-	return &JobInput{
-		ODataType: j.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobInputs.
@@ -2383,7 +1896,7 @@ func (j JobInputs) MarshalJSON() ([]byte, error) {
 func (j *JobInputs) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -2392,18 +1905,15 @@ func (j *JobInputs) UnmarshalJSON(data []byte) error {
 			j.Inputs, err = unmarshalJobInputClassificationArray(val)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
+			err = unpopulate(val, "ODataType", &j.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
 }
-
-// GetJobOutput implements the JobOutputClassification interface for type JobOutput.
-func (j *JobOutput) GetJobOutput() *JobOutput { return j }
 
 // MarshalJSON implements the json.Marshaller interface for type JobOutput.
 func (j JobOutput) MarshalJSON() ([]byte, error) {
@@ -2423,55 +1933,41 @@ func (j JobOutput) MarshalJSON() ([]byte, error) {
 func (j *JobOutput) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, &j.EndTime)
+			err = unpopulateTimeRFC3339(val, "EndTime", &j.EndTime)
 			delete(rawMsg, key)
 		case "error":
-			err = unpopulate(val, &j.Error)
+			err = unpopulate(val, "Error", &j.Error)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &j.Label)
+			err = unpopulate(val, "Label", &j.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
+			err = unpopulate(val, "ODataType", &j.ODataType)
 			delete(rawMsg, key)
 		case "presetOverride":
 			j.PresetOverride, err = unmarshalPresetClassification(val)
 			delete(rawMsg, key)
 		case "progress":
-			err = unpopulate(val, &j.Progress)
+			err = unpopulate(val, "Progress", &j.Progress)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &j.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &j.StartTime)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &j.State)
+			err = unpopulate(val, "State", &j.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
-}
-
-// GetJobOutput implements the JobOutputClassification interface for type JobOutputAsset.
-func (j *JobOutputAsset) GetJobOutput() *JobOutput {
-	return &JobOutput{
-		ODataType:      j.ODataType,
-		Error:          j.Error,
-		PresetOverride: j.PresetOverride,
-		State:          j.State,
-		Progress:       j.Progress,
-		Label:          j.Label,
-		StartTime:      j.StartTime,
-		EndTime:        j.EndTime,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JobOutputAsset.
@@ -2493,41 +1989,41 @@ func (j JobOutputAsset) MarshalJSON() ([]byte, error) {
 func (j *JobOutputAsset) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "assetName":
-			err = unpopulate(val, &j.AssetName)
+			err = unpopulate(val, "AssetName", &j.AssetName)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, &j.EndTime)
+			err = unpopulateTimeRFC3339(val, "EndTime", &j.EndTime)
 			delete(rawMsg, key)
 		case "error":
-			err = unpopulate(val, &j.Error)
+			err = unpopulate(val, "Error", &j.Error)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &j.Label)
+			err = unpopulate(val, "Label", &j.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
+			err = unpopulate(val, "ODataType", &j.ODataType)
 			delete(rawMsg, key)
 		case "presetOverride":
 			j.PresetOverride, err = unmarshalPresetClassification(val)
 			delete(rawMsg, key)
 		case "progress":
-			err = unpopulate(val, &j.Progress)
+			err = unpopulate(val, "Progress", &j.Progress)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &j.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &j.StartTime)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &j.State)
+			err = unpopulate(val, "State", &j.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
@@ -2553,63 +2049,47 @@ func (j JobProperties) MarshalJSON() ([]byte, error) {
 func (j *JobProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "correlationData":
-			err = unpopulate(val, &j.CorrelationData)
+			err = unpopulate(val, "CorrelationData", &j.CorrelationData)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTimeRFC3339(val, &j.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &j.Created)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &j.Description)
+			err = unpopulate(val, "Description", &j.Description)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, &j.EndTime)
+			err = unpopulateTimeRFC3339(val, "EndTime", &j.EndTime)
 			delete(rawMsg, key)
 		case "input":
 			j.Input, err = unmarshalJobInputClassification(val)
 			delete(rawMsg, key)
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &j.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &j.LastModified)
 			delete(rawMsg, key)
 		case "outputs":
 			j.Outputs, err = unmarshalJobOutputClassificationArray(val)
 			delete(rawMsg, key)
 		case "priority":
-			err = unpopulate(val, &j.Priority)
+			err = unpopulate(val, "Priority", &j.Priority)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &j.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &j.StartTime)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &j.State)
+			err = unpopulate(val, "State", &j.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
-}
-
-// GetFormat implements the FormatClassification interface for type JpgFormat.
-func (j *JpgFormat) GetFormat() *Format {
-	return &Format{
-		ODataType:       j.ODataType,
-		FilenamePattern: j.FilenamePattern,
-	}
-}
-
-// GetImageFormat implements the ImageFormatClassification interface for type JpgFormat.
-func (j *JpgFormat) GetImageFormat() *ImageFormat {
-	return &ImageFormat{
-		ODataType:       j.ODataType,
-		FilenamePattern: j.FilenamePattern,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JpgFormat.
@@ -2624,56 +2104,23 @@ func (j JpgFormat) MarshalJSON() ([]byte, error) {
 func (j *JpgFormat) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "filenamePattern":
-			err = unpopulate(val, &j.FilenamePattern)
+			err = unpopulate(val, "FilenamePattern", &j.FilenamePattern)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
+			err = unpopulate(val, "ODataType", &j.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
-}
-
-// GetCodec implements the CodecClassification interface for type JpgImage.
-func (j *JpgImage) GetCodec() *Codec {
-	return &Codec{
-		ODataType: j.ODataType,
-		Label:     j.Label,
-	}
-}
-
-// GetImage implements the ImageClassification interface for type JpgImage.
-func (j *JpgImage) GetImage() *Image {
-	return &Image{
-		Start:            j.Start,
-		Step:             j.Step,
-		Range:            j.Range,
-		KeyFrameInterval: j.KeyFrameInterval,
-		StretchMode:      j.StretchMode,
-		SyncMode:         j.SyncMode,
-		ODataType:        j.ODataType,
-		Label:            j.Label,
-	}
-}
-
-// GetVideo implements the VideoClassification interface for type JpgImage.
-func (j *JpgImage) GetVideo() *Video {
-	return &Video{
-		KeyFrameInterval: j.KeyFrameInterval,
-		StretchMode:      j.StretchMode,
-		SyncMode:         j.SyncMode,
-		ODataType:        j.ODataType,
-		Label:            j.Label,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type JpgImage.
@@ -2696,44 +2143,44 @@ func (j JpgImage) MarshalJSON() ([]byte, error) {
 func (j *JpgImage) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "keyFrameInterval":
-			err = unpopulate(val, &j.KeyFrameInterval)
+			err = unpopulate(val, "KeyFrameInterval", &j.KeyFrameInterval)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &j.Label)
+			err = unpopulate(val, "Label", &j.Label)
 			delete(rawMsg, key)
 		case "layers":
-			err = unpopulate(val, &j.Layers)
+			err = unpopulate(val, "Layers", &j.Layers)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &j.ODataType)
+			err = unpopulate(val, "ODataType", &j.ODataType)
 			delete(rawMsg, key)
 		case "range":
-			err = unpopulate(val, &j.Range)
+			err = unpopulate(val, "Range", &j.Range)
 			delete(rawMsg, key)
 		case "spriteColumn":
-			err = unpopulate(val, &j.SpriteColumn)
+			err = unpopulate(val, "SpriteColumn", &j.SpriteColumn)
 			delete(rawMsg, key)
 		case "start":
-			err = unpopulate(val, &j.Start)
+			err = unpopulate(val, "Start", &j.Start)
 			delete(rawMsg, key)
 		case "step":
-			err = unpopulate(val, &j.Step)
+			err = unpopulate(val, "Step", &j.Step)
 			delete(rawMsg, key)
 		case "stretchMode":
-			err = unpopulate(val, &j.StretchMode)
+			err = unpopulate(val, "StretchMode", &j.StretchMode)
 			delete(rawMsg, key)
 		case "syncMode":
-			err = unpopulate(val, &j.SyncMode)
+			err = unpopulate(val, "SyncMode", &j.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
 		}
 	}
 	return nil
@@ -2751,45 +2198,23 @@ func (l ListContainerSasInput) MarshalJSON() ([]byte, error) {
 func (l *ListContainerSasInput) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", l, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "expiryTime":
-			err = unpopulateTimeRFC3339(val, &l.ExpiryTime)
+			err = unpopulateTimeRFC3339(val, "ExpiryTime", &l.ExpiryTime)
 			delete(rawMsg, key)
 		case "permissions":
-			err = unpopulate(val, &l.Permissions)
+			err = unpopulate(val, "Permissions", &l.Permissions)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", l, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListContentKeysResponse.
-func (l ListContentKeysResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "contentKeys", l.ContentKeys)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListPathsResponse.
-func (l ListPathsResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "downloadPaths", l.DownloadPaths)
-	populate(objectMap, "streamingPaths", l.StreamingPaths)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListStreamingLocatorsResponse.
-func (l ListStreamingLocatorsResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "streamingLocators", l.StreamingLocators)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type LiveEvent.
@@ -2813,15 +2238,6 @@ func (l LiveEventInput) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "endpoints", l.Endpoints)
 	populate(objectMap, "keyFrameIntervalDuration", l.KeyFrameIntervalDuration)
 	populate(objectMap, "streamingProtocol", l.StreamingProtocol)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LiveEventListResult.
-func (l LiveEventListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.count", l.ODataCount)
-	populate(objectMap, "@odata.nextLink", l.ODataNextLink)
-	populate(objectMap, "value", l.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -2859,53 +2275,53 @@ func (l LiveEventProperties) MarshalJSON() ([]byte, error) {
 func (l *LiveEventProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", l, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeRFC3339(val, &l.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &l.Created)
 			delete(rawMsg, key)
 		case "crossSiteAccessPolicies":
-			err = unpopulate(val, &l.CrossSiteAccessPolicies)
+			err = unpopulate(val, "CrossSiteAccessPolicies", &l.CrossSiteAccessPolicies)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &l.Description)
+			err = unpopulate(val, "Description", &l.Description)
 			delete(rawMsg, key)
 		case "encoding":
-			err = unpopulate(val, &l.Encoding)
+			err = unpopulate(val, "Encoding", &l.Encoding)
 			delete(rawMsg, key)
 		case "hostnamePrefix":
-			err = unpopulate(val, &l.HostnamePrefix)
+			err = unpopulate(val, "HostnamePrefix", &l.HostnamePrefix)
 			delete(rawMsg, key)
 		case "input":
-			err = unpopulate(val, &l.Input)
+			err = unpopulate(val, "Input", &l.Input)
 			delete(rawMsg, key)
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &l.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &l.LastModified)
 			delete(rawMsg, key)
 		case "preview":
-			err = unpopulate(val, &l.Preview)
+			err = unpopulate(val, "Preview", &l.Preview)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &l.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &l.ProvisioningState)
 			delete(rawMsg, key)
 		case "resourceState":
-			err = unpopulate(val, &l.ResourceState)
+			err = unpopulate(val, "ResourceState", &l.ResourceState)
 			delete(rawMsg, key)
 		case "streamOptions":
-			err = unpopulate(val, &l.StreamOptions)
+			err = unpopulate(val, "StreamOptions", &l.StreamOptions)
 			delete(rawMsg, key)
 		case "transcriptions":
-			err = unpopulate(val, &l.Transcriptions)
+			err = unpopulate(val, "Transcriptions", &l.Transcriptions)
 			delete(rawMsg, key)
 		case "useStaticHostname":
-			err = unpopulate(val, &l.UseStaticHostname)
+			err = unpopulate(val, "UseStaticHostname", &l.UseStaticHostname)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", l, err)
 		}
 	}
 	return nil
@@ -2917,15 +2333,6 @@ func (l LiveEventTranscription) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "inputTrackSelection", l.InputTrackSelection)
 	populate(objectMap, "language", l.Language)
 	populate(objectMap, "outputTranscriptionTrack", l.OutputTranscriptionTrack)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LiveOutputListResult.
-func (l LiveOutputListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.count", l.ODataCount)
-	populate(objectMap, "@odata.nextLink", l.ODataNextLink)
-	populate(objectMap, "value", l.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -2949,44 +2356,44 @@ func (l LiveOutputProperties) MarshalJSON() ([]byte, error) {
 func (l *LiveOutputProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", l, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "archiveWindowLength":
-			err = unpopulate(val, &l.ArchiveWindowLength)
+			err = unpopulate(val, "ArchiveWindowLength", &l.ArchiveWindowLength)
 			delete(rawMsg, key)
 		case "assetName":
-			err = unpopulate(val, &l.AssetName)
+			err = unpopulate(val, "AssetName", &l.AssetName)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTimeRFC3339(val, &l.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &l.Created)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &l.Description)
+			err = unpopulate(val, "Description", &l.Description)
 			delete(rawMsg, key)
 		case "hls":
-			err = unpopulate(val, &l.Hls)
+			err = unpopulate(val, "Hls", &l.Hls)
 			delete(rawMsg, key)
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &l.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &l.LastModified)
 			delete(rawMsg, key)
 		case "manifestName":
-			err = unpopulate(val, &l.ManifestName)
+			err = unpopulate(val, "ManifestName", &l.ManifestName)
 			delete(rawMsg, key)
 		case "outputSnapTime":
-			err = unpopulate(val, &l.OutputSnapTime)
+			err = unpopulate(val, "OutputSnapTime", &l.OutputSnapTime)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &l.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &l.ProvisioningState)
 			delete(rawMsg, key)
 		case "resourceState":
-			err = unpopulate(val, &l.ResourceState)
+			err = unpopulate(val, "ResourceState", &l.ResourceState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", l, err)
 		}
 	}
 	return nil
@@ -3012,14 +2419,6 @@ func (m MediaService) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "systemData", m.SystemData)
 	populate(objectMap, "tags", m.Tags)
 	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MediaServiceCollection.
-func (m MediaServiceCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", m.ODataNextLink)
-	populate(objectMap, "value", m.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -3054,41 +2453,6 @@ func (m MediaServiceUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MetricSpecification.
-func (m MetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", m.AggregationType)
-	populate(objectMap, "dimensions", m.Dimensions)
-	populate(objectMap, "displayDescription", m.DisplayDescription)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "enableRegionalMdmAccount", m.EnableRegionalMdmAccount)
-	populate(objectMap, "lockAggregationType", m.LockAggregationType)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "sourceMdmAccount", m.SourceMdmAccount)
-	populate(objectMap, "sourceMdmNamespace", m.SourceMdmNamespace)
-	populate(objectMap, "supportedAggregationTypes", m.SupportedAggregationTypes)
-	populate(objectMap, "supportedTimeGrainTypes", m.SupportedTimeGrainTypes)
-	populate(objectMap, "unit", m.Unit)
-	return json.Marshal(objectMap)
-}
-
-// GetFormat implements the FormatClassification interface for type Mp4Format.
-func (m *Mp4Format) GetFormat() *Format {
-	return &Format{
-		ODataType:       m.ODataType,
-		FilenamePattern: m.FilenamePattern,
-	}
-}
-
-// GetMultiBitrateFormat implements the MultiBitrateFormatClassification interface for type Mp4Format.
-func (m *Mp4Format) GetMultiBitrateFormat() *MultiBitrateFormat {
-	return &MultiBitrateFormat{
-		OutputFiles:     m.OutputFiles,
-		ODataType:       m.ODataType,
-		FilenamePattern: m.FilenamePattern,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type Mp4Format.
 func (m Mp4Format) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -3102,38 +2466,27 @@ func (m Mp4Format) MarshalJSON() ([]byte, error) {
 func (m *Mp4Format) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "filenamePattern":
-			err = unpopulate(val, &m.FilenamePattern)
+			err = unpopulate(val, "FilenamePattern", &m.FilenamePattern)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &m.ODataType)
+			err = unpopulate(val, "ODataType", &m.ODataType)
 			delete(rawMsg, key)
 		case "outputFiles":
-			err = unpopulate(val, &m.OutputFiles)
+			err = unpopulate(val, "OutputFiles", &m.OutputFiles)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
 		}
 	}
 	return nil
 }
-
-// GetFormat implements the FormatClassification interface for type MultiBitrateFormat.
-func (m *MultiBitrateFormat) GetFormat() *Format {
-	return &Format{
-		ODataType:       m.ODataType,
-		FilenamePattern: m.FilenamePattern,
-	}
-}
-
-// GetMultiBitrateFormat implements the MultiBitrateFormatClassification interface for type MultiBitrateFormat.
-func (m *MultiBitrateFormat) GetMultiBitrateFormat() *MultiBitrateFormat { return m }
 
 // MarshalJSON implements the json.Marshaller interface for type MultiBitrateFormat.
 func (m MultiBitrateFormat) MarshalJSON() ([]byte, error) {
@@ -3148,33 +2501,26 @@ func (m MultiBitrateFormat) MarshalJSON() ([]byte, error) {
 func (m *MultiBitrateFormat) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "filenamePattern":
-			err = unpopulate(val, &m.FilenamePattern)
+			err = unpopulate(val, "FilenamePattern", &m.FilenamePattern)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &m.ODataType)
+			err = unpopulate(val, "ODataType", &m.ODataType)
 			delete(rawMsg, key)
 		case "outputFiles":
-			err = unpopulate(val, &m.OutputFiles)
+			err = unpopulate(val, "OutputFiles", &m.OutputFiles)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationCollection.
-func (o OperationCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type OutputFile.
@@ -3182,25 +2528,6 @@ func (o OutputFile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "labels", o.Labels)
 	return json.Marshal(objectMap)
-}
-
-// GetOverlay implements the OverlayClassification interface for type Overlay.
-func (o *Overlay) GetOverlay() *Overlay { return o }
-
-// GetFormat implements the FormatClassification interface for type PNGFormat.
-func (p *PNGFormat) GetFormat() *Format {
-	return &Format{
-		ODataType:       p.ODataType,
-		FilenamePattern: p.FilenamePattern,
-	}
-}
-
-// GetImageFormat implements the ImageFormatClassification interface for type PNGFormat.
-func (p *PNGFormat) GetImageFormat() *ImageFormat {
-	return &ImageFormat{
-		ODataType:       p.ODataType,
-		FilenamePattern: p.FilenamePattern,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PNGFormat.
@@ -3215,56 +2542,23 @@ func (p PNGFormat) MarshalJSON() ([]byte, error) {
 func (p *PNGFormat) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "filenamePattern":
-			err = unpopulate(val, &p.FilenamePattern)
+			err = unpopulate(val, "FilenamePattern", &p.FilenamePattern)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &p.ODataType)
+			err = unpopulate(val, "ODataType", &p.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
 		}
 	}
 	return nil
-}
-
-// GetCodec implements the CodecClassification interface for type PNGImage.
-func (p *PNGImage) GetCodec() *Codec {
-	return &Codec{
-		ODataType: p.ODataType,
-		Label:     p.Label,
-	}
-}
-
-// GetImage implements the ImageClassification interface for type PNGImage.
-func (p *PNGImage) GetImage() *Image {
-	return &Image{
-		Start:            p.Start,
-		Step:             p.Step,
-		Range:            p.Range,
-		KeyFrameInterval: p.KeyFrameInterval,
-		StretchMode:      p.StretchMode,
-		SyncMode:         p.SyncMode,
-		ODataType:        p.ODataType,
-		Label:            p.Label,
-	}
-}
-
-// GetVideo implements the VideoClassification interface for type PNGImage.
-func (p *PNGImage) GetVideo() *Video {
-	return &Video{
-		KeyFrameInterval: p.KeyFrameInterval,
-		StretchMode:      p.StretchMode,
-		SyncMode:         p.SyncMode,
-		ODataType:        p.ODataType,
-		Label:            p.Label,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PNGImage.
@@ -3286,61 +2580,44 @@ func (p PNGImage) MarshalJSON() ([]byte, error) {
 func (p *PNGImage) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "keyFrameInterval":
-			err = unpopulate(val, &p.KeyFrameInterval)
+			err = unpopulate(val, "KeyFrameInterval", &p.KeyFrameInterval)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &p.Label)
+			err = unpopulate(val, "Label", &p.Label)
 			delete(rawMsg, key)
 		case "layers":
-			err = unpopulate(val, &p.Layers)
+			err = unpopulate(val, "Layers", &p.Layers)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &p.ODataType)
+			err = unpopulate(val, "ODataType", &p.ODataType)
 			delete(rawMsg, key)
 		case "range":
-			err = unpopulate(val, &p.Range)
+			err = unpopulate(val, "Range", &p.Range)
 			delete(rawMsg, key)
 		case "start":
-			err = unpopulate(val, &p.Start)
+			err = unpopulate(val, "Start", &p.Start)
 			delete(rawMsg, key)
 		case "step":
-			err = unpopulate(val, &p.Step)
+			err = unpopulate(val, "Step", &p.Step)
 			delete(rawMsg, key)
 		case "stretchMode":
-			err = unpopulate(val, &p.StretchMode)
+			err = unpopulate(val, "StretchMode", &p.StretchMode)
 			delete(rawMsg, key)
 		case "syncMode":
-			err = unpopulate(val, &p.SyncMode)
+			err = unpopulate(val, "SyncMode", &p.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
 		}
 	}
 	return nil
-}
-
-// GetPreset implements the PresetClassification interface for type Preset.
-func (p *Preset) GetPreset() *Preset { return p }
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionListResult.
-func (p PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
-func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
@@ -3350,21 +2627,6 @@ func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "requiredMembers", p.RequiredMembers)
 	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
 	return json.Marshal(objectMap)
-}
-
-// GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type SelectAudioTrackByAttribute.
-func (s *SelectAudioTrackByAttribute) GetAudioTrackDescriptor() *AudioTrackDescriptor {
-	return &AudioTrackDescriptor{
-		ChannelMapping: s.ChannelMapping,
-		ODataType:      s.ODataType,
-	}
-}
-
-// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectAudioTrackByAttribute.
-func (s *SelectAudioTrackByAttribute) GetTrackDescriptor() *TrackDescriptor {
-	return &TrackDescriptor{
-		ODataType: s.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SelectAudioTrackByAttribute.
@@ -3382,47 +2644,32 @@ func (s SelectAudioTrackByAttribute) MarshalJSON() ([]byte, error) {
 func (s *SelectAudioTrackByAttribute) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "attribute":
-			err = unpopulate(val, &s.Attribute)
+			err = unpopulate(val, "Attribute", &s.Attribute)
 			delete(rawMsg, key)
 		case "channelMapping":
-			err = unpopulate(val, &s.ChannelMapping)
+			err = unpopulate(val, "ChannelMapping", &s.ChannelMapping)
 			delete(rawMsg, key)
 		case "filter":
-			err = unpopulate(val, &s.Filter)
+			err = unpopulate(val, "Filter", &s.Filter)
 			delete(rawMsg, key)
 		case "filterValue":
-			err = unpopulate(val, &s.FilterValue)
+			err = unpopulate(val, "FilterValue", &s.FilterValue)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &s.ODataType)
+			err = unpopulate(val, "ODataType", &s.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// GetAudioTrackDescriptor implements the AudioTrackDescriptorClassification interface for type SelectAudioTrackByID.
-func (s *SelectAudioTrackByID) GetAudioTrackDescriptor() *AudioTrackDescriptor {
-	return &AudioTrackDescriptor{
-		ChannelMapping: s.ChannelMapping,
-		ODataType:      s.ODataType,
-	}
-}
-
-// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectAudioTrackByID.
-func (s *SelectAudioTrackByID) GetTrackDescriptor() *TrackDescriptor {
-	return &TrackDescriptor{
-		ODataType: s.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SelectAudioTrackByID.
@@ -3438,40 +2685,26 @@ func (s SelectAudioTrackByID) MarshalJSON() ([]byte, error) {
 func (s *SelectAudioTrackByID) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "channelMapping":
-			err = unpopulate(val, &s.ChannelMapping)
+			err = unpopulate(val, "ChannelMapping", &s.ChannelMapping)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &s.ODataType)
+			err = unpopulate(val, "ODataType", &s.ODataType)
 			delete(rawMsg, key)
 		case "trackId":
-			err = unpopulate(val, &s.TrackID)
+			err = unpopulate(val, "TrackID", &s.TrackID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectVideoTrackByAttribute.
-func (s *SelectVideoTrackByAttribute) GetTrackDescriptor() *TrackDescriptor {
-	return &TrackDescriptor{
-		ODataType: s.ODataType,
-	}
-}
-
-// GetVideoTrackDescriptor implements the VideoTrackDescriptorClassification interface for type SelectVideoTrackByAttribute.
-func (s *SelectVideoTrackByAttribute) GetVideoTrackDescriptor() *VideoTrackDescriptor {
-	return &VideoTrackDescriptor{
-		ODataType: s.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SelectVideoTrackByAttribute.
@@ -3488,43 +2721,29 @@ func (s SelectVideoTrackByAttribute) MarshalJSON() ([]byte, error) {
 func (s *SelectVideoTrackByAttribute) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "attribute":
-			err = unpopulate(val, &s.Attribute)
+			err = unpopulate(val, "Attribute", &s.Attribute)
 			delete(rawMsg, key)
 		case "filter":
-			err = unpopulate(val, &s.Filter)
+			err = unpopulate(val, "Filter", &s.Filter)
 			delete(rawMsg, key)
 		case "filterValue":
-			err = unpopulate(val, &s.FilterValue)
+			err = unpopulate(val, "FilterValue", &s.FilterValue)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &s.ODataType)
+			err = unpopulate(val, "ODataType", &s.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// GetTrackDescriptor implements the TrackDescriptorClassification interface for type SelectVideoTrackByID.
-func (s *SelectVideoTrackByID) GetTrackDescriptor() *TrackDescriptor {
-	return &TrackDescriptor{
-		ODataType: s.ODataType,
-	}
-}
-
-// GetVideoTrackDescriptor implements the VideoTrackDescriptorClassification interface for type SelectVideoTrackByID.
-func (s *SelectVideoTrackByID) GetVideoTrackDescriptor() *VideoTrackDescriptor {
-	return &VideoTrackDescriptor{
-		ODataType: s.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SelectVideoTrackByID.
@@ -3539,38 +2758,23 @@ func (s SelectVideoTrackByID) MarshalJSON() ([]byte, error) {
 func (s *SelectVideoTrackByID) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &s.ODataType)
+			err = unpopulate(val, "ODataType", &s.ODataType)
 			delete(rawMsg, key)
 		case "trackId":
-			err = unpopulate(val, &s.TrackID)
+			err = unpopulate(val, "TrackID", &s.TrackID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceSpecification.
-func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", s.LogSpecifications)
-	populate(objectMap, "metricSpecifications", s.MetricSpecifications)
-	return json.Marshal(objectMap)
-}
-
-// GetPreset implements the PresetClassification interface for type StandardEncoderPreset.
-func (s *StandardEncoderPreset) GetPreset() *Preset {
-	return &Preset{
-		ODataType: s.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StandardEncoderPreset.
@@ -3587,7 +2791,7 @@ func (s StandardEncoderPreset) MarshalJSON() ([]byte, error) {
 func (s *StandardEncoderPreset) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -3596,48 +2800,40 @@ func (s *StandardEncoderPreset) UnmarshalJSON(data []byte) error {
 			s.Codecs, err = unmarshalCodecClassificationArray(val)
 			delete(rawMsg, key)
 		case "filters":
-			err = unpopulate(val, &s.Filters)
+			err = unpopulate(val, "Filters", &s.Filters)
 			delete(rawMsg, key)
 		case "formats":
 			s.Formats, err = unmarshalFormatClassificationArray(val)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &s.ODataType)
+			err = unpopulate(val, "ODataType", &s.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StorageEncryptedAssetDecryptionData.
-func (s StorageEncryptedAssetDecryptionData) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "assetFileEncryptionMetadata", s.AssetFileEncryptionMetadata)
-	populateByteArray(objectMap, "key", s.Key, runtime.Base64StdFormat)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type StorageEncryptedAssetDecryptionData.
 func (s *StorageEncryptedAssetDecryptionData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "assetFileEncryptionMetadata":
-			err = unpopulate(val, &s.AssetFileEncryptionMetadata)
+			err = unpopulate(val, "AssetFileEncryptionMetadata", &s.AssetFileEncryptionMetadata)
 			delete(rawMsg, key)
 		case "key":
 			err = runtime.DecodeByteArray(string(val), &s.Key, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
@@ -3654,15 +2850,6 @@ func (s StreamingEndpoint) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "systemData", s.SystemData)
 	populate(objectMap, "tags", s.Tags)
 	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StreamingEndpointListResult.
-func (s StreamingEndpointListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.count", s.ODataCount)
-	populate(objectMap, "@odata.nextLink", s.ODataNextLink)
-	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -3692,80 +2879,65 @@ func (s StreamingEndpointProperties) MarshalJSON() ([]byte, error) {
 func (s *StreamingEndpointProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "accessControl":
-			err = unpopulate(val, &s.AccessControl)
+			err = unpopulate(val, "AccessControl", &s.AccessControl)
 			delete(rawMsg, key)
 		case "availabilitySetName":
-			err = unpopulate(val, &s.AvailabilitySetName)
+			err = unpopulate(val, "AvailabilitySetName", &s.AvailabilitySetName)
 			delete(rawMsg, key)
 		case "cdnEnabled":
-			err = unpopulate(val, &s.CdnEnabled)
+			err = unpopulate(val, "CdnEnabled", &s.CdnEnabled)
 			delete(rawMsg, key)
 		case "cdnProfile":
-			err = unpopulate(val, &s.CdnProfile)
+			err = unpopulate(val, "CdnProfile", &s.CdnProfile)
 			delete(rawMsg, key)
 		case "cdnProvider":
-			err = unpopulate(val, &s.CdnProvider)
+			err = unpopulate(val, "CdnProvider", &s.CdnProvider)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTimeRFC3339(val, &s.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &s.Created)
 			delete(rawMsg, key)
 		case "crossSiteAccessPolicies":
-			err = unpopulate(val, &s.CrossSiteAccessPolicies)
+			err = unpopulate(val, "CrossSiteAccessPolicies", &s.CrossSiteAccessPolicies)
 			delete(rawMsg, key)
 		case "customHostNames":
-			err = unpopulate(val, &s.CustomHostNames)
+			err = unpopulate(val, "CustomHostNames", &s.CustomHostNames)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &s.Description)
+			err = unpopulate(val, "Description", &s.Description)
 			delete(rawMsg, key)
 		case "freeTrialEndTime":
-			err = unpopulateTimeRFC3339(val, &s.FreeTrialEndTime)
+			err = unpopulateTimeRFC3339(val, "FreeTrialEndTime", &s.FreeTrialEndTime)
 			delete(rawMsg, key)
 		case "hostName":
-			err = unpopulate(val, &s.HostName)
+			err = unpopulate(val, "HostName", &s.HostName)
 			delete(rawMsg, key)
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &s.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &s.LastModified)
 			delete(rawMsg, key)
 		case "maxCacheAge":
-			err = unpopulate(val, &s.MaxCacheAge)
+			err = unpopulate(val, "MaxCacheAge", &s.MaxCacheAge)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &s.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
 			delete(rawMsg, key)
 		case "resourceState":
-			err = unpopulate(val, &s.ResourceState)
+			err = unpopulate(val, "ResourceState", &s.ResourceState)
 			delete(rawMsg, key)
 		case "scaleUnits":
-			err = unpopulate(val, &s.ScaleUnits)
+			err = unpopulate(val, "ScaleUnits", &s.ScaleUnits)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StreamingEndpointSKUInfoListResult.
-func (s StreamingEndpointSKUInfoListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StreamingLocatorCollection.
-func (s StreamingLocatorCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", s.ODataNextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StreamingLocatorContentKey.
@@ -3800,64 +2972,47 @@ func (s StreamingLocatorProperties) MarshalJSON() ([]byte, error) {
 func (s *StreamingLocatorProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "alternativeMediaId":
-			err = unpopulate(val, &s.AlternativeMediaID)
+			err = unpopulate(val, "AlternativeMediaID", &s.AlternativeMediaID)
 			delete(rawMsg, key)
 		case "assetName":
-			err = unpopulate(val, &s.AssetName)
+			err = unpopulate(val, "AssetName", &s.AssetName)
 			delete(rawMsg, key)
 		case "contentKeys":
-			err = unpopulate(val, &s.ContentKeys)
+			err = unpopulate(val, "ContentKeys", &s.ContentKeys)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTimeRFC3339(val, &s.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &s.Created)
 			delete(rawMsg, key)
 		case "defaultContentKeyPolicyName":
-			err = unpopulate(val, &s.DefaultContentKeyPolicyName)
+			err = unpopulate(val, "DefaultContentKeyPolicyName", &s.DefaultContentKeyPolicyName)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, &s.EndTime)
+			err = unpopulateTimeRFC3339(val, "EndTime", &s.EndTime)
 			delete(rawMsg, key)
 		case "filters":
-			err = unpopulate(val, &s.Filters)
+			err = unpopulate(val, "Filters", &s.Filters)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &s.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &s.StartTime)
 			delete(rawMsg, key)
 		case "streamingLocatorId":
-			err = unpopulate(val, &s.StreamingLocatorID)
+			err = unpopulate(val, "StreamingLocatorID", &s.StreamingLocatorID)
 			delete(rawMsg, key)
 		case "streamingPolicyName":
-			err = unpopulate(val, &s.StreamingPolicyName)
+			err = unpopulate(val, "StreamingPolicyName", &s.StreamingPolicyName)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StreamingPath.
-func (s StreamingPath) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "encryptionScheme", s.EncryptionScheme)
-	populate(objectMap, "paths", s.Paths)
-	populate(objectMap, "streamingProtocol", s.StreamingProtocol)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StreamingPolicyCollection.
-func (s StreamingPolicyCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", s.ODataNextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type StreamingPolicyContentKey.
@@ -3893,32 +3048,32 @@ func (s StreamingPolicyProperties) MarshalJSON() ([]byte, error) {
 func (s *StreamingPolicyProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "commonEncryptionCbcs":
-			err = unpopulate(val, &s.CommonEncryptionCbcs)
+			err = unpopulate(val, "CommonEncryptionCbcs", &s.CommonEncryptionCbcs)
 			delete(rawMsg, key)
 		case "commonEncryptionCenc":
-			err = unpopulate(val, &s.CommonEncryptionCenc)
+			err = unpopulate(val, "CommonEncryptionCenc", &s.CommonEncryptionCenc)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTimeRFC3339(val, &s.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &s.Created)
 			delete(rawMsg, key)
 		case "defaultContentKeyPolicyName":
-			err = unpopulate(val, &s.DefaultContentKeyPolicyName)
+			err = unpopulate(val, "DefaultContentKeyPolicyName", &s.DefaultContentKeyPolicyName)
 			delete(rawMsg, key)
 		case "envelopeEncryption":
-			err = unpopulate(val, &s.EnvelopeEncryption)
+			err = unpopulate(val, "EnvelopeEncryption", &s.EnvelopeEncryption)
 			delete(rawMsg, key)
 		case "noEncryption":
-			err = unpopulate(val, &s.NoEncryption)
+			err = unpopulate(val, "NoEncryption", &s.NoEncryption)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
@@ -3940,42 +3095,35 @@ func (s SystemData) MarshalJSON() ([]byte, error) {
 func (s *SystemData) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
+			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
-			err = unpopulate(val, &s.CreatedBy)
+			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
 			delete(rawMsg, key)
 		case "createdByType":
-			err = unpopulate(val, &s.CreatedByType)
+			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
+			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
-			err = unpopulate(val, &s.LastModifiedBy)
+			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
 			delete(rawMsg, key)
 		case "lastModifiedByType":
-			err = unpopulate(val, &s.LastModifiedByType)
+			err = unpopulate(val, "LastModifiedByType", &s.LastModifiedByType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
-}
-
-// GetTrackBase implements the TrackBaseClassification interface for type TextTrack.
-func (t *TextTrack) GetTrackBase() *TrackBase {
-	return &TrackBase{
-		ODataType: t.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TextTrack.
@@ -3994,42 +3142,36 @@ func (t TextTrack) MarshalJSON() ([]byte, error) {
 func (t *TextTrack) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "displayName":
-			err = unpopulate(val, &t.DisplayName)
+			err = unpopulate(val, "DisplayName", &t.DisplayName)
 			delete(rawMsg, key)
 		case "fileName":
-			err = unpopulate(val, &t.FileName)
+			err = unpopulate(val, "FileName", &t.FileName)
 			delete(rawMsg, key)
 		case "hlsSettings":
-			err = unpopulate(val, &t.HlsSettings)
+			err = unpopulate(val, "HlsSettings", &t.HlsSettings)
 			delete(rawMsg, key)
 		case "languageCode":
-			err = unpopulate(val, &t.LanguageCode)
+			err = unpopulate(val, "LanguageCode", &t.LanguageCode)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &t.ODataType)
+			err = unpopulate(val, "ODataType", &t.ODataType)
 			delete(rawMsg, key)
 		case "playerVisibility":
-			err = unpopulate(val, &t.PlayerVisibility)
+			err = unpopulate(val, "PlayerVisibility", &t.PlayerVisibility)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil
 }
-
-// GetTrackBase implements the TrackBaseClassification interface for type TrackBase.
-func (t *TrackBase) GetTrackBase() *TrackBase { return t }
-
-// GetTrackDescriptor implements the TrackDescriptorClassification interface for type TrackDescriptor.
-func (t *TrackDescriptor) GetTrackDescriptor() *TrackDescriptor { return t }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackSelection.
 func (t TrackSelection) MarshalJSON() ([]byte, error) {
@@ -4060,14 +3202,6 @@ func (t Transform) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TransformCollection.
-func (t TransformCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", t.ODataNextLink)
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type TransformOutput.
 func (t TransformOutput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -4081,23 +3215,23 @@ func (t TransformOutput) MarshalJSON() ([]byte, error) {
 func (t *TransformOutput) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "onError":
-			err = unpopulate(val, &t.OnError)
+			err = unpopulate(val, "OnError", &t.OnError)
 			delete(rawMsg, key)
 		case "preset":
 			t.Preset, err = unmarshalPresetClassification(val)
 			delete(rawMsg, key)
 		case "relativePriority":
-			err = unpopulate(val, &t.RelativePriority)
+			err = unpopulate(val, "RelativePriority", &t.RelativePriority)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil
@@ -4117,46 +3251,29 @@ func (t TransformProperties) MarshalJSON() ([]byte, error) {
 func (t *TransformProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "created":
-			err = unpopulateTimeRFC3339(val, &t.Created)
+			err = unpopulateTimeRFC3339(val, "Created", &t.Created)
 			delete(rawMsg, key)
 		case "description":
-			err = unpopulate(val, &t.Description)
+			err = unpopulate(val, "Description", &t.Description)
 			delete(rawMsg, key)
 		case "lastModified":
-			err = unpopulateTimeRFC3339(val, &t.LastModified)
+			err = unpopulateTimeRFC3339(val, "LastModified", &t.LastModified)
 			delete(rawMsg, key)
 		case "outputs":
-			err = unpopulate(val, &t.Outputs)
+			err = unpopulate(val, "Outputs", &t.Outputs)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil
-}
-
-// GetFormat implements the FormatClassification interface for type TransportStreamFormat.
-func (t *TransportStreamFormat) GetFormat() *Format {
-	return &Format{
-		ODataType:       t.ODataType,
-		FilenamePattern: t.FilenamePattern,
-	}
-}
-
-// GetMultiBitrateFormat implements the MultiBitrateFormatClassification interface for type TransportStreamFormat.
-func (t *TransportStreamFormat) GetMultiBitrateFormat() *MultiBitrateFormat {
-	return &MultiBitrateFormat{
-		OutputFiles:     t.OutputFiles,
-		ODataType:       t.ODataType,
-		FilenamePattern: t.FilenamePattern,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TransportStreamFormat.
@@ -4172,33 +3289,26 @@ func (t TransportStreamFormat) MarshalJSON() ([]byte, error) {
 func (t *TransportStreamFormat) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "filenamePattern":
-			err = unpopulate(val, &t.FilenamePattern)
+			err = unpopulate(val, "FilenamePattern", &t.FilenamePattern)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &t.ODataType)
+			err = unpopulate(val, "ODataType", &t.ODataType)
 			delete(rawMsg, key)
 		case "outputFiles":
-			err = unpopulate(val, &t.OutputFiles)
+			err = unpopulate(val, "OutputFiles", &t.OutputFiles)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil
-}
-
-// GetClipTime implements the ClipTimeClassification interface for type UTCClipTime.
-func (u *UTCClipTime) GetClipTime() *ClipTime {
-	return &ClipTime{
-		ODataType: u.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type UTCClipTime.
@@ -4213,35 +3323,24 @@ func (u UTCClipTime) MarshalJSON() ([]byte, error) {
 func (u *UTCClipTime) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", u, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &u.ODataType)
+			err = unpopulate(val, "ODataType", &u.ODataType)
 			delete(rawMsg, key)
 		case "time":
-			err = unpopulateTimeRFC3339(val, &u.Time)
+			err = unpopulateTimeRFC3339(val, "Time", &u.Time)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", u, err)
 		}
 	}
 	return nil
 }
-
-// GetCodec implements the CodecClassification interface for type Video.
-func (v *Video) GetCodec() *Codec {
-	return &Codec{
-		ODataType: v.ODataType,
-		Label:     v.Label,
-	}
-}
-
-// GetVideo implements the VideoClassification interface for type Video.
-func (v *Video) GetVideo() *Video { return v }
 
 // MarshalJSON implements the json.Marshaller interface for type Video.
 func (v Video) MarshalJSON() ([]byte, error) {
@@ -4258,49 +3357,32 @@ func (v Video) MarshalJSON() ([]byte, error) {
 func (v *Video) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "keyFrameInterval":
-			err = unpopulate(val, &v.KeyFrameInterval)
+			err = unpopulate(val, "KeyFrameInterval", &v.KeyFrameInterval)
 			delete(rawMsg, key)
 		case "label":
-			err = unpopulate(val, &v.Label)
+			err = unpopulate(val, "Label", &v.Label)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &v.ODataType)
+			err = unpopulate(val, "ODataType", &v.ODataType)
 			delete(rawMsg, key)
 		case "stretchMode":
-			err = unpopulate(val, &v.StretchMode)
+			err = unpopulate(val, "StretchMode", &v.StretchMode)
 			delete(rawMsg, key)
 		case "syncMode":
-			err = unpopulate(val, &v.SyncMode)
+			err = unpopulate(val, "SyncMode", &v.SyncMode)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil
-}
-
-// GetAudioAnalyzerPreset implements the AudioAnalyzerPresetClassification interface for type VideoAnalyzerPreset.
-func (v *VideoAnalyzerPreset) GetAudioAnalyzerPreset() *AudioAnalyzerPreset {
-	return &AudioAnalyzerPreset{
-		AudioLanguage:       v.AudioLanguage,
-		Mode:                v.Mode,
-		ExperimentalOptions: v.ExperimentalOptions,
-		ODataType:           v.ODataType,
-	}
-}
-
-// GetPreset implements the PresetClassification interface for type VideoAnalyzerPreset.
-func (v *VideoAnalyzerPreset) GetPreset() *Preset {
-	return &Preset{
-		ODataType: v.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VideoAnalyzerPreset.
@@ -4318,45 +3400,32 @@ func (v VideoAnalyzerPreset) MarshalJSON() ([]byte, error) {
 func (v *VideoAnalyzerPreset) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "audioLanguage":
-			err = unpopulate(val, &v.AudioLanguage)
+			err = unpopulate(val, "AudioLanguage", &v.AudioLanguage)
 			delete(rawMsg, key)
 		case "experimentalOptions":
-			err = unpopulate(val, &v.ExperimentalOptions)
+			err = unpopulate(val, "ExperimentalOptions", &v.ExperimentalOptions)
 			delete(rawMsg, key)
 		case "insightsToExtract":
-			err = unpopulate(val, &v.InsightsToExtract)
+			err = unpopulate(val, "InsightsToExtract", &v.InsightsToExtract)
 			delete(rawMsg, key)
 		case "mode":
-			err = unpopulate(val, &v.Mode)
+			err = unpopulate(val, "Mode", &v.Mode)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &v.ODataType)
+			err = unpopulate(val, "ODataType", &v.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil
-}
-
-// GetOverlay implements the OverlayClassification interface for type VideoOverlay.
-func (v *VideoOverlay) GetOverlay() *Overlay {
-	return &Overlay{
-		ODataType:       v.ODataType,
-		InputLabel:      v.InputLabel,
-		Start:           v.Start,
-		End:             v.End,
-		FadeInDuration:  v.FadeInDuration,
-		FadeOutDuration: v.FadeOutDuration,
-		AudioGainLevel:  v.AudioGainLevel,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VideoOverlay.
@@ -4379,54 +3448,47 @@ func (v VideoOverlay) MarshalJSON() ([]byte, error) {
 func (v *VideoOverlay) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "audioGainLevel":
-			err = unpopulate(val, &v.AudioGainLevel)
+			err = unpopulate(val, "AudioGainLevel", &v.AudioGainLevel)
 			delete(rawMsg, key)
 		case "cropRectangle":
-			err = unpopulate(val, &v.CropRectangle)
+			err = unpopulate(val, "CropRectangle", &v.CropRectangle)
 			delete(rawMsg, key)
 		case "end":
-			err = unpopulate(val, &v.End)
+			err = unpopulate(val, "End", &v.End)
 			delete(rawMsg, key)
 		case "fadeInDuration":
-			err = unpopulate(val, &v.FadeInDuration)
+			err = unpopulate(val, "FadeInDuration", &v.FadeInDuration)
 			delete(rawMsg, key)
 		case "fadeOutDuration":
-			err = unpopulate(val, &v.FadeOutDuration)
+			err = unpopulate(val, "FadeOutDuration", &v.FadeOutDuration)
 			delete(rawMsg, key)
 		case "inputLabel":
-			err = unpopulate(val, &v.InputLabel)
+			err = unpopulate(val, "InputLabel", &v.InputLabel)
 			delete(rawMsg, key)
 		case "@odata.type":
-			err = unpopulate(val, &v.ODataType)
+			err = unpopulate(val, "ODataType", &v.ODataType)
 			delete(rawMsg, key)
 		case "opacity":
-			err = unpopulate(val, &v.Opacity)
+			err = unpopulate(val, "Opacity", &v.Opacity)
 			delete(rawMsg, key)
 		case "position":
-			err = unpopulate(val, &v.Position)
+			err = unpopulate(val, "Position", &v.Position)
 			delete(rawMsg, key)
 		case "start":
-			err = unpopulate(val, &v.Start)
+			err = unpopulate(val, "Start", &v.Start)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil
-}
-
-// GetTrackBase implements the TrackBaseClassification interface for type VideoTrack.
-func (v *VideoTrack) GetTrackBase() *TrackBase {
-	return &TrackBase{
-		ODataType: v.ODataType,
-	}
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VideoTrack.
@@ -4440,31 +3502,21 @@ func (v VideoTrack) MarshalJSON() ([]byte, error) {
 func (v *VideoTrack) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &v.ODataType)
+			err = unpopulate(val, "ODataType", &v.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil
 }
-
-// GetTrackDescriptor implements the TrackDescriptorClassification interface for type VideoTrackDescriptor.
-func (v *VideoTrackDescriptor) GetTrackDescriptor() *TrackDescriptor {
-	return &TrackDescriptor{
-		ODataType: v.ODataType,
-	}
-}
-
-// GetVideoTrackDescriptor implements the VideoTrackDescriptorClassification interface for type VideoTrackDescriptor.
-func (v *VideoTrackDescriptor) GetVideoTrackDescriptor() *VideoTrackDescriptor { return v }
 
 // MarshalJSON implements the json.Marshaller interface for type VideoTrackDescriptor.
 func (v VideoTrackDescriptor) MarshalJSON() ([]byte, error) {
@@ -4477,17 +3529,17 @@ func (v VideoTrackDescriptor) MarshalJSON() ([]byte, error) {
 func (v *VideoTrackDescriptor) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", v, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "@odata.type":
-			err = unpopulate(val, &v.ODataType)
+			err = unpopulate(val, "ODataType", &v.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", v, err)
 		}
 	}
 	return nil
@@ -4513,9 +3565,12 @@ func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.B
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

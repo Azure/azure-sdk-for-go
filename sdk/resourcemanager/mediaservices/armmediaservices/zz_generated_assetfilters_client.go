@@ -38,7 +38,7 @@ func NewAssetFiltersClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAssetFiltersClient(subscriptionID string, credential azcore.TokenCredent
 
 // CreateOrUpdate - Creates or updates an Asset Filter associated with the specified Asset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -108,7 +109,7 @@ func (client *AssetFiltersClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -123,6 +124,7 @@ func (client *AssetFiltersClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Deletes an Asset Filter associated with the specified Asset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -173,12 +175,13 @@ func (client *AssetFiltersClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the details of an Asset Filter associated with the specified Asset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -229,7 +232,7 @@ func (client *AssetFiltersClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -244,12 +247,13 @@ func (client *AssetFiltersClient) getHandleResponse(resp *http.Response) (AssetF
 
 // NewListPager - List Asset Filters associated with the specified Asset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
 // options - AssetFiltersClientListOptions contains the optional parameters for the AssetFiltersClient.List method.
 func (client *AssetFiltersClient) NewListPager(resourceGroupName string, accountName string, assetName string, options *AssetFiltersClientListOptions) *runtime.Pager[AssetFiltersClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AssetFiltersClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AssetFiltersClientListResponse]{
 		More: func(page AssetFiltersClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -302,7 +306,7 @@ func (client *AssetFiltersClient) listCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -317,6 +321,7 @@ func (client *AssetFiltersClient) listHandleResponse(resp *http.Response) (Asset
 
 // Update - Updates an existing Asset Filter associated with the specified Asset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // assetName - The Asset name.
@@ -368,7 +373,7 @@ func (client *AssetFiltersClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

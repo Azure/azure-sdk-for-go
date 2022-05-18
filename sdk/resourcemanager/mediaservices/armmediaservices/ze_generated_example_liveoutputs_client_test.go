@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices"
@@ -26,19 +24,18 @@ func ExampleLiveOutputsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveOutputsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveOutputsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
+	pager := client.NewListPager("mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleLiveOutputsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveOutputsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveOutputsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
-		"<live-output-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
+		"myLiveOutput1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,31 +75,31 @@ func ExampleLiveOutputsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveOutputsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveOutputsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
-		"<live-output-name>",
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
+		"myLiveOutput1",
 		armmediaservices.LiveOutput{
 			Properties: &armmediaservices.LiveOutputProperties{
-				Description:         to.Ptr("<description>"),
-				ArchiveWindowLength: to.Ptr("<archive-window-length>"),
-				AssetName:           to.Ptr("<asset-name>"),
+				Description:         to.Ptr("test live output 1"),
+				ArchiveWindowLength: to.Ptr("PT5M"),
+				AssetName:           to.Ptr("6f3264f5-a189-48b4-a29a-a40f22575212"),
 				Hls: &armmediaservices.Hls{
 					FragmentsPerTsSegment: to.Ptr[int32](5),
 				},
-				ManifestName: to.Ptr("<manifest-name>"),
+				ManifestName: to.Ptr("testmanifest"),
 			},
 		},
-		&armmediaservices.LiveOutputsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -117,20 +114,20 @@ func ExampleLiveOutputsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewLiveOutputsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewLiveOutputsClient("0a6ec948-5a62-437d-b9df-934dc7c1b722", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<live-event-name>",
-		"<live-output-name>",
-		&armmediaservices.LiveOutputsClientBeginDeleteOptions{ResumeToken: ""})
+		"mediaresources",
+		"slitestmedia10",
+		"myLiveEvent1",
+		"myLiveOutput1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

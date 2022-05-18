@@ -38,7 +38,7 @@ func NewPrivateLinkResourcesSecClient(subscriptionID string, credential azcore.T
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPrivateLinkResourcesSecClient(subscriptionID string, credential azcore.T
 
 // Get - Gets a private link resource that need to be created for a service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // groupName - The name of the private link resource group.
@@ -102,7 +103,7 @@ func (client *PrivateLinkResourcesSecClient) getCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,6 +118,7 @@ func (client *PrivateLinkResourcesSecClient) getHandleResponse(resp *http.Respon
 
 // ListByService - Gets the private link resources that need to be created for a service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateLinkResourcesSecClientListByServiceOptions contains the optional parameters for the PrivateLinkResourcesSecClient.ListByService
@@ -158,7 +160,7 @@ func (client *PrivateLinkResourcesSecClient) listByServiceCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -1,5 +1,49 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesForSCCPowershellClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForSCCPowershellClientUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForSCCPowershellClientUpdateResponse], error)`
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForO365ManagementActivityAPIClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsSecClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsSecClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsSecClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsForSCCPowershellClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsForSCCPowershellClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServicesClientDeleteResponse], error)` to `(*runtime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsAdtAPIClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsAdtAPIClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForO365ManagementActivityAPIClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForO365ManagementActivityAPIClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsCompClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsCompClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsCompClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForM365SecurityCenterClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForMIPPolicySyncClientUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForMIPPolicySyncClientUpdateResponse], error)`
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForM365SecurityCenterClientUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsForMIPPolicySyncClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForM365ComplianceCenterClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForEDMUploadClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForM365ComplianceCenterClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesForSCCPowershellClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForSCCPowershellClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForSCCPowershellClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsSecClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsSecClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsSecClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesForO365ManagementActivityAPIClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForO365ManagementActivityAPIClientUpdateResponse], error)`
+- Function `*PrivateLinkServicesForM365ComplianceCenterClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForM365ComplianceCenterClientUpdateResponse], error)`
+- Function `*PrivateLinkServicesForM365SecurityCenterClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForM365SecurityCenterClientCreateOrUpdateResponse], error)`
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForMIPPolicySyncClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsForEDMClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsForEDMClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsAdtAPIClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsAdtAPIClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsAdtAPIClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsForEDMClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsForEDMClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsForEDMClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesForEDMUploadClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForEDMUploadClientUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForEDMUploadClientUpdateResponse], error)`
+- Function `*PrivateLinkServicesForSCCPowershellClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForSCCPowershellClientCreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsForSCCPowershellClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsForSCCPowershellClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsForSCCPowershellClientDeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsCompClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsCompClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsCompClientDeleteResponse], error)`
+- Function `*PrivateLinkServicesForMIPPolicySyncClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServicesForMIPPolicySyncClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkServicesForMIPPolicySyncClientDeleteResponse], error)`
+- Function `PrivateLinkServicesForM365ComplianceCenterDescriptionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkServicesForSCCPowershellDescriptionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkServicesForM365SecurityCenterDescriptionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkServicesForMIPPolicySyncDescriptionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkServicesForEDMUploadDescriptionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

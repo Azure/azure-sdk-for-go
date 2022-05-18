@@ -38,7 +38,7 @@ func NewPrivateEndpointConnectionsSecClient(subscriptionID string, credential az
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,28 +56,30 @@ func NewPrivateEndpointConnectionsSecClient(subscriptionID string, credential az
 
 // BeginCreateOrUpdate - Update the state of the specified private endpoint connection associated with the service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
 // properties - The private endpoint connection properties.
 // options - PrivateEndpointConnectionsSecClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsSecClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateEndpointConnectionsSecClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsSecClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateEndpointConnectionsSecClientCreateOrUpdateResponse], error) {
+func (client *PrivateEndpointConnectionsSecClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsSecClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsSecClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionsSecClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionsSecClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsSecClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsSecClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Update the state of the specified private endpoint connection associated with the service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateEndpointConnectionsSecClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsSecClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, properties, options)
 	if err != nil {
@@ -119,33 +121,35 @@ func (client *PrivateEndpointConnectionsSecClient) createOrUpdateCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // BeginDelete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
 // options - PrivateEndpointConnectionsSecClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsSecClient.BeginDelete
 // method.
-func (client *PrivateEndpointConnectionsSecClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsSecClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionsSecClientDeleteResponse], error) {
+func (client *PrivateEndpointConnectionsSecClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsSecClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsSecClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionsSecClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionsSecClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsSecClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsSecClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateEndpointConnectionsSecClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsSecClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -187,12 +191,13 @@ func (client *PrivateEndpointConnectionsSecClient) deleteCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the specified private endpoint connection associated with the service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
@@ -239,7 +244,7 @@ func (client *PrivateEndpointConnectionsSecClient) getCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -254,12 +259,13 @@ func (client *PrivateEndpointConnectionsSecClient) getHandleResponse(resp *http.
 
 // NewListByServicePager - Lists all private endpoint connections for a service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateEndpointConnectionsSecClientListByServiceOptions contains the optional parameters for the PrivateEndpointConnectionsSecClient.ListByService
 // method.
 func (client *PrivateEndpointConnectionsSecClient) NewListByServicePager(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsSecClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsSecClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsSecClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsSecClientListByServiceResponse]{
 		More: func(page PrivateEndpointConnectionsSecClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -308,7 +314,7 @@ func (client *PrivateEndpointConnectionsSecClient) listByServiceCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewPrivateEndpointConnectionsForMIPPolicySyncClient(subscriptionID string, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,28 +56,30 @@ func NewPrivateEndpointConnectionsForMIPPolicySyncClient(subscriptionID string, 
 
 // BeginCreateOrUpdate - Update the state of the specified private endpoint connection associated with the service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
 // properties - The private endpoint connection properties.
 // options - PrivateEndpointConnectionsForMIPPolicySyncClientBeginCreateOrUpdateOptions contains the optional parameters for
 // the PrivateEndpointConnectionsForMIPPolicySyncClient.BeginCreateOrUpdate method.
-func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsForMIPPolicySyncClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse], error) {
+func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsForMIPPolicySyncClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsForMIPPolicySyncClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Update the state of the specified private endpoint connection associated with the service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsForMIPPolicySyncClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, properties, options)
 	if err != nil {
@@ -119,33 +121,35 @@ func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) createOrUpdateCr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // BeginDelete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
 // options - PrivateEndpointConnectionsForMIPPolicySyncClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsForMIPPolicySyncClient.BeginDelete
 // method.
-func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsForMIPPolicySyncClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse], error) {
+func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsForMIPPolicySyncClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsForMIPPolicySyncClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsForMIPPolicySyncClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -187,12 +191,13 @@ func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) deleteCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the specified private endpoint connection associated with the service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
@@ -239,7 +244,7 @@ func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) getCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -254,12 +259,13 @@ func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) getHandleRespons
 
 // NewListByServicePager - Lists all private endpoint connections for a service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceOptions contains the optional parameters for the
 // PrivateEndpointConnectionsForMIPPolicySyncClient.ListByService method.
 func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) NewListByServicePager(resourceGroupName string, resourceName string, options *PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceOptions) *runtime.Pager[PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse]{
 		More: func(page PrivateEndpointConnectionsForMIPPolicySyncClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -308,7 +314,7 @@ func (client *PrivateEndpointConnectionsForMIPPolicySyncClient) listByServiceCre
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

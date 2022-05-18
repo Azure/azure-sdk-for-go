@@ -12,6 +12,7 @@
 * Removed types `DeleteKeyPoller` and `RecoverDeletedKeyPoller`.
 * Methods `BeginDeleteKey` and `BeginRecoverDeletedKey` now return a `*runtime.Poller[T]` with their respective response types.
 * Option types with a `ResumeToken` field now take the token by value.
+* Renamed `CreateECKeyOptions.CurveName` to `.Curve`
 
 ### Bugs Fixed
 

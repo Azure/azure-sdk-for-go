@@ -17,13 +17,13 @@ import (
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
-// Client is the struct for interacting with a KeyVault Keys instance
+// Client interacts with Key Vault keys.
 type Client struct {
 	kvClient *generated.KeyVaultClient
 	vaultURL string
 }
 
-// ClientOptions are the configurable options on a Client.
+// ClientOptions are the configurable options for a Client.
 type ClientOptions struct {
 	azcore.ClientOptions
 }
@@ -44,8 +44,8 @@ func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 	}
 }
 
-// NewClient returns a pointer to a Client object affinitized to a vaultUrl.
-func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+// NewClient constructs a Client that accesses a Key Vault's keys.
+func NewClient(vaultURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -60,34 +60,36 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
 		kvClient: generated.NewKeyVaultClient(pl),
-		vaultURL: vaultUrl,
+		vaultURL: vaultURL,
 	}, nil
 }
 
-// VaultURL returns a string of the vault URL
+// VaultURL returns the URL for the client's Key Vault.
 func (c *Client) VaultURL() string {
 	return c.vaultURL
 }
 
-// CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
+// CreateKeyOptions contains optional parameters for CreateKey.
 type CreateKeyOptions struct {
-	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
+	// Curve is the elliptic curve name. For valid values, see PossibleCurveNameValues.
 	Curve *CurveName `json:"crv,omitempty"`
 
-	// The properties of a key managed by the key vault service.
-	Properties *Properties  `json:"attributes,omitempty"`
+	// Properties is the key's management properties.
+	Properties *Properties `json:"attributes,omitempty"`
+
+	// Operations are the operations Key Vault will allow for the key.
 	Operations []*Operation `json:"key_ops,omitempty"`
 
-	// The policy rules under which the key can be exported.
+	// ReleasePolicy specifies conditions under which the key can be exported.
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
-	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+	// Size is the key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	Size *int32 `json:"key_size,omitempty"`
 
-	// The public exponent for a RSA key.
+	// PublicExponent is the public exponent of an RSA key.
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
-	// Tags contain application specific metadata in the form of key-value pairs.
+	// Tags is application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
@@ -123,7 +125,7 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 	}
 }
 
-// CreateKeyResponse contains the response from method KeyVaultClient.CreateKey.
+// CreateKeyResponse is returned by CreateKey.
 type CreateKeyResponse struct {
 	Key
 }
@@ -141,8 +143,9 @@ func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse)
 	}
 }
 
-// CreateKey can be used to create any key type in Azure Key Vault.  If the named key already exists,
-// Azure Key Vault creates a new version of the key. It requires the keys/create permission. Pass nil to use the default options.
+// CreateKey creates a key. If the named key already exists, it creates a new version of the key. This method can create
+// a key of any type. CreateRSAKey, CreateECKey, and CreateOctKey are more convenient for creating specific key types.
+//  Pass nil for options to accept default values.
 func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, options *CreateKeyOptions) (CreateKeyResponse, error) {
 	if options == nil {
 		options = &CreateKeyOptions{}
@@ -156,22 +159,24 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 	return createKeyResponseFromGenerated(resp), nil
 }
 
-// CreateECKeyOptions contains the optional parameters for the KeyVaultClient.CreateECKey method
+// CreateECKeyOptions contains optional parameters for CreateECKey
 type CreateECKeyOptions struct {
-	// Elliptic curve name. For valid values, see PossibleCurveNameValues.
-	CurveName *CurveName `json:"crv,omitempty"`
+	// Curve is the elliptic curve name. For valid values, see PossibleCurveNameValues.
+	Curve *CurveName `json:"crv,omitempty"`
 
-	// Tags contain application specific metadata in the form of key-value pairs.
+	// Tags is application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
-	// Whether to create an EC key with HSM protection
+	// HardwareProtected determines whether the key is is created in a hardware security module (HSM).
 	HardwareProtected *bool
 
-	// The properties of a key managed by the key vault service.
-	Properties *Properties  `json:"attributes,omitempty"`
+	// Properties is the key's management properties.
+	Properties *Properties `json:"attributes,omitempty"`
+
+	// Operations are the operations Key Vault will allow for the key.
 	Operations []*Operation `json:"key_ops,omitempty"`
 
-	// The policy rules under which the key can be exported.
+	// ReleasePolicy specifies conditions under which the key can be exported
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 }
 
@@ -186,7 +191,7 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 	}
 	return generated.KeyCreateParameters{
 		Kty:           keyType.toGenerated(),
-		Curve:         (*generated.JSONWebKeyCurveName)(c.CurveName),
+		Curve:         (*generated.JSONWebKeyCurveName)(c.Curve),
 		Tags:          convertToGeneratedMap(c.Tags),
 		KeyOps:        keyOps,
 		ReleasePolicy: c.ReleasePolicy.toGenerated(),
@@ -194,7 +199,7 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 	}
 }
 
-// CreateECKeyResponse contains the response from method Client.CreateECKey.
+// CreateECKeyResponse is returned by CreateECKey.
 type CreateECKeyResponse struct {
 	Key
 }
@@ -212,10 +217,8 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 	}
 }
 
-// CreateECKey can be used to create a new elliptic key curve in Azure Key Vault. If the
-// named key already exists, Azure Key Vault creates a new version of the key.
-// EC keys can be created in Standard or Premium SKU vaults, ECHSM can be created in Premium SKU vaults or Managed HSMs.
-// It requires the keys/create permission. Pass nil to use the default options.
+// CreateECKey creates a new elliptic curve key. If the named key already exists, this creates a new version of the key.
+// Pass nil for options to accept default values.
 func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateECKeyOptions) (CreateECKeyResponse, error) {
 	keyType := KeyTypeEC
 
@@ -234,26 +237,28 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 	return createECKeyResponseFromGenerated(resp), nil
 }
 
-// CreateOctKeyOptions contains the optional parameters for the Client.CreateOCTKey method
+// CreateOctKeyOptions contains optional parameters for CreateOctKey
 type CreateOctKeyOptions struct {
-	// Hardware Protected OCT Key
+	// HardwareProtected determines whether the key is is created in a hardware security module (HSM).
 	HardwareProtected *bool
 
-	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+	// Size is the key size in bits. For example: 128, 192 or 256.
 	Size *int32 `json:"key_size,omitempty"`
 
-	// The properties of a key managed by the key vault service.
-	Properties *Properties  `json:"attributes,omitempty"`
+	// Properties is the key's management properties.
+	Properties *Properties `json:"attributes,omitempty"`
+
+	// Operations are the operations Key Vault will allow for the key.
 	Operations []*Operation `json:"key_ops,omitempty"`
 
-	// The policy rules under which the key can be exported.
+	// ReleasePolicy specifies conditions under which the key can be exported
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
-	// Tags contain application specific metadata in the form of key-value pairs.
+	// Tags is application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-// conver the CreateOCTKeyOptions to generated.KeyCreateParameters
+// conver the CreateOctKeyOptions to generated.KeyCreateParameters
 func (c *CreateOctKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
 	var keyOps []*generated.JSONWebKeyOperation
 	if c.Operations != nil {
@@ -272,12 +277,12 @@ func (c *CreateOctKeyOptions) toKeyCreateParameters(keyType KeyType) generated.K
 	}
 }
 
-// CreateOctKeyResponse contains the response from method Client.CreateOCTKey.
+// CreateOctKeyResponse is returned by CreateOctKey.
 type CreateOctKeyResponse struct {
 	Key
 }
 
-// convert generated response to CreateOCTKeyResponse
+// convert generated response to CreateOctKeyResponse
 func createOctKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateOctKeyResponse {
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateOctKeyResponse{
@@ -290,10 +295,7 @@ func createOctKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespon
 	}
 }
 
-// CreateOctKey can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
-// If the named key already exists, Azure Key Vault creates a new version of the key.
-// An oct-HSM key can only be created with a Managed HSM vault.
-// It requires the keys/create permission. Pass nil to use the default options.
+// CreateOctKey creates a new AES key. If the named key already exists, this creates a new version of the key. Pass nil for options to accept default values.
 func (c *Client) CreateOctKey(ctx context.Context, name string, options *CreateOctKeyOptions) (CreateOctKeyResponse, error) {
 	keyType := KeyTypeOctHSM
 
@@ -311,25 +313,27 @@ func (c *Client) CreateOctKey(ctx context.Context, name string, options *CreateO
 	return createOctKeyResponseFromGenerated(resp), nil
 }
 
-// CreateRSAKeyOptions contains the optional parameters for the Client.CreateRSAKey method.
+// CreateRSAKeyOptions contains optional parameters for CreateRSAKey.
 type CreateRSAKeyOptions struct {
-	// Hardware Protected OCT Key
+	// HardwareProtected determines whether the key is is created in a hardware security module (HSM).
 	HardwareProtected *bool
 
-	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+	// Size is the key size in bits. For example: 2048, 3072, or 4096.
 	Size *int32 `json:"key_size,omitempty"`
 
-	// The public exponent for a RSA key.
+	// PublicExponent is the key's public exponent.
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
-	// Tags contain application specific metadata in the form of key-value pairs.
+	// Tags is application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 
-	// The properties of a key managed by the key vault service.
-	Properties *Properties  `json:"attributes,omitempty"`
+	// Properties is the key's management properties.
+	Properties *Properties `json:"attributes,omitempty"`
+
+	// Operations are the operations Key Vault will allow for the key.
 	Operations []*Operation `json:"key_ops,omitempty"`
 
-	// The policy rules under which the key can be exported.
+	// ReleasePolicy specifies conditions under which the key can be exported
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 }
 
@@ -353,7 +357,7 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreat
 	}
 }
 
-// CreateRSAKeyResponse contains the response from method Client.CreateRSAKey.
+// CreateRSAKeyResponse is returned by CreateRSAKey.
 type CreateRSAKeyResponse struct {
 	Key
 }
@@ -374,7 +378,7 @@ func createRSAKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespon
 // CreateRSAKey can be used to create a new RSA key in Azure Key Vault. If the named key already
 // exists, Azure Key Vault creates a new version of the key. RSA keys can be created in Standard or
 // Premium SKU vaults, RSAHSM can be created in Premium SKU vaults or Managed HSMs.
-// It requires the keys/create permission. Pass nil to use the default options.
+// It requires the keys/create permission. Pass nil for options to accept default values.
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {
 	keyType := KeyTypeRSA
 
@@ -393,17 +397,17 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 	return createRSAKeyResponseFromGenerated(resp), nil
 }
 
-// ListPropertiesOfKeysOptions contains the optional parameters for the Client.ListKeys method
+// ListPropertiesOfKeysOptions contains optional parameters for ListKeys
 type ListPropertiesOfKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListPropertiesOfKeysResponse contains the current page of results for the Client.ListSecrets operation
+// ListPropertiesOfKeysResponse contains a page of key properties.
 type ListPropertiesOfKeysResponse struct {
-	// READ-ONLY; The URL to get the next set of keys.
+	// NextLink is the URL to get the next page.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A response message containing a list of keys in the key vault along with a link to the next page of keys.
+	// Keys is the page's content.
 	Keys []*KeyItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -460,7 +464,7 @@ type GetKeyOptions struct {
 	Version string
 }
 
-// GetKeyResponse contains the response for the Client.GetResponse method
+// GetKeyResponse is returned by GetResponse.
 type GetKeyResponse struct {
 	Key
 }
@@ -480,7 +484,7 @@ func getKeyResponseFromGenerated(g generated.KeyVaultClientGetKeyResponse) GetKe
 
 // GetKey is used to retrieve the content for any single Key. If the requested key is symmetric, then
 // no key material is released in the response. This operation requires the keys/get permission.
-// Pass nil to use the default options.
+// Pass nil for options to accept default values.
 func (c *Client) GetKey(ctx context.Context, name string, options *GetKeyOptions) (GetKeyResponse, error) {
 	if options == nil {
 		options = &GetKeyOptions{}
@@ -494,7 +498,7 @@ func (c *Client) GetKey(ctx context.Context, name string, options *GetKeyOptions
 	return getKeyResponseFromGenerated(resp), err
 }
 
-// GetDeletedKeyOptions contains the optional parameters for the Client.GetDeletedKey method
+// GetDeletedKeyOptions contains optional parameters for GetDeletedKey
 type GetDeletedKeyOptions struct {
 	// placeholder for future optional parameters
 }
@@ -526,7 +530,7 @@ func getDeletedKeyResponseFromGenerated(g generated.KeyVaultClientGetDeletedKeyR
 // GetDeletedKey is used to retrieve information about a deleted key. This operation is only
 // applicable for soft-delete enabled vaults. While the operation can be invoked on any vault,
 // it will return an error if invoked on a non soft-delete enabled vault. This operation requires
-// the keys/get permission. Pass nil to use the default options.
+// the keys/get permission. Pass nil for options to accept default values.
 func (c *Client) GetDeletedKey(ctx context.Context, name string, options *GetDeletedKeyOptions) (GetDeletedKeyResponse, error) {
 	if options == nil {
 		options = &GetDeletedKeyOptions{}
@@ -540,7 +544,7 @@ func (c *Client) GetDeletedKey(ctx context.Context, name string, options *GetDel
 	return getDeletedKeyResponseFromGenerated(resp), nil
 }
 
-// PurgeDeletedKeyOptions is the struct for any future options for Client.PurgeDeletedKey.
+// PurgeDeletedKeyOptions contains optional parameters for PurgeDeletedKey.
 type PurgeDeletedKeyOptions struct {
 	// placeholder for future optional parameters
 }
@@ -550,7 +554,7 @@ func (p *PurgeDeletedKeyOptions) toGenerated() *generated.KeyVaultClientPurgeDel
 	return &generated.KeyVaultClientPurgeDeletedKeyOptions{}
 }
 
-// PurgeDeletedKeyResponse contains the response from method Client.PurgeDeletedKey.
+// PurgeDeletedKeyResponse is returned by PurgeDeletedKey.
 type PurgeDeletedKeyResponse struct {
 	// placeholder for future response values
 }
@@ -560,9 +564,8 @@ func purgeDeletedKeyResponseFromGenerated(i generated.KeyVaultClientPurgeDeleted
 	return PurgeDeletedKeyResponse{}
 }
 
-// PurgeDeletedKey deletes the specified key. The purge deleted key operation removes the key permanently, without the possibility of recovery.
-// This operation can only be enabled on a soft-delete enabled vault. This operation requires the key/purge permission.
-// Pass nil to use the default options.
+// PurgeDeletedKey permanently deletes a deleted key. Key Vault may require several seconds to finish purging the key after this
+// method returns. Pass nil for options to accept default values.
 func (c *Client) PurgeDeletedKey(ctx context.Context, name string, options *PurgeDeletedKeyOptions) (PurgeDeletedKeyResponse, error) {
 	if options == nil {
 		options = &PurgeDeletedKeyOptions{}
@@ -576,15 +579,14 @@ type DeleteKeyResponse struct {
 	DeletedKey
 }
 
-// BeginDeleteKeyOptions contains the optional parameters for the Client.BeginDeleteKey method.
+// BeginDeleteKeyOptions contains optional parameters for BeginDeleteKey.
 type BeginDeleteKeyOptions struct {
 	// ResumeToken is a string to rehydrate a poller for an operation that has already begun.
 	ResumeToken string
 }
 
-// BeginDeleteKey deletes a key from the keyvault. Delete cannot be applied to an individual version of a key. This operation
-// requires the key/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
-// PollUntilDone function can be used to poll until completion. Pass nil to use the default options.
+// BeginDeleteKey deletes all versions of a key. It returns a Poller that enables waiting for the deletion to finish.
+// Pass nil for options to accept default values.
 func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *BeginDeleteKeyOptions) (*runtime.Poller[DeleteKeyResponse], error) {
 	if options == nil {
 		options = &BeginDeleteKeyOptions{}
@@ -617,7 +619,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *Begin
 	})
 }
 
-// BackupKeyOptions contains the optional parameters for the Client.BackupKey method
+// BackupKeyOptions contains optional parameters for BackupKey
 type BackupKeyOptions struct {
 	// placeholder for future optional parameters
 }
@@ -640,17 +642,16 @@ func backupKeyResponseFromGenerated(i generated.KeyVaultClientBackupKeyResponse)
 	}
 }
 
-// BackupKey exports a key from Azure Key Vault in a protected form.
+// BackupKey exports all versions of a key from Azure Key Vault in a protected form.
+//
 // Note that this operation does NOT return key material in a form that can be used outside the
-// Azure Key Vault system, the returned key material is either protected to a Azure Key Vault
+// Azure Key Vault system. The returned key material is either protected to an Azure Key Vault
 // HSM or to Azure Key Vault itself. The intent of this operation is to allow a client to GENERATE
 // a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into another Azure
-// Key Vault instance. The BACKUP operation may be used to export, in protected form, any key
-// type from Azure Key Vault. Individual versions of a key cannot be backed up. BACKUP / RESTORE
-// can be performed within geographical boundaries only; meaning that a BACKUP from one geographical
-// area cannot be restored to another geographical area. For example, a backup from the US
-// geographical area cannot be restored in an EU geographical area. This operation requires the key/backup permission.
-// Pass nil to use the default options.
+// Key Vault instance. BACKUP / RESTORE can be performed within geographical boundaries only; a
+//  BACKUP from one geographical area cannot be restored to another geographical area. For example,
+//  a backup from the US geographical area cannot be restored in an EU geographical area.
+// Pass nil for options to accept default values.
 func (c *Client) BackupKey(ctx context.Context, name string, options *BackupKeyOptions) (BackupKeyResponse, error) {
 	if options == nil {
 		options = &BackupKeyOptions{}
@@ -688,9 +689,7 @@ func recoverDeletedKeyResponseFromGenerated(g generated.KeyVaultClientRecoverDel
 	}
 }
 
-// BeginRecoverDeletedKey recovers the deleted key in the specified vault to the latest version.
-// This operation can only be performed on a soft-delete enabled vault. This operation requires
-// the keys/recover permission. Pass nil to use the default options.
+// BeginRecoverDeletedKey recovers a deleted key to its latest version. Pass nil for options to accept default values.
 func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, options *BeginRecoverDeletedKeyOptions) (*runtime.Poller[RecoverDeletedKeyResponse], error) {
 	if options == nil {
 		options = &BeginRecoverDeletedKeyOptions{}
@@ -723,12 +722,12 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 	})
 }
 
-// UpdateKeyPropertiesOptions contains the optional parameters for the Client.UpdateKeyProperties method
+// UpdateKeyPropertiesOptions contains optional parameters for UpdateKeyProperties
 type UpdateKeyPropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UpdateKeyPropertiesResponse contains the response for the Client.UpdateKeyProperties method
+// UpdateKeyPropertiesResponse is returned by UpdateKeyProperties.
 type UpdateKeyPropertiesResponse struct {
 	Key
 }
@@ -746,9 +745,8 @@ func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyRespons
 	}
 }
 
-// UpdateKeyProperties updates the parameters of a key, but cannot be used to update the cryptographic material
-// of a key itself. In order to perform this operation, the key must already exist in the Key Vault.
-// This operation requires the keys/update permission. Pass nil to use the default options.
+// UpdateKeyProperties updates the management properties of a key, but not its cryptographic material.
+// Pass nil for options to accept default values.
 func (c *Client) UpdateKeyProperties(ctx context.Context, key Key, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
 	name, version := "", ""
 	if key.Properties != nil && key.Properties.Name != nil {
@@ -774,14 +772,14 @@ func (c *Client) UpdateKeyProperties(ctx context.Context, key Key, options *Upda
 
 // ListDeletedKeysResponse holds the data for a single page.
 type ListDeletedKeysResponse struct {
-	// READ-ONLY; The URL to get the next set of deleted keys.
+	// NextLink is the URL to get the next page.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A response message containing a list of the deleted keys in the vault along with a link to the next page of deleted keys
+	// DeletedKeys is the page's content.
 	DeletedKeys []*DeletedKeyItem `json:"value,omitempty" azure:"ro"`
 }
 
-// ListDeletedKeysOptions contains the optional parameters for the Client.ListDeletedKeys operation.
+// ListDeletedKeysOptions contains optional parameters for NewListDeletedKeysPager.
 type ListDeletedKeysOptions struct {
 	// placeholder for future optional parameters
 }
@@ -791,10 +789,7 @@ func (l *ListDeletedKeysOptions) toGenerated() *generated.KeyVaultClientGetDelet
 	return &generated.KeyVaultClientGetDeletedKeysOptions{}
 }
 
-// NewListDeletedKeysPager retrieves a list of the public part of deleted keys. This operation includes deletion-specific information.
-// The ListDeleted operation is applicable for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return
-// an error if invoked on a non soft-delete enabled vault. This operation requires the keys/list permission.
-// If the operation fails it returns an *azcore.ResponseError type. Pass nil to use the default options.
+// NewListDeletedKeysPager creates a pager that lists deleted keys. Pass nil for options to accept default values.
 func (c *Client) NewListDeletedKeysPager(options *ListDeletedKeysOptions) *runtime.Pager[ListDeletedKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListDeletedKeysResponse]{
 		More: func(page ListDeletedKeysResponse) bool {
@@ -836,7 +831,7 @@ func (c *Client) NewListDeletedKeysPager(options *ListDeletedKeysOptions) *runti
 	})
 }
 
-// ListPropertiesOfKeyVersionsOptions contains the options for the ListKeyVersions operations
+// ListPropertiesOfKeyVersionsOptions contains optional parameters for NewListPropertiesOfKeyVersionsPager.
 type ListPropertiesOfKeyVersionsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -849,12 +844,12 @@ func (l *ListPropertiesOfKeyVersionsOptions) toGenerated() *generated.KeyVaultCl
 	return &generated.KeyVaultClientGetKeyVersionsOptions{}
 }
 
-// ListPropertiesOfKeyVersionsResponse contains the current page from a ListKeyVersionsPager.PageResponse method
+// ListPropertiesOfKeyVersionsResponse contains a page of key versions.
 type ListPropertiesOfKeyVersionsResponse struct {
-	// READ-ONLY; The URL to get the next set of keys.
+	// NextLink is the URL to get the next page.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A response message containing a list of keys in the key vault along with a link to the next page of keys.
+	// Keys is the page's content.
 	Keys []KeyItem `json:"value,omitempty" azure:"ro"`
 }
 
@@ -872,9 +867,7 @@ func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsRe
 	}
 }
 
-// NewListPropertiesOfKeyVersionsPager lists all versions of the specified key. The full key identifer and
-// attributes are provided in the response. No values are returned for the keys. This operation
-// requires the keys/list permission.
+// NewListPropertiesOfKeyVersionsPager creates a pager that lists properties of a key's versions, not including key material.
 func (c *Client) NewListPropertiesOfKeyVersionsPager(keyName string, options *ListPropertiesOfKeyVersionsOptions) *runtime.Pager[ListPropertiesOfKeyVersionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfKeyVersionsResponse]{
 		More: func(page ListPropertiesOfKeyVersionsResponse) bool {
@@ -907,7 +900,7 @@ func (c *Client) NewListPropertiesOfKeyVersionsPager(keyName string, options *Li
 	})
 }
 
-// RestoreKeyBackupOptions contains the optional parameters for the Client.RestoreKey method.
+// RestoreKeyBackupOptions contains optional parameters for RestoreKey.
 type RestoreKeyBackupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -916,7 +909,7 @@ func (r RestoreKeyBackupOptions) toGenerated() *generated.KeyVaultClientRestoreK
 	return &generated.KeyVaultClientRestoreKeyOptions{}
 }
 
-// RestoreKeyBackupResponse contains the response object for the Client.RestoreKeyBackup operation.
+// RestoreKeyBackupResponse is returned by RestoreKeyBackup.
 type RestoreKeyBackupResponse struct {
 	Key
 }
@@ -934,9 +927,8 @@ func restoreKeyBackupResponseFromGenerated(g generated.KeyVaultClientRestoreKeyR
 	}
 }
 
-// RestoreKeyBackup restores a backed up key, and all its versions, to a vault. This operation requires the keys/restore permission.
-// The backup parameter is a blob of the key to restore, this can be received from the Client.BackupKey function.
-// Pass nil to use the default options.
+// RestoreKeyBackup restores all versions of a backed up key to the vault. The keyBackup parameter is the bytes of a key backup as returned by BackupKey.
+// Pass nil for options to accept default values.
 func (c *Client) RestoreKeyBackup(ctx context.Context, keyBackup []byte, options *RestoreKeyBackupOptions) (RestoreKeyBackupResponse, error) {
 	if options == nil {
 		options = &RestoreKeyBackupOptions{}
@@ -950,15 +942,15 @@ func (c *Client) RestoreKeyBackup(ctx context.Context, keyBackup []byte, options
 	return restoreKeyBackupResponseFromGenerated(resp), nil
 }
 
-// ImportKeyOptions contains the optional parameters for the Client.ImportKeyOptions parameter
+// ImportKeyOptions contains optional parameters for ImportKeyOptions.
 type ImportKeyOptions struct {
-	// Whether to import as a hardware key (HSM) or software key.
+	// HardwareProtected determines whether Key Vault protects the imported key with an HSM.
 	HardwareProtected *bool `json:"Hsm,omitempty"`
 
-	// The key management attributes.
+	// Properties is the properties of the key.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Tags contain application specific metadata in the form of key-value pairs.
+	// Tags is application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
@@ -975,7 +967,7 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImp
 	}
 }
 
-// ImportKeyResponse contains the response of the Client.ImportKey method
+// ImportKeyResponse is returned by ImportKey.
 type ImportKeyResponse struct {
 	Key
 }
@@ -993,9 +985,7 @@ func importKeyResponseFromGenerated(g generated.KeyVaultClientImportKeyResponse)
 	}
 }
 
-// ImportKey may be used to import any key type into an Azure Key Vault. If the named key already exists,
-// Azure Key Vault creates a new version of the key. This operation requires the keys/import permission.
-// Pass nil to use the default options.
+// ImportKey imports a key into the vault. If the named key already exists, this creates a new version of the key. Pass nil for options to accept default values.
 func (c *Client) ImportKey(ctx context.Context, name string, key JSONWebKey, options *ImportKeyOptions) (ImportKeyResponse, error) {
 	if options == nil {
 		options = &ImportKeyOptions{}
@@ -1009,7 +999,7 @@ func (c *Client) ImportKey(ctx context.Context, name string, key JSONWebKey, opt
 	return importKeyResponseFromGenerated(resp), nil
 }
 
-// GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes function.
+// GetRandomBytesOptions contains optional parameters for GetRandomBytes.
 type GetRandomBytesOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1018,14 +1008,13 @@ func (g GetRandomBytesOptions) toGenerated() *generated.KeyVaultClientGetRandomB
 	return &generated.KeyVaultClientGetRandomBytesOptions{}
 }
 
-// GetRandomBytesResponse is the response struct for the Client.GetRandomBytes function.
+// GetRandomBytesResponse is returned by GetRandomBytes.
 type GetRandomBytesResponse struct {
-	// The bytes encoded as a base64url string.
+	// Value is the random bytes.
 	Value []byte `json:"value,omitempty"`
 }
 
-// GetRandomBytes gets the requested number of bytes containing random values from a managed HSM.
-// If the operation fails it returns the *KeyVaultError error type. Pass nil to use the default options.
+// GetRandomBytes gets the requested number of random bytes from Azure Managed HSM. Pass nil for options to accept default values.
 func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetRandomBytesOptions) (GetRandomBytesResponse, error) {
 	if options == nil {
 		options = &GetRandomBytesOptions{}
@@ -1047,7 +1036,7 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 	}, nil
 }
 
-// RotateKeyOptions contains the optional parameters for the Client.RotateKey function
+// RotateKeyOptions contains optional parameters for RotateKey.
 type RotateKeyOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1056,14 +1045,12 @@ func (r RotateKeyOptions) toGenerated() *generated.KeyVaultClientRotateKeyOption
 	return &generated.KeyVaultClientRotateKeyOptions{}
 }
 
-// RotateKeyResponse contains response fields for Client.RotateKey
+// RotateKeyResponse is returned by RotateKey.
 type RotateKeyResponse struct {
 	Key
 }
 
-// RotateKey will rotate the key based on the key policy. It requires the keys/rotate permission.
-// The system will generate a new version in the specified key.
-// Pass nil to use the default options.
+// RotateKey rotates a key based on the key's rotation policy, creating a new version in the specified key. Pass nil for options to accept default values.
 func (c *Client) RotateKey(ctx context.Context, keyName string, options *RotateKeyOptions) (RotateKeyResponse, error) {
 	if options == nil {
 		options = &RotateKeyOptions{}
@@ -1091,7 +1078,7 @@ func (c *Client) RotateKey(ctx context.Context, keyName string, options *RotateK
 	}, nil
 }
 
-// GetKeyRotationPolicyOptions contains the optional parameters for the Client.GetKeyRotationPolicy function
+// GetKeyRotationPolicyOptions contains optional parameters for GetKeyRotationPolicy.
 type GetKeyRotationPolicyOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1100,7 +1087,7 @@ func (g GetKeyRotationPolicyOptions) toGenerated() *generated.KeyVaultClientGetK
 	return &generated.KeyVaultClientGetKeyRotationPolicyOptions{}
 }
 
-// GetKeyRotationPolicyResponse contains the response struct for the Client.GetKeyRotationPolicy function
+// GetKeyRotationPolicyResponse is returned by GetKeyRotationPolicy.
 type GetKeyRotationPolicyResponse struct {
 	RotationPolicy
 }
@@ -1127,8 +1114,7 @@ func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyR
 	}
 }
 
-// GetKeyRotationPolicy returns the specified key policy resources in the specified key vault. This operation requires
-// the keys/get permission. Pass nil to use the default options.
+// GetKeyRotationPolicy gets the specified key's rotation policy. Pass nil for options to accept default values.
 func (c *Client) GetKeyRotationPolicy(ctx context.Context, keyName string, options *GetKeyRotationPolicyOptions) (GetKeyRotationPolicyResponse, error) {
 	if options == nil {
 		options = &GetKeyRotationPolicyOptions{}
@@ -1147,26 +1133,25 @@ func (c *Client) GetKeyRotationPolicy(ctx context.Context, keyName string, optio
 	return getKeyRotationPolicyResponseFromGenerated(resp), nil
 }
 
-// ReleaseKeyOptions contains optional parameters for Client.ReleaseKey
+// ReleaseKeyOptions contains optional parameters for Client.ReleaseKey.
 type ReleaseKeyOptions struct {
-	// The version of the key to release
+	// Version is the version of the key to release
 	Version string
 
-	// The encryption algorithm to use to protected the exported key material
+	// Enc is the encryption algorithm used to protected exported key material.
 	Enc *ExportEncryptionAlg `json:"enc,omitempty"`
 
-	// A client provided nonce for freshness.
+	// Nonce is client-provided nonce for freshness.
 	Nonce *string `json:"nonce,omitempty"`
 }
 
-// ReleaseKeyResponse contains the response of Client.ReleaseKey
+// ReleaseKeyResponse is returned by ReleaseKey.
 type ReleaseKeyResponse struct {
-	// READ-ONLY; A signed object containing the released key.
+	// Value is a signed token containing the released key.
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// ReleaseKey is applicable to all key types. The target key must be marked exportable. This operation requires the keys/release permission.
-// Pass nil to use the default options.
+// ReleaseKey is applicable to all key types. The target key must be exportable. Pass nil for options to accept default values.
 func (c *Client) ReleaseKey(ctx context.Context, name string, targetAttestationToken string, options *ReleaseKeyOptions) (ReleaseKeyResponse, error) {
 	if options == nil {
 		options = &ReleaseKeyOptions{}
@@ -1194,12 +1179,12 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, targetAttestationT
 	}, err
 }
 
-// UpdateKeyRotationPolicyOptions contains the optional parameters for the Client.UpdateKeyRotationPolicy function
+// UpdateKeyRotationPolicyOptions contains optional parameters for UpdateKeyRotationPolicy.
 type UpdateKeyRotationPolicyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UpdateKeyRotationPolicyResponse contains the response for the Client.UpdateKeyRotationPolicy function
+// UpdateKeyRotationPolicyResponse is returned by UpdateKeyRotationPolicy.
 type UpdateKeyRotationPolicyResponse struct {
 	RotationPolicy
 }
@@ -1226,9 +1211,7 @@ func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpda
 	}
 }
 
-// UpdateKeyRotationPolicy sets specified members in the key policy.
-// This operation requires the keys/update permission.
-// Pass nil to use the default options.
+// UpdateKeyRotationPolicy updates the key's rotation policy. Pass nil for options to accept default values.
 func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, keyName string, policy RotationPolicy, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
 	resp, err := c.kvClient.UpdateKeyRotationPolicy(
 		ctx,

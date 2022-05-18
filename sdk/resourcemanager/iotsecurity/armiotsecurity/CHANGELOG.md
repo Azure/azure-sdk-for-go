@@ -1,5 +1,30 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `DefenderSettingsList.MarshalJSON` has been removed
+- Function `PackageDownloads.MarshalJSON` has been removed
+- Function `OperationMetaServiceSpecification.MarshalJSON` has been removed
+- Function `ErrorResponseModelError.MarshalJSON` has been removed
+- Function `OnPremiseSensorsList.MarshalJSON` has been removed
+- Function `SensorsList.MarshalJSON` has been removed
+- Function `ErrorModel.MarshalJSON` has been removed
+- Function `OperationMetaMetricSpecification.MarshalJSON` has been removed
+- Function `PackageDownloadsSensorFull.MarshalJSON` has been removed
+- Function `LocationList.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `PackageDownloadsCentralManager.MarshalJSON` has been removed
+- Function `DeviceGroupList.MarshalJSON` has been removed
+- Function `PackageDownloadsCentralManagerFullOvf.MarshalJSON` has been removed
+- Function `SitesList.MarshalJSON` has been removed
+- Function `PackageDownloadsSensorFullOvf.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `PackageDownloadsCentralManagerFull.MarshalJSON` has been removed
+- Function `DeviceList.MarshalJSON` has been removed
+- Function `PackageDownloadsSensor.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

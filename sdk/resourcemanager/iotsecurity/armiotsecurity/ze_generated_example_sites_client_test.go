@@ -29,7 +29,7 @@ func ExampleSitesClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<scope>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub/sites",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,7 +50,7 @@ func ExampleSitesClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -71,10 +71,10 @@ func ExampleSitesClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<scope>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
 		armiotsecurity.SiteModel{
 			Properties: &armiotsecurity.SiteProperties{
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("IoT site name"),
 				Tags: map[string]*string{
 					"key1": to.Ptr("value1"),
 					"key2": to.Ptr("value2"),
@@ -101,7 +101,7 @@ func ExampleSitesClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<scope>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -24,7 +24,7 @@ func ExampleOnPremiseSensorsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewOnPremiseSensorsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewOnPremiseSensorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -44,12 +44,12 @@ func ExampleOnPremiseSensorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewOnPremiseSensorsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewOnPremiseSensorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<on-premise-sensor-name>",
+		"mySensor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,12 +65,12 @@ func ExampleOnPremiseSensorsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewOnPremiseSensorsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewOnPremiseSensorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<on-premise-sensor-name>",
+		"mySensor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -86,12 +86,12 @@ func ExampleOnPremiseSensorsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewOnPremiseSensorsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewOnPremiseSensorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc24", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<on-premise-sensor-name>",
+		"mySensor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,12 +105,12 @@ func ExampleOnPremiseSensorsClient_DownloadActivation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewOnPremiseSensorsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewOnPremiseSensorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DownloadActivation(ctx,
-		"<on-premise-sensor-name>",
+		"mySensor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -124,14 +124,14 @@ func ExampleOnPremiseSensorsClient_DownloadResetPassword() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewOnPremiseSensorsClient("<subscription-id>", cred, nil)
+	client, err := armiotsecurity.NewOnPremiseSensorsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DownloadResetPassword(ctx,
-		"<on-premise-sensor-name>",
+		"mySensor",
 		armiotsecurity.ResetPasswordInput{
-			ApplianceID: to.Ptr("<appliance-id>"),
+			ApplianceID: to.Ptr("3214-528AV23-D121-D3-E1"),
 		},
 		nil)
 	if err != nil {

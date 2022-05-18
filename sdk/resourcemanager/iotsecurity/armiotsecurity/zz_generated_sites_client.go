@@ -34,7 +34,7 @@ func NewSitesClient(credential azcore.TokenCredential, options *arm.ClientOption
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,6 +51,7 @@ func NewSitesClient(credential azcore.TokenCredential, options *arm.ClientOption
 
 // CreateOrUpdate - Create or update IoT site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // siteModel - The IoT sites model
 // options - SitesClientCreateOrUpdateOptions contains the optional parameters for the SitesClient.CreateOrUpdate method.
@@ -80,7 +81,7 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, scop
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, siteModel)
 }
 
@@ -95,6 +96,7 @@ func (client *SitesClient) createOrUpdateHandleResponse(resp *http.Response) (Si
 
 // Delete - Delete IoT site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // options - SitesClientDeleteOptions contains the optional parameters for the SitesClient.Delete method.
 func (client *SitesClient) Delete(ctx context.Context, scope string, options *SitesClientDeleteOptions) (SitesClientDeleteResponse, error) {
@@ -123,12 +125,13 @@ func (client *SitesClient) deleteCreateRequest(ctx context.Context, scope string
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get IoT site
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // options - SitesClientGetOptions contains the optional parameters for the SitesClient.Get method.
 func (client *SitesClient) Get(ctx context.Context, scope string, options *SitesClientGetOptions) (SitesClientGetResponse, error) {
@@ -157,7 +160,7 @@ func (client *SitesClient) getCreateRequest(ctx context.Context, scope string, o
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -172,6 +175,7 @@ func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGe
 
 // List - List IoT sites
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // scope - Scope of the query (IoT Hub, /providers/Microsoft.Devices/iotHubs/myHub)
 // options - SitesClientListOptions contains the optional parameters for the SitesClient.List method.
 func (client *SitesClient) List(ctx context.Context, scope string, options *SitesClientListOptions) (SitesClientListResponse, error) {
@@ -200,7 +204,7 @@ func (client *SitesClient) listCreateRequest(ctx context.Context, scope string, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

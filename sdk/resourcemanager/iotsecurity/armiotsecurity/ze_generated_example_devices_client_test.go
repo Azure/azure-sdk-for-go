@@ -23,18 +23,17 @@ func ExampleDevicesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDevicesClient("<subscription-id>",
-		"<iot-defender-location>", cred, nil)
+	client, err := armiotsecurity.NewDevicesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+		"eastus", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<device-group-name>",
+	pager := client.NewListPager("myGroup",
 		&armiotsecurity.DevicesClientListOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleDevicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armiotsecurity.NewDevicesClient("<subscription-id>",
-		"<iot-defender-location>", cred, nil)
+	client, err := armiotsecurity.NewDevicesClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+		"eastus", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-group-name>",
-		"<device-id>",
+		"myGroup",
+		"fa30e727-16e1-4e81-84f1-d26b9153d1b2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

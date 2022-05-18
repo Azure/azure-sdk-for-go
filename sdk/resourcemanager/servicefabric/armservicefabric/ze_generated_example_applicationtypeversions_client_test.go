@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric"
@@ -26,15 +24,15 @@ func ExampleApplicationTypeVersionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewApplicationTypeVersionsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewApplicationTypeVersionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-type-name>",
-		"<version>",
+		"resRg",
+		"myCluster",
+		"myAppType",
+		"1.0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,26 +48,26 @@ func ExampleApplicationTypeVersionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewApplicationTypeVersionsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewApplicationTypeVersionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-type-name>",
-		"<version>",
+		"resRg",
+		"myCluster",
+		"myAppType",
+		"1.0",
 		armservicefabric.ApplicationTypeVersionResource{
 			Tags: map[string]*string{},
 			Properties: &armservicefabric.ApplicationTypeVersionResourceProperties{
-				AppPackageURL: to.Ptr("<app-package-url>"),
+				AppPackageURL: to.Ptr("http://fakelink.test.com/MyAppType"),
 			},
 		},
-		&armservicefabric.ApplicationTypeVersionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -82,20 +80,20 @@ func ExampleApplicationTypeVersionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewApplicationTypeVersionsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewApplicationTypeVersionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-type-name>",
-		"<version>",
-		&armservicefabric.ApplicationTypeVersionsClientBeginDeleteOptions{ResumeToken: ""})
+		"resRg",
+		"myCluster",
+		"myAppType",
+		"1.0",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -108,14 +106,14 @@ func ExampleApplicationTypeVersionsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabric.NewApplicationTypeVersionsClient("<subscription-id>", cred, nil)
+	client, err := armservicefabric.NewApplicationTypeVersionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-type-name>",
+		"resRg",
+		"myCluster",
+		"myAppType",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

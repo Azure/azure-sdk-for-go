@@ -1,5 +1,29 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ClustersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientUpdateResponse], error)` to `(*runtime.Poller[ClustersClientUpdateResponse], error)`
+- Function `*ClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClustersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClustersClientCreateOrUpdateResponse], error)`
+- Function `*ApplicationTypeVersionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationTypeVersionsClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationTypeVersionsClientDeleteResponse], error)`
+- Function `*ApplicationTypesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationTypesClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationTypesClientDeleteResponse], error)`
+- Function `*ApplicationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ApplicationsClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServicesClientCreateOrUpdateResponse], error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServicesClientDeleteResponse], error)` to `(*runtime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientUpdateResponse], error)` to `(*runtime.Poller[ServicesClientUpdateResponse], error)`
+- Function `*ApplicationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientDeleteResponse], error)` to `(*runtime.Poller[ApplicationsClientDeleteResponse], error)`
+- Function `*ApplicationsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationsClientUpdateResponse], error)` to `(*runtime.Poller[ApplicationsClientUpdateResponse], error)`
+- Function `*ApplicationTypeVersionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ApplicationTypeVersionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ApplicationTypeVersionsClientCreateOrUpdateResponse], error)`
+- Function `ApplicationResourceList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `UpgradableVersionPathResult.MarshalJSON` has been removed
+- Function `ServiceResourceList.MarshalJSON` has been removed
+- Function `ClusterCodeVersionsListResult.MarshalJSON` has been removed
+- Function `ApplicationTypeVersionResourceList.MarshalJSON` has been removed
+- Function `ClusterListResult.MarshalJSON` has been removed
+- Function `ApplicationTypeResourceList.MarshalJSON` has been removed
+
+
 ## 0.6.0 (2022-04-18)
 ### Breaking Changes
 

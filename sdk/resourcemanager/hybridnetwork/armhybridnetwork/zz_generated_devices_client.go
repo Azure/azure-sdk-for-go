@@ -38,7 +38,7 @@ func NewDevicesClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewDevicesClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginCreateOrUpdate - Creates or updates a device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deviceName - Resource name for the device resource.
 // parameters - Parameters supplied to the create or update device operation.
 // options - DevicesClientBeginCreateOrUpdateOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdate
 // method.
-func (client *DevicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, parameters Device, options *DevicesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DevicesClientCreateOrUpdateResponse], error) {
+func (client *DevicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, parameters Device, options *DevicesClientBeginCreateOrUpdateOptions) (*runtime.Poller[DevicesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, deviceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DevicesClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DevicesClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[DevicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DevicesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *DevicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, deviceName string, parameters Device, options *DevicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, deviceName, parameters, options)
 	if err != nil {
@@ -112,33 +114,35 @@ func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the specified device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deviceName - The name of the device resource.
 // options - DevicesClientBeginDeleteOptions contains the optional parameters for the DevicesClient.BeginDelete method.
-func (client *DevicesClient) BeginDelete(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientBeginDeleteOptions) (*armruntime.Poller[DevicesClientDeleteResponse], error) {
+func (client *DevicesClient) BeginDelete(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientBeginDeleteOptions) (*runtime.Poller[DevicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, deviceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DevicesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DevicesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[DevicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DevicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the specified device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *DevicesClient) deleteOperation(ctx context.Context, resourceGroupName string, deviceName string, options *DevicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, deviceName, options)
 	if err != nil {
@@ -174,14 +178,15 @@ func (client *DevicesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets information about the specified device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deviceName - The name of the device resource.
 // options - DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
@@ -220,9 +225,9 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -237,11 +242,12 @@ func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesClie
 
 // NewListByResourceGroupPager - Lists all the device resource in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup
 // method.
 func (client *DevicesClient) NewListByResourceGroupPager(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *runtime.Pager[DevicesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DevicesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DevicesClientListByResourceGroupResponse]{
 		More: func(page DevicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,9 +290,9 @@ func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -301,10 +307,11 @@ func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Respon
 
 // NewListBySubscriptionPager - Lists all the devices in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // options - DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription
 // method.
 func (client *DevicesClient) NewListBySubscriptionPager(options *DevicesClientListBySubscriptionOptions) *runtime.Pager[DevicesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DevicesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DevicesClientListBySubscriptionResponse]{
 		More: func(page DevicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -343,9 +350,9 @@ func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -360,6 +367,7 @@ func (client *DevicesClient) listBySubscriptionHandleResponse(resp *http.Respons
 
 // ListRegistrationKey - List the registration key for the device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deviceName - The name of the device resource.
 // options - DevicesClientListRegistrationKeyOptions contains the optional parameters for the DevicesClient.ListRegistrationKey
@@ -399,9 +407,9 @@ func (client *DevicesClient) listRegistrationKeyCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -416,6 +424,7 @@ func (client *DevicesClient) listRegistrationKeyHandleResponse(resp *http.Respon
 
 // UpdateTags - Updates device tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // deviceName - The name of the device resource.
 // parameters - Parameters supplied to the update device tags operation.
@@ -455,9 +464,9 @@ func (client *DevicesClient) updateTagsCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

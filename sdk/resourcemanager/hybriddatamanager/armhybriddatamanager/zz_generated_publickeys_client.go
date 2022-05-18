@@ -38,7 +38,7 @@ func NewPublicKeysClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPublicKeysClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Get - This method gets the public keys.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // publicKeyName - Name of the public key.
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
@@ -102,7 +103,7 @@ func (client *PublicKeysClient) getCreateRequest(ctx context.Context, publicKeyN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,13 +118,14 @@ func (client *PublicKeysClient) getHandleResponse(resp *http.Response) (PublicKe
 
 // NewListByDataManagerPager - This method gets the list view of public keys, however it will only have one element.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01
 // resourceGroupName - The Resource Group Name
 // dataManagerName - The name of the DataManager Resource within the specified resource group. DataManager names must be between
 // 3 and 24 characters in length and use any alphanumeric and underscore only
 // options - PublicKeysClientListByDataManagerOptions contains the optional parameters for the PublicKeysClient.ListByDataManager
 // method.
 func (client *PublicKeysClient) NewListByDataManagerPager(resourceGroupName string, dataManagerName string, options *PublicKeysClientListByDataManagerOptions) *runtime.Pager[PublicKeysClientListByDataManagerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PublicKeysClientListByDataManagerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PublicKeysClientListByDataManagerResponse]{
 		More: func(page PublicKeysClientListByDataManagerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -172,7 +174,7 @@ func (client *PublicKeysClient) listByDataManagerCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

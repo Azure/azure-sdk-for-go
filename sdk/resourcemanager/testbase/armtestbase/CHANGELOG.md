@@ -1,5 +1,37 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*PackagesClient.BeginHardDelete` return value(s) have been changed from `(*armruntime.Poller[PackagesClientHardDeleteResponse], error)` to `(*runtime.Poller[PackagesClientHardDeleteResponse], error)`
+- Function `*PackagesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PackagesClientDeleteResponse], error)` to `(*runtime.Poller[PackagesClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientUpdateResponse], error)` to `(*runtime.Poller[AccountsClientUpdateResponse], error)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientCreateResponse], error)` to `(*runtime.Poller[AccountsClientCreateResponse], error)`
+- Function `*PackagesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PackagesClientUpdateResponse], error)` to `(*runtime.Poller[PackagesClientUpdateResponse], error)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountsClientDeleteResponse], error)` to `(*runtime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*PackagesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[PackagesClientCreateResponse], error)` to `(*runtime.Poller[PackagesClientCreateResponse], error)`
+- Function `*CustomerEventsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[CustomerEventsClientCreateResponse], error)` to `(*runtime.Poller[CustomerEventsClientCreateResponse], error)`
+- Function `*AccountsClient.BeginOffboard` return value(s) have been changed from `(*armruntime.Poller[AccountsClientOffboardResponse], error)` to `(*runtime.Poller[AccountsClientOffboardResponse], error)`
+- Function `*CustomerEventsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CustomerEventsClientDeleteResponse], error)` to `(*runtime.Poller[CustomerEventsClientDeleteResponse], error)`
+- Function `AccountSKUListResult.MarshalJSON` has been removed
+- Function `AccountUsageDataList.MarshalJSON` has been removed
+- Function `DownloadURLResponse.MarshalJSON` has been removed
+- Function `AvailableOSListResult.MarshalJSON` has been removed
+- Function `TestTypeListResult.MarshalJSON` has been removed
+- Function `EmailEventListResult.MarshalJSON` has been removed
+- Function `ErrorDefinition.MarshalJSON` has been removed
+- Function `TestSummaryListResult.MarshalJSON` has been removed
+- Function `PackageListResult.MarshalJSON` has been removed
+- Function `AnalysisResultListResult.MarshalJSON` has been removed
+- Function `FavoriteProcessListResult.MarshalJSON` has been removed
+- Function `OSUpdateListResult.MarshalJSON` has been removed
+- Function `TestResultListResult.MarshalJSON` has been removed
+- Function `CustomerEventListResult.MarshalJSON` has been removed
+- Function `FlightingRingListResult.MarshalJSON` has been removed
+- Function `AccountListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

@@ -1,5 +1,42 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientStartResponse], error)` to `(*runtime.Poller[VirtualMachinesClientStartResponse], error)`
+- Function `*LabsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LabsClientDeleteResponse], error)` to `(*runtime.Poller[LabsClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginRedeploy` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientRedeployResponse], error)` to `(*runtime.Poller[VirtualMachinesClientRedeployResponse], error)`
+- Function `*UsersClient.BeginInvite` return value(s) have been changed from `(*armruntime.Poller[UsersClientInviteResponse], error)` to `(*runtime.Poller[UsersClientInviteResponse], error)`
+- Function `*VirtualMachinesClient.BeginReimage` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientReimageResponse], error)` to `(*runtime.Poller[VirtualMachinesClientReimageResponse], error)`
+- Function `*LabsClient.BeginPublish` return value(s) have been changed from `(*armruntime.Poller[LabsClientPublishResponse], error)` to `(*runtime.Poller[LabsClientPublishResponse], error)`
+- Function `*UsersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[UsersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[UsersClientCreateOrUpdateResponse], error)`
+- Function `*LabsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[LabsClientUpdateResponse], error)` to `(*runtime.Poller[LabsClientUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginResetPassword` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientResetPasswordResponse], error)` to `(*runtime.Poller[VirtualMachinesClientResetPasswordResponse], error)`
+- Function `*SchedulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SchedulesClientDeleteResponse], error)` to `(*runtime.Poller[SchedulesClientDeleteResponse], error)`
+- Function `*LabsClient.BeginSyncGroup` return value(s) have been changed from `(*armruntime.Poller[LabsClientSyncGroupResponse], error)` to `(*runtime.Poller[LabsClientSyncGroupResponse], error)`
+- Function `*UsersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[UsersClientDeleteResponse], error)` to `(*runtime.Poller[UsersClientDeleteResponse], error)`
+- Function `*LabPlansClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LabPlansClientDeleteResponse], error)` to `(*runtime.Poller[LabPlansClientDeleteResponse], error)`
+- Function `*LabPlansClient.BeginSaveImage` return value(s) have been changed from `(*armruntime.Poller[LabPlansClientSaveImageResponse], error)` to `(*runtime.Poller[LabPlansClientSaveImageResponse], error)`
+- Function `*LabPlansClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[LabPlansClientUpdateResponse], error)` to `(*runtime.Poller[LabPlansClientUpdateResponse], error)`
+- Function `*UsersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[UsersClientUpdateResponse], error)` to `(*runtime.Poller[UsersClientUpdateResponse], error)`
+- Function `*LabsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[LabsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[LabsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientStopResponse], error)` to `(*runtime.Poller[VirtualMachinesClientStopResponse], error)`
+- Function `*LabPlansClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[LabPlansClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[LabPlansClientCreateOrUpdateResponse], error)`
+- Function `PagedSchedules.MarshalJSON` has been removed
+- Function `SKUInfo.MarshalJSON` has been removed
+- Function `SKURestrictions.MarshalJSON` has been removed
+- Function `PagedSKUInfos.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `PagedLabPlans.MarshalJSON` has been removed
+- Function `OperationResult.MarshalJSON` has been removed
+- Function `PagedUsers.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `PagedLabs.MarshalJSON` has been removed
+- Function `PagedImages.MarshalJSON` has been removed
+- Function `ListUsagesResult.MarshalJSON` has been removed
+- Function `PagedVirtualMachines.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

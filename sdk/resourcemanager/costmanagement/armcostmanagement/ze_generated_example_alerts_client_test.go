@@ -29,7 +29,7 @@ func ExampleAlertsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<scope>",
+		"providers/Microsoft.Billing/billingAccounts/12345:6789",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,8 +50,8 @@ func ExampleAlertsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<alert-id>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
+		"22222222-2222-2222-2222-222222222222",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,8 +72,8 @@ func ExampleAlertsClient_Dismiss() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Dismiss(ctx,
-		"<scope>",
-		"<alert-id>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
+		"22222222-2222-2222-2222-222222222222",
 		armcostmanagement.DismissAlertPayload{
 			Properties: &armcostmanagement.AlertProperties{
 				Status: to.Ptr(armcostmanagement.AlertStatusDismissed),
@@ -100,7 +100,7 @@ func ExampleAlertsClient_ListExternal() {
 	}
 	res, err := client.ListExternal(ctx,
 		armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
-		"<external-cloud-provider-id>",
+		"100",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

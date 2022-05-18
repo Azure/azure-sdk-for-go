@@ -17,20 +17,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Workspace_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/Workspace_Get.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"resourceGroup1",
+		"workspace1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -39,29 +39,29 @@ func ExampleWorkspacesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Workspace_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/Workspace_Create.json
 func ExampleWorkspacesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"resourceGroup1",
+		"workspace1",
 		armdesktopvirtualization.Workspace{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("centralus"),
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armdesktopvirtualization.WorkspaceProperties{
-				Description:  to.Ptr("<description>"),
-				FriendlyName: to.Ptr("<friendly-name>"),
+				Description:  to.Ptr("des1"),
+				FriendlyName: to.Ptr("friendly"),
 			},
 		},
 		nil)
@@ -72,45 +72,44 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Workspace_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/Workspace_Delete.json
 func ExampleWorkspacesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"resourceGroup1",
+		"workspace1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Workspace_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/Workspace_Update.json
 func ExampleWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"resourceGroup1",
+		"workspace1",
 		&armdesktopvirtualization.WorkspacesClientUpdateOptions{Workspace: &armdesktopvirtualization.WorkspacePatch{
 			Properties: &armdesktopvirtualization.WorkspacePatchProperties{
-				Description:         to.Ptr("<description>"),
-				FriendlyName:        to.Ptr("<friendly-name>"),
-				PublicNetworkAccess: to.Ptr(armdesktopvirtualization.PublicNetworkAccessEnabled),
+				Description:  to.Ptr("des1"),
+				FriendlyName: to.Ptr("friendly"),
 			},
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -125,24 +124,23 @@ func ExampleWorkspacesClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Workspace_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/Workspace_ListByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("resourceGroup1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -151,14 +149,14 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/Workspace_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/Workspace_ListBySubscription.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdesktopvirtualization.NewWorkspacesClient("<subscription-id>", cred, nil)
+	client, err := armdesktopvirtualization.NewWorkspacesClient("daefabc0-95b4-48b3-b645-8a753a63c4fa", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -167,7 +165,6 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

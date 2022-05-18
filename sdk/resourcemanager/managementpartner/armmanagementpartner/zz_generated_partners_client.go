@@ -33,7 +33,7 @@ func NewPartnersClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,6 +50,7 @@ func NewPartnersClient(credential azcore.TokenCredential, options *arm.ClientOpt
 
 // Get - Get the management partner using the objectId and tenantId.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-01
 // options - PartnersClientGetOptions contains the optional parameters for the PartnersClient.Get method.
 func (client *PartnersClient) Get(ctx context.Context, options *PartnersClientGetOptions) (PartnersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
@@ -76,7 +77,7 @@ func (client *PartnersClient) getCreateRequest(ctx context.Context, options *Par
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

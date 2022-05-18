@@ -38,7 +38,7 @@ func NewInventoryItemsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewInventoryItemsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Create - Create Or Update InventoryItem.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // vmmServerName - Name of the VMMServer.
 // inventoryItemName - Name of the inventoryItem.
@@ -101,7 +102,7 @@ func (client *InventoryItemsClient) createCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -119,6 +120,7 @@ func (client *InventoryItemsClient) createHandleResponse(resp *http.Response) (I
 
 // Delete - Deletes an inventoryItem.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // vmmServerName - Name of the VMMServer.
 // inventoryItemName - Name of the inventoryItem.
@@ -164,12 +166,13 @@ func (client *InventoryItemsClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Shows an inventory item.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // vmmServerName - Name of the VMMServer.
 // inventoryItemName - Name of the inventoryItem.
@@ -215,7 +218,7 @@ func (client *InventoryItemsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,12 +233,13 @@ func (client *InventoryItemsClient) getHandleResponse(resp *http.Response) (Inve
 
 // NewListByVMMServerPager - Returns the list of inventoryItems in the given VMMServer.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // vmmServerName - Name of the VMMServer.
 // options - InventoryItemsClientListByVMMServerOptions contains the optional parameters for the InventoryItemsClient.ListByVMMServer
 // method.
 func (client *InventoryItemsClient) NewListByVMMServerPager(resourceGroupName string, vmmServerName string, options *InventoryItemsClientListByVMMServerOptions) *runtime.Pager[InventoryItemsClientListByVMMServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InventoryItemsClientListByVMMServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InventoryItemsClientListByVMMServerResponse]{
 		More: func(page InventoryItemsClientListByVMMServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,7 +288,7 @@ func (client *InventoryItemsClient) listByVMMServerCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -177,6 +177,17 @@ type CloudInventoryItem struct {
 	UUID *string `json:"uuid,omitempty" azure:"ro"`
 }
 
+// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type CloudInventoryItem.
+func (c *CloudInventoryItem) GetInventoryItemProperties() *InventoryItemProperties {
+	return &InventoryItemProperties{
+		InventoryType:     c.InventoryType,
+		ManagedResourceID: c.ManagedResourceID,
+		UUID:              c.UUID,
+		InventoryItemName: c.InventoryItemName,
+		ProvisioningState: c.ProvisioningState,
+	}
+}
+
 // CloudListResult - List of Clouds.
 type CloudListResult struct {
 	// Url to follow for getting next page of resources.
@@ -375,6 +386,9 @@ type InventoryItemProperties struct {
 	// READ-ONLY; Gets the UUID (which is assigned by VMM) for the inventory item.
 	UUID *string `json:"uuid,omitempty" azure:"ro"`
 }
+
+// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type InventoryItemProperties.
+func (i *InventoryItemProperties) GetInventoryItemProperties() *InventoryItemProperties { return i }
 
 // InventoryItemsClientCreateOptions contains the optional parameters for the InventoryItemsClient.Create method.
 type InventoryItemsClientCreateOptions struct {
@@ -857,6 +871,17 @@ type VirtualMachineInventoryItem struct {
 	UUID *string `json:"uuid,omitempty" azure:"ro"`
 }
 
+// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type VirtualMachineInventoryItem.
+func (v *VirtualMachineInventoryItem) GetInventoryItemProperties() *InventoryItemProperties {
+	return &InventoryItemProperties{
+		InventoryType:     v.InventoryType,
+		ManagedResourceID: v.ManagedResourceID,
+		UUID:              v.UUID,
+		InventoryItemName: v.InventoryItemName,
+		ProvisioningState: v.ProvisioningState,
+	}
+}
+
 // VirtualMachineListResult - List of VirtualMachines.
 type VirtualMachineListResult struct {
 	// Url to follow for getting next page of resources.
@@ -978,6 +1003,17 @@ type VirtualMachineTemplateInventoryItem struct {
 
 	// READ-ONLY; Gets the UUID (which is assigned by VMM) for the inventory item.
 	UUID *string `json:"uuid,omitempty" azure:"ro"`
+}
+
+// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type VirtualMachineTemplateInventoryItem.
+func (v *VirtualMachineTemplateInventoryItem) GetInventoryItemProperties() *InventoryItemProperties {
+	return &InventoryItemProperties{
+		InventoryType:     v.InventoryType,
+		ManagedResourceID: v.ManagedResourceID,
+		UUID:              v.UUID,
+		InventoryItemName: v.InventoryItemName,
+		ProvisioningState: v.ProvisioningState,
+	}
 }
 
 // VirtualMachineTemplateListResult - List of VirtualMachineTemplates.
@@ -1240,6 +1276,17 @@ type VirtualNetworkInventoryItem struct {
 
 	// READ-ONLY; Gets the UUID (which is assigned by VMM) for the inventory item.
 	UUID *string `json:"uuid,omitempty" azure:"ro"`
+}
+
+// GetInventoryItemProperties implements the InventoryItemPropertiesClassification interface for type VirtualNetworkInventoryItem.
+func (v *VirtualNetworkInventoryItem) GetInventoryItemProperties() *InventoryItemProperties {
+	return &InventoryItemProperties{
+		InventoryType:     v.InventoryType,
+		ManagedResourceID: v.ManagedResourceID,
+		UUID:              v.UUID,
+		InventoryItemName: v.InventoryItemName,
+		ProvisioningState: v.ProvisioningState,
+	}
 }
 
 // VirtualNetworkListResult - List of VirtualNetworks.

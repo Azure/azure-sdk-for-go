@@ -1,5 +1,34 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `QueryApprovedPlansDetails.MarshalJSON` has been removed
+- Function `SubscriptionsContextList.MarshalJSON` has been removed
+- Function `TransferOffersResponse.MarshalJSON` has been removed
+- Function `BillingAccountsResponse.MarshalJSON` has been removed
+- Function `CollectionsSubscriptionsMappingDetails.MarshalJSON` has been removed
+- Function `BulkCollectionsResponse.MarshalJSON` has been removed
+- Function `RequestApprovalsDetails.MarshalJSON` has been removed
+- Function `NewNotifications.MarshalJSON` has been removed
+- Function `AdminRequestApprovalsList.MarshalJSON` has been removed
+- Function `OfferListResponse.MarshalJSON` has been removed
+- Function `PrivateStoreList.MarshalJSON` has been removed
+- Function `QueryRequestApproval.MarshalJSON` has been removed
+- Function `RequestApprovalsList.MarshalJSON` has been removed
+- Function `SubscriptionsResponse.MarshalJSON` has been removed
+- Function `CollectionsToSubscriptionsMappingResponse.MarshalJSON` has been removed
+- Function `QueryApprovedPlansResponse.MarshalJSON` has been removed
+- Function `StopSellNotifications.MarshalJSON` has been removed
+- Function `StopSellOffersPlansNotificationsListProperties.MarshalJSON` has been removed
+- Function `PrivateStoreNotificationsState.MarshalJSON` has been removed
+- Function `StopSellOffersPlansNotificationsList.MarshalJSON` has been removed
+- Function `NewPlansNotificationsList.MarshalJSON` has been removed
+- Function `QueryOffers.MarshalJSON` has been removed
+- Function `CollectionsList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

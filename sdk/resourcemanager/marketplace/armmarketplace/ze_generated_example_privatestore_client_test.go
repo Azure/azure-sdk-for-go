@@ -33,7 +33,6 @@ func ExamplePrivateStoreClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,7 +53,7 @@ func ExamplePrivateStoreClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,11 +74,11 @@ func ExamplePrivateStoreClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CreateOrUpdate(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		&armmarketplace.PrivateStoreClientCreateOrUpdateOptions{Payload: &armmarketplace.PrivateStore{
 			Properties: &armmarketplace.PrivateStoreProperties{
 				Availability: to.Ptr(armmarketplace.AvailabilityDisabled),
-				ETag:         to.Ptr("<etag>"),
+				ETag:         to.Ptr("\"9301f4fd-0000-0100-0000-5e248b350345\""),
 			},
 		},
 		})
@@ -100,7 +99,7 @@ func ExamplePrivateStoreClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -119,7 +118,7 @@ func ExamplePrivateStoreClient_QueryOffers() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.QueryOffers(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -140,7 +139,7 @@ func ExamplePrivateStoreClient_BillingAccounts() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.BillingAccounts(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -161,7 +160,7 @@ func ExamplePrivateStoreClient_CollectionsToSubscriptionsMapping() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CollectionsToSubscriptionsMapping(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		&armmarketplace.PrivateStoreClientCollectionsToSubscriptionsMappingOptions{Payload: &armmarketplace.CollectionsToSubscriptionsMappingPayload{
 			Properties: &armmarketplace.CollectionsToSubscriptionsMappingProperties{
 				SubscriptionIDs: []*string{
@@ -189,10 +188,10 @@ func ExamplePrivateStoreClient_QueryApprovedPlans() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.QueryApprovedPlans(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		&armmarketplace.PrivateStoreClientQueryApprovedPlansOptions{Payload: &armmarketplace.QueryApprovedPlansPayload{
 			Properties: &armmarketplace.QueryApprovedPlans{
-				OfferID: to.Ptr("<offer-id>"),
+				OfferID: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 				PlanIDs: []*string{
 					to.Ptr("testPlanA"),
 					to.Ptr("testPlanB"),
@@ -219,10 +218,10 @@ func ExamplePrivateStoreClient_BulkCollectionsAction() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.BulkCollectionsAction(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		&armmarketplace.PrivateStoreClientBulkCollectionsActionOptions{Payload: &armmarketplace.BulkCollectionsPayload{
 			Properties: &armmarketplace.BulkCollectionsDetails{
-				Action: to.Ptr("<action>"),
+				Action: to.Ptr("EnableCollections"),
 				CollectionIDs: []*string{
 					to.Ptr("c752f021-1c37-4af5-b82f-74c51c27b44a"),
 					to.Ptr("f47ef1c7-e908-4f39-ae29-db181634ad8d")},
@@ -248,7 +247,7 @@ func ExamplePrivateStoreClient_GetApprovalRequestsList() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetApprovalRequestsList(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -269,8 +268,8 @@ func ExamplePrivateStoreClient_GetRequestApproval() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetRequestApproval(ctx,
-		"<private-store-id>",
-		"<request-approval-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -291,8 +290,8 @@ func ExamplePrivateStoreClient_CreateApprovalRequest() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateApprovalRequest(ctx,
-		"<private-store-id>",
-		"<request-approval-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
 		&armmarketplace.PrivateStoreClientCreateApprovalRequestOptions{Payload: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -313,15 +312,15 @@ func ExamplePrivateStoreClient_QueryRequestApproval() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.QueryRequestApproval(ctx,
-		"<private-store-id>",
-		"<request-approval-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
 		&armmarketplace.PrivateStoreClientQueryRequestApprovalOptions{Payload: &armmarketplace.QueryRequestApprovalProperties{
 			Properties: &armmarketplace.RequestDetails{
 				PlanIDs: []*string{
 					to.Ptr("testPlanA"),
 					to.Ptr("testPlanB"),
 					to.Ptr("*")},
-				PublisherID: to.Ptr("<publisher-id>"),
+				PublisherID: to.Ptr("marketplacetestthirdparty"),
 			},
 		},
 		})
@@ -344,7 +343,7 @@ func ExamplePrivateStoreClient_AdminRequestApprovalsList() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.AdminRequestApprovalsList(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -365,9 +364,9 @@ func ExamplePrivateStoreClient_GetAdminRequestApproval() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAdminRequestApproval(ctx,
-		"<private-store-id>",
-		"<admin-request-approval-id>",
-		"<publisher-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
+		"marketplacetestthirdparty",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -388,8 +387,8 @@ func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateAdminRequestApproval(ctx,
-		"<private-store-id>",
-		"<admin-request-approval-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
 		&armmarketplace.PrivateStoreClientUpdateAdminRequestApprovalOptions{Payload: &armmarketplace.AdminRequestApprovalsResource{
 			Properties: &armmarketplace.AdminRequestApprovalProperties{
 				AdminAction: to.Ptr(armmarketplace.AdminActionApproved),
@@ -398,8 +397,8 @@ func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 				CollectionIDs: []*string{
 					to.Ptr("f8ee227e-85d7-477d-abbf-854d6decaf70"),
 					to.Ptr("39246ad6-c521-4fed-8de7-77dede2e873f")},
-				Comment:     to.Ptr("<comment>"),
-				PublisherID: to.Ptr("<publisher-id>"),
+				Comment:     to.Ptr("I'm ok with that"),
+				PublisherID: to.Ptr("marketplacetestthirdparty"),
 			},
 		},
 		})
@@ -422,7 +421,7 @@ func ExamplePrivateStoreClient_QueryNotificationsState() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.QueryNotificationsState(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -443,8 +442,8 @@ func ExamplePrivateStoreClient_AcknowledgeOfferNotification() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.AcknowledgeOfferNotification(ctx,
-		"<private-store-id>",
-		"<offer-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
 		&armmarketplace.PrivateStoreClientAcknowledgeOfferNotificationOptions{Payload: &armmarketplace.AcknowledgeOfferNotificationProperties{
 			Properties: &armmarketplace.AcknowledgeOfferNotificationDetails{
 				Acknowledge: to.Ptr(false),
@@ -472,12 +471,12 @@ func ExamplePrivateStoreClient_WithdrawPlan() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.WithdrawPlan(ctx,
-		"<private-store-id>",
-		"<request-approval-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
+		"marketplacetestthirdparty.md-test-third-party-2",
 		&armmarketplace.PrivateStoreClientWithdrawPlanOptions{Payload: &armmarketplace.WithdrawProperties{
 			Properties: &armmarketplace.WithdrawDetails{
-				PlanID:      to.Ptr("<plan-id>"),
-				PublisherID: to.Ptr("<publisher-id>"),
+				PlanID:      to.Ptr("*"),
+				PublisherID: to.Ptr("marketplacetestthirdparty"),
 			},
 		},
 		})
@@ -498,7 +497,7 @@ func ExamplePrivateStoreClient_FetchAllSubscriptionsInTenant() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.FetchAllSubscriptionsInTenant(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		&armmarketplace.PrivateStoreClientFetchAllSubscriptionsInTenantOptions{NextPageToken: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -519,7 +518,7 @@ func ExamplePrivateStoreClient_ListNewPlansNotifications() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListNewPlansNotifications(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -540,7 +539,7 @@ func ExamplePrivateStoreClient_ListStopSellOffersPlansNotifications() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListStopSellOffersPlansNotifications(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		&armmarketplace.PrivateStoreClientListStopSellOffersPlansNotificationsOptions{StopSellSubscriptions: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -561,7 +560,7 @@ func ExamplePrivateStoreClient_ListSubscriptionsContext() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSubscriptionsContext(ctx,
-		"<private-store-id>",
+		"a0e28e55-90c4-41d8-8e34-bb7ef7775406",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

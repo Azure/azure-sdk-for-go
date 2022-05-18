@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
@@ -26,19 +24,19 @@ func ExampleSlicesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSlicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<slice-name>",
-		&armmobilenetwork.SlicesClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"testMobileNetwork",
+		"testSlice",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -51,14 +49,14 @@ func ExampleSlicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSlicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<slice-name>",
+		"rg1",
+		"testMobileNetwork",
+		"testSlice",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,29 +72,29 @@ func ExampleSlicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSlicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<slice-name>",
+		"rg1",
+		"testMobileNetwork",
+		"testSlice",
 		armmobilenetwork.Slice{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armmobilenetwork.SlicePropertiesFormat{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("myFavouriteSlice"),
 				Snssai: &armmobilenetwork.Snssai{
-					Sd:  to.Ptr("<sd>"),
+					Sd:  to.Ptr("1abcde"),
 					Sst: to.Ptr[int32](1),
 				},
 			},
 		},
-		&armmobilenetwork.SlicesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -111,14 +109,14 @@ func ExampleSlicesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSlicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<slice-name>",
+		"rg1",
+		"testMobileNetwork",
+		"testSlice",
 		armmobilenetwork.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -140,18 +138,17 @@ func ExampleSlicesClient_NewListByMobileNetworkPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSlicesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSlicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByMobileNetworkPager("<resource-group-name>",
-		"<mobile-network-name>",
+	pager := client.NewListByMobileNetworkPager("rg1",
+		"testMobileNetwork",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

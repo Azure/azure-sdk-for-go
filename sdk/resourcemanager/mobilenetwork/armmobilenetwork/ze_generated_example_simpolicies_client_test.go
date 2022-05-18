@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork"
@@ -26,19 +24,19 @@ func ExampleSimPoliciesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSimPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSimPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<sim-policy-name>",
-		&armmobilenetwork.SimPoliciesClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"testMobileNetwork",
+		"testPolicy",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -51,14 +49,14 @@ func ExampleSimPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSimPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSimPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<sim-policy-name>",
+		"rg1",
+		"testMobileNetwork",
+		"testPolicy",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,19 +72,19 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSimPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSimPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<sim-policy-name>",
+		"rg1",
+		"testMobileNetwork",
+		"testPolicy",
 		armmobilenetwork.SimPolicy{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armmobilenetwork.SimPolicyPropertiesFormat{
 				DefaultSlice: &armmobilenetwork.SliceResourceID{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 				},
 				RegistrationTimer: to.Ptr[int32](3240),
 				SliceConfigurations: []*armmobilenetwork.SliceConfiguration{
@@ -98,37 +96,37 @@ func ExampleSimPoliciesClient_BeginCreateOrUpdate() {
 								AllocationAndRetentionPriorityLevel: to.Ptr[int32](9),
 								AllowedServices: []*armmobilenetwork.ServiceResourceID{
 									{
-										ID: to.Ptr("<id>"),
+										ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService"),
 									}},
 								DataNetwork: &armmobilenetwork.DataNetworkResourceID{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 								},
 								DefaultSessionType:      to.Ptr(armmobilenetwork.PduSessionTypeIPv4),
 								PreemptionCapability:    to.Ptr(armmobilenetwork.PreemptionCapabilityNotPreempt),
 								PreemptionVulnerability: to.Ptr(armmobilenetwork.PreemptionVulnerabilityPreemptable),
 								SessionAmbr: &armmobilenetwork.Ambr{
-									Downlink: to.Ptr("<downlink>"),
-									Uplink:   to.Ptr("<uplink>"),
+									Downlink: to.Ptr("1 Gbps"),
+									Uplink:   to.Ptr("500 Mbps"),
 								},
 							}},
 						DefaultDataNetwork: &armmobilenetwork.DataNetworkResourceID{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"),
 						},
 						Slice: &armmobilenetwork.SliceResourceID{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"),
 						},
 					}},
 				UeAmbr: &armmobilenetwork.Ambr{
-					Downlink: to.Ptr("<downlink>"),
-					Uplink:   to.Ptr("<uplink>"),
+					Downlink: to.Ptr("1 Gbps"),
+					Uplink:   to.Ptr("500 Mbps"),
 				},
 			},
 		},
-		&armmobilenetwork.SimPoliciesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -143,14 +141,14 @@ func ExampleSimPoliciesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSimPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSimPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<mobile-network-name>",
-		"<sim-policy-name>",
+		"rg1",
+		"testMobileNetwork",
+		"testPolicy",
 		armmobilenetwork.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -172,18 +170,17 @@ func ExampleSimPoliciesClient_NewListByMobileNetworkPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmobilenetwork.NewSimPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armmobilenetwork.NewSimPoliciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByMobileNetworkPager("<resource-group-name>",
-		"<mobile-network-name>",
+	pager := client.NewListByMobileNetworkPager("testResourceGroupName",
+		"testMobileNetwork",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

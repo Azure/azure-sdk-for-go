@@ -1,5 +1,14 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `HealthMonitorStateChangeList.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `ErrorResponseError.MarshalJSON` has been removed
+- Function `HealthMonitorList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

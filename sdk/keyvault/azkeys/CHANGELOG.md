@@ -14,6 +14,7 @@
 * Option types with a `ResumeToken` field now take the token by value.
 * Renamed `CreateECKeyOptions.CurveName` to `.Curve`
 * Renamed `ReleaseKeyOptions.Enc` to `.Algorithm`
+* Removed redundant field `DeletedKeyItem.Managed`. Use `DeletedKeyItem.Properties.Managed` instead.
 
 ### Bugs Fixed
 

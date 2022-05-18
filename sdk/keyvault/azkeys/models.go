@@ -86,19 +86,18 @@ func keyPropertiesFromGenerated(i *generated.KeyAttributes, id *string, name *st
 
 	return &Properties{
 		CreatedOn:       i.Created,
-		RecoverableDays: i.RecoverableDays,
-		RecoveryLevel:   to.Ptr(string(*i.RecoveryLevel)),
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
-		NotBefore:       i.NotBefore,
-		UpdatedOn:       i.Updated,
 		Exportable:      i.Exportable,
+		NotBefore:       i.NotBefore,
+		RecoverableDays: i.RecoverableDays,
+		RecoveryLevel:   to.Ptr(string(*i.RecoveryLevel)),
+		UpdatedOn:       i.Updated,
 		ID:              id,
-		Name:            name,
-		Version:         version,
 		Managed:         managed,
 		Tags:            convertGeneratedMap(tags),
 		VaultURL:        vaultURL,
+		Version:         version,
 	}
 }
 
@@ -303,10 +302,6 @@ type DeletedKeyItem struct {
 	// READ-ONLY; The time when the key was deleted, in UTC
 	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-	// be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
-
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
@@ -317,24 +312,15 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		return nil
 	}
 
-	_, name, _ := shared.ParseID(i.Kid)
+	vaultURL, name, version := shared.ParseID(i.Kid)
 	return &DeletedKeyItem{
 		RecoveryID:         i.RecoveryID,
 		DeletedOn:          i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Properties: &Properties{
-			Enabled:         i.Attributes.Enabled,
-			ExpiresOn:       i.Attributes.Expires,
-			NotBefore:       i.Attributes.NotBefore,
-			CreatedOn:       i.Attributes.Created,
-			UpdatedOn:       i.Attributes.Updated,
-			RecoverableDays: i.Attributes.RecoverableDays,
-			RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
-		},
-		ID:      i.Kid,
-		Name:    name,
-		Tags:    convertGeneratedMap(i.Tags),
-		Managed: i.Managed,
+		Properties:         keyPropertiesFromGenerated(i.Attributes, i.Kid, name, version, i.Managed, vaultURL, i.Tags),
+		ID:                 i.Kid,
+		Name:               name,
+		Tags:               i.Tags,
 	}
 }
 

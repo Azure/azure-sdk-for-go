@@ -38,7 +38,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // Get - Gets a job with id in a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // jobID - The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
@@ -99,9 +100,9 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,11 +117,12 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 
 // NewListPager - Returns list of jobs belonging to a backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
 func (client *JobsClient) NewListPager(resourceGroupName string, vaultName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -167,9 +169,9 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

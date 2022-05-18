@@ -1,5 +1,49 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- Function `*MachineExtensionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[MachineExtensionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[MachineExtensionsClientCreateOrUpdateResponse], error)`
+- Function `*ManagementClient.BeginUpgradeExtensions` return value(s) have been changed from `(*armruntime.Poller[ManagementClientUpgradeExtensionsResponse], error)` to `(*runtime.Poller[ManagementClientUpgradeExtensionsResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*MachineExtensionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[MachineExtensionsClientUpdateResponse], error)` to `(*runtime.Poller[MachineExtensionsClientUpdateResponse], error)`
+- Function `*PrivateLinkScopesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkScopesClientDeleteResponse], error)` to `(*runtime.Poller[PrivateLinkScopesClientDeleteResponse], error)`
+- Function `*MachineExtensionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MachineExtensionsClientDeleteResponse], error)` to `(*runtime.Poller[MachineExtensionsClientDeleteResponse], error)`
+- Type of `PatchSettings.AssessmentMode` has been changed from `*string` to `*AssessmentModeTypes`
+- Type of `PatchSettings.PatchMode` has been changed from `*string` to `*PatchModeTypes`
+- Function `MachineExtensionsListResult.MarshalJSON` has been removed
+- Function `MachineListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `PrivateLinkScopeListResult.MarshalJSON` has been removed
+- Function `PrivateLinkScopeValidationDetails.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+
+### Features Added
+
+- New const `AssessmentModeTypesAutomaticByPlatform`
+- New const `AssessmentModeTypesImageDefault`
+- New const `PatchModeTypesImageDefault`
+- New const `PatchModeTypesAutomaticByOS`
+- New const `PatchModeTypesAutomaticByPlatform`
+- New const `PatchModeTypesManual`
+- New function `PrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleAssessmentModeTypesValues() []AssessmentModeTypes`
+- New function `PossiblePatchModeTypesValues() []PatchModeTypes`
+- New struct `ConfigurationExtension`
+- New struct `ServiceStatus`
+- New struct `ServiceStatuses`
+- New field `GuestConfigurationEnabled` in struct `AgentConfiguration`
+- New field `ProxyBypass` in struct `AgentConfiguration`
+- New field `ExtensionsAllowList` in struct `AgentConfiguration`
+- New field `ExtensionsBlockList` in struct `AgentConfiguration`
+- New field `ExtensionsEnabled` in struct `AgentConfiguration`
+- New field `IsDataAction` in struct `OperationValue`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+- New field `ServiceStatuses` in struct `MachineProperties`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

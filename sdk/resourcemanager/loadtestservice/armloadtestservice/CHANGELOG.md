@@ -1,5 +1,16 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*LoadTestsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LoadTestsClientDeleteResponse], error)` to `(*runtime.Poller[LoadTestsClientDeleteResponse], error)`
+- Function `*LoadTestsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[LoadTestsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[LoadTestsClientCreateOrUpdateResponse], error)`
+- Function `*LoadTestsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[LoadTestsClientUpdateResponse], error)` to `(*runtime.Poller[LoadTestsClientUpdateResponse], error)`
+- Function `LoadTestResourcePageList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devtestlabs/armdevtestlabs"
@@ -26,12 +24,12 @@ func ExampleSchedulesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<lab-name>",
+	pager := client.NewListPager("resourceGroupName",
+		"{labName}",
 		&armdevtestlabs.SchedulesClientListOptions{Expand: nil,
 			Filter:  nil,
 			Top:     nil,
@@ -41,7 +39,6 @@ func ExampleSchedulesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,14 +54,14 @@ func ExampleSchedulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{scheduleName}",
 		&armdevtestlabs.SchedulesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,39 +77,39 @@ func ExampleSchedulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{scheduleName}",
 		armdevtestlabs.Schedule{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("{location}"),
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),
 			},
 			Properties: &armdevtestlabs.ScheduleProperties{
 				DailyRecurrence: &armdevtestlabs.DayDetails{
-					Time: to.Ptr("<time>"),
+					Time: to.Ptr("{timeOfTheDayTheScheduleWillOccurEveryDay}"),
 				},
 				HourlyRecurrence: &armdevtestlabs.HourDetails{
 					Minute: to.Ptr[int32](30),
 				},
 				NotificationSettings: &armdevtestlabs.NotificationSettings{
-					EmailRecipient:     to.Ptr("<email-recipient>"),
-					NotificationLocale: to.Ptr("<notification-locale>"),
+					EmailRecipient:     to.Ptr("{email}"),
+					NotificationLocale: to.Ptr("EN"),
 					Status:             to.Ptr(armdevtestlabs.EnableStatus("{Enabled|Disabled}")),
 					TimeInMinutes:      to.Ptr[int32](15),
-					WebhookURL:         to.Ptr("<webhook-url>"),
+					WebhookURL:         to.Ptr("{webhookUrl}"),
 				},
 				Status:           to.Ptr(armdevtestlabs.EnableStatus("{Enabled|Disabled}")),
-				TargetResourceID: to.Ptr("<target-resource-id>"),
-				TaskType:         to.Ptr("<task-type>"),
-				TimeZoneID:       to.Ptr("<time-zone-id>"),
+				TargetResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourcegroups/resourceGroupName/providers/microsoft.devtestlab/labs/{labName}"),
+				TaskType:         to.Ptr("{myLabVmTaskType}"),
+				TimeZoneID:       to.Ptr("Pacific Standard Time"),
 				WeeklyRecurrence: &armdevtestlabs.WeekDetails{
-					Time: to.Ptr("<time>"),
+					Time: to.Ptr("{timeOfTheDayTheScheduleWillOccurOnThoseDays}"),
 					Weekdays: []*string{
 						to.Ptr("Monday"),
 						to.Ptr("Wednesday"),
@@ -135,14 +132,14 @@ func ExampleSchedulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{scheduleName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -156,14 +153,14 @@ func ExampleSchedulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{scheduleName}",
 		armdevtestlabs.ScheduleFragment{
 			Tags: map[string]*string{
 				"tagName1": to.Ptr("tagValue1"),
@@ -184,19 +181,19 @@ func ExampleSchedulesClient_BeginExecute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginExecute(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
-		&armdevtestlabs.SchedulesClientBeginExecuteOptions{ResumeToken: ""})
+		"resourceGroupName",
+		"{labName}",
+		"{scheduleName}",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -209,19 +206,18 @@ func ExampleSchedulesClient_NewListApplicablePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewSchedulesClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListApplicablePager("<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+	pager := client.NewListApplicablePager("resourceGroupName",
+		"{labName}",
+		"{scheduleName}",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

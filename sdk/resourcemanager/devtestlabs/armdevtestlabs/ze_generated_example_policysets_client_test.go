@@ -24,19 +24,19 @@ func ExamplePolicySetsClient_EvaluatePolicies() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdevtestlabs.NewPolicySetsClient("<subscription-id>", cred, nil)
+	client, err := armdevtestlabs.NewPolicySetsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.EvaluatePolicies(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<name>",
+		"resourceGroupName",
+		"{labName}",
+		"{policySetName}",
 		armdevtestlabs.EvaluatePoliciesRequest{
 			Policies: []*armdevtestlabs.EvaluatePoliciesProperties{
 				{
-					FactName:    to.Ptr("<fact-name>"),
-					ValueOffset: to.Ptr("<value-offset>"),
+					FactName:    to.Ptr("LabVmCount"),
+					ValueOffset: to.Ptr("1"),
 				}},
 		},
 		nil)

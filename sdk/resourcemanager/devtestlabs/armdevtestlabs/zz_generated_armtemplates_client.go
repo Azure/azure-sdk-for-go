@@ -39,7 +39,7 @@ func NewArmTemplatesClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewArmTemplatesClient(subscriptionID string, credential azcore.TokenCredent
 
 // Get - Get azure resource manager template.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // artifactSourceName - The name of the artifact source.
@@ -110,7 +111,7 @@ func (client *ArmTemplatesClient) getCreateRequest(ctx context.Context, resource
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -125,12 +126,13 @@ func (client *ArmTemplatesClient) getHandleResponse(resp *http.Response) (ArmTem
 
 // NewListPager - List azure resource manager templates in a given artifact source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // artifactSourceName - The name of the artifact source.
 // options - ArmTemplatesClientListOptions contains the optional parameters for the ArmTemplatesClient.List method.
 func (client *ArmTemplatesClient) NewListPager(resourceGroupName string, labName string, artifactSourceName string, options *ArmTemplatesClientListOptions) *runtime.Pager[ArmTemplatesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ArmTemplatesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ArmTemplatesClientListResponse]{
 		More: func(page ArmTemplatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -195,7 +197,7 @@ func (client *ArmTemplatesClient) listCreateRequest(ctx context.Context, resourc
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

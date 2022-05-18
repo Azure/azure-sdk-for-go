@@ -1,5 +1,75 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*DisksClient.BeginAttach` return value(s) have been changed from `(*armruntime.Poller[DisksClientAttachResponse], error)` to `(*runtime.Poller[DisksClientAttachResponse], error)`
+- Function `*VirtualMachinesClient.BeginUnClaim` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientUnClaimResponse], error)` to `(*runtime.Poller[VirtualMachinesClientUnClaimResponse], error)`
+- Function `*FormulasClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FormulasClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FormulasClientCreateOrUpdateResponse], error)`
+- Function `*LabsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[LabsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[LabsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginResize` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientResizeResponse], error)` to `(*runtime.Poller[VirtualMachinesClientResizeResponse], error)`
+- Function `*VirtualMachinesClient.BeginClaim` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientClaimResponse], error)` to `(*runtime.Poller[VirtualMachinesClientClaimResponse], error)`
+- Function `*VirtualMachinesClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientRestartResponse], error)` to `(*runtime.Poller[VirtualMachinesClientRestartResponse], error)`
+- Function `*CustomImagesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[CustomImagesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CustomImagesClientCreateOrUpdateResponse], error)`
+- Function `*UsersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[UsersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[UsersClientCreateOrUpdateResponse], error)`
+- Function `*EnvironmentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[EnvironmentsClientDeleteResponse], error)` to `(*runtime.Poller[EnvironmentsClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error)`
+- Function `*GlobalSchedulesClient.BeginRetarget` return value(s) have been changed from `(*armruntime.Poller[GlobalSchedulesClientRetargetResponse], error)` to `(*runtime.Poller[GlobalSchedulesClientRetargetResponse], error)`
+- Function `*LabsClient.BeginExportResourceUsage` return value(s) have been changed from `(*armruntime.Poller[LabsClientExportResourceUsageResponse], error)` to `(*runtime.Poller[LabsClientExportResourceUsageResponse], error)`
+- Function `*SecretsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SecretsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SecretsClientCreateOrUpdateResponse], error)`
+- Function `*UsersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[UsersClientDeleteResponse], error)` to `(*runtime.Poller[UsersClientDeleteResponse], error)`
+- Function `*ServiceFabricsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ServiceFabricsClientStopResponse], error)` to `(*runtime.Poller[ServiceFabricsClientStopResponse], error)`
+- Function `*VirtualNetworksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworksClientCreateOrUpdateResponse], error)`
+- Function `*ServiceFabricsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServiceFabricsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServiceFabricsClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineSchedulesClient.BeginExecute` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineSchedulesClientExecuteResponse], error)` to `(*runtime.Poller[VirtualMachineSchedulesClientExecuteResponse], error)`
+- Function `*LabsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LabsClientDeleteResponse], error)` to `(*runtime.Poller[LabsClientDeleteResponse], error)`
+- Function `*SchedulesClient.BeginExecute` return value(s) have been changed from `(*armruntime.Poller[SchedulesClientExecuteResponse], error)` to `(*runtime.Poller[SchedulesClientExecuteResponse], error)`
+- Function `*ServiceFabricsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServiceFabricsClientDeleteResponse], error)` to `(*runtime.Poller[ServiceFabricsClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientStopResponse], error)` to `(*runtime.Poller[VirtualMachinesClientStopResponse], error)`
+- Function `*CustomImagesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CustomImagesClientDeleteResponse], error)` to `(*runtime.Poller[CustomImagesClientDeleteResponse], error)`
+- Function `*VirtualNetworksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworksClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworksClientDeleteResponse], error)`
+- Function `*ServiceFabricsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ServiceFabricsClientStartResponse], error)` to `(*runtime.Poller[ServiceFabricsClientStartResponse], error)`
+- Function `*VirtualMachinesClient.BeginTransferDisks` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientTransferDisksResponse], error)` to `(*runtime.Poller[VirtualMachinesClientTransferDisksResponse], error)`
+- Function `*VirtualMachinesClient.BeginAddDataDisk` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientAddDataDiskResponse], error)` to `(*runtime.Poller[VirtualMachinesClientAddDataDiskResponse], error)`
+- Function `*EnvironmentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[EnvironmentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[EnvironmentsClientCreateOrUpdateResponse], error)`
+- Function `*ServiceFabricSchedulesClient.BeginExecute` return value(s) have been changed from `(*armruntime.Poller[ServiceFabricSchedulesClientExecuteResponse], error)` to `(*runtime.Poller[ServiceFabricSchedulesClientExecuteResponse], error)`
+- Function `*VirtualMachinesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientStartResponse], error)` to `(*runtime.Poller[VirtualMachinesClientStartResponse], error)`
+- Function `*DisksClient.BeginDetach` return value(s) have been changed from `(*armruntime.Poller[DisksClientDetachResponse], error)` to `(*runtime.Poller[DisksClientDetachResponse], error)`
+- Function `*LabsClient.BeginImportVirtualMachine` return value(s) have been changed from `(*armruntime.Poller[LabsClientImportVirtualMachineResponse], error)` to `(*runtime.Poller[LabsClientImportVirtualMachineResponse], error)`
+- Function `*DisksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DisksClientDeleteResponse], error)` to `(*runtime.Poller[DisksClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginApplyArtifacts` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientApplyArtifactsResponse], error)` to `(*runtime.Poller[VirtualMachinesClientApplyArtifactsResponse], error)`
+- Function `*DisksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DisksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DisksClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachinesClient.BeginRedeploy` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientRedeployResponse], error)` to `(*runtime.Poller[VirtualMachinesClientRedeployResponse], error)`
+- Function `*LabsClient.BeginCreateEnvironment` return value(s) have been changed from `(*armruntime.Poller[LabsClientCreateEnvironmentResponse], error)` to `(*runtime.Poller[LabsClientCreateEnvironmentResponse], error)`
+- Function `*VirtualMachinesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachinesClientDeleteResponse], error)`
+- Function `*VirtualMachinesClient.BeginDetachDataDisk` return value(s) have been changed from `(*armruntime.Poller[VirtualMachinesClientDetachDataDiskResponse], error)` to `(*runtime.Poller[VirtualMachinesClientDetachDataDiskResponse], error)`
+- Function `*LabsClient.BeginClaimAnyVM` return value(s) have been changed from `(*armruntime.Poller[LabsClientClaimAnyVMResponse], error)` to `(*runtime.Poller[LabsClientClaimAnyVMResponse], error)`
+- Function `*GlobalSchedulesClient.BeginExecute` return value(s) have been changed from `(*armruntime.Poller[GlobalSchedulesClientExecuteResponse], error)` to `(*runtime.Poller[GlobalSchedulesClientExecuteResponse], error)`
+- Function `ScheduleList.MarshalJSON` has been removed
+- Function `ArtifactList.MarshalJSON` has been removed
+- Function `ProviderOperationResult.MarshalJSON` has been removed
+- Function `CustomImageList.MarshalJSON` has been removed
+- Function `ServiceRunnerList.MarshalJSON` has been removed
+- Function `PolicyList.MarshalJSON` has been removed
+- Function `ArmTemplateList.MarshalJSON` has been removed
+- Function `SecretList.MarshalJSON` has been removed
+- Function `UserList.MarshalJSON` has been removed
+- Function `ServiceFabricList.MarshalJSON` has been removed
+- Function `PolicySetResult.MarshalJSON` has been removed
+- Function `GalleryImageList.MarshalJSON` has been removed
+- Function `LabList.MarshalJSON` has been removed
+- Function `LabVhdList.MarshalJSON` has been removed
+- Function `ArtifactSourceList.MarshalJSON` has been removed
+- Function `LabVirtualMachineList.MarshalJSON` has been removed
+- Function `DtlEnvironmentList.MarshalJSON` has been removed
+- Function `EvaluatePoliciesResponse.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `VirtualNetworkList.MarshalJSON` has been removed
+- Function `FormulaList.MarshalJSON` has been removed
+- Function `DiskList.MarshalJSON` has been removed
+- Function `NotificationChannelList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

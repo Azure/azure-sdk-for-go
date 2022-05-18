@@ -39,7 +39,7 @@ func NewVirtualMachineSchedulesClient(subscriptionID string, credential azcore.T
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewVirtualMachineSchedulesClient(subscriptionID string, credential azcore.T
 
 // CreateOrUpdate - Create or replace an existing schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // virtualMachineName - The name of the virtual machine.
@@ -109,7 +110,7 @@ func (client *VirtualMachineSchedulesClient) createOrUpdateCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, schedule)
 }
 
@@ -124,6 +125,7 @@ func (client *VirtualMachineSchedulesClient) createOrUpdateHandleResponse(resp *
 
 // Delete - Delete schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // virtualMachineName - The name of the virtual machine.
@@ -175,32 +177,34 @@ func (client *VirtualMachineSchedulesClient) deleteCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginExecute - Execute a schedule. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // virtualMachineName - The name of the virtual machine.
 // name - The name of the schedule.
 // options - VirtualMachineSchedulesClientBeginExecuteOptions contains the optional parameters for the VirtualMachineSchedulesClient.BeginExecute
 // method.
-func (client *VirtualMachineSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientBeginExecuteOptions) (*armruntime.Poller[VirtualMachineSchedulesClientExecuteResponse], error) {
+func (client *VirtualMachineSchedulesClient) BeginExecute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientBeginExecuteOptions) (*runtime.Poller[VirtualMachineSchedulesClientExecuteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.execute(ctx, resourceGroupName, labName, virtualMachineName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachineSchedulesClientExecuteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachineSchedulesClientExecuteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachineSchedulesClientExecuteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachineSchedulesClientExecuteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Execute - Execute a schedule. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *VirtualMachineSchedulesClient) execute(ctx context.Context, resourceGroupName string, labName string, virtualMachineName string, name string, options *VirtualMachineSchedulesClientBeginExecuteOptions) (*http.Response, error) {
 	req, err := client.executeCreateRequest(ctx, resourceGroupName, labName, virtualMachineName, name, options)
 	if err != nil {
@@ -246,12 +250,13 @@ func (client *VirtualMachineSchedulesClient) executeCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // virtualMachineName - The name of the virtual machine.
@@ -306,7 +311,7 @@ func (client *VirtualMachineSchedulesClient) getCreateRequest(ctx context.Contex
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -321,13 +326,14 @@ func (client *VirtualMachineSchedulesClient) getHandleResponse(resp *http.Respon
 
 // NewListPager - List schedules in a given virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // virtualMachineName - The name of the virtual machine.
 // options - VirtualMachineSchedulesClientListOptions contains the optional parameters for the VirtualMachineSchedulesClient.List
 // method.
 func (client *VirtualMachineSchedulesClient) NewListPager(resourceGroupName string, labName string, virtualMachineName string, options *VirtualMachineSchedulesClientListOptions) *runtime.Pager[VirtualMachineSchedulesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachineSchedulesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineSchedulesClientListResponse]{
 		More: func(page VirtualMachineSchedulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -392,7 +398,7 @@ func (client *VirtualMachineSchedulesClient) listCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -407,6 +413,7 @@ func (client *VirtualMachineSchedulesClient) listHandleResponse(resp *http.Respo
 
 // Update - Allows modifying tags of schedules. All other properties will be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // virtualMachineName - The name of the virtual machine.
@@ -459,7 +466,7 @@ func (client *VirtualMachineSchedulesClient) updateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, schedule)
 }
 

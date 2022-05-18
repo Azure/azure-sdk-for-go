@@ -39,7 +39,7 @@ func NewArtifactsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewArtifactsClient(subscriptionID string, credential azcore.TokenCredential
 // GenerateArmTemplate - Generates an ARM template for the given artifact, uploads the required files to a storage account,
 // and validates the generated artifact.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // artifactSourceName - The name of the artifact source.
@@ -110,7 +111,7 @@ func (client *ArtifactsClient) generateArmTemplateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, generateArmTemplateRequest)
 }
 
@@ -125,6 +126,7 @@ func (client *ArtifactsClient) generateArmTemplateHandleResponse(resp *http.Resp
 
 // Get - Get artifact.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // artifactSourceName - The name of the artifact source.
@@ -178,7 +180,7 @@ func (client *ArtifactsClient) getCreateRequest(ctx context.Context, resourceGro
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -193,12 +195,13 @@ func (client *ArtifactsClient) getHandleResponse(resp *http.Response) (Artifacts
 
 // NewListPager - List artifacts in a given artifact source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // artifactSourceName - The name of the artifact source.
 // options - ArtifactsClientListOptions contains the optional parameters for the ArtifactsClient.List method.
 func (client *ArtifactsClient) NewListPager(resourceGroupName string, labName string, artifactSourceName string, options *ArtifactsClientListOptions) *runtime.Pager[ArtifactsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ArtifactsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ArtifactsClientListResponse]{
 		More: func(page ArtifactsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -263,7 +266,7 @@ func (client *ArtifactsClient) listCreateRequest(ctx context.Context, resourceGr
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

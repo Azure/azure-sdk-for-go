@@ -28,8 +28,8 @@ func ExampleGenerateDetailedCostReportOperationStatusClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<operation-id>",
-		"<scope>",
+		"00000000-0000-0000-0000-000000000000",
+		"subscriptions/00000000-0000-0000-0000-000000000000",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

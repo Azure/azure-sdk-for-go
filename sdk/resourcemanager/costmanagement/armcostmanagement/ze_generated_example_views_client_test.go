@@ -33,7 +33,6 @@ func ExampleViewsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,13 +52,12 @@ func ExampleViewsClient_NewListByScopePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByScopePager("<scope>",
+	pager := client.NewListByScopePager("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -80,7 +78,7 @@ func ExampleViewsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<view-name>",
+		"swaggerExample",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,13 +99,13 @@ func ExampleViewsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<view-name>",
+		"swaggerExample",
 		armcostmanagement.View{
-			ETag: to.Ptr("<etag>"),
+			ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 			Properties: &armcostmanagement.ViewProperties{
 				Accumulated: to.Ptr(armcostmanagement.AccumulatedTypeTrue),
 				Chart:       to.Ptr(armcostmanagement.ChartTypeTable),
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("swagger Example"),
 				Kpis: []*armcostmanagement.KpiProperties{
 					{
 						Type:    to.Ptr(armcostmanagement.KpiTypeForecast),
@@ -116,20 +114,20 @@ func ExampleViewsClient_CreateOrUpdate() {
 					{
 						Type:    to.Ptr(armcostmanagement.KpiTypeBudget),
 						Enabled: to.Ptr(true),
-						ID:      to.Ptr("<id>"),
+						ID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Consumption/budgets/swaggerDemo"),
 					}},
 				Metric: to.Ptr(armcostmanagement.MetricTypeActualCost),
 				Pivots: []*armcostmanagement.PivotProperties{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("ServiceName"),
 						Type: to.Ptr(armcostmanagement.PivotTypeDimension),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("MeterCategory"),
 						Type: to.Ptr(armcostmanagement.PivotTypeDimension),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("swaggerTagKey"),
 						Type: to.Ptr(armcostmanagement.PivotTypeTagKey),
 					}},
 				Query: &armcostmanagement.ReportConfigDefinition{
@@ -137,7 +135,7 @@ func ExampleViewsClient_CreateOrUpdate() {
 					DataSet: &armcostmanagement.ReportConfigDataset{
 						Aggregation: map[string]*armcostmanagement.ReportConfigAggregation{
 							"totalCost": {
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("PreTaxCost"),
 								Function: to.Ptr(armcostmanagement.FunctionTypeSum),
 							},
 						},
@@ -145,7 +143,7 @@ func ExampleViewsClient_CreateOrUpdate() {
 						Grouping:    []*armcostmanagement.ReportConfigGrouping{},
 						Sorting: []*armcostmanagement.ReportConfigSorting{
 							{
-								Name:      to.Ptr("<name>"),
+								Name:      to.Ptr("UsageDate"),
 								Direction: to.Ptr(armcostmanagement.ReportConfigSortingTypeAscending),
 							}},
 					},
@@ -173,7 +171,7 @@ func ExampleViewsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<view-name>",
+		"TestView",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -192,8 +190,8 @@ func ExampleViewsClient_GetByScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByScope(ctx,
-		"<scope>",
-		"<view-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
+		"swaggerExample",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -214,14 +212,14 @@ func ExampleViewsClient_CreateOrUpdateByScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateByScope(ctx,
-		"<scope>",
-		"<view-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
+		"swaggerExample",
 		armcostmanagement.View{
-			ETag: to.Ptr("<etag>"),
+			ETag: to.Ptr("\"1d4ff9fe66f1d10\""),
 			Properties: &armcostmanagement.ViewProperties{
 				Accumulated: to.Ptr(armcostmanagement.AccumulatedTypeTrue),
 				Chart:       to.Ptr(armcostmanagement.ChartTypeTable),
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("swagger Example"),
 				Kpis: []*armcostmanagement.KpiProperties{
 					{
 						Type:    to.Ptr(armcostmanagement.KpiTypeForecast),
@@ -230,20 +228,20 @@ func ExampleViewsClient_CreateOrUpdateByScope() {
 					{
 						Type:    to.Ptr(armcostmanagement.KpiTypeBudget),
 						Enabled: to.Ptr(true),
-						ID:      to.Ptr("<id>"),
+						ID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Consumption/budgets/swaggerDemo"),
 					}},
 				Metric: to.Ptr(armcostmanagement.MetricTypeActualCost),
 				Pivots: []*armcostmanagement.PivotProperties{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("ServiceName"),
 						Type: to.Ptr(armcostmanagement.PivotTypeDimension),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("MeterCategory"),
 						Type: to.Ptr(armcostmanagement.PivotTypeDimension),
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("swaggerTagKey"),
 						Type: to.Ptr(armcostmanagement.PivotTypeTagKey),
 					}},
 				Query: &armcostmanagement.ReportConfigDefinition{
@@ -251,7 +249,7 @@ func ExampleViewsClient_CreateOrUpdateByScope() {
 					DataSet: &armcostmanagement.ReportConfigDataset{
 						Aggregation: map[string]*armcostmanagement.ReportConfigAggregation{
 							"totalCost": {
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("PreTaxCost"),
 								Function: to.Ptr(armcostmanagement.FunctionTypeSum),
 							},
 						},
@@ -259,7 +257,7 @@ func ExampleViewsClient_CreateOrUpdateByScope() {
 						Grouping:    []*armcostmanagement.ReportConfigGrouping{},
 						Sorting: []*armcostmanagement.ReportConfigSorting{
 							{
-								Name:      to.Ptr("<name>"),
+								Name:      to.Ptr("UsageDate"),
 								Direction: to.Ptr(armcostmanagement.ReportConfigSortingTypeAscending),
 							}},
 					},
@@ -287,8 +285,8 @@ func ExampleViewsClient_DeleteByScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteByScope(ctx,
-		"<scope>",
-		"<view-name>",
+		"subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
+		"TestView",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

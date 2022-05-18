@@ -29,7 +29,7 @@ func ExampleQueryClient_Usage() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Usage(ctx,
-		"<scope>",
+		"providers/Microsoft.Billing/billingAccounts/70664866",
 		armcostmanagement.QueryDefinition{
 			Type: to.Ptr(armcostmanagement.ExportTypeUsage),
 			Dataset: &armcostmanagement.QueryDataset{
@@ -39,7 +39,7 @@ func ExampleQueryClient_Usage() {
 							Or: []*armcostmanagement.QueryFilter{
 								{
 									Dimensions: &armcostmanagement.QueryComparisonExpression{
-										Name:     to.Ptr("<name>"),
+										Name:     to.Ptr("ResourceLocation"),
 										Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 										Values: []*string{
 											to.Ptr("East US"),
@@ -48,7 +48,7 @@ func ExampleQueryClient_Usage() {
 								},
 								{
 									Tags: &armcostmanagement.QueryComparisonExpression{
-										Name:     to.Ptr("<name>"),
+										Name:     to.Ptr("Environment"),
 										Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 										Values: []*string{
 											to.Ptr("UAT"),
@@ -58,7 +58,7 @@ func ExampleQueryClient_Usage() {
 						},
 						{
 							Dimensions: &armcostmanagement.QueryComparisonExpression{
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("ResourceGroup"),
 								Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 								Values: []*string{
 									to.Ptr("API")},
@@ -90,7 +90,7 @@ func ExampleQueryClient_UsageByExternalCloudProviderType() {
 	}
 	res, err := client.UsageByExternalCloudProviderType(ctx,
 		armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
-		"<external-cloud-provider-id>",
+		"100",
 		armcostmanagement.QueryDefinition{
 			Type: to.Ptr(armcostmanagement.ExportTypeUsage),
 			Dataset: &armcostmanagement.QueryDataset{
@@ -100,7 +100,7 @@ func ExampleQueryClient_UsageByExternalCloudProviderType() {
 							Or: []*armcostmanagement.QueryFilter{
 								{
 									Dimensions: &armcostmanagement.QueryComparisonExpression{
-										Name:     to.Ptr("<name>"),
+										Name:     to.Ptr("ResourceLocation"),
 										Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 										Values: []*string{
 											to.Ptr("East US"),
@@ -109,7 +109,7 @@ func ExampleQueryClient_UsageByExternalCloudProviderType() {
 								},
 								{
 									Tags: &armcostmanagement.QueryComparisonExpression{
-										Name:     to.Ptr("<name>"),
+										Name:     to.Ptr("Environment"),
 										Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 										Values: []*string{
 											to.Ptr("UAT"),
@@ -119,7 +119,7 @@ func ExampleQueryClient_UsageByExternalCloudProviderType() {
 						},
 						{
 							Dimensions: &armcostmanagement.QueryComparisonExpression{
-								Name:     to.Ptr("<name>"),
+								Name:     to.Ptr("ResourceGroup"),
 								Operator: to.Ptr(armcostmanagement.QueryOperatorTypeIn),
 								Values: []*string{
 									to.Ptr("API")},

@@ -31,7 +31,7 @@ func ExampleExportsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<scope>",
+		"providers/Microsoft.Billing/billingAccounts/123456",
 		&armcostmanagement.ExportsClientListOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -52,8 +52,8 @@ func ExampleExportsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<export-name>",
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
 		&armcostmanagement.ExportsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,8 +74,8 @@ func ExampleExportsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<scope>",
-		"<export-name>",
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
 		armcostmanagement.Export{
 			Properties: &armcostmanagement.ExportProperties{
 				Format: to.Ptr(armcostmanagement.FormatTypeCSV),
@@ -96,9 +96,9 @@ func ExampleExportsClient_CreateOrUpdate() {
 				},
 				DeliveryInfo: &armcostmanagement.ExportDeliveryInfo{
 					Destination: &armcostmanagement.ExportDeliveryDestination{
-						Container:      to.Ptr("<container>"),
-						ResourceID:     to.Ptr("<resource-id>"),
-						RootFolderPath: to.Ptr("<root-folder-path>"),
+						Container:      to.Ptr("exports"),
+						ResourceID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182"),
+						RootFolderPath: to.Ptr("ad-hoc"),
 					},
 				},
 				Schedule: &armcostmanagement.ExportSchedule{
@@ -131,8 +131,8 @@ func ExampleExportsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<scope>",
-		"<export-name>",
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -151,8 +151,8 @@ func ExampleExportsClient_Execute() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Execute(ctx,
-		"<scope>",
-		"<export-name>",
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -171,8 +171,8 @@ func ExampleExportsClient_GetExecutionHistory() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetExecutionHistory(ctx,
-		"<scope>",
-		"<export-name>",
+		"providers/Microsoft.Billing/billingAccounts/123456",
+		"TestExport",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

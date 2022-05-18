@@ -38,7 +38,7 @@ func NewEndpointClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewEndpointClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create or update DigitalTwinsInstance endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-30-preview
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // endpointName - Name of Endpoint Resource.
 // endpointDescription - The DigitalTwinsInstance endpoint metadata and security metadata.
 // options - EndpointClientBeginCreateOrUpdateOptions contains the optional parameters for the EndpointClient.BeginCreateOrUpdate
 // method.
-func (client *EndpointClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, endpointDescription EndpointResource, options *EndpointClientBeginCreateOrUpdateOptions) (*armruntime.Poller[EndpointClientCreateOrUpdateResponse], error) {
+func (client *EndpointClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, endpointDescription EndpointResource, options *EndpointClientBeginCreateOrUpdateOptions) (*runtime.Poller[EndpointClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, endpointName, endpointDescription, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EndpointClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EndpointClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update DigitalTwinsInstance endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-30-preview
 func (client *EndpointClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, endpointDescription EndpointResource, options *EndpointClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, endpointName, endpointDescription, options)
 	if err != nil {
@@ -117,30 +119,32 @@ func (client *EndpointClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, endpointDescription)
 }
 
 // BeginDelete - Delete a DigitalTwinsInstance endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-30-preview
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // endpointName - Name of Endpoint Resource.
 // options - EndpointClientBeginDeleteOptions contains the optional parameters for the EndpointClient.BeginDelete method.
-func (client *EndpointClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, options *EndpointClientBeginDeleteOptions) (*armruntime.Poller[EndpointClientDeleteResponse], error) {
+func (client *EndpointClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, options *EndpointClientBeginDeleteOptions) (*runtime.Poller[EndpointClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, endpointName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[EndpointClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[EndpointClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[EndpointClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[EndpointClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a DigitalTwinsInstance endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-30-preview
 func (client *EndpointClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, options *EndpointClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, endpointName, options)
 	if err != nil {
@@ -182,12 +186,13 @@ func (client *EndpointClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get DigitalTwinsInstances Endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-30-preview
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // endpointName - Name of Endpoint Resource.
@@ -233,7 +238,7 @@ func (client *EndpointClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -248,11 +253,12 @@ func (client *EndpointClient) getHandleResponse(resp *http.Response) (EndpointCl
 
 // NewListPager - Get DigitalTwinsInstance Endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-30-preview
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // options - EndpointClientListOptions contains the optional parameters for the EndpointClient.List method.
 func (client *EndpointClient) NewListPager(resourceGroupName string, resourceName string, options *EndpointClientListOptions) *runtime.Pager[EndpointClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EndpointClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EndpointClientListResponse]{
 		More: func(page EndpointClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -301,7 +307,7 @@ func (client *EndpointClient) listCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

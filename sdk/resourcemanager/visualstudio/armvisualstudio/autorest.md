@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/b9d36b704e582a2bd5677fedc813607e73963469/specification/visualstudio/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/b9d36b704e582a2bd5677fedc813607e73963469/specification/visualstudio/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/visualstudio/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/visualstudio/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.3.0
+module-version: 0.4.0
 
 ```

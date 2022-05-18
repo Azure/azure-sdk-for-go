@@ -1,5 +1,15 @@
 # Release History
 
+## 0.4.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ProjectsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ProjectsClientCreateResponse], error)` to `(*runtime.Poller[ProjectsClientCreateResponse], error)`
+- Function `ProjectResourceListResult.MarshalJSON` has been removed
+- Function `AccountResourceListResult.MarshalJSON` has been removed
+- Function `ExtensionResourceListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.3.0 (2022-04-13)
 ### Breaking Changes
 

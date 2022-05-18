@@ -26,13 +26,6 @@ func (a AccountResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AccountResourceListResult.
-func (a AccountResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type AccountResourceRequest.
 func (a AccountResourceRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -64,13 +57,6 @@ func (e ExtensionResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ExtensionResourceListResult.
-func (e ExtensionResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ExtensionResourceRequest.
 func (e ExtensionResourceRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -78,13 +64,6 @@ func (e ExtensionResourceRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "plan", e.Plan)
 	populate(objectMap, "properties", e.Properties)
 	populate(objectMap, "tags", e.Tags)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -97,13 +76,6 @@ func (p ProjectResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "tags", p.Tags)
 	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ProjectResourceListResult.
-func (p ProjectResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
 

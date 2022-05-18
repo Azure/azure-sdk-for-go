@@ -38,7 +38,7 @@ func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -60,20 +60,21 @@ func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential,
 // 27450541-8E31-4150-9947-DC59F998FC01 (these IDs
 // correspond to Scrum, Agile, and CMMI process templates).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // rootResourceName - Name of the Team Services account.
 // resourceName - Name of the Team Services project.
 // body - The request data.
 // options - ProjectsClientBeginCreateOptions contains the optional parameters for the ProjectsClient.BeginCreate method.
-func (client *ProjectsClient) BeginCreate(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientBeginCreateOptions) (*armruntime.Poller[ProjectsClientCreateResponse], error) {
+func (client *ProjectsClient) BeginCreate(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientBeginCreateOptions) (*runtime.Poller[ProjectsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, rootResourceName, resourceName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ProjectsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ProjectsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ProjectsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ProjectsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -83,6 +84,7 @@ func (client *ProjectsClient) BeginCreate(ctx context.Context, resourceGroupName
 // 27450541-8E31-4150-9947-DC59F998FC01 (these IDs
 // correspond to Scrum, Agile, and CMMI process templates).
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 func (client *ProjectsClient) create(ctx context.Context, resourceGroupName string, rootResourceName string, resourceName string, body ProjectResource, options *ProjectsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, rootResourceName, resourceName, body, options)
 	if err != nil {
@@ -127,12 +129,13 @@ func (client *ProjectsClient) createCreateRequest(ctx context.Context, resourceG
 		reqQP.Set("validating", *options.Validating)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // Get - Gets the details of a Team Services project resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // rootResourceName - Name of the Team Services account.
 // resourceName - Name of the Team Services project.
@@ -178,7 +181,7 @@ func (client *ProjectsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -193,6 +196,7 @@ func (client *ProjectsClient) getHandleResponse(resp *http.Response) (ProjectsCl
 
 // GetJobStatus - Gets the status of the project resource creation job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // rootResourceName - Name of the Team Services account.
 // resourceName - Name of the Team Services project.
@@ -248,7 +252,7 @@ func (client *ProjectsClient) getJobStatusCreateRequest(ctx context.Context, res
 		reqQP.Set("jobId", *options.JobID)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -263,6 +267,7 @@ func (client *ProjectsClient) getJobStatusHandleResponse(resp *http.Response) (P
 
 // ListByResourceGroup - Gets all Visual Studio Team Services project resources created in the specified Team Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // rootResourceName - Name of the Team Services account.
 // options - ProjectsClientListByResourceGroupOptions contains the optional parameters for the ProjectsClient.ListByResourceGroup
@@ -304,7 +309,7 @@ func (client *ProjectsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -319,6 +324,7 @@ func (client *ProjectsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // Update - Updates the tags of the specified Team Services project.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2014-04-01-preview
 // resourceGroupName - Name of the resource group within the Azure subscription.
 // rootResourceName - Name of the Team Services account.
 // resourceName - Name of the Team Services project.
@@ -365,7 +371,7 @@ func (client *ProjectsClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2014-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

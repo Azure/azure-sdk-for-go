@@ -10,7 +10,7 @@ package armvisualstudio
 
 const (
 	moduleName    = "armvisualstudio"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // AccountResourceRequestOperationType - The type of the operation.

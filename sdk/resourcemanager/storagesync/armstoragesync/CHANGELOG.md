@@ -1,5 +1,43 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*CloudEndpointsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[CloudEndpointsClientCreateResponse], error)` to `(*runtime.Poller[CloudEndpointsClientCreateResponse], error)`
+- Function `*RegisteredServersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RegisteredServersClientDeleteResponse], error)` to `(*runtime.Poller[RegisteredServersClientDeleteResponse], error)`
+- Function `*CloudEndpointsClient.BeginTriggerChangeDetection` return value(s) have been changed from `(*armruntime.Poller[CloudEndpointsClientTriggerChangeDetectionResponse], error)` to `(*runtime.Poller[CloudEndpointsClientTriggerChangeDetectionResponse], error)`
+- Function `*ServerEndpointsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ServerEndpointsClientCreateResponse], error)` to `(*runtime.Poller[ServerEndpointsClientCreateResponse], error)`
+- Function `*ServerEndpointsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServerEndpointsClientUpdateResponse], error)` to `(*runtime.Poller[ServerEndpointsClientUpdateResponse], error)`
+- Function `*ServerEndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServerEndpointsClientDeleteResponse], error)` to `(*runtime.Poller[ServerEndpointsClientDeleteResponse], error)`
+- Function `*RegisteredServersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[RegisteredServersClientCreateResponse], error)` to `(*runtime.Poller[RegisteredServersClientCreateResponse], error)`
+- Function `*CloudEndpointsClient.BeginPreRestore` return value(s) have been changed from `(*armruntime.Poller[CloudEndpointsClientPreRestoreResponse], error)` to `(*runtime.Poller[CloudEndpointsClientPreRestoreResponse], error)`
+- Function `*CloudEndpointsClient.BeginPostBackup` return value(s) have been changed from `(*armruntime.Poller[CloudEndpointsClientPostBackupResponse], error)` to `(*runtime.Poller[CloudEndpointsClientPostBackupResponse], error)`
+- Function `*RegisteredServersClient.BeginTriggerRollover` return value(s) have been changed from `(*armruntime.Poller[RegisteredServersClientTriggerRolloverResponse], error)` to `(*runtime.Poller[RegisteredServersClientTriggerRolloverResponse], error)`
+- Function `*ServicesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientUpdateResponse], error)` to `(*runtime.Poller[ServicesClientUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientCreateResponse], error)`
+- Function `*ServerEndpointsClient.BeginRecallAction` return value(s) have been changed from `(*armruntime.Poller[ServerEndpointsClientRecallActionResponse], error)` to `(*runtime.Poller[ServerEndpointsClientRecallActionResponse], error)`
+- Function `*ServicesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ServicesClientCreateResponse], error)` to `(*runtime.Poller[ServicesClientCreateResponse], error)`
+- Function `*CloudEndpointsClient.BeginPostRestore` return value(s) have been changed from `(*armruntime.Poller[CloudEndpointsClientPostRestoreResponse], error)` to `(*runtime.Poller[CloudEndpointsClientPostRestoreResponse], error)`
+- Function `*CloudEndpointsClient.BeginPreBackup` return value(s) have been changed from `(*armruntime.Poller[CloudEndpointsClientPreBackupResponse], error)` to `(*runtime.Poller[CloudEndpointsClientPreBackupResponse], error)`
+- Function `*ServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServicesClientDeleteResponse], error)` to `(*runtime.Poller[ServicesClientDeleteResponse], error)`
+- Function `*CloudEndpointsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[CloudEndpointsClientDeleteResponse], error)` to `(*runtime.Poller[CloudEndpointsClientDeleteResponse], error)`
+- Function `OperationStatus.MarshalJSON` has been removed
+- Function `OperationEntityListResult.MarshalJSON` has been removed
+- Function `OperationResourceServiceSpecification.MarshalJSON` has been removed
+- Function `ServerEndpointArray.MarshalJSON` has been removed
+- Function `ServiceArray.MarshalJSON` has been removed
+- Function `CloudEndpointArray.MarshalJSON` has been removed
+- Function `OperationResourceMetricSpecification.MarshalJSON` has been removed
+- Function `RegisteredServerArray.MarshalJSON` has been removed
+- Function `WorkflowArray.MarshalJSON` has been removed
+- Function `ResourcesMoveInfo.MarshalJSON` has been removed
+- Function `LocationOperationStatus.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `SyncGroupArray.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

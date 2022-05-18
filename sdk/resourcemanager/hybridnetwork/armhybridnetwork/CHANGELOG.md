@@ -1,5 +1,72 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*VendorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VendorsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VendorsClientCreateOrUpdateResponse], error)`
+- Function `*NetworkFunctionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[NetworkFunctionsClientDeleteResponse], error)` to `(*runtime.Poller[NetworkFunctionsClientDeleteResponse], error)`
+- Function `*VendorSKUPreviewClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VendorSKUPreviewClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VendorSKUPreviewClientCreateOrUpdateResponse], error)`
+- Function `*NetworkFunctionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[NetworkFunctionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[NetworkFunctionsClientCreateOrUpdateResponse], error)`
+- Function `*DevicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DevicesClientDeleteResponse], error)` to `(*runtime.Poller[DevicesClientDeleteResponse], error)`
+- Function `*VendorSKUsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VendorSKUsClientDeleteResponse], error)` to `(*runtime.Poller[VendorSKUsClientDeleteResponse], error)`
+- Function `*VendorNetworkFunctionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VendorNetworkFunctionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VendorNetworkFunctionsClientCreateOrUpdateResponse], error)`
+- Function `*VendorSKUPreviewClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VendorSKUPreviewClientDeleteResponse], error)` to `(*runtime.Poller[VendorSKUPreviewClientDeleteResponse], error)`
+- Function `*RoleInstancesClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[RoleInstancesClientStartResponse], error)` to `(*runtime.Poller[RoleInstancesClientStartResponse], error)`
+- Function `*RoleInstancesClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[RoleInstancesClientRestartResponse], error)` to `(*runtime.Poller[RoleInstancesClientRestartResponse], error)`
+- Function `*VendorSKUsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VendorSKUsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VendorSKUsClientCreateOrUpdateResponse], error)`
+- Function `*DevicesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DevicesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DevicesClientCreateOrUpdateResponse], error)`
+- Function `*VendorsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VendorsClientDeleteResponse], error)` to `(*runtime.Poller[VendorsClientDeleteResponse], error)`
+- Function `*RoleInstancesClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[RoleInstancesClientStopResponse], error)` to `(*runtime.Poller[RoleInstancesClientStopResponse], error)`
+- Const `HTTPMethodPut` has been removed
+- Const `HTTPMethodPost` has been removed
+- Const `HTTPMethodUnknown` has been removed
+- Const `OriginUser` has been removed
+- Const `OriginSystem` has been removed
+- Const `ActionTypeInternal` has been removed
+- Const `OriginUserSystem` has been removed
+- Const `HTTPMethodGet` has been removed
+- Const `HTTPMethodPatch` has been removed
+- Const `HTTPMethodDelete` has been removed
+- Function `NetworkFunctionListResult.MarshalJSON` has been removed
+- Function `NetworkFunctionSKUDetails.MarshalJSON` has been removed
+- Function `NetworkFunctionVendorListResult.MarshalJSON` has been removed
+- Function `SKUCredential.MarshalJSON` has been removed
+- Function `*SKUCredential.UnmarshalJSON` has been removed
+- Function `VendorDetails.MarshalJSON` has been removed
+- Function `NetworkFunctionSKUListResult.MarshalJSON` has been removed
+- Function `PossibleOriginValues` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `DeviceListResult.MarshalJSON` has been removed
+- Function `PossibleActionTypeValues` has been removed
+- Function `VendorListResult.MarshalJSON` has been removed
+- Function `VendorSKUListResult.MarshalJSON` has been removed
+- Function `*VendorSKUsClient.ListCredential` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `VendorNetworkFunctionListResult.MarshalJSON` has been removed
+- Function `NetworkFunctionSKURoleDetails.MarshalJSON` has been removed
+- Function `*NetworkFunctionsClient.BeginExecuteRequest` has been removed
+- Function `PossibleHTTPMethodValues` has been removed
+- Function `NetworkFunctionRoleInstanceListResult.MarshalJSON` has been removed
+- Function `PreviewSubscriptionsList.MarshalJSON` has been removed
+- Struct `ExecuteRequestParameters` has been removed
+- Struct `NetworkFunctionsClientBeginExecuteRequestOptions` has been removed
+- Struct `NetworkFunctionsClientExecuteRequestResponse` has been removed
+- Struct `OperationListResult` has been removed
+- Struct `RequestMetadata` has been removed
+- Struct `SKUCredential` has been removed
+- Struct `VendorSKUsClientListCredentialOptions` has been removed
+- Struct `VendorSKUsClientListCredentialResponse` has been removed
+- Field `ActionType` of struct `Operation` has been removed
+- Field `IsDataAction` of struct `Operation` has been removed
+- Field `Origin` of struct `Operation` has been removed
+- Field `OperationListResult` of struct `OperationsClientListResponse` has been removed
+
+### Features Added
+
+- New struct `OperationList`
+- New anonymous field `OperationList` in struct `OperationsClientListResponse`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

@@ -38,7 +38,7 @@ func NewNetworkFunctionVendorsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,10 +56,11 @@ func NewNetworkFunctionVendorsClient(subscriptionID string, credential azcore.To
 
 // NewListPager - Lists all the available vendor and sku information.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // options - NetworkFunctionVendorsClientListOptions contains the optional parameters for the NetworkFunctionVendorsClient.List
 // method.
 func (client *NetworkFunctionVendorsClient) NewListPager(options *NetworkFunctionVendorsClientListOptions) *runtime.Pager[NetworkFunctionVendorsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[NetworkFunctionVendorsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[NetworkFunctionVendorsClientListResponse]{
 		More: func(page NetworkFunctionVendorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -98,9 +99,9 @@ func (client *NetworkFunctionVendorsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

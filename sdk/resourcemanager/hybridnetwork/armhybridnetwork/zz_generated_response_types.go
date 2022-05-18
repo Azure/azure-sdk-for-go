@@ -68,11 +68,6 @@ type NetworkFunctionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// NetworkFunctionsClientExecuteRequestResponse contains the response from method NetworkFunctionsClient.ExecuteRequest.
-type NetworkFunctionsClientExecuteRequestResponse struct {
-	// placeholder for future response values
-}
-
 // NetworkFunctionsClientGetResponse contains the response from method NetworkFunctionsClient.Get.
 type NetworkFunctionsClientGetResponse struct {
 	NetworkFunction
@@ -95,7 +90,7 @@ type NetworkFunctionsClientUpdateTagsResponse struct {
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	OperationListResult
+	OperationList
 }
 
 // RoleInstancesClientGetResponse contains the response from method RoleInstancesClient.Get.
@@ -171,11 +166,6 @@ type VendorSKUsClientDeleteResponse struct {
 // VendorSKUsClientGetResponse contains the response from method VendorSKUsClient.Get.
 type VendorSKUsClientGetResponse struct {
 	VendorSKU
-}
-
-// VendorSKUsClientListCredentialResponse contains the response from method VendorSKUsClient.ListCredential.
-type VendorSKUsClientListCredentialResponse struct {
-	SKUCredential
 }
 
 // VendorSKUsClientListResponse contains the response from method VendorSKUsClient.List.

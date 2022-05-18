@@ -1,5 +1,20 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- Function `*PrivateLinkServiceResourceOperationResultsClient.BeginGet` return value(s) have been changed from `(*armruntime.Poller[PrivateLinkServiceResourceOperationResultsClientGetResponse], error)` to `(*runtime.Poller[PrivateLinkServiceResourceOperationResultsClientGetResponse], error)`
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `GroupConnectivityInformation.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `PrivateLinkServiceConnection.MarshalJSON` has been removed
+- Function `PrivateLinkResourcesListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `PrivateLinkServiceProxy.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

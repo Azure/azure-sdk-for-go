@@ -24,9 +24,9 @@ func ExamplePowerBIResourcesClient_ListByResourceName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("<subscription-id>",
-		"<resource-group-name>",
-		"<azure-resource-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup",
+		"azureResourceName", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -46,24 +46,24 @@ func ExamplePowerBIResourcesClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("<subscription-id>",
-		"<resource-group-name>",
-		"<azure-resource-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup",
+		"azureResourceName", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
 		armpowerbiprivatelinks.TenantResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("global"),
 			Properties: &armpowerbiprivatelinks.TenantProperties{
-				TenantID: to.Ptr("<tenant-id>"),
+				TenantID: to.Ptr("ac2bc297-8a3e-46f3-972d-87c2b4ae6e2f"),
 			},
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armpowerbiprivatelinks.PowerBIResourcesClientCreateOptions{ClientTenantID: to.Ptr("<client-tenant-id>")})
+		&armpowerbiprivatelinks.PowerBIResourcesClientCreateOptions{ClientTenantID: to.Ptr("ac2bc297-8a3e-46f3-972d-87c2b4ae6e2f")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -78,24 +78,24 @@ func ExamplePowerBIResourcesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("<subscription-id>",
-		"<resource-group-name>",
-		"<azure-resource-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup",
+		"azureResourceName", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
 		armpowerbiprivatelinks.TenantResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("global"),
 			Properties: &armpowerbiprivatelinks.TenantProperties{
-				TenantID: to.Ptr("<tenant-id>"),
+				TenantID: to.Ptr("ac2bc297-8a3e-46f3-972d-87c2b4ae6e2f"),
 			},
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armpowerbiprivatelinks.PowerBIResourcesClientUpdateOptions{ClientTenantID: to.Ptr("<client-tenant-id>")})
+		&armpowerbiprivatelinks.PowerBIResourcesClientUpdateOptions{ClientTenantID: to.Ptr("ac2bc297-8a3e-46f3-972d-87c2b4ae6e2f")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -110,9 +110,9 @@ func ExamplePowerBIResourcesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("<subscription-id>",
-		"<resource-group-name>",
-		"<azure-resource-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPowerBIResourcesClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup",
+		"azureResourceName", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

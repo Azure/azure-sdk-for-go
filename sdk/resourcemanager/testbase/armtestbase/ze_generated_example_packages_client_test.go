@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase"
@@ -26,18 +24,17 @@ func ExamplePackagesClient_NewListByTestBaseAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewPackagesClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewPackagesClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTestBaseAccountPager("<resource-group-name>",
-		"<test-base-account-name>",
+	pager := client.NewListByTestBaseAccountPager("contoso-rg1",
+		"contoso-testBaseAccount1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,24 +50,24 @@ func ExamplePackagesClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewPackagesClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewPackagesClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
 		armtestbase.PackageResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Tags:     map[string]*string{},
 			Properties: &armtestbase.PackageProperties{
-				ApplicationName: to.Ptr("<application-name>"),
-				BlobPath:        to.Ptr("<blob-path>"),
-				FlightingRing:   to.Ptr("<flighting-ring>"),
+				ApplicationName: to.Ptr("contoso-package2"),
+				BlobPath:        to.Ptr("storageAccountPath/package.zip"),
+				FlightingRing:   to.Ptr("Insider Beta Channel"),
 				TargetOSList: []*armtestbase.TargetOSInfo{
 					{
-						OSUpdateType: to.Ptr("<osupdate-type>"),
+						OSUpdateType: to.Ptr("Security updates"),
 						TargetOSs: []*string{
 							to.Ptr("Windows 10 2004"),
 							to.Ptr("Windows 10 1903")},
@@ -81,11 +78,11 @@ func ExamplePackagesClient_BeginCreate() {
 						TestType: to.Ptr(armtestbase.TestTypeOutOfBoxTest),
 						Commands: []*armtestbase.Command{
 							{
-								Name:              to.Ptr("<name>"),
+								Name:              to.Ptr("Install"),
 								Action:            to.Ptr(armtestbase.ActionInstall),
 								AlwaysRun:         to.Ptr(true),
 								ApplyUpdateBefore: to.Ptr(false),
-								Content:           to.Ptr("<content>"),
+								Content:           to.Ptr("app/scripts/install/job.ps1"),
 								ContentType:       to.Ptr(armtestbase.ContentTypePath),
 								MaxRunTime:        to.Ptr[int32](1800),
 								RestartAfter:      to.Ptr(true),
@@ -93,11 +90,11 @@ func ExamplePackagesClient_BeginCreate() {
 								RunElevated:       to.Ptr(true),
 							},
 							{
-								Name:              to.Ptr("<name>"),
+								Name:              to.Ptr("Launch"),
 								Action:            to.Ptr(armtestbase.ActionLaunch),
 								AlwaysRun:         to.Ptr(false),
 								ApplyUpdateBefore: to.Ptr(true),
-								Content:           to.Ptr("<content>"),
+								Content:           to.Ptr("app/scripts/launch/job.ps1"),
 								ContentType:       to.Ptr(armtestbase.ContentTypePath),
 								MaxRunTime:        to.Ptr[int32](1800),
 								RestartAfter:      to.Ptr(false),
@@ -105,11 +102,11 @@ func ExamplePackagesClient_BeginCreate() {
 								RunElevated:       to.Ptr(true),
 							},
 							{
-								Name:              to.Ptr("<name>"),
+								Name:              to.Ptr("Close"),
 								Action:            to.Ptr(armtestbase.ActionClose),
 								AlwaysRun:         to.Ptr(false),
 								ApplyUpdateBefore: to.Ptr(false),
-								Content:           to.Ptr("<content>"),
+								Content:           to.Ptr("app/scripts/close/job.ps1"),
 								ContentType:       to.Ptr(armtestbase.ContentTypePath),
 								MaxRunTime:        to.Ptr[int32](1800),
 								RestartAfter:      to.Ptr(false),
@@ -117,11 +114,11 @@ func ExamplePackagesClient_BeginCreate() {
 								RunElevated:       to.Ptr(true),
 							},
 							{
-								Name:              to.Ptr("<name>"),
+								Name:              to.Ptr("Uninstall"),
 								Action:            to.Ptr(armtestbase.ActionUninstall),
 								AlwaysRun:         to.Ptr(true),
 								ApplyUpdateBefore: to.Ptr(false),
-								Content:           to.Ptr("<content>"),
+								Content:           to.Ptr("app/scripts/uninstall/job.ps1"),
 								ContentType:       to.Ptr(armtestbase.ContentTypePath),
 								MaxRunTime:        to.Ptr[int32](1800),
 								RestartAfter:      to.Ptr(false),
@@ -129,14 +126,14 @@ func ExamplePackagesClient_BeginCreate() {
 								RunElevated:       to.Ptr(true),
 							}},
 					}},
-				Version: to.Ptr("<version>"),
+				Version: to.Ptr("1.0.0"),
 			},
 		},
-		&armtestbase.PackagesClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -151,22 +148,22 @@ func ExamplePackagesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewPackagesClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewPackagesClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
 		armtestbase.PackageUpdateParameters{
 			Properties: &armtestbase.PackageUpdateParameterProperties{
-				BlobPath:      to.Ptr("<blob-path>"),
-				FlightingRing: to.Ptr("<flighting-ring>"),
+				BlobPath:      to.Ptr("storageAccountPath/package.zip"),
+				FlightingRing: to.Ptr("Insider Beta Channel"),
 				IsEnabled:     to.Ptr(false),
 				TargetOSList: []*armtestbase.TargetOSInfo{
 					{
-						OSUpdateType: to.Ptr("<osupdate-type>"),
+						OSUpdateType: to.Ptr("Security updates"),
 						TargetOSs: []*string{
 							to.Ptr("Windows 10 2004"),
 							to.Ptr("Windows 10 1903")},
@@ -177,11 +174,11 @@ func ExamplePackagesClient_BeginUpdate() {
 						TestType: to.Ptr(armtestbase.TestTypeOutOfBoxTest),
 						Commands: []*armtestbase.Command{
 							{
-								Name:              to.Ptr("<name>"),
+								Name:              to.Ptr("Install"),
 								Action:            to.Ptr(armtestbase.ActionInstall),
 								AlwaysRun:         to.Ptr(true),
 								ApplyUpdateBefore: to.Ptr(false),
-								Content:           to.Ptr("<content>"),
+								Content:           to.Ptr("app/scripts/install/job.ps1"),
 								ContentType:       to.Ptr(armtestbase.ContentTypePath),
 								MaxRunTime:        to.Ptr[int32](1800),
 								RestartAfter:      to.Ptr(true),
@@ -189,11 +186,11 @@ func ExamplePackagesClient_BeginUpdate() {
 								RunElevated:       to.Ptr(true),
 							},
 							{
-								Name:              to.Ptr("<name>"),
+								Name:              to.Ptr("Launch"),
 								Action:            to.Ptr(armtestbase.ActionLaunch),
 								AlwaysRun:         to.Ptr(false),
 								ApplyUpdateBefore: to.Ptr(true),
-								Content:           to.Ptr("<content>"),
+								Content:           to.Ptr("app/scripts/launch/job.ps1"),
 								ContentType:       to.Ptr(armtestbase.ContentTypePath),
 								MaxRunTime:        to.Ptr[int32](1800),
 								RestartAfter:      to.Ptr(false),
@@ -201,11 +198,11 @@ func ExamplePackagesClient_BeginUpdate() {
 								RunElevated:       to.Ptr(true),
 							},
 							{
-								Name:              to.Ptr("<name>"),
+								Name:              to.Ptr("Close"),
 								Action:            to.Ptr(armtestbase.ActionClose),
 								AlwaysRun:         to.Ptr(false),
 								ApplyUpdateBefore: to.Ptr(false),
-								Content:           to.Ptr("<content>"),
+								Content:           to.Ptr("app/scripts/close/job.ps1"),
 								ContentType:       to.Ptr(armtestbase.ContentTypePath),
 								MaxRunTime:        to.Ptr[int32](1800),
 								RestartAfter:      to.Ptr(false),
@@ -213,11 +210,11 @@ func ExamplePackagesClient_BeginUpdate() {
 								RunElevated:       to.Ptr(true),
 							},
 							{
-								Name:              to.Ptr("<name>"),
+								Name:              to.Ptr("Uninstall"),
 								Action:            to.Ptr(armtestbase.ActionUninstall),
 								AlwaysRun:         to.Ptr(true),
 								ApplyUpdateBefore: to.Ptr(false),
-								Content:           to.Ptr("<content>"),
+								Content:           to.Ptr("app/scripts/uninstall/job.ps1"),
 								ContentType:       to.Ptr(armtestbase.ContentTypePath),
 								MaxRunTime:        to.Ptr[int32](1800),
 								RestartAfter:      to.Ptr(false),
@@ -228,11 +225,11 @@ func ExamplePackagesClient_BeginUpdate() {
 			},
 			Tags: map[string]*string{},
 		},
-		&armtestbase.PackagesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -247,19 +244,19 @@ func ExamplePackagesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewPackagesClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewPackagesClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
-		&armtestbase.PackagesClientBeginDeleteOptions{ResumeToken: ""})
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -272,14 +269,14 @@ func ExamplePackagesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewPackagesClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewPackagesClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -295,19 +292,19 @@ func ExamplePackagesClient_BeginHardDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewPackagesClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewPackagesClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginHardDelete(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
-		&armtestbase.PackagesClientBeginHardDeleteOptions{ResumeToken: ""})
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -320,14 +317,14 @@ func ExamplePackagesClient_GetDownloadURL() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewPackagesClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewPackagesClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDownloadURL(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

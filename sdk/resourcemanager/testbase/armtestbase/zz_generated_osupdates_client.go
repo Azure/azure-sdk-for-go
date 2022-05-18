@@ -38,7 +38,7 @@ func NewOSUpdatesClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewOSUpdatesClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Gets an OS Update by name in which the package was tested before.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -106,7 +107,7 @@ func (client *OSUpdatesClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -121,13 +122,14 @@ func (client *OSUpdatesClient) getHandleResponse(resp *http.Response) (OSUpdates
 
 // NewListPager - Lists the OS Updates in which the package were tested before.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-12-16-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
 // osUpdateType - The type of the OS Update.
 // options - OSUpdatesClientListOptions contains the optional parameters for the OSUpdatesClient.List method.
 func (client *OSUpdatesClient) NewListPager(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesClientListOptions) *runtime.Pager[OSUpdatesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OSUpdatesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OSUpdatesClientListResponse]{
 		More: func(page OSUpdatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -181,7 +183,7 @@ func (client *OSUpdatesClient) listCreateRequest(ctx context.Context, resourceGr
 	reqQP.Set("osUpdateType", string(osUpdateType))
 	reqQP.Set("api-version", "2020-12-16-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

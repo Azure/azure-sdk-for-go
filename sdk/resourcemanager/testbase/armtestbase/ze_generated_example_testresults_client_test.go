@@ -24,20 +24,19 @@ func ExampleTestResultsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewTestResultsClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
+	pager := client.NewListPager("contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
 		armtestbase.OsUpdateTypeSecurityUpdate,
-		&armtestbase.TestResultsClientListOptions{Filter: to.Ptr("<filter>")})
+		&armtestbase.TestResultsClientListOptions{Filter: to.Ptr("osName eq 'Windows 10 2004' and releaseName eq '2020.11B'")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,15 +52,15 @@ func ExampleTestResultsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewTestResultsClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
-		"<test-result-name>",
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
+		"Windows-10-1909-99b1f80d-03a9-4148-997f-806ba5bac8e0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,15 +76,15 @@ func ExampleTestResultsClient_GetDownloadURL() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewTestResultsClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDownloadURL(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
-		"<test-result-name>",
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
+		"Windows-10-1909-99b1f80d-03a9-4148-997f-806ba5bac8e0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,15 +100,15 @@ func ExampleTestResultsClient_GetVideoDownloadURL() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armtestbase.NewTestResultsClient("<subscription-id>", cred, nil)
+	client, err := armtestbase.NewTestResultsClient("476f61a4-952c-422a-b4db-568a828f35df", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetVideoDownloadURL(ctx,
-		"<resource-group-name>",
-		"<test-base-account-name>",
-		"<package-name>",
-		"<test-result-name>",
+		"contoso-rg1",
+		"contoso-testBaseAccount1",
+		"contoso-package2",
+		"Windows-10-1909-99b1f80d-03a9-4148-997f-806ba5bac8e0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

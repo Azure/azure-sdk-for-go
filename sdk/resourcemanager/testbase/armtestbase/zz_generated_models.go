@@ -248,6 +248,12 @@ type AnalysisResultSingletonResourceProperties struct {
 	Grade *Grade `json:"grade,omitempty"`
 }
 
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type AnalysisResultSingletonResourceProperties.
+func (a *AnalysisResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return a
+}
+
 // AnalysisResultsClientGetOptions contains the optional parameters for the AnalysisResultsClient.Get method.
 type AnalysisResultsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -328,6 +334,15 @@ type CPURegressionResultSingletonResourceProperties struct {
 	Grade *Grade `json:"grade,omitempty"`
 }
 
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type CPURegressionResultSingletonResourceProperties.
+func (c *CPURegressionResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              c.Grade,
+		AnalysisResultType: c.AnalysisResultType,
+	}
+}
+
 // CPUUtilizationResultSingletonResourceProperties - The properties of CPU Utilization Result.
 type CPUUtilizationResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
@@ -338,6 +353,15 @@ type CPUUtilizationResultSingletonResourceProperties struct {
 
 	// The grade of the test.
 	Grade *Grade `json:"grade,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type CPUUtilizationResultSingletonResourceProperties.
+func (c *CPUUtilizationResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              c.Grade,
+		AnalysisResultType: c.AnalysisResultType,
+	}
 }
 
 // CheckNameAvailabilityResult - Description of a Check Name availability response properties.
@@ -668,6 +692,15 @@ type MemoryRegressionResultSingletonResourceProperties struct {
 	MemoryRegressionResults []*RegressionResult `json:"memoryRegressionResults,omitempty"`
 }
 
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type MemoryRegressionResultSingletonResourceProperties.
+func (m *MemoryRegressionResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              m.Grade,
+		AnalysisResultType: m.AnalysisResultType,
+	}
+}
+
 // MemoryUtilizationResultSingletonResourceProperties - The properties of Memory Utilization Result.
 type MemoryUtilizationResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
@@ -678,6 +711,15 @@ type MemoryUtilizationResultSingletonResourceProperties struct {
 
 	// The result array data.
 	MemoryUtilizationResults []*UtilizationResult `json:"memoryUtilizationResults,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type MemoryUtilizationResultSingletonResourceProperties.
+func (m *MemoryUtilizationResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              m.Grade,
+		AnalysisResultType: m.AnalysisResultType,
+	}
 }
 
 // NotificationEventReceiver - A notification event receivers.
@@ -1114,6 +1156,15 @@ type ReliabilityResultSingletonResourceProperties struct {
 	ReliabilityResults []*ReliabilityResult `json:"reliabilityResults,omitempty"`
 }
 
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type ReliabilityResultSingletonResourceProperties.
+func (r *ReliabilityResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              r.Grade,
+		AnalysisResultType: r.AnalysisResultType,
+	}
+}
+
 // Resource - The Resource definition.
 type Resource struct {
 	// READ-ONLY; Resource ID.
@@ -1159,6 +1210,15 @@ type ScriptExecutionResultSingletonResourceProperties struct {
 
 	// The result array data.
 	ScriptExecutionResults []*ScriptExecutionResult `json:"scriptExecutionResults,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type ScriptExecutionResultSingletonResourceProperties.
+func (s *ScriptExecutionResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              s.Grade,
+		AnalysisResultType: s.AnalysisResultType,
+	}
 }
 
 // SubscriptionReceiverValue - The subscription role receiver value.
@@ -1240,6 +1300,15 @@ type TestAnalysisResultSingletonResourceProperties struct {
 
 	// The result of test analysis.
 	TestAnalysisResult *TestAnalysisResult `json:"testAnalysisResult,omitempty"`
+}
+
+// GetAnalysisResultSingletonResourceProperties implements the AnalysisResultSingletonResourcePropertiesClassification interface
+// for type TestAnalysisResultSingletonResourceProperties.
+func (t *TestAnalysisResultSingletonResourceProperties) GetAnalysisResultSingletonResourceProperties() *AnalysisResultSingletonResourceProperties {
+	return &AnalysisResultSingletonResourceProperties{
+		Grade:              t.Grade,
+		AnalysisResultType: t.AnalysisResultType,
+	}
 }
 
 // TestResultAnalysisSummary - The summary of a Test Analysis Result.

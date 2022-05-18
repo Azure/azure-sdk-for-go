@@ -1,5 +1,48 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ComputeClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ComputeClientUpdateResponse], error)` to `(*runtime.Poller[ComputeClientUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginDiagnose` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientDiagnoseResponse], error)` to `(*runtime.Poller[WorkspacesClientDiagnoseResponse], error)`
+- Function `*ComputeClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[ComputeClientRestartResponse], error)` to `(*runtime.Poller[ComputeClientRestartResponse], error)`
+- Function `*ComputeClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ComputeClientDeleteResponse], error)` to `(*runtime.Poller[ComputeClientDeleteResponse], error)`
+- Function `*ComputeClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ComputeClientStartResponse], error)` to `(*runtime.Poller[ComputeClientStartResponse], error)`
+- Function `*WorkspacesClient.BeginPrepareNotebook` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientPrepareNotebookResponse], error)` to `(*runtime.Poller[WorkspacesClientPrepareNotebookResponse], error)`
+- Function `*ComputeClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ComputeClientStopResponse], error)` to `(*runtime.Poller[ComputeClientStopResponse], error)`
+- Function `*WorkspacesClient.BeginResyncKeys` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientResyncKeysResponse], error)` to `(*runtime.Poller[WorkspacesClientResyncKeysResponse], error)`
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)` to `(*runtime.Poller[WorkspacesClientDeleteResponse], error)`
+- Function `*ComputeClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ComputeClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ComputeClientCreateOrUpdateResponse], error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `ListUsagesResult.MarshalJSON` has been removed
+- Function `Restriction.MarshalJSON` has been removed
+- Function `PaginatedWorkspaceConnectionsList.MarshalJSON` has been removed
+- Function `ExternalFQDNResponse.MarshalJSON` has been removed
+- Function `ListWorkspaceQuotas.MarshalJSON` has been removed
+- Function `VirtualMachineSizeListResult.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResult.MarshalJSON` has been removed
+- Function `FQDNEndpointsProperties.MarshalJSON` has been removed
+- Function `WorkspaceSKU.MarshalJSON` has been removed
+- Function `AmlComputeNodesInformation.MarshalJSON` has been removed
+- Function `VirtualMachineSize.MarshalJSON` has been removed
+- Function `ListAmlUserFeatureResult.MarshalJSON` has been removed
+- Function `UpdateWorkspaceQuotasResult.MarshalJSON` has been removed
+- Function `PaginatedComputeResourcesList.MarshalJSON` has been removed
+- Function `FQDNEndpoint.MarshalJSON` has been removed
+- Function `VirtualMachineSecrets.MarshalJSON` has been removed
+- Function `WorkspaceListResult.MarshalJSON` has been removed
+- Function `DiagnoseResponseResultValue.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `EstimatedVMPrices.MarshalJSON` has been removed
+- Function `AksComputeSecrets.MarshalJSON` has been removed
+- Function `RegistryListCredentialsResult.MarshalJSON` has been removed
+- Function `SKUListResult.MarshalJSON` has been removed
+- Function `ResourceSKUZoneDetails.MarshalJSON` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `ResourceSKULocationInfo.MarshalJSON` has been removed
+- Function `DatabricksComputeSecrets.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

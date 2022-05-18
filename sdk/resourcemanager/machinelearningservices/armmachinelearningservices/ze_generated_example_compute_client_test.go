@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices"
@@ -26,18 +24,17 @@ func ExampleComputeClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListPager("testrg123",
+		"workspaces123",
 		&armmachinelearningservices.ComputeClientListOptions{Skip: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleComputeClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<compute-name>",
+		"testrg123",
+		"workspaces123",
+		"compute123",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,21 +73,21 @@ func ExampleComputeClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<compute-name>",
+		"testrg123",
+		"workspaces123",
+		"compute123",
 		armmachinelearningservices.ComputeResource{
 			Properties: &armmachinelearningservices.Kubernetes{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("some compute"),
 				ComputeType: to.Ptr(armmachinelearningservices.ComputeTypeKubernetes),
-				ResourceID:  to.Ptr("<resource-id>"),
+				ResourceID:  to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2"),
 				Properties: &armmachinelearningservices.KubernetesProperties{
-					DefaultInstanceType: to.Ptr("<default-instance-type>"),
+					DefaultInstanceType: to.Ptr("defaultInstanceType"),
 					InstanceTypes: map[string]*armmachinelearningservices.InstanceTypeSchema{
 						"defaultInstanceType": {
 							Resources: &armmachinelearningservices.InstanceTypeSchemaResources{
@@ -107,16 +104,16 @@ func ExampleComputeClient_BeginCreateOrUpdate() {
 							},
 						},
 					},
-					Namespace: to.Ptr("<namespace>"),
+					Namespace: to.Ptr("default"),
 				},
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 		},
-		&armmachinelearningservices.ComputeClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -131,30 +128,30 @@ func ExampleComputeClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<compute-name>",
+		"testrg123",
+		"workspaces123",
+		"compute123",
 		armmachinelearningservices.ClusterUpdateParameters{
 			Properties: &armmachinelearningservices.ClusterUpdateProperties{
 				Properties: &armmachinelearningservices.ScaleSettingsInformation{
 					ScaleSettings: &armmachinelearningservices.ScaleSettings{
 						MaxNodeCount:                to.Ptr[int32](4),
 						MinNodeCount:                to.Ptr[int32](4),
-						NodeIdleTimeBeforeScaleDown: to.Ptr("<node-idle-time-before-scale-down>"),
+						NodeIdleTimeBeforeScaleDown: to.Ptr("PT5M"),
 					},
 				},
 			},
 		},
-		&armmachinelearningservices.ComputeClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -169,20 +166,20 @@ func ExampleComputeClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<compute-name>",
+		"testrg123",
+		"workspaces123",
+		"compute123",
 		armmachinelearningservices.UnderlyingResourceActionDelete,
-		&armmachinelearningservices.ComputeClientBeginDeleteOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -195,19 +192,18 @@ func ExampleComputeClient_NewListNodesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListNodesPager("<resource-group-name>",
-		"<workspace-name>",
-		"<compute-name>",
+	pager := client.NewListNodesPager("testrg123",
+		"workspaces123",
+		"compute123",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Nodes {
 			// TODO: use page item
@@ -223,14 +219,14 @@ func ExampleComputeClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<compute-name>",
+		"testrg123",
+		"workspaces123",
+		"compute123",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -246,19 +242,19 @@ func ExampleComputeClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<compute-name>",
-		&armmachinelearningservices.ComputeClientBeginStartOptions{ResumeToken: ""})
+		"testrg123",
+		"workspaces123",
+		"compute123",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -271,19 +267,19 @@ func ExampleComputeClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<compute-name>",
-		&armmachinelearningservices.ComputeClientBeginStopOptions{ResumeToken: ""})
+		"testrg123",
+		"workspaces123",
+		"compute123",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -296,19 +292,19 @@ func ExampleComputeClient_BeginRestart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmachinelearningservices.NewComputeClient("<subscription-id>", cred, nil)
+	client, err := armmachinelearningservices.NewComputeClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<compute-name>",
-		&armmachinelearningservices.ComputeClientBeginRestartOptions{ResumeToken: ""})
+		"testrg123",
+		"workspaces123",
+		"compute123",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

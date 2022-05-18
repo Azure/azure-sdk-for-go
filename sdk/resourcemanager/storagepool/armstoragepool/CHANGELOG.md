@@ -1,5 +1,34 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*DiskPoolsClient.BeginDeallocate` return value(s) have been changed from `(*armruntime.Poller[DiskPoolsClientDeallocateResponse], error)` to `(*runtime.Poller[DiskPoolsClientDeallocateResponse], error)`
+- Function `*DiskPoolsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[DiskPoolsClientStartResponse], error)` to `(*runtime.Poller[DiskPoolsClientStartResponse], error)`
+- Function `*IscsiTargetsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[IscsiTargetsClientDeleteResponse], error)` to `(*runtime.Poller[IscsiTargetsClientDeleteResponse], error)`
+- Function `*DiskPoolsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DiskPoolsClientUpdateResponse], error)` to `(*runtime.Poller[DiskPoolsClientUpdateResponse], error)`
+- Function `*DiskPoolsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DiskPoolsClientDeleteResponse], error)` to `(*runtime.Poller[DiskPoolsClientDeleteResponse], error)`
+- Function `*DiskPoolsClient.BeginUpgrade` return value(s) have been changed from `(*armruntime.Poller[DiskPoolsClientUpgradeResponse], error)` to `(*runtime.Poller[DiskPoolsClientUpgradeResponse], error)`
+- Function `*DiskPoolsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DiskPoolsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DiskPoolsClientCreateOrUpdateResponse], error)`
+- Function `*IscsiTargetsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[IscsiTargetsClientUpdateResponse], error)` to `(*runtime.Poller[IscsiTargetsClientUpdateResponse], error)`
+- Function `*IscsiTargetsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[IscsiTargetsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[IscsiTargetsClientCreateOrUpdateResponse], error)`
+- Function `ResourceSKURestrictionInfo.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ResourceSKUListResult.MarshalJSON` has been removed
+- Function `ResourceSKUInfo.MarshalJSON` has been removed
+- Function `ErrorResponse.MarshalJSON` has been removed
+- Function `DiskPoolListResult.MarshalJSON` has been removed
+- Function `IscsiTargetList.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpointList.MarshalJSON` has been removed
+- Function `ResourceSKURestrictions.MarshalJSON` has been removed
+- Function `DiskPoolZoneListResult.MarshalJSON` has been removed
+- Function `DiskPoolZoneInfo.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpoint.MarshalJSON` has been removed
+- Function `EndpointDependency.MarshalJSON` has been removed
+- Function `ResourceSKUZoneDetails.MarshalJSON` has been removed
+- Function `ResourceSKULocationInfo.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

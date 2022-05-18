@@ -10,6 +10,7 @@ package armmanagementgroups
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
@@ -39,26 +40,26 @@ func (c CreateManagementGroupDetails) MarshalJSON() ([]byte, error) {
 func (c *CreateManagementGroupDetails) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "parent":
-			err = unpopulate(val, &c.Parent)
+			err = unpopulate(val, "Parent", &c.Parent)
 			delete(rawMsg, key)
 		case "updatedBy":
-			err = unpopulate(val, &c.UpdatedBy)
+			err = unpopulate(val, "UpdatedBy", &c.UpdatedBy)
 			delete(rawMsg, key)
 		case "updatedTime":
-			err = unpopulateTimeRFC3339(val, &c.UpdatedTime)
+			err = unpopulateTimeRFC3339(val, "UpdatedTime", &c.UpdatedTime)
 			delete(rawMsg, key)
 		case "version":
-			err = unpopulate(val, &c.Version)
+			err = unpopulate(val, "Version", &c.Version)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
@@ -81,150 +82,42 @@ func (c CreateOrUpdateSettingsRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DescendantListResult.
-func (d DescendantListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityHierarchyItemProperties.
-func (e EntityHierarchyItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "children", e.Children)
-	populate(objectMap, "displayName", e.DisplayName)
-	populate(objectMap, "permissions", e.Permissions)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityInfoProperties.
-func (e EntityInfoProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "displayName", e.DisplayName)
-	populate(objectMap, "inheritedPermissions", e.InheritedPermissions)
-	populate(objectMap, "numberOfChildGroups", e.NumberOfChildGroups)
-	populate(objectMap, "numberOfChildren", e.NumberOfChildren)
-	populate(objectMap, "numberOfDescendants", e.NumberOfDescendants)
-	populate(objectMap, "parent", e.Parent)
-	populate(objectMap, "parentDisplayNameChain", e.ParentDisplayNameChain)
-	populate(objectMap, "parentNameChain", e.ParentNameChain)
-	populate(objectMap, "permissions", e.Permissions)
-	populate(objectMap, "tenantId", e.TenantID)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type EntityListResult.
-func (e EntityListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "count", e.Count)
-	populate(objectMap, "nextLink", e.NextLink)
-	populate(objectMap, "value", e.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HierarchySettingsList.
-func (h HierarchySettingsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", h.NextLink)
-	populate(objectMap, "value", h.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListSubscriptionUnderManagementGroup.
-func (l ListSubscriptionUnderManagementGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", l.NextLink)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagementGroupChildInfo.
-func (m ManagementGroupChildInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "children", m.Children)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagementGroupDetails.
-func (m ManagementGroupDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "managementGroupAncestors", m.ManagementGroupAncestors)
-	populate(objectMap, "managementGroupAncestorsChain", m.ManagementGroupAncestorsChain)
-	populate(objectMap, "parent", m.Parent)
-	populate(objectMap, "path", m.Path)
-	populate(objectMap, "updatedBy", m.UpdatedBy)
-	populateTimeRFC3339(objectMap, "updatedTime", m.UpdatedTime)
-	populate(objectMap, "version", m.Version)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type ManagementGroupDetails.
 func (m *ManagementGroupDetails) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "managementGroupAncestors":
-			err = unpopulate(val, &m.ManagementGroupAncestors)
+			err = unpopulate(val, "ManagementGroupAncestors", &m.ManagementGroupAncestors)
 			delete(rawMsg, key)
 		case "managementGroupAncestorsChain":
-			err = unpopulate(val, &m.ManagementGroupAncestorsChain)
+			err = unpopulate(val, "ManagementGroupAncestorsChain", &m.ManagementGroupAncestorsChain)
 			delete(rawMsg, key)
 		case "parent":
-			err = unpopulate(val, &m.Parent)
+			err = unpopulate(val, "Parent", &m.Parent)
 			delete(rawMsg, key)
 		case "path":
-			err = unpopulate(val, &m.Path)
+			err = unpopulate(val, "Path", &m.Path)
 			delete(rawMsg, key)
 		case "updatedBy":
-			err = unpopulate(val, &m.UpdatedBy)
+			err = unpopulate(val, "UpdatedBy", &m.UpdatedBy)
 			delete(rawMsg, key)
 		case "updatedTime":
-			err = unpopulateTimeRFC3339(val, &m.UpdatedTime)
+			err = unpopulateTimeRFC3339(val, "UpdatedTime", &m.UpdatedTime)
 			delete(rawMsg, key)
 		case "version":
-			err = unpopulate(val, &m.Version)
+			err = unpopulate(val, "Version", &m.Version)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagementGroupListResult.
-func (m ManagementGroupListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ManagementGroupProperties.
-func (m ManagementGroupProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "children", m.Children)
-	populate(objectMap, "details", m.Details)
-	populate(objectMap, "displayName", m.DisplayName)
-	populate(objectMap, "tenantId", m.TenantID)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type PatchManagementGroupRequest.
@@ -245,9 +138,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

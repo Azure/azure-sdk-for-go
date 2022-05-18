@@ -30,8 +30,8 @@ func ExampleAPIClient_CheckNameAvailability() {
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armmanagementgroups.CheckNameAvailabilityRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("nameTocheck"),
+			Type: to.Ptr("Microsoft.Management/managementGroups"),
 		},
 		nil)
 	if err != nil {

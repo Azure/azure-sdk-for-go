@@ -29,9 +29,9 @@ func ExampleManagementGroupSubscriptionsClient_Create() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<group-id>",
-		"<subscription-id>",
-		&armmanagementgroups.ManagementGroupSubscriptionsClientCreateOptions{CacheControl: to.Ptr("<cache-control>")})
+		"Group",
+		"728bcbe4-8d56-4510-86c2-4921b8beefbc",
+		&armmanagementgroups.ManagementGroupSubscriptionsClientCreateOptions{CacheControl: to.Ptr("no-cache")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -51,9 +51,9 @@ func ExampleManagementGroupSubscriptionsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<group-id>",
-		"<subscription-id>",
-		&armmanagementgroups.ManagementGroupSubscriptionsClientDeleteOptions{CacheControl: to.Ptr("<cache-control>")})
+		"Group",
+		"728bcbe4-8d56-4510-86c2-4921b8beefbc",
+		&armmanagementgroups.ManagementGroupSubscriptionsClientDeleteOptions{CacheControl: to.Ptr("no-cache")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -71,9 +71,9 @@ func ExampleManagementGroupSubscriptionsClient_GetSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSubscription(ctx,
-		"<group-id>",
-		"<subscription-id>",
-		&armmanagementgroups.ManagementGroupSubscriptionsClientGetSubscriptionOptions{CacheControl: to.Ptr("<cache-control>")})
+		"Group",
+		"728bcbe4-8d56-4510-86c2-4921b8beefbc",
+		&armmanagementgroups.ManagementGroupSubscriptionsClientGetSubscriptionOptions{CacheControl: to.Ptr("no-cache")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -92,13 +92,12 @@ func ExampleManagementGroupSubscriptionsClient_NewGetSubscriptionsUnderManagemen
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetSubscriptionsUnderManagementGroupPager("<group-id>",
+	pager := client.NewGetSubscriptionsUnderManagementGroupPager("Group",
 		&armmanagementgroups.ManagementGroupSubscriptionsClientGetSubscriptionsUnderManagementGroupOptions{Skiptoken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

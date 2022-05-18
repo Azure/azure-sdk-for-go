@@ -1,5 +1,20 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*PrivateZonesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateZonesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PrivateZonesClientCreateOrUpdateResponse], error)`
+- Function `*PrivateZonesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[PrivateZonesClientUpdateResponse], error)` to `(*runtime.Poller[PrivateZonesClientUpdateResponse], error)`
+- Function `*VirtualNetworkLinksClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkLinksClientDeleteResponse], error)` to `(*runtime.Poller[VirtualNetworkLinksClientDeleteResponse], error)`
+- Function `*VirtualNetworkLinksClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkLinksClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkLinksClientCreateOrUpdateResponse], error)`
+- Function `*VirtualNetworkLinksClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualNetworkLinksClientUpdateResponse], error)` to `(*runtime.Poller[VirtualNetworkLinksClientUpdateResponse], error)`
+- Function `*PrivateZonesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PrivateZonesClientDeleteResponse], error)` to `(*runtime.Poller[PrivateZonesClientDeleteResponse], error)`
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `PrivateZoneListResult.MarshalJSON` has been removed
+- Function `VirtualNetworkLinkListResult.MarshalJSON` has been removed
+- Function `RecordSetListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

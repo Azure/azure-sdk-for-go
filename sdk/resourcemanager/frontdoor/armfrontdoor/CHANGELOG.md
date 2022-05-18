@@ -1,5 +1,39 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*FrontDoorsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FrontDoorsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FrontDoorsClientCreateOrUpdateResponse], error)`
+- Function `*RulesEnginesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RulesEnginesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RulesEnginesClientCreateOrUpdateResponse], error)`
+- Function `*PoliciesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PoliciesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PoliciesClientCreateOrUpdateResponse], error)`
+- Function `*EndpointsClient.BeginPurgeContent` return value(s) have been changed from `(*armruntime.Poller[EndpointsClientPurgeContentResponse], error)` to `(*runtime.Poller[EndpointsClientPurgeContentResponse], error)`
+- Function `*FrontendEndpointsClient.BeginDisableHTTPS` return value(s) have been changed from `(*armruntime.Poller[FrontendEndpointsClientDisableHTTPSResponse], error)` to `(*runtime.Poller[FrontendEndpointsClientDisableHTTPSResponse], error)`
+- Function `*NetworkExperimentProfilesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[NetworkExperimentProfilesClientDeleteResponse], error)` to `(*runtime.Poller[NetworkExperimentProfilesClientDeleteResponse], error)`
+- Function `*NetworkExperimentProfilesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[NetworkExperimentProfilesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[NetworkExperimentProfilesClientCreateOrUpdateResponse], error)`
+- Function `*RulesEnginesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RulesEnginesClientDeleteResponse], error)` to `(*runtime.Poller[RulesEnginesClientDeleteResponse], error)`
+- Function `*ExperimentsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExperimentsClientDeleteResponse], error)` to `(*runtime.Poller[ExperimentsClientDeleteResponse], error)`
+- Function `*FrontDoorsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[FrontDoorsClientDeleteResponse], error)` to `(*runtime.Poller[FrontDoorsClientDeleteResponse], error)`
+- Function `*NetworkExperimentProfilesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[NetworkExperimentProfilesClientUpdateResponse], error)` to `(*runtime.Poller[NetworkExperimentProfilesClientUpdateResponse], error)`
+- Function `*FrontendEndpointsClient.BeginEnableHTTPS` return value(s) have been changed from `(*armruntime.Poller[FrontendEndpointsClientEnableHTTPSResponse], error)` to `(*runtime.Poller[FrontendEndpointsClientEnableHTTPSResponse], error)`
+- Function `*ExperimentsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ExperimentsClientUpdateResponse], error)` to `(*runtime.Poller[ExperimentsClientUpdateResponse], error)`
+- Function `*ExperimentsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ExperimentsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ExperimentsClientCreateOrUpdateResponse], error)`
+- Function `*PoliciesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[PoliciesClientDeleteResponse], error)` to `(*runtime.Poller[PoliciesClientDeleteResponse], error)`
+- Function `Error.MarshalJSON` has been removed
+- Function `ExperimentList.MarshalJSON` has been removed
+- Function `RulesEngineListResult.MarshalJSON` has been removed
+- Function `WebApplicationFirewallPolicyList.MarshalJSON` has been removed
+- Function `ProfileList.MarshalJSON` has been removed
+- Function `PreconfiguredEndpointList.MarshalJSON` has been removed
+- Function `RoutingRuleListResult.MarshalJSON` has been removed
+- Function `LoadBalancingSettingsListResult.MarshalJSON` has been removed
+- Function `HealthProbeSettingsListResult.MarshalJSON` has been removed
+- Function `TagsObject.MarshalJSON` has been removed
+- Function `BackendPoolListResult.MarshalJSON` has been removed
+- Function `ListResult.MarshalJSON` has been removed
+- Function `ManagedRuleSetDefinitionList.MarshalJSON` has been removed
+- Function `FrontendEndpointsListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

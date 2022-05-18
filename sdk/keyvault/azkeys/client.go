@@ -1138,8 +1138,8 @@ type ReleaseKeyOptions struct {
 	// Version is the version of the key to release
 	Version string
 
-	// Enc is the encryption algorithm used to protected exported key material.
-	Enc *ExportEncryptionAlg `json:"enc,omitempty"`
+	// Algorithm is the encryption algorithm used to protected exported key material.
+	Algorithm *ExportEncryptionAlg `json:"algorithm,omitempty"`
 
 	// Nonce is client-provided nonce for freshness.
 	Nonce *string `json:"nonce,omitempty"`
@@ -1164,7 +1164,7 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, targetAttestationT
 		options.Version,
 		generated.KeyReleaseParameters{
 			TargetAttestationToken: &targetAttestationToken,
-			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Enc),
+			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Algorithm),
 			Nonce:                  options.Nonce,
 		},
 		&generated.KeyVaultClientReleaseOptions{},

@@ -38,7 +38,7 @@ func NewExportJobsOperationResultClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewExportJobsOperationResultClient(subscriptionID string, credential azcore
 // contains URL of a Blob and a SAS key to access the same. The blob contains exported
 // jobs in JSON serialized format.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // operationID - OperationID which represents the export job.
@@ -102,9 +103,9 @@ func (client *ExportJobsOperationResultClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

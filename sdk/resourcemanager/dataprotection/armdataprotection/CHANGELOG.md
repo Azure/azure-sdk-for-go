@@ -1,5 +1,52 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*BackupInstancesClient.BeginValidateForBackup` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientValidateForBackupResponse], error)` to `(*runtime.Poller[BackupInstancesClientValidateForBackupResponse], error)`
+- Function `*BackupInstancesClient.BeginAdhocBackup` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientAdhocBackupResponse], error)` to `(*runtime.Poller[BackupInstancesClientAdhocBackupResponse], error)`
+- Function `*BackupVaultsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[BackupVaultsClientUpdateResponse], error)` to `(*runtime.Poller[BackupVaultsClientUpdateResponse], error)`
+- Function `*BackupInstancesClient.BeginResumeBackups` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientResumeBackupsResponse], error)` to `(*runtime.Poller[BackupInstancesClientResumeBackupsResponse], error)`
+- Function `*BackupInstancesClient.BeginTriggerRehydrate` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientTriggerRehydrateResponse], error)` to `(*runtime.Poller[BackupInstancesClientTriggerRehydrateResponse], error)`
+- Function `*BackupInstancesClient.BeginSuspendBackups` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientSuspendBackupsResponse], error)` to `(*runtime.Poller[BackupInstancesClientSuspendBackupsResponse], error)`
+- Function `*BackupInstancesClient.BeginValidateForRestore` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientValidateForRestoreResponse], error)` to `(*runtime.Poller[BackupInstancesClientValidateForRestoreResponse], error)`
+- Function `*BackupInstancesClient.BeginResumeProtection` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientResumeProtectionResponse], error)` to `(*runtime.Poller[BackupInstancesClientResumeProtectionResponse], error)`
+- Function `*BackupInstancesClient.BeginTriggerRestore` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientTriggerRestoreResponse], error)` to `(*runtime.Poller[BackupInstancesClientTriggerRestoreResponse], error)`
+- Function `*BackupInstancesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BackupInstancesClientCreateOrUpdateResponse], error)`
+- Function `*ExportJobsClient.BeginTrigger` return value(s) have been changed from `(*armruntime.Poller[ExportJobsClientTriggerResponse], error)` to `(*runtime.Poller[ExportJobsClientTriggerResponse], error)`
+- Function `*BackupVaultsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BackupVaultsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BackupVaultsClientCreateOrUpdateResponse], error)`
+- Function `*BackupInstancesClient.BeginSyncBackupInstance` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientSyncBackupInstanceResponse], error)` to `(*runtime.Poller[BackupInstancesClientSyncBackupInstanceResponse], error)`
+- Function `*BackupInstancesClient.BeginStopProtection` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientStopProtectionResponse], error)` to `(*runtime.Poller[BackupInstancesClientStopProtectionResponse], error)`
+- Function `*BackupInstancesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BackupInstancesClientDeleteResponse], error)` to `(*runtime.Poller[BackupInstancesClientDeleteResponse], error)`
+- Function `FeatureValidationResponse.MarshalJSON` has been removed
+- Function `BackupVaultResourceList.MarshalJSON` has been removed
+- Function `AzureBackupFindRestorableTimeRangesRequestResource.MarshalJSON` has been removed
+- Function `DppBaseResourceList.MarshalJSON` has been removed
+- Function `OperationJobExtendedInfo.MarshalJSON` has been removed
+- Function `ClientDiscoveryForServiceSpecification.MarshalJSON` has been removed
+- Function `Error.MarshalJSON` has been removed
+- Function `DppWorkerRequest.MarshalJSON` has been removed
+- Function `ResourceGuardResourceList.MarshalJSON` has been removed
+- Function `AzureBackupRecoveryPointResourceList.MarshalJSON` has been removed
+- Function `SupportedFeature.MarshalJSON` has been removed
+- Function `AzureBackupJobResourceList.MarshalJSON` has been removed
+- Function `OperationResource.MarshalJSON` has been removed
+- Function `BaseBackupPolicyResourceList.MarshalJSON` has been removed
+- Function `ClientDiscoveryResponse.MarshalJSON` has been removed
+- Function `BackupInstanceResourceList.MarshalJSON` has been removed
+
+### Features Added
+
+- New function `*KubernetesPVRestoreCriteria.UnmarshalJSON([]byte) error`
+- New function `*KubernetesStorageClassRestoreCriteria.GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria`
+- New function `*KubernetesPVRestoreCriteria.GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria`
+- New function `*KubernetesStorageClassRestoreCriteria.UnmarshalJSON([]byte) error`
+- New function `KubernetesStorageClassRestoreCriteria.MarshalJSON() ([]byte, error)`
+- New function `KubernetesPVRestoreCriteria.MarshalJSON() ([]byte, error)`
+- New struct `KubernetesPVRestoreCriteria`
+- New struct `KubernetesStorageClassRestoreCriteria`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

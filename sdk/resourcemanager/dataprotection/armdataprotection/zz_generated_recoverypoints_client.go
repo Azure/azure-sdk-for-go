@@ -38,7 +38,7 @@ func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Gets a Recovery Point using recoveryPointId for a Datasource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // backupInstanceName - The name of the backup instance
@@ -103,9 +104,9 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -120,12 +121,13 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 
 // NewListPager - Returns a list of Recovery Points for a DataSource in a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // backupInstanceName - The name of the backup instance
 // options - RecoveryPointsClientListOptions contains the optional parameters for the RecoveryPointsClient.List method.
 func (client *RecoveryPointsClient) NewListPager(resourceGroupName string, vaultName string, backupInstanceName string, options *RecoveryPointsClientListOptions) *runtime.Pager[RecoveryPointsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RecoveryPointsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RecoveryPointsClientListResponse]{
 		More: func(page RecoveryPointsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -176,7 +178,7 @@ func (client *RecoveryPointsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -184,7 +186,7 @@ func (client *RecoveryPointsClient) listCreateRequest(ctx context.Context, resou
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

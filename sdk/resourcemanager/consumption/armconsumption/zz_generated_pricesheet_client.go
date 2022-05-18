@@ -39,7 +39,7 @@ func NewPriceSheetClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewPriceSheetClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Get - Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // options - PriceSheetClientGetOptions contains the optional parameters for the PriceSheetClient.Get method.
 func (client *PriceSheetClient) Get(ctx context.Context, options *PriceSheetClientGetOptions) (PriceSheetClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
@@ -96,7 +97,7 @@ func (client *PriceSheetClient) getCreateRequest(ctx context.Context, options *P
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -112,6 +113,7 @@ func (client *PriceSheetClient) getHandleResponse(resp *http.Response) (PriceShe
 // GetByBillingPeriod - Get the price sheet for a scope by subscriptionId and billing period. Price sheet is available via
 // this API only for May 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // billingPeriodName - Billing Period Name.
 // options - PriceSheetClientGetByBillingPeriodOptions contains the optional parameters for the PriceSheetClient.GetByBillingPeriod
 // method.
@@ -157,7 +159,7 @@ func (client *PriceSheetClient) getByBillingPeriodCreateRequest(ctx context.Cont
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

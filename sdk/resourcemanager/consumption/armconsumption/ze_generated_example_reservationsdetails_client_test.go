@@ -28,14 +28,13 @@ func ExampleReservationsDetailsClient_NewListByReservationOrderPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReservationOrderPager("<reservation-order-id>",
-		"<filter>",
+	pager := client.NewListByReservationOrderPager("00000000-0000-0000-0000-000000000000",
+		"properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-12-05",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,15 +54,14 @@ func ExampleReservationsDetailsClient_NewListByReservationOrderAndReservationPag
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReservationOrderAndReservationPager("<reservation-order-id>",
-		"<reservation-id>",
-		"<filter>",
+	pager := client.NewListByReservationOrderAndReservationPager("00000000-0000-0000-0000-000000000000",
+		"00000000-0000-0000-0000-000000000000",
+		"properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-12-05",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -83,10 +81,10 @@ func ExampleReservationsDetailsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
+	pager := client.NewListPager("providers/Microsoft.Billing/billingAccounts/12345",
 		&armconsumption.ReservationsDetailsClientListOptions{StartDate: nil,
 			EndDate:            nil,
-			Filter:             to.Ptr("<filter>"),
+			Filter:             to.Ptr("properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-12-05"),
 			ReservationID:      nil,
 			ReservationOrderID: nil,
 		})
@@ -94,7 +92,6 @@ func ExampleReservationsDetailsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

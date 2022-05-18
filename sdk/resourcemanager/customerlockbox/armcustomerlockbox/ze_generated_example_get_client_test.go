@@ -28,7 +28,7 @@ func ExampleGetClient_TenantOptedIn() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.TenantOptedIn(ctx,
-		"<tenant-id>",
+		"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

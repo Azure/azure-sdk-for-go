@@ -36,7 +36,7 @@ func NewRequestsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewRequestsClient(credential azcore.TokenCredential, options *arm.ClientOpt
 
 // Get - Get Customer Lockbox request
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-28-preview
 // requestID - The Lockbox request ID.
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // options - RequestsClientGetOptions contains the optional parameters for the RequestsClient.Get method.
@@ -89,7 +90,7 @@ func (client *RequestsClient) getCreateRequest(ctx context.Context, requestID st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-28-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -104,10 +105,11 @@ func (client *RequestsClient) getHandleResponse(resp *http.Response) (RequestsCl
 
 // NewListPager - Lists all of the Lockbox requests in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-28-preview
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // options - RequestsClientListOptions contains the optional parameters for the RequestsClient.List method.
 func (client *RequestsClient) NewListPager(subscriptionID string, options *RequestsClientListOptions) *runtime.Pager[RequestsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RequestsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RequestsClientListResponse]{
 		More: func(page RequestsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -150,7 +152,7 @@ func (client *RequestsClient) listCreateRequest(ctx context.Context, subscriptio
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -165,6 +167,7 @@ func (client *RequestsClient) listHandleResponse(resp *http.Response) (RequestsC
 
 // UpdateStatus - Update Customer Lockbox request approval status API
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-28-preview
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
 // requestID - The Lockbox request ID.
 // approval - The approval object to update request status.
@@ -202,7 +205,7 @@ func (client *RequestsClient) updateStatusCreateRequest(ctx context.Context, sub
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-28-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, approval)
 }
 

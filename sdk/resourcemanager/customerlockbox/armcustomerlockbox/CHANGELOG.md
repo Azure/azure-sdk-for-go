@@ -1,5 +1,14 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `LockboxRequestResponseProperties.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `RequestListResult.MarshalJSON` has been removed
+- Function `ErrorBody.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

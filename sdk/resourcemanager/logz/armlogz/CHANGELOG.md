@@ -1,5 +1,23 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*MonitorsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MonitorsClientDeleteResponse], error)` to `(*runtime.Poller[MonitorsClientDeleteResponse], error)`
+- Function `*SingleSignOnClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SingleSignOnClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SingleSignOnClientCreateOrUpdateResponse], error)`
+- Function `*SubAccountClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[SubAccountClientCreateResponse], error)` to `(*runtime.Poller[SubAccountClientCreateResponse], error)`
+- Function `*SubAccountClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SubAccountClientDeleteResponse], error)` to `(*runtime.Poller[SubAccountClientDeleteResponse], error)`
+- Function `*MonitorsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[MonitorsClientCreateResponse], error)` to `(*runtime.Poller[MonitorsClientCreateResponse], error)`
+- Function `MonitoredResourceListResponse.MarshalJSON` has been removed
+- Function `UserRoleListResponse.MarshalJSON` has been removed
+- Function `MonitoringTagRulesListResponse.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `MonitorResourceListResponse.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `SingleSignOnResourceListResponse.MarshalJSON` has been removed
+- Function `VMResourcesListResponse.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

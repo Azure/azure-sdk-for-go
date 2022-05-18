@@ -38,7 +38,7 @@ func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAlertsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // Get - Gets an alert by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // name - The alert name.
 // resourceGroupName - The resource group name.
@@ -101,7 +102,7 @@ func (client *AlertsClient) getCreateRequest(ctx context.Context, deviceName str
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,12 +117,13 @@ func (client *AlertsClient) getHandleResponse(resp *http.Response) (AlertsClient
 
 // NewListByDataBoxEdgeDevicePager - Gets all the alerts for a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - AlertsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the AlertsClient.ListByDataBoxEdgeDevice
 // method.
 func (client *AlertsClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *AlertsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[AlertsClientListByDataBoxEdgeDeviceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AlertsClientListByDataBoxEdgeDeviceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AlertsClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page AlertsClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -170,7 +172,7 @@ func (client *AlertsClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

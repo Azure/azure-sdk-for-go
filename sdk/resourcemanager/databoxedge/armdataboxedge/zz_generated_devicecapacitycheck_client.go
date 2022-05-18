@@ -38,7 +38,7 @@ func NewDeviceCapacityCheckClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewDeviceCapacityCheckClient(subscriptionID string, credential azcore.Token
 
 // BeginCheckResourceCreationFeasibility - Posts the device capacity request info to check feasibility.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // resourceGroupName - The resource group name.
 // deviceName - The device name.
 // deviceCapacityRequestInfo - The device capacity request info.
 // options - DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions contains the optional parameters for the
 // DeviceCapacityCheckClient.BeginCheckResourceCreationFeasibility method.
-func (client *DeviceCapacityCheckClient) BeginCheckResourceCreationFeasibility(ctx context.Context, resourceGroupName string, deviceName string, deviceCapacityRequestInfo DeviceCapacityRequestInfo, options *DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions) (*armruntime.Poller[DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse], error) {
+func (client *DeviceCapacityCheckClient) BeginCheckResourceCreationFeasibility(ctx context.Context, resourceGroupName string, deviceName string, deviceCapacityRequestInfo DeviceCapacityRequestInfo, options *DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions) (*runtime.Poller[DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.checkResourceCreationFeasibility(ctx, resourceGroupName, deviceName, deviceCapacityRequestInfo, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CheckResourceCreationFeasibility - Posts the device capacity request info to check feasibility.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *DeviceCapacityCheckClient) checkResourceCreationFeasibility(ctx context.Context, resourceGroupName string, deviceName string, deviceCapacityRequestInfo DeviceCapacityRequestInfo, options *DeviceCapacityCheckClientBeginCheckResourceCreationFeasibilityOptions) (*http.Response, error) {
 	req, err := client.checkResourceCreationFeasibilityCreateRequest(ctx, resourceGroupName, deviceName, deviceCapacityRequestInfo, options)
 	if err != nil {
@@ -117,6 +119,6 @@ func (client *DeviceCapacityCheckClient) checkResourceCreationFeasibilityCreateR
 		reqQP.Set("capacityName", *options.CapacityName)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, deviceCapacityRequestInfo)
 }

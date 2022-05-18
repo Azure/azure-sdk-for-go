@@ -38,7 +38,7 @@ func NewContainersClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewContainersClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Creates a new container or updates an existing container on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // storageAccountName - The Storage Account Name
 // containerName - The container name.
@@ -63,20 +64,21 @@ func NewContainersClient(subscriptionID string, credential azcore.TokenCredentia
 // containerParam - The container properties.
 // options - ContainersClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainersClient.BeginCreateOrUpdate
 // method.
-func (client *ContainersClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, containerParam Container, options *ContainersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ContainersClientCreateOrUpdateResponse], error) {
+func (client *ContainersClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, containerParam Container, options *ContainersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ContainersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, deviceName, storageAccountName, containerName, resourceGroupName, containerParam, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ContainersClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ContainersClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ContainersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ContainersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a new container or updates an existing container on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *ContainersClient) createOrUpdate(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, containerParam Container, options *ContainersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, deviceName, storageAccountName, containerName, resourceGroupName, containerParam, options)
 	if err != nil {
@@ -122,31 +124,33 @@ func (client *ContainersClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, containerParam)
 }
 
 // BeginDelete - Deletes the container on the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // storageAccountName - The Storage Account Name
 // containerName - The container name.
 // resourceGroupName - The resource group name.
 // options - ContainersClientBeginDeleteOptions contains the optional parameters for the ContainersClient.BeginDelete method.
-func (client *ContainersClient) BeginDelete(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *ContainersClientBeginDeleteOptions) (*armruntime.Poller[ContainersClientDeleteResponse], error) {
+func (client *ContainersClient) BeginDelete(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *ContainersClientBeginDeleteOptions) (*runtime.Poller[ContainersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, deviceName, storageAccountName, containerName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ContainersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ContainersClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ContainersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ContainersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the container on the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *ContainersClient) deleteOperation(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *ContainersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, deviceName, storageAccountName, containerName, resourceGroupName, options)
 	if err != nil {
@@ -192,12 +196,13 @@ func (client *ContainersClient) deleteCreateRequest(ctx context.Context, deviceN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a container by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // storageAccountName - The Storage Account Name
 // containerName - The container Name
@@ -248,7 +253,7 @@ func (client *ContainersClient) getCreateRequest(ctx context.Context, deviceName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -263,13 +268,14 @@ func (client *ContainersClient) getHandleResponse(resp *http.Response) (Containe
 
 // NewListByStorageAccountPager - Lists all the containers of a storage Account in a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // storageAccountName - The storage Account name.
 // resourceGroupName - The resource group name.
 // options - ContainersClientListByStorageAccountOptions contains the optional parameters for the ContainersClient.ListByStorageAccount
 // method.
 func (client *ContainersClient) NewListByStorageAccountPager(deviceName string, storageAccountName string, resourceGroupName string, options *ContainersClientListByStorageAccountOptions) *runtime.Pager[ContainersClientListByStorageAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ContainersClientListByStorageAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ContainersClientListByStorageAccountResponse]{
 		More: func(page ContainersClientListByStorageAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -322,7 +328,7 @@ func (client *ContainersClient) listByStorageAccountCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -337,25 +343,27 @@ func (client *ContainersClient) listByStorageAccountHandleResponse(resp *http.Re
 
 // BeginRefresh - Refreshes the container metadata with the data from the cloud.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // storageAccountName - The Storage Account Name
 // containerName - The container name.
 // resourceGroupName - The resource group name.
 // options - ContainersClientBeginRefreshOptions contains the optional parameters for the ContainersClient.BeginRefresh method.
-func (client *ContainersClient) BeginRefresh(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *ContainersClientBeginRefreshOptions) (*armruntime.Poller[ContainersClientRefreshResponse], error) {
+func (client *ContainersClient) BeginRefresh(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *ContainersClientBeginRefreshOptions) (*runtime.Poller[ContainersClientRefreshResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.refresh(ctx, deviceName, storageAccountName, containerName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ContainersClientRefreshResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ContainersClientRefreshResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ContainersClientRefreshResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ContainersClientRefreshResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Refresh - Refreshes the container metadata with the data from the cloud.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *ContainersClient) refresh(ctx context.Context, deviceName string, storageAccountName string, containerName string, resourceGroupName string, options *ContainersClientBeginRefreshOptions) (*http.Response, error) {
 	req, err := client.refreshCreateRequest(ctx, deviceName, storageAccountName, containerName, resourceGroupName, options)
 	if err != nil {
@@ -401,6 +409,6 @@ func (client *ContainersClient) refreshCreateRequest(ctx context.Context, device
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

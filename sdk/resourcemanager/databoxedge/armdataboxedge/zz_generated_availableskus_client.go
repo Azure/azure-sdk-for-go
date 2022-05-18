@@ -38,7 +38,7 @@ func NewAvailableSKUsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,9 +56,10 @@ func NewAvailableSKUsClient(subscriptionID string, credential azcore.TokenCreden
 
 // NewListPager - List all the available Skus and information related to them.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // options - AvailableSKUsClientListOptions contains the optional parameters for the AvailableSKUsClient.List method.
 func (client *AvailableSKUsClient) NewListPager(options *AvailableSKUsClientListOptions) *runtime.Pager[AvailableSKUsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailableSKUsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AvailableSKUsClientListResponse]{
 		More: func(page AvailableSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -99,7 +100,7 @@ func (client *AvailableSKUsClient) listCreateRequest(ctx context.Context, option
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

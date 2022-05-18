@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
@@ -26,18 +24,17 @@ func ExampleBandwidthSchedulesClient_NewListByDataBoxEdgeDevicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewBandwidthSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewBandwidthSchedulesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataBoxEdgeDevicePager("<device-name>",
-		"<resource-group-name>",
+	pager := client.NewListByDataBoxEdgeDevicePager("testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleBandwidthSchedulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewBandwidthSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewBandwidthSchedulesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"bandwidth-1",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,29 +73,29 @@ func ExampleBandwidthSchedulesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewBandwidthSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewBandwidthSchedulesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"bandwidth-1",
+		"GroupForEdgeAutomation",
 		armdataboxedge.BandwidthSchedule{
 			Properties: &armdataboxedge.BandwidthScheduleProperties{
 				Days: []*armdataboxedge.DayOfWeek{
 					to.Ptr(armdataboxedge.DayOfWeekSunday),
 					to.Ptr(armdataboxedge.DayOfWeekMonday)},
 				RateInMbps: to.Ptr[int32](100),
-				Start:      to.Ptr("<start>"),
-				Stop:       to.Ptr("<stop>"),
+				Start:      to.Ptr("0:0:0"),
+				Stop:       to.Ptr("13:59:0"),
 			},
 		},
-		&armdataboxedge.BandwidthSchedulesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -113,19 +110,19 @@ func ExampleBandwidthSchedulesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewBandwidthSchedulesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewBandwidthSchedulesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
-		&armdataboxedge.BandwidthSchedulesClientBeginDeleteOptions{ResumeToken: ""})
+		"testedgedevice",
+		"bandwidth-1",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

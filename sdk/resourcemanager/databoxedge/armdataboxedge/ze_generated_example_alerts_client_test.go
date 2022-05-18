@@ -23,18 +23,17 @@ func ExampleAlertsClient_NewListByDataBoxEdgeDevicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewAlertsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataBoxEdgeDevicePager("<device-name>",
-		"<resource-group-name>",
+	pager := client.NewListByDataBoxEdgeDevicePager("testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleAlertsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewAlertsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"159a00c7-8543-4343-9435-263ac87df3bb",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -23,13 +23,13 @@ func ExampleDeviceCapacityInfoClient_GetDeviceCapacityInfo() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewDeviceCapacityInfoClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewDeviceCapacityInfoClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDeviceCapacityInfo(ctx,
-		"<resource-group-name>",
-		"<device-name>",
+		"GroupForEdgeAutomation",
+		"testedgedevice",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

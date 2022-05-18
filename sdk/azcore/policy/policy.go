@@ -111,6 +111,8 @@ type TelemetryOptions struct {
 type TokenRequestOptions struct {
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
+	// Claims contains the additional claims to be included in the token. See https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter for more information on format and content. Note this parameter is a placeholder and hasn't been implemented yet.
+	Claims string
 }
 
 // BearerTokenOptions configures the bearer token policy's behavior.

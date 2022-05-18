@@ -16,25 +16,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_GetParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/ApplyUpdates_GetParent.json
 func ExampleApplyUpdatesClient_GetParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewApplyUpdatesClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewApplyUpdatesClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetParent(ctx,
-		"<resource-group-name>",
-		"<resource-parent-type>",
-		"<resource-parent-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<apply-update-name>",
+		"examplerg",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"Microsoft.Compute",
+		"virtualMachines",
+		"smdvm1",
+		"e9b9685d-78e4-44c4-a81c-64a14f9b87b6",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -43,23 +43,23 @@ func ExampleApplyUpdatesClient_GetParent() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/ApplyUpdates_Get.json
 func ExampleApplyUpdatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewApplyUpdatesClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewApplyUpdatesClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
-		"<apply-update-name>",
+		"examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"e9b9685d-78e4-44c4-a81c-64a14f9b87b6",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,24 +68,24 @@ func ExampleApplyUpdatesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_CreateOrUpdateParent.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/ApplyUpdates_CreateOrUpdateParent.json
 func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewApplyUpdatesClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewApplyUpdatesClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateParent(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-parent-type>",
-		"<resource-parent-name>",
-		"<resource-type>",
-		"<resource-name>",
+		"examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"virtualMachines",
+		"smdvm1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -94,22 +94,22 @@ func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/ApplyUpdates_CreateOrUpdate.json
 func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewApplyUpdatesClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewApplyUpdatesClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
+		"examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -118,14 +118,14 @@ func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/ApplyUpdates_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/ApplyUpdates_List.json
 func ExampleApplyUpdatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewApplyUpdatesClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewApplyUpdatesClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -134,7 +134,6 @@ func ExampleApplyUpdatesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

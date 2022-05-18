@@ -1,5 +1,44 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Const `TaskScopeResource` has been removed
+- Const `RebootOptionsAlways` has been removed
+- Const `RebootOptionsIfRequired` has been removed
+- Const `RebootOptionsNever` has been removed
+- Const `TaskScopeGlobal` has been removed
+- Function `PossibleTaskScopeValues` has been removed
+- Function `PossibleRebootOptionsValues` has been removed
+- Function `*ConfigurationAssignmentsClient.GetParent` has been removed
+- Function `Update.MarshalJSON` has been removed
+- Function `ListApplyUpdate.MarshalJSON` has been removed
+- Function `TaskProperties.MarshalJSON` has been removed
+- Function `ListUpdatesResult.MarshalJSON` has been removed
+- Function `OperationsListResult.MarshalJSON` has been removed
+- Function `*ConfigurationAssignmentsClient.Get` has been removed
+- Function `SoftwareUpdateConfigurationTasks.MarshalJSON` has been removed
+- Function `InputWindowsParameters.MarshalJSON` has been removed
+- Function `ListMaintenanceConfigurationsResult.MarshalJSON` has been removed
+- Function `NewConfigurationAssignmentsWithinSubscriptionClient` has been removed
+- Function `*ConfigurationAssignmentsWithinSubscriptionClient.NewListPager` has been removed
+- Function `InputLinuxParameters.MarshalJSON` has been removed
+- Function `ListConfigurationAssignmentsResult.MarshalJSON` has been removed
+- Struct `ConfigurationAssignmentsClientGetOptions` has been removed
+- Struct `ConfigurationAssignmentsClientGetParentOptions` has been removed
+- Struct `ConfigurationAssignmentsClientGetParentResponse` has been removed
+- Struct `ConfigurationAssignmentsClientGetResponse` has been removed
+- Struct `ConfigurationAssignmentsWithinSubscriptionClient` has been removed
+- Struct `ConfigurationAssignmentsWithinSubscriptionClientListOptions` has been removed
+- Struct `ConfigurationAssignmentsWithinSubscriptionClientListResponse` has been removed
+- Struct `InputLinuxParameters` has been removed
+- Struct `InputPatchConfiguration` has been removed
+- Struct `InputWindowsParameters` has been removed
+- Struct `SoftwareUpdateConfigurationTasks` has been removed
+- Struct `TaskProperties` has been removed
+- Field `InstallPatches` of struct `ConfigurationProperties` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

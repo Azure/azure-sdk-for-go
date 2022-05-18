@@ -1,5 +1,17 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*PipelinesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[PipelinesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[PipelinesClientCreateOrUpdateResponse], error)`
+- Function `PipelineListResult.MarshalJSON` has been removed
+- Function `InputDescriptor.MarshalJSON` has been removed
+- Function `PipelineTemplateDefinition.MarshalJSON` has been removed
+- Function `PipelineTemplateDefinitionListResult.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

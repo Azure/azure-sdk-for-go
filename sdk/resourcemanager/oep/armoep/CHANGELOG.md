@@ -1,5 +1,31 @@
 # Release History
 
+## 0.4.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*EnergyServicesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[EnergyServicesClientCreateResponse], error)` to `(*runtime.Poller[EnergyServicesClientCreateResponse], error)`
+- Function `*EnergyServicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[EnergyServicesClientDeleteResponse], error)` to `(*runtime.Poller[EnergyServicesClientDeleteResponse], error)`
+- Function `EnergyServiceList.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+
+### Features Added
+
+- New function `*EnergyServicesClient.ListPartitions(context.Context, string, string, *EnergyServicesClientListPartitionsOptions) (EnergyServicesClientListPartitionsResponse, error)`
+- New function `*EnergyServicesClient.BeginRemovePartition(context.Context, string, string, *EnergyServicesClientBeginRemovePartitionOptions) (*runtime.Poller[EnergyServicesClientRemovePartitionResponse], error)`
+- New function `*EnergyServicesClient.BeginAddPartition(context.Context, string, string, *EnergyServicesClientBeginAddPartitionOptions) (*runtime.Poller[EnergyServicesClientAddPartitionResponse], error)`
+- New struct `DataPartitionAddOrRemoveRequest`
+- New struct `DataPartitionProperties`
+- New struct `DataPartitionsList`
+- New struct `DataPartitionsListResult`
+- New struct `EnergyServicesClientAddPartitionResponse`
+- New struct `EnergyServicesClientBeginAddPartitionOptions`
+- New struct `EnergyServicesClientBeginRemovePartitionOptions`
+- New struct `EnergyServicesClientListPartitionsOptions`
+- New struct `EnergyServicesClientListPartitionsResponse`
+- New struct `EnergyServicesClientRemovePartitionResponse`
+
+
 ## 0.3.0 (2022-04-18)
 ### Breaking Changes
 

@@ -39,7 +39,7 @@ func NewOuContainerClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,25 +57,27 @@ func NewOuContainerClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreate - The Create OuContainer operation creates a new OuContainer under the specified Domain Service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // ouContainerName - The name of the OuContainer.
 // containerAccount - Container Account Description.
 // options - OuContainerClientBeginCreateOptions contains the optional parameters for the OuContainerClient.BeginCreate method.
-func (client *OuContainerClient) BeginCreate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (*armruntime.Poller[OuContainerClientCreateResponse], error) {
+func (client *OuContainerClient) BeginCreate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (*runtime.Poller[OuContainerClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OuContainerClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OuContainerClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OuContainerClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OuContainerClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - The Create OuContainer operation creates a new OuContainer under the specified Domain Service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *OuContainerClient) create(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
 	if err != nil {
@@ -117,30 +119,32 @@ func (client *OuContainerClient) createCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, containerAccount)
 }
 
 // BeginDelete - The Delete OuContainer operation deletes specified OuContainer.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // ouContainerName - The name of the OuContainer.
 // options - OuContainerClientBeginDeleteOptions contains the optional parameters for the OuContainerClient.BeginDelete method.
-func (client *OuContainerClient) BeginDelete(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (*armruntime.Poller[OuContainerClientDeleteResponse], error) {
+func (client *OuContainerClient) BeginDelete(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (*runtime.Poller[OuContainerClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, domainServiceName, ouContainerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OuContainerClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OuContainerClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OuContainerClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OuContainerClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - The Delete OuContainer operation deletes specified OuContainer.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *OuContainerClient) deleteOperation(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, options *OuContainerClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, domainServiceName, ouContainerName, options)
 	if err != nil {
@@ -182,12 +186,13 @@ func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get OuContainer in DomainService instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // ouContainerName - The name of the OuContainer.
@@ -233,7 +238,7 @@ func (client *OuContainerClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -248,11 +253,12 @@ func (client *OuContainerClient) getHandleResponse(resp *http.Response) (OuConta
 
 // NewListPager - The List of OuContainers in DomainService instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // options - OuContainerClientListOptions contains the optional parameters for the OuContainerClient.List method.
 func (client *OuContainerClient) NewListPager(resourceGroupName string, domainServiceName string, options *OuContainerClientListOptions) *runtime.Pager[OuContainerClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OuContainerClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OuContainerClientListResponse]{
 		More: func(page OuContainerClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -301,7 +307,7 @@ func (client *OuContainerClient) listCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -316,25 +322,27 @@ func (client *OuContainerClient) listHandleResponse(resp *http.Response) (OuCont
 
 // BeginUpdate - The Update OuContainer operation can be used to update the existing OuContainers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // domainServiceName - The name of the domain service.
 // ouContainerName - The name of the OuContainer.
 // containerAccount - Container Account Description.
 // options - OuContainerClientBeginUpdateOptions contains the optional parameters for the OuContainerClient.BeginUpdate method.
-func (client *OuContainerClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*armruntime.Poller[OuContainerClientUpdateResponse], error) {
+func (client *OuContainerClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*runtime.Poller[OuContainerClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OuContainerClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OuContainerClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OuContainerClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OuContainerClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - The Update OuContainer operation can be used to update the existing OuContainers.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *OuContainerClient) update(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
 	if err != nil {
@@ -376,6 +384,6 @@ func (client *OuContainerClient) updateCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, containerAccount)
 }

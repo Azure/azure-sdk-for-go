@@ -1,5 +1,30 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*IotDpsResourceClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[IotDpsResourceClientUpdateResponse], error)` to `(*runtime.Poller[IotDpsResourceClientUpdateResponse], error)`
+- Function `*IotDpsResourceClient.BeginCreateOrUpdatePrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse], error)`
+- Function `*IotDpsResourceClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[IotDpsResourceClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[IotDpsResourceClientCreateOrUpdateResponse], error)`
+- Function `*IotDpsResourceClient.BeginDeletePrivateEndpointConnection` return value(s) have been changed from `(*armruntime.Poller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse], error)` to `(*runtime.Poller[IotDpsResourceClientDeletePrivateEndpointConnectionResponse], error)`
+- Function `*DpsCertificateClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, CertificateBodyDescription, *DpsCertificateClientCreateOrUpdateOptions)` to `(context.Context, string, string, string, CertificateResponse, *DpsCertificateClientCreateOrUpdateOptions)`
+- Function `*IotDpsResourceClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[IotDpsResourceClientDeleteResponse], error)` to `(*runtime.Poller[IotDpsResourceClientDeleteResponse], error)`
+- Type of `AsyncOperationResult.Error` has been changed from `*ErrorMesssage` to `*ErrorMessage`
+- Function `PrivateLinkResources.MarshalJSON` has been removed
+- Function `GroupIDInformationProperties.MarshalJSON` has been removed
+- Function `ProvisioningServiceDescriptionListResult.MarshalJSON` has been removed
+- Function `SharedAccessSignatureAuthorizationRuleListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `VerificationCodeResponseProperties.MarshalJSON` has been removed
+- Function `CertificateListDescription.MarshalJSON` has been removed
+- Function `IotDpsSKUDefinitionListResult.MarshalJSON` has been removed
+- Struct `ErrorMesssage` has been removed
+
+### Features Added
+
+- New struct `ErrorMessage`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

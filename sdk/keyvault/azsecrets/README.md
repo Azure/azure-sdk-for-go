@@ -296,7 +296,7 @@ func main() {
 
 	// If you do not care when the secret is deleted, you do not have to
 	// call resp.PollUntilDone.
-	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
+	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		panic(err)
 	}

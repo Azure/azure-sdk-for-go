@@ -1,10 +1,13 @@
 # Release History
 
-## 0.7.2 (Unreleased)
+## 0.8.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Deleted types `DeleteSecretPoller` and `RecoverDeletedSecretPoller`
+* Methods `BeginDeleteSecret` and `BeginRecoverDeletedSecret` now return a `*runtime.Poller[T]` with their respective response types.
+* Options types with a `ResumeToken` field now take the token by value.
 * Renamed methods which return `Pager[T]`:
   * `ListDeletedSecrets` to `NewListDeletedSecretsPager`
   * `ListPropertiesOfSecrets` to `NewListPropertiesOfSecretsPager`

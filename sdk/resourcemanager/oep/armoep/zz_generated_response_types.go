@@ -8,6 +8,11 @@
 
 package armoep
 
+// EnergyServicesClientAddPartitionResponse contains the response from method EnergyServicesClient.AddPartition.
+type EnergyServicesClientAddPartitionResponse struct {
+	// placeholder for future response values
+}
+
 // EnergyServicesClientCreateResponse contains the response from method EnergyServicesClient.Create.
 type EnergyServicesClientCreateResponse struct {
 	EnergyService
@@ -31,6 +36,16 @@ type EnergyServicesClientListByResourceGroupResponse struct {
 // EnergyServicesClientListBySubscriptionResponse contains the response from method EnergyServicesClient.ListBySubscription.
 type EnergyServicesClientListBySubscriptionResponse struct {
 	EnergyServiceList
+}
+
+// EnergyServicesClientListPartitionsResponse contains the response from method EnergyServicesClient.ListPartitions.
+type EnergyServicesClientListPartitionsResponse struct {
+	DataPartitionsListResult
+}
+
+// EnergyServicesClientRemovePartitionResponse contains the response from method EnergyServicesClient.RemovePartition.
+type EnergyServicesClientRemovePartitionResponse struct {
+	// placeholder for future response values
 }
 
 // EnergyServicesClientUpdateResponse contains the response from method EnergyServicesClient.Update.

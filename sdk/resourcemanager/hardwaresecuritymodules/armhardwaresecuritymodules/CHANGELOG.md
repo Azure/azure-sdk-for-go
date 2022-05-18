@@ -1,5 +1,19 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*DedicatedHsmClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[DedicatedHsmClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[DedicatedHsmClientCreateOrUpdateResponse], error)`
+- Function `*DedicatedHsmClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DedicatedHsmClientDeleteResponse], error)` to `(*runtime.Poller[DedicatedHsmClientDeleteResponse], error)`
+- Function `*DedicatedHsmClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[DedicatedHsmClientUpdateResponse], error)` to `(*runtime.Poller[DedicatedHsmClientUpdateResponse], error)`
+- Function `EndpointDependency.MarshalJSON` has been removed
+- Function `DedicatedHsmOperationListResult.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpoint.MarshalJSON` has been removed
+- Function `DedicatedHsmListResult.MarshalJSON` has been removed
+- Function `OutboundEnvironmentEndpointCollection.MarshalJSON` has been removed
+- Function `ResourceListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

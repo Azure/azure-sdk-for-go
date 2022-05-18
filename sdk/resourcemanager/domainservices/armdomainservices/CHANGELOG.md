@@ -1,5 +1,20 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*OuContainerClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[OuContainerClientUpdateResponse], error)` to `(*runtime.Poller[OuContainerClientUpdateResponse], error)`
+- Function `*OuContainerClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[OuContainerClientCreateResponse], error)` to `(*runtime.Poller[OuContainerClientCreateResponse], error)`
+- Function `*Client.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ClientCreateOrUpdateResponse], error)`
+- Function `*Client.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ClientDeleteResponse], error)` to `(*runtime.Poller[ClientDeleteResponse], error)`
+- Function `*OuContainerClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[OuContainerClientDeleteResponse], error)` to `(*runtime.Poller[OuContainerClientDeleteResponse], error)`
+- Function `*Client.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ClientUpdateResponse], error)` to `(*runtime.Poller[ClientUpdateResponse], error)`
+- Function `OuContainerListResult.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `OperationEntityListResult.MarshalJSON` has been removed
+- Function `DomainServiceListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

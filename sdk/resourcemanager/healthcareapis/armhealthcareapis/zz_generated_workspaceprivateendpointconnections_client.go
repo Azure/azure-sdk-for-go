@@ -38,7 +38,7 @@ func NewWorkspacePrivateEndpointConnectionsClient(subscriptionID string, credent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewWorkspacePrivateEndpointConnectionsClient(subscriptionID string, credent
 
 // BeginCreateOrUpdate - Update the state of the specified private endpoint connection associated with the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
 // properties - The private endpoint connection properties.
 // options - WorkspacePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the
 // WorkspacePrivateEndpointConnectionsClient.BeginCreateOrUpdate method.
-func (client *WorkspacePrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionDescription, options *WorkspacePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse], error) {
+func (client *WorkspacePrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionDescription, options *WorkspacePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspacePrivateEndpointConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Update the state of the specified private endpoint connection associated with the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *WorkspacePrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionDescription, options *WorkspacePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, properties, options)
 	if err != nil {
@@ -117,31 +119,33 @@ func (client *WorkspacePrivateEndpointConnectionsClient) createOrUpdateCreateReq
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // BeginDelete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
 // options - WorkspacePrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the WorkspacePrivateEndpointConnectionsClient.BeginDelete
 // method.
-func (client *WorkspacePrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *WorkspacePrivateEndpointConnectionsClientBeginDeleteOptions) (*armruntime.Poller[WorkspacePrivateEndpointConnectionsClientDeleteResponse], error) {
+func (client *WorkspacePrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *WorkspacePrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[WorkspacePrivateEndpointConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkspacePrivateEndpointConnectionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspacePrivateEndpointConnectionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkspacePrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspacePrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 func (client *WorkspacePrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, options *WorkspacePrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -183,12 +187,13 @@ func (client *WorkspacePrivateEndpointConnectionsClient) deleteCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the specified private endpoint connection associated with the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource
@@ -235,7 +240,7 @@ func (client *WorkspacePrivateEndpointConnectionsClient) getCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -250,12 +255,13 @@ func (client *WorkspacePrivateEndpointConnectionsClient) getHandleResponse(resp 
 
 // NewListByWorkspacePager - Lists all private endpoint connections for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - WorkspacePrivateEndpointConnectionsClientListByWorkspaceOptions contains the optional parameters for the WorkspacePrivateEndpointConnectionsClient.ListByWorkspace
 // method.
 func (client *WorkspacePrivateEndpointConnectionsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *WorkspacePrivateEndpointConnectionsClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse]{
 		More: func(page WorkspacePrivateEndpointConnectionsClientListByWorkspaceResponse) bool {
 			return false
 		},
@@ -298,7 +304,7 @@ func (client *WorkspacePrivateEndpointConnectionsClient) listByWorkspaceCreateRe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

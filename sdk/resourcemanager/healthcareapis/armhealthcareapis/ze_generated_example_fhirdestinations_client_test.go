@@ -23,19 +23,18 @@ func ExampleFhirDestinationsClient_NewListByIotConnectorPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewFhirDestinationsClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirDestinationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByIotConnectorPager("<resource-group-name>",
-		"<workspace-name>",
-		"<iot-connector-name>",
+	pager := client.NewListByIotConnectorPager("testRG",
+		"workspace1",
+		"blue",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis"
@@ -26,18 +24,17 @@ func ExampleFhirServicesClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListByWorkspacePager("testRG",
+		"workspace1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleFhirServicesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<fhir-service-name>",
+		"testRG",
+		"workspace1",
+		"fhirservices1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,19 +73,19 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<fhir-service-name>",
+		"testRG",
+		"workspace1",
+		"fhirservice1",
 		armhealthcareapis.FhirService{
 			Identity: &armhealthcareapis.ServiceManagedIdentityIdentity{
 				Type: to.Ptr(armhealthcareapis.ServiceManagedIdentityTypeSystemAssigned),
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Tags: map[string]*string{
 				"additionalProp1": to.Ptr("string"),
 				"additionalProp2": to.Ptr("string"),
@@ -98,18 +95,18 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 			Properties: &armhealthcareapis.FhirServiceProperties{
 				AccessPolicies: []*armhealthcareapis.FhirServiceAccessPolicyEntry{
 					{
-						ObjectID: to.Ptr("<object-id>"),
+						ObjectID: to.Ptr("c487e7d1-3210-41a3-8ccc-e9372b78da47"),
 					},
 					{
-						ObjectID: to.Ptr("<object-id>"),
+						ObjectID: to.Ptr("5b307da8-43d4-492b-8b66-b0294ade872f"),
 					}},
 				AcrConfiguration: &armhealthcareapis.FhirServiceAcrConfiguration{
 					LoginServers: []*string{
 						to.Ptr("test1.azurecr.io")},
 				},
 				AuthenticationConfiguration: &armhealthcareapis.FhirServiceAuthenticationConfiguration{
-					Audience:          to.Ptr("<audience>"),
-					Authority:         to.Ptr("<authority>"),
+					Audience:          to.Ptr("https://azurehealthcareapis.com"),
+					Authority:         to.Ptr("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc"),
 					SmartProxyEnabled: to.Ptr(true),
 				},
 				CorsConfiguration: &armhealthcareapis.FhirServiceCorsConfiguration{
@@ -128,15 +125,15 @@ func ExampleFhirServicesClient_BeginCreateOrUpdate() {
 						to.Ptr("*")},
 				},
 				ExportConfiguration: &armhealthcareapis.FhirServiceExportConfiguration{
-					StorageAccountName: to.Ptr("<storage-account-name>"),
+					StorageAccountName: to.Ptr("existingStorageAccount"),
 				},
 			},
 		},
-		&armhealthcareapis.FhirServicesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -151,24 +148,24 @@ func ExampleFhirServicesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<fhir-service-name>",
-		"<workspace-name>",
+		"testRG",
+		"fhirservice1",
+		"workspace1",
 		armhealthcareapis.FhirServicePatchResource{
 			Tags: map[string]*string{
 				"tagKey": to.Ptr("tagValue"),
 			},
 		},
-		&armhealthcareapis.FhirServicesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -183,19 +180,19 @@ func ExampleFhirServicesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewFhirServicesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewFhirServicesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<fhir-service-name>",
-		"<workspace-name>",
-		&armhealthcareapis.FhirServicesClientBeginDeleteOptions{ResumeToken: ""})
+		"testRG",
+		"fhirservice1",
+		"workspace1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

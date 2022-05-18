@@ -38,7 +38,7 @@ func NewWorkspacePrivateLinkResourcesClient(subscriptionID string, credential az
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkspacePrivateLinkResourcesClient(subscriptionID string, credential az
 
 // Get - Gets a private link resource that need to be created for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // groupName - The name of the private link resource group.
@@ -102,7 +103,7 @@ func (client *WorkspacePrivateLinkResourcesClient) getCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *WorkspacePrivateLinkResourcesClient) getHandleResponse(resp *http.
 
 // NewListByWorkspacePager - Gets the private link resources that need to be created for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - WorkspacePrivateLinkResourcesClientListByWorkspaceOptions contains the optional parameters for the WorkspacePrivateLinkResourcesClient.ListByWorkspace
 // method.
 func (client *WorkspacePrivateLinkResourcesClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *WorkspacePrivateLinkResourcesClientListByWorkspaceOptions) *runtime.Pager[WorkspacePrivateLinkResourcesClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspacePrivateLinkResourcesClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspacePrivateLinkResourcesClientListByWorkspaceResponse]{
 		More: func(page WorkspacePrivateLinkResourcesClientListByWorkspaceResponse) bool {
 			return false
 		},
@@ -165,7 +167,7 @@ func (client *WorkspacePrivateLinkResourcesClient) listByWorkspaceCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

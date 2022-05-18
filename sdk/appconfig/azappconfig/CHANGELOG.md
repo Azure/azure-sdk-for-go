@@ -1,14 +1,9 @@
 # Release History
 
-## 0.3.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 0.3.2 (2022-05-18)
 
 ### Other Changes
+* Deprecate this module in favor of `github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig`
 
 ## 0.3.1 (2022-05-12)
 

@@ -1,3 +1,4 @@
+// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig instead
 module github.com/Azure/azure-sdk-for-go/sdk/appconfig/azappconfig
 
 go 1.18

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
@@ -26,18 +24,17 @@ func ExampleRolesClient_NewListByDataBoxEdgeDevicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewRolesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataBoxEdgeDevicePager("<device-name>",
-		"<resource-group-name>",
+	pager := client.NewListByDataBoxEdgeDevicePager("testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleRolesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewRolesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"IoTRole1",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,14 +73,14 @@ func ExampleRolesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewRolesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"IoTRole1",
+		"GroupForEdgeAutomation",
 		&armdataboxedge.IoTRole{
 			Kind: to.Ptr(armdataboxedge.RoleTypesIOT),
 			Properties: &armdataboxedge.IoTRoleProperties{
@@ -93,36 +90,36 @@ func ExampleRolesClient_BeginCreateOrUpdate() {
 						SymmetricKey: &armdataboxedge.SymmetricKey{
 							ConnectionString: &armdataboxedge.AsymmetricEncryptedSecret{
 								EncryptionAlgorithm:      to.Ptr(armdataboxedge.EncryptionAlgorithmAES256),
-								EncryptionCertThumbprint: to.Ptr("<encryption-cert-thumbprint>"),
-								Value:                    to.Ptr("<value>"),
+								EncryptionCertThumbprint: to.Ptr("348586569999244"),
+								Value:                    to.Ptr("Encrypted<<HostName=iothub.azure-devices.net;DeviceId=iotDevice;SharedAccessKey=2C750FscEas3JmQ8Bnui5yQWZPyml0/UiRt1bQwd8=>>"),
 							},
 						},
 					},
-					DeviceID:   to.Ptr("<device-id>"),
-					IoTHostHub: to.Ptr("<io-thost-hub>"),
+					DeviceID:   to.Ptr("iotdevice"),
+					IoTHostHub: to.Ptr("iothub.azure-devices.net"),
 				},
 				IoTEdgeDeviceDetails: &armdataboxedge.IoTDeviceInfo{
 					Authentication: &armdataboxedge.Authentication{
 						SymmetricKey: &armdataboxedge.SymmetricKey{
 							ConnectionString: &armdataboxedge.AsymmetricEncryptedSecret{
 								EncryptionAlgorithm:      to.Ptr(armdataboxedge.EncryptionAlgorithmAES256),
-								EncryptionCertThumbprint: to.Ptr("<encryption-cert-thumbprint>"),
-								Value:                    to.Ptr("<value>"),
+								EncryptionCertThumbprint: to.Ptr("1245475856069999244"),
+								Value:                    to.Ptr("Encrypted<<HostName=iothub.azure-devices.net;DeviceId=iotEdge;SharedAccessKey=2C750FscEas3JmQ8Bnui5yQWZPyml0/UiRt1bQwd8=>>"),
 							},
 						},
 					},
-					DeviceID:   to.Ptr("<device-id>"),
-					IoTHostHub: to.Ptr("<io-thost-hub>"),
+					DeviceID:   to.Ptr("iotEdge"),
+					IoTHostHub: to.Ptr("iothub.azure-devices.net"),
 				},
 				RoleStatus:    to.Ptr(armdataboxedge.RoleStatusEnabled),
 				ShareMappings: []*armdataboxedge.MountPointMap{},
 			},
 		},
-		&armdataboxedge.RolesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -137,19 +134,19 @@ func ExampleRolesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewRolesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewRolesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<device-name>",
-		"<name>",
-		"<resource-group-name>",
-		&armdataboxedge.RolesClientBeginDeleteOptions{ResumeToken: ""})
+		"testedgedevice",
+		"IoTRole1",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

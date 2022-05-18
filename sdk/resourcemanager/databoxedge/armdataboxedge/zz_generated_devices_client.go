@@ -38,7 +38,7 @@ func NewDevicesClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDevicesClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // CreateOrUpdate - Creates or updates a Data Box Edge/Data Box Gateway resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // dataBoxEdgeDevice - The resource object.
@@ -97,7 +98,7 @@ func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, de
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dataBoxEdgeDevice)
 }
 
@@ -112,25 +113,27 @@ func (client *DevicesClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // BeginCreateOrUpdateSecuritySettings - Updates the security settings on a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // securitySettings - The security settings.
 // options - DevicesClientBeginCreateOrUpdateSecuritySettingsOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdateSecuritySettings
 // method.
-func (client *DevicesClient) BeginCreateOrUpdateSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (*armruntime.Poller[DevicesClientCreateOrUpdateSecuritySettingsResponse], error) {
+func (client *DevicesClient) BeginCreateOrUpdateSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (*runtime.Poller[DevicesClientCreateOrUpdateSecuritySettingsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdateSecuritySettings(ctx, deviceName, resourceGroupName, securitySettings, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DevicesClientCreateOrUpdateSecuritySettingsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DevicesClientCreateOrUpdateSecuritySettingsResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DevicesClientCreateOrUpdateSecuritySettingsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DevicesClientCreateOrUpdateSecuritySettingsResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdateSecuritySettings - Updates the security settings on a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *DevicesClient) createOrUpdateSecuritySettings(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, options *DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateSecuritySettingsCreateRequest(ctx, deviceName, resourceGroupName, securitySettings, options)
 	if err != nil {
@@ -168,29 +171,31 @@ func (client *DevicesClient) createOrUpdateSecuritySettingsCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, securitySettings)
 }
 
 // BeginDelete - Deletes the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientBeginDeleteOptions contains the optional parameters for the DevicesClient.BeginDelete method.
-func (client *DevicesClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDeleteOptions) (*armruntime.Poller[DevicesClientDeleteResponse], error) {
+func (client *DevicesClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDeleteOptions) (*runtime.Poller[DevicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, deviceName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DevicesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DevicesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DevicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DevicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *DevicesClient) deleteOperation(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
@@ -228,30 +233,32 @@ func (client *DevicesClient) deleteCreateRequest(ctx context.Context, deviceName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDownloadUpdates - Downloads the updates on a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientBeginDownloadUpdatesOptions contains the optional parameters for the DevicesClient.BeginDownloadUpdates
 // method.
-func (client *DevicesClient) BeginDownloadUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDownloadUpdatesOptions) (*armruntime.Poller[DevicesClientDownloadUpdatesResponse], error) {
+func (client *DevicesClient) BeginDownloadUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDownloadUpdatesOptions) (*runtime.Poller[DevicesClientDownloadUpdatesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.downloadUpdates(ctx, deviceName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DevicesClientDownloadUpdatesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DevicesClientDownloadUpdatesResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DevicesClientDownloadUpdatesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DevicesClientDownloadUpdatesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DownloadUpdates - Downloads the updates on a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *DevicesClient) downloadUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginDownloadUpdatesOptions) (*http.Response, error) {
 	req, err := client.downloadUpdatesCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
@@ -289,12 +296,13 @@ func (client *DevicesClient) downloadUpdatesCreateRequest(ctx context.Context, d
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GenerateCertificate - Generates certificate for activation key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientGenerateCertificateOptions contains the optional parameters for the DevicesClient.GenerateCertificate
@@ -336,7 +344,7 @@ func (client *DevicesClient) generateCertificateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -351,6 +359,7 @@ func (client *DevicesClient) generateCertificateHandleResponse(resp *http.Respon
 
 // Get - Gets the properties of the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
@@ -391,7 +400,7 @@ func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceName st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -406,6 +415,7 @@ func (client *DevicesClient) getHandleResponse(resp *http.Response) (DevicesClie
 
 // GetExtendedInformation - Gets additional information for the specified Azure Stack Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientGetExtendedInformationOptions contains the optional parameters for the DevicesClient.GetExtendedInformation
@@ -447,7 +457,7 @@ func (client *DevicesClient) getExtendedInformationCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -462,6 +472,7 @@ func (client *DevicesClient) getExtendedInformationHandleResponse(resp *http.Res
 
 // GetNetworkSettings - Gets the network settings of the specified Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientGetNetworkSettingsOptions contains the optional parameters for the DevicesClient.GetNetworkSettings
@@ -503,7 +514,7 @@ func (client *DevicesClient) getNetworkSettingsCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -519,6 +530,7 @@ func (client *DevicesClient) getNetworkSettingsHandleResponse(resp *http.Respons
 // GetUpdateSummary - Gets information about the availability of updates based on the last scan of the device. It also gets
 // information about any ongoing download or install jobs on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientGetUpdateSummaryOptions contains the optional parameters for the DevicesClient.GetUpdateSummary
@@ -560,7 +572,7 @@ func (client *DevicesClient) getUpdateSummaryCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -575,24 +587,26 @@ func (client *DevicesClient) getUpdateSummaryHandleResponse(resp *http.Response)
 
 // BeginInstallUpdates - Installs the updates on the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientBeginInstallUpdatesOptions contains the optional parameters for the DevicesClient.BeginInstallUpdates
 // method.
-func (client *DevicesClient) BeginInstallUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginInstallUpdatesOptions) (*armruntime.Poller[DevicesClientInstallUpdatesResponse], error) {
+func (client *DevicesClient) BeginInstallUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginInstallUpdatesOptions) (*runtime.Poller[DevicesClientInstallUpdatesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.installUpdates(ctx, deviceName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DevicesClientInstallUpdatesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DevicesClientInstallUpdatesResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DevicesClientInstallUpdatesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DevicesClientInstallUpdatesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // InstallUpdates - Installs the updates on the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *DevicesClient) installUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginInstallUpdatesOptions) (*http.Response, error) {
 	req, err := client.installUpdatesCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
@@ -630,17 +644,18 @@ func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, de
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListByResourceGroupPager - Gets all the Data Box Edge/Data Box Gateway devices in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // resourceGroupName - The resource group name.
 // options - DevicesClientListByResourceGroupOptions contains the optional parameters for the DevicesClient.ListByResourceGroup
 // method.
 func (client *DevicesClient) NewListByResourceGroupPager(resourceGroupName string, options *DevicesClientListByResourceGroupOptions) *runtime.Pager[DevicesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DevicesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DevicesClientListByResourceGroupResponse]{
 		More: func(page DevicesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -688,7 +703,7 @@ func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Contex
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -703,10 +718,11 @@ func (client *DevicesClient) listByResourceGroupHandleResponse(resp *http.Respon
 
 // NewListBySubscriptionPager - Gets all the Data Box Edge/Data Box Gateway devices in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // options - DevicesClientListBySubscriptionOptions contains the optional parameters for the DevicesClient.ListBySubscription
 // method.
 func (client *DevicesClient) NewListBySubscriptionPager(options *DevicesClientListBySubscriptionOptions) *runtime.Pager[DevicesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DevicesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DevicesClientListBySubscriptionResponse]{
 		More: func(page DevicesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -750,7 +766,7 @@ func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -765,24 +781,26 @@ func (client *DevicesClient) listBySubscriptionHandleResponse(resp *http.Respons
 
 // BeginScanForUpdates - Scans for updates on a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - DevicesClientBeginScanForUpdatesOptions contains the optional parameters for the DevicesClient.BeginScanForUpdates
 // method.
-func (client *DevicesClient) BeginScanForUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginScanForUpdatesOptions) (*armruntime.Poller[DevicesClientScanForUpdatesResponse], error) {
+func (client *DevicesClient) BeginScanForUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginScanForUpdatesOptions) (*runtime.Poller[DevicesClientScanForUpdatesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.scanForUpdates(ctx, deviceName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DevicesClientScanForUpdatesResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DevicesClientScanForUpdatesResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DevicesClientScanForUpdatesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DevicesClientScanForUpdatesResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ScanForUpdates - Scans for updates on a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *DevicesClient) scanForUpdates(ctx context.Context, deviceName string, resourceGroupName string, options *DevicesClientBeginScanForUpdatesOptions) (*http.Response, error) {
 	req, err := client.scanForUpdatesCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
@@ -820,12 +838,13 @@ func (client *DevicesClient) scanForUpdatesCreateRequest(ctx context.Context, de
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Update - Modifies a Data Box Edge/Data Box Gateway resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // parameters - The resource parameters.
@@ -867,7 +886,7 @@ func (client *DevicesClient) updateCreateRequest(ctx context.Context, deviceName
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -882,6 +901,7 @@ func (client *DevicesClient) updateHandleResponse(resp *http.Response) (DevicesC
 
 // UpdateExtendedInformation - Gets additional information for the specified Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // parameters - The patch object.
@@ -924,7 +944,7 @@ func (client *DevicesClient) updateExtendedInformationCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -939,6 +959,7 @@ func (client *DevicesClient) updateExtendedInformationHandleResponse(resp *http.
 
 // UploadCertificate - Uploads registration certificate for the device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // parameters - The upload certificate request.
@@ -981,7 +1002,7 @@ func (client *DevicesClient) uploadCertificateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

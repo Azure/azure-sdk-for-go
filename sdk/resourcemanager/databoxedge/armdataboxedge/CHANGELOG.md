@@ -1,5 +1,71 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*SharesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[SharesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[SharesClientCreateOrUpdateResponse], error)`
+- Function `*DevicesClient.BeginCreateOrUpdateSecuritySettings` return value(s) have been changed from `(*armruntime.Poller[DevicesClientCreateOrUpdateSecuritySettingsResponse], error)` to `(*runtime.Poller[DevicesClientCreateOrUpdateSecuritySettingsResponse], error)`
+- Function `*UsersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[UsersClientDeleteResponse], error)` to `(*runtime.Poller[UsersClientDeleteResponse], error)`
+- Function `*ContainersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ContainersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ContainersClientCreateOrUpdateResponse], error)`
+- Function `*SupportPackagesClient.BeginTriggerSupportPackage` return value(s) have been changed from `(*armruntime.Poller[SupportPackagesClientTriggerSupportPackageResponse], error)` to `(*runtime.Poller[SupportPackagesClientTriggerSupportPackageResponse], error)`
+- Function `*TriggersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[TriggersClientDeleteResponse], error)` to `(*runtime.Poller[TriggersClientDeleteResponse], error)`
+- Function `*DeviceCapacityCheckClient.BeginCheckResourceCreationFeasibility` return value(s) have been changed from `(*armruntime.Poller[DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse], error)` to `(*runtime.Poller[DeviceCapacityCheckClientCheckResourceCreationFeasibilityResponse], error)`
+- Function `*DiagnosticSettingsClient.BeginUpdateDiagnosticProactiveLogCollectionSettings` return value(s) have been changed from `(*armruntime.Poller[DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResponse], error)` to `(*runtime.Poller[DiagnosticSettingsClientUpdateDiagnosticProactiveLogCollectionSettingsResponse], error)`
+- Function `*ContainersClient.BeginRefresh` return value(s) have been changed from `(*armruntime.Poller[ContainersClientRefreshResponse], error)` to `(*runtime.Poller[ContainersClientRefreshResponse], error)`
+- Function `*RolesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RolesClientDeleteResponse], error)` to `(*runtime.Poller[RolesClientDeleteResponse], error)`
+- Function `*AddonsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[AddonsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[AddonsClientCreateOrUpdateResponse], error)`
+- Function `*BandwidthSchedulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[BandwidthSchedulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[BandwidthSchedulesClientCreateOrUpdateResponse], error)`
+- Function `*SharesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SharesClientDeleteResponse], error)` to `(*runtime.Poller[SharesClientDeleteResponse], error)`
+- Function `*StorageAccountCredentialsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[StorageAccountCredentialsClientDeleteResponse], error)` to `(*runtime.Poller[StorageAccountCredentialsClientDeleteResponse], error)`
+- Function `*UsersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[UsersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[UsersClientCreateOrUpdateResponse], error)`
+- Function `*StorageAccountsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[StorageAccountsClientDeleteResponse], error)` to `(*runtime.Poller[StorageAccountsClientDeleteResponse], error)`
+- Function `*DevicesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DevicesClientDeleteResponse], error)` to `(*runtime.Poller[DevicesClientDeleteResponse], error)`
+- Function `*OrdersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[OrdersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[OrdersClientCreateOrUpdateResponse], error)`
+- Function `*DiagnosticSettingsClient.BeginUpdateDiagnosticRemoteSupportSettings` return value(s) have been changed from `(*armruntime.Poller[DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResponse], error)` to `(*runtime.Poller[DiagnosticSettingsClientUpdateDiagnosticRemoteSupportSettingsResponse], error)`
+- Function `*BandwidthSchedulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BandwidthSchedulesClientDeleteResponse], error)` to `(*runtime.Poller[BandwidthSchedulesClientDeleteResponse], error)`
+- Function `*OrdersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[OrdersClientDeleteResponse], error)` to `(*runtime.Poller[OrdersClientDeleteResponse], error)`
+- Function `*AddonsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AddonsClientDeleteResponse], error)` to `(*runtime.Poller[AddonsClientDeleteResponse], error)`
+- Function `*RolesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[RolesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[RolesClientCreateOrUpdateResponse], error)`
+- Function `*DevicesClient.BeginInstallUpdates` return value(s) have been changed from `(*armruntime.Poller[DevicesClientInstallUpdatesResponse], error)` to `(*runtime.Poller[DevicesClientInstallUpdatesResponse], error)`
+- Function `*StorageAccountsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[StorageAccountsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[StorageAccountsClientCreateOrUpdateResponse], error)`
+- Function `*DevicesClient.BeginScanForUpdates` return value(s) have been changed from `(*armruntime.Poller[DevicesClientScanForUpdatesResponse], error)` to `(*runtime.Poller[DevicesClientScanForUpdatesResponse], error)`
+- Function `*MonitoringConfigClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[MonitoringConfigClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[MonitoringConfigClientCreateOrUpdateResponse], error)`
+- Function `*StorageAccountCredentialsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[StorageAccountCredentialsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[StorageAccountCredentialsClientCreateOrUpdateResponse], error)`
+- Function `*ContainersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ContainersClientDeleteResponse], error)` to `(*runtime.Poller[ContainersClientDeleteResponse], error)`
+- Function `*TriggersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[TriggersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[TriggersClientCreateOrUpdateResponse], error)`
+- Function `*SharesClient.BeginRefresh` return value(s) have been changed from `(*armruntime.Poller[SharesClientRefreshResponse], error)` to `(*runtime.Poller[SharesClientRefreshResponse], error)`
+- Function `*MonitoringConfigClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MonitoringConfigClientDeleteResponse], error)` to `(*runtime.Poller[MonitoringConfigClientDeleteResponse], error)`
+- Function `*DevicesClient.BeginDownloadUpdates` return value(s) have been changed from `(*armruntime.Poller[DevicesClientDownloadUpdatesResponse], error)` to `(*runtime.Poller[DevicesClientDownloadUpdatesResponse], error)`
+- Function `AddonList.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `JobErrorDetails.MarshalJSON` has been removed
+- Function `MetricSpecificationV1.MarshalJSON` has been removed
+- Function `Job.MarshalJSON` has been removed
+- Function `SKULocationInfo.MarshalJSON` has been removed
+- Function `MonitoringMetricConfigurationList.MarshalJSON` has been removed
+- Function `*SystemDataAutoGenerated.UnmarshalJSON` has been removed
+- Function `ContainerList.MarshalJSON` has been removed
+- Function `BandwidthSchedulesList.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `DeviceList.MarshalJSON` has been removed
+- Function `JobErrorItem.MarshalJSON` has been removed
+- Function `UserList.MarshalJSON` has been removed
+- Function `SystemDataAutoGenerated.MarshalJSON` has been removed
+- Function `StorageAccountList.MarshalJSON` has been removed
+- Function `ShareList.MarshalJSON` has been removed
+- Function `SKU.MarshalJSON` has been removed
+- Function `RoleList.MarshalJSON` has been removed
+- Function `TriggerList.MarshalJSON` has been removed
+- Function `MoveRequest.MarshalJSON` has been removed
+- Function `AlertList.MarshalJSON` has been removed
+- Function `OperationsList.MarshalJSON` has been removed
+- Function `SKUList.MarshalJSON` has been removed
+- Function `StorageAccountCredentialList.MarshalJSON` has been removed
+- Function `NodeList.MarshalJSON` has been removed
+- Function `OrderList.MarshalJSON` has been removed
+- Struct `SystemDataAutoGenerated` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

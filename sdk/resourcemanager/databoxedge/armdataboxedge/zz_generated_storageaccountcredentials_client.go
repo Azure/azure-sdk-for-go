@@ -38,7 +38,7 @@ func NewStorageAccountCredentialsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewStorageAccountCredentialsClient(subscriptionID string, credential azcore
 
 // BeginCreateOrUpdate - Creates or updates the storage account credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // name - The storage account credential name.
 // resourceGroupName - The resource group name.
 // storageAccountCredential - The storage account credential.
 // options - StorageAccountCredentialsClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAccountCredentialsClient.BeginCreateOrUpdate
 // method.
-func (client *StorageAccountCredentialsClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, storageAccountCredential StorageAccountCredential, options *StorageAccountCredentialsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[StorageAccountCredentialsClientCreateOrUpdateResponse], error) {
+func (client *StorageAccountCredentialsClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, storageAccountCredential StorageAccountCredential, options *StorageAccountCredentialsClientBeginCreateOrUpdateOptions) (*runtime.Poller[StorageAccountCredentialsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, deviceName, name, resourceGroupName, storageAccountCredential, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StorageAccountCredentialsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StorageAccountCredentialsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StorageAccountCredentialsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageAccountCredentialsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates the storage account credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *StorageAccountCredentialsClient) createOrUpdate(ctx context.Context, deviceName string, name string, resourceGroupName string, storageAccountCredential StorageAccountCredential, options *StorageAccountCredentialsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, deviceName, name, resourceGroupName, storageAccountCredential, options)
 	if err != nil {
@@ -117,31 +119,33 @@ func (client *StorageAccountCredentialsClient) createOrUpdateCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, storageAccountCredential)
 }
 
 // BeginDelete - Deletes the storage account credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // name - The storage account credential name.
 // resourceGroupName - The resource group name.
 // options - StorageAccountCredentialsClientBeginDeleteOptions contains the optional parameters for the StorageAccountCredentialsClient.BeginDelete
 // method.
-func (client *StorageAccountCredentialsClient) BeginDelete(ctx context.Context, deviceName string, name string, resourceGroupName string, options *StorageAccountCredentialsClientBeginDeleteOptions) (*armruntime.Poller[StorageAccountCredentialsClientDeleteResponse], error) {
+func (client *StorageAccountCredentialsClient) BeginDelete(ctx context.Context, deviceName string, name string, resourceGroupName string, options *StorageAccountCredentialsClientBeginDeleteOptions) (*runtime.Poller[StorageAccountCredentialsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, deviceName, name, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[StorageAccountCredentialsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[StorageAccountCredentialsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[StorageAccountCredentialsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageAccountCredentialsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the storage account credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *StorageAccountCredentialsClient) deleteOperation(ctx context.Context, deviceName string, name string, resourceGroupName string, options *StorageAccountCredentialsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, deviceName, name, resourceGroupName, options)
 	if err != nil {
@@ -183,12 +187,13 @@ func (client *StorageAccountCredentialsClient) deleteCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the properties of the specified storage account credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // name - The storage account credential name.
 // resourceGroupName - The resource group name.
@@ -235,7 +240,7 @@ func (client *StorageAccountCredentialsClient) getCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -250,12 +255,13 @@ func (client *StorageAccountCredentialsClient) getHandleResponse(resp *http.Resp
 
 // NewListByDataBoxEdgeDevicePager - Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - StorageAccountCredentialsClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the StorageAccountCredentialsClient.ListByDataBoxEdgeDevice
 // method.
 func (client *StorageAccountCredentialsClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *StorageAccountCredentialsClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page StorageAccountCredentialsClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -304,7 +310,7 @@ func (client *StorageAccountCredentialsClient) listByDataBoxEdgeDeviceCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

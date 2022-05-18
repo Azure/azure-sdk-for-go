@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
@@ -26,19 +24,18 @@ func ExampleAddonsClient_NewListByRolePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewAddonsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewAddonsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByRolePager("<device-name>",
-		"<role-name>",
-		"<resource-group-name>",
+	pager := client.NewListByRolePager("testedgedevice",
+		"IoTRole1",
+		"GroupForEdgeAutomation",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleAddonsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewAddonsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewAddonsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<device-name>",
-		"<role-name>",
-		"<addon-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"KubernetesRole",
+		"arcName",
+		"GroupForEdgeAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,29 +75,29 @@ func ExampleAddonsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewAddonsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewAddonsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<device-name>",
-		"<role-name>",
-		"<addon-name>",
-		"<resource-group-name>",
+		"testedgedevice",
+		"KubernetesRole",
+		"arcName",
+		"GroupForEdgeAutomation",
 		&armdataboxedge.ArcAddon{
 			Kind: to.Ptr(armdataboxedge.AddonTypeArcForKubernetes),
 			Properties: &armdataboxedge.ArcAddonProperties{
-				ResourceGroupName: to.Ptr("<resource-group-name>"),
-				ResourceLocation:  to.Ptr("<resource-location>"),
-				ResourceName:      to.Ptr("<resource-name>"),
-				SubscriptionID:    to.Ptr("<subscription-id>"),
+				ResourceGroupName: to.Ptr("GroupForEdgeAutomation"),
+				ResourceLocation:  to.Ptr("EastUS"),
+				ResourceName:      to.Ptr("testedgedevice"),
+				SubscriptionID:    to.Ptr("4385cf00-2d3a-425a-832f-f4285b1c9dce"),
 			},
 		},
-		&armdataboxedge.AddonsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -115,20 +112,20 @@ func ExampleAddonsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewAddonsClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewAddonsClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<device-name>",
-		"<role-name>",
-		"<addon-name>",
-		"<resource-group-name>",
-		&armdataboxedge.AddonsClientBeginDeleteOptions{ResumeToken: ""})
+		"testedgedevice",
+		"KubernetesRole",
+		"arcName",
+		"GroupForEdgeAutomation",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

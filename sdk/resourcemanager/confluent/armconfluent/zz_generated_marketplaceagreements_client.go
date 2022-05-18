@@ -38,7 +38,7 @@ func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.Tok
 
 // Create - Create Confluent Marketplace agreement in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // options - MarketplaceAgreementsClientCreateOptions contains the optional parameters for the MarketplaceAgreementsClient.Create
 // method.
 func (client *MarketplaceAgreementsClient) Create(ctx context.Context, options *MarketplaceAgreementsClientCreateOptions) (MarketplaceAgreementsClientCreateResponse, error) {
@@ -87,7 +88,7 @@ func (client *MarketplaceAgreementsClient) createCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -105,10 +106,11 @@ func (client *MarketplaceAgreementsClient) createHandleResponse(resp *http.Respo
 
 // NewListPager - List Confluent marketplace agreements in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // options - MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.List
 // method.
 func (client *MarketplaceAgreementsClient) NewListPager(options *MarketplaceAgreementsClientListOptions) *runtime.Pager[MarketplaceAgreementsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MarketplaceAgreementsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MarketplaceAgreementsClientListResponse]{
 		More: func(page MarketplaceAgreementsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -149,7 +151,7 @@ func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

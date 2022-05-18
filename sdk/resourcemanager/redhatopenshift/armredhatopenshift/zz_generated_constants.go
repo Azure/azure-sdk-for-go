@@ -10,8 +10,60 @@ package armredhatopenshift
 
 const (
 	moduleName    = "armredhatopenshift"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
+
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// EncryptionAtHost - EncryptionAtHost represents encryption at host state
+type EncryptionAtHost string
+
+const (
+	EncryptionAtHostDisabled EncryptionAtHost = "Disabled"
+	EncryptionAtHostEnabled  EncryptionAtHost = "Enabled"
+)
+
+// PossibleEncryptionAtHostValues returns the possible values for the EncryptionAtHost const type.
+func PossibleEncryptionAtHostValues() []EncryptionAtHost {
+	return []EncryptionAtHost{
+		EncryptionAtHostDisabled,
+		EncryptionAtHostEnabled,
+	}
+}
+
+// FipsValidatedModules - FipsValidatedModules determines if FIPS is used.
+type FipsValidatedModules string
+
+const (
+	FipsValidatedModulesDisabled FipsValidatedModules = "Disabled"
+	FipsValidatedModulesEnabled  FipsValidatedModules = "Enabled"
+)
+
+// PossibleFipsValidatedModulesValues returns the possible values for the FipsValidatedModules const type.
+func PossibleFipsValidatedModulesValues() []FipsValidatedModules {
+	return []FipsValidatedModules{
+		FipsValidatedModulesDisabled,
+		FipsValidatedModulesEnabled,
+	}
+}
 
 // ProvisioningState - ProvisioningState represents a provisioning state.
 type ProvisioningState string
@@ -34,24 +86,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
 		ProvisioningStateUpdating,
-	}
-}
-
-// VMSize - VMSize represents a VM size.
-type VMSize string
-
-const (
-	VMSizeStandardD2SV3 VMSize = "Standard_D2s_v3"
-	VMSizeStandardD4SV3 VMSize = "Standard_D4s_v3"
-	VMSizeStandardD8SV3 VMSize = "Standard_D8s_v3"
-)
-
-// PossibleVMSizeValues returns the possible values for the VMSize const type.
-func PossibleVMSizeValues() []VMSize {
-	return []VMSize{
-		VMSizeStandardD2SV3,
-		VMSizeStandardD4SV3,
-		VMSizeStandardD8SV3,
 	}
 }
 

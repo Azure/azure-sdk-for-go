@@ -1,5 +1,50 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*OpenShiftClustersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[OpenShiftClustersClientDeleteResponse], error)` to `(*runtime.Poller[OpenShiftClustersClientDeleteResponse], error)`
+- Function `*OpenShiftClustersClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[OpenShiftClustersClientUpdateResponse], error)` to `(*runtime.Poller[OpenShiftClustersClientUpdateResponse], error)`
+- Function `*OpenShiftClustersClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[OpenShiftClustersClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[OpenShiftClustersClientCreateOrUpdateResponse], error)`
+- Type of `WorkerProfile.VMSize` has been changed from `*VMSize` to `*string`
+- Type of `MasterProfile.VMSize` has been changed from `*VMSize` to `*string`
+- Const `VMSizeStandardD4SV3` has been removed
+- Const `VMSizeStandardD8SV3` has been removed
+- Const `VMSizeStandardD2SV3` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `PossibleVMSizeValues` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `OpenShiftClusterList.MarshalJSON` has been removed
+
+### Features Added
+
+- New const `CreatedByTypeApplication`
+- New const `FipsValidatedModulesEnabled`
+- New const `CreatedByTypeKey`
+- New const `CreatedByTypeUser`
+- New const `EncryptionAtHostDisabled`
+- New const `EncryptionAtHostEnabled`
+- New const `CreatedByTypeManagedIdentity`
+- New const `FipsValidatedModulesDisabled`
+- New function `*OpenShiftClustersClient.ListAdminCredentials(context.Context, string, string, *OpenShiftClustersClientListAdminCredentialsOptions) (OpenShiftClustersClientListAdminCredentialsResponse, error)`
+- New function `SystemData.MarshalJSON() ([]byte, error)`
+- New function `PossibleFipsValidatedModulesValues() []FipsValidatedModules`
+- New function `PossibleCreatedByTypeValues() []CreatedByType`
+- New function `*SystemData.UnmarshalJSON([]byte) error`
+- New function `PossibleEncryptionAtHostValues() []EncryptionAtHost`
+- New struct `OpenShiftClusterAdminKubeconfig`
+- New struct `OpenShiftClustersClientListAdminCredentialsOptions`
+- New struct `OpenShiftClustersClientListAdminCredentialsResponse`
+- New struct `SystemData`
+- New field `SystemData` in struct `OpenShiftClusterUpdate`
+- New field `SystemData` in struct `OpenShiftCluster`
+- New field `DiskEncryptionSetID` in struct `MasterProfile`
+- New field `EncryptionAtHost` in struct `MasterProfile`
+- New field `FipsValidatedModules` in struct `ClusterProfile`
+- New field `EncryptionAtHost` in struct `WorkerProfile`
+- New field `DiskEncryptionSetID` in struct `WorkerProfile`
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

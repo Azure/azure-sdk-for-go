@@ -1,5 +1,26 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `RegisteredPrefixListResult.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `LocationListResult.MarshalJSON` has been removed
+- Function `ServiceProviderListResult.MarshalJSON` has been removed
+- Function `ReceivedRouteListResult.MarshalJSON` has been removed
+- Function `ListResult.MarshalJSON` has been removed
+- Function `PeerAsnListResult.MarshalJSON` has been removed
+- Function `RegisteredAsnListResult.MarshalJSON` has been removed
+- Function `ServiceListResult.MarshalJSON` has been removed
+- Function `CdnPeeringPrefixListResult.MarshalJSON` has been removed
+- Function `MetricSpecification.MarshalJSON` has been removed
+- Function `ServiceCountryListResult.MarshalJSON` has been removed
+- Function `ServiceLocationListResult.MarshalJSON` has been removed
+- Function `ServicePrefixListResult.MarshalJSON` has been removed
+- Function `ConnectionMonitorTestListResult.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-18)
 ### Breaking Changes
 

@@ -24,14 +24,14 @@ func ExampleConnectionMonitorTestsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewConnectionMonitorTestsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewConnectionMonitorTestsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
-		"<connection-monitor-test-name>",
+		"rgName",
+		"peeringServiceName",
+		"connectionMonitorTestName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,19 +47,19 @@ func ExampleConnectionMonitorTestsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewConnectionMonitorTestsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewConnectionMonitorTestsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
-		"<connection-monitor-test-name>",
+		"rgName",
+		"peeringServiceName",
+		"connectionMonitorTestName",
 		armpeering.ConnectionMonitorTest{
 			Properties: &armpeering.ConnectionMonitorTestProperties{
-				Destination:        to.Ptr("<destination>"),
+				Destination:        to.Ptr("Example Destination"),
 				DestinationPort:    to.Ptr[int32](443),
-				SourceAgent:        to.Ptr("<source-agent>"),
+				SourceAgent:        to.Ptr("Example Source Agent"),
 				TestFrequencyInSec: to.Ptr[int32](30),
 			},
 		},
@@ -78,14 +78,14 @@ func ExampleConnectionMonitorTestsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewConnectionMonitorTestsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewConnectionMonitorTestsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
-		"<connection-monitor-test-name>",
+		"rgName",
+		"peeringServiceName",
+		"connectionMonitorTestName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,18 +99,17 @@ func ExampleConnectionMonitorTestsClient_NewListByPeeringServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewConnectionMonitorTestsClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewConnectionMonitorTestsClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPeeringServicePager("<resource-group-name>",
-		"<peering-service-name>",
+	pager := client.NewListByPeeringServicePager("rgName",
+		"peeringServiceName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

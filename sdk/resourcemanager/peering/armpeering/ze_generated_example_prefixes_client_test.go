@@ -24,14 +24,14 @@ func ExamplePrefixesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPrefixesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
-		"<prefix-name>",
+		"rgName",
+		"peeringServiceName",
+		"peeringServicePrefixName",
 		&armpeering.PrefixesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,18 +47,18 @@ func ExamplePrefixesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPrefixesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
-		"<prefix-name>",
+		"rgName",
+		"peeringServiceName",
+		"peeringServicePrefixName",
 		armpeering.ServicePrefix{
 			Properties: &armpeering.ServicePrefixProperties{
-				PeeringServicePrefixKey: to.Ptr("<peering-service-prefix-key>"),
-				Prefix:                  to.Ptr("<prefix>"),
+				PeeringServicePrefixKey: to.Ptr("00000000-0000-0000-0000-000000000000"),
+				Prefix:                  to.Ptr("192.168.1.0/24"),
 			},
 		},
 		nil)
@@ -76,14 +76,14 @@ func ExamplePrefixesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPrefixesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<peering-service-name>",
-		"<prefix-name>",
+		"rgName",
+		"peeringServiceName",
+		"peeringServicePrefixName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,18 +97,17 @@ func ExamplePrefixesClient_NewListByPeeringServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpeering.NewPrefixesClient("<subscription-id>", cred, nil)
+	client, err := armpeering.NewPrefixesClient("subId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByPeeringServicePager("<resource-group-name>",
-		"<peering-service-name>",
+	pager := client.NewListByPeeringServicePager("rgName",
+		"peeringServiceName",
 		&armpeering.PrefixesClientListByPeeringServiceOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

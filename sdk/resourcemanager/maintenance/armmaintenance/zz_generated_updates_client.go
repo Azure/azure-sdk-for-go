@@ -39,7 +39,7 @@ func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,13 +57,14 @@ func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // NewListPager - Get updates to resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceType - Resource type
 // resourceName - Resource identifier
 // options - UpdatesClientListOptions contains the optional parameters for the UpdatesClient.List method.
 func (client *UpdatesClient) NewListPager(resourceGroupName string, providerName string, resourceType string, resourceName string, options *UpdatesClientListOptions) *runtime.Pager[UpdatesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UpdatesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UpdatesClientListResponse]{
 		More: func(page UpdatesClientListResponse) bool {
 			return false
 		},
@@ -112,9 +113,9 @@ func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -129,6 +130,7 @@ func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesCli
 
 // NewListParentPager - Get updates to resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // resourceGroupName - Resource group name
 // providerName - Resource provider name
 // resourceParentType - Resource parent type
@@ -137,7 +139,7 @@ func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesCli
 // resourceName - Resource identifier
 // options - UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.ListParent method.
 func (client *UpdatesClient) NewListParentPager(resourceGroupName string, providerName string, resourceParentType string, resourceParentName string, resourceType string, resourceName string, options *UpdatesClientListParentOptions) *runtime.Pager[UpdatesClientListParentResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UpdatesClientListParentResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UpdatesClientListParentResponse]{
 		More: func(page UpdatesClientListParentResponse) bool {
 			return false
 		},
@@ -194,9 +196,9 @@ func (client *UpdatesClient) listParentCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-09-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

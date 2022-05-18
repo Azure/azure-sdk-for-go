@@ -10,7 +10,7 @@ package armmaintenance
 
 const (
 	moduleName    = "armmaintenance"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v1.0.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -85,41 +85,6 @@ func PossibleMaintenanceScopeValues() []MaintenanceScope {
 		MaintenanceScopeOSImage,
 		MaintenanceScopeSQLDB,
 		MaintenanceScopeSQLManagedInstance,
-	}
-}
-
-// RebootOptions - Possible reboot preference as defined by the user based on which it would be decided to reboot the machine
-// or not after the patch operation is completed.
-type RebootOptions string
-
-const (
-	RebootOptionsAlways     RebootOptions = "Always"
-	RebootOptionsIfRequired RebootOptions = "IfRequired"
-	RebootOptionsNever      RebootOptions = "Never"
-)
-
-// PossibleRebootOptionsValues returns the possible values for the RebootOptions const type.
-func PossibleRebootOptionsValues() []RebootOptions {
-	return []RebootOptions{
-		RebootOptionsAlways,
-		RebootOptionsIfRequired,
-		RebootOptionsNever,
-	}
-}
-
-// TaskScope - Global Task execute once when schedule trigger. Resource task execute for each VM.
-type TaskScope string
-
-const (
-	TaskScopeGlobal   TaskScope = "Global"
-	TaskScopeResource TaskScope = "Resource"
-)
-
-// PossibleTaskScopeValues returns the possible values for the TaskScope const type.
-func PossibleTaskScopeValues() []TaskScope {
-	return []TaskScope{
-		TaskScopeGlobal,
-		TaskScopeResource,
 	}
 }
 

@@ -1,5 +1,29 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*MoveResourcesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MoveResourcesClientDeleteResponse], error)` to `(*runtime.Poller[MoveResourcesClientDeleteResponse], error)`
+- Function `*MoveCollectionsClient.BeginPrepare` return value(s) have been changed from `(*armruntime.Poller[MoveCollectionsClientPrepareResponse], error)` to `(*runtime.Poller[MoveCollectionsClientPrepareResponse], error)`
+- Function `*MoveCollectionsClient.BeginDiscard` return value(s) have been changed from `(*armruntime.Poller[MoveCollectionsClientDiscardResponse], error)` to `(*runtime.Poller[MoveCollectionsClientDiscardResponse], error)`
+- Function `*MoveCollectionsClient.BeginInitiateMove` return value(s) have been changed from `(*armruntime.Poller[MoveCollectionsClientInitiateMoveResponse], error)` to `(*runtime.Poller[MoveCollectionsClientInitiateMoveResponse], error)`
+- Function `*MoveCollectionsClient.BeginBulkRemove` return value(s) have been changed from `(*armruntime.Poller[MoveCollectionsClientBulkRemoveResponse], error)` to `(*runtime.Poller[MoveCollectionsClientBulkRemoveResponse], error)`
+- Function `*MoveCollectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[MoveCollectionsClientDeleteResponse], error)` to `(*runtime.Poller[MoveCollectionsClientDeleteResponse], error)`
+- Function `*MoveCollectionsClient.BeginCommit` return value(s) have been changed from `(*armruntime.Poller[MoveCollectionsClientCommitResponse], error)` to `(*runtime.Poller[MoveCollectionsClientCommitResponse], error)`
+- Function `*MoveCollectionsClient.BeginResolveDependencies` return value(s) have been changed from `(*armruntime.Poller[MoveCollectionsClientResolveDependenciesResponse], error)` to `(*runtime.Poller[MoveCollectionsClientResolveDependenciesResponse], error)`
+- Function `*MoveResourcesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[MoveResourcesClientCreateResponse], error)` to `(*runtime.Poller[MoveResourcesClientCreateResponse], error)`
+- Function `MoveCollectionResultList.MarshalJSON` has been removed
+- Function `OperationsDiscoveryCollection.MarshalJSON` has been removed
+- Function `UnresolvedDependencyCollection.MarshalJSON` has been removed
+- Function `RequiredForResourcesCollection.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `OperationStatusError.MarshalJSON` has been removed
+- Function `SummaryCollection.MarshalJSON` has been removed
+- Function `MoveErrorInfo.MarshalJSON` has been removed
+- Function `AffectedMoveResource.MarshalJSON` has been removed
+- Function `MoveResourceCollection.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

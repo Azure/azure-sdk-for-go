@@ -38,7 +38,7 @@ func NewMoveResourcesClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewMoveResourcesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreate - Creates or updates a Move Resource in the move collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The Resource Group Name.
 // moveCollectionName - The Move Collection Name.
 // moveResourceName - The Move Resource Name.
 // options - MoveResourcesClientBeginCreateOptions contains the optional parameters for the MoveResourcesClient.BeginCreate
 // method.
-func (client *MoveResourcesClient) BeginCreate(ctx context.Context, resourceGroupName string, moveCollectionName string, moveResourceName string, options *MoveResourcesClientBeginCreateOptions) (*armruntime.Poller[MoveResourcesClientCreateResponse], error) {
+func (client *MoveResourcesClient) BeginCreate(ctx context.Context, resourceGroupName string, moveCollectionName string, moveResourceName string, options *MoveResourcesClientBeginCreateOptions) (*runtime.Poller[MoveResourcesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, moveCollectionName, moveResourceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MoveResourcesClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MoveResourcesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[MoveResourcesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MoveResourcesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates or updates a Move Resource in the move collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *MoveResourcesClient) create(ctx context.Context, resourceGroupName string, moveCollectionName string, moveResourceName string, options *MoveResourcesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, moveCollectionName, moveResourceName, options)
 	if err != nil {
@@ -118,7 +120,7 @@ func (client *MoveResourcesClient) createCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -127,27 +129,29 @@ func (client *MoveResourcesClient) createCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Deletes a Move Resource from the move collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The Resource Group Name.
 // moveCollectionName - The Move Collection Name.
 // moveResourceName - The Move Resource Name.
 // options - MoveResourcesClientBeginDeleteOptions contains the optional parameters for the MoveResourcesClient.BeginDelete
 // method.
-func (client *MoveResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, moveCollectionName string, moveResourceName string, options *MoveResourcesClientBeginDeleteOptions) (*armruntime.Poller[MoveResourcesClientDeleteResponse], error) {
+func (client *MoveResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, moveCollectionName string, moveResourceName string, options *MoveResourcesClientBeginDeleteOptions) (*runtime.Poller[MoveResourcesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, moveCollectionName, moveResourceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MoveResourcesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MoveResourcesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[MoveResourcesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MoveResourcesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a Move Resource from the move collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *MoveResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, moveCollectionName string, moveResourceName string, options *MoveResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, moveCollectionName, moveResourceName, options)
 	if err != nil {
@@ -189,12 +193,13 @@ func (client *MoveResourcesClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the Move Resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The Resource Group Name.
 // moveCollectionName - The Move Collection Name.
 // moveResourceName - The Move Resource Name.
@@ -240,7 +245,7 @@ func (client *MoveResourcesClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -255,11 +260,12 @@ func (client *MoveResourcesClient) getHandleResponse(resp *http.Response) (MoveR
 
 // NewListPager - Lists the Move Resources in the move collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The Resource Group Name.
 // moveCollectionName - The Move Collection Name.
 // options - MoveResourcesClientListOptions contains the optional parameters for the MoveResourcesClient.List method.
 func (client *MoveResourcesClient) NewListPager(resourceGroupName string, moveCollectionName string, options *MoveResourcesClientListOptions) *runtime.Pager[MoveResourcesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MoveResourcesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MoveResourcesClientListResponse]{
 		More: func(page MoveResourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -311,7 +317,7 @@ func (client *MoveResourcesClient) listCreateRequest(ctx context.Context, resour
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

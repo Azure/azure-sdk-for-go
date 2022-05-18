@@ -40,7 +40,7 @@ func NewStorageAccountsClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewStorageAccountsClient(subscriptionID string, credential azcore.TokenCred
 
 // Add - Updates the specified Data Lake Analytics account to add an Azure Storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // storageAccountName - The name of the Azure Storage account to add
@@ -104,12 +105,13 @@ func (client *StorageAccountsClient) addCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Delete - Updates the specified Data Lake Analytics account to remove an Azure Storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // storageAccountName - The name of the Azure Storage account to remove
@@ -155,12 +157,13 @@ func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // storageAccountName - The name of the Azure Storage account for which to retrieve the details.
@@ -206,7 +209,7 @@ func (client *StorageAccountsClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -222,6 +225,7 @@ func (client *StorageAccountsClient) getHandleResponse(resp *http.Response) (Sto
 // GetStorageContainer - Gets the specified Azure Storage container associated with the given Data Lake Analytics and Azure
 // Storage accounts.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // storageAccountName - The name of the Azure storage account from which to retrieve the blob container.
@@ -273,7 +277,7 @@ func (client *StorageAccountsClient) getStorageContainerCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -289,12 +293,13 @@ func (client *StorageAccountsClient) getStorageContainerHandleResponse(resp *htt
 // NewListByAccountPager - Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics
 // account. The response includes a link to the next page, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // options - StorageAccountsClientListByAccountOptions contains the optional parameters for the StorageAccountsClient.ListByAccount
 // method.
 func (client *StorageAccountsClient) NewListByAccountPager(resourceGroupName string, accountName string, options *StorageAccountsClientListByAccountOptions) *runtime.Pager[StorageAccountsClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StorageAccountsClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StorageAccountsClientListByAccountResponse]{
 		More: func(page StorageAccountsClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -361,7 +366,7 @@ func (client *StorageAccountsClient) listByAccountCreateRequest(ctx context.Cont
 	}
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -377,6 +382,7 @@ func (client *StorageAccountsClient) listByAccountHandleResponse(resp *http.Resp
 // NewListSasTokensPager - Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account
 // and container combination.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // storageAccountName - The name of the Azure storage account for which the SAS token is being requested.
@@ -384,7 +390,7 @@ func (client *StorageAccountsClient) listByAccountHandleResponse(resp *http.Resp
 // options - StorageAccountsClientListSasTokensOptions contains the optional parameters for the StorageAccountsClient.ListSasTokens
 // method.
 func (client *StorageAccountsClient) NewListSasTokensPager(resourceGroupName string, accountName string, storageAccountName string, containerName string, options *StorageAccountsClientListSasTokensOptions) *runtime.Pager[StorageAccountsClientListSasTokensResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StorageAccountsClientListSasTokensResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StorageAccountsClientListSasTokensResponse]{
 		More: func(page StorageAccountsClientListSasTokensResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -441,7 +447,7 @@ func (client *StorageAccountsClient) listSasTokensCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -457,13 +463,14 @@ func (client *StorageAccountsClient) listSasTokensHandleResponse(resp *http.Resp
 // NewListStorageContainersPager - Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics
 // and Azure Storage account combination. The response includes a link to the next page of results, if any.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // storageAccountName - The name of the Azure storage account from which to list blob containers.
 // options - StorageAccountsClientListStorageContainersOptions contains the optional parameters for the StorageAccountsClient.ListStorageContainers
 // method.
 func (client *StorageAccountsClient) NewListStorageContainersPager(resourceGroupName string, accountName string, storageAccountName string, options *StorageAccountsClientListStorageContainersOptions) *runtime.Pager[StorageAccountsClientListStorageContainersResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StorageAccountsClientListStorageContainersResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StorageAccountsClientListStorageContainersResponse]{
 		More: func(page StorageAccountsClientListStorageContainersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -516,7 +523,7 @@ func (client *StorageAccountsClient) listStorageContainersCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -532,6 +539,7 @@ func (client *StorageAccountsClient) listStorageContainersHandleResponse(resp *h
 // Update - Updates the Data Lake Analytics account to replace Azure Storage blob account details, such as the access key
 // and/or suffix.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Analytics account.
 // storageAccountName - The Azure Storage account to modify
@@ -577,7 +585,7 @@ func (client *StorageAccountsClient) updateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}

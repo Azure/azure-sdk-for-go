@@ -39,7 +39,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // GetCapability - Gets subscription-level properties and limits for Data Lake Analytics specified by resource location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-11-01-preview
 // location - The resource location without whitespace.
 // options - LocationsClientGetCapabilityOptions contains the optional parameters for the LocationsClient.GetCapability method.
 func (client *LocationsClient) GetCapability(ctx context.Context, location string, options *LocationsClientGetCapabilityOptions) (LocationsClientGetCapabilityResponse, error) {
@@ -92,7 +93,7 @@ func (client *LocationsClient) getCapabilityCreateRequest(ctx context.Context, l
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

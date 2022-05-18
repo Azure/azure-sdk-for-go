@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armkubernetesconfiguration"
@@ -26,16 +24,16 @@ func ExampleExtensionsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<cluster-rp>",
-		"<cluster-resource-name>",
-		"<cluster-name>",
-		"<extension-name>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"ClusterMonitor",
 		armkubernetesconfiguration.Extension{
 			Properties: &armkubernetesconfiguration.ExtensionProperties{
 				AutoUpgradeMinorVersion: to.Ptr(true),
@@ -46,20 +44,20 @@ func ExampleExtensionsClient_BeginCreate() {
 					"omsagent.env.clusterName": to.Ptr("clusterName1"),
 					"omsagent.secret.wsid":     to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
 				},
-				ExtensionType: to.Ptr("<extension-type>"),
-				ReleaseTrain:  to.Ptr("<release-train>"),
+				ExtensionType: to.Ptr("azuremonitor-containers"),
+				ReleaseTrain:  to.Ptr("Preview"),
 				Scope: &armkubernetesconfiguration.Scope{
 					Cluster: &armkubernetesconfiguration.ScopeCluster{
-						ReleaseNamespace: to.Ptr("<release-namespace>"),
+						ReleaseNamespace: to.Ptr("kube-system"),
 					},
 				},
 			},
 		},
-		&armkubernetesconfiguration.ExtensionsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -74,16 +72,16 @@ func ExampleExtensionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-rp>",
-		"<cluster-resource-name>",
-		"<cluster-name>",
-		"<extension-name>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"ClusterMonitor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,23 +97,21 @@ func ExampleExtensionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-rp>",
-		"<cluster-resource-name>",
-		"<cluster-name>",
-		"<extension-name>",
-		&armkubernetesconfiguration.ExtensionsClientBeginDeleteOptions{ForceDelete: nil,
-			ResumeToken: "",
-		})
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"ClusterMonitor",
+		&armkubernetesconfiguration.ExtensionsClientBeginDeleteOptions{ForceDelete: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -128,16 +124,16 @@ func ExampleExtensionsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-rp>",
-		"<cluster-resource-name>",
-		"<cluster-name>",
-		"<extension-name>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"ClusterMonitor",
 		armkubernetesconfiguration.PatchExtension{
 			Properties: &armkubernetesconfiguration.PatchExtensionProperties{
 				AutoUpgradeMinorVersion: to.Ptr(true),
@@ -148,17 +144,19 @@ func ExampleExtensionsClient_BeginUpdate() {
 					"omsagent.env.clusterName": to.Ptr("clusterName1"),
 					"omsagent.secret.wsid":     to.Ptr("a38cef99-5a89-52ed-b6db-22095c23664b"),
 				},
-				ReleaseTrain: to.Ptr("<release-train>"),
+				ReleaseTrain: to.Ptr("Preview"),
 			},
 		},
-		&armkubernetesconfiguration.ExtensionsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/ListExtensions.json
@@ -168,20 +166,19 @@ func ExampleExtensionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkubernetesconfiguration.NewExtensionsClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewExtensionsClient("subId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<cluster-rp>",
-		"<cluster-resource-name>",
-		"<cluster-name>",
+	pager := client.NewListPager("rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

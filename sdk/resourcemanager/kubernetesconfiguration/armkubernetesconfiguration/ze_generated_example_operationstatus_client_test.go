@@ -23,17 +23,17 @@ func ExampleOperationStatusClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkubernetesconfiguration.NewOperationStatusClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewOperationStatusClient("subId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-rp>",
-		"<cluster-resource-name>",
-		"<cluster-name>",
-		"<extension-name>",
-		"<operation-id>",
+		"rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
+		"ClusterMonitor",
+		"99999999-9999-9999-9999-999999999999",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,20 +49,19 @@ func ExampleOperationStatusClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkubernetesconfiguration.NewOperationStatusClient("<subscription-id>", cred, nil)
+	client, err := armkubernetesconfiguration.NewOperationStatusClient("subId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<cluster-rp>",
-		"<cluster-resource-name>",
-		"<cluster-name>",
+	pager := client.NewListPager("rg1",
+		"Microsoft.Kubernetes",
+		"connectedClusters",
+		"clusterName1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

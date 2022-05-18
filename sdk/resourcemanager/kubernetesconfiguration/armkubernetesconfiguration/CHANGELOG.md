@@ -1,5 +1,23 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*FluxConfigurationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[FluxConfigurationsClientDeleteResponse], error)` to `(*runtime.Poller[FluxConfigurationsClientDeleteResponse], error)`
+- Function `*ExtensionsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientUpdateResponse], error)` to `(*runtime.Poller[ExtensionsClientUpdateResponse], error)`
+- Function `*ExtensionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientDeleteResponse], error)` to `(*runtime.Poller[ExtensionsClientDeleteResponse], error)`
+- Function `*SourceControlConfigurationsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SourceControlConfigurationsClientDeleteResponse], error)` to `(*runtime.Poller[SourceControlConfigurationsClientDeleteResponse], error)`
+- Function `*FluxConfigurationsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FluxConfigurationsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FluxConfigurationsClientCreateOrUpdateResponse], error)`
+- Function `*ExtensionsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[ExtensionsClientCreateResponse], error)` to `(*runtime.Poller[ExtensionsClientCreateResponse], error)`
+- Function `*FluxConfigurationsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[FluxConfigurationsClientUpdateResponse], error)` to `(*runtime.Poller[FluxConfigurationsClientUpdateResponse], error)`
+- Function `OperationStatusResult.MarshalJSON` has been removed
+- Function `SourceControlConfigurationList.MarshalJSON` has been removed
+- Function `OperationStatusList.MarshalJSON` has been removed
+- Function `ResourceProviderOperationList.MarshalJSON` has been removed
+- Function `ExtensionsList.MarshalJSON` has been removed
+- Function `FluxConfigurationsList.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/labservices/armlabservices"
@@ -26,18 +24,17 @@ func ExampleVirtualMachinesClient_NewListByLabPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewVirtualMachinesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLabPager("<resource-group-name>",
-		"<lab-name>",
+	pager := client.NewListByLabPager("testrg123",
+		"testlab",
 		&armlabservices.VirtualMachinesClientListByLabOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleVirtualMachinesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewVirtualMachinesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<virtual-machine-name>",
+		"testrg123",
+		"testlab",
+		"template",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,19 +73,19 @@ func ExampleVirtualMachinesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewVirtualMachinesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<virtual-machine-name>",
-		&armlabservices.VirtualMachinesClientBeginStartOptions{ResumeToken: ""})
+		"testrg123",
+		"testlab",
+		"template",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -101,19 +98,19 @@ func ExampleVirtualMachinesClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewVirtualMachinesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<virtual-machine-name>",
-		&armlabservices.VirtualMachinesClientBeginStopOptions{ResumeToken: ""})
+		"testrg123",
+		"testlab",
+		"template",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -126,19 +123,19 @@ func ExampleVirtualMachinesClient_BeginReimage() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewVirtualMachinesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginReimage(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<virtual-machine-name>",
-		&armlabservices.VirtualMachinesClientBeginReimageOptions{ResumeToken: ""})
+		"testrg123",
+		"testlab",
+		"template",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -151,19 +148,19 @@ func ExampleVirtualMachinesClient_BeginRedeploy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewVirtualMachinesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRedeploy(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<virtual-machine-name>",
-		&armlabservices.VirtualMachinesClientBeginRedeployOptions{ResumeToken: ""})
+		"testrg123",
+		"testlab",
+		"template",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -176,23 +173,23 @@ func ExampleVirtualMachinesClient_BeginResetPassword() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlabservices.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armlabservices.NewVirtualMachinesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResetPassword(ctx,
-		"<resource-group-name>",
-		"<lab-name>",
-		"<virtual-machine-name>",
+		"testrg123",
+		"testlab",
+		"template",
 		armlabservices.ResetPasswordBody{
-			Password: to.Ptr("<password>"),
-			Username: to.Ptr("<username>"),
+			Password: to.Ptr("example-password"),
+			Username: to.Ptr("example-username"),
 		},
-		&armlabservices.VirtualMachinesClientBeginResetPasswordOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

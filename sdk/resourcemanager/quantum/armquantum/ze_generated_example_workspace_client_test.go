@@ -24,15 +24,15 @@ func ExampleWorkspaceClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armquantum.NewWorkspaceClient("<subscription-id>", cred, nil)
+	client, err := armquantum.NewWorkspaceClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<location-name>",
+		"westus2",
 		armquantum.CheckNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("sample-workspace-name"),
+			Type: to.Ptr("Microsoft.Quantum/Workspaces"),
 		},
 		nil)
 	if err != nil {

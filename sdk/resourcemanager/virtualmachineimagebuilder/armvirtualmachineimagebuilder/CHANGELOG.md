@@ -1,5 +1,19 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*VirtualMachineImageTemplatesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineImageTemplatesClientDeleteResponse], error)` to `(*runtime.Poller[VirtualMachineImageTemplatesClientDeleteResponse], error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineImageTemplatesClientUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineImageTemplatesClientUpdateResponse], error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginRun` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineImageTemplatesClientRunResponse], error)` to `(*runtime.Poller[VirtualMachineImageTemplatesClientRunResponse], error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineImageTemplatesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[VirtualMachineImageTemplatesClientCreateOrUpdateResponse], error)`
+- Function `*VirtualMachineImageTemplatesClient.BeginCancel` return value(s) have been changed from `(*armruntime.Poller[VirtualMachineImageTemplatesClientCancelResponse], error)` to `(*runtime.Poller[VirtualMachineImageTemplatesClientCancelResponse], error)`
+- Function `ImageTemplateListResult.MarshalJSON` has been removed
+- Function `RunOutputCollection.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

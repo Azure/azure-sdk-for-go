@@ -85,6 +85,9 @@ type ImageTemplateCustomizer struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateCustomizer.
+func (i *ImageTemplateCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer { return i }
+
 // ImageTemplateDistributorClassification provides polymorphic access to related types.
 // Call the interface's GetImageTemplateDistributor() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -106,6 +109,9 @@ type ImageTemplateDistributor struct {
 	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
 }
 
+// GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateDistributor.
+func (i *ImageTemplateDistributor) GetImageTemplateDistributor() *ImageTemplateDistributor { return i }
+
 // ImageTemplateFileCustomizer - Uploads files to VMs (Linux, Windows). Corresponds to Packer file provisioner
 type ImageTemplateFileCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
@@ -123,6 +129,14 @@ type ImageTemplateFileCustomizer struct {
 
 	// The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage, etc
 	SourceURI *string `json:"sourceUri,omitempty"`
+}
+
+// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateFileCustomizer.
+func (i *ImageTemplateFileCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
+	return &ImageTemplateCustomizer{
+		Type: i.Type,
+		Name: i.Name,
+	}
 }
 
 // ImageTemplateIdentity - Identity for the image template.
@@ -181,6 +195,15 @@ type ImageTemplateManagedImageDistributor struct {
 	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
 }
 
+// GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateManagedImageDistributor.
+func (i *ImageTemplateManagedImageDistributor) GetImageTemplateDistributor() *ImageTemplateDistributor {
+	return &ImageTemplateDistributor{
+		Type:          i.Type,
+		RunOutputName: i.RunOutputName,
+		ArtifactTags:  i.ArtifactTags,
+	}
+}
+
 // ImageTemplateManagedImageSource - Describes an image source that is a managed image in customer subscription.
 type ImageTemplateManagedImageSource struct {
 	// REQUIRED; ARM resource id of the managed image in customer subscription
@@ -188,6 +211,13 @@ type ImageTemplateManagedImageSource struct {
 
 	// REQUIRED; Specifies the type of source image you want to start with.
 	Type *string `json:"type,omitempty"`
+}
+
+// GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateManagedImageSource.
+func (i *ImageTemplateManagedImageSource) GetImageTemplateSource() *ImageTemplateSource {
+	return &ImageTemplateSource{
+		Type: i.Type,
+	}
 }
 
 // ImageTemplatePlatformImageSource - Describes an image source from Azure Gallery Images [https://docs.microsoft.com/en-us/rest/api/compute/virtualmachineimages].
@@ -218,6 +248,13 @@ type ImageTemplatePlatformImageSource struct {
 	ExactVersion *string `json:"exactVersion,omitempty" azure:"ro"`
 }
 
+// GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplatePlatformImageSource.
+func (i *ImageTemplatePlatformImageSource) GetImageTemplateSource() *ImageTemplateSource {
+	return &ImageTemplateSource{
+		Type: i.Type,
+	}
+}
+
 // ImageTemplatePowerShellCustomizer - Runs the specified PowerShell on the VM (Windows). Corresponds to Packer powershell
 // provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
 type ImageTemplatePowerShellCustomizer struct {
@@ -245,6 +282,14 @@ type ImageTemplatePowerShellCustomizer struct {
 
 	// Valid exit codes for the PowerShell script. [Default: 0]
 	ValidExitCodes []*int32 `json:"validExitCodes,omitempty"`
+}
+
+// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplatePowerShellCustomizer.
+func (i *ImageTemplatePowerShellCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
+	return &ImageTemplateCustomizer{
+		Type: i.Type,
+		Name: i.Name,
+	}
 }
 
 // ImageTemplateProperties - Describes the properties of an image template
@@ -293,6 +338,14 @@ type ImageTemplateRestartCustomizer struct {
 	RestartTimeout *string `json:"restartTimeout,omitempty"`
 }
 
+// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateRestartCustomizer.
+func (i *ImageTemplateRestartCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
+	return &ImageTemplateCustomizer{
+		Type: i.Type,
+		Name: i.Name,
+	}
+}
+
 // ImageTemplateSharedImageDistributor - Distribute via Shared Image Gallery.
 type ImageTemplateSharedImageDistributor struct {
 	// REQUIRED; Resource Id of the Shared Image Gallery image
@@ -317,6 +370,15 @@ type ImageTemplateSharedImageDistributor struct {
 	StorageAccountType *SharedImageStorageAccountType `json:"storageAccountType,omitempty"`
 }
 
+// GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateSharedImageDistributor.
+func (i *ImageTemplateSharedImageDistributor) GetImageTemplateDistributor() *ImageTemplateDistributor {
+	return &ImageTemplateDistributor{
+		Type:          i.Type,
+		RunOutputName: i.RunOutputName,
+		ArtifactTags:  i.ArtifactTags,
+	}
+}
+
 // ImageTemplateSharedImageVersionSource - Describes an image source that is an image version in a shared image gallery.
 type ImageTemplateSharedImageVersionSource struct {
 	// REQUIRED; ARM resource id of the image version in the shared image gallery
@@ -324,6 +386,13 @@ type ImageTemplateSharedImageVersionSource struct {
 
 	// REQUIRED; Specifies the type of source image you want to start with.
 	Type *string `json:"type,omitempty"`
+}
+
+// GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateSharedImageVersionSource.
+func (i *ImageTemplateSharedImageVersionSource) GetImageTemplateSource() *ImageTemplateSource {
+	return &ImageTemplateSource{
+		Type: i.Type,
+	}
 }
 
 // ImageTemplateShellCustomizer - Runs a shell script during the customization phase (Linux). Corresponds to Packer shell
@@ -345,6 +414,14 @@ type ImageTemplateShellCustomizer struct {
 	ScriptURI *string `json:"scriptUri,omitempty"`
 }
 
+// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateShellCustomizer.
+func (i *ImageTemplateShellCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
+	return &ImageTemplateCustomizer{
+		Type: i.Type,
+		Name: i.Name,
+	}
+}
+
 // ImageTemplateSourceClassification provides polymorphic access to related types.
 // Call the interface's GetImageTemplateSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -359,6 +436,9 @@ type ImageTemplateSource struct {
 	// REQUIRED; Specifies the type of source image you want to start with.
 	Type *string `json:"type,omitempty"`
 }
+
+// GetImageTemplateSource implements the ImageTemplateSourceClassification interface for type ImageTemplateSource.
+func (i *ImageTemplateSource) GetImageTemplateSource() *ImageTemplateSource { return i }
 
 // ImageTemplateUpdateParameters - Parameters for updating an image template.
 type ImageTemplateUpdateParameters struct {
@@ -399,6 +479,15 @@ type ImageTemplateVhdDistributor struct {
 	ArtifactTags map[string]*string `json:"artifactTags,omitempty"`
 }
 
+// GetImageTemplateDistributor implements the ImageTemplateDistributorClassification interface for type ImageTemplateVhdDistributor.
+func (i *ImageTemplateVhdDistributor) GetImageTemplateDistributor() *ImageTemplateDistributor {
+	return &ImageTemplateDistributor{
+		Type:          i.Type,
+		RunOutputName: i.RunOutputName,
+		ArtifactTags:  i.ArtifactTags,
+	}
+}
+
 // ImageTemplateWindowsUpdateCustomizer - Installs Windows Updates. Corresponds to Packer Windows Update Provisioner (https://github.com/rgl/packer-provisioner-windows-update)
 type ImageTemplateWindowsUpdateCustomizer struct {
 	// REQUIRED; The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
@@ -417,6 +506,14 @@ type ImageTemplateWindowsUpdateCustomizer struct {
 
 	// Maximum number of updates to apply at a time. Omit or specify 0 to use the default (1000)
 	UpdateLimit *int32 `json:"updateLimit,omitempty"`
+}
+
+// GetImageTemplateCustomizer implements the ImageTemplateCustomizerClassification interface for type ImageTemplateWindowsUpdateCustomizer.
+func (i *ImageTemplateWindowsUpdateCustomizer) GetImageTemplateCustomizer() *ImageTemplateCustomizer {
+	return &ImageTemplateCustomizer{
+		Type: i.Type,
+		Name: i.Name,
+	}
 }
 
 // Operation - A REST API operation

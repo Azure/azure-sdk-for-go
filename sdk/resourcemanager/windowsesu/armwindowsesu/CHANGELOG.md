@@ -1,5 +1,14 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*MultipleActivationKeysClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[MultipleActivationKeysClientCreateResponse], error)` to `(*runtime.Poller[MultipleActivationKeysClientCreateResponse], error)`
+- Function `MultipleActivationKeyList.MarshalJSON` has been removed
+- Function `ErrorDefinition.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

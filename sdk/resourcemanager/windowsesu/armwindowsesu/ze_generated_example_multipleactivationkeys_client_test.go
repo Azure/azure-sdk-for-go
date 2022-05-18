@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsesu/armwindowsesu"
@@ -26,7 +24,7 @@ func ExampleMultipleActivationKeysClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsesu.NewMultipleActivationKeysClient("<subscription-id>", cred, nil)
+	client, err := armwindowsesu.NewMultipleActivationKeysClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleMultipleActivationKeysClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleMultipleActivationKeysClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsesu.NewMultipleActivationKeysClient("<subscription-id>", cred, nil)
+	client, err := armwindowsesu.NewMultipleActivationKeysClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testrg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,13 +73,13 @@ func ExampleMultipleActivationKeysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsesu.NewMultipleActivationKeysClient("<subscription-id>", cred, nil)
+	client, err := armwindowsesu.NewMultipleActivationKeysClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<multiple-activation-key-name>",
+		"testgr1",
+		"server08-key-2019",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -99,28 +95,28 @@ func ExampleMultipleActivationKeysClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsesu.NewMultipleActivationKeysClient("<subscription-id>", cred, nil)
+	client, err := armwindowsesu.NewMultipleActivationKeysClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<multiple-activation-key-name>",
+		"testgr1",
+		"server08-key-2019",
 		armwindowsesu.MultipleActivationKey{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Properties: &armwindowsesu.MultipleActivationKeyProperties{
-				AgreementNumber:       to.Ptr("<agreement-number>"),
+				AgreementNumber:       to.Ptr("1a2b45ag"),
 				InstalledServerNumber: to.Ptr[int32](100),
 				IsEligible:            to.Ptr(true),
 				OSType:                to.Ptr(armwindowsesu.OsTypeWindowsServer2008),
 				SupportType:           to.Ptr(armwindowsesu.SupportTypeSupplementalServicing),
 			},
 		},
-		&armwindowsesu.MultipleActivationKeysClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -135,13 +131,13 @@ func ExampleMultipleActivationKeysClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsesu.NewMultipleActivationKeysClient("<subscription-id>", cred, nil)
+	client, err := armwindowsesu.NewMultipleActivationKeysClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<multiple-activation-key-name>",
+		"testgr1",
+		"server08-key-2019",
 		armwindowsesu.MultipleActivationKeyUpdate{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -163,13 +159,13 @@ func ExampleMultipleActivationKeysClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armwindowsesu.NewMultipleActivationKeysClient("<subscription-id>", cred, nil)
+	client, err := armwindowsesu.NewMultipleActivationKeysClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<multiple-activation-key-name>",
+		"testgr1",
+		"server08-key-2019",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

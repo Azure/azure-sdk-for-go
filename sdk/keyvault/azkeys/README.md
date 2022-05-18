@@ -337,7 +337,7 @@ func main() {
 ```
 
 ### List keys
-[`NewListPropertiesOfKeysPager`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.ListKeys) creates a pager that lists the properties of all of the keys in the client's vault.
+[`NewListPropertiesOfKeysPager`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.NewListPropertiesOfKeysPager) creates a pager that lists the properties of all of the keys in the client's vault.
 
 ```go
 import (

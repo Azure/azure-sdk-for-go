@@ -36,7 +36,7 @@ func NewLinkerClient(credential azcore.TokenCredential, options *arm.ClientOptio
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,27 +53,29 @@ func NewLinkerClient(credential azcore.TokenCredential, options *arm.ClientOptio
 
 // BeginCreateOrUpdate - Create or update linker resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // linkerName - The name Linker resource.
 // parameters - Linker details.
 // options - LinkerClientBeginCreateOrUpdateOptions contains the optional parameters for the LinkerClient.BeginCreateOrUpdate
 // method.
-func (client *LinkerClient) BeginCreateOrUpdate(ctx context.Context, resourceURI string, linkerName string, parameters LinkerResource, options *LinkerClientBeginCreateOrUpdateOptions) (*armruntime.Poller[LinkerClientCreateOrUpdateResponse], error) {
+func (client *LinkerClient) BeginCreateOrUpdate(ctx context.Context, resourceURI string, linkerName string, parameters LinkerResource, options *LinkerClientBeginCreateOrUpdateOptions) (*runtime.Poller[LinkerClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceURI, linkerName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[LinkerClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LinkerClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[LinkerClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LinkerClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update linker resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 func (client *LinkerClient) createOrUpdate(ctx context.Context, resourceURI string, linkerName string, parameters LinkerResource, options *LinkerClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceURI, linkerName, parameters, options)
 	if err != nil {
@@ -104,31 +106,33 @@ func (client *LinkerClient) createOrUpdateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Delete a link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // linkerName - The name Linker resource.
 // options - LinkerClientBeginDeleteOptions contains the optional parameters for the LinkerClient.BeginDelete method.
-func (client *LinkerClient) BeginDelete(ctx context.Context, resourceURI string, linkerName string, options *LinkerClientBeginDeleteOptions) (*armruntime.Poller[LinkerClientDeleteResponse], error) {
+func (client *LinkerClient) BeginDelete(ctx context.Context, resourceURI string, linkerName string, options *LinkerClientBeginDeleteOptions) (*runtime.Poller[LinkerClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceURI, linkerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[LinkerClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LinkerClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[LinkerClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LinkerClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 func (client *LinkerClient) deleteOperation(ctx context.Context, resourceURI string, linkerName string, options *LinkerClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceURI, linkerName, options)
 	if err != nil {
@@ -159,12 +163,13 @@ func (client *LinkerClient) deleteCreateRequest(ctx context.Context, resourceURI
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns Linker resource for a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // linkerName - The name Linker resource.
 // options - LinkerClientGetOptions contains the optional parameters for the LinkerClient.Get method.
@@ -198,7 +203,7 @@ func (client *LinkerClient) getCreateRequest(ctx context.Context, resourceURI st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -213,10 +218,11 @@ func (client *LinkerClient) getHandleResponse(resp *http.Response) (LinkerClient
 
 // NewListPager - Returns list of Linkers which connects to the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // options - LinkerClientListOptions contains the optional parameters for the LinkerClient.List method.
 func (client *LinkerClient) NewListPager(resourceURI string, options *LinkerClientListOptions) *runtime.Pager[LinkerClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LinkerClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LinkerClientListResponse]{
 		More: func(page LinkerClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -254,7 +260,7 @@ func (client *LinkerClient) listCreateRequest(ctx context.Context, resourceURI s
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -269,6 +275,7 @@ func (client *LinkerClient) listHandleResponse(resp *http.Response) (LinkerClien
 
 // ListConfigurations - list source configurations for a linker.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // linkerName - The name Linker resource.
 // options - LinkerClientListConfigurationsOptions contains the optional parameters for the LinkerClient.ListConfigurations
@@ -303,7 +310,7 @@ func (client *LinkerClient) listConfigurationsCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -318,26 +325,28 @@ func (client *LinkerClient) listConfigurationsHandleResponse(resp *http.Response
 
 // BeginUpdate - Operation to update an existing link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // linkerName - The name Linker resource.
 // parameters - Linker details.
 // options - LinkerClientBeginUpdateOptions contains the optional parameters for the LinkerClient.BeginUpdate method.
-func (client *LinkerClient) BeginUpdate(ctx context.Context, resourceURI string, linkerName string, parameters LinkerPatch, options *LinkerClientBeginUpdateOptions) (*armruntime.Poller[LinkerClientUpdateResponse], error) {
+func (client *LinkerClient) BeginUpdate(ctx context.Context, resourceURI string, linkerName string, parameters LinkerPatch, options *LinkerClientBeginUpdateOptions) (*runtime.Poller[LinkerClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceURI, linkerName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[LinkerClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LinkerClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[LinkerClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LinkerClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Operation to update an existing link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 func (client *LinkerClient) update(ctx context.Context, resourceURI string, linkerName string, parameters LinkerPatch, options *LinkerClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceURI, linkerName, parameters, options)
 	if err != nil {
@@ -368,31 +377,33 @@ func (client *LinkerClient) updateCreateRequest(ctx context.Context, resourceURI
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginValidate - Validate a link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 // resourceURI - The fully qualified Azure Resource manager identifier of the resource to be connected.
 // linkerName - The name Linker resource.
 // options - LinkerClientBeginValidateOptions contains the optional parameters for the LinkerClient.BeginValidate method.
-func (client *LinkerClient) BeginValidate(ctx context.Context, resourceURI string, linkerName string, options *LinkerClientBeginValidateOptions) (*armruntime.Poller[LinkerClientValidateResponse], error) {
+func (client *LinkerClient) BeginValidate(ctx context.Context, resourceURI string, linkerName string, options *LinkerClientBeginValidateOptions) (*runtime.Poller[LinkerClientValidateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.validate(ctx, resourceURI, linkerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[LinkerClientValidateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[LinkerClientValidateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[LinkerClientValidateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LinkerClientValidateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Validate - Validate a link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
 func (client *LinkerClient) validate(ctx context.Context, resourceURI string, linkerName string, options *LinkerClientBeginValidateOptions) (*http.Response, error) {
 	req, err := client.validateCreateRequest(ctx, resourceURI, linkerName, options)
 	if err != nil {
@@ -423,6 +434,6 @@ func (client *LinkerClient) validateCreateRequest(ctx context.Context, resourceU
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -1,5 +1,44 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*LinkerClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[LinkerClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[LinkerClientCreateOrUpdateResponse], error)`
+- Function `*LinkerClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[LinkerClientUpdateResponse], error)` to `(*runtime.Poller[LinkerClientUpdateResponse], error)`
+- Function `*LinkerClient.BeginValidate` return value(s) have been changed from `(*armruntime.Poller[LinkerClientValidateResponse], error)` to `(*runtime.Poller[LinkerClientValidateResponse], error)`
+- Function `*LinkerClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[LinkerClientDeleteResponse], error)` to `(*runtime.Poller[LinkerClientDeleteResponse], error)`
+- Type of `ConfluentBootstrapServer.Type` has been changed from `*Type` to `*TargetServiceType`
+- Type of `TargetServiceBase.Type` has been changed from `*Type` to `*TargetServiceType`
+- Type of `AzureResourcePropertiesBase.Type` has been changed from `*Type` to `*AzureResourceType`
+- Type of `AzureResource.Type` has been changed from `*Type` to `*TargetServiceType`
+- Type of `ConfluentSchemaRegistry.Type` has been changed from `*Type` to `*TargetServiceType`
+- Type of `AzureKeyVaultProperties.Type` has been changed from `*Type` to `*AzureResourceType`
+- Const `ValidationResultStatusFailed` has been removed
+- Const `TypeAzureResource` has been removed
+- Const `TypeConfluentBootstrapServer` has been removed
+- Const `TypeConfluentSchemaRegistry` has been removed
+- Const `TypeKeyVault` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `PossibleTypeValues` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `LinkerList.MarshalJSON` has been removed
+- Function `ValidateResult.MarshalJSON` has been removed
+- Function `SourceConfigurationResult.MarshalJSON` has been removed
+- Field `ValidateResult` of struct `LinkerClientValidateResponse` has been removed
+
+### Features Added
+
+- New const `AzureResourceTypeKeyVault`
+- New const `TargetServiceTypeConfluentSchemaRegistry`
+- New const `ValidationResultStatusFailure`
+- New const `TargetServiceTypeConfluentBootstrapServer`
+- New const `TargetServiceTypeAzureResource`
+- New function `PossibleAzureResourceTypeValues() []AzureResourceType`
+- New function `PossibleTargetServiceTypeValues() []TargetServiceType`
+- New struct `ValidateOperationResult`
+- New anonymous field `ValidateOperationResult` in struct `LinkerClientValidateResponse`
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

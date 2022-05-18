@@ -24,19 +24,18 @@ func ExampleAvailabilityStatusesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcehealth.NewAvailabilityStatusesClient("<subscription-id>", cred, nil)
+	client, err := armresourcehealth.NewAvailabilityStatusesClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("resourceGroupName",
 		&armresourcehealth.AvailabilityStatusesClientListByResourceGroupOptions{Filter: nil,
-			Expand: to.Ptr("<expand>"),
+			Expand: to.Ptr("recommendedactions"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -57,9 +56,9 @@ func ExampleAvailabilityStatusesClient_GetByResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByResource(ctx,
-		"<resource-uri>",
+		"resourceUri",
 		&armresourcehealth.AvailabilityStatusesClientGetByResourceOptions{Filter: nil,
-			Expand: to.Ptr("<expand>"),
+			Expand: to.Ptr("recommendedactions"),
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,7 +78,7 @@ func ExampleAvailabilityStatusesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-uri>",
+	pager := client.NewListPager("resourceUri",
 		&armresourcehealth.AvailabilityStatusesClientListOptions{Filter: nil,
 			Expand: nil,
 		})
@@ -87,7 +86,6 @@ func ExampleAvailabilityStatusesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

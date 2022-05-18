@@ -1,5 +1,49 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*JobsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[JobsClientCreateResponse], error)` to `(*runtime.Poller[JobsClientCreateResponse], error)`
+- Function `*JobsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[JobsClientUpdateResponse], error)` to `(*runtime.Poller[JobsClientUpdateResponse], error)`
+- Function `*JobsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[JobsClientDeleteResponse], error)` to `(*runtime.Poller[JobsClientDeleteResponse], error)`
+- Function `ShipmentPickUpResponse.MarshalJSON` has been removed
+- Function `JobSecrets.MarshalJSON` has been removed
+- Function `TransportAvailabilityResponse.MarshalJSON` has been removed
+- Function `RegionConfigurationResponse.MarshalJSON` has been removed
+- Function `PreferencesValidationResponseProperties.MarshalJSON` has been removed
+- Function `AvailableSKUsResult.MarshalJSON` has been removed
+- Function `ValidationResponseProperties.MarshalJSON` has been removed
+- Function `DiskJobSecrets.MarshalJSON` has been removed
+- Function `AddressValidationProperties.MarshalJSON` has been removed
+- Function `ScheduleAvailabilityResponse.MarshalJSON` has been removed
+- Function `UnencryptedCredentialsList.MarshalJSON` has been removed
+- Function `SubscriptionIsAllowedToCreateJobValidationResponseProperties.MarshalJSON` has been removed
+- Function `DiskGranularCopyLogDetails.MarshalJSON` has been removed
+- Function `DataTransferDetailsValidationResponseProperties.MarshalJSON` has been removed
+- Function `JobResourceList.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `HeavySecret.MarshalJSON` has been removed
+- Function `SKUAvailabilityValidationResponseProperties.MarshalJSON` has been removed
+- Function `UnencryptedCredentials.MarshalJSON` has been removed
+- Function `CreateOrderLimitForSubscriptionValidationResponseProperties.MarshalJSON` has been removed
+- Function `Secret.MarshalJSON` has been removed
+- Function `ShareCredentialDetails.MarshalJSON` has been removed
+- Function `AccountCredentialDetails.MarshalJSON` has been removed
+- Function `HeavyJobSecrets.MarshalJSON` has been removed
+- Function `CustomerDiskJobSecrets.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `SKUProperties.MarshalJSON` has been removed
+
+### Features Added
+
+- New struct `DeviceErasureDetails`
+- New field `DeviceErasureDetails` in struct `CommonJobDetails`
+- New field `DeviceErasureDetails` in struct `CustomerDiskJobDetails`
+- New field `DeviceErasureDetails` in struct `DiskJobDetails`
+- New field `DeviceErasureDetails` in struct `HeavyJobDetails`
+- New field `DeviceErasureDetails` in struct `JobDetails`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

@@ -17,20 +17,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2021-12-01/examples/JobMitigate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/JobMitigate.json
 func ExampleManagementClient_Mitigate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatabox.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewManagementClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Mitigate(ctx,
-		"<job-name>",
-		"<resource-group-name>",
+		"SdkJob8367",
+		"SdkRg9836",
 		armdatabox.MitigateJobRequest{
 			CustomerResolutionCode: to.Ptr(armdatabox.CustomerResolutionCodeMoveToCleanUpDevice),
 		},

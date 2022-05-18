@@ -10,239 +10,151 @@ package armdatalakeanalytics
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// MarshalJSON implements the json.Marshaller interface for type Account.
-func (a Account) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountBasic.
-func (a AccountBasic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", a.ID)
-	populate(objectMap, "location", a.Location)
-	populate(objectMap, "name", a.Name)
-	populate(objectMap, "properties", a.Properties)
-	populate(objectMap, "tags", a.Tags)
-	populate(objectMap, "type", a.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountListResult.
-func (a AccountListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "count", a.Count)
-	populate(objectMap, "nextLink", a.NextLink)
-	populate(objectMap, "value", a.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountProperties.
-func (a AccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountId", a.AccountID)
-	populate(objectMap, "computePolicies", a.ComputePolicies)
-	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
-	populate(objectMap, "currentTier", a.CurrentTier)
-	populate(objectMap, "dataLakeStoreAccounts", a.DataLakeStoreAccounts)
-	populate(objectMap, "debugDataAccessLevel", a.DebugDataAccessLevel)
-	populate(objectMap, "defaultDataLakeStoreAccount", a.DefaultDataLakeStoreAccount)
-	populate(objectMap, "defaultDataLakeStoreAccountType", a.DefaultDataLakeStoreAccountType)
-	populate(objectMap, "endpoint", a.Endpoint)
-	populate(objectMap, "firewallAllowAzureIps", a.FirewallAllowAzureIPs)
-	populate(objectMap, "firewallRules", a.FirewallRules)
-	populate(objectMap, "firewallState", a.FirewallState)
-	populate(objectMap, "hiveMetastores", a.HiveMetastores)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
-	populate(objectMap, "maxActiveJobCountPerUser", a.MaxActiveJobCountPerUser)
-	populate(objectMap, "maxDegreeOfParallelism", a.MaxDegreeOfParallelism)
-	populate(objectMap, "maxDegreeOfParallelismPerJob", a.MaxDegreeOfParallelismPerJob)
-	populate(objectMap, "maxJobCount", a.MaxJobCount)
-	populate(objectMap, "maxJobRunningTimeInMin", a.MaxJobRunningTimeInMin)
-	populate(objectMap, "maxQueuedJobCountPerUser", a.MaxQueuedJobCountPerUser)
-	populate(objectMap, "minPriorityPerJob", a.MinPriorityPerJob)
-	populate(objectMap, "newTier", a.NewTier)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "publicDataLakeStoreAccounts", a.PublicDataLakeStoreAccounts)
-	populate(objectMap, "queryStoreRetention", a.QueryStoreRetention)
-	populate(objectMap, "state", a.State)
-	populate(objectMap, "storageAccounts", a.StorageAccounts)
-	populate(objectMap, "systemMaxDegreeOfParallelism", a.SystemMaxDegreeOfParallelism)
-	populate(objectMap, "systemMaxJobCount", a.SystemMaxJobCount)
-	populate(objectMap, "virtualNetworkRules", a.VirtualNetworkRules)
-	return json.Marshal(objectMap)
-}
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AccountProperties.
 func (a *AccountProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "accountId":
-			err = unpopulate(val, &a.AccountID)
+			err = unpopulate(val, "AccountID", &a.AccountID)
 			delete(rawMsg, key)
 		case "computePolicies":
-			err = unpopulate(val, &a.ComputePolicies)
+			err = unpopulate(val, "ComputePolicies", &a.ComputePolicies)
 			delete(rawMsg, key)
 		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &a.CreationTime)
+			err = unpopulateTimeRFC3339(val, "CreationTime", &a.CreationTime)
 			delete(rawMsg, key)
 		case "currentTier":
-			err = unpopulate(val, &a.CurrentTier)
+			err = unpopulate(val, "CurrentTier", &a.CurrentTier)
 			delete(rawMsg, key)
 		case "dataLakeStoreAccounts":
-			err = unpopulate(val, &a.DataLakeStoreAccounts)
+			err = unpopulate(val, "DataLakeStoreAccounts", &a.DataLakeStoreAccounts)
 			delete(rawMsg, key)
 		case "debugDataAccessLevel":
-			err = unpopulate(val, &a.DebugDataAccessLevel)
+			err = unpopulate(val, "DebugDataAccessLevel", &a.DebugDataAccessLevel)
 			delete(rawMsg, key)
 		case "defaultDataLakeStoreAccount":
-			err = unpopulate(val, &a.DefaultDataLakeStoreAccount)
+			err = unpopulate(val, "DefaultDataLakeStoreAccount", &a.DefaultDataLakeStoreAccount)
 			delete(rawMsg, key)
 		case "defaultDataLakeStoreAccountType":
-			err = unpopulate(val, &a.DefaultDataLakeStoreAccountType)
+			err = unpopulate(val, "DefaultDataLakeStoreAccountType", &a.DefaultDataLakeStoreAccountType)
 			delete(rawMsg, key)
 		case "endpoint":
-			err = unpopulate(val, &a.Endpoint)
+			err = unpopulate(val, "Endpoint", &a.Endpoint)
 			delete(rawMsg, key)
 		case "firewallAllowAzureIps":
-			err = unpopulate(val, &a.FirewallAllowAzureIPs)
+			err = unpopulate(val, "FirewallAllowAzureIPs", &a.FirewallAllowAzureIPs)
 			delete(rawMsg, key)
 		case "firewallRules":
-			err = unpopulate(val, &a.FirewallRules)
+			err = unpopulate(val, "FirewallRules", &a.FirewallRules)
 			delete(rawMsg, key)
 		case "firewallState":
-			err = unpopulate(val, &a.FirewallState)
+			err = unpopulate(val, "FirewallState", &a.FirewallState)
 			delete(rawMsg, key)
 		case "hiveMetastores":
-			err = unpopulate(val, &a.HiveMetastores)
+			err = unpopulate(val, "HiveMetastores", &a.HiveMetastores)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &a.LastModifiedTime)
 			delete(rawMsg, key)
 		case "maxActiveJobCountPerUser":
-			err = unpopulate(val, &a.MaxActiveJobCountPerUser)
+			err = unpopulate(val, "MaxActiveJobCountPerUser", &a.MaxActiveJobCountPerUser)
 			delete(rawMsg, key)
 		case "maxDegreeOfParallelism":
-			err = unpopulate(val, &a.MaxDegreeOfParallelism)
+			err = unpopulate(val, "MaxDegreeOfParallelism", &a.MaxDegreeOfParallelism)
 			delete(rawMsg, key)
 		case "maxDegreeOfParallelismPerJob":
-			err = unpopulate(val, &a.MaxDegreeOfParallelismPerJob)
+			err = unpopulate(val, "MaxDegreeOfParallelismPerJob", &a.MaxDegreeOfParallelismPerJob)
 			delete(rawMsg, key)
 		case "maxJobCount":
-			err = unpopulate(val, &a.MaxJobCount)
+			err = unpopulate(val, "MaxJobCount", &a.MaxJobCount)
 			delete(rawMsg, key)
 		case "maxJobRunningTimeInMin":
-			err = unpopulate(val, &a.MaxJobRunningTimeInMin)
+			err = unpopulate(val, "MaxJobRunningTimeInMin", &a.MaxJobRunningTimeInMin)
 			delete(rawMsg, key)
 		case "maxQueuedJobCountPerUser":
-			err = unpopulate(val, &a.MaxQueuedJobCountPerUser)
+			err = unpopulate(val, "MaxQueuedJobCountPerUser", &a.MaxQueuedJobCountPerUser)
 			delete(rawMsg, key)
 		case "minPriorityPerJob":
-			err = unpopulate(val, &a.MinPriorityPerJob)
+			err = unpopulate(val, "MinPriorityPerJob", &a.MinPriorityPerJob)
 			delete(rawMsg, key)
 		case "newTier":
-			err = unpopulate(val, &a.NewTier)
+			err = unpopulate(val, "NewTier", &a.NewTier)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
 			delete(rawMsg, key)
 		case "publicDataLakeStoreAccounts":
-			err = unpopulate(val, &a.PublicDataLakeStoreAccounts)
+			err = unpopulate(val, "PublicDataLakeStoreAccounts", &a.PublicDataLakeStoreAccounts)
 			delete(rawMsg, key)
 		case "queryStoreRetention":
-			err = unpopulate(val, &a.QueryStoreRetention)
+			err = unpopulate(val, "QueryStoreRetention", &a.QueryStoreRetention)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &a.State)
+			err = unpopulate(val, "State", &a.State)
 			delete(rawMsg, key)
 		case "storageAccounts":
-			err = unpopulate(val, &a.StorageAccounts)
+			err = unpopulate(val, "StorageAccounts", &a.StorageAccounts)
 			delete(rawMsg, key)
 		case "systemMaxDegreeOfParallelism":
-			err = unpopulate(val, &a.SystemMaxDegreeOfParallelism)
+			err = unpopulate(val, "SystemMaxDegreeOfParallelism", &a.SystemMaxDegreeOfParallelism)
 			delete(rawMsg, key)
 		case "systemMaxJobCount":
-			err = unpopulate(val, &a.SystemMaxJobCount)
+			err = unpopulate(val, "SystemMaxJobCount", &a.SystemMaxJobCount)
 			delete(rawMsg, key)
 		case "virtualNetworkRules":
-			err = unpopulate(val, &a.VirtualNetworkRules)
+			err = unpopulate(val, "VirtualNetworkRules", &a.VirtualNetworkRules)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AccountPropertiesBasic.
-func (a AccountPropertiesBasic) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "accountId", a.AccountID)
-	populateTimeRFC3339(objectMap, "creationTime", a.CreationTime)
-	populate(objectMap, "endpoint", a.Endpoint)
-	populateTimeRFC3339(objectMap, "lastModifiedTime", a.LastModifiedTime)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	populate(objectMap, "state", a.State)
-	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type AccountPropertiesBasic.
 func (a *AccountPropertiesBasic) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "accountId":
-			err = unpopulate(val, &a.AccountID)
+			err = unpopulate(val, "AccountID", &a.AccountID)
 			delete(rawMsg, key)
 		case "creationTime":
-			err = unpopulateTimeRFC3339(val, &a.CreationTime)
+			err = unpopulateTimeRFC3339(val, "CreationTime", &a.CreationTime)
 			delete(rawMsg, key)
 		case "endpoint":
-			err = unpopulate(val, &a.Endpoint)
+			err = unpopulate(val, "Endpoint", &a.Endpoint)
 			delete(rawMsg, key)
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &a.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &a.LastModifiedTime)
 			delete(rawMsg, key)
 		case "provisioningState":
-			err = unpopulate(val, &a.ProvisioningState)
+			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
 			delete(rawMsg, key)
 		case "state":
-			err = unpopulate(val, &a.State)
+			err = unpopulate(val, "State", &a.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ComputePolicyListResult.
-func (c ComputePolicyListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CreateDataLakeAnalyticsAccountParameters.
@@ -273,126 +185,21 @@ func (c CreateDataLakeAnalyticsAccountProperties) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DataLakeStoreAccountInformationListResult.
-func (d DataLakeStoreAccountInformationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ErrorDetail.
-func (e ErrorDetail) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "additionalInfo", e.AdditionalInfo)
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	populate(objectMap, "target", e.Target)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FirewallRuleListResult.
-func (f FirewallRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", f.NextLink)
-	populate(objectMap, "value", f.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HiveMetastoreListResult.
-func (h HiveMetastoreListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", h.NextLink)
-	populate(objectMap, "value", h.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
-func (o OperationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", o.NextLink)
-	populate(objectMap, "value", o.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationMetaMetricSpecification.
-func (o OperationMetaMetricSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "aggregationType", o.AggregationType)
-	populate(objectMap, "availabilities", o.Availabilities)
-	populate(objectMap, "displayDescription", o.DisplayDescription)
-	populate(objectMap, "displayName", o.DisplayName)
-	populate(objectMap, "name", o.Name)
-	populate(objectMap, "unit", o.Unit)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OperationMetaServiceSpecification.
-func (o OperationMetaServiceSpecification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "logSpecifications", o.LogSpecifications)
-	populate(objectMap, "metricSpecifications", o.MetricSpecifications)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Resource.
-func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "location", r.Location)
-	populate(objectMap, "name", r.Name)
-	populate(objectMap, "tags", r.Tags)
-	populate(objectMap, "type", r.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SasTokenInformationListResult.
-func (s SasTokenInformationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StorageAccountInformationListResult.
-func (s StorageAccountInformationListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StorageContainerListResult.
-func (s StorageContainerListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type StorageContainerProperties.
-func (s StorageContainerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "lastModifiedTime", s.LastModifiedTime)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type StorageContainerProperties.
 func (s *StorageContainerProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "lastModifiedTime":
-			err = unpopulateTimeRFC3339(val, &s.LastModifiedTime)
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &s.LastModifiedTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
 		}
 	}
 	return nil
@@ -445,14 +252,6 @@ func (u UpdateStorageAccountParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkRuleListResult.
-func (v VirtualNetworkRuleListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 func populate(m map[string]interface{}, k string, v interface{}) {
 	if v == nil {
 		return
@@ -463,9 +262,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

@@ -23,12 +23,12 @@ func ExampleLocationsClient_GetCapability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakeanalytics.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armdatalakeanalytics.NewLocationsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetCapability(ctx,
-		"<location>",
+		"EastUS2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

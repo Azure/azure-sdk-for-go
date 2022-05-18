@@ -1,5 +1,32 @@
 # Release History
 
+## 0.6.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*AccountsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientUpdateResponse], error)` to `(*runtime.Poller[AccountsClientUpdateResponse], error)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountsClientDeleteResponse], error)` to `(*runtime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientCreateResponse], error)` to `(*runtime.Poller[AccountsClientCreateResponse], error)`
+- Function `Resource.MarshalJSON` has been removed
+- Function `FirewallRuleListResult.MarshalJSON` has been removed
+- Function `StorageContainerProperties.MarshalJSON` has been removed
+- Function `SasTokenInformationListResult.MarshalJSON` has been removed
+- Function `AccountBasic.MarshalJSON` has been removed
+- Function `ComputePolicyListResult.MarshalJSON` has been removed
+- Function `HiveMetastoreListResult.MarshalJSON` has been removed
+- Function `VirtualNetworkRuleListResult.MarshalJSON` has been removed
+- Function `OperationMetaMetricSpecification.MarshalJSON` has been removed
+- Function `AccountListResult.MarshalJSON` has been removed
+- Function `Account.MarshalJSON` has been removed
+- Function `DataLakeStoreAccountInformationListResult.MarshalJSON` has been removed
+- Function `StorageContainerListResult.MarshalJSON` has been removed
+- Function `AccountPropertiesBasic.MarshalJSON` has been removed
+- Function `AccountProperties.MarshalJSON` has been removed
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `StorageAccountInformationListResult.MarshalJSON` has been removed
+- Function `OperationMetaServiceSpecification.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+
+
 ## 0.5.0 (2022-04-15)
 ### Breaking Changes
 

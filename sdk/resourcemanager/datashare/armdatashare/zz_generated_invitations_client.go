@@ -38,7 +38,7 @@ func NewInvitationsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewInvitationsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Create - Create an invitation
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share to send the invitation for.
@@ -107,7 +108,7 @@ func (client *InvitationsClient) createCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, invitation)
 }
 
@@ -122,6 +123,7 @@ func (client *InvitationsClient) createHandleResponse(resp *http.Response) (Invi
 
 // Delete - Delete an invitation in a share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
@@ -172,12 +174,13 @@ func (client *InvitationsClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get an invitation in a share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
@@ -228,7 +231,7 @@ func (client *InvitationsClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -243,12 +246,13 @@ func (client *InvitationsClient) getHandleResponse(resp *http.Response) (Invitat
 
 // NewListBySharePager - List invitations in a share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - InvitationsClientListByShareOptions contains the optional parameters for the InvitationsClient.ListByShare method.
 func (client *InvitationsClient) NewListBySharePager(resourceGroupName string, accountName string, shareName string, options *InvitationsClientListByShareOptions) *runtime.Pager[InvitationsClientListByShareResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InvitationsClientListByShareResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InvitationsClientListByShareResponse]{
 		More: func(page InvitationsClientListByShareResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -310,7 +314,7 @@ func (client *InvitationsClient) listByShareCreateRequest(ctx context.Context, r
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

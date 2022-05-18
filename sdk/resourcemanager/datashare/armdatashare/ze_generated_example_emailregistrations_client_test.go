@@ -29,9 +29,9 @@ func ExampleEmailRegistrationsClient_ActivateEmail() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ActivateEmail(ctx,
-		"<location>",
+		"East US 2",
 		armdatashare.EmailRegistration{
-			ActivationCode: to.Ptr("<activation-code>"),
+			ActivationCode: to.Ptr("djsfhakj2lekowd3wepfklpwe9lpflcd"),
 		},
 		nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleEmailRegistrationsClient_RegisterEmail() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegisterEmail(ctx,
-		"<location>",
+		"East US 2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

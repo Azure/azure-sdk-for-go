@@ -33,7 +33,6 @@ func ExampleConsumerInvitationsClient_NewListInvitationsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,8 +53,8 @@ func ExampleConsumerInvitationsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location>",
-		"<invitation-id>",
+		"East US 2",
+		"dfbbc788-19eb-4607-a5a1-c74181bfff03",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,10 +75,10 @@ func ExampleConsumerInvitationsClient_RejectInvitation() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RejectInvitation(ctx,
-		"<location>",
+		"East US 2",
 		armdatashare.ConsumerInvitation{
 			Properties: &armdatashare.ConsumerInvitationProperties{
-				InvitationID: to.Ptr("<invitation-id>"),
+				InvitationID: to.Ptr("dfbbc788-19eb-4607-a5a1-c74181bfff03"),
 			},
 		},
 		nil)

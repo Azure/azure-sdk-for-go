@@ -38,7 +38,7 @@ func NewSharesClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSharesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // Create - Create a share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
@@ -102,7 +103,7 @@ func (client *SharesClient) createCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, share)
 }
 
@@ -117,24 +118,26 @@ func (client *SharesClient) createHandleResponse(resp *http.Response) (SharesCli
 
 // BeginDelete - Delete a share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - SharesClientBeginDeleteOptions contains the optional parameters for the SharesClient.BeginDelete method.
-func (client *SharesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientBeginDeleteOptions) (*armruntime.Poller[SharesClientDeleteResponse], error) {
+func (client *SharesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientBeginDeleteOptions) (*runtime.Poller[SharesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SharesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SharesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SharesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SharesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *SharesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *SharesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
@@ -176,12 +179,13 @@ func (client *SharesClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share to retrieve.
@@ -227,7 +231,7 @@ func (client *SharesClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -242,11 +246,12 @@ func (client *SharesClient) getHandleResponse(resp *http.Response) (SharesClient
 
 // NewListByAccountPager - List shares in an account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // options - SharesClientListByAccountOptions contains the optional parameters for the SharesClient.ListByAccount method.
 func (client *SharesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *SharesClientListByAccountOptions) *runtime.Pager[SharesClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SharesClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SharesClientListByAccountResponse]{
 		More: func(page SharesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -304,7 +309,7 @@ func (client *SharesClient) listByAccountCreateRequest(ctx context.Context, reso
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -319,6 +324,7 @@ func (client *SharesClient) listByAccountHandleResponse(resp *http.Response) (Sh
 
 // NewListSynchronizationDetailsPager - List synchronization details
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
@@ -326,7 +332,7 @@ func (client *SharesClient) listByAccountHandleResponse(resp *http.Response) (Sh
 // options - SharesClientListSynchronizationDetailsOptions contains the optional parameters for the SharesClient.ListSynchronizationDetails
 // method.
 func (client *SharesClient) NewListSynchronizationDetailsPager(resourceGroupName string, accountName string, shareName string, shareSynchronization ShareSynchronization, options *SharesClientListSynchronizationDetailsOptions) *runtime.Pager[SharesClientListSynchronizationDetailsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SharesClientListSynchronizationDetailsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SharesClientListSynchronizationDetailsResponse]{
 		More: func(page SharesClientListSynchronizationDetailsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -388,7 +394,7 @@ func (client *SharesClient) listSynchronizationDetailsCreateRequest(ctx context.
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, shareSynchronization)
 }
 
@@ -403,13 +409,14 @@ func (client *SharesClient) listSynchronizationDetailsHandleResponse(resp *http.
 
 // NewListSynchronizationsPager - List synchronizations of a share
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareName - The name of the share.
 // options - SharesClientListSynchronizationsOptions contains the optional parameters for the SharesClient.ListSynchronizations
 // method.
 func (client *SharesClient) NewListSynchronizationsPager(resourceGroupName string, accountName string, shareName string, options *SharesClientListSynchronizationsOptions) *runtime.Pager[SharesClientListSynchronizationsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SharesClientListSynchronizationsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SharesClientListSynchronizationsResponse]{
 		More: func(page SharesClientListSynchronizationsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -471,7 +478,7 @@ func (client *SharesClient) listSynchronizationsCreateRequest(ctx context.Contex
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

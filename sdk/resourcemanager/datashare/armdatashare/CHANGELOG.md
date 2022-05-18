@@ -1,5 +1,44 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ProviderShareSubscriptionsClient.BeginRevoke` return value(s) have been changed from `(*armruntime.Poller[ProviderShareSubscriptionsClientRevokeResponse], error)` to `(*runtime.Poller[ProviderShareSubscriptionsClientRevokeResponse], error)`
+- Function `*DataSetsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[DataSetsClientDeleteResponse], error)` to `(*runtime.Poller[DataSetsClientDeleteResponse], error)`
+- Function `*TriggersClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[TriggersClientCreateResponse], error)` to `(*runtime.Poller[TriggersClientCreateResponse], error)`
+- Function `*SynchronizationSettingsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SynchronizationSettingsClientDeleteResponse], error)` to `(*runtime.Poller[SynchronizationSettingsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[AccountsClientCreateResponse], error)` to `(*runtime.Poller[AccountsClientCreateResponse], error)`
+- Function `*ShareSubscriptionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ShareSubscriptionsClientDeleteResponse], error)` to `(*runtime.Poller[ShareSubscriptionsClientDeleteResponse], error)`
+- Function `*AccountsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[AccountsClientDeleteResponse], error)` to `(*runtime.Poller[AccountsClientDeleteResponse], error)`
+- Function `*TriggersClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[TriggersClientDeleteResponse], error)` to `(*runtime.Poller[TriggersClientDeleteResponse], error)`
+- Function `*ShareSubscriptionsClient.BeginSynchronize` return value(s) have been changed from `(*armruntime.Poller[ShareSubscriptionsClientSynchronizeResponse], error)` to `(*runtime.Poller[ShareSubscriptionsClientSynchronizeResponse], error)`
+- Function `*SharesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[SharesClientDeleteResponse], error)` to `(*runtime.Poller[SharesClientDeleteResponse], error)`
+- Function `*ShareSubscriptionsClient.BeginCancelSynchronization` return value(s) have been changed from `(*armruntime.Poller[ShareSubscriptionsClientCancelSynchronizationResponse], error)` to `(*runtime.Poller[ShareSubscriptionsClientCancelSynchronizationResponse], error)`
+- Function `ShareSubscriptionSynchronizationList.MarshalJSON` has been removed
+- Function `InvitationList.MarshalJSON` has been removed
+- Function `AccountList.MarshalJSON` has been removed
+- Function `OperationMetaServiceSpecification.MarshalJSON` has been removed
+- Function `SynchronizationSettingList.MarshalJSON` has been removed
+- Function `SynchronizationDetails.MarshalJSON` has been removed
+- Function `DataSetList.MarshalJSON` has been removed
+- Function `TriggerList.MarshalJSON` has been removed
+- Function `DataSetMappingList.MarshalJSON` has been removed
+- Function `OperationResponse.MarshalJSON` has been removed
+- Function `ShareList.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `ConsumerInvitationList.MarshalJSON` has been removed
+- Function `ErrorInfo.MarshalJSON` has been removed
+- Function `ConsumerSourceDataSetList.MarshalJSON` has been removed
+- Function `ShareSubscriptionList.MarshalJSON` has been removed
+- Function `ShareSynchronizationList.MarshalJSON` has been removed
+- Function `ScheduledSourceShareSynchronizationSettingProperties.MarshalJSON` has been removed
+- Function `ScheduledSourceSynchronizationSetting.MarshalJSON` has been removed
+- Function `SynchronizationDetailsList.MarshalJSON` has been removed
+- Function `OperationMetaMetricSpecification.MarshalJSON` has been removed
+- Function `SourceShareSynchronizationSettingList.MarshalJSON` has been removed
+- Function `ProviderShareSubscriptionList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

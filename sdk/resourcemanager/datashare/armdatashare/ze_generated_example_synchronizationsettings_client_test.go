@@ -26,15 +26,15 @@ func ExampleSynchronizationSettingsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewSynchronizationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSynchronizationSettingsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<synchronization-setting-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"SynchronizationSetting1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,15 +50,15 @@ func ExampleSynchronizationSettingsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewSynchronizationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSynchronizationSettingsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<synchronization-setting-name>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"Dataset1",
 		&armdatashare.ScheduledSynchronizationSetting{
 			Kind: to.Ptr(armdatashare.SynchronizationSettingKindScheduleBased),
 			Properties: &armdatashare.ScheduledSynchronizationSettingProperties{
@@ -81,20 +81,20 @@ func ExampleSynchronizationSettingsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewSynchronizationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSynchronizationSettingsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<synchronization-setting-name>",
-		&armdatashare.SynchronizationSettingsClientBeginDeleteOptions{ResumeToken: ""})
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"SynchronizationSetting1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -109,19 +109,18 @@ func ExampleSynchronizationSettingsClient_NewListBySharePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewSynchronizationSettingsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewSynchronizationSettingsClient("433a8dfd-e5d5-4e77-ad86-90acdc75eb1a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySharePager("<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+	pager := client.NewListBySharePager("SampleResourceGroup",
+		"Account1",
+		"Share1",
 		&armdatashare.SynchronizationSettingsClientListByShareOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

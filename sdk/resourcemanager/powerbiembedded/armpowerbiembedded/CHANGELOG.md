@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*WorkspaceCollectionsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspaceCollectionsClientDeleteResponse], error)` to `(*runtime.Poller[WorkspaceCollectionsClientDeleteResponse], error)`
+- Function `WorkspaceCollection.MarshalJSON` has been removed
+- Function `OperationList.MarshalJSON` has been removed
+- Function `WorkspaceCollectionList.MarshalJSON` has been removed
+- Function `Error.MarshalJSON` has been removed
+- Function `WorkspaceList.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

@@ -24,59 +24,59 @@ func ExampleGatewayClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<gateway-resource-name>",
+		"sbz_demo",
+		"sampleGateway",
 		armservicefabricmesh.GatewayResourceDescription{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("EastUS"),
 			Tags:     map[string]*string{},
 			Properties: &armservicefabricmesh.GatewayResourceProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Service Fabric Mesh sample gateway."),
 				DestinationNetwork: &armservicefabricmesh.NetworkRef{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("helloWorldNetwork"),
 				},
 				SourceNetwork: &armservicefabricmesh.NetworkRef{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("Open"),
 				},
 				TCP: []*armservicefabricmesh.TCPConfig{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("web"),
 						Destination: &armservicefabricmesh.GatewayDestination{
-							ApplicationName: to.Ptr("<application-name>"),
-							EndpointName:    to.Ptr("<endpoint-name>"),
-							ServiceName:     to.Ptr("<service-name>"),
+							ApplicationName: to.Ptr("helloWorldApp"),
+							EndpointName:    to.Ptr("helloWorldListener"),
+							ServiceName:     to.Ptr("helloWorldService"),
 						},
 						Port: to.Ptr[int32](80),
 					}},
 				HTTP: []*armservicefabricmesh.HTTPConfig{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("contosoWebsite"),
 						Hosts: []*armservicefabricmesh.HTTPHostConfig{
 							{
-								Name: to.Ptr("<name>"),
+								Name: to.Ptr("contoso.com"),
 								Routes: []*armservicefabricmesh.HTTPRouteConfig{
 									{
-										Name: to.Ptr("<name>"),
+										Name: to.Ptr("index"),
 										Destination: &armservicefabricmesh.GatewayDestination{
-											ApplicationName: to.Ptr("<application-name>"),
-											EndpointName:    to.Ptr("<endpoint-name>"),
-											ServiceName:     to.Ptr("<service-name>"),
+											ApplicationName: to.Ptr("httpHelloWorldApp"),
+											EndpointName:    to.Ptr("indexHttpEndpoint"),
+											ServiceName:     to.Ptr("indexService"),
 										},
 										Match: &armservicefabricmesh.HTTPRouteMatchRule{
 											Path: &armservicefabricmesh.HTTPRouteMatchPath{
 												Type:    to.Ptr(armservicefabricmesh.PathMatchTypePrefix),
-												Rewrite: to.Ptr("<rewrite>"),
-												Value:   to.Ptr("<value>"),
+												Rewrite: to.Ptr("/"),
+												Value:   to.Ptr("/index"),
 											},
 											Headers: []*armservicefabricmesh.HTTPRouteMatchHeader{
 												{
-													Name:  to.Ptr("<name>"),
+													Name:  to.Ptr("accept"),
 													Type:  to.Ptr(armservicefabricmesh.HeaderMatchTypeExact),
-													Value: to.Ptr("<value>"),
+													Value: to.Ptr("application/json"),
 												}},
 										},
 									}},
@@ -100,13 +100,13 @@ func ExampleGatewayClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<gateway-resource-name>",
+		"sbz_demo",
+		"sampleGateway",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -122,13 +122,13 @@ func ExampleGatewayClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<gateway-resource-name>",
+		"sbz_demo",
+		"sampleGateway",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -142,17 +142,16 @@ func ExampleGatewayClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("sbz_demo",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -168,7 +167,7 @@ func ExampleGatewayClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewGatewayClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -177,7 +176,6 @@ func ExampleGatewayClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -24,18 +24,18 @@ func ExampleSecretValueClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretValueClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretValueClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<secret-resource-name>",
-		"<secret-value-resource-name>",
+		"sbz_demo",
+		"dbConnectionString",
+		"v1",
 		armservicefabricmesh.SecretValueResourceDescription{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("v1"),
 			Properties: &armservicefabricmesh.SecretValueResourceProperties{
-				Value: to.Ptr("<value>"),
+				Value: to.Ptr("mongodb://contoso123:0Fc3IolnL12312asdfawejunASDF@asdfYXX2t8a97kghVcUzcDv98hawelufhawefafnoQRGwNj2nMPL1Y9qsIr9Srdw==@contoso123.documents.azure.com:10255/mydatabase?ssl=true"),
 			},
 		},
 		nil)
@@ -53,14 +53,14 @@ func ExampleSecretValueClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretValueClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretValueClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<secret-resource-name>",
-		"<secret-value-resource-name>",
+		"sbz_demo",
+		"dbConnectionString",
+		"v1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,14 +76,14 @@ func ExampleSecretValueClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretValueClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretValueClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<secret-resource-name>",
-		"<secret-value-resource-name>",
+		"sbz_demo",
+		"dbConnectionString",
+		"v1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,18 +97,17 @@ func ExampleSecretValueClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretValueClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretValueClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<secret-resource-name>",
+	pager := client.NewListPager("sbz_demo",
+		"dbConnectionString",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -124,14 +123,14 @@ func ExampleSecretValueClient_ListValue() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewSecretValueClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewSecretValueClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListValue(ctx,
-		"<resource-group-name>",
-		"<secret-resource-name>",
-		"<secret-value-resource-name>",
+		"sbz_demo",
+		"dbConnectionString",
+		"v1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -1,5 +1,19 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*WorkspacesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientDeleteResponse], error)` to `(*runtime.Poller[WorkspacesClientDeleteResponse], error)`
+- Function `*WorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[WorkspacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[WorkspacesClientCreateOrUpdateResponse], error)`
+- Function `ErrorDetail.MarshalJSON` has been removed
+- Function `OfferingsListResult.MarshalJSON` has been removed
+- Function `OperationsList.MarshalJSON` has been removed
+- Function `SKUDescription.MarshalJSON` has been removed
+- Function `TargetDescription.MarshalJSON` has been removed
+- Function `ProviderProperties.MarshalJSON` has been removed
+- Function `WorkspaceListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

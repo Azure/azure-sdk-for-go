@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*BotsClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[BotsClientCreateResponse], error)` to `(*runtime.Poller[BotsClientCreateResponse], error)`
+- Function `*BotsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[BotsClientDeleteResponse], error)` to `(*runtime.Poller[BotsClientDeleteResponse], error)`
+- Function `BotResponseList.MarshalJSON` has been removed
+- Function `ErrorError.MarshalJSON` has been removed
+- Function `AvailableOperations.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

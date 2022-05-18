@@ -1,5 +1,35 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ManagementClient.BeginUpdateAddress` return value(s) have been changed from `(*armruntime.Poller[ManagementClientUpdateAddressResponse], error)` to `(*runtime.Poller[ManagementClientUpdateAddressResponse], error)`
+- Function `*ManagementClient.BeginReturnOrderItem` return value(s) have been changed from `(*armruntime.Poller[ManagementClientReturnOrderItemResponse], error)` to `(*runtime.Poller[ManagementClientReturnOrderItemResponse], error)`
+- Function `*ManagementClient.BeginCreateOrderItem` return value(s) have been changed from `(*armruntime.Poller[ManagementClientCreateOrderItemResponse], error)` to `(*runtime.Poller[ManagementClientCreateOrderItemResponse], error)`
+- Function `*ManagementClient.BeginDeleteAddressByName` return value(s) have been changed from `(*armruntime.Poller[ManagementClientDeleteAddressByNameResponse], error)` to `(*runtime.Poller[ManagementClientDeleteAddressByNameResponse], error)`
+- Function `*ManagementClient.BeginCreateAddress` return value(s) have been changed from `(*armruntime.Poller[ManagementClientCreateAddressResponse], error)` to `(*runtime.Poller[ManagementClientCreateAddressResponse], error)`
+- Function `*ManagementClient.BeginDeleteOrderItemByName` return value(s) have been changed from `(*armruntime.Poller[ManagementClientDeleteOrderItemByNameResponse], error)` to `(*runtime.Poller[ManagementClientDeleteOrderItemByNameResponse], error)`
+- Function `*ManagementClient.BeginUpdateOrderItem` return value(s) have been changed from `(*armruntime.Poller[ManagementClientUpdateOrderItemResponse], error)` to `(*runtime.Poller[ManagementClientUpdateOrderItemResponse], error)`
+- Function `ProductLineProperties.MarshalJSON` has been removed
+- Function `Configurations.MarshalJSON` has been removed
+- Function `ProductProperties.MarshalJSON` has been removed
+- Function `CostInformation.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `PurchaseMeterDetails.MarshalJSON` has been removed
+- Function `Description.MarshalJSON` has been removed
+- Function `OrderItemResourceList.MarshalJSON` has been removed
+- Function `ProductFamilies.MarshalJSON` has been removed
+- Function `ConfigurationProperties.MarshalJSON` has been removed
+- Function `OrderResourceList.MarshalJSON` has been removed
+- Function `BasicInformation.MarshalJSON` has been removed
+- Function `BillingMeterDetails.MarshalJSON` has been removed
+- Function `Pav2MeterDetails.MarshalJSON` has been removed
+- Function `CommonProperties.MarshalJSON` has been removed
+- Function `AddressResourceList.MarshalJSON` has been removed
+- Function `ProductFamiliesMetadata.MarshalJSON` has been removed
+- Function `ProductFamilyProperties.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

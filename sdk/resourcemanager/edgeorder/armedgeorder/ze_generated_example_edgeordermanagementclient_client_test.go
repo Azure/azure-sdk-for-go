@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder"
@@ -35,7 +33,6 @@ func ExampleManagementClient_NewListOperationsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,7 +48,7 @@ func ExampleManagementClient_NewListAddressesAtSubscriptionLevelPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -62,7 +59,6 @@ func ExampleManagementClient_NewListAddressesAtSubscriptionLevelPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -78,7 +74,7 @@ func ExampleManagementClient_NewListProductFamiliesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -92,14 +88,13 @@ func ExampleManagementClient_NewListProductFamiliesPager() {
 				}},
 		},
 	},
-		&armedgeorder.ManagementClientListProductFamiliesOptions{Expand: to.Ptr("<expand>"),
+		&armedgeorder.ManagementClientListProductFamiliesOptions{Expand: to.Ptr("configurations"),
 			SkipToken: nil,
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -115,7 +110,7 @@ func ExampleManagementClient_NewListConfigurationsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -129,9 +124,9 @@ func ExampleManagementClient_NewListConfigurationsPager() {
 							to.Ptr("US")},
 					}},
 				HierarchyInformation: &armedgeorder.HierarchyInformation{
-					ProductFamilyName: to.Ptr("<product-family-name>"),
-					ProductLineName:   to.Ptr("<product-line-name>"),
-					ProductName:       to.Ptr("<product-name>"),
+					ProductFamilyName: to.Ptr("azurestackedge"),
+					ProductLineName:   to.Ptr("azurestackedge"),
+					ProductName:       to.Ptr("azurestackedgegpu"),
 				},
 			}},
 	},
@@ -140,7 +135,6 @@ func ExampleManagementClient_NewListConfigurationsPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -156,7 +150,7 @@ func ExampleManagementClient_NewListProductFamiliesMetadataPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -165,7 +159,6 @@ func ExampleManagementClient_NewListProductFamiliesMetadataPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -181,7 +174,7 @@ func ExampleManagementClient_NewListOrderAtSubscriptionLevelPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -190,7 +183,6 @@ func ExampleManagementClient_NewListOrderAtSubscriptionLevelPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -206,7 +198,7 @@ func ExampleManagementClient_NewListOrderItemsAtSubscriptionLevelPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -218,7 +210,6 @@ func ExampleManagementClient_NewListOrderItemsAtSubscriptionLevelPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -234,11 +225,11 @@ func ExampleManagementClient_NewListAddressesAtResourceGroupLevelPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAddressesAtResourceGroupLevelPager("<resource-group-name>",
+	pager := client.NewListAddressesAtResourceGroupLevelPager("YourResourceGroupName",
 		&armedgeorder.ManagementClientListAddressesAtResourceGroupLevelOptions{Filter: nil,
 			SkipToken: nil,
 		})
@@ -246,7 +237,6 @@ func ExampleManagementClient_NewListAddressesAtResourceGroupLevelPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -262,13 +252,13 @@ func ExampleManagementClient_GetAddressByName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAddressByName(ctx,
-		"<address-name>",
-		"<resource-group-name>",
+		"TestAddressName1",
+		"YourResourceGroupName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -284,40 +274,40 @@ func ExampleManagementClient_BeginCreateAddress() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateAddress(ctx,
-		"<address-name>",
-		"<resource-group-name>",
+		"TestAddressName2",
+		"YourResourceGroupName",
 		armedgeorder.AddressResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armedgeorder.AddressProperties{
 				ContactDetails: &armedgeorder.ContactDetails{
-					ContactName: to.Ptr("<contact-name>"),
+					ContactName: to.Ptr("XXXX XXXX"),
 					EmailList: []*string{
 						to.Ptr("xxxx@xxxx.xxx")},
-					Phone:          to.Ptr("<phone>"),
-					PhoneExtension: to.Ptr("<phone-extension>"),
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				ShippingAddress: &armedgeorder.ShippingAddress{
 					AddressType:     to.Ptr(armedgeorder.AddressTypeNone),
-					City:            to.Ptr("<city>"),
-					CompanyName:     to.Ptr("<company-name>"),
-					Country:         to.Ptr("<country>"),
-					PostalCode:      to.Ptr("<postal-code>"),
-					StateOrProvince: to.Ptr("<state-or-province>"),
-					StreetAddress1:  to.Ptr("<street-address1>"),
-					StreetAddress2:  to.Ptr("<street-address2>"),
+					City:            to.Ptr("San Francisco"),
+					CompanyName:     to.Ptr("Microsoft"),
+					Country:         to.Ptr("US"),
+					PostalCode:      to.Ptr("94107"),
+					StateOrProvince: to.Ptr("CA"),
+					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+					StreetAddress2:  to.Ptr("UNIT 1"),
 				},
 			},
 		},
-		&armedgeorder.ManagementClientBeginCreateAddressOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -332,18 +322,18 @@ func ExampleManagementClient_BeginDeleteAddressByName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeleteAddressByName(ctx,
-		"<address-name>",
-		"<resource-group-name>",
-		&armedgeorder.ManagementClientBeginDeleteAddressByNameOptions{ResumeToken: ""})
+		"TestAddressName1",
+		"YourResourceGroupName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -356,31 +346,31 @@ func ExampleManagementClient_BeginUpdateAddress() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateAddress(ctx,
-		"<address-name>",
-		"<resource-group-name>",
+		"TestAddressName2",
+		"YourResourceGroupName",
 		armedgeorder.AddressUpdateParameter{
 			Properties: &armedgeorder.AddressUpdateProperties{
 				ContactDetails: &armedgeorder.ContactDetails{
-					ContactName: to.Ptr("<contact-name>"),
+					ContactName: to.Ptr("YYYY YYYY"),
 					EmailList: []*string{
 						to.Ptr("xxxx@xxxx.xxx")},
-					Phone:          to.Ptr("<phone>"),
-					PhoneExtension: to.Ptr("<phone-extension>"),
+					Phone:          to.Ptr("0000000000"),
+					PhoneExtension: to.Ptr(""),
 				},
 				ShippingAddress: &armedgeorder.ShippingAddress{
 					AddressType:     to.Ptr(armedgeorder.AddressTypeNone),
-					City:            to.Ptr("<city>"),
-					CompanyName:     to.Ptr("<company-name>"),
-					Country:         to.Ptr("<country>"),
-					PostalCode:      to.Ptr("<postal-code>"),
-					StateOrProvince: to.Ptr("<state-or-province>"),
-					StreetAddress1:  to.Ptr("<street-address1>"),
-					StreetAddress2:  to.Ptr("<street-address2>"),
+					City:            to.Ptr("San Francisco"),
+					CompanyName:     to.Ptr("Microsoft"),
+					Country:         to.Ptr("US"),
+					PostalCode:      to.Ptr("94107"),
+					StateOrProvince: to.Ptr("CA"),
+					StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+					StreetAddress2:  to.Ptr("UNIT 1"),
 				},
 			},
 			Tags: map[string]*string{
@@ -388,13 +378,11 @@ func ExampleManagementClient_BeginUpdateAddress() {
 				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armedgeorder.ManagementClientBeginUpdateAddressOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armedgeorder.ManagementClientBeginUpdateAddressOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -409,17 +397,16 @@ func ExampleManagementClient_NewListOrderAtResourceGroupLevelPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOrderAtResourceGroupLevelPager("<resource-group-name>",
+	pager := client.NewListOrderAtResourceGroupLevelPager("YourResourceGroupName",
 		&armedgeorder.ManagementClientListOrderAtResourceGroupLevelOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -435,14 +422,14 @@ func ExampleManagementClient_GetOrderByName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetOrderByName(ctx,
-		"<order-name>",
-		"<resource-group-name>",
-		"<location>",
+		"TestOrderName3",
+		"YourResourceGroupName",
+		"eastus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -458,11 +445,11 @@ func ExampleManagementClient_NewListOrderItemsAtResourceGroupLevelPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListOrderItemsAtResourceGroupLevelPager("<resource-group-name>",
+	pager := client.NewListOrderItemsAtResourceGroupLevelPager("YourResourceGroupName",
 		&armedgeorder.ManagementClientListOrderItemsAtResourceGroupLevelOptions{Filter: nil,
 			Expand:    nil,
 			SkipToken: nil,
@@ -471,7 +458,6 @@ func ExampleManagementClient_NewListOrderItemsAtResourceGroupLevelPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -487,13 +473,13 @@ func ExampleManagementClient_GetOrderItemByName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetOrderItemByName(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderItemName1",
+		"YourResourceGroupName",
 		&armedgeorder.ManagementClientGetOrderItemByNameOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -509,38 +495,38 @@ func ExampleManagementClient_BeginCreateOrderItem() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrderItem(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderItemName2",
+		"YourResourceGroupName",
 		armedgeorder.OrderItemResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armedgeorder.OrderItemProperties{
 				AddressDetails: &armedgeorder.AddressDetails{
 					ForwardAddress: &armedgeorder.AddressProperties{
 						ContactDetails: &armedgeorder.ContactDetails{
-							ContactName: to.Ptr("<contact-name>"),
+							ContactName: to.Ptr("XXXX XXXX"),
 							EmailList: []*string{
 								to.Ptr("xxxx@xxxx.xxx")},
-							Phone:          to.Ptr("<phone>"),
-							PhoneExtension: to.Ptr("<phone-extension>"),
+							Phone:          to.Ptr("0000000000"),
+							PhoneExtension: to.Ptr(""),
 						},
 						ShippingAddress: &armedgeorder.ShippingAddress{
 							AddressType:     to.Ptr(armedgeorder.AddressTypeNone),
-							City:            to.Ptr("<city>"),
-							CompanyName:     to.Ptr("<company-name>"),
-							Country:         to.Ptr("<country>"),
-							PostalCode:      to.Ptr("<postal-code>"),
-							StateOrProvince: to.Ptr("<state-or-province>"),
-							StreetAddress1:  to.Ptr("<street-address1>"),
-							StreetAddress2:  to.Ptr("<street-address2>"),
+							City:            to.Ptr("San Francisco"),
+							CompanyName:     to.Ptr("Microsoft"),
+							Country:         to.Ptr("US"),
+							PostalCode:      to.Ptr("94107"),
+							StateOrProvince: to.Ptr("CA"),
+							StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+							StreetAddress2:  to.Ptr("UNIT 1"),
 						},
 					},
 				},
-				OrderID: to.Ptr("<order-id>"),
+				OrderID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/locations/eastus/orders/TestOrderName2"),
 				OrderItemDetails: &armedgeorder.OrderItemDetails{
 					OrderItemType: to.Ptr(armedgeorder.OrderItemTypePurchase),
 					Preferences: &armedgeorder.Preferences{
@@ -550,20 +536,20 @@ func ExampleManagementClient_BeginCreateOrderItem() {
 					},
 					ProductDetails: &armedgeorder.ProductDetails{
 						HierarchyInformation: &armedgeorder.HierarchyInformation{
-							ConfigurationName: to.Ptr("<configuration-name>"),
-							ProductFamilyName: to.Ptr("<product-family-name>"),
-							ProductLineName:   to.Ptr("<product-line-name>"),
-							ProductName:       to.Ptr("<product-name>"),
+							ConfigurationName: to.Ptr("edgep_base"),
+							ProductFamilyName: to.Ptr("azurestackedge"),
+							ProductLineName:   to.Ptr("azurestackedge"),
+							ProductName:       to.Ptr("azurestackedgegpu"),
 						},
 					},
 				},
 			},
 		},
-		&armedgeorder.ManagementClientBeginCreateOrderItemOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -578,18 +564,18 @@ func ExampleManagementClient_BeginDeleteOrderItemByName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeleteOrderItemByName(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
-		&armedgeorder.ManagementClientBeginDeleteOrderItemByNameOptions{ResumeToken: ""})
+		"TestOrderItemName3",
+		"YourResourceGroupName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -602,13 +588,13 @@ func ExampleManagementClient_BeginUpdateOrderItem() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateOrderItem(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderItemName3",
+		"YourResourceGroupName",
 		armedgeorder.OrderItemUpdateParameter{
 			Properties: &armedgeorder.OrderItemUpdateProperties{
 				Preferences: &armedgeorder.Preferences{
@@ -618,13 +604,11 @@ func ExampleManagementClient_BeginUpdateOrderItem() {
 				},
 			},
 		},
-		&armedgeorder.ManagementClientBeginUpdateOrderItemOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armedgeorder.ManagementClientBeginUpdateOrderItemOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -639,15 +623,15 @@ func ExampleManagementClient_CancelOrderItem() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CancelOrderItem(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderItemName3",
+		"YourResourceGroupName",
 		armedgeorder.CancellationReason{
-			Reason: to.Ptr("<reason>"),
+			Reason: to.Ptr("Order cancelled"),
 		},
 		nil)
 	if err != nil {
@@ -662,21 +646,21 @@ func ExampleManagementClient_BeginReturnOrderItem() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armedgeorder.NewManagementClient("<subscription-id>", cred, nil)
+	client, err := armedgeorder.NewManagementClient("YourSubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginReturnOrderItem(ctx,
-		"<order-item-name>",
-		"<resource-group-name>",
+		"TestOrderName4",
+		"YourResourceGroupName",
 		armedgeorder.ReturnOrderItemDetails{
-			ReturnReason: to.Ptr("<return-reason>"),
+			ReturnReason: to.Ptr("Order returned"),
 		},
-		&armedgeorder.ManagementClientBeginReturnOrderItemOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

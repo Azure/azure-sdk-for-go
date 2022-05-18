@@ -39,7 +39,7 @@ func NewWorkspaceCollectionsClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewWorkspaceCollectionsClient(subscriptionID string, credential azcore.Toke
 
 // CheckNameAvailability - Verify the specified Power BI Workspace Collection name is valid and not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // location - Azure location
 // body - Check name availability request
 // options - WorkspaceCollectionsClientCheckNameAvailabilityOptions contains the optional parameters for the WorkspaceCollectionsClient.CheckNameAvailability
@@ -94,7 +95,7 @@ func (client *WorkspaceCollectionsClient) checkNameAvailabilityCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -111,6 +112,7 @@ func (client *WorkspaceCollectionsClient) checkNameAvailabilityHandleResponse(re
 // one or more workspaces, and can be used to provision keys that provide API access to
 // those workspaces.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // resourceGroupName - Azure resource group
 // workspaceCollectionName - Power BI Embedded Workspace Collection name
 // body - Create workspace collection request
@@ -153,7 +155,7 @@ func (client *WorkspaceCollectionsClient) createCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -168,24 +170,26 @@ func (client *WorkspaceCollectionsClient) createHandleResponse(resp *http.Respon
 
 // BeginDelete - Delete a Power BI Workspace Collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // resourceGroupName - Azure resource group
 // workspaceCollectionName - Power BI Embedded Workspace Collection name
 // options - WorkspaceCollectionsClientBeginDeleteOptions contains the optional parameters for the WorkspaceCollectionsClient.BeginDelete
 // method.
-func (client *WorkspaceCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceCollectionName string, options *WorkspaceCollectionsClientBeginDeleteOptions) (*armruntime.Poller[WorkspaceCollectionsClientDeleteResponse], error) {
+func (client *WorkspaceCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceCollectionName string, options *WorkspaceCollectionsClientBeginDeleteOptions) (*runtime.Poller[WorkspaceCollectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceCollectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkspaceCollectionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspaceCollectionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkspaceCollectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspaceCollectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a Power BI Workspace Collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 func (client *WorkspaceCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceCollectionName string, options *WorkspaceCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceCollectionName, options)
 	if err != nil {
@@ -223,12 +227,13 @@ func (client *WorkspaceCollectionsClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GetAccessKeys - Retrieves the primary and secondary access keys for the specified Power BI Workspace Collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // resourceGroupName - Azure resource group
 // workspaceCollectionName - Power BI Embedded Workspace Collection name
 // options - WorkspaceCollectionsClientGetAccessKeysOptions contains the optional parameters for the WorkspaceCollectionsClient.GetAccessKeys
@@ -270,7 +275,7 @@ func (client *WorkspaceCollectionsClient) getAccessKeysCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -285,6 +290,7 @@ func (client *WorkspaceCollectionsClient) getAccessKeysHandleResponse(resp *http
 
 // GetByName - Retrieves an existing Power BI Workspace Collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // resourceGroupName - Azure resource group
 // workspaceCollectionName - Power BI Embedded Workspace Collection name
 // options - WorkspaceCollectionsClientGetByNameOptions contains the optional parameters for the WorkspaceCollectionsClient.GetByName
@@ -326,7 +332,7 @@ func (client *WorkspaceCollectionsClient) getByNameCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -341,11 +347,12 @@ func (client *WorkspaceCollectionsClient) getByNameHandleResponse(resp *http.Res
 
 // NewListByResourceGroupPager - Retrieves all existing Power BI workspace collections in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // resourceGroupName - Azure resource group
 // options - WorkspaceCollectionsClientListByResourceGroupOptions contains the optional parameters for the WorkspaceCollectionsClient.ListByResourceGroup
 // method.
 func (client *WorkspaceCollectionsClient) NewListByResourceGroupPager(resourceGroupName string, options *WorkspaceCollectionsClientListByResourceGroupOptions) *runtime.Pager[WorkspaceCollectionsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspaceCollectionsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspaceCollectionsClientListByResourceGroupResponse]{
 		More: func(page WorkspaceCollectionsClientListByResourceGroupResponse) bool {
 			return false
 		},
@@ -384,7 +391,7 @@ func (client *WorkspaceCollectionsClient) listByResourceGroupCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -399,10 +406,11 @@ func (client *WorkspaceCollectionsClient) listByResourceGroupHandleResponse(resp
 
 // NewListBySubscriptionPager - Retrieves all existing Power BI workspace collections in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // options - WorkspaceCollectionsClientListBySubscriptionOptions contains the optional parameters for the WorkspaceCollectionsClient.ListBySubscription
 // method.
 func (client *WorkspaceCollectionsClient) NewListBySubscriptionPager(options *WorkspaceCollectionsClientListBySubscriptionOptions) *runtime.Pager[WorkspaceCollectionsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspaceCollectionsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspaceCollectionsClientListBySubscriptionResponse]{
 		More: func(page WorkspaceCollectionsClientListBySubscriptionResponse) bool {
 			return false
 		},
@@ -437,7 +445,7 @@ func (client *WorkspaceCollectionsClient) listBySubscriptionCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -452,6 +460,7 @@ func (client *WorkspaceCollectionsClient) listBySubscriptionHandleResponse(resp 
 
 // Migrate - Migrates an existing Power BI Workspace Collection to a different resource group and/or subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // resourceGroupName - Azure resource group
 // body - Workspace migration request
 // options - WorkspaceCollectionsClientMigrateOptions contains the optional parameters for the WorkspaceCollectionsClient.Migrate
@@ -489,12 +498,13 @@ func (client *WorkspaceCollectionsClient) migrateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // RegenerateKey - Regenerates the primary or secondary access key for the specified Power BI Workspace Collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // resourceGroupName - Azure resource group
 // workspaceCollectionName - Power BI Embedded Workspace Collection name
 // body - Access key to regenerate
@@ -537,7 +547,7 @@ func (client *WorkspaceCollectionsClient) regenerateKeyCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -552,6 +562,7 @@ func (client *WorkspaceCollectionsClient) regenerateKeyHandleResponse(resp *http
 
 // Update - Update an existing Power BI Workspace Collection with the specified properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // resourceGroupName - Azure resource group
 // workspaceCollectionName - Power BI Embedded Workspace Collection name
 // body - Update workspace collection request
@@ -594,7 +605,7 @@ func (client *WorkspaceCollectionsClient) updateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

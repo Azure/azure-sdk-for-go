@@ -1,5 +1,149 @@
 # Release History
 
+## 1.0.0 (2022-05-18)
+### Breaking Changes
+
+- Type of `ScalingPlanProperties.HostPoolType` has been changed from `*ScalingHostPoolType` to `*HostPoolType`
+- Type of `ScalingSchedule.RampUpStartTime` has been changed from `*Time` to `*time.Time`
+- Type of `ScalingSchedule.OffPeakStartTime` has been changed from `*Time` to `*time.Time`
+- Type of `ScalingSchedule.PeakStartTime` has been changed from `*Time` to `*time.Time`
+- Type of `ScalingSchedule.RampDownStartTime` has been changed from `*Time` to `*time.Time`
+- Const `PrivateEndpointConnectionProvisioningStateSucceeded` has been removed
+- Const `PrivateEndpointConnectionProvisioningStateFailed` has been removed
+- Const `HostpoolPublicNetworkAccessEnabled` has been removed
+- Const `PublicNetworkAccessEnabled` has been removed
+- Const `DayOfWeekSaturday` has been removed
+- Const `PrivateEndpointConnectionProvisioningStateDeleting` has been removed
+- Const `DayOfWeekTuesday` has been removed
+- Const `CreatedByTypeKey` has been removed
+- Const `DayOfWeekMonday` has been removed
+- Const `HostpoolPublicNetworkAccessEnabledForClientsOnly` has been removed
+- Const `DayOfWeekWednesday` has been removed
+- Const `CreatedByTypeManagedIdentity` has been removed
+- Const `PrivateEndpointServiceConnectionStatusRejected` has been removed
+- Const `PrivateEndpointServiceConnectionStatusPending` has been removed
+- Const `DayOfWeekThursday` has been removed
+- Const `CreatedByTypeUser` has been removed
+- Const `DayOfWeekFriday` has been removed
+- Const `HostpoolPublicNetworkAccessEnabledForSessionHostsOnly` has been removed
+- Const `CreatedByTypeApplication` has been removed
+- Const `PrivateEndpointServiceConnectionStatusApproved` has been removed
+- Const `ScalingHostPoolTypePooled` has been removed
+- Const `PublicNetworkAccessDisabled` has been removed
+- Const `SessionHostComponentUpdateTypeDefault` has been removed
+- Const `DayOfWeekSunday` has been removed
+- Const `SessionHostComponentUpdateTypeScheduled` has been removed
+- Const `PrivateEndpointConnectionProvisioningStateCreating` has been removed
+- Const `HostpoolPublicNetworkAccessDisabled` has been removed
+- Function `UserSessionList.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsClient.UpdateByHostPool` has been removed
+- Function `PossibleScalingHostPoolTypeValues` has been removed
+- Function `PrivateLinkResourceListResult.MarshalJSON` has been removed
+- Function `SessionHostList.MarshalJSON` has been removed
+- Function `*OperationsClient.NewListPager` has been removed
+- Function `PossibleCreatedByTypeValues` has been removed
+- Function `PossiblePublicNetworkAccessValues` has been removed
+- Function `PossiblePrivateEndpointServiceConnectionStatusValues` has been removed
+- Function `*PrivateLinkResourcesClient.NewListByHostPoolPager` has been removed
+- Function `PossibleHostpoolPublicNetworkAccessValues` has been removed
+- Function `*PrivateEndpointConnectionsClient.GetByWorkspace` has been removed
+- Function `*SystemData.UnmarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsClient.UpdateByWorkspace` has been removed
+- Function `AgentUpdateProperties.MarshalJSON` has been removed
+- Function `PrivateEndpointConnectionListResultWithSystemData.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsClient.GetByHostPool` has been removed
+- Function `DesktopList.MarshalJSON` has been removed
+- Function `WorkspaceList.MarshalJSON` has been removed
+- Function `NewPrivateLinkResourcesClient` has been removed
+- Function `PossibleDayOfWeekValues` has been removed
+- Function `HostPoolList.MarshalJSON` has been removed
+- Function `ApplicationGroupList.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsClient.DeleteByHostPool` has been removed
+- Function `MSIXPackageList.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsClient.NewListByHostPoolPager` has been removed
+- Function `ScalingPlanList.MarshalJSON` has been removed
+- Function `ResourceProviderOperationList.MarshalJSON` has been removed
+- Function `StartMenuItemList.MarshalJSON` has been removed
+- Function `PossibleSessionHostComponentUpdateTypeValues` has been removed
+- Function `*PrivateEndpointConnectionsClient.DeleteByWorkspace` has been removed
+- Function `AgentUpdatePatchProperties.MarshalJSON` has been removed
+- Function `ServiceSpecification.MarshalJSON` has been removed
+- Function `SystemData.MarshalJSON` has been removed
+- Function `*PrivateEndpointConnectionsClient.NewListByWorkspacePager` has been removed
+- Function `*DesktopsClient.NewListPager` has been removed
+- Function `ExpandMsixImageList.MarshalJSON` has been removed
+- Function `ApplicationList.MarshalJSON` has been removed
+- Function `*PrivateLinkResourcesClient.NewListByWorkspacePager` has been removed
+- Function `NewPrivateEndpointConnectionsClient` has been removed
+- Function `PrivateLinkResourceProperties.MarshalJSON` has been removed
+- Function `PossiblePrivateEndpointConnectionProvisioningStateValues` has been removed
+- Struct `AgentUpdatePatchProperties` has been removed
+- Struct `AgentUpdateProperties` has been removed
+- Struct `MaintenanceWindowPatchProperties` has been removed
+- Struct `MaintenanceWindowProperties` has been removed
+- Struct `PrivateEndpoint` has been removed
+- Struct `PrivateEndpointConnection` has been removed
+- Struct `PrivateEndpointConnectionListResultWithSystemData` has been removed
+- Struct `PrivateEndpointConnectionProperties` has been removed
+- Struct `PrivateEndpointConnectionWithSystemData` has been removed
+- Struct `PrivateEndpointConnectionsClient` has been removed
+- Struct `PrivateEndpointConnectionsClientDeleteByHostPoolOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientDeleteByHostPoolResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientDeleteByWorkspaceOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientDeleteByWorkspaceResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetByHostPoolOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientGetByHostPoolResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetByWorkspaceOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientGetByWorkspaceResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientListByHostPoolOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientListByHostPoolResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientListByWorkspaceOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientListByWorkspaceResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdateByHostPoolOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdateByHostPoolResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdateByWorkspaceOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientUpdateByWorkspaceResponse` has been removed
+- Struct `PrivateLinkResource` has been removed
+- Struct `PrivateLinkResourceListResult` has been removed
+- Struct `PrivateLinkResourceProperties` has been removed
+- Struct `PrivateLinkResourcesClient` has been removed
+- Struct `PrivateLinkResourcesClientListByHostPoolOptions` has been removed
+- Struct `PrivateLinkResourcesClientListByHostPoolResponse` has been removed
+- Struct `PrivateLinkResourcesClientListByWorkspaceOptions` has been removed
+- Struct `PrivateLinkResourcesClientListByWorkspaceResponse` has been removed
+- Struct `PrivateLinkServiceConnectionState` has been removed
+- Struct `SystemData` has been removed
+- Struct `Time` has been removed
+- Field `SystemData` of struct `SessionHost` has been removed
+- Field `PrivateEndpointConnections` of struct `WorkspaceProperties` has been removed
+- Field `PublicNetworkAccess` of struct `WorkspaceProperties` has been removed
+- Field `SystemData` of struct `UserSession` has been removed
+- Field `FriendlyName` of struct `SessionHostPatchProperties` has been removed
+- Field `NextLink` of struct `ResourceProviderOperationList` has been removed
+- Field `SystemData` of struct `Desktop` has been removed
+- Field `SystemData` of struct `Workspace` has been removed
+- Field `AgentUpdate` of struct `HostPoolPatchProperties` has been removed
+- Field `PublicNetworkAccess` of struct `HostPoolPatchProperties` has been removed
+- Field `SystemData` of struct `ApplicationGroup` has been removed
+- Field `FriendlyName` of struct `SessionHostProperties` has been removed
+- Field `SystemData` of struct `HostPool` has been removed
+- Field `PublicNetworkAccess` of struct `WorkspacePatchProperties` has been removed
+- Field `SystemData` of struct `MSIXPackage` has been removed
+- Field `AgentUpdate` of struct `HostPoolProperties` has been removed
+- Field `PublicNetworkAccess` of struct `HostPoolProperties` has been removed
+- Field `PrivateEndpointConnections` of struct `HostPoolProperties` has been removed
+- Field `SystemData` of struct `Application` has been removed
+- Field `SystemData` of struct `ScalingPlan` has been removed
+- Field `Force` of struct `SessionHostsClientUpdateOptions` has been removed
+
+### Features Added
+
+- New function `*ScalingSchedule.UnmarshalJSON([]byte) error`
+- New function `*DesktopsClient.List(context.Context, string, string, *DesktopsClientListOptions) (DesktopsClientListResponse, error)`
+- New function `*OperationsClient.List(context.Context, *OperationsClientListOptions) (OperationsClientListResponse, error)`
+- New field `HostPoolType` in struct `ScalingPlanPatchProperties`
+
+
 ## 0.4.0 (2022-04-15)
 ### Breaking Changes
 

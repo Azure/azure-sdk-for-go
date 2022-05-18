@@ -39,7 +39,7 @@ func NewSessionHostsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSessionHostsClient(subscriptionID string, credential azcore.TokenCredent
 
 // Delete - Remove a SessionHost.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-12
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // sessionHostName - The name of the session host within the specified host pool
@@ -100,17 +101,18 @@ func (client *SessionHostsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-10-preview")
+	reqQP.Set("api-version", "2021-07-12")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a session host.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-12
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // sessionHostName - The name of the session host within the specified host pool
@@ -154,9 +156,9 @@ func (client *SessionHostsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-10-preview")
+	reqQP.Set("api-version", "2021-07-12")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -171,11 +173,12 @@ func (client *SessionHostsClient) getHandleResponse(resp *http.Response) (Sessio
 
 // NewListPager - List sessionHosts.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-12
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - SessionHostsClientListOptions contains the optional parameters for the SessionHostsClient.List method.
 func (client *SessionHostsClient) NewListPager(resourceGroupName string, hostPoolName string, options *SessionHostsClientListOptions) *runtime.Pager[SessionHostsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SessionHostsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SessionHostsClientListResponse]{
 		More: func(page SessionHostsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -222,9 +225,9 @@ func (client *SessionHostsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-10-preview")
+	reqQP.Set("api-version", "2021-07-12")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,6 +242,7 @@ func (client *SessionHostsClient) listHandleResponse(resp *http.Response) (Sessi
 
 // Update - Update a session host.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-12
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // sessionHostName - The name of the session host within the specified host pool
@@ -282,12 +286,9 @@ func (client *SessionHostsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-10-preview")
-	if options != nil && options.Force != nil {
-		reqQP.Set("force", strconv.FormatBool(*options.Force))
-	}
+	reqQP.Set("api-version", "2021-07-12")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SessionHost != nil {
 		return req, runtime.MarshalAsJSON(req, *options.SessionHost)
 	}

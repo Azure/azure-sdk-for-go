@@ -1,5 +1,30 @@
 # Release History
 
+## 0.5.0 (2022-05-18)
+### Breaking Changes
+
+- Function `*ServerGroupsClient.BeginRestart` return value(s) have been changed from `(*armruntime.Poller[ServerGroupsClientRestartResponse], error)` to `(*runtime.Poller[ServerGroupsClientRestartResponse], error)`
+- Function `*ServerGroupsClient.BeginStop` return value(s) have been changed from `(*armruntime.Poller[ServerGroupsClientStopResponse], error)` to `(*runtime.Poller[ServerGroupsClientStopResponse], error)`
+- Function `*RolesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[RolesClientDeleteResponse], error)` to `(*runtime.Poller[RolesClientDeleteResponse], error)`
+- Function `*ServerGroupsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[ServerGroupsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[ServerGroupsClientCreateOrUpdateResponse], error)`
+- Function `*ServerGroupsClient.BeginStart` return value(s) have been changed from `(*armruntime.Poller[ServerGroupsClientStartResponse], error)` to `(*runtime.Poller[ServerGroupsClientStartResponse], error)`
+- Function `*FirewallRulesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*armruntime.Poller[FirewallRulesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[FirewallRulesClientCreateOrUpdateResponse], error)`
+- Function `*ConfigurationsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ConfigurationsClientUpdateResponse], error)` to `(*runtime.Poller[ConfigurationsClientUpdateResponse], error)`
+- Function `*FirewallRulesClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[FirewallRulesClientDeleteResponse], error)` to `(*runtime.Poller[FirewallRulesClientDeleteResponse], error)`
+- Function `*ServerGroupsClient.BeginUpdate` return value(s) have been changed from `(*armruntime.Poller[ServerGroupsClientUpdateResponse], error)` to `(*runtime.Poller[ServerGroupsClientUpdateResponse], error)`
+- Function `*ServerGroupsClient.BeginDelete` return value(s) have been changed from `(*armruntime.Poller[ServerGroupsClientDeleteResponse], error)` to `(*runtime.Poller[ServerGroupsClientDeleteResponse], error)`
+- Function `*RolesClient.BeginCreate` return value(s) have been changed from `(*armruntime.Poller[RolesClientCreateResponse], error)` to `(*runtime.Poller[RolesClientCreateResponse], error)`
+- Function `ServerGroupConfigurationListResult.MarshalJSON` has been removed
+- Function `Operation.MarshalJSON` has been removed
+- Function `ServerConfigurationListResult.MarshalJSON` has been removed
+- Function `ServerGroupListResult.MarshalJSON` has been removed
+- Function `RoleListResult.MarshalJSON` has been removed
+- Function `FirewallRuleListResult.MarshalJSON` has been removed
+- Function `CloudErrorBody.MarshalJSON` has been removed
+- Function `OperationListResult.MarshalJSON` has been removed
+- Function `ServerGroupServerListResult.MarshalJSON` has been removed
+
+
 ## 0.4.0 (2022-04-18)
 ### Breaking Changes
 

@@ -67,10 +67,38 @@ func (c Configuration) MarshalJSON() ([]byte, error) {
 func (c ConfigurationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "extensionProperties", c.ExtensionProperties)
+	populate(objectMap, "installPatches", c.InstallPatches)
 	populate(objectMap, "maintenanceScope", c.MaintenanceScope)
 	populate(objectMap, "maintenanceWindow", c.MaintenanceWindow)
 	populate(objectMap, "namespace", c.Namespace)
 	populate(objectMap, "visibility", c.Visibility)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InputLinuxParameters.
+func (i InputLinuxParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "classificationsToInclude", i.ClassificationsToInclude)
+	populate(objectMap, "packageNameMasksToExclude", i.PackageNameMasksToExclude)
+	populate(objectMap, "packageNameMasksToInclude", i.PackageNameMasksToInclude)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type InputWindowsParameters.
+func (i InputWindowsParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "classificationsToInclude", i.ClassificationsToInclude)
+	populate(objectMap, "excludeKbsRequiringReboot", i.ExcludeKbsRequiringReboot)
+	populate(objectMap, "kbNumbersToExclude", i.KbNumbersToExclude)
+	populate(objectMap, "kbNumbersToInclude", i.KbNumbersToInclude)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SoftwareUpdateConfigurationTasks.
+func (s SoftwareUpdateConfigurationTasks) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "postTasks", s.PostTasks)
+	populate(objectMap, "preTasks", s.PreTasks)
 	return json.Marshal(objectMap)
 }
 
@@ -119,6 +147,15 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TaskProperties.
+func (t TaskProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "parameters", t.Parameters)
+	populate(objectMap, "source", t.Source)
+	populate(objectMap, "taskScope", t.TaskScope)
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type Update.

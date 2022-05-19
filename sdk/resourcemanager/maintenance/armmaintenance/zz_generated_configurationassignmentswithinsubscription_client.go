@@ -22,20 +22,20 @@ import (
 	"strings"
 )
 
-// ApplyUpdateForResourceGroupClient contains the methods for the ApplyUpdateForResourceGroup group.
-// Don't use this type directly, use NewApplyUpdateForResourceGroupClient() instead.
-type ApplyUpdateForResourceGroupClient struct {
+// ConfigurationAssignmentsWithinSubscriptionClient contains the methods for the ConfigurationAssignmentsWithinSubscription group.
+// Don't use this type directly, use NewConfigurationAssignmentsWithinSubscriptionClient() instead.
+type ConfigurationAssignmentsWithinSubscriptionClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewApplyUpdateForResourceGroupClient creates a new instance of ApplyUpdateForResourceGroupClient with the specified values.
+// NewConfigurationAssignmentsWithinSubscriptionClient creates a new instance of ConfigurationAssignmentsWithinSubscriptionClient with the specified values.
 // subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 // part of the URI for every service call.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewApplyUpdateForResourceGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplyUpdateForResourceGroupClient, error) {
+func NewConfigurationAssignmentsWithinSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsWithinSubscriptionClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -47,7 +47,7 @@ func NewApplyUpdateForResourceGroupClient(subscriptionID string, credential azco
 	if err != nil {
 		return nil, err
 	}
-	client := &ApplyUpdateForResourceGroupClient{
+	client := &ConfigurationAssignmentsWithinSubscriptionClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -55,28 +55,27 @@ func NewApplyUpdateForResourceGroupClient(subscriptionID string, credential azco
 	return client, nil
 }
 
-// NewListPager - Get Configuration records within a subscription and resource group
+// NewListPager - Get configuration assignment within a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - Resource Group Name
-// options - ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.List
+// options - ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.List
 // method.
-func (client *ApplyUpdateForResourceGroupClient) NewListPager(resourceGroupName string, options *ApplyUpdateForResourceGroupClientListOptions) *runtime.Pager[ApplyUpdateForResourceGroupClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ApplyUpdateForResourceGroupClientListResponse]{
-		More: func(page ApplyUpdateForResourceGroupClientListResponse) bool {
+func (client *ConfigurationAssignmentsWithinSubscriptionClient) NewListPager(options *ConfigurationAssignmentsWithinSubscriptionClientListOptions) *runtime.Pager[ConfigurationAssignmentsWithinSubscriptionClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ConfigurationAssignmentsWithinSubscriptionClientListResponse]{
+		More: func(page ConfigurationAssignmentsWithinSubscriptionClientListResponse) bool {
 			return false
 		},
-		Fetcher: func(ctx context.Context, page *ApplyUpdateForResourceGroupClientListResponse) (ApplyUpdateForResourceGroupClientListResponse, error) {
-			req, err := client.listCreateRequest(ctx, resourceGroupName, options)
+		Fetcher: func(ctx context.Context, page *ConfigurationAssignmentsWithinSubscriptionClientListResponse) (ConfigurationAssignmentsWithinSubscriptionClientListResponse, error) {
+			req, err := client.listCreateRequest(ctx, options)
 			if err != nil {
-				return ApplyUpdateForResourceGroupClientListResponse{}, err
+				return ConfigurationAssignmentsWithinSubscriptionClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return ApplyUpdateForResourceGroupClientListResponse{}, err
+				return ConfigurationAssignmentsWithinSubscriptionClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ApplyUpdateForResourceGroupClientListResponse{}, runtime.NewResponseError(resp)
+				return ConfigurationAssignmentsWithinSubscriptionClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -84,16 +83,12 @@ func (client *ApplyUpdateForResourceGroupClient) NewListPager(resourceGroupName 
 }
 
 // listCreateRequest creates the List request.
-func (client *ApplyUpdateForResourceGroupClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *ApplyUpdateForResourceGroupClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/applyUpdates"
+func (client *ConfigurationAssignmentsWithinSubscriptionClient) listCreateRequest(ctx context.Context, options *ConfigurationAssignmentsWithinSubscriptionClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
@@ -106,10 +101,10 @@ func (client *ApplyUpdateForResourceGroupClient) listCreateRequest(ctx context.C
 }
 
 // listHandleResponse handles the List response.
-func (client *ApplyUpdateForResourceGroupClient) listHandleResponse(resp *http.Response) (ApplyUpdateForResourceGroupClientListResponse, error) {
-	result := ApplyUpdateForResourceGroupClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListApplyUpdate); err != nil {
-		return ApplyUpdateForResourceGroupClientListResponse{}, err
+func (client *ConfigurationAssignmentsWithinSubscriptionClient) listHandleResponse(resp *http.Response) (ConfigurationAssignmentsWithinSubscriptionClientListResponse, error) {
+	result := ConfigurationAssignmentsWithinSubscriptionClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListConfigurationAssignmentsResult); err != nil {
+		return ConfigurationAssignmentsWithinSubscriptionClientListResponse{}, err
 	}
 	return result, nil
 }

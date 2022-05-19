@@ -57,7 +57,7 @@ func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential 
 
 // Get - Get Public Maintenance Configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2021-09-01-preview
 // resourceName - Maintenance Configuration Name
 // options - PublicMaintenanceConfigurationsClientGetOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.Get
 // method.
@@ -92,7 +92,7 @@ func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *htt
 
 // NewListPager - Get Public Maintenance Configuration records
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2021-09-01-preview
 // options - PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.List
 // method.
 func (client *PublicMaintenanceConfigurationsClient) NewListPager(options *PublicMaintenanceConfigurationsClientListOptions) *runtime.Pager[PublicMaintenanceConfigurationsClientListResponse] {
@@ -146,7 +146,7 @@ func (client *PublicMaintenanceConfigurationsClient) listCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

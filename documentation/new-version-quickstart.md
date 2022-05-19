@@ -19,7 +19,7 @@ You will need to authenticate to Azure either by using Azure CLI to sign in or s
 
 ### Using Azure CLI to Sign In
 
-You could easily use `az login` in command line to sign in to Azure via your default browser. Detail instructions can be found in [Sign in with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli).
+You could easily use `az login` in command line to sign in to Azure via your default browser. Detail instructions can be found in [Sign in with Azure CLI](https://docs.microsoft.com/cli/azure/authenticate-azure-cli).
 
 ### Setting Environment Variables
 

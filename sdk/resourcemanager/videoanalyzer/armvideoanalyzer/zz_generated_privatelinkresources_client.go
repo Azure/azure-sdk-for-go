@@ -38,7 +38,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // Get - Get group ID for video analyzer account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Video Analyzer account name.
 // name - Name of the private link resource (Group ID).
@@ -102,7 +103,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,6 +118,7 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 
 // List - Get list of group IDs for video analyzer account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Video Analyzer account name.
 // options - PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List
@@ -158,7 +160,7 @@ func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

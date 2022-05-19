@@ -39,7 +39,7 @@ func NewPipelineTopologiesClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -60,6 +60,7 @@ func NewPipelineTopologiesClient(subscriptionID string, credential azcore.TokenC
 // topology should be defined according to the scenario to be achieved and can be reused across many pipeline instances which
 // share the same processing characteristics.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // pipelineTopologyName - Pipeline topology unique identifier.
@@ -107,7 +108,7 @@ func (client *PipelineTopologiesClient) createOrUpdateCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -123,6 +124,7 @@ func (client *PipelineTopologiesClient) createOrUpdateHandleResponse(resp *http.
 // Delete - Deletes a pipeline topology with the given name. This method should be called after all instances of the topology
 // have been stopped and deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // pipelineTopologyName - Pipeline topology unique identifier.
@@ -169,13 +171,14 @@ func (client *PipelineTopologiesClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves a specific pipeline topology by name. If a topology with that name has been previously created, the call
 // will return the JSON representation of that topology.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // pipelineTopologyName - Pipeline topology unique identifier.
@@ -221,7 +224,7 @@ func (client *PipelineTopologiesClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -237,11 +240,12 @@ func (client *PipelineTopologiesClient) getHandleResponse(resp *http.Response) (
 // NewListPager - Retrieves a list of pipeline topologies that have been added to the account, if any, along with their JSON
 // representation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - PipelineTopologiesClientListOptions contains the optional parameters for the PipelineTopologiesClient.List method.
 func (client *PipelineTopologiesClient) NewListPager(resourceGroupName string, accountName string, options *PipelineTopologiesClientListOptions) *runtime.Pager[PipelineTopologiesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PipelineTopologiesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PipelineTopologiesClientListResponse]{
 		More: func(page PipelineTopologiesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -296,7 +300,7 @@ func (client *PipelineTopologiesClient) listCreateRequest(ctx context.Context, r
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -313,6 +317,7 @@ func (client *PipelineTopologiesClient) listHandleResponse(resp *http.Response) 
 // in active or processing state, respectively, then only the description can be updated.
 // Else, the properties that can be updated include: description, parameter declarations, sources, processors, and sinks.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // pipelineTopologyName - Pipeline topology unique identifier.
@@ -360,7 +365,7 @@ func (client *PipelineTopologiesClient) updateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -16,26 +16,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/orbital/armorbital"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/OperationsList.json
-func ExampleOperationsClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/OperationResultsGet.json
+func ExampleOperationsResultsClient_BeginGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armorbital.NewOperationsClient(cred, nil)
+	client, err := armorbital.NewOperationsResultsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
+	poller, err := client.BeginGet(ctx,
+		"westus",
+		"30972f1b-b61d-4fd8-bd34-3dcfa24670f3",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
 }

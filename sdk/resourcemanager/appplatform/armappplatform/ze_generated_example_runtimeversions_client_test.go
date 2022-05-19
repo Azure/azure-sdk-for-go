@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/RuntimeVersions_ListRuntimeVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/RuntimeVersions_ListRuntimeVersions.json
 func ExampleRuntimeVersionsClient_ListRuntimeVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

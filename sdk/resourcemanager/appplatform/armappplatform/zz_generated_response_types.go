@@ -8,6 +8,51 @@
 
 package armappplatform
 
+// APIPortalCustomDomainsClientCreateOrUpdateResponse contains the response from method APIPortalCustomDomainsClient.CreateOrUpdate.
+type APIPortalCustomDomainsClientCreateOrUpdateResponse struct {
+	APIPortalCustomDomainResource
+}
+
+// APIPortalCustomDomainsClientDeleteResponse contains the response from method APIPortalCustomDomainsClient.Delete.
+type APIPortalCustomDomainsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// APIPortalCustomDomainsClientGetResponse contains the response from method APIPortalCustomDomainsClient.Get.
+type APIPortalCustomDomainsClientGetResponse struct {
+	APIPortalCustomDomainResource
+}
+
+// APIPortalCustomDomainsClientListResponse contains the response from method APIPortalCustomDomainsClient.List.
+type APIPortalCustomDomainsClientListResponse struct {
+	APIPortalCustomDomainResourceCollection
+}
+
+// APIPortalsClientCreateOrUpdateResponse contains the response from method APIPortalsClient.CreateOrUpdate.
+type APIPortalsClientCreateOrUpdateResponse struct {
+	APIPortalResource
+}
+
+// APIPortalsClientDeleteResponse contains the response from method APIPortalsClient.Delete.
+type APIPortalsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// APIPortalsClientGetResponse contains the response from method APIPortalsClient.Get.
+type APIPortalsClientGetResponse struct {
+	APIPortalResource
+}
+
+// APIPortalsClientListResponse contains the response from method APIPortalsClient.List.
+type APIPortalsClientListResponse struct {
+	APIPortalResourceCollection
+}
+
+// APIPortalsClientValidateDomainResponse contains the response from method APIPortalsClient.ValidateDomain.
+type APIPortalsClientValidateDomainResponse struct {
+	CustomDomainValidateResult
+}
+
 // AppsClientCreateOrUpdateResponse contains the response from method AppsClient.CreateOrUpdate.
 type AppsClientCreateOrUpdateResponse struct {
 	AppResource
@@ -348,6 +393,71 @@ type DeploymentsClientUpdateResponse struct {
 	DeploymentResource
 }
 
+// GatewayCustomDomainsClientCreateOrUpdateResponse contains the response from method GatewayCustomDomainsClient.CreateOrUpdate.
+type GatewayCustomDomainsClientCreateOrUpdateResponse struct {
+	GatewayCustomDomainResource
+}
+
+// GatewayCustomDomainsClientDeleteResponse contains the response from method GatewayCustomDomainsClient.Delete.
+type GatewayCustomDomainsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GatewayCustomDomainsClientGetResponse contains the response from method GatewayCustomDomainsClient.Get.
+type GatewayCustomDomainsClientGetResponse struct {
+	GatewayCustomDomainResource
+}
+
+// GatewayCustomDomainsClientListResponse contains the response from method GatewayCustomDomainsClient.List.
+type GatewayCustomDomainsClientListResponse struct {
+	GatewayCustomDomainResourceCollection
+}
+
+// GatewayRouteConfigsClientCreateOrUpdateResponse contains the response from method GatewayRouteConfigsClient.CreateOrUpdate.
+type GatewayRouteConfigsClientCreateOrUpdateResponse struct {
+	GatewayRouteConfigResource
+}
+
+// GatewayRouteConfigsClientDeleteResponse contains the response from method GatewayRouteConfigsClient.Delete.
+type GatewayRouteConfigsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GatewayRouteConfigsClientGetResponse contains the response from method GatewayRouteConfigsClient.Get.
+type GatewayRouteConfigsClientGetResponse struct {
+	GatewayRouteConfigResource
+}
+
+// GatewayRouteConfigsClientListResponse contains the response from method GatewayRouteConfigsClient.List.
+type GatewayRouteConfigsClientListResponse struct {
+	GatewayRouteConfigResourceCollection
+}
+
+// GatewaysClientCreateOrUpdateResponse contains the response from method GatewaysClient.CreateOrUpdate.
+type GatewaysClientCreateOrUpdateResponse struct {
+	GatewayResource
+}
+
+// GatewaysClientDeleteResponse contains the response from method GatewaysClient.Delete.
+type GatewaysClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GatewaysClientGetResponse contains the response from method GatewaysClient.Get.
+type GatewaysClientGetResponse struct {
+	GatewayResource
+}
+
+// GatewaysClientListResponse contains the response from method GatewaysClient.List.
+type GatewaysClientListResponse struct {
+	GatewayResourceCollection
+}
+
+// GatewaysClientValidateDomainResponse contains the response from method GatewaysClient.ValidateDomain.
+type GatewaysClientValidateDomainResponse struct {
+	CustomDomainValidateResult
+}
+
 // MonitoringSettingsClientGetResponse contains the response from method MonitoringSettingsClient.Get.
 type MonitoringSettingsClientGetResponse struct {
 	MonitoringSettingResource
@@ -448,7 +558,37 @@ type ServicesClientRegenerateTestKeyResponse struct {
 	TestKeys
 }
 
+// ServicesClientStartResponse contains the response from method ServicesClient.Start.
+type ServicesClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// ServicesClientStopResponse contains the response from method ServicesClient.Stop.
+type ServicesClientStopResponse struct {
+	// placeholder for future response values
+}
+
 // ServicesClientUpdateResponse contains the response from method ServicesClient.Update.
 type ServicesClientUpdateResponse struct {
 	ServiceResource
+}
+
+// StoragesClientCreateOrUpdateResponse contains the response from method StoragesClient.CreateOrUpdate.
+type StoragesClientCreateOrUpdateResponse struct {
+	StorageResource
+}
+
+// StoragesClientDeleteResponse contains the response from method StoragesClient.Delete.
+type StoragesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// StoragesClientGetResponse contains the response from method StoragesClient.Get.
+type StoragesClientGetResponse struct {
+	StorageResource
+}
+
+// StoragesClientListResponse contains the response from method StoragesClient.List.
+type StoragesClientListResponse struct {
+	StorageResourceCollection
 }

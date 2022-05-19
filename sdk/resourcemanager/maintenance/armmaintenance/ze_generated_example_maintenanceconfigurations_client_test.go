@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_GetForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_GetForResource.json
 func ExampleConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleConfigurationsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_CreateOrUpdateForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_CreateOrUpdateForResource.json
 func ExampleConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleConfigurationsClient_CreateOrUpdate() {
 		armmaintenance.Configuration{
 			Location: to.Ptr("westus2"),
 			Properties: &armmaintenance.ConfigurationProperties{
-				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeHost),
+				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 				MaintenanceWindow: &armmaintenance.Window{
 					Duration:           to.Ptr("05:00"),
 					ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
@@ -76,7 +76,7 @@ func ExampleConfigurationsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_DeleteForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_DeleteForResource.json
 func ExampleConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleConfigurationsClient_Delete() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_UpdateForResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_UpdateForResource.json
 func ExampleConfigurationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleConfigurationsClient_Update() {
 		armmaintenance.Configuration{
 			Location: to.Ptr("westus2"),
 			Properties: &armmaintenance.ConfigurationProperties{
-				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeHost),
+				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 				MaintenanceWindow: &armmaintenance.Window{
 					Duration:           to.Ptr("05:00"),
 					ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
@@ -135,7 +135,7 @@ func ExampleConfigurationsClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2021-09-01-preview/examples/MaintenanceConfigurations_List.json
 func ExampleConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

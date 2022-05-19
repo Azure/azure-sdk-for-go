@@ -57,7 +57,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // ListByVault - Gets the private link resources supported for the key vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - Name of the resource group that contains the key vault.
 // vaultName - The name of the key vault.
 // options - PrivateLinkResourcesClientListByVaultOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByVault
@@ -97,7 +97,7 @@ func (client *PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

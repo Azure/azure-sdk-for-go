@@ -17,7 +17,162 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubListByNameSpace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleListAll.json
+func ExampleEventHubsClient_NewListAuthorizationRulesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListAuthorizationRulesPager("ArunMonocle",
+		"sdk-Namespace-960",
+		"sdk-EventHub-532",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleCreate.json
+func ExampleEventHubsClient_CreateOrUpdateAuthorizationRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CreateOrUpdateAuthorizationRule(ctx,
+		"ArunMonocle",
+		"sdk-Namespace-960",
+		"sdk-EventHub-532",
+		"sdk-Authrules-2513",
+		armeventhub.AuthorizationRule{
+			Properties: &armeventhub.AuthorizationRuleProperties{
+				Rights: []*armeventhub.AccessRights{
+					to.Ptr(armeventhub.AccessRightsListen),
+					to.Ptr(armeventhub.AccessRightsSend)},
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleGet.json
+func ExampleEventHubsClient_GetAuthorizationRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.GetAuthorizationRule(ctx,
+		"ArunMonocle",
+		"sdk-Namespace-960",
+		"sdk-EventHub-532",
+		"sdk-Authrules-2513",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleDelete.json
+func ExampleEventHubsClient_DeleteAuthorizationRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.DeleteAuthorizationRule(ctx,
+		"ArunMonocle",
+		"sdk-Namespace-960",
+		"sdk-EventHub-532",
+		"sdk-Authrules-2513",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleListKey.json
+func ExampleEventHubsClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.ListKeys(ctx,
+		"ArunMonocle",
+		"sdk-namespace-960",
+		"sdk-EventHub-532",
+		"sdk-Authrules-2513",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleRegenerateKey.json
+func ExampleEventHubsClient_RegenerateKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.RegenerateKeys(ctx,
+		"ArunMonocle",
+		"sdk-namespace-960",
+		"sdk-EventHub-532",
+		"sdk-Authrules-1534",
+		armeventhub.RegenerateAccessKeyParameters{
+			KeyType: to.Ptr(armeventhub.KeyTypePrimaryKey),
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubListByNameSpace.json
 func ExampleEventHubsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +200,7 @@ func ExampleEventHubsClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubCreate.json
 func ExampleEventHubsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +244,7 @@ func ExampleEventHubsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubDelete.json
 func ExampleEventHubsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +265,7 @@ func ExampleEventHubsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-01-01-preview/examples/EventHubs/EHEventHubGet.json
 func ExampleEventHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,161 +280,6 @@ func ExampleEventHubsClient_Get() {
 		"Default-NotificationHubs-AustraliaEast",
 		"sdk-Namespace-716",
 		"sdk-EventHub-10",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleListAll.json
-func ExampleEventHubsClient_NewListAuthorizationRulesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := client.NewListAuthorizationRulesPager("ArunMonocle",
-		"sdk-Namespace-960",
-		"sdk-EventHub-532",
-		nil)
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleCreate.json
-func ExampleEventHubsClient_CreateOrUpdateAuthorizationRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.CreateOrUpdateAuthorizationRule(ctx,
-		"ArunMonocle",
-		"sdk-Namespace-960",
-		"sdk-EventHub-532",
-		"sdk-Authrules-2513",
-		armeventhub.AuthorizationRule{
-			Properties: &armeventhub.AuthorizationRuleProperties{
-				Rights: []*armeventhub.AccessRights{
-					to.Ptr(armeventhub.AccessRightsListen),
-					to.Ptr(armeventhub.AccessRightsSend)},
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleGet.json
-func ExampleEventHubsClient_GetAuthorizationRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.GetAuthorizationRule(ctx,
-		"ArunMonocle",
-		"sdk-Namespace-960",
-		"sdk-EventHub-532",
-		"sdk-Authrules-2513",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleDelete.json
-func ExampleEventHubsClient_DeleteAuthorizationRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = client.DeleteAuthorizationRule(ctx,
-		"ArunMonocle",
-		"sdk-Namespace-960",
-		"sdk-EventHub-532",
-		"sdk-Authrules-2513",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleListKey.json
-func ExampleEventHubsClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.ListKeys(ctx,
-		"ArunMonocle",
-		"sdk-namespace-960",
-		"sdk-EventHub-532",
-		"sdk-Authrules-2513",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleRegenerateKey.json
-func ExampleEventHubsClient_RegenerateKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armeventhub.NewEventHubsClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.RegenerateKeys(ctx,
-		"ArunMonocle",
-		"sdk-namespace-960",
-		"sdk-EventHub-532",
-		"sdk-Authrules-1534",
-		armeventhub.RegenerateAccessKeyParameters{
-			KeyType: to.Ptr(armeventhub.KeyTypePrimaryKey),
-		},
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

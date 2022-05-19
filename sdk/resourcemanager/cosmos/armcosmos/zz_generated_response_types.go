@@ -23,6 +23,11 @@ type CassandraClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// CassandraClustersClientGetBackupResponse contains the response from method CassandraClustersClient.GetBackup.
+type CassandraClustersClientGetBackupResponse struct {
+	BackupResource
+}
+
 // CassandraClustersClientGetResponse contains the response from method CassandraClustersClient.Get.
 type CassandraClustersClientGetResponse struct {
 	ClusterResource
@@ -31,6 +36,11 @@ type CassandraClustersClientGetResponse struct {
 // CassandraClustersClientInvokeCommandResponse contains the response from method CassandraClustersClient.InvokeCommand.
 type CassandraClustersClientInvokeCommandResponse struct {
 	CommandOutput
+}
+
+// CassandraClustersClientListBackupsResponse contains the response from method CassandraClustersClient.ListBackups.
+type CassandraClustersClientListBackupsResponse struct {
+	ListBackups
 }
 
 // CassandraClustersClientListByResourceGroupResponse contains the response from method CassandraClustersClient.ListByResourceGroup.
@@ -93,6 +103,11 @@ type CassandraResourcesClientCreateUpdateCassandraTableResponse struct {
 	CassandraTableGetResults
 }
 
+// CassandraResourcesClientCreateUpdateCassandraViewResponse contains the response from method CassandraResourcesClient.CreateUpdateCassandraView.
+type CassandraResourcesClientCreateUpdateCassandraViewResponse struct {
+	CassandraViewGetResults
+}
+
 // CassandraResourcesClientDeleteCassandraKeyspaceResponse contains the response from method CassandraResourcesClient.DeleteCassandraKeyspace.
 type CassandraResourcesClientDeleteCassandraKeyspaceResponse struct {
 	// placeholder for future response values
@@ -100,6 +115,11 @@ type CassandraResourcesClientDeleteCassandraKeyspaceResponse struct {
 
 // CassandraResourcesClientDeleteCassandraTableResponse contains the response from method CassandraResourcesClient.DeleteCassandraTable.
 type CassandraResourcesClientDeleteCassandraTableResponse struct {
+	// placeholder for future response values
+}
+
+// CassandraResourcesClientDeleteCassandraViewResponse contains the response from method CassandraResourcesClient.DeleteCassandraView.
+type CassandraResourcesClientDeleteCassandraViewResponse struct {
 	// placeholder for future response values
 }
 
@@ -123,6 +143,16 @@ type CassandraResourcesClientGetCassandraTableThroughputResponse struct {
 	ThroughputSettingsGetResults
 }
 
+// CassandraResourcesClientGetCassandraViewResponse contains the response from method CassandraResourcesClient.GetCassandraView.
+type CassandraResourcesClientGetCassandraViewResponse struct {
+	CassandraViewGetResults
+}
+
+// CassandraResourcesClientGetCassandraViewThroughputResponse contains the response from method CassandraResourcesClient.GetCassandraViewThroughput.
+type CassandraResourcesClientGetCassandraViewThroughputResponse struct {
+	ThroughputSettingsGetResults
+}
+
 // CassandraResourcesClientListCassandraKeyspacesResponse contains the response from method CassandraResourcesClient.ListCassandraKeyspaces.
 type CassandraResourcesClientListCassandraKeyspacesResponse struct {
 	CassandraKeyspaceListResult
@@ -131,6 +161,11 @@ type CassandraResourcesClientListCassandraKeyspacesResponse struct {
 // CassandraResourcesClientListCassandraTablesResponse contains the response from method CassandraResourcesClient.ListCassandraTables.
 type CassandraResourcesClientListCassandraTablesResponse struct {
 	CassandraTableListResult
+}
+
+// CassandraResourcesClientListCassandraViewsResponse contains the response from method CassandraResourcesClient.ListCassandraViews.
+type CassandraResourcesClientListCassandraViewsResponse struct {
+	CassandraViewListResult
 }
 
 // CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse contains the response from method CassandraResourcesClient.MigrateCassandraKeyspaceToAutoscale.
@@ -153,6 +188,16 @@ type CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse str
 	ThroughputSettingsGetResults
 }
 
+// CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse contains the response from method CassandraResourcesClient.MigrateCassandraViewToAutoscale.
+type CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse struct {
+	ThroughputSettingsGetResults
+}
+
+// CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse contains the response from method CassandraResourcesClient.MigrateCassandraViewToManualThroughput.
+type CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse struct {
+	ThroughputSettingsGetResults
+}
+
 // CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse contains the response from method CassandraResourcesClient.UpdateCassandraKeyspaceThroughput.
 type CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse struct {
 	ThroughputSettingsGetResults
@@ -160,6 +205,11 @@ type CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse struct {
 
 // CassandraResourcesClientUpdateCassandraTableThroughputResponse contains the response from method CassandraResourcesClient.UpdateCassandraTableThroughput.
 type CassandraResourcesClientUpdateCassandraTableThroughputResponse struct {
+	ThroughputSettingsGetResults
+}
+
+// CassandraResourcesClientUpdateCassandraViewThroughputResponse contains the response from method CassandraResourcesClient.UpdateCassandraViewThroughput.
+type CassandraResourcesClientUpdateCassandraViewThroughputResponse struct {
 	ThroughputSettingsGetResults
 }
 
@@ -196,6 +246,36 @@ type CollectionPartitionRegionClientListMetricsResponse struct {
 // CollectionRegionClientListMetricsResponse contains the response from method CollectionRegionClient.ListMetrics.
 type CollectionRegionClientListMetricsResponse struct {
 	MetricListResult
+}
+
+// DataTransferJobsClientCancelResponse contains the response from method DataTransferJobsClient.Cancel.
+type DataTransferJobsClientCancelResponse struct {
+	DataTransferJobGetResults
+}
+
+// DataTransferJobsClientCreateResponse contains the response from method DataTransferJobsClient.Create.
+type DataTransferJobsClientCreateResponse struct {
+	DataTransferJobGetResults
+}
+
+// DataTransferJobsClientGetResponse contains the response from method DataTransferJobsClient.Get.
+type DataTransferJobsClientGetResponse struct {
+	DataTransferJobGetResults
+}
+
+// DataTransferJobsClientListByDatabaseAccountResponse contains the response from method DataTransferJobsClient.ListByDatabaseAccount.
+type DataTransferJobsClientListByDatabaseAccountResponse struct {
+	DataTransferJobFeedResults
+}
+
+// DataTransferJobsClientPauseResponse contains the response from method DataTransferJobsClient.Pause.
+type DataTransferJobsClientPauseResponse struct {
+	DataTransferJobGetResults
+}
+
+// DataTransferJobsClientResumeResponse contains the response from method DataTransferJobsClient.Resume.
+type DataTransferJobsClientResumeResponse struct {
+	DataTransferJobGetResults
 }
 
 // DatabaseAccountRegionClientListMetricsResponse contains the response from method DatabaseAccountRegionClient.ListMetrics.
@@ -309,6 +389,26 @@ type DatabaseClientListUsagesResponse struct {
 	UsagesResult
 }
 
+// GraphResourcesClientCreateUpdateGraphResponse contains the response from method GraphResourcesClient.CreateUpdateGraph.
+type GraphResourcesClientCreateUpdateGraphResponse struct {
+	GraphResourceGetResults
+}
+
+// GraphResourcesClientDeleteGraphResourceResponse contains the response from method GraphResourcesClient.DeleteGraphResource.
+type GraphResourcesClientDeleteGraphResourceResponse struct {
+	// placeholder for future response values
+}
+
+// GraphResourcesClientGetGraphResponse contains the response from method GraphResourcesClient.GetGraph.
+type GraphResourcesClientGetGraphResponse struct {
+	GraphResourceGetResults
+}
+
+// GraphResourcesClientListGraphsResponse contains the response from method GraphResourcesClient.ListGraphs.
+type GraphResourcesClientListGraphsResponse struct {
+	GraphResourcesListResult
+}
+
 // GremlinResourcesClientCreateUpdateGremlinDatabaseResponse contains the response from method GremlinResourcesClient.CreateUpdateGremlinDatabase.
 type GremlinResourcesClientCreateUpdateGremlinDatabaseResponse struct {
 	GremlinDatabaseGetResults
@@ -379,6 +479,11 @@ type GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse struct 
 	ThroughputSettingsGetResults
 }
 
+// GremlinResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method GremlinResourcesClient.RetrieveContinuousBackupInformation.
+type GremlinResourcesClientRetrieveContinuousBackupInformationResponse struct {
+	BackupInformation
+}
+
 // GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse contains the response from method GremlinResourcesClient.UpdateGremlinDatabaseThroughput.
 type GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse struct {
 	ThroughputSettingsGetResults
@@ -409,6 +514,16 @@ type MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse struct {
 	MongoDBDatabaseGetResults
 }
 
+// MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse contains the response from method MongoDBResourcesClient.CreateUpdateMongoRoleDefinition.
+type MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse struct {
+	MongoRoleDefinitionGetResults
+}
+
+// MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse contains the response from method MongoDBResourcesClient.CreateUpdateMongoUserDefinition.
+type MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse struct {
+	MongoUserDefinitionGetResults
+}
+
 // MongoDBResourcesClientDeleteMongoDBCollectionResponse contains the response from method MongoDBResourcesClient.DeleteMongoDBCollection.
 type MongoDBResourcesClientDeleteMongoDBCollectionResponse struct {
 	// placeholder for future response values
@@ -416,6 +531,16 @@ type MongoDBResourcesClientDeleteMongoDBCollectionResponse struct {
 
 // MongoDBResourcesClientDeleteMongoDBDatabaseResponse contains the response from method MongoDBResourcesClient.DeleteMongoDBDatabase.
 type MongoDBResourcesClientDeleteMongoDBDatabaseResponse struct {
+	// placeholder for future response values
+}
+
+// MongoDBResourcesClientDeleteMongoRoleDefinitionResponse contains the response from method MongoDBResourcesClient.DeleteMongoRoleDefinition.
+type MongoDBResourcesClientDeleteMongoRoleDefinitionResponse struct {
+	// placeholder for future response values
+}
+
+// MongoDBResourcesClientDeleteMongoUserDefinitionResponse contains the response from method MongoDBResourcesClient.DeleteMongoUserDefinition.
+type MongoDBResourcesClientDeleteMongoUserDefinitionResponse struct {
 	// placeholder for future response values
 }
 
@@ -439,6 +564,21 @@ type MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse struct {
 	ThroughputSettingsGetResults
 }
 
+// MongoDBResourcesClientGetMongoRoleDefinitionResponse contains the response from method MongoDBResourcesClient.GetMongoRoleDefinition.
+type MongoDBResourcesClientGetMongoRoleDefinitionResponse struct {
+	MongoRoleDefinitionGetResults
+}
+
+// MongoDBResourcesClientGetMongoUserDefinitionResponse contains the response from method MongoDBResourcesClient.GetMongoUserDefinition.
+type MongoDBResourcesClientGetMongoUserDefinitionResponse struct {
+	MongoUserDefinitionGetResults
+}
+
+// MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse contains the response from method MongoDBResourcesClient.ListMongoDBCollectionPartitionMerge.
+type MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse struct {
+	PhysicalPartitionStorageInfoCollection
+}
+
 // MongoDBResourcesClientListMongoDBCollectionsResponse contains the response from method MongoDBResourcesClient.ListMongoDBCollections.
 type MongoDBResourcesClientListMongoDBCollectionsResponse struct {
 	MongoDBCollectionListResult
@@ -447,6 +587,16 @@ type MongoDBResourcesClientListMongoDBCollectionsResponse struct {
 // MongoDBResourcesClientListMongoDBDatabasesResponse contains the response from method MongoDBResourcesClient.ListMongoDBDatabases.
 type MongoDBResourcesClientListMongoDBDatabasesResponse struct {
 	MongoDBDatabaseListResult
+}
+
+// MongoDBResourcesClientListMongoRoleDefinitionsResponse contains the response from method MongoDBResourcesClient.ListMongoRoleDefinitions.
+type MongoDBResourcesClientListMongoRoleDefinitionsResponse struct {
+	MongoRoleDefinitionListResult
+}
+
+// MongoDBResourcesClientListMongoUserDefinitionsResponse contains the response from method MongoDBResourcesClient.ListMongoUserDefinitions.
+type MongoDBResourcesClientListMongoUserDefinitionsResponse struct {
+	MongoUserDefinitionListResult
 }
 
 // MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBCollectionToAutoscale.
@@ -467,6 +617,16 @@ type MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse struct {
 // MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput.
 type MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse struct {
 	ThroughputSettingsGetResults
+}
+
+// MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse contains the response from method MongoDBResourcesClient.MongoDBContainerRedistributeThroughput.
+type MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse struct {
+	PhysicalPartitionThroughputInfoResult
+}
+
+// MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse contains the response from method MongoDBResourcesClient.MongoDBContainerRetrieveThroughputDistribution.
+type MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse struct {
+	PhysicalPartitionThroughputInfoResult
 }
 
 // MongoDBResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method MongoDBResourcesClient.RetrieveContinuousBackupInformation.
@@ -594,6 +754,21 @@ type RestorableDatabaseAccountsClientListResponse struct {
 	RestorableDatabaseAccountsListResult
 }
 
+// RestorableGremlinDatabasesClientListResponse contains the response from method RestorableGremlinDatabasesClient.List.
+type RestorableGremlinDatabasesClientListResponse struct {
+	RestorableGremlinDatabasesListResult
+}
+
+// RestorableGremlinGraphsClientListResponse contains the response from method RestorableGremlinGraphsClient.List.
+type RestorableGremlinGraphsClientListResponse struct {
+	RestorableGremlinGraphsListResult
+}
+
+// RestorableGremlinResourcesClientListResponse contains the response from method RestorableGremlinResourcesClient.List.
+type RestorableGremlinResourcesClientListResponse struct {
+	RestorableGremlinResourcesListResult
+}
+
 // RestorableMongodbCollectionsClientListResponse contains the response from method RestorableMongodbCollectionsClient.List.
 type RestorableMongodbCollectionsClientListResponse struct {
 	RestorableMongodbCollectionsListResult
@@ -622,6 +797,21 @@ type RestorableSQLDatabasesClientListResponse struct {
 // RestorableSQLResourcesClientListResponse contains the response from method RestorableSQLResourcesClient.List.
 type RestorableSQLResourcesClientListResponse struct {
 	RestorableSQLResourcesListResult
+}
+
+// RestorableTableResourcesClientListResponse contains the response from method RestorableTableResourcesClient.List.
+type RestorableTableResourcesClientListResponse struct {
+	RestorableTableResourcesListResult
+}
+
+// RestorableTablesClientListResponse contains the response from method RestorableTablesClient.List.
+type RestorableTablesClientListResponse struct {
+	RestorableTablesListResult
+}
+
+// SQLResourcesClientCreateUpdateClientEncryptionKeyResponse contains the response from method SQLResourcesClient.CreateUpdateClientEncryptionKey.
+type SQLResourcesClientCreateUpdateClientEncryptionKeyResponse struct {
+	ClientEncryptionKeyGetResults
 }
 
 // SQLResourcesClientCreateUpdateSQLContainerResponse contains the response from method SQLResourcesClient.CreateUpdateSQLContainer.
@@ -694,6 +884,11 @@ type SQLResourcesClientDeleteSQLUserDefinedFunctionResponse struct {
 	// placeholder for future response values
 }
 
+// SQLResourcesClientGetClientEncryptionKeyResponse contains the response from method SQLResourcesClient.GetClientEncryptionKey.
+type SQLResourcesClientGetClientEncryptionKeyResponse struct {
+	ClientEncryptionKeyGetResults
+}
+
 // SQLResourcesClientGetSQLContainerResponse contains the response from method SQLResourcesClient.GetSQLContainer.
 type SQLResourcesClientGetSQLContainerResponse struct {
 	SQLContainerGetResults
@@ -737,6 +932,16 @@ type SQLResourcesClientGetSQLTriggerResponse struct {
 // SQLResourcesClientGetSQLUserDefinedFunctionResponse contains the response from method SQLResourcesClient.GetSQLUserDefinedFunction.
 type SQLResourcesClientGetSQLUserDefinedFunctionResponse struct {
 	SQLUserDefinedFunctionGetResults
+}
+
+// SQLResourcesClientListClientEncryptionKeysResponse contains the response from method SQLResourcesClient.ListClientEncryptionKeys.
+type SQLResourcesClientListClientEncryptionKeysResponse struct {
+	ClientEncryptionKeysListResult
+}
+
+// SQLResourcesClientListSQLContainerPartitionMergeResponse contains the response from method SQLResourcesClient.ListSQLContainerPartitionMerge.
+type SQLResourcesClientListSQLContainerPartitionMergeResponse struct {
+	PhysicalPartitionStorageInfoCollection
 }
 
 // SQLResourcesClientListSQLContainersResponse contains the response from method SQLResourcesClient.ListSQLContainers.
@@ -799,6 +1004,16 @@ type SQLResourcesClientRetrieveContinuousBackupInformationResponse struct {
 	BackupInformation
 }
 
+// SQLResourcesClientSQLContainerRedistributeThroughputResponse contains the response from method SQLResourcesClient.SQLContainerRedistributeThroughput.
+type SQLResourcesClientSQLContainerRedistributeThroughputResponse struct {
+	PhysicalPartitionThroughputInfoResult
+}
+
+// SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse contains the response from method SQLResourcesClient.SQLContainerRetrieveThroughputDistribution.
+type SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse struct {
+	PhysicalPartitionThroughputInfoResult
+}
+
 // SQLResourcesClientUpdateSQLContainerThroughputResponse contains the response from method SQLResourcesClient.UpdateSQLContainerThroughput.
 type SQLResourcesClientUpdateSQLContainerThroughputResponse struct {
 	ThroughputSettingsGetResults
@@ -807,6 +1022,26 @@ type SQLResourcesClientUpdateSQLContainerThroughputResponse struct {
 // SQLResourcesClientUpdateSQLDatabaseThroughputResponse contains the response from method SQLResourcesClient.UpdateSQLDatabaseThroughput.
 type SQLResourcesClientUpdateSQLDatabaseThroughputResponse struct {
 	ThroughputSettingsGetResults
+}
+
+// ServiceClientCreateResponse contains the response from method ServiceClient.Create.
+type ServiceClientCreateResponse struct {
+	ServiceResource
+}
+
+// ServiceClientDeleteResponse contains the response from method ServiceClient.Delete.
+type ServiceClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ServiceClientGetResponse contains the response from method ServiceClient.Get.
+type ServiceClientGetResponse struct {
+	ServiceResource
+}
+
+// ServiceClientListResponse contains the response from method ServiceClient.List.
+type ServiceClientListResponse struct {
+	ServiceResourceListResult
 }
 
 // TableResourcesClientCreateUpdateTableResponse contains the response from method TableResourcesClient.CreateUpdateTable.
@@ -842,6 +1077,11 @@ type TableResourcesClientMigrateTableToAutoscaleResponse struct {
 // TableResourcesClientMigrateTableToManualThroughputResponse contains the response from method TableResourcesClient.MigrateTableToManualThroughput.
 type TableResourcesClientMigrateTableToManualThroughputResponse struct {
 	ThroughputSettingsGetResults
+}
+
+// TableResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method TableResourcesClient.RetrieveContinuousBackupInformation.
+type TableResourcesClientRetrieveContinuousBackupInformationResponse struct {
+	BackupInformation
 }
 
 // TableResourcesClientUpdateTableThroughputResponse contains the response from method TableResourcesClient.UpdateTableThroughput.

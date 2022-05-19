@@ -56,7 +56,7 @@ func NewFhirServicesClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdate - Creates or updates a FHIR Service resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // fhirServiceName - The name of FHIR Service resource.
@@ -77,7 +77,7 @@ func (client *FhirServicesClient) BeginCreateOrUpdate(ctx context.Context, resou
 
 // CreateOrUpdate - Creates or updates a FHIR Service resource with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 func (client *FhirServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, fhirServiceName string, fhirservice FhirService, options *FhirServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, fhirServiceName, fhirservice, options)
 	if err != nil {
@@ -117,7 +117,7 @@ func (client *FhirServicesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, fhirservice)
@@ -125,7 +125,7 @@ func (client *FhirServicesClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // BeginDelete - Deletes a FHIR Service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // fhirServiceName - The name of FHIR Service resource.
 // workspaceName - The name of workspace resource.
@@ -145,7 +145,7 @@ func (client *FhirServicesClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Deletes a FHIR Service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 func (client *FhirServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, options *FhirServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fhirServiceName, workspaceName, options)
 	if err != nil {
@@ -185,7 +185,7 @@ func (client *FhirServicesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,7 +193,7 @@ func (client *FhirServicesClient) deleteCreateRequest(ctx context.Context, resou
 
 // Get - Gets the properties of the specified FHIR Service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // fhirServiceName - The name of FHIR Service resource.
@@ -237,7 +237,7 @@ func (client *FhirServicesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -254,7 +254,7 @@ func (client *FhirServicesClient) getHandleResponse(resp *http.Response) (FhirSe
 
 // NewListByWorkspacePager - Lists all FHIR Services for the given workspace
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - FhirServicesClientListByWorkspaceOptions contains the optional parameters for the FhirServicesClient.ListByWorkspace
@@ -307,7 +307,7 @@ func (client *FhirServicesClient) listByWorkspaceCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *FhirServicesClient) listByWorkspaceHandleResponse(resp *http.Respo
 
 // BeginUpdate - Patch FHIR Service details.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // fhirServiceName - The name of FHIR Service resource.
 // workspaceName - The name of workspace resource.
@@ -345,7 +345,7 @@ func (client *FhirServicesClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Patch FHIR Service details.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 func (client *FhirServicesClient) update(ctx context.Context, resourceGroupName string, fhirServiceName string, workspaceName string, fhirservicePatchResource FhirServicePatchResource, options *FhirServicesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, fhirServiceName, workspaceName, fhirservicePatchResource, options)
 	if err != nil {
@@ -385,7 +385,7 @@ func (client *FhirServicesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, fhirservicePatchResource)

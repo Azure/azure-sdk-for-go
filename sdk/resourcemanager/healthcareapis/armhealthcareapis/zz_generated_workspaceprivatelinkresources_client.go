@@ -56,7 +56,7 @@ func NewWorkspacePrivateLinkResourcesClient(subscriptionID string, credential az
 
 // Get - Gets a private link resource that need to be created for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // groupName - The name of the private link resource group.
@@ -101,7 +101,7 @@ func (client *WorkspacePrivateLinkResourcesClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,7 +118,7 @@ func (client *WorkspacePrivateLinkResourcesClient) getHandleResponse(resp *http.
 
 // NewListByWorkspacePager - Gets the private link resources that need to be created for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // options - WorkspacePrivateLinkResourcesClientListByWorkspaceOptions contains the optional parameters for the WorkspacePrivateLinkResourcesClient.ListByWorkspace
@@ -165,7 +165,7 @@ func (client *WorkspacePrivateLinkResourcesClient) listByWorkspaceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

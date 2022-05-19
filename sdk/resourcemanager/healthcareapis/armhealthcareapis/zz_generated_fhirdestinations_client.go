@@ -56,7 +56,7 @@ func NewFhirDestinationsClient(subscriptionID string, credential azcore.TokenCre
 
 // NewListByIotConnectorPager - Lists all FHIR destinations for the given IoT Connector
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-31-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // workspaceName - The name of workspace resource.
 // iotConnectorName - The name of IoT Connector resource.
@@ -114,7 +114,7 @@ func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-31-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

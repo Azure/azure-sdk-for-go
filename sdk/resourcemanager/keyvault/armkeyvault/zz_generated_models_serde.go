@@ -12,6 +12,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"reflect"
 )
 
@@ -158,7 +159,40 @@ func (k KeyProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "keyUri", k.KeyURI)
 	populate(objectMap, "keyUriWithVersion", k.KeyURIWithVersion)
 	populate(objectMap, "kty", k.Kty)
+	populate(objectMap, "release_policy", k.ReleasePolicy)
+	populate(objectMap, "rotationPolicy", k.RotationPolicy)
 	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KeyReleasePolicy.
+func (k KeyReleasePolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "contentType", k.ContentType)
+	populateByteArray(objectMap, "data", k.Data, runtime.Base64URLFormat)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type KeyReleasePolicy.
+func (k *KeyReleasePolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", k, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "contentType":
+			err = unpopulate(val, "ContentType", &k.ContentType)
+			delete(rawMsg, key)
+		case "data":
+			err = runtime.DecodeByteArray(string(val), &k.Data, runtime.Base64URLFormat)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", k, err)
+		}
+	}
+	return nil
 }
 
 // MarshalJSON implements the json.Marshaller interface for type MHSMNetworkRuleSet.
@@ -376,6 +410,14 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RotationPolicy.
+func (r RotationPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "attributes", r.Attributes)
+	populate(objectMap, "lifetimeActions", r.LifetimeActions)
+	return json.Marshal(objectMap)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Secret.
 func (s Secret) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -567,6 +609,16 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
 		m[k] = v
+	}
+}
+
+func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
+	if azcore.IsNullValue(b) {
+		m[k] = nil
+	} else if len(b) == 0 {
+		return
+	} else {
+		m[k] = runtime.EncodeByteArray(b, f)
 	}
 }
 

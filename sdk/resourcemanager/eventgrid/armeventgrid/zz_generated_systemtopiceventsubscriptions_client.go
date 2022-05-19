@@ -59,7 +59,7 @@ func NewSystemTopicEventSubscriptionsClient(subscriptionID string, credential az
 // BeginCreateOrUpdate - Asynchronously creates or updates an event subscription with the specified parameters. Existing event
 // subscriptions will be updated with this API.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
 // eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
@@ -82,7 +82,7 @@ func (client *SystemTopicEventSubscriptionsClient) BeginCreateOrUpdate(ctx conte
 // CreateOrUpdate - Asynchronously creates or updates an event subscription with the specified parameters. Existing event
 // subscriptions will be updated with this API.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 func (client *SystemTopicEventSubscriptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionInfo, options)
 	if err != nil {
@@ -122,15 +122,15 @@ func (client *SystemTopicEventSubscriptionsClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionInfo)
 }
 
-// BeginDelete - Delete an event subscription of a system topic.
+// BeginDelete - Delete an existing event subscription of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
 // eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
@@ -149,9 +149,9 @@ func (client *SystemTopicEventSubscriptionsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// Delete - Delete an event subscription of a system topic.
+// Delete - Delete an existing event subscription of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 func (client *SystemTopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, options *SystemTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, options)
 	if err != nil {
@@ -191,14 +191,14 @@ func (client *SystemTopicEventSubscriptionsClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get an event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
 // eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
@@ -244,7 +244,7 @@ func (client *SystemTopicEventSubscriptionsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,7 +261,7 @@ func (client *SystemTopicEventSubscriptionsClient) getHandleResponse(resp *http.
 
 // GetDeliveryAttributes - Get all delivery attributes for an event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
 // eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
@@ -307,7 +307,7 @@ func (client *SystemTopicEventSubscriptionsClient) getDeliveryAttributesCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *SystemTopicEventSubscriptionsClient) getDeliveryAttributesHandleRe
 
 // GetFullURL - Get the full endpoint URL for an event subscription of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
 // eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
@@ -370,7 +370,7 @@ func (client *SystemTopicEventSubscriptionsClient) getFullURLCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -387,7 +387,7 @@ func (client *SystemTopicEventSubscriptionsClient) getFullURLHandleResponse(resp
 
 // NewListBySystemTopicPager - List event subscriptions that belong to a specific system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
 // options - SystemTopicEventSubscriptionsClientListBySystemTopicOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.ListBySystemTopic
@@ -440,7 +440,7 @@ func (client *SystemTopicEventSubscriptionsClient) listBySystemTopicCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -461,9 +461,9 @@ func (client *SystemTopicEventSubscriptionsClient) listBySystemTopicHandleRespon
 	return result, nil
 }
 
-// BeginUpdate - Update event subscription of a system topic.
+// BeginUpdate - Update an existing event subscription of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // systemTopicName - Name of the system topic.
 // eventSubscriptionName - Name of the event subscription to be created. Event subscription names must be between 3 and 100
@@ -483,9 +483,9 @@ func (client *SystemTopicEventSubscriptionsClient) BeginUpdate(ctx context.Conte
 	}
 }
 
-// Update - Update event subscription of a system topic.
+// Update - Update an existing event subscription of a system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 func (client *SystemTopicEventSubscriptionsClient) update(ctx context.Context, resourceGroupName string, systemTopicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *SystemTopicEventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, systemTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters, options)
 	if err != nil {
@@ -525,7 +525,7 @@ func (client *SystemTopicEventSubscriptionsClient) updateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters)

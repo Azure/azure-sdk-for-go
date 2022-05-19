@@ -150,6 +150,17 @@ type ConfigurationAssignmentsClientDeleteParentOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ConfigurationAssignmentsClientGetOptions contains the optional parameters for the ConfigurationAssignmentsClient.Get method.
+type ConfigurationAssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationAssignmentsClientGetParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.GetParent
+// method.
+type ConfigurationAssignmentsClientGetParentOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.List
 // method.
 type ConfigurationAssignmentsClientListOptions struct {
@@ -162,10 +173,19 @@ type ConfigurationAssignmentsClientListParentOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.List
+// method.
+type ConfigurationAssignmentsWithinSubscriptionClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ConfigurationProperties - Properties for maintenance configuration
 type ConfigurationProperties struct {
 	// Gets or sets extensionProperties of the maintenanceConfiguration
 	ExtensionProperties map[string]*string `json:"extensionProperties,omitempty"`
+
+	// The input parameters to be passed to the patch run operation.
+	InstallPatches *InputPatchConfiguration `json:"installPatches,omitempty"`
 
 	// Gets or sets maintenanceScope of the configuration
 	MaintenanceScope *MaintenanceScope `json:"maintenanceScope,omitempty"`
@@ -225,6 +245,49 @@ type ErrorDetails struct {
 
 	// Human-readable representation of the error.
 	Message *string `json:"message,omitempty"`
+}
+
+// InputLinuxParameters - Input properties for patching a Linux machine.
+type InputLinuxParameters struct {
+	// Classification category of patches to be patched
+	ClassificationsToInclude []*string `json:"classificationsToInclude,omitempty"`
+
+	// Package names to be excluded for patching.
+	PackageNameMasksToExclude []*string `json:"packageNameMasksToExclude,omitempty"`
+
+	// Package names to be included for patching.
+	PackageNameMasksToInclude []*string `json:"packageNameMasksToInclude,omitempty"`
+}
+
+// InputPatchConfiguration - Input configuration for a patch run
+type InputPatchConfiguration struct {
+	// Input parameters specific to patching Linux machine. For Windows machines, do not pass this property.
+	LinuxParameters *InputLinuxParameters `json:"linuxParameters,omitempty"`
+
+	// Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or not after
+	// the patch operation is completed.
+	RebootSetting *RebootOptions `json:"rebootSetting,omitempty"`
+
+	// Tasks information for the Software update configuration.
+	Tasks *SoftwareUpdateConfigurationTasks `json:"tasks,omitempty"`
+
+	// Input parameters specific to patching a Windows machine. For Linux machines, do not pass this property.
+	WindowsParameters *InputWindowsParameters `json:"windowsParameters,omitempty"`
+}
+
+// InputWindowsParameters - Input properties for patching a Windows machine.
+type InputWindowsParameters struct {
+	// Classification category of patches to be patched
+	ClassificationsToInclude []*string `json:"classificationsToInclude,omitempty"`
+
+	// Exclude patches which need reboot
+	ExcludeKbsRequiringReboot *bool `json:"excludeKbsRequiringReboot,omitempty"`
+
+	// Windows KBID to be excluded for patching.
+	KbNumbersToExclude []*string `json:"kbNumbersToExclude,omitempty"`
+
+	// Windows KBID to be included for patching.
+	KbNumbersToInclude []*string `json:"kbNumbersToInclude,omitempty"`
 }
 
 // ListApplyUpdate - Response for ApplyUpdate list
@@ -322,6 +385,15 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// SoftwareUpdateConfigurationTasks - Task properties of the software update configuration.
+type SoftwareUpdateConfigurationTasks struct {
+	// List of post tasks. e.g. [{'source' :'runbook', 'taskScope': 'Resource', 'parameters': { 'arg1': 'value1'}}]
+	PostTasks []*TaskProperties `json:"postTasks,omitempty"`
+
+	// List of pre tasks. e.g. [{'source' :'runbook', 'taskScope': 'Global', 'parameters': { 'arg1': 'value1'}}]
+	PreTasks []*TaskProperties `json:"preTasks,omitempty"`
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -341,6 +413,18 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// TaskProperties - Task properties of the software update configuration.
+type TaskProperties struct {
+	// Gets or sets the parameters of the task.
+	Parameters map[string]*string `json:"parameters,omitempty"`
+
+	// Gets or sets the name of the runbook.
+	Source *string `json:"source,omitempty"`
+
+	// Global Task execute once when schedule trigger. Resource task execute for each VM.
+	TaskScope *TaskScope `json:"taskScope,omitempty"`
 }
 
 // Update - Maintenance update on a resource
@@ -398,9 +482,10 @@ type Window struct {
 	// [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are recurEvery: 3Weeks, recurEvery:
 	// Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
 	// integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month (First,
-	// Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples
-	// are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month
-	// Fourth Monday.
+	// Second, Third, Fourth, Last)] [Weekday Monday-Sunday] [Optional Offset(No. of
+	// days)]. Offset value must be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months,
+	// recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery:
+	// Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery: Month Third Sunday Offset6.
 	RecurEvery *string `json:"recurEvery,omitempty"`
 
 	// Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The start date can be set to either the current

@@ -58,7 +58,7 @@ func NewConfigurationClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Get all Event Hubs Cluster settings - a collection of key/value pairs which represent the quotas and settings imposed
 // on the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // clusterName - The name of the Event Hubs Cluster.
 // options - ConfigurationClientGetOptions contains the optional parameters for the ConfigurationClient.Get method.
@@ -97,7 +97,7 @@ func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *ConfigurationClient) getHandleResponse(resp *http.Response) (Confi
 // Patch - Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings
 // not specified in the request body unmodified.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // clusterName - The name of the Event Hubs Cluster.
 // parameters - Parameters for creating an Event Hubs Cluster resource.
@@ -155,7 +155,7 @@ func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

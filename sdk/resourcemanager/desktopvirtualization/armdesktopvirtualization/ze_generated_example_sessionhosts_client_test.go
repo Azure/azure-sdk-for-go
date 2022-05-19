@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/desktopvirtualization/armdesktopvirtualization"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/SessionHost_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/SessionHost_Get.json
 func ExampleSessionHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleSessionHostsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/SessionHost_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/SessionHost_Delete.json
 func ExampleSessionHostsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleSessionHostsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/SessionHost_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/SessionHost_Update.json
 func ExampleSessionHostsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,12 +76,14 @@ func ExampleSessionHostsClient_Update() {
 		"resourceGroup1",
 		"hostPool1",
 		"sessionHost1.microsoft.com",
-		&armdesktopvirtualization.SessionHostsClientUpdateOptions{SessionHost: &armdesktopvirtualization.SessionHostPatch{
-			Properties: &armdesktopvirtualization.SessionHostPatchProperties{
-				AllowNewSession: to.Ptr(true),
-				AssignedUser:    to.Ptr("user1@microsoft.com"),
+		&armdesktopvirtualization.SessionHostsClientUpdateOptions{Force: to.Ptr(true),
+			SessionHost: &armdesktopvirtualization.SessionHostPatch{
+				Properties: &armdesktopvirtualization.SessionHostPatchProperties{
+					AllowNewSession: to.Ptr(true),
+					AssignedUser:    to.Ptr("user1@microsoft.com"),
+					FriendlyName:    to.Ptr("friendly"),
+				},
 			},
-		},
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -90,7 +92,7 @@ func ExampleSessionHostsClient_Update() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2021-07-12/examples/SessionHost_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2022-02-10-preview/examples/SessionHost_List.json
 func ExampleSessionHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

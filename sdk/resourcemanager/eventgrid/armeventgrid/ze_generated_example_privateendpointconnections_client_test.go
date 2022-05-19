@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_Get.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	}
 	res, err := client.Get(ctx,
 		"examplerg",
-		armeventgrid.PrivateEndpointConnectionsParentTypeTopics,
+		armeventgrid.ParentTypeTopics,
 		"exampletopic1",
 		"BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
 		nil)
@@ -41,7 +41,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_Update.json
 func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	}
 	poller, err := client.BeginUpdate(ctx,
 		"examplerg",
-		armeventgrid.PrivateEndpointConnectionsParentTypeTopics,
+		armeventgrid.ParentTypeTopics,
 		"exampletopic1",
 		"BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
 		armeventgrid.PrivateEndpointConnection{
@@ -78,7 +78,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_Delete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	poller, err := client.BeginDelete(ctx,
 		"examplerg",
-		armeventgrid.PrivateEndpointConnectionsParentTypeTopics,
+		armeventgrid.ParentTypeTopics,
 		"exampletopic1",
 		"BMTPE5.8A30D251-4C61-489D-A1AA-B37C4A329B8B",
 		nil)
@@ -104,7 +104,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_ListByResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/PrivateEndpointConnections_ListByResource.json
 func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListByResourcePager("examplerg",
-		armeventgrid.PrivateEndpointConnectionsParentTypeTopics,
+		armeventgrid.ParentTypeTopics,
 		"exampletopic1",
 		&armeventgrid.PrivateEndpointConnectionsClientListByResourceOptions{Filter: nil,
 			Top: nil,

@@ -58,7 +58,7 @@ func NewDomainTopicsClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdate - Asynchronously creates or updates a new domain topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain.
 // domainTopicName - Name of the domain topic.
@@ -78,7 +78,7 @@ func (client *DomainTopicsClient) BeginCreateOrUpdate(ctx context.Context, resou
 
 // CreateOrUpdate - Asynchronously creates or updates a new domain topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 func (client *DomainTopicsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domainTopicName string, options *DomainTopicsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, domainName, domainTopicName, options)
 	if err != nil {
@@ -118,7 +118,7 @@ func (client *DomainTopicsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -126,7 +126,7 @@ func (client *DomainTopicsClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // BeginDelete - Delete existing domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain.
 // domainTopicName - Name of the domain topic.
@@ -146,7 +146,7 @@ func (client *DomainTopicsClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Delete existing domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 func (client *DomainTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, domainTopicName string, options *DomainTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, domainName, domainTopicName, options)
 	if err != nil {
@@ -186,14 +186,14 @@ func (client *DomainTopicsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get properties of a domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Name of the domain.
 // domainTopicName - Name of the topic.
@@ -237,7 +237,7 @@ func (client *DomainTopicsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -254,7 +254,7 @@ func (client *DomainTopicsClient) getHandleResponse(resp *http.Response) (Domain
 
 // NewListByDomainPager - List all the topics in a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // domainName - Domain name.
 // options - DomainTopicsClientListByDomainOptions contains the optional parameters for the DomainTopicsClient.ListByDomain
@@ -307,7 +307,7 @@ func (client *DomainTopicsClient) listByDomainCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

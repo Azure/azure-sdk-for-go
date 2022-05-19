@@ -16,6 +16,26 @@ import (
 	"reflect"
 )
 
+// MarshalJSON implements the json.Marshaller interface for type AgentUpdatePatchProperties.
+func (a AgentUpdatePatchProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "maintenanceWindowTimeZone", a.MaintenanceWindowTimeZone)
+	populate(objectMap, "maintenanceWindows", a.MaintenanceWindows)
+	populate(objectMap, "type", a.Type)
+	populate(objectMap, "useSessionHostLocalTime", a.UseSessionHostLocalTime)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AgentUpdateProperties.
+func (a AgentUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "maintenanceWindowTimeZone", a.MaintenanceWindowTimeZone)
+	populate(objectMap, "maintenanceWindows", a.MaintenanceWindows)
+	populate(objectMap, "type", a.Type)
+	populate(objectMap, "useSessionHostLocalTime", a.UseSessionHostLocalTime)
+	return json.Marshal(objectMap)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ApplicationGroup.
 func (a ApplicationGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -29,6 +49,7 @@ func (a ApplicationGroup) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "plan", a.Plan)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "systemData", a.SystemData)
 	populate(objectMap, "tags", a.Tags)
 	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
@@ -271,6 +292,7 @@ func (h HostPool) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "plan", h.Plan)
 	populate(objectMap, "properties", h.Properties)
 	populate(objectMap, "sku", h.SKU)
+	populate(objectMap, "systemData", h.SystemData)
 	populate(objectMap, "tags", h.Tags)
 	populate(objectMap, "type", h.Type)
 	return json.Marshal(objectMap)
@@ -290,6 +312,7 @@ func (h HostPoolPatch) MarshalJSON() ([]byte, error) {
 // MarshalJSON implements the json.Marshaller interface for type HostPoolProperties.
 func (h HostPoolProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "agentUpdate", h.AgentUpdate)
 	populate(objectMap, "applicationGroupReferences", h.ApplicationGroupReferences)
 	populate(objectMap, "cloudPcResource", h.CloudPcResource)
 	populate(objectMap, "customRdpProperty", h.CustomRdpProperty)
@@ -302,6 +325,8 @@ func (h HostPoolProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "objectId", h.ObjectID)
 	populate(objectMap, "personalDesktopAssignmentType", h.PersonalDesktopAssignmentType)
 	populate(objectMap, "preferredAppGroupType", h.PreferredAppGroupType)
+	populate(objectMap, "privateEndpointConnections", h.PrivateEndpointConnections)
+	populate(objectMap, "publicNetworkAccess", h.PublicNetworkAccess)
 	populate(objectMap, "registrationInfo", h.RegistrationInfo)
 	populate(objectMap, "ring", h.Ring)
 	populate(objectMap, "ssoClientId", h.SsoClientID)
@@ -442,6 +467,15 @@ func (m *MsixPackageApplications) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
+func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "groupId", p.GroupID)
+	populate(objectMap, "requiredMembers", p.RequiredMembers)
+	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
+	return json.Marshal(objectMap)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type RegistrationInfo.
 func (r RegistrationInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -538,6 +572,7 @@ func (s ScalingPlan) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "plan", s.Plan)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "sku", s.SKU)
+	populate(objectMap, "systemData", s.SystemData)
 	populate(objectMap, "tags", s.Tags)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
@@ -558,7 +593,6 @@ func (s ScalingPlanPatchProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "exclusionTag", s.ExclusionTag)
 	populate(objectMap, "friendlyName", s.FriendlyName)
 	populate(objectMap, "hostPoolReferences", s.HostPoolReferences)
-	populate(objectMap, "hostPoolType", s.HostPoolType)
 	populate(objectMap, "schedules", s.Schedules)
 	populate(objectMap, "timeZone", s.TimeZone)
 	return json.Marshal(objectMap)
@@ -584,93 +618,22 @@ func (s ScalingSchedule) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "daysOfWeek", s.DaysOfWeek)
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "offPeakLoadBalancingAlgorithm", s.OffPeakLoadBalancingAlgorithm)
-	populateTimeRFC3339(objectMap, "offPeakStartTime", s.OffPeakStartTime)
+	populate(objectMap, "offPeakStartTime", s.OffPeakStartTime)
 	populate(objectMap, "peakLoadBalancingAlgorithm", s.PeakLoadBalancingAlgorithm)
-	populateTimeRFC3339(objectMap, "peakStartTime", s.PeakStartTime)
+	populate(objectMap, "peakStartTime", s.PeakStartTime)
 	populate(objectMap, "rampDownCapacityThresholdPct", s.RampDownCapacityThresholdPct)
 	populate(objectMap, "rampDownForceLogoffUsers", s.RampDownForceLogoffUsers)
 	populate(objectMap, "rampDownLoadBalancingAlgorithm", s.RampDownLoadBalancingAlgorithm)
 	populate(objectMap, "rampDownMinimumHostsPct", s.RampDownMinimumHostsPct)
 	populate(objectMap, "rampDownNotificationMessage", s.RampDownNotificationMessage)
-	populateTimeRFC3339(objectMap, "rampDownStartTime", s.RampDownStartTime)
+	populate(objectMap, "rampDownStartTime", s.RampDownStartTime)
 	populate(objectMap, "rampDownStopHostsWhen", s.RampDownStopHostsWhen)
 	populate(objectMap, "rampDownWaitTimeMinutes", s.RampDownWaitTimeMinutes)
 	populate(objectMap, "rampUpCapacityThresholdPct", s.RampUpCapacityThresholdPct)
 	populate(objectMap, "rampUpLoadBalancingAlgorithm", s.RampUpLoadBalancingAlgorithm)
 	populate(objectMap, "rampUpMinimumHostsPct", s.RampUpMinimumHostsPct)
-	populateTimeRFC3339(objectMap, "rampUpStartTime", s.RampUpStartTime)
+	populate(objectMap, "rampUpStartTime", s.RampUpStartTime)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ScalingSchedule.
-func (s *ScalingSchedule) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "daysOfWeek":
-			err = unpopulate(val, "DaysOfWeek", &s.DaysOfWeek)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "offPeakLoadBalancingAlgorithm":
-			err = unpopulate(val, "OffPeakLoadBalancingAlgorithm", &s.OffPeakLoadBalancingAlgorithm)
-			delete(rawMsg, key)
-		case "offPeakStartTime":
-			err = unpopulateTimeRFC3339(val, "OffPeakStartTime", &s.OffPeakStartTime)
-			delete(rawMsg, key)
-		case "peakLoadBalancingAlgorithm":
-			err = unpopulate(val, "PeakLoadBalancingAlgorithm", &s.PeakLoadBalancingAlgorithm)
-			delete(rawMsg, key)
-		case "peakStartTime":
-			err = unpopulateTimeRFC3339(val, "PeakStartTime", &s.PeakStartTime)
-			delete(rawMsg, key)
-		case "rampDownCapacityThresholdPct":
-			err = unpopulate(val, "RampDownCapacityThresholdPct", &s.RampDownCapacityThresholdPct)
-			delete(rawMsg, key)
-		case "rampDownForceLogoffUsers":
-			err = unpopulate(val, "RampDownForceLogoffUsers", &s.RampDownForceLogoffUsers)
-			delete(rawMsg, key)
-		case "rampDownLoadBalancingAlgorithm":
-			err = unpopulate(val, "RampDownLoadBalancingAlgorithm", &s.RampDownLoadBalancingAlgorithm)
-			delete(rawMsg, key)
-		case "rampDownMinimumHostsPct":
-			err = unpopulate(val, "RampDownMinimumHostsPct", &s.RampDownMinimumHostsPct)
-			delete(rawMsg, key)
-		case "rampDownNotificationMessage":
-			err = unpopulate(val, "RampDownNotificationMessage", &s.RampDownNotificationMessage)
-			delete(rawMsg, key)
-		case "rampDownStartTime":
-			err = unpopulateTimeRFC3339(val, "RampDownStartTime", &s.RampDownStartTime)
-			delete(rawMsg, key)
-		case "rampDownStopHostsWhen":
-			err = unpopulate(val, "RampDownStopHostsWhen", &s.RampDownStopHostsWhen)
-			delete(rawMsg, key)
-		case "rampDownWaitTimeMinutes":
-			err = unpopulate(val, "RampDownWaitTimeMinutes", &s.RampDownWaitTimeMinutes)
-			delete(rawMsg, key)
-		case "rampUpCapacityThresholdPct":
-			err = unpopulate(val, "RampUpCapacityThresholdPct", &s.RampUpCapacityThresholdPct)
-			delete(rawMsg, key)
-		case "rampUpLoadBalancingAlgorithm":
-			err = unpopulate(val, "RampUpLoadBalancingAlgorithm", &s.RampUpLoadBalancingAlgorithm)
-			delete(rawMsg, key)
-		case "rampUpMinimumHostsPct":
-			err = unpopulate(val, "RampUpMinimumHostsPct", &s.RampUpMinimumHostsPct)
-			delete(rawMsg, key)
-		case "rampUpStartTime":
-			err = unpopulateTimeRFC3339(val, "RampUpStartTime", &s.RampUpStartTime)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SessionHostHealthCheckFailureDetails.
@@ -724,6 +687,7 @@ func (s SessionHostProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "agentVersion", s.AgentVersion)
 	populate(objectMap, "allowNewSession", s.AllowNewSession)
 	populate(objectMap, "assignedUser", s.AssignedUser)
+	populate(objectMap, "friendlyName", s.FriendlyName)
 	populateTimeRFC3339(objectMap, "lastHeartBeat", s.LastHeartBeat)
 	populateTimeRFC3339(objectMap, "lastUpdateTime", s.LastUpdateTime)
 	populate(objectMap, "osVersion", s.OSVersion)
@@ -757,6 +721,9 @@ func (s *SessionHostProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "assignedUser":
 			err = unpopulate(val, "AssignedUser", &s.AssignedUser)
+			delete(rawMsg, key)
+		case "friendlyName":
+			err = unpopulate(val, "FriendlyName", &s.FriendlyName)
 			delete(rawMsg, key)
 		case "lastHeartBeat":
 			err = unpopulateTimeRFC3339(val, "LastHeartBeat", &s.LastHeartBeat)
@@ -796,6 +763,53 @@ func (s *SessionHostProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "virtualMachineId":
 			err = unpopulate(val, "VirtualMachineID", &s.VirtualMachineID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SystemData.
+func (s SystemData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populate(objectMap, "createdBy", s.CreatedBy)
+	populate(objectMap, "createdByType", s.CreatedByType)
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
+	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
+func (s *SystemData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createdAt":
+			err = unpopulateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			delete(rawMsg, key)
+		case "createdBy":
+			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
+			delete(rawMsg, key)
+		case "createdByType":
+			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
+			delete(rawMsg, key)
+		case "lastModifiedAt":
+			err = unpopulateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			delete(rawMsg, key)
+		case "lastModifiedBy":
+			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
+			delete(rawMsg, key)
+		case "lastModifiedByType":
+			err = unpopulate(val, "LastModifiedByType", &s.LastModifiedByType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -865,6 +879,7 @@ func (w Workspace) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "plan", w.Plan)
 	populate(objectMap, "properties", w.Properties)
 	populate(objectMap, "sku", w.SKU)
+	populate(objectMap, "systemData", w.SystemData)
 	populate(objectMap, "tags", w.Tags)
 	populate(objectMap, "type", w.Type)
 	return json.Marshal(objectMap)
@@ -884,6 +899,7 @@ func (w WorkspacePatchProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "applicationGroupReferences", w.ApplicationGroupReferences)
 	populate(objectMap, "description", w.Description)
 	populate(objectMap, "friendlyName", w.FriendlyName)
+	populate(objectMap, "publicNetworkAccess", w.PublicNetworkAccess)
 	return json.Marshal(objectMap)
 }
 
@@ -895,6 +911,8 @@ func (w WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", w.Description)
 	populate(objectMap, "friendlyName", w.FriendlyName)
 	populate(objectMap, "objectId", w.ObjectID)
+	populate(objectMap, "privateEndpointConnections", w.PrivateEndpointConnections)
+	populate(objectMap, "publicNetworkAccess", w.PublicNetworkAccess)
 	return json.Marshal(objectMap)
 }
 

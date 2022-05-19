@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/alertRules/GetAllAlertRules.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/GetAllAlertRules.json
 func ExampleAlertRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleAlertRulesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/alertRules/GetFusionAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/GetFusionAlertRule.json
 func ExampleAlertRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleAlertRulesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/alertRules/CreateFusionAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/CreateFusionAlertRuleWithFusionScenarioExclusion.json
 func ExampleAlertRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,6 +87,233 @@ func ExampleAlertRulesClient_CreateOrUpdate() {
 			Properties: &armsecurityinsights.FusionAlertRuleProperties{
 				AlertRuleTemplateName: to.Ptr("f71aba3d-28fb-450b-b192-4e76a83015c8"),
 				Enabled:               to.Ptr(true),
+				SourceSettings: []*armsecurityinsights.FusionSourceSettings{
+					{
+						Enabled:    to.Ptr(true),
+						SourceName: to.Ptr("Anomalies"),
+					},
+					{
+						Enabled:    to.Ptr(true),
+						SourceName: to.Ptr("Alert providers"),
+						SourceSubTypes: []*armsecurityinsights.FusionSourceSubTypeSetting{
+							{
+								Enabled: to.Ptr(true),
+								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
+									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
+										}},
+								},
+								SourceSubTypeName: to.Ptr("Azure Active Directory Identity Protection"),
+							},
+							{
+								Enabled: to.Ptr(true),
+								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
+									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
+										}},
+								},
+								SourceSubTypeName: to.Ptr("Azure Defender"),
+							},
+							{
+								Enabled: to.Ptr(true),
+								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
+									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
+										}},
+								},
+								SourceSubTypeName: to.Ptr("Azure Defender for IoT"),
+							},
+							{
+								Enabled: to.Ptr(true),
+								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
+									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
+										}},
+								},
+								SourceSubTypeName: to.Ptr("Microsoft 365 Defender"),
+							},
+							{
+								Enabled: to.Ptr(true),
+								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
+									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
+										}},
+								},
+								SourceSubTypeName: to.Ptr("Microsoft Cloud App Security"),
+							},
+							{
+								Enabled: to.Ptr(true),
+								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
+									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
+										}},
+								},
+								SourceSubTypeName: to.Ptr("Microsoft Defender for Endpoint"),
+							},
+							{
+								Enabled: to.Ptr(true),
+								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
+									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
+										}},
+								},
+								SourceSubTypeName: to.Ptr("Microsoft Defender for Identity"),
+							},
+							{
+								Enabled: to.Ptr(true),
+								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
+									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
+										}},
+								},
+								SourceSubTypeName: to.Ptr("Microsoft Defender for Office 365"),
+							},
+							{
+								Enabled: to.Ptr(true),
+								SeverityFilters: &armsecurityinsights.FusionSubTypeSeverityFilter{
+									Filters: []*armsecurityinsights.FusionSubTypeSeverityFiltersItem{
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityLow),
+										},
+										{
+											Enabled:  to.Ptr(true),
+											Severity: to.Ptr(armsecurityinsights.AlertSeverityInformational),
+										}},
+								},
+								SourceSubTypeName: to.Ptr("Azure Sentinel scheduled analytics rules"),
+							}},
+					},
+					{
+						Enabled:    to.Ptr(true),
+						SourceName: to.Ptr("Raw logs from other sources"),
+						SourceSubTypes: []*armsecurityinsights.FusionSourceSubTypeSetting{
+							{
+								Enabled:           to.Ptr(true),
+								SeverityFilters:   &armsecurityinsights.FusionSubTypeSeverityFilter{},
+								SourceSubTypeName: to.Ptr("Palo Alto Networks"),
+							}},
+					}},
 			},
 		},
 		nil)
@@ -97,7 +324,7 @@ func ExampleAlertRulesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/alertRules/DeleteAlertRule.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/alertRules/DeleteAlertRule.json
 func ExampleAlertRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

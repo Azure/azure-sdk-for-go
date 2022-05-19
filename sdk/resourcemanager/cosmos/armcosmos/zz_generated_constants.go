@@ -10,7 +10,7 @@ package armcosmos
 
 const (
 	moduleName    = "armcosmos"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0-beta.1"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -55,11 +55,12 @@ func PossibleAnalyticalStorageSchemaTypeValues() []AnalyticalStorageSchemaType {
 
 // AuthenticationMethod - Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication,
 // so should not be used except in emergencies. 'Cassandra' is the default password based
-// authentication. The default is 'Cassandra'.
+// authentication. The default is 'Cassandra'. 'Ldap' is in preview.
 type AuthenticationMethod string
 
 const (
 	AuthenticationMethodCassandra AuthenticationMethod = "Cassandra"
+	AuthenticationMethodLdap      AuthenticationMethod = "Ldap"
 	AuthenticationMethodNone      AuthenticationMethod = "None"
 )
 
@@ -67,6 +68,7 @@ const (
 func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 	return []AuthenticationMethod{
 		AuthenticationMethodCassandra,
+		AuthenticationMethodLdap,
 		AuthenticationMethodNone,
 	}
 }
@@ -195,6 +197,22 @@ func PossibleConnectorOfferValues() []ConnectorOffer {
 	}
 }
 
+// ContinuousTier - Enum to indicate type of Continuous backup tier.
+type ContinuousTier string
+
+const (
+	ContinuousTierContinuous30Days ContinuousTier = "Continuous30Days"
+	ContinuousTierContinuous7Days  ContinuousTier = "Continuous7Days"
+)
+
+// PossibleContinuousTierValues returns the possible values for the ContinuousTier const type.
+func PossibleContinuousTierValues() []ContinuousTier {
+	return []ContinuousTier{
+		ContinuousTierContinuous30Days,
+		ContinuousTierContinuous7Days,
+	}
+}
+
 // CreateMode - Enum to indicate the mode of account creation.
 type CreateMode string
 
@@ -228,6 +246,23 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+type DataTransferComponent string
+
+const (
+	DataTransferComponentAzureBlobStorage  DataTransferComponent = "AzureBlobStorage"
+	DataTransferComponentCosmosDBCassandra DataTransferComponent = "CosmosDBCassandra"
+	DataTransferComponentCosmosDBSQL       DataTransferComponent = "CosmosDBSql"
+)
+
+// PossibleDataTransferComponentValues returns the possible values for the DataTransferComponent const type.
+func PossibleDataTransferComponentValues() []DataTransferComponent {
+	return []DataTransferComponent{
+		DataTransferComponentAzureBlobStorage,
+		DataTransferComponentCosmosDBCassandra,
+		DataTransferComponentCosmosDBSQL,
 	}
 }
 
@@ -292,6 +327,24 @@ func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 		DefaultConsistencyLevelBoundedStaleness,
 		DefaultConsistencyLevelStrong,
 		DefaultConsistencyLevelConsistentPrefix,
+	}
+}
+
+// EnableFullTextQuery - Describe the level of detail with which queries are to be logged.
+type EnableFullTextQuery string
+
+const (
+	EnableFullTextQueryNone  EnableFullTextQuery = "None"
+	EnableFullTextQueryTrue  EnableFullTextQuery = "True"
+	EnableFullTextQueryFalse EnableFullTextQuery = "False"
+)
+
+// PossibleEnableFullTextQueryValues returns the possible values for the EnableFullTextQuery const type.
+func PossibleEnableFullTextQueryValues() []EnableFullTextQuery {
+	return []EnableFullTextQuery{
+		EnableFullTextQueryNone,
+		EnableFullTextQueryTrue,
+		EnableFullTextQueryFalse,
 	}
 }
 
@@ -388,6 +441,22 @@ func PossibleManagedCassandraResourceIdentityTypeValues() []ManagedCassandraReso
 	return []ManagedCassandraResourceIdentityType{
 		ManagedCassandraResourceIdentityTypeNone,
 		ManagedCassandraResourceIdentityTypeSystemAssigned,
+	}
+}
+
+// MongoRoleDefinitionType - Indicates whether the Role Definition was built-in or user created.
+type MongoRoleDefinitionType string
+
+const (
+	MongoRoleDefinitionTypeBuiltInRole MongoRoleDefinitionType = "BuiltInRole"
+	MongoRoleDefinitionTypeCustomRole  MongoRoleDefinitionType = "CustomRole"
+)
+
+// PossibleMongoRoleDefinitionTypeValues returns the possible values for the MongoRoleDefinitionType const type.
+func PossibleMongoRoleDefinitionTypeValues() []MongoRoleDefinitionType {
+	return []MongoRoleDefinitionType{
+		MongoRoleDefinitionTypeBuiltInRole,
+		MongoRoleDefinitionTypeCustomRole,
 	}
 }
 
@@ -609,6 +678,68 @@ func PossibleServerVersionValues() []ServerVersion {
 	}
 }
 
+// ServiceSize - Instance type for the service.
+type ServiceSize string
+
+const (
+	ServiceSizeCosmosD16S ServiceSize = "Cosmos.D16s"
+	ServiceSizeCosmosD4S  ServiceSize = "Cosmos.D4s"
+	ServiceSizeCosmosD8S  ServiceSize = "Cosmos.D8s"
+)
+
+// PossibleServiceSizeValues returns the possible values for the ServiceSize const type.
+func PossibleServiceSizeValues() []ServiceSize {
+	return []ServiceSize{
+		ServiceSizeCosmosD16S,
+		ServiceSizeCosmosD4S,
+		ServiceSizeCosmosD8S,
+	}
+}
+
+// ServiceStatus - Describes the status of a service.
+type ServiceStatus string
+
+const (
+	ServiceStatusCreating ServiceStatus = "Creating"
+	ServiceStatusDeleting ServiceStatus = "Deleting"
+	ServiceStatusError    ServiceStatus = "Error"
+	ServiceStatusRunning  ServiceStatus = "Running"
+	ServiceStatusStopped  ServiceStatus = "Stopped"
+	ServiceStatusUpdating ServiceStatus = "Updating"
+)
+
+// PossibleServiceStatusValues returns the possible values for the ServiceStatus const type.
+func PossibleServiceStatusValues() []ServiceStatus {
+	return []ServiceStatus{
+		ServiceStatusCreating,
+		ServiceStatusDeleting,
+		ServiceStatusError,
+		ServiceStatusRunning,
+		ServiceStatusStopped,
+		ServiceStatusUpdating,
+	}
+}
+
+// ServiceType - ServiceType for the service.
+type ServiceType string
+
+const (
+	ServiceTypeDataTransfer             ServiceType = "DataTransfer"
+	ServiceTypeGraphAPICompute          ServiceType = "GraphAPICompute"
+	ServiceTypeMaterializedViewsBuilder ServiceType = "MaterializedViewsBuilder"
+	ServiceTypeSQLDedicatedGateway      ServiceType = "SqlDedicatedGateway"
+)
+
+// PossibleServiceTypeValues returns the possible values for the ServiceType const type.
+func PossibleServiceTypeValues() []ServiceType {
+	return []ServiceType{
+		ServiceTypeDataTransfer,
+		ServiceTypeGraphAPICompute,
+		ServiceTypeMaterializedViewsBuilder,
+		ServiceTypeSQLDedicatedGateway,
+	}
+}
+
 // SpatialType - Indicates the spatial type of index.
 type SpatialType string
 
@@ -626,6 +757,24 @@ func PossibleSpatialTypeValues() []SpatialType {
 		SpatialTypeMultiPolygon,
 		SpatialTypePoint,
 		SpatialTypePolygon,
+	}
+}
+
+// ThroughputPolicyType - ThroughputPolicy to apply for throughput redistribution
+type ThroughputPolicyType string
+
+const (
+	ThroughputPolicyTypeCustom ThroughputPolicyType = "custom"
+	ThroughputPolicyTypeEqual  ThroughputPolicyType = "equal"
+	ThroughputPolicyTypeNone   ThroughputPolicyType = "none"
+)
+
+// PossibleThroughputPolicyTypeValues returns the possible values for the ThroughputPolicyType const type.
+func PossibleThroughputPolicyTypeValues() []ThroughputPolicyType {
+	return []ThroughputPolicyType{
+		ThroughputPolicyTypeCustom,
+		ThroughputPolicyTypeEqual,
+		ThroughputPolicyTypeNone,
 	}
 }
 

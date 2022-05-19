@@ -57,7 +57,7 @@ func NewConfigurationsForResourceGroupClient(subscriptionID string, credential a
 
 // NewListPager - Get Configuration records within a subscription and resource group
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - Resource Group Name
 // options - ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.List
 // method.
@@ -99,7 +99,7 @@ func (client *ConfigurationsForResourceGroupClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

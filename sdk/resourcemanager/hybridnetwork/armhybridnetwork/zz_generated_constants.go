@@ -10,8 +10,22 @@ package armhybridnetwork
 
 const (
 	moduleName    = "armhybridnetwork"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
+
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
+const (
+	ActionTypeInternal ActionType = "Internal"
+)
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -62,6 +76,30 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return []DiskCreateOptionTypes{
 		DiskCreateOptionTypesEmpty,
 		DiskCreateOptionTypesUnknown,
+	}
+}
+
+// HTTPMethod - The http method of the request.
+type HTTPMethod string
+
+const (
+	HTTPMethodDelete  HTTPMethod = "Delete"
+	HTTPMethodGet     HTTPMethod = "Get"
+	HTTPMethodPatch   HTTPMethod = "Patch"
+	HTTPMethodPost    HTTPMethod = "Post"
+	HTTPMethodPut     HTTPMethod = "Put"
+	HTTPMethodUnknown HTTPMethod = "Unknown"
+)
+
+// PossibleHTTPMethodValues returns the possible values for the HTTPMethod const type.
+func PossibleHTTPMethodValues() []HTTPMethod {
+	return []HTTPMethod{
+		HTTPMethodDelete,
+		HTTPMethodGet,
+		HTTPMethodPatch,
+		HTTPMethodPost,
+		HTTPMethodPut,
+		HTTPMethodUnknown,
 	}
 }
 
@@ -170,6 +208,25 @@ func PossibleOperationalStateValues() []OperationalState {
 		OperationalStateStopped,
 		OperationalStateStopping,
 		OperationalStateUnknown,
+	}
+}
+
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
 	}
 }
 

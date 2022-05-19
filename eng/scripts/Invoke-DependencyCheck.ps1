@@ -24,7 +24,11 @@ if ($LASTEXITCODE) { exit $LASTEXITCODE }
 function IsPackageDeprecated($sdk)
 {
     $RETRACT_SECTION_REGEX = "retract\s*((?<retract>(.|\s)*))"
+    $DEPRECATE_SECTION_REGEX = "\/\/\s*Deprecated:"
     $modContent = Get-Content (Join-Path $sdk.DirectoryPath 'go.mod') -Raw
+    if ($modContent -match $DEPRECATE_SECTION_REGEX) {
+        return $true
+    }
     if ($modContent -match $RETRACT_SECTION_REGEX) {
         return $($matches["retract"]).Indexof($sdk.Version) -ne -1
     }

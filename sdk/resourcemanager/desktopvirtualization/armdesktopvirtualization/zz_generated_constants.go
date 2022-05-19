@@ -10,7 +10,7 @@ package armdesktopvirtualization
 
 const (
 	moduleName    = "armdesktopvirtualization"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleVersion = "v1.0.0"
 )
 
 // ApplicationGroupType - Resource Type of ApplicationGroup.
@@ -61,52 +61,6 @@ func PossibleCommandLineSettingValues() []CommandLineSetting {
 		CommandLineSettingAllow,
 		CommandLineSettingDoNotAllow,
 		CommandLineSettingRequire,
-	}
-}
-
-// CreatedByType - The type of identity that created the resource.
-type CreatedByType string
-
-const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
-	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
-)
-
-// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
-func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
-		CreatedByTypeApplication,
-		CreatedByTypeKey,
-		CreatedByTypeManagedIdentity,
-		CreatedByTypeUser,
-	}
-}
-
-// DayOfWeek - The day of the week (Monday-Sunday).
-type DayOfWeek string
-
-const (
-	DayOfWeekMonday    DayOfWeek = "Monday"
-	DayOfWeekTuesday   DayOfWeek = "Tuesday"
-	DayOfWeekWednesday DayOfWeek = "Wednesday"
-	DayOfWeekThursday  DayOfWeek = "Thursday"
-	DayOfWeekFriday    DayOfWeek = "Friday"
-	DayOfWeekSaturday  DayOfWeek = "Saturday"
-	DayOfWeekSunday    DayOfWeek = "Sunday"
-)
-
-// PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{
-		DayOfWeekMonday,
-		DayOfWeekTuesday,
-		DayOfWeekWednesday,
-		DayOfWeekThursday,
-		DayOfWeekFriday,
-		DayOfWeekSaturday,
-		DayOfWeekSunday,
 	}
 }
 
@@ -225,27 +179,6 @@ func PossibleHostPoolTypeValues() []HostPoolType {
 	}
 }
 
-// HostpoolPublicNetworkAccess - Enabled allows this resource to be accessed from both public and private networks, Disabled
-// allows this resource to only be accessed via private endpoints
-type HostpoolPublicNetworkAccess string
-
-const (
-	HostpoolPublicNetworkAccessDisabled                   HostpoolPublicNetworkAccess = "Disabled"
-	HostpoolPublicNetworkAccessEnabled                    HostpoolPublicNetworkAccess = "Enabled"
-	HostpoolPublicNetworkAccessEnabledForClientsOnly      HostpoolPublicNetworkAccess = "EnabledForClientsOnly"
-	HostpoolPublicNetworkAccessEnabledForSessionHostsOnly HostpoolPublicNetworkAccess = "EnabledForSessionHostsOnly"
-)
-
-// PossibleHostpoolPublicNetworkAccessValues returns the possible values for the HostpoolPublicNetworkAccess const type.
-func PossibleHostpoolPublicNetworkAccessValues() []HostpoolPublicNetworkAccess {
-	return []HostpoolPublicNetworkAccess{
-		HostpoolPublicNetworkAccessDisabled,
-		HostpoolPublicNetworkAccessEnabled,
-		HostpoolPublicNetworkAccessEnabledForClientsOnly,
-		HostpoolPublicNetworkAccessEnabledForSessionHostsOnly,
-	}
-}
-
 // LoadBalancerType - The type of the load balancer.
 type LoadBalancerType string
 
@@ -325,61 +258,6 @@ func PossiblePreferredAppGroupTypeValues() []PreferredAppGroupType {
 	}
 }
 
-// PrivateEndpointConnectionProvisioningState - The current provisioning state.
-type PrivateEndpointConnectionProvisioningState string
-
-const (
-	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
-	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
-	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
-	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
-)
-
-// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
-func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
-	return []PrivateEndpointConnectionProvisioningState{
-		PrivateEndpointConnectionProvisioningStateCreating,
-		PrivateEndpointConnectionProvisioningStateDeleting,
-		PrivateEndpointConnectionProvisioningStateFailed,
-		PrivateEndpointConnectionProvisioningStateSucceeded,
-	}
-}
-
-// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
-type PrivateEndpointServiceConnectionStatus string
-
-const (
-	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
-	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
-	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
-)
-
-// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
-func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{
-		PrivateEndpointServiceConnectionStatusApproved,
-		PrivateEndpointServiceConnectionStatusPending,
-		PrivateEndpointServiceConnectionStatusRejected,
-	}
-}
-
-// PublicNetworkAccess - Enabled allows this resource to be accessed from both public and private networks, Disabled allows
-// this resource to only be accessed via private endpoints
-type PublicNetworkAccess string
-
-const (
-	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
-)
-
-// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
-		PublicNetworkAccessDisabled,
-		PublicNetworkAccessEnabled,
-	}
-}
-
 // RegistrationTokenOperation - The type of resetting the token.
 type RegistrationTokenOperation string
 
@@ -455,21 +333,6 @@ func PossibleSSOSecretTypeValues() []SSOSecretType {
 	}
 }
 
-// ScalingHostPoolType - HostPool type for desktop.
-type ScalingHostPoolType string
-
-const (
-	// ScalingHostPoolTypePooled - Users get a new (random) SessionHost every time it connects to the HostPool.
-	ScalingHostPoolTypePooled ScalingHostPoolType = "Pooled"
-)
-
-// PossibleScalingHostPoolTypeValues returns the possible values for the ScalingHostPoolType const type.
-func PossibleScalingHostPoolTypeValues() []ScalingHostPoolType {
-	return []ScalingHostPoolType{
-		ScalingHostPoolTypePooled,
-	}
-}
-
 type ScalingScheduleDaysOfWeekItem string
 
 const (
@@ -492,27 +355,6 @@ func PossibleScalingScheduleDaysOfWeekItemValues() []ScalingScheduleDaysOfWeekIt
 		ScalingScheduleDaysOfWeekItemThursday,
 		ScalingScheduleDaysOfWeekItemTuesday,
 		ScalingScheduleDaysOfWeekItemWednesday,
-	}
-}
-
-// SessionHostComponentUpdateType - The preferred mechanism for updating the agent components. This is either Scheduled or
-// Default.
-type SessionHostComponentUpdateType string
-
-const (
-	// SessionHostComponentUpdateTypeDefault - The agent components are updated according to the AVD infrastructure flighting.
-	// For more information, see https://aka.ms/avdagent.
-	SessionHostComponentUpdateTypeDefault SessionHostComponentUpdateType = "Default"
-	// SessionHostComponentUpdateTypeScheduled - This enables the Scheduled Agent Updates feature which allows the agent components
-	// to get updated according to the schedule that the admin define. For more information, see https://aka.ms/avdsau.
-	SessionHostComponentUpdateTypeScheduled SessionHostComponentUpdateType = "Scheduled"
-)
-
-// PossibleSessionHostComponentUpdateTypeValues returns the possible values for the SessionHostComponentUpdateType const type.
-func PossibleSessionHostComponentUpdateTypeValues() []SessionHostComponentUpdateType {
-	return []SessionHostComponentUpdateType{
-		SessionHostComponentUpdateTypeDefault,
-		SessionHostComponentUpdateTypeScheduled,
 	}
 }
 

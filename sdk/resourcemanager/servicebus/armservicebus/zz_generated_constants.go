@@ -10,23 +10,23 @@ package armservicebus
 
 const (
 	moduleName    = "armservicebus"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleVersion = "v1.0.0"
 )
 
 type AccessRights string
 
 const (
-	AccessRightsListen AccessRights = "Listen"
 	AccessRightsManage AccessRights = "Manage"
 	AccessRightsSend   AccessRights = "Send"
+	AccessRightsListen AccessRights = "Listen"
 )
 
 // PossibleAccessRightsValues returns the possible values for the AccessRights const type.
 func PossibleAccessRightsValues() []AccessRights {
 	return []AccessRights{
-		AccessRightsListen,
 		AccessRightsManage,
 		AccessRightsSend,
+		AccessRightsListen,
 	}
 }
 
@@ -124,29 +124,15 @@ func PossibleEntityStatusValues() []EntityStatus {
 type FilterType string
 
 const (
-	FilterTypeCorrelationFilter FilterType = "CorrelationFilter"
 	FilterTypeSQLFilter         FilterType = "SqlFilter"
+	FilterTypeCorrelationFilter FilterType = "CorrelationFilter"
 )
 
 // PossibleFilterTypeValues returns the possible values for the FilterType const type.
 func PossibleFilterTypeValues() []FilterType {
 	return []FilterType{
-		FilterTypeCorrelationFilter,
 		FilterTypeSQLFilter,
-	}
-}
-
-// KeySource - Enumerates the possible value of keySource for Encryption
-type KeySource string
-
-const (
-	KeySourceMicrosoftKeyVault KeySource = "Microsoft.KeyVault"
-)
-
-// PossibleKeySourceValues returns the possible values for the KeySource const type.
-func PossibleKeySourceValues() []KeySource {
-	return []KeySource{
-		KeySourceMicrosoftKeyVault,
+		FilterTypeCorrelationFilter,
 	}
 }
 
@@ -170,19 +156,19 @@ func PossibleKeyTypeValues() []KeyType {
 type ManagedServiceIdentityType string
 
 const (
-	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
 	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
 	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
 )
 
 // PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
 func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	return []ManagedServiceIdentityType{
-		ManagedServiceIdentityTypeNone,
 		ManagedServiceIdentityTypeSystemAssigned,
-		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeNone,
 	}
 }
 
@@ -239,34 +225,16 @@ type ProvisioningStateDR string
 
 const (
 	ProvisioningStateDRAccepted  ProvisioningStateDR = "Accepted"
-	ProvisioningStateDRFailed    ProvisioningStateDR = "Failed"
 	ProvisioningStateDRSucceeded ProvisioningStateDR = "Succeeded"
+	ProvisioningStateDRFailed    ProvisioningStateDR = "Failed"
 )
 
 // PossibleProvisioningStateDRValues returns the possible values for the ProvisioningStateDR const type.
 func PossibleProvisioningStateDRValues() []ProvisioningStateDR {
 	return []ProvisioningStateDR{
 		ProvisioningStateDRAccepted,
-		ProvisioningStateDRFailed,
 		ProvisioningStateDRSucceeded,
-	}
-}
-
-// PublicNetworkAccess - This determines if traffic is allowed over public network. By default it is enabled.
-type PublicNetworkAccess string
-
-const (
-	PublicNetworkAccessDisabled           PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled            PublicNetworkAccess = "Enabled"
-	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
-)
-
-// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
-		PublicNetworkAccessDisabled,
-		PublicNetworkAccessEnabled,
-		PublicNetworkAccessSecuredByPerimeter,
+		ProvisioningStateDRFailed,
 	}
 }
 
@@ -309,16 +277,16 @@ type SKUName string
 
 const (
 	SKUNameBasic    SKUName = "Basic"
-	SKUNamePremium  SKUName = "Premium"
 	SKUNameStandard SKUName = "Standard"
+	SKUNamePremium  SKUName = "Premium"
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNameBasic,
-		SKUNamePremium,
 		SKUNameStandard,
+		SKUNamePremium,
 	}
 }
 
@@ -327,34 +295,16 @@ type SKUTier string
 
 const (
 	SKUTierBasic    SKUTier = "Basic"
-	SKUTierPremium  SKUTier = "Premium"
 	SKUTierStandard SKUTier = "Standard"
+	SKUTierPremium  SKUTier = "Premium"
 )
 
 // PossibleSKUTierValues returns the possible values for the SKUTier const type.
 func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
 		SKUTierBasic,
-		SKUTierPremium,
 		SKUTierStandard,
-	}
-}
-
-// TLSVersion - The minimum TLS version for the cluster to support, e.g. '1.2'
-type TLSVersion string
-
-const (
-	TLSVersionOne0 TLSVersion = "1.0"
-	TLSVersionOne1 TLSVersion = "1.1"
-	TLSVersionOne2 TLSVersion = "1.2"
-)
-
-// PossibleTLSVersionValues returns the possible values for the TLSVersion const type.
-func PossibleTLSVersionValues() []TLSVersion {
-	return []TLSVersion{
-		TLSVersionOne0,
-		TLSVersionOne1,
-		TLSVersionOne2,
+		SKUTierPremium,
 	}
 }
 
@@ -362,22 +312,22 @@ func PossibleTLSVersionValues() []TLSVersion {
 type UnavailableReason string
 
 const (
-	UnavailableReasonInvalidName                           UnavailableReason = "InvalidName"
-	UnavailableReasonNameInLockdown                        UnavailableReason = "NameInLockdown"
-	UnavailableReasonNameInUse                             UnavailableReason = "NameInUse"
 	UnavailableReasonNone                                  UnavailableReason = "None"
+	UnavailableReasonInvalidName                           UnavailableReason = "InvalidName"
 	UnavailableReasonSubscriptionIsDisabled                UnavailableReason = "SubscriptionIsDisabled"
+	UnavailableReasonNameInUse                             UnavailableReason = "NameInUse"
+	UnavailableReasonNameInLockdown                        UnavailableReason = "NameInLockdown"
 	UnavailableReasonTooManyNamespaceInCurrentSubscription UnavailableReason = "TooManyNamespaceInCurrentSubscription"
 )
 
 // PossibleUnavailableReasonValues returns the possible values for the UnavailableReason const type.
 func PossibleUnavailableReasonValues() []UnavailableReason {
 	return []UnavailableReason{
-		UnavailableReasonInvalidName,
-		UnavailableReasonNameInLockdown,
-		UnavailableReasonNameInUse,
 		UnavailableReasonNone,
+		UnavailableReasonInvalidName,
 		UnavailableReasonSubscriptionIsDisabled,
+		UnavailableReasonNameInUse,
+		UnavailableReasonNameInLockdown,
 		UnavailableReasonTooManyNamespaceInCurrentSubscription,
 	}
 }

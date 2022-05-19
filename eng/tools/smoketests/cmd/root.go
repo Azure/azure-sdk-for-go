@@ -12,9 +12,9 @@ import (
 	"path/filepath"
 	"regexp"
 	"runtime"
-	"strconv"
 	"strings"
 
+	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 )
 
@@ -106,40 +106,35 @@ func getAllTags() []string {
 	return strings.Split(res, "\n")
 }
 
-// Convert a string to an integer and handle errors
-func toInt(a string) int {
-	r, err := strconv.Atoi(a)
-	handle(err)
-	return r
-}
-
 // Create a new SemVer type
-func NewSemVerFromTag(s string) SemVer {
+func NewSemVerFromTag(s string) (*semver.Version, error) {
 	path := strings.Split(s, "/")
 	versionStr := path[len(path)-1]
 	versionStr = strings.TrimLeft(versionStr, "v")
-	parts := strings.Split(versionStr, ".")
-	return SemVer{
-		Major: toInt(parts[0]),
-		Minor: toInt(parts[1]),
-		Patch: toInt(parts[2]),
-	}
+	return semver.NewVersion(versionStr)
 }
 
 // Find the most recent SemVer tag for a given package.
 func findLatestTag(p string, tags []string) (string, error) {
-	var v SemVer
+	var v *semver.Version
+	var err error
 	for i, tag := range tags {
 		if strings.Contains(tag, p) {
-			v = NewSemVerFromTag(tag)
+			v, err = NewSemVerFromTag(tag)
+			if err != nil {
+				return "", fmt.Errorf("could not parse version for tag %s", tag)
+			}
 			for strings.Contains(tags[i+1], p) {
-				newV := NewSemVerFromTag(tags[i+1])
-				if newV.Newer(v) {
+				newV, err := NewSemVerFromTag(tags[i+1])
+				if err != nil {
+					return "", fmt.Errorf("could not parse version for tag %s", tags[i+1])
+				}
+				if newV.GreaterThan(v) {
 					v = newV
 				}
 				i += 1
 			}
-			return v.String(), nil
+			return "v" + v.String(), nil
 		}
 	}
 	return "", fmt.Errorf("could not find a version for module %s", p)

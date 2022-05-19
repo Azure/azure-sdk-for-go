@@ -111,7 +111,9 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 		return nil, err
 	}
 
-	vaultClient, err := azkeys.NewClient(vaultURL, credential, &azkeys.ClientOptions{options.ClientOptions})
+	vaultClient, err := azkeys.NewClient(vaultURL, credential, &azkeys.ClientOptions{
+		ClientOptions: options.ClientOptions,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +184,9 @@ func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse, alg
 // Get is used to retrieve the content for the Key corresponds to Client. If the requested key is symmetric, then
 // no key material is released in the response. This operation requires the keys/get permission.
 func (c *Client) Get(ctx context.Context) (azkeys.GetKeyResponse, error) {
-	return c.vaultClient.GetKey(ctx, c.keyID, &azkeys.GetKeyOptions{c.keyVersion})
+	return c.vaultClient.GetKey(ctx, c.keyID, &azkeys.GetKeyOptions{
+		Version: c.keyVersion,
+	})
 }
 
 // Encrypt encrypts plaintext using the client's key. This method encrypts only a single block of data, whose

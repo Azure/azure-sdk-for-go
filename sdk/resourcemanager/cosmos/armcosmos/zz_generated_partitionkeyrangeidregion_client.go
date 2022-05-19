@@ -56,7 +56,7 @@ func NewPartitionKeyRangeIDRegionClient(subscriptionID string, credential azcore
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given partition key range id and region.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-15
+// Generated from API version 2022-02-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // region - Cosmos DB region, with spaces between words and each word capitalized.
@@ -126,7 +126,7 @@ func (client *PartitionKeyRangeIDRegionClient) listMetricsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-15")
+	reqQP.Set("api-version", "2022-02-15-preview")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

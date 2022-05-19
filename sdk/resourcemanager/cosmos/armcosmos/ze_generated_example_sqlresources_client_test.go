@@ -17,7 +17,101 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBSqlContainerBackupInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBSqlClientEncryptionKeysList.json
+func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewSQLResourcesClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListClientEncryptionKeysPager("rgName",
+		"accountName",
+		"databaseName",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBSqlClientEncryptionKeyGet.json
+func ExampleSQLResourcesClient_GetClientEncryptionKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewSQLResourcesClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.GetClientEncryptionKey(ctx,
+		"rgName",
+		"accountName",
+		"databaseName",
+		"cekName",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
+func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewSQLResourcesClient("subId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := client.BeginCreateUpdateClientEncryptionKey(ctx,
+		"rgName",
+		"accountName",
+		"databaseName",
+		"cekName",
+		armcosmos.ClientEncryptionKeyCreateUpdateParameters{
+			Properties: &armcosmos.ClientEncryptionKeyCreateUpdateProperties{
+				Resource: &armcosmos.ClientEncryptionKeyResource{
+					EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
+					ID:                  to.Ptr("cekName"),
+					KeyWrapMetadata: &armcosmos.KeyWrapMetadata{
+						Name:      to.Ptr("customerManagedKey"),
+						Type:      to.Ptr("AzureKeyVault"),
+						Algorithm: to.Ptr("RSA-OAEP"),
+						Value:     to.Ptr("AzureKeyVault Key URL"),
+					},
+					WrappedDataEncryptionKey: []byte("This is actually an array of bytes. This request/response is being presented as a string for readability in the example"),
+				},
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/CosmosDBSqlContainerBackupInformation.json
 func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

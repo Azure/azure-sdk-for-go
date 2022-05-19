@@ -17,14 +17,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_Get.json
-func ExampleBuildServiceBuilderClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/GatewayRouteConfigs_Get.json
+func ExampleGatewayRouteConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewGatewayRouteConfigsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,7 +32,7 @@ func ExampleBuildServiceBuilderClient_Get() {
 		"myResourceGroup",
 		"myservice",
 		"default",
-		"mybuilder",
+		"myRouteConfig",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -41,14 +41,14 @@ func ExampleBuildServiceBuilderClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_CreateOrUpdate.json
-func ExampleBuildServiceBuilderClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/GatewayRouteConfigs_CreateOrUpdate.json
+func ExampleGatewayRouteConfigsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewGatewayRouteConfigsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -56,21 +56,23 @@ func ExampleBuildServiceBuilderClient_BeginCreateOrUpdate() {
 		"myResourceGroup",
 		"myservice",
 		"default",
-		"mybuilder",
-		armappplatform.BuilderResource{
-			Properties: &armappplatform.BuilderProperties{
-				BuildpackGroups: []*armappplatform.BuildpacksGroupProperties{
-					{
-						Name: to.Ptr("mix"),
-						Buildpacks: []*armappplatform.BuildpackProperties{
-							{
-								ID: to.Ptr("tanzu-buildpacks/java-azure"),
-							}},
-					}},
-				Stack: &armappplatform.StackProperties{
-					ID:      to.Ptr("io.buildpacks.stacks.bionic"),
-					Version: to.Ptr("base"),
+		"myRouteConfig",
+		armappplatform.GatewayRouteConfigResource{
+			Properties: &armappplatform.GatewayRouteConfigProperties{
+				AppResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apps/myApp"),
+				OpenAPI: &armappplatform.GatewayRouteConfigOpenAPIProperties{
+					URI: to.Ptr("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.json"),
 				},
+				Routes: []*armappplatform.GatewayAPIRoute{
+					{
+						Filters: []*string{
+							to.Ptr("StripPrefix=2"),
+							to.Ptr("RateLimit=1,1s")},
+						Predicates: []*string{
+							to.Ptr("Path=/api5/customer/**")},
+						SsoEnabled: to.Ptr(true),
+						Title:      to.Ptr("myApp route config"),
+					}},
 			},
 		},
 		nil)
@@ -85,14 +87,14 @@ func ExampleBuildServiceBuilderClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_Delete.json
-func ExampleBuildServiceBuilderClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/GatewayRouteConfigs_Delete.json
+func ExampleGatewayRouteConfigsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewGatewayRouteConfigsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -100,7 +102,7 @@ func ExampleBuildServiceBuilderClient_BeginDelete() {
 		"myResourceGroup",
 		"myservice",
 		"default",
-		"mybuilder",
+		"myRouteConfig",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -111,14 +113,14 @@ func ExampleBuildServiceBuilderClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_List.json
-func ExampleBuildServiceBuilderClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/GatewayRouteConfigs_List.json
+func ExampleGatewayRouteConfigsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewGatewayRouteConfigsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

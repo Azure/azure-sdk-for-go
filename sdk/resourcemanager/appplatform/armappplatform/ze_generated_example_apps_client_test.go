@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Apps_Get.json
 func ExampleAppsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleAppsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Apps_CreateOrUpdate.json
 func ExampleAppsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,11 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 		"myapp",
 		armappplatform.AppResource{
 			Identity: &armappplatform.ManagedIdentityProperties{
-				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssigned),
+				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssignedUserAssigned),
+				UserAssignedIdentities: map[string]*armappplatform.UserAssignedManagedIdentity{
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
+				},
 			},
 			Location: to.Ptr("eastus"),
 			Properties: &armappplatform.AppResourceProperties{
@@ -69,6 +73,20 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 						"resourceId": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/serviceRegistries/myServiceRegistry",
 					},
 				},
+				CustomPersistentDisks: []*armappplatform.CustomPersistentDiskResource{
+					{
+						CustomPersistentDiskProperties: &armappplatform.AzureFileVolume{
+							Type: to.Ptr(armappplatform.TypeAzureFileVolume),
+							MountOptions: []*string{
+								to.Ptr("uid=0"),
+								to.Ptr("gid=0"),
+								to.Ptr("dir_mode=0777"),
+								to.Ptr("file_mode=0777")},
+							MountPath: to.Ptr("/mypath1/mypath2"),
+							ShareName: to.Ptr("myFileShare"),
+						},
+						StorageID: to.Ptr("myASCStorageID"),
+					}},
 				EnableEndToEndTLS: to.Ptr(false),
 				Fqdn:              to.Ptr("myapp.mydomain.com"),
 				HTTPSOnly:         to.Ptr(false),
@@ -104,7 +122,7 @@ func ExampleAppsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Apps_Delete.json
 func ExampleAppsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +147,7 @@ func ExampleAppsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Apps_Update.json
 func ExampleAppsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,10 +164,24 @@ func ExampleAppsClient_BeginUpdate() {
 		"myapp",
 		armappplatform.AppResource{
 			Identity: &armappplatform.ManagedIdentityProperties{
-				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssigned),
+				Type: to.Ptr(armappplatform.ManagedIdentityTypeSystemAssignedUserAssigned),
+				UserAssignedIdentities: map[string]*armappplatform.UserAssignedManagedIdentity{
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
+					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
+				},
 			},
 			Location: to.Ptr("eastus"),
 			Properties: &armappplatform.AppResourceProperties{
+				CustomPersistentDisks: []*armappplatform.CustomPersistentDiskResource{
+					{
+						CustomPersistentDiskProperties: &armappplatform.AzureFileVolume{
+							Type:         to.Ptr(armappplatform.TypeAzureFileVolume),
+							MountOptions: []*string{},
+							MountPath:    to.Ptr("/mypath1/mypath2"),
+							ShareName:    to.Ptr("myFileShare"),
+						},
+						StorageID: to.Ptr("myASCStorageID"),
+					}},
 				EnableEndToEndTLS: to.Ptr(false),
 				Fqdn:              to.Ptr("myapp.mydomain.com"),
 				HTTPSOnly:         to.Ptr(false),
@@ -176,7 +208,7 @@ func ExampleAppsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Apps_List.json
 func ExampleAppsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +234,7 @@ func ExampleAppsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_SetActiveDeployments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Apps_SetActiveDeployments.json
 func ExampleAppsClient_BeginSetActiveDeployments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +265,7 @@ func ExampleAppsClient_BeginSetActiveDeployments() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Apps_ValidateDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Apps_ValidateDomain.json
 func ExampleAppsClient_ValidateDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

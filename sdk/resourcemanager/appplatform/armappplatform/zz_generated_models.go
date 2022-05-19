@@ -10,6 +10,170 @@ package armappplatform
 
 import "time"
 
+// APIPortalCustomDomainProperties - The properties of custom domain for API portal
+type APIPortalCustomDomainProperties struct {
+	// The thumbprint of bound certificate.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+}
+
+// APIPortalCustomDomainResource - Custom domain of the API portal
+type APIPortalCustomDomainResource struct {
+	// The properties of custom domain for API portal
+	Properties *APIPortalCustomDomainProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// APIPortalCustomDomainResourceCollection - Object that includes an array of API portal custom domain resources and a possible
+// link for next set
+type APIPortalCustomDomainResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of API portal custom domain resources
+	Value []*APIPortalCustomDomainResource `json:"value,omitempty"`
+}
+
+// APIPortalCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalCustomDomainsClient.BeginCreateOrUpdate
+// method.
+type APIPortalCustomDomainsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APIPortalCustomDomainsClientBeginDeleteOptions contains the optional parameters for the APIPortalCustomDomainsClient.BeginDelete
+// method.
+type APIPortalCustomDomainsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APIPortalCustomDomainsClientGetOptions contains the optional parameters for the APIPortalCustomDomainsClient.Get method.
+type APIPortalCustomDomainsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalCustomDomainsClientListOptions contains the optional parameters for the APIPortalCustomDomainsClient.List method.
+type APIPortalCustomDomainsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalInstance - Collection of instances belong to the API portal
+type APIPortalInstance struct {
+	// READ-ONLY; Name of the API portal instance
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the API portal instance
+	Status *string `json:"status,omitempty" azure:"ro"`
+}
+
+// APIPortalProperties - API portal properties payload
+type APIPortalProperties struct {
+	// The array of resource Ids of gateway to integrate with API portal.
+	GatewayIDs []*string `json:"gatewayIds,omitempty"`
+
+	// Indicate if only https is allowed.
+	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+
+	// Indicates whether the API portal exposes endpoint.
+	Public *bool `json:"public,omitempty"`
+
+	// Collection of OpenAPI source URL locations.
+	SourceUrls []*string `json:"sourceUrls,omitempty"`
+
+	// Single sign-on related configuration
+	SsoProperties *SsoProperties `json:"ssoProperties,omitempty"`
+
+	// READ-ONLY; Collection of instances belong to API portal.
+	Instances []*APIPortalInstance `json:"instances,omitempty" azure:"ro"`
+
+	// READ-ONLY; State of the API portal.
+	ProvisioningState *APIPortalProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *APIPortalResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+
+	// READ-ONLY; URL of the API portal, exposed when 'public' is true.
+	URL *string `json:"url,omitempty" azure:"ro"`
+}
+
+// APIPortalResource - API portal resource
+type APIPortalResource struct {
+	// API portal properties payload
+	Properties *APIPortalProperties `json:"properties,omitempty"`
+
+	// Sku of the API portal resource
+	SKU *SKU `json:"sku,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// APIPortalResourceCollection - Object that includes an array of API portal resources and a possible link for next set
+type APIPortalResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of API portal resources
+	Value []*APIPortalResource `json:"value,omitempty"`
+}
+
+// APIPortalResourceRequests - Resource requests of the API portal
+type APIPortalResourceRequests struct {
+	// READ-ONLY; Cpu allocated to each API portal instance
+	CPU *string `json:"cpu,omitempty" azure:"ro"`
+
+	// READ-ONLY; Memory allocated to each API portal instance
+	Memory *string `json:"memory,omitempty" azure:"ro"`
+}
+
+// APIPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the APIPortalsClient.BeginCreateOrUpdate
+// method.
+type APIPortalsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APIPortalsClientBeginDeleteOptions contains the optional parameters for the APIPortalsClient.BeginDelete method.
+type APIPortalsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// APIPortalsClientGetOptions contains the optional parameters for the APIPortalsClient.Get method.
+type APIPortalsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalsClientListOptions contains the optional parameters for the APIPortalsClient.List method.
+type APIPortalsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIPortalsClientValidateDomainOptions contains the optional parameters for the APIPortalsClient.ValidateDomain method.
+type APIPortalsClientValidateDomainOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ActiveDeploymentCollection - Object that includes an array of Deployment resource name and set them as active.
 type ActiveDeploymentCollection struct {
 	// Collection of Deployment name.
@@ -54,6 +218,9 @@ type AppResourceProperties struct {
 	// Collection of addons
 	AddonConfigs map[string]map[string]interface{} `json:"addonConfigs,omitempty"`
 
+	// List of custom persistent disks
+	CustomPersistentDisks []*CustomPersistentDiskResource `json:"customPersistentDisks,omitempty"`
+
 	// Indicate if end to end TLS is enabled.
 	EnableEndToEndTLS *bool `json:"enableEndToEndTLS,omitempty"`
 
@@ -75,11 +242,23 @@ type AppResourceProperties struct {
 	// Temporary disk settings
 	TemporaryDisk *TemporaryDisk `json:"temporaryDisk,omitempty"`
 
+	// Additional App settings in vnet injection instance
+	VnetAddons *AppVNetAddons `json:"vnetAddons,omitempty"`
+
 	// READ-ONLY; Provisioning state of the App
 	ProvisioningState *AppResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; URL of the App
 	URL *string `json:"url,omitempty" azure:"ro"`
+}
+
+// AppVNetAddons - Additional App settings in vnet injection instance
+type AppVNetAddons struct {
+	// Indicates whether the App in vnet injection instance exposes endpoint which could be accessed from internet.
+	PublicEndpoint *bool `json:"publicEndpoint,omitempty"`
+
+	// READ-ONLY; URL of the App in vnet injection instance which could be accessed from internet
+	PublicEndpointURL *string `json:"publicEndpointUrl,omitempty" azure:"ro"`
 }
 
 // ApplicationInsightsAgentVersions - Application Insights agent versions properties payload
@@ -146,6 +325,34 @@ type AvailableOperations struct {
 type AvailableRuntimeVersions struct {
 	// READ-ONLY; A list of all supported runtime versions.
 	Value []*SupportedRuntimeVersion `json:"value,omitempty" azure:"ro"`
+}
+
+// AzureFileVolume - The properties of the Azure File volume. Azure File shares are mounted as volumes.
+type AzureFileVolume struct {
+	// REQUIRED; The mount path of the persistent disk.
+	MountPath *string `json:"mountPath,omitempty"`
+
+	// REQUIRED; The share name of the Azure File share.
+	ShareName *string `json:"shareName,omitempty"`
+
+	// REQUIRED; The type of the underlying resource to mount as a persistent disk.
+	Type *Type `json:"type,omitempty"`
+
+	// These are the mount options for a persistent disk.
+	MountOptions []*string `json:"mountOptions,omitempty"`
+
+	// Indicates whether the persistent disk is a readOnly one.
+	ReadOnly *bool `json:"readOnly,omitempty"`
+}
+
+// GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type AzureFileVolume.
+func (a *AzureFileVolume) GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties {
+	return &CustomPersistentDiskProperties{
+		Type:         a.Type,
+		MountPath:    a.MountPath,
+		ReadOnly:     a.ReadOnly,
+		MountOptions: a.MountOptions,
+	}
 }
 
 // BindingResource - Binding resource payload
@@ -271,11 +478,25 @@ type BuildProperties struct {
 	// The relative path of source code
 	RelativePath *string `json:"relativePath,omitempty"`
 
+	// The customized build resource for this build
+	ResourceRequests *BuildResourceRequests `json:"resourceRequests,omitempty"`
+
 	// READ-ONLY; Provisioning state of the KPack build result
 	ProvisioningState *BuildProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The build result triggered by this build
 	TriggeredBuildResult *TriggeredBuildResult `json:"triggeredBuildResult,omitempty" azure:"ro"`
+}
+
+// BuildResourceRequests - Resource request payload of Build Resource.
+type BuildResourceRequests struct {
+	// Optional Cpu allocated to the build resource. 1 core can be represented by 1 or 1000m. The default value is 1, this should
+	// not exceed build service agent pool cpu size.
+	CPU *string `json:"cpu,omitempty"`
+
+	// Optional Memory allocated to the build resource. 1 GB can be represented by 1Gi or 1024Mi. The default value is 2Gi, this
+	// should not exceed build service agent pool memory size.
+	Memory *string `json:"memory,omitempty"`
 }
 
 // BuildResult - Build result resource payload
@@ -722,6 +943,9 @@ type CertificateProperties struct {
 	// READ-ONLY; The issuer of certificate.
 	Issuer *string `json:"issuer,omitempty" azure:"ro"`
 
+	// READ-ONLY; Provisioning state of the Certificate
+	ProvisioningState *CertificateResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
 	// READ-ONLY; The subject name of certificate.
 	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
 
@@ -805,12 +1029,21 @@ type CloudErrorBody struct {
 
 // ClusterResourceProperties - Service properties payload
 type ClusterResourceProperties struct {
+	// Purchasing 3rd party product of the Service resource.
+	MarketplaceResource *MarketplaceResource `json:"marketplaceResource,omitempty"`
+
 	// Network profile of the Service
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
-	ZoneRedundant  *bool           `json:"zoneRedundant,omitempty"`
+
+	// Additional Service settings in vnet injection instance
+	VnetAddons    *ServiceVNetAddons `json:"vnetAddons,omitempty"`
+	ZoneRedundant *bool              `json:"zoneRedundant,omitempty"`
 
 	// READ-ONLY; Fully qualified dns name of the service instance
 	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Power state of the Service
+	PowerState *PowerState `json:"powerState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Provisioning state of the Service
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -1094,6 +1327,12 @@ type ConfigurationServicesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ContainerProbeSettings - Container liveness and readiness probe settings
+type ContainerProbeSettings struct {
+	// Indicates whether disable the liveness and readiness probe
+	DisableProbe *bool `json:"disableProbe,omitempty"`
+}
+
 // ContentCertificateProperties - Properties of certificate imported from key vault.
 type ContentCertificateProperties struct {
 	// REQUIRED; The type of the certificate source.
@@ -1117,6 +1356,9 @@ type ContentCertificateProperties struct {
 	// READ-ONLY; The issuer of certificate.
 	Issuer *string `json:"issuer,omitempty" azure:"ro"`
 
+	// READ-ONLY; Provisioning state of the Certificate
+	ProvisioningState *CertificateResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
 	// READ-ONLY; The subject name of certificate.
 	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
 
@@ -1127,14 +1369,56 @@ type ContentCertificateProperties struct {
 // GetCertificateProperties implements the CertificatePropertiesClassification interface for type ContentCertificateProperties.
 func (c *ContentCertificateProperties) GetCertificateProperties() *CertificateProperties {
 	return &CertificateProperties{
-		Type:           c.Type,
-		Thumbprint:     c.Thumbprint,
-		Issuer:         c.Issuer,
-		IssuedDate:     c.IssuedDate,
-		ExpirationDate: c.ExpirationDate,
-		ActivateDate:   c.ActivateDate,
-		SubjectName:    c.SubjectName,
-		DNSNames:       c.DNSNames,
+		Type:              c.Type,
+		Thumbprint:        c.Thumbprint,
+		Issuer:            c.Issuer,
+		IssuedDate:        c.IssuedDate,
+		ExpirationDate:    c.ExpirationDate,
+		ActivateDate:      c.ActivateDate,
+		SubjectName:       c.SubjectName,
+		DNSNames:          c.DNSNames,
+		ProvisioningState: c.ProvisioningState,
+	}
+}
+
+// CustomContainer - Custom container payload
+type CustomContainer struct {
+	// Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
+	Args []*string `json:"args,omitempty"`
+
+	// Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided.
+	Command []*string `json:"command,omitempty"`
+
+	// Container image of the custom container. This should be in the form of : without the server name of the registry
+	ContainerImage *string `json:"containerImage,omitempty"`
+
+	// Credential of the image registry
+	ImageRegistryCredential *ImageRegistryCredential `json:"imageRegistryCredential,omitempty"`
+
+	// Language framework of the container image uploaded
+	LanguageFramework *string `json:"languageFramework,omitempty"`
+
+	// The name of the registry that contains the container image
+	Server *string `json:"server,omitempty"`
+}
+
+// CustomContainerUserSourceInfo - Custom container user source info
+type CustomContainerUserSourceInfo struct {
+	// REQUIRED; Type of the source uploaded
+	Type *string `json:"type,omitempty"`
+
+	// Custom container payload
+	CustomContainer *CustomContainer `json:"customContainer,omitempty"`
+
+	// Version of the source
+	Version *string `json:"version,omitempty"`
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type CustomContainerUserSourceInfo.
+func (c *CustomContainerUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    c.Type,
+		Version: c.Version,
 	}
 }
 
@@ -1148,6 +1432,9 @@ type CustomDomainProperties struct {
 
 	// READ-ONLY; The app name of domain.
 	AppName *string `json:"appName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the Domain
+	ProvisioningState *CustomDomainResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // CustomDomainResource - Custom domain resource payload.
@@ -1219,6 +1506,44 @@ type CustomDomainsClientGetOptions struct {
 // CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
 type CustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// CustomPersistentDiskPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetCustomPersistentDiskProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureFileVolume, *CustomPersistentDiskProperties
+type CustomPersistentDiskPropertiesClassification interface {
+	// GetCustomPersistentDiskProperties returns the CustomPersistentDiskProperties content of the underlying type.
+	GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties
+}
+
+// CustomPersistentDiskProperties - Custom persistent disk resource payload.
+type CustomPersistentDiskProperties struct {
+	// REQUIRED; The mount path of the persistent disk.
+	MountPath *string `json:"mountPath,omitempty"`
+
+	// REQUIRED; The type of the underlying resource to mount as a persistent disk.
+	Type *Type `json:"type,omitempty"`
+
+	// These are the mount options for a persistent disk.
+	MountOptions []*string `json:"mountOptions,omitempty"`
+
+	// Indicates whether the persistent disk is a readOnly one.
+	ReadOnly *bool `json:"readOnly,omitempty"`
+}
+
+// GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type CustomPersistentDiskProperties.
+func (c *CustomPersistentDiskProperties) GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties {
+	return c
+}
+
+// CustomPersistentDiskResource - Custom persistent disk resource payload.
+type CustomPersistentDiskResource struct {
+	// REQUIRED; The resource id of Azure Spring Apps Storage resource.
+	StorageID *string `json:"storageId,omitempty"`
+
+	// Properties of the custom persistent disk resource payload.
+	CustomPersistentDiskProperties CustomPersistentDiskPropertiesClassification `json:"customPersistentDiskProperties,omitempty"`
 }
 
 // DeploymentInstance - Deployment instance payload
@@ -1298,13 +1623,40 @@ type DeploymentSettings struct {
 	// Collection of addons
 	AddonConfigs map[string]map[string]interface{} `json:"addonConfigs,omitempty"`
 
+	// Container liveness and readiness probe settings
+	ContainerProbeSettings *ContainerProbeSettings `json:"containerProbeSettings,omitempty"`
+
 	// Collection of environment variables
 	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// Periodic probe of App Instance liveness. App Instance will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	LivenessProbe *Probe `json:"livenessProbe,omitempty"`
+
+	// Periodic probe of App Instance service readiness. App Instance will be removed from service endpoints if the probe fails.
+	// More info:
+	// https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	ReadinessProbe *Probe `json:"readinessProbe,omitempty"`
 
 	// The requested resource quantity for required CPU and Memory. It is recommended that using this field to represent the required
 	// CPU and Memory, the old field cpu and memoryInGB will be deprecated
 	// later.
 	ResourceRequests *ResourceRequests `json:"resourceRequests,omitempty"`
+
+	// StartupProbe indicates that the App Instance has successfully initialized. If specified, no other probes are executed until
+	// this completes successfully. If this probe fails, the Pod will be restarted,
+	// just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a App Instance's
+	// lifecycle, when it might take a long time to load data or warm a cache,
+	// than during steady-state operation. This cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	StartupProbe *Probe `json:"startupProbe,omitempty"`
+
+	// Optional duration in seconds the App Instance needs to terminate gracefully. May be decreased in delete request. Value
+	// must be non-negative integer. The value zero indicates stop immediately via the
+	// kill signal (no opportunity to shut down). If this value is nil, the default grace period will be used instead. The grace
+	// period is the duration in seconds after the processes running in the App
+	// Instance are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+	// value longer than the expected cleanup time for your process. Defaults to 90
+	// seconds.
+	TerminationGracePeriodSeconds *int32 `json:"terminationGracePeriodSeconds,omitempty"`
 }
 
 // DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
@@ -1407,6 +1759,358 @@ type Error struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// ExecAction describes a "run in container" action.
+type ExecAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType `json:"type,omitempty"`
+
+	// Command is the command line to execute inside the container, the working directory for the command is root ('/') in the
+	// container's filesystem. The command is not run inside a shell, so traditional
+	// shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of
+	// 0 is treated as live/healthy and non-zero is unhealthy.
+	Command []*string `json:"command,omitempty"`
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type ExecAction.
+func (e *ExecAction) GetProbeAction() *ProbeAction {
+	return &ProbeAction{
+		Type: e.Type,
+	}
+}
+
+// GatewayAPIMetadataProperties - API metadata property for Spring Cloud Gateway
+type GatewayAPIMetadataProperties struct {
+	// Detailed description of the APIs available on the Gateway instance (default: Generated OpenAPI 3 document that describes
+	// the API routes configured.)
+	Description *string `json:"description,omitempty"`
+
+	// Location of additional documentation for the APIs available on the Gateway instance
+	Documentation *string `json:"documentation,omitempty"`
+
+	// Base URL that API consumers will use to access APIs on the Gateway instance.
+	ServerURL *string `json:"serverUrl,omitempty"`
+
+	// Title describing the context of the APIs available on the Gateway instance (default: Spring Cloud Gateway for K8S)
+	Title *string `json:"title,omitempty"`
+
+	// Version of APIs available on this Gateway instance (default: unspecified).
+	Version *string `json:"version,omitempty"`
+}
+
+// GatewayAPIRoute - API route config of the Spring Cloud Gateway
+type GatewayAPIRoute struct {
+	// A description, will be applied to methods in the generated OpenAPI documentation.
+	Description *string `json:"description,omitempty"`
+
+	// To modify the request before sending it to the target endpoint, or the received response.
+	Filters []*string `json:"filters,omitempty"`
+
+	// Route processing order.
+	Order *int32 `json:"order,omitempty"`
+
+	// A number of conditions to evaluate a route for each request. Each predicate may be evaluated against request headers and
+	// parameter values. All of the predicates associated with a route must evaluate
+	// to true for the route to be matched to the request.
+	Predicates []*string `json:"predicates,omitempty"`
+
+	// Enable sso validation.
+	SsoEnabled *bool `json:"ssoEnabled,omitempty"`
+
+	// Classification tags, will be applied to methods in the generated OpenAPI documentation.
+	Tags []*string `json:"tags,omitempty"`
+
+	// A title, will be applied to methods in the generated OpenAPI documentation.
+	Title *string `json:"title,omitempty"`
+
+	// Pass currently-authenticated user's identity token to application service, default is 'false'
+	TokenRelay *bool `json:"tokenRelay,omitempty"`
+
+	// Full uri, will override appName.
+	URI *string `json:"uri,omitempty"`
+}
+
+// GatewayCorsProperties - Cross-Origin Resource Sharing property
+type GatewayCorsProperties struct {
+	// Whether user credentials are supported on cross-site requests. Valid values: true, false.
+	AllowCredentials *bool `json:"allowCredentials,omitempty"`
+
+	// Allowed headers in cross-site requests. The special value * allows actual requests to send any header.
+	AllowedHeaders []*string `json:"allowedHeaders,omitempty"`
+
+	// Allowed HTTP methods on cross-site requests. The special value * allows all methods. If not set, GET and HEAD are allowed
+	// by default.
+	AllowedMethods []*string `json:"allowedMethods,omitempty"`
+
+	// Allowed origins to make cross-site requests. The special value * allows all domains.
+	AllowedOrigins []*string `json:"allowedOrigins,omitempty"`
+
+	// HTTP response headers to expose for cross-site requests.
+	ExposedHeaders []*string `json:"exposedHeaders,omitempty"`
+
+	// How long, in seconds, the response from a pre-flight request can be cached by clients.
+	MaxAge *int32 `json:"maxAge,omitempty"`
+}
+
+// GatewayCustomDomainProperties - The properties of custom domain for Spring Cloud Gateway
+type GatewayCustomDomainProperties struct {
+	// The thumbprint of bound certificate.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+}
+
+// GatewayCustomDomainResource - Custom domain of the Spring Cloud Gateway
+type GatewayCustomDomainResource struct {
+	// The properties of custom domain for Spring Cloud Gateway
+	Properties *GatewayCustomDomainProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GatewayCustomDomainResourceCollection - Object that includes an array of Spring Cloud Gateway custom domain resources and
+// a possible link for next set
+type GatewayCustomDomainResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of Spring Cloud Gateway custom domain resources
+	Value []*GatewayCustomDomainResource `json:"value,omitempty"`
+}
+
+// GatewayCustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewayCustomDomainsClient.BeginCreateOrUpdate
+// method.
+type GatewayCustomDomainsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewayCustomDomainsClientBeginDeleteOptions contains the optional parameters for the GatewayCustomDomainsClient.BeginDelete
+// method.
+type GatewayCustomDomainsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewayCustomDomainsClientGetOptions contains the optional parameters for the GatewayCustomDomainsClient.Get method.
+type GatewayCustomDomainsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayCustomDomainsClientListOptions contains the optional parameters for the GatewayCustomDomainsClient.List method.
+type GatewayCustomDomainsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayInstance - Collection of instances belong to the Spring Cloud Gateway
+type GatewayInstance struct {
+	// READ-ONLY; Name of the Spring Cloud Gateway instance
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the Spring Cloud Gateway instance
+	Status *string `json:"status,omitempty" azure:"ro"`
+}
+
+// GatewayOperatorProperties - Properties of the Spring Cloud Gateway Operator.
+type GatewayOperatorProperties struct {
+	// READ-ONLY; Collection of instances belong to Spring Cloud Gateway operator.
+	Instances []*GatewayInstance `json:"instances,omitempty" azure:"ro"`
+
+	// READ-ONLY; The requested resource quantity for required CPU and Memory.
+	ResourceRequests *GatewayOperatorResourceRequests `json:"resourceRequests,omitempty" azure:"ro"`
+}
+
+// GatewayOperatorResourceRequests - Properties of the Spring Cloud Gateway Operator.
+type GatewayOperatorResourceRequests struct {
+	// READ-ONLY; Cpu allocated to each Spring Cloud Gateway Operator instance.
+	CPU *string `json:"cpu,omitempty" azure:"ro"`
+
+	// READ-ONLY; Instance count of the Spring Cloud Gateway Operator.
+	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; Memory allocated to each Spring Cloud Gateway Operator instance.
+	Memory *string `json:"memory,omitempty" azure:"ro"`
+}
+
+// GatewayProperties - Spring Cloud Gateway properties payload
+type GatewayProperties struct {
+	// API metadata property for Spring Cloud Gateway
+	APIMetadataProperties *GatewayAPIMetadataProperties `json:"apiMetadataProperties,omitempty"`
+
+	// Cross-Origin Resource Sharing property
+	CorsProperties *GatewayCorsProperties `json:"corsProperties,omitempty"`
+
+	// Indicate if only https is allowed.
+	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+
+	// Indicates whether the Spring Cloud Gateway exposes endpoint.
+	Public *bool `json:"public,omitempty"`
+
+	// The requested resource quantity for required CPU and Memory.
+	ResourceRequests *GatewayResourceRequests `json:"resourceRequests,omitempty"`
+
+	// Single sign-on related configuration
+	SsoProperties *SsoProperties `json:"ssoProperties,omitempty"`
+
+	// READ-ONLY; Collection of instances belong to Spring Cloud Gateway.
+	Instances []*GatewayInstance `json:"instances,omitempty" azure:"ro"`
+
+	// READ-ONLY; Properties of the Spring Cloud Gateway Operator.
+	OperatorProperties *GatewayOperatorProperties `json:"operatorProperties,omitempty" azure:"ro"`
+
+	// READ-ONLY; State of the Spring Cloud Gateway.
+	ProvisioningState *GatewayProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; URL of the Spring Cloud Gateway, exposed when 'public' is true.
+	URL *string `json:"url,omitempty" azure:"ro"`
+}
+
+// GatewayResource - Spring Cloud Gateway resource
+type GatewayResource struct {
+	// Spring Cloud Gateway properties payload
+	Properties *GatewayProperties `json:"properties,omitempty"`
+
+	// Sku of the Spring Cloud Gateway resource
+	SKU *SKU `json:"sku,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GatewayResourceCollection - Object that includes an array of gateway resources and a possible link for next set
+type GatewayResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of gateway resources
+	Value []*GatewayResource `json:"value,omitempty"`
+}
+
+// GatewayResourceRequests - Resource request payload of Spring Cloud Gateway.
+type GatewayResourceRequests struct {
+	// Cpu allocated to each Spring Cloud Gateway instance.
+	CPU *string `json:"cpu,omitempty"`
+
+	// Memory allocated to each Spring Cloud Gateway instance.
+	Memory *string `json:"memory,omitempty"`
+}
+
+// GatewayRouteConfigOpenAPIProperties - OpenAPI properties of Spring Cloud Gateway route config.
+type GatewayRouteConfigOpenAPIProperties struct {
+	// The URI of OpenAPI specification.
+	URI *string `json:"uri,omitempty"`
+}
+
+// GatewayRouteConfigProperties - API route config of the Spring Cloud Gateway
+type GatewayRouteConfigProperties struct {
+	// The resource Id of the Azure Spring Apps app, required unless route defines uri.
+	AppResourceID *string `json:"appResourceId,omitempty"`
+
+	// OpenAPI properties of Spring Cloud Gateway route config.
+	OpenAPI *GatewayRouteConfigOpenAPIProperties `json:"openApi,omitempty"`
+
+	// Array of API routes, each route contains properties such as title, uri, ssoEnabled, predicates, filters.
+	Routes []*GatewayAPIRoute `json:"routes,omitempty"`
+
+	// READ-ONLY; State of the Spring Cloud Gateway route config.
+	ProvisioningState *GatewayProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GatewayRouteConfigResource - Spring Cloud Gateway route config resource
+type GatewayRouteConfigResource struct {
+	// API route config of the Spring Cloud Gateway
+	Properties *GatewayRouteConfigProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GatewayRouteConfigResourceCollection - Object that includes an array of Spring Cloud Gateway route config resources and
+// a possible link for next set
+type GatewayRouteConfigResourceCollection struct {
+	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Collection of Spring Cloud Gateway route config resources
+	Value []*GatewayRouteConfigResource `json:"value,omitempty"`
+}
+
+// GatewayRouteConfigsClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewayRouteConfigsClient.BeginCreateOrUpdate
+// method.
+type GatewayRouteConfigsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewayRouteConfigsClientBeginDeleteOptions contains the optional parameters for the GatewayRouteConfigsClient.BeginDelete
+// method.
+type GatewayRouteConfigsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewayRouteConfigsClientGetOptions contains the optional parameters for the GatewayRouteConfigsClient.Get method.
+type GatewayRouteConfigsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewayRouteConfigsClientListOptions contains the optional parameters for the GatewayRouteConfigsClient.List method.
+type GatewayRouteConfigsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the GatewaysClient.BeginCreateOrUpdate method.
+type GatewaysClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewaysClientBeginDeleteOptions contains the optional parameters for the GatewaysClient.BeginDelete method.
+type GatewaysClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// GatewaysClientGetOptions contains the optional parameters for the GatewaysClient.Get method.
+type GatewaysClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientListOptions contains the optional parameters for the GatewaysClient.List method.
+type GatewaysClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GatewaysClientValidateDomainOptions contains the optional parameters for the GatewaysClient.ValidateDomain method.
+type GatewaysClientValidateDomainOptions struct {
+	// placeholder for future optional parameters
+}
+
 // GitPatternRepository - Git repository property payload for config server
 type GitPatternRepository struct {
 	// REQUIRED; Name of the repository
@@ -1441,6 +2145,43 @@ type GitPatternRepository struct {
 
 	// Username of git repository basic auth.
 	Username *string `json:"username,omitempty"`
+}
+
+// HTTPGetAction describes an action based on HTTP Get requests.
+type HTTPGetAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType `json:"type,omitempty"`
+
+	// Path to access on the HTTP server.
+	Path *string `json:"path,omitempty"`
+
+	// Scheme to use for connecting to the host. Defaults to HTTP.
+	// Possible enum values:
+	// * "HTTP" means that the scheme used will be http://
+	// * "HTTPS" means that the scheme used will be https://
+	Scheme *HTTPSchemeType `json:"scheme,omitempty"`
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type HTTPGetAction.
+func (h *HTTPGetAction) GetProbeAction() *ProbeAction {
+	return &ProbeAction{
+		Type: h.Type,
+	}
+}
+
+// ImageRegistryCredential - Credential of the image registry
+type ImageRegistryCredential struct {
+	// The password of the image registry credential
+	Password *string `json:"password,omitempty"`
+
+	// The username of the image registry credential
+	Username *string `json:"username,omitempty"`
+}
+
+// IngressConfig - Ingress configuration payload for Azure Spring Apps resource.
+type IngressConfig struct {
+	// Ingress read time out in seconds.
+	ReadTimeoutInSeconds *int32 `json:"readTimeoutInSeconds,omitempty"`
 }
 
 // JarUploadedUserSourceInfo - Uploaded Jar binary for a deployment
@@ -1510,6 +2251,9 @@ type KeyVaultCertificateProperties struct {
 	// READ-ONLY; The issuer of certificate.
 	Issuer *string `json:"issuer,omitempty" azure:"ro"`
 
+	// READ-ONLY; Provisioning state of the Certificate
+	ProvisioningState *CertificateResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
 	// READ-ONLY; The subject name of certificate.
 	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
 
@@ -1520,14 +2264,15 @@ type KeyVaultCertificateProperties struct {
 // GetCertificateProperties implements the CertificatePropertiesClassification interface for type KeyVaultCertificateProperties.
 func (k *KeyVaultCertificateProperties) GetCertificateProperties() *CertificateProperties {
 	return &CertificateProperties{
-		Type:           k.Type,
-		Thumbprint:     k.Thumbprint,
-		Issuer:         k.Issuer,
-		IssuedDate:     k.IssuedDate,
-		ExpirationDate: k.ExpirationDate,
-		ActivateDate:   k.ActivateDate,
-		SubjectName:    k.SubjectName,
-		DNSNames:       k.DNSNames,
+		Type:              k.Type,
+		Thumbprint:        k.Thumbprint,
+		Issuer:            k.Issuer,
+		IssuedDate:        k.IssuedDate,
+		ExpirationDate:    k.ExpirationDate,
+		ActivateDate:      k.ActivateDate,
+		SubjectName:       k.SubjectName,
+		DNSNames:          k.DNSNames,
+		ProvisioningState: k.ProvisioningState,
 	}
 }
 
@@ -1568,6 +2313,21 @@ type ManagedIdentityProperties struct {
 
 	// Type of the managed identity
 	Type *ManagedIdentityType `json:"type,omitempty"`
+
+	// Properties of user-assigned managed identities
+	UserAssignedIdentities map[string]*UserAssignedManagedIdentity `json:"userAssignedIdentities,omitempty"`
+}
+
+// MarketplaceResource - Purchasing 3rd Party product for one Azure Spring Apps instance
+type MarketplaceResource struct {
+	// The plan id of the 3rd Party Artifact that is being procured.
+	Plan *string `json:"plan,omitempty"`
+
+	// The 3rd Party artifact that is being procured.
+	Product *string `json:"product,omitempty"`
+
+	// The publisher id of the 3rd Party Artifact that is being bought.
+	Publisher *string `json:"publisher,omitempty"`
 }
 
 // MetricDimension - Specifications of the Dimension of metrics
@@ -1742,6 +2502,9 @@ type NetworkProfile struct {
 	// Fully qualified resource Id of the subnet to host customer apps in Azure Spring Apps
 	AppSubnetID *string `json:"appSubnetId,omitempty"`
 
+	// Ingress configuration payload for Azure Spring Apps resource.
+	IngressConfig *IngressConfig `json:"ingressConfig,omitempty"`
+
 	// Azure Spring Apps service reserved CIDR
 	ServiceCidr *string `json:"serviceCidr,omitempty"`
 
@@ -1822,6 +2585,50 @@ type PersistentDisk struct {
 	// READ-ONLY; Size of the used persistent disk in GB
 	UsedInGB *int32 `json:"usedInGB,omitempty" azure:"ro"`
 }
+
+// Probe describes a health check to be performed against an App Instance to determine whether it is alive or ready to receive
+// traffic.
+type Probe struct {
+	// REQUIRED; Indicate whether the probe is disabled.
+	DisableProbe *bool `json:"disableProbe,omitempty"`
+
+	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	// Number of seconds after the App Instance has started before probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
+	// How often (in seconds) to perform the probe. Minimum value is 1.
+	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+
+	// The action of the probe.
+	ProbeAction ProbeActionClassification `json:"probeAction,omitempty"`
+
+	// Minimum consecutive successes for the probe to be considered successful after having failed. Must be 1 for liveness and
+	// startup. Minimum value is 1.
+	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+
+	// Number of seconds after which the probe times out. Minimum value is 1.
+	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+}
+
+// ProbeActionClassification provides polymorphic access to related types.
+// Call the interface's GetProbeAction() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ExecAction, *HTTPGetAction, *ProbeAction, *TCPSocketAction
+type ProbeActionClassification interface {
+	// GetProbeAction returns the ProbeAction content of the underlying type.
+	GetProbeAction() *ProbeAction
+}
+
+// ProbeAction - The action of the probe.
+type ProbeAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType `json:"type,omitempty"`
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type ProbeAction.
+func (p *ProbeAction) GetProbeAction() *ProbeAction { return p }
 
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
 // and tags.
@@ -2153,6 +2960,12 @@ type ServiceSpecification struct {
 	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
+// ServiceVNetAddons - Additional Service settings in vnet injection instance
+type ServiceVNetAddons struct {
+	// Indicates whether the log stream in vnet injection instance could be accessed from internet.
+	LogStreamPublicEndpoint *bool `json:"logStreamPublicEndpoint,omitempty"`
+}
+
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
 type ServicesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -2161,6 +2974,18 @@ type ServicesClientBeginCreateOrUpdateOptions struct {
 
 // ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
 type ServicesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientBeginStartOptions contains the optional parameters for the ServicesClient.BeginStart method.
+type ServicesClientBeginStartOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientBeginStopOptions contains the optional parameters for the ServicesClient.BeginStop method.
+type ServicesClientBeginStopOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2248,6 +3073,21 @@ func (s *SourceUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 	}
 }
 
+// SsoProperties - Single sign-on related configuration
+type SsoProperties struct {
+	// The public identifier for the application
+	ClientID *string `json:"clientId,omitempty"`
+
+	// The secret known only to the application and the authorization server
+	ClientSecret *string `json:"clientSecret,omitempty"`
+
+	// The URI of Issuer Identifier
+	IssuerURI *string `json:"issuerUri,omitempty"`
+
+	// It defines the specific actions applications can be allowed to do on a user's behalf
+	Scope []*string `json:"scope,omitempty"`
+}
+
 // StackProperties - KPack ClusterStack properties payload
 type StackProperties struct {
 	// Id of the ClusterStack.
@@ -2255,6 +3095,92 @@ type StackProperties struct {
 
 	// Version of the ClusterStack
 	Version *string `json:"version,omitempty"`
+}
+
+// StorageAccount - storage resource of type Azure Storage Account.
+type StorageAccount struct {
+	// REQUIRED; The account key of the Azure Storage Account.
+	AccountKey *string `json:"accountKey,omitempty"`
+
+	// REQUIRED; The account name of the Azure Storage Account.
+	AccountName *string `json:"accountName,omitempty"`
+
+	// REQUIRED; The type of the storage.
+	StorageType *StorageType `json:"storageType,omitempty"`
+}
+
+// GetStorageProperties implements the StoragePropertiesClassification interface for type StorageAccount.
+func (s *StorageAccount) GetStorageProperties() *StorageProperties {
+	return &StorageProperties{
+		StorageType: s.StorageType,
+	}
+}
+
+// StoragePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetStorageProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *StorageAccount, *StorageProperties
+type StoragePropertiesClassification interface {
+	// GetStorageProperties returns the StorageProperties content of the underlying type.
+	GetStorageProperties() *StorageProperties
+}
+
+// StorageProperties - Storage resource payload.
+type StorageProperties struct {
+	// REQUIRED; The type of the storage.
+	StorageType *StorageType `json:"storageType,omitempty"`
+}
+
+// GetStorageProperties implements the StoragePropertiesClassification interface for type StorageProperties.
+func (s *StorageProperties) GetStorageProperties() *StorageProperties { return s }
+
+// StorageResource - Storage resource payload.
+type StorageResource struct {
+	// Properties of the storage resource payload.
+	Properties StoragePropertiesClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// StorageResourceCollection - Collection compose of storage resources list and a possible link for next page.
+type StorageResourceCollection struct {
+	// The link to next page of storage list.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The storage resources list.
+	Value []*StorageResource `json:"value,omitempty"`
+}
+
+// StoragesClientBeginCreateOrUpdateOptions contains the optional parameters for the StoragesClient.BeginCreateOrUpdate method.
+type StoragesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// StoragesClientBeginDeleteOptions contains the optional parameters for the StoragesClient.BeginDelete method.
+type StoragesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// StoragesClientGetOptions contains the optional parameters for the StoragesClient.Get method.
+type StoragesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StoragesClientListOptions contains the optional parameters for the StoragesClient.List method.
+type StoragesClientListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // SupportedBuildpackResource - Supported buildpack resource payload
@@ -2360,6 +3286,19 @@ type SystemData struct {
 	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty"`
 }
 
+// TCPSocketAction describes an action based on opening a socket
+type TCPSocketAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType `json:"type,omitempty"`
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type TCPSocketAction.
+func (t *TCPSocketAction) GetProbeAction() *ProbeAction {
+	return &ProbeAction{
+		Type: t.Type,
+	}
+}
+
 // TemporaryDisk - Temporary disk payload
 type TemporaryDisk struct {
 	// Mount path of the temporary disk
@@ -2447,11 +3386,20 @@ func (u *UploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
 	}
 }
 
+// UserAssignedManagedIdentity - The details of the user-assigned managed identity assigned to an App.
+type UserAssignedManagedIdentity struct {
+	// READ-ONLY; Client Id of user-assigned managed identity.
+	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Principal Id of user-assigned managed identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+}
+
 // UserSourceInfoClassification provides polymorphic access to related types.
 // Call the interface's GetUserSourceInfo() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *BuildResultUserSourceInfo, *JarUploadedUserSourceInfo, *NetCoreZipUploadedUserSourceInfo, *SourceUploadedUserSourceInfo,
-// - *UploadedUserSourceInfo, *UserSourceInfo
+// - *BuildResultUserSourceInfo, *CustomContainerUserSourceInfo, *JarUploadedUserSourceInfo, *NetCoreZipUploadedUserSourceInfo,
+// - *SourceUploadedUserSourceInfo, *UploadedUserSourceInfo, *UserSourceInfo
 type UserSourceInfoClassification interface {
 	// GetUserSourceInfo returns the UserSourceInfo content of the underlying type.
 	GetUserSourceInfo() *UserSourceInfo

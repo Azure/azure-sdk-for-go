@@ -17,22 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_Get.json
-func ExampleBuildServiceBuilderClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Storages_Get.json
+func ExampleStoragesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewStoragesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
 		"myResourceGroup",
 		"myservice",
-		"default",
-		"mybuilder",
+		"mystorage",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -41,36 +40,26 @@ func ExampleBuildServiceBuilderClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_CreateOrUpdate.json
-func ExampleBuildServiceBuilderClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Storages_CreateOrUpdate.json
+func ExampleStoragesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewStoragesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"myResourceGroup",
 		"myservice",
-		"default",
-		"mybuilder",
-		armappplatform.BuilderResource{
-			Properties: &armappplatform.BuilderProperties{
-				BuildpackGroups: []*armappplatform.BuildpacksGroupProperties{
-					{
-						Name: to.Ptr("mix"),
-						Buildpacks: []*armappplatform.BuildpackProperties{
-							{
-								ID: to.Ptr("tanzu-buildpacks/java-azure"),
-							}},
-					}},
-				Stack: &armappplatform.StackProperties{
-					ID:      to.Ptr("io.buildpacks.stacks.bionic"),
-					Version: to.Ptr("base"),
-				},
+		"mystorage",
+		armappplatform.StorageResource{
+			Properties: &armappplatform.StorageAccount{
+				StorageType: to.Ptr(armappplatform.StorageTypeStorageAccount),
+				AccountKey:  to.Ptr("account-key-of-storage-account"),
+				AccountName: to.Ptr("storage-account-name"),
 			},
 		},
 		nil)
@@ -85,22 +74,21 @@ func ExampleBuildServiceBuilderClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_Delete.json
-func ExampleBuildServiceBuilderClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Storages_Delete.json
+func ExampleStoragesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewStoragesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
 		"myResourceGroup",
 		"myservice",
-		"default",
-		"mybuilder",
+		"mystorage",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -111,20 +99,19 @@ func ExampleBuildServiceBuilderClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_List.json
-func ExampleBuildServiceBuilderClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/Storages_List.json
+func ExampleStoragesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewStoragesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListPager("myResourceGroup",
-		"myservice",
-		"default",
+		"myService",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)

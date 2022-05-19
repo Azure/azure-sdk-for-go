@@ -30,6 +30,64 @@ func unmarshalCertificatePropertiesClassification(rawMsg json.RawMessage) (Certi
 	return b, json.Unmarshal(rawMsg, b)
 }
 
+func unmarshalCustomPersistentDiskPropertiesClassification(rawMsg json.RawMessage) (CustomPersistentDiskPropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b CustomPersistentDiskPropertiesClassification
+	switch m["type"] {
+	case string(TypeAzureFileVolume):
+		b = &AzureFileVolume{}
+	default:
+		b = &CustomPersistentDiskProperties{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalProbeActionClassification(rawMsg json.RawMessage) (ProbeActionClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ProbeActionClassification
+	switch m["type"] {
+	case string(ProbeActionTypeExecAction):
+		b = &ExecAction{}
+	case string(ProbeActionTypeHTTPGetAction):
+		b = &HTTPGetAction{}
+	case string(ProbeActionTypeTCPSocketAction):
+		b = &TCPSocketAction{}
+	default:
+		b = &ProbeAction{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalStoragePropertiesClassification(rawMsg json.RawMessage) (StoragePropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b StoragePropertiesClassification
+	switch m["storageType"] {
+	case string(StorageTypeStorageAccount):
+		b = &StorageAccount{}
+	default:
+		b = &StorageProperties{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
 func unmarshalUserSourceInfoClassification(rawMsg json.RawMessage) (UserSourceInfoClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -42,6 +100,8 @@ func unmarshalUserSourceInfoClassification(rawMsg json.RawMessage) (UserSourceIn
 	switch m["type"] {
 	case "BuildResult":
 		b = &BuildResultUserSourceInfo{}
+	case "Container":
+		b = &CustomContainerUserSourceInfo{}
 	case "Jar":
 		b = &JarUploadedUserSourceInfo{}
 	case "NetCoreZip":

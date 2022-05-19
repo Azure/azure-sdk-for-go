@@ -50,7 +50,7 @@ func NewRuntimeVersionsClient(credential azcore.TokenCredential, options *arm.Cl
 
 // ListRuntimeVersions - Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01
+// Generated from API version 2022-05-01-preview
 // options - RuntimeVersionsClientListRuntimeVersionsOptions contains the optional parameters for the RuntimeVersionsClient.ListRuntimeVersions
 // method.
 func (client *RuntimeVersionsClient) ListRuntimeVersions(ctx context.Context, options *RuntimeVersionsClientListRuntimeVersionsOptions) (RuntimeVersionsClientListRuntimeVersionsResponse, error) {
@@ -76,7 +76,7 @@ func (client *RuntimeVersionsClient) listRuntimeVersionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

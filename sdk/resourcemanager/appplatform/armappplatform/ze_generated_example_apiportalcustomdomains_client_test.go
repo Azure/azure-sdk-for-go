@@ -17,14 +17,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_Get.json
-func ExampleBuildServiceBuilderClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/ApiPortalCustomDomains_Get.json
+func ExampleAPIPortalCustomDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewAPIPortalCustomDomainsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -32,7 +32,7 @@ func ExampleBuildServiceBuilderClient_Get() {
 		"myResourceGroup",
 		"myservice",
 		"default",
-		"mybuilder",
+		"myDomainName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -41,14 +41,14 @@ func ExampleBuildServiceBuilderClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_CreateOrUpdate.json
-func ExampleBuildServiceBuilderClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/ApiPortalCustomDomains_CreateOrUpdate.json
+func ExampleAPIPortalCustomDomainsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewAPIPortalCustomDomainsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -56,21 +56,10 @@ func ExampleBuildServiceBuilderClient_BeginCreateOrUpdate() {
 		"myResourceGroup",
 		"myservice",
 		"default",
-		"mybuilder",
-		armappplatform.BuilderResource{
-			Properties: &armappplatform.BuilderProperties{
-				BuildpackGroups: []*armappplatform.BuildpacksGroupProperties{
-					{
-						Name: to.Ptr("mix"),
-						Buildpacks: []*armappplatform.BuildpackProperties{
-							{
-								ID: to.Ptr("tanzu-buildpacks/java-azure"),
-							}},
-					}},
-				Stack: &armappplatform.StackProperties{
-					ID:      to.Ptr("io.buildpacks.stacks.bionic"),
-					Version: to.Ptr("base"),
-				},
+		"myDomainName",
+		armappplatform.APIPortalCustomDomainResource{
+			Properties: &armappplatform.APIPortalCustomDomainProperties{
+				Thumbprint: to.Ptr("*"),
 			},
 		},
 		nil)
@@ -85,14 +74,14 @@ func ExampleBuildServiceBuilderClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_Delete.json
-func ExampleBuildServiceBuilderClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/ApiPortalCustomDomains_Delete.json
+func ExampleAPIPortalCustomDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewAPIPortalCustomDomainsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -100,7 +89,7 @@ func ExampleBuildServiceBuilderClient_BeginDelete() {
 		"myResourceGroup",
 		"myservice",
 		"default",
-		"mybuilder",
+		"myDomainName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -111,14 +100,14 @@ func ExampleBuildServiceBuilderClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/BuildServiceBuilder_List.json
-func ExampleBuildServiceBuilderClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/ApiPortalCustomDomains_List.json
+func ExampleAPIPortalCustomDomainsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewBuildServiceBuilderClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	client, err := armappplatform.NewAPIPortalCustomDomainsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

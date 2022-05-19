@@ -149,7 +149,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		isCurrentPreview, err := ContainsPreviewAPIVersion(packagePath)
+		isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 		if err != nil {
 			return nil, err
 		}

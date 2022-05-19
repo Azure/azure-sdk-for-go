@@ -53,7 +53,7 @@ func NewExtensionTopicsClient(credential azcore.TokenCredential, options *arm.Cl
 
 // Get - Get the properties of an extension topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // scope - The identifier of the resource to which extension topic is queried. The scope can be a subscription, or a resource
 // group, or a top level resource belonging to a resource provider namespace. For
 // example, use '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
@@ -88,7 +88,7 @@ func (client *ExtensionTopicsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

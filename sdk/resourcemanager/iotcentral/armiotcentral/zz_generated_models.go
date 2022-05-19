@@ -8,9 +8,11 @@
 
 package armiotcentral
 
+import "time"
+
 // App - The IoT Central application.
 type App struct {
-	// REQUIRED; The resource location.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// REQUIRED; A valid instance SKU.
@@ -22,16 +24,19 @@ type App struct {
 	// The common properties of an IoT Central application.
 	Properties *AppProperties `json:"properties,omitempty"`
 
-	// The resource tags.
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; The ARM resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; The ARM resource name.
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -76,6 +81,12 @@ type AppProperties struct {
 	// The display name of the application.
 	DisplayName *string `json:"displayName,omitempty"`
 
+	// Network Rule Set Properties of this IoT Central application.
+	NetworkRuleSets *NetworkRuleSets `json:"networkRuleSets,omitempty"`
+
+	// Whether requests from the public network are allowed.
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
 	// The subdomain of the application.
 	Subdomain *string `json:"subdomain,omitempty"`
 
@@ -86,6 +97,12 @@ type AppProperties struct {
 
 	// READ-ONLY; The ID of the application.
 	ApplicationID *string `json:"applicationId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Private endpoint connections created on this IoT Central application.
+	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the application.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The current state of the application.
 	State *AppState `json:"state,omitempty" azure:"ro"`
@@ -191,25 +208,65 @@ type AppsClientListTemplatesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudError - Error details.
-type CloudError struct {
-	// Error response body.
-	Error *CloudErrorBody `json:"error,omitempty"`
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty" azure:"ro"`
+
+	// READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// CloudErrorBody - Details of error response.
-type CloudErrorBody struct {
-	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
 
-	// READ-ONLY; The target of the particular error.
+	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+// NetworkRuleSetIPRule - An object for an IP range that will be allowed access.
+type NetworkRuleSetIPRule struct {
+	// The readable name of the IP rule.
+	FilterName *string `json:"filterName,omitempty"`
+
+	// The CIDR block defining the IP range.
+	IPMask *string `json:"ipMask,omitempty"`
+
+	// READ-ONLY; The network action for the IP mask.
+	Action *IPRuleAction `json:"action,omitempty" azure:"ro"`
+}
+
+// NetworkRuleSets - Network Rule Set Properties of this IoT Central application.
+type NetworkRuleSets struct {
+	// Whether these rules apply for device connectivity to IoT Hub and Device Provisioning service associated with this application.
+	ApplyToDevices *bool `json:"applyToDevices,omitempty"`
+
+	// Whether these rules apply for connectivity via IoT Central web portal and APIs.
+	ApplyToIoTCentral *bool `json:"applyToIoTCentral,omitempty"`
+
+	// The default network action to apply.
+	DefaultAction *NetworkAction `json:"defaultAction,omitempty"`
+
+	// List of IP rules.
+	IPRules []*NetworkRuleSetIPRule `json:"ipRules,omitempty"`
 }
 
 // Operation - IoT Central REST API operation
@@ -266,21 +323,148 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Resource - The common properties of an ARM resource.
-type Resource struct {
-	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+// PrivateEndpoint - The private endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The ARM identifier for private endpoint.
+	ID *string `json:"id,omitempty" azure:"ro"`
+}
 
-	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+// PrivateEndpointConnection - The private endpoint connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 
-	// READ-ONLY; The ARM resource identifier.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; The ARM resource name.
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The resource type.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PrivateEndpointConnectionListResult - List of private endpoint connections associated with the specified resource.
+type PrivateEndpointConnectionListResult struct {
+	// Array of private endpoint connections.
+	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string `json:"groupIds,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// method.
+type PrivateEndpointConnectionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResource - A private link resource.
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PrivateLinkResourceListResult - A list of private link resources.
+type PrivateLinkResourceListResult struct {
+	// Array of private link resources
+	Value []*PrivateLinkResource `json:"value,omitempty"`
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+
+	// The reason for approval/rejection of the connection.
+	Description *string `json:"description,omitempty"`
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+}
+
+// PrivateLinksClientGetOptions contains the optional parameters for the PrivateLinksClient.Get method.
+type PrivateLinksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinksClientListOptions contains the optional parameters for the PrivateLinksClient.List method.
+type PrivateLinksClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -295,4 +479,47 @@ type SystemAssignedServiceIdentity struct {
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }

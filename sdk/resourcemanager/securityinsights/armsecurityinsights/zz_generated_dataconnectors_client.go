@@ -54,9 +54,62 @@ func NewDataConnectorsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
+// Connect - Connects a data connector.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// dataConnectorID - Connector ID
+// connectBody - The data connector
+// options - DataConnectorsClientConnectOptions contains the optional parameters for the DataConnectorsClient.Connect method.
+func (client *DataConnectorsClient) Connect(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, connectBody DataConnectorConnectBody, options *DataConnectorsClientConnectOptions) (DataConnectorsClientConnectResponse, error) {
+	req, err := client.connectCreateRequest(ctx, resourceGroupName, workspaceName, dataConnectorID, connectBody, options)
+	if err != nil {
+		return DataConnectorsClientConnectResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return DataConnectorsClientConnectResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return DataConnectorsClientConnectResponse{}, runtime.NewResponseError(resp)
+	}
+	return DataConnectorsClientConnectResponse{}, nil
+}
+
+// connectCreateRequest creates the Connect request.
+func (client *DataConnectorsClient) connectCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, connectBody DataConnectorConnectBody, options *DataConnectorsClientConnectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}/connect"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if dataConnectorID == "" {
+		return nil, errors.New("parameter dataConnectorID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataConnectorId}", url.PathEscape(dataConnectorID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, connectBody)
+}
+
 // CreateOrUpdate - Creates or updates the data connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2022-05-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataConnectorID - Connector ID
@@ -102,7 +155,7 @@ func (client *DataConnectorsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dataConnector)
@@ -119,7 +172,7 @@ func (client *DataConnectorsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Delete the data connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2022-05-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataConnectorID - Connector ID
@@ -163,7 +216,60 @@ func (client *DataConnectorsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// Disconnect - Disconnect a data connector.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01-preview
+// resourceGroupName - The name of the resource group. The name is case insensitive.
+// workspaceName - The name of the workspace.
+// dataConnectorID - Connector ID
+// options - DataConnectorsClientDisconnectOptions contains the optional parameters for the DataConnectorsClient.Disconnect
+// method.
+func (client *DataConnectorsClient) Disconnect(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, options *DataConnectorsClientDisconnectOptions) (DataConnectorsClientDisconnectResponse, error) {
+	req, err := client.disconnectCreateRequest(ctx, resourceGroupName, workspaceName, dataConnectorID, options)
+	if err != nil {
+		return DataConnectorsClientDisconnectResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return DataConnectorsClientDisconnectResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return DataConnectorsClientDisconnectResponse{}, runtime.NewResponseError(resp)
+	}
+	return DataConnectorsClientDisconnectResponse{}, nil
+}
+
+// disconnectCreateRequest creates the Disconnect request.
+func (client *DataConnectorsClient) disconnectCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, options *DataConnectorsClientDisconnectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectors/{dataConnectorId}/disconnect"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if dataConnectorID == "" {
+		return nil, errors.New("parameter dataConnectorID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataConnectorId}", url.PathEscape(dataConnectorID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,7 +277,7 @@ func (client *DataConnectorsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets a data connector.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2022-05-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dataConnectorID - Connector ID
@@ -215,7 +321,7 @@ func (client *DataConnectorsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -232,7 +338,7 @@ func (client *DataConnectorsClient) getHandleResponse(resp *http.Response) (Data
 
 // NewListPager - Gets all data connectors.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2022-05-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - DataConnectorsClientListOptions contains the optional parameters for the DataConnectorsClient.List method.
@@ -284,7 +390,7 @@ func (client *DataConnectorsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

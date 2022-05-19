@@ -19,7 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/bookmarks/GetBookmarks.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/bookmarks/GetBookmarks.json
 func ExampleBookmarksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleBookmarksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/bookmarks/GetBookmarkById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/bookmarks/GetBookmarkById.json
 func ExampleBookmarksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleBookmarksClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/bookmarks/CreateBookmark.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/bookmarks/CreateBookmark.json
 func ExampleBookmarksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,18 +86,31 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 		armsecurityinsights.Bookmark{
 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 			Properties: &armsecurityinsights.BookmarkProperties{
-				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t }()),
+				Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
 				CreatedBy: &armsecurityinsights.UserInfo{
 					ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 				},
 				DisplayName: to.Ptr("My bookmark"),
+				EntityMappings: []*armsecurityinsights.BookmarkEntityMappings{
+					{
+						EntityType: to.Ptr("Account"),
+						FieldMappings: []*armsecurityinsights.EntityFieldMapping{
+							{
+								Identifier: to.Ptr("Fullname"),
+								Value:      to.Ptr("johndoe@microsoft.com"),
+							}},
+					}},
 				Labels: []*string{
 					to.Ptr("Tag1"),
 					to.Ptr("Tag2")},
 				Notes:       to.Ptr("Found a suspicious activity"),
 				Query:       to.Ptr("SecurityEvent | where TimeGenerated > ago(1d) and TimeGenerated < ago(2d)"),
 				QueryResult: to.Ptr("Security Event query result"),
-				Updated:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t }()),
+				Tactics: []*armsecurityinsights.AttackTactic{
+					to.Ptr(armsecurityinsights.AttackTacticExecution)},
+				Techniques: []*string{
+					to.Ptr("T1609")},
+				Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:15:30Z"); return t }()),
 				UpdatedBy: &armsecurityinsights.UserInfo{
 					ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 				},
@@ -111,7 +124,7 @@ func ExampleBookmarksClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/bookmarks/DeleteBookmark.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-05-01-preview/examples/bookmarks/DeleteBookmark.json
 func ExampleBookmarksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

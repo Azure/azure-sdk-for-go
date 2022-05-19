@@ -58,7 +58,7 @@ func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
@@ -109,7 +109,7 @@ func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -126,7 +126,7 @@ func (client *ConsumerGroupsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes a consumer group from the specified Event Hub and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
@@ -175,7 +175,7 @@ func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets a description for the specified consumer group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
@@ -232,7 +232,7 @@ func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,7 +250,7 @@ func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (Cons
 // NewListByEventHubPager - Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists
 // in the Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-11-01
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // eventHubName - The Event Hub name
@@ -308,7 +308,7 @@ func (client *ConsumerGroupsClient) listByEventHubCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}

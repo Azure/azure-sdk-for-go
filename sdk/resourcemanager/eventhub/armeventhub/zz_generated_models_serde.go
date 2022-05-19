@@ -15,6 +15,41 @@ import (
 	"reflect"
 )
 
+// MarshalJSON implements the json.Marshaller interface for type ApplicationGroupProperties.
+func (a ApplicationGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "clientAppGroupIdentifier", a.ClientAppGroupIdentifier)
+	populate(objectMap, "isEnabled", a.IsEnabled)
+	populate(objectMap, "policies", a.Policies)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ApplicationGroupProperties.
+func (a *ApplicationGroupProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "clientAppGroupIdentifier":
+			err = unpopulate(val, "ClientAppGroupIdentifier", &a.ClientAppGroupIdentifier)
+			delete(rawMsg, key)
+		case "isEnabled":
+			err = unpopulate(val, "IsEnabled", &a.IsEnabled)
+			delete(rawMsg, key)
+		case "policies":
+			a.Policies, err = unmarshalApplicationGroupPolicyClassificationArray(val)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AuthorizationRuleProperties.
 func (a AuthorizationRuleProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -105,8 +140,10 @@ func (e EHNamespaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "kafkaEnabled", e.KafkaEnabled)
 	populate(objectMap, "maximumThroughputUnits", e.MaximumThroughputUnits)
 	populate(objectMap, "metricId", e.MetricID)
+	populate(objectMap, "minimumTlsVersion", e.MinimumTLSVersion)
 	populate(objectMap, "privateEndpointConnections", e.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
+	populate(objectMap, "publicNetworkAccess", e.PublicNetworkAccess)
 	populate(objectMap, "serviceBusEndpoint", e.ServiceBusEndpoint)
 	populate(objectMap, "status", e.Status)
 	populateTimeRFC3339(objectMap, "updatedAt", e.UpdatedAt)
@@ -150,11 +187,17 @@ func (e *EHNamespaceProperties) UnmarshalJSON(data []byte) error {
 		case "metricId":
 			err = unpopulate(val, "MetricID", &e.MetricID)
 			delete(rawMsg, key)
+		case "minimumTlsVersion":
+			err = unpopulate(val, "MinimumTLSVersion", &e.MinimumTLSVersion)
+			delete(rawMsg, key)
 		case "privateEndpointConnections":
 			err = unpopulate(val, "PrivateEndpointConnections", &e.PrivateEndpointConnections)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
+			delete(rawMsg, key)
+		case "publicNetworkAccess":
+			err = unpopulate(val, "PublicNetworkAccess", &e.PublicNetworkAccess)
 			delete(rawMsg, key)
 		case "serviceBusEndpoint":
 			err = unpopulate(val, "ServiceBusEndpoint", &e.ServiceBusEndpoint)
@@ -203,6 +246,49 @@ func (n NetworkRuleSetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "publicNetworkAccess", n.PublicNetworkAccess)
 	populate(objectMap, "trustedServiceAccessEnabled", n.TrustedServiceAccessEnabled)
 	populate(objectMap, "virtualNetworkRules", n.VirtualNetworkRules)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NetworkSecurityPerimeterConfiguration.
+func (n NetworkSecurityPerimeterConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", n.ID)
+	populate(objectMap, "location", n.Location)
+	populate(objectMap, "name", n.Name)
+	populate(objectMap, "properties", n.Properties)
+	populate(objectMap, "tags", n.Tags)
+	populate(objectMap, "type", n.Type)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NetworkSecurityPerimeterConfigurationProperties.
+func (n NetworkSecurityPerimeterConfigurationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "networkSecurityPerimeter", n.NetworkSecurityPerimeter)
+	populate(objectMap, "profile", n.Profile)
+	populate(objectMap, "provisioningIssues", n.ProvisioningIssues)
+	populate(objectMap, "provisioningState", n.ProvisioningState)
+	populate(objectMap, "resourceAssociation", n.ResourceAssociation)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NetworkSecurityPerimeterConfigurationPropertiesProfile.
+func (n NetworkSecurityPerimeterConfigurationPropertiesProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accessRules", n.AccessRules)
+	populate(objectMap, "accessRulesVersion", n.AccessRulesVersion)
+	populate(objectMap, "name", n.Name)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NspAccessRuleProperties.
+func (n NspAccessRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "addressPrefixes", n.AddressPrefixes)
+	populate(objectMap, "direction", n.Direction)
+	populate(objectMap, "fullyQualifiedDomainNames", n.FullyQualifiedDomainNames)
+	populate(objectMap, "networkSecurityPerimeters", n.NetworkSecurityPerimeters)
+	populate(objectMap, "subscriptions", n.Subscriptions)
 	return json.Marshal(objectMap)
 }
 
@@ -346,6 +432,45 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ThrottlingPolicy.
+func (t ThrottlingPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "metricId", t.MetricID)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "rateLimitThreshold", t.RateLimitThreshold)
+	objectMap["type"] = ApplicationGroupPolicyTypeThrottlingPolicy
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ThrottlingPolicy.
+func (t *ThrottlingPolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", t, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "metricId":
+			err = unpopulate(val, "MetricID", &t.MetricID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &t.Name)
+			delete(rawMsg, key)
+		case "rateLimitThreshold":
+			err = unpopulate(val, "RateLimitThreshold", &t.RateLimitThreshold)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &t.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil

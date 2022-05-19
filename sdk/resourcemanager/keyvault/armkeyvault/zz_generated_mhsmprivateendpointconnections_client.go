@@ -58,7 +58,7 @@ func NewMHSMPrivateEndpointConnectionsClient(subscriptionID string, credential a
 
 // BeginDelete - Deletes the specified private endpoint connection associated with the managed hsm pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - Name of the resource group that contains the managed HSM pool.
 // name - Name of the managed HSM Pool
 // privateEndpointConnectionName - Name of the private endpoint connection associated with the managed hsm pool.
@@ -78,7 +78,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) BeginDelete(ctx context.Cont
 
 // Delete - Deletes the specified private endpoint connection associated with the managed hsm pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2021-11-01-preview
 func (client *MHSMPrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
@@ -118,7 +118,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) deleteCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -126,7 +126,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) deleteCreateRequest(ctx cont
 
 // Get - Gets the specified private endpoint connection associated with the managed HSM Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - Name of the resource group that contains the managed HSM pool.
 // name - Name of the managed HSM Pool
 // privateEndpointConnectionName - Name of the private endpoint connection associated with the managed hsm pool.
@@ -171,7 +171,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,7 +189,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) getHandleResponse(resp *http
 // NewListByResourcePager - The List operation gets information about the private endpoint connections associated with the
 // managed HSM Pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - Name of the resource group that contains the managed HSM pool.
 // name - Name of the managed HSM Pool
 // options - MHSMPrivateEndpointConnectionsClientListByResourceOptions contains the optional parameters for the MHSMPrivateEndpointConnectionsClient.ListByResource
@@ -242,7 +242,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) listByResourceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,7 +259,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) listByResourceHandleResponse
 
 // Put - Updates the specified private endpoint connection associated with the managed hsm pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - Name of the resource group that contains the managed HSM pool.
 // name - Name of the managed HSM Pool
 // privateEndpointConnectionName - Name of the private endpoint connection associated with the managed hsm pool.
@@ -305,7 +305,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) putCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)

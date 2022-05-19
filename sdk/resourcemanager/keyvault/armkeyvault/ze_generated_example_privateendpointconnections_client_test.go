@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/getPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/getPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/putPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/putPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExamplePrivateEndpointConnectionsClient_Put() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/deletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/deletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/listPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/keyvault/resource-manager/Microsoft.KeyVault/preview/2021-11-01-preview/examples/listPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -57,7 +57,7 @@ func NewMHSMPrivateLinkResourcesClient(subscriptionID string, credential azcore.
 
 // ListByMHSMResource - Gets the private link resources supported for the managed hsm pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - Name of the resource group that contains the managed HSM pool.
 // name - Name of the managed HSM Pool
 // options - MHSMPrivateLinkResourcesClientListByMHSMResourceOptions contains the optional parameters for the MHSMPrivateLinkResourcesClient.ListByMHSMResource
@@ -97,7 +97,7 @@ func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

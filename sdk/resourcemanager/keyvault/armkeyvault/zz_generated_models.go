@@ -27,6 +27,11 @@ type AccessPolicyEntry struct {
 	ApplicationID *string `json:"applicationId,omitempty"`
 }
 
+type Action struct {
+	// The type of action.
+	Type *KeyRotationPolicyActionType `json:"type,omitempty"`
+}
+
 // Attributes - The object attributes managed by the KeyVault service.
 type Attributes struct {
 	// Determines whether the object is enabled.
@@ -273,11 +278,36 @@ type KeyProperties struct {
 	// The type of the key. For valid values, see JsonWebKeyType.
 	Kty *JSONWebKeyType `json:"kty,omitempty"`
 
+	// Key release policy in response. It will be used for both output and input. Omitted if empty
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+
+	// Key rotation policy in response. It will be used for both output and input. Omitted if empty
+	RotationPolicy *RotationPolicy `json:"rotationPolicy,omitempty"`
+
 	// READ-ONLY; The URI to retrieve the current version of the key.
 	KeyURI *string `json:"keyUri,omitempty" azure:"ro"`
 
 	// READ-ONLY; The URI to retrieve the specific version of the key.
 	KeyURIWithVersion *string `json:"keyUriWithVersion,omitempty" azure:"ro"`
+}
+
+type KeyReleasePolicy struct {
+	// Content type and version of key release policy
+	ContentType *string `json:"contentType,omitempty"`
+
+	// Blob encoding the policy rules under which the key can be released.
+	Data []byte `json:"data,omitempty"`
+}
+
+type KeyRotationPolicyAttributes struct {
+	// The expiration time for the new key version. It should be in ISO8601 format. Eg: 'P90D', 'P1Y'.
+	ExpiryTime *string `json:"expiryTime,omitempty"`
+
+	// READ-ONLY; Creation time in seconds since 1970-01-01T00:00:00Z.
+	Created *int64 `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in seconds since 1970-01-01T00:00:00Z.
+	Updated *int64 `json:"updated,omitempty" azure:"ro"`
 }
 
 // KeysClientCreateIfNotExistOptions contains the optional parameters for the KeysClient.CreateIfNotExist method.
@@ -303,6 +333,14 @@ type KeysClientListOptions struct {
 // KeysClientListVersionsOptions contains the optional parameters for the KeysClient.ListVersions method.
 type KeysClientListVersionsOptions struct {
 	// placeholder for future optional parameters
+}
+
+type LifetimeAction struct {
+	// The action of key rotation policy lifetimeAction.
+	Action *Action `json:"action,omitempty"`
+
+	// The trigger of key rotation policy lifetimeAction.
+	Trigger *Trigger `json:"trigger,omitempty"`
 }
 
 // LogSpecification - Log specification of operation.
@@ -967,6 +1005,14 @@ type ResourceListResult struct {
 	Value []*Resource `json:"value,omitempty"`
 }
 
+type RotationPolicy struct {
+	// The attributes of key rotation policy.
+	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
+
+	// The lifetimeActions for key rotation action.
+	LifetimeActions []*LifetimeAction `json:"lifetimeActions,omitempty"`
+}
+
 // SKU details
 type SKU struct {
 	// REQUIRED; SKU family name
@@ -1125,6 +1171,15 @@ type SystemData struct {
 	LastModifiedByType *IdentityType `json:"lastModifiedByType,omitempty"`
 }
 
+type Trigger struct {
+	// The time duration after key creation to rotate the key. It only applies to rotate. It will be in ISO 8601 duration format.
+	// Eg: 'P90D', 'P1Y'.
+	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
+
+	// The time duration before key expiring to rotate or notify. It will be in ISO 8601 duration format. Eg: 'P90D', 'P1Y'.
+	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
+}
+
 // Vault - Resource information with extended details.
 type Vault struct {
 	// REQUIRED; Properties of the vault
@@ -1231,9 +1286,9 @@ type VaultPatchProperties struct {
 
 	// Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC)
 	// for authorization of data actions, and the access policies specified in vault
-	// properties will be ignored. When false, the key vault will use the access policies specified in vault properties, and any
-	// policy stored on Azure Resource Manager will be ignored. If null or not
-	// specified, the value of this property will not change.
+	// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies
+	// specified in vault properties, and any policy stored on Azure Resource Manager
+	// will be ignored. If null or not specified, the value of this property will not change.
 	EnableRbacAuthorization *bool `json:"enableRbacAuthorization,omitempty"`
 
 	// Property to specify whether the 'soft delete' functionality is enabled for this key vault. Once set to true, it cannot
@@ -1294,10 +1349,10 @@ type VaultProperties struct {
 
 	// Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC)
 	// for authorization of data actions, and the access policies specified in vault
-	// properties will be ignored. When false, the key vault will use the access policies specified in vault properties, and any
-	// policy stored on Azure Resource Manager will be ignored. If null or not
-	// specified, the vault is created with the default value of false. Note that management actions are always authorized with
-	// RBAC.
+	// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies
+	// specified in vault properties, and any policy stored on Azure Resource Manager
+	// will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions
+	// are always authorized with RBAC.
 	EnableRbacAuthorization *bool `json:"enableRbacAuthorization,omitempty"`
 
 	// Property to specify whether the 'soft delete' functionality is enabled for this key vault. If it's not set to any value(true

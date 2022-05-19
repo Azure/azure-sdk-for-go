@@ -3,6 +3,7 @@
 ## 0.6.0 (Unreleased)
 
 ### Features Added
+* Expose `Get` to crypto.Client
 
 ### Breaking Changes
 * Renamed methods which return `Pager[T]`:

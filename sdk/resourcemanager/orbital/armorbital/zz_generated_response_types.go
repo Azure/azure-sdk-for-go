@@ -73,6 +73,11 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// OperationsResultsClientGetResponse contains the response from method OperationsResultsClient.Get.
+type OperationsResultsClientGetResponse struct {
+	OperationResult
+}
+
 // SpacecraftsClientCreateOrUpdateResponse contains the response from method SpacecraftsClient.CreateOrUpdate.
 type SpacecraftsClientCreateOrUpdateResponse struct {
 	Spacecraft

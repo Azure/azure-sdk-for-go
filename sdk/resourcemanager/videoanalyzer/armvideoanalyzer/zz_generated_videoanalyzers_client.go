@@ -38,7 +38,7 @@ func NewVideoAnalyzersClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewVideoAnalyzersClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Create or update an instance of a Video Analyzer account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Video Analyzer account name.
 // parameters - The request parameters
 // options - VideoAnalyzersClientBeginCreateOrUpdateOptions contains the optional parameters for the VideoAnalyzersClient.BeginCreateOrUpdate
 // method.
-func (client *VideoAnalyzersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters VideoAnalyzer, options *VideoAnalyzersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VideoAnalyzersClientCreateOrUpdateResponse], error) {
+func (client *VideoAnalyzersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters VideoAnalyzer, options *VideoAnalyzersClientBeginCreateOrUpdateOptions) (*runtime.Poller[VideoAnalyzersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VideoAnalyzersClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VideoAnalyzersClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VideoAnalyzersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VideoAnalyzersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update an instance of a Video Analyzer account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *VideoAnalyzersClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters VideoAnalyzer, options *VideoAnalyzersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
@@ -112,12 +114,13 @@ func (client *VideoAnalyzersClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Delete - Delete the specified Video Analyzer account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Video Analyzer account name.
 // options - VideoAnalyzersClientDeleteOptions contains the optional parameters for the VideoAnalyzersClient.Delete method.
@@ -158,12 +161,13 @@ func (client *VideoAnalyzersClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the details of the specified Video Analyzer account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Video Analyzer account name.
 // options - VideoAnalyzersClientGetOptions contains the optional parameters for the VideoAnalyzersClient.Get method.
@@ -204,7 +208,7 @@ func (client *VideoAnalyzersClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -219,6 +223,7 @@ func (client *VideoAnalyzersClient) getHandleResponse(resp *http.Response) (Vide
 
 // List - Lists the Video Analyzer accounts in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - VideoAnalyzersClientListOptions contains the optional parameters for the VideoAnalyzersClient.List method.
 func (client *VideoAnalyzersClient) List(ctx context.Context, resourceGroupName string, options *VideoAnalyzersClientListOptions) (VideoAnalyzersClientListResponse, error) {
@@ -254,7 +259,7 @@ func (client *VideoAnalyzersClient) listCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -269,6 +274,7 @@ func (client *VideoAnalyzersClient) listHandleResponse(resp *http.Response) (Vid
 
 // ListBySubscription - List all Video Analyzer accounts in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // options - VideoAnalyzersClientListBySubscriptionOptions contains the optional parameters for the VideoAnalyzersClient.ListBySubscription
 // method.
 func (client *VideoAnalyzersClient) ListBySubscription(ctx context.Context, options *VideoAnalyzersClientListBySubscriptionOptions) (VideoAnalyzersClientListBySubscriptionResponse, error) {
@@ -300,7 +306,7 @@ func (client *VideoAnalyzersClient) listBySubscriptionCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -315,25 +321,27 @@ func (client *VideoAnalyzersClient) listBySubscriptionHandleResponse(resp *http.
 
 // BeginUpdate - Updates an existing instance of Video Analyzer account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Video Analyzer account name.
 // parameters - The request parameters
 // options - VideoAnalyzersClientBeginUpdateOptions contains the optional parameters for the VideoAnalyzersClient.BeginUpdate
 // method.
-func (client *VideoAnalyzersClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters Update, options *VideoAnalyzersClientBeginUpdateOptions) (*armruntime.Poller[VideoAnalyzersClientUpdateResponse], error) {
+func (client *VideoAnalyzersClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, parameters Update, options *VideoAnalyzersClientBeginUpdateOptions) (*runtime.Poller[VideoAnalyzersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VideoAnalyzersClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VideoAnalyzersClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VideoAnalyzersClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VideoAnalyzersClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an existing instance of Video Analyzer account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *VideoAnalyzersClient) update(ctx context.Context, resourceGroupName string, accountName string, parameters Update, options *VideoAnalyzersClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
@@ -371,6 +379,6 @@ func (client *VideoAnalyzersClient) updateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

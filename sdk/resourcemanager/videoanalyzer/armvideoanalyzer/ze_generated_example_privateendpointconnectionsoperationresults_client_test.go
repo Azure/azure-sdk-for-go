@@ -23,15 +23,15 @@ func ExamplePrivateEndpointConnectionsOperationResultsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPrivateEndpointConnectionsOperationResultsClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPrivateEndpointConnectionsOperationResultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<name>",
-		"<operation-id>",
+		"contoso",
+		"contososports",
+		"6FBA62C4-99B5-4FF8-9826-FC4744A8864F",
+		"10000000-0000-0000-0000-000000000000",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

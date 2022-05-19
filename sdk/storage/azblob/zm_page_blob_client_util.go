@@ -7,6 +7,7 @@
 package azblob
 
 import (
+	"context"
 	"strconv"
 	"time"
 )
@@ -248,6 +249,31 @@ func toPageBlobGetPageRangesPager(resp *pageBlobClientGetPageRangesPager) *PageB
 	return &PageBlobGetPageRangesPager{resp}
 }
 
+// Err returns the last error encountered while paging.
+func (p *PageBlobGetPageRangesPager) Err() error {
+	return p.pageBlobClientGetPageRangesPager.Err()
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *PageBlobGetPageRangesPager) NextPage(ctx context.Context) bool {
+	return p.pageBlobClientGetPageRangesPager.NextPage(ctx)
+}
+
+// PageResponse returns the current containerClientListBlobFlatSegmentResponse page.
+func (p *PageBlobGetPageRangesPager) PageResponse() PageBlobGetPageRangesResponse {
+	return toPageBlobGetPageRangesResponse(p.pageBlobClientGetPageRangesPager.PageResponse())
+}
+
+// PageBlobGetPageRangesResponse contains the response from method pageBlobClientGetPageRangesPager.PageResponse()
+type PageBlobGetPageRangesResponse struct {
+	pageBlobClientGetPageRangesResponse
+}
+
+func toPageBlobGetPageRangesResponse(resp pageBlobClientGetPageRangesResponse) PageBlobGetPageRangesResponse {
+	return PageBlobGetPageRangesResponse{resp}
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // PageBlobGetPageRangesDiffOptions provides set of configurations for PageBlobClient.GetPageRangesDiff operation
@@ -309,6 +335,31 @@ type PageBlobGetPageRangesDiffPager struct {
 
 func toPageBlobGetPageRangesDiffPager(resp *pageBlobClientGetPageRangesDiffPager) *PageBlobGetPageRangesDiffPager {
 	return &PageBlobGetPageRangesDiffPager{resp}
+}
+
+// Err returns the last error encountered while paging.
+func (p *PageBlobGetPageRangesDiffPager) Err() error {
+	return p.pageBlobClientGetPageRangesDiffPager.Err()
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *PageBlobGetPageRangesDiffPager) NextPage(ctx context.Context) bool {
+	return p.pageBlobClientGetPageRangesDiffPager.NextPage(ctx)
+}
+
+// PageResponse returns the current containerClientListBlobFlatSegmentResponse page.
+func (p *PageBlobGetPageRangesDiffPager) PageResponse() PageBlobGetPageRangesDiffResponse {
+	return toPageBlobGetPageRangesDiffResponse(p.pageBlobClientGetPageRangesDiffPager.PageResponse())
+}
+
+// PageBlobGetPageRangesDiffResponse contains the response from method pageBlobClientGetPageRangesDiffPager.PageResponse()
+type PageBlobGetPageRangesDiffResponse struct {
+	pageBlobClientGetPageRangesDiffResponse
+}
+
+func toPageBlobGetPageRangesDiffResponse(resp pageBlobClientGetPageRangesDiffResponse) PageBlobGetPageRangesDiffResponse {
+	return PageBlobGetPageRangesDiffResponse{resp}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

@@ -280,7 +280,7 @@ func ExampleServiceClient_ListContainers() {
 		log.Fatal(err)
 	}
 
-	listContainersOptions := azblob.ListContainersOptions{
+	listContainersOptions := azblob.ServiceListContainersOptions{
 		Include: azblob.ListContainersDetail{
 			Metadata: true, // Include Metadata
 			Deleted:  true, // Include deleted containers in the result as well

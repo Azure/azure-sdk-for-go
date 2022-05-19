@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -25,10 +26,11 @@ import (
 // is able to get that material from Key Vault. When the required key material is unavailable,
 // cryptographic operations are performed by the Key Vault service.
 type Client struct {
-	kvClient   *generated.KeyVaultClient
-	vaultURL   string
-	keyID      string
-	keyVersion string
+	kvClient    *generated.KeyVaultClient
+	vaultURL    string
+	keyID       string
+	keyVersion  string
+	vaultClient *azkeys.Client
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -109,11 +111,17 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 		return nil, err
 	}
 
+	vaultClient, err := azkeys.NewClient(vaultURL, credential, &azkeys.ClientOptions{options.ClientOptions})
+	if err != nil {
+		return nil, err
+	}
+
 	return &Client{
-		kvClient:   generated.NewKeyVaultClient(pl),
-		vaultURL:   vaultURL,
-		keyID:      keyID,
-		keyVersion: keyVersion,
+		kvClient:    generated.NewKeyVaultClient(pl),
+		vaultURL:    vaultURL,
+		keyID:       keyID,
+		keyVersion:  keyVersion,
+		vaultClient: vaultClient,
 	}, nil
 }
 
@@ -169,6 +177,12 @@ func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse, alg
 		Ciphertext: i.Result,
 		Algorithm:  to.Ptr(alg),
 	}
+}
+
+// Get is used to retrieve the content for the Key corresponds to Client. If the requested key is symmetric, then
+// no key material is released in the response. This operation requires the keys/get permission.
+func (c *Client) Get(ctx context.Context) (azkeys.GetKeyResponse, error) {
+	return c.vaultClient.GetKey(ctx, c.keyID, &azkeys.GetKeyOptions{c.keyVersion})
 }
 
 // Encrypt encrypts plaintext using the client's key. This method encrypts only a single block of data, whose

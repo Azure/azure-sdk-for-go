@@ -62,7 +62,7 @@ func NewReplicationProtectionContainerMappingsClient(resourceName string, resour
 
 // BeginCreate - The operation to create a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection container mapping name.
@@ -83,7 +83,7 @@ func (client *ReplicationProtectionContainerMappingsClient) BeginCreate(ctx cont
 
 // Create - The operation to create a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationProtectionContainerMappingsClient) create(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, protectionContainerName, mappingName, creationInput, options)
 	if err != nil {
@@ -131,7 +131,7 @@ func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, creationInput)
@@ -139,7 +139,7 @@ func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(
 
 // BeginDelete - The operation to delete or remove a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection container mapping name.
@@ -160,7 +160,7 @@ func (client *ReplicationProtectionContainerMappingsClient) BeginDelete(ctx cont
 
 // Delete - The operation to delete or remove a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationProtectionContainerMappingsClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, protectionContainerName, mappingName, removalInput, options)
 	if err != nil {
@@ -208,14 +208,14 @@ func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, removalInput)
 }
 
 // Get - Gets the details of a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection Container mapping name.
@@ -268,7 +268,7 @@ func (client *ReplicationProtectionContainerMappingsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -285,7 +285,7 @@ func (client *ReplicationProtectionContainerMappingsClient) getHandleResponse(re
 
 // NewListPager - Lists the protection container mappings in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - ReplicationProtectionContainerMappingsClientListOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.List
 // method.
 func (client *ReplicationProtectionContainerMappingsClient) NewListPager(options *ReplicationProtectionContainerMappingsClientListOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListResponse] {
@@ -336,7 +336,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -353,7 +353,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listHandleResponse(r
 
 // NewListByReplicationProtectionContainersPager - Lists the protection container mappings for a protection container.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // options - ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions contains the optional
@@ -414,7 +414,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listByReplicationPro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -431,7 +431,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listByReplicationPro
 
 // BeginPurge - The operation to purge(force delete) a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection container mapping name.
@@ -451,7 +451,7 @@ func (client *ReplicationProtectionContainerMappingsClient) BeginPurge(ctx conte
 
 // Purge - The operation to purge(force delete) a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationProtectionContainerMappingsClient) purge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*http.Response, error) {
 	req, err := client.purgeCreateRequest(ctx, fabricName, protectionContainerName, mappingName, options)
 	if err != nil {
@@ -499,14 +499,14 @@ func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginUpdate - The operation to update protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // mappingName - Protection container mapping name.
@@ -527,7 +527,7 @@ func (client *ReplicationProtectionContainerMappingsClient) BeginUpdate(ctx cont
 
 // Update - The operation to update protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationProtectionContainerMappingsClient) update(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, fabricName, protectionContainerName, mappingName, updateInput, options)
 	if err != nil {
@@ -575,7 +575,7 @@ func (client *ReplicationProtectionContainerMappingsClient) updateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, updateInput)

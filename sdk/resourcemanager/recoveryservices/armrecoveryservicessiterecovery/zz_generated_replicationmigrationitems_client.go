@@ -62,7 +62,7 @@ func NewReplicationMigrationItemsClient(resourceName string, resourceGroupName s
 
 // BeginCreate - The operation to create an ASR migration item (enable migration).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -83,7 +83,7 @@ func (client *ReplicationMigrationItemsClient) BeginCreate(ctx context.Context, 
 
 // Create - The operation to create an ASR migration item (enable migration).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationMigrationItemsClient) create(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
 	if err != nil {
@@ -131,7 +131,7 @@ func (client *ReplicationMigrationItemsClient) createCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)
@@ -139,7 +139,7 @@ func (client *ReplicationMigrationItemsClient) createCreateRequest(ctx context.C
 
 // BeginDelete - The operation to delete an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -159,7 +159,7 @@ func (client *ReplicationMigrationItemsClient) BeginDelete(ctx context.Context, 
 
 // Delete - The operation to delete an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationMigrationItemsClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, options)
 	if err != nil {
@@ -207,7 +207,7 @@ func (client *ReplicationMigrationItemsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.DeleteOption != nil {
 		reqQP.Set("deleteOption", *options.DeleteOption)
 	}
@@ -217,7 +217,7 @@ func (client *ReplicationMigrationItemsClient) deleteCreateRequest(ctx context.C
 
 // Get - Gets the details of a migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric unique name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -270,7 +270,7 @@ func (client *ReplicationMigrationItemsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -287,7 +287,7 @@ func (client *ReplicationMigrationItemsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Gets the list of migration items in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - ReplicationMigrationItemsClientListOptions contains the optional parameters for the ReplicationMigrationItemsClient.List
 // method.
 func (client *ReplicationMigrationItemsClient) NewListPager(options *ReplicationMigrationItemsClientListOptions) *runtime.Pager[ReplicationMigrationItemsClientListResponse] {
@@ -338,7 +338,7 @@ func (client *ReplicationMigrationItemsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -364,7 +364,7 @@ func (client *ReplicationMigrationItemsClient) listHandleResponse(resp *http.Res
 
 // NewListByReplicationProtectionContainersPager - Gets the list of ASR migration items in the protection container.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // options - ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions contains the optional parameters
@@ -425,7 +425,7 @@ func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContai
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -451,7 +451,7 @@ func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContai
 
 // BeginMigrate - The operation to initiate migration of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -472,7 +472,7 @@ func (client *ReplicationMigrationItemsClient) BeginMigrate(ctx context.Context,
 
 // Migrate - The operation to initiate migration of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationMigrationItemsClient) migrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsClientBeginMigrateOptions) (*http.Response, error) {
 	req, err := client.migrateCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, migrateInput, options)
 	if err != nil {
@@ -520,7 +520,7 @@ func (client *ReplicationMigrationItemsClient) migrateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, migrateInput)
@@ -528,7 +528,7 @@ func (client *ReplicationMigrationItemsClient) migrateCreateRequest(ctx context.
 
 // BeginResync - The operation to resynchronize replication of an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -549,7 +549,7 @@ func (client *ReplicationMigrationItemsClient) BeginResync(ctx context.Context, 
 
 // Resync - The operation to resynchronize replication of an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationMigrationItemsClient) resync(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsClientBeginResyncOptions) (*http.Response, error) {
 	req, err := client.resyncCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
 	if err != nil {
@@ -597,7 +597,7 @@ func (client *ReplicationMigrationItemsClient) resyncCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)
@@ -605,7 +605,7 @@ func (client *ReplicationMigrationItemsClient) resyncCreateRequest(ctx context.C
 
 // BeginTestMigrate - The operation to initiate test migration of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -626,7 +626,7 @@ func (client *ReplicationMigrationItemsClient) BeginTestMigrate(ctx context.Cont
 
 // TestMigrate - The operation to initiate test migration of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationMigrationItemsClient) testMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsClientBeginTestMigrateOptions) (*http.Response, error) {
 	req, err := client.testMigrateCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateInput, options)
 	if err != nil {
@@ -674,7 +674,7 @@ func (client *ReplicationMigrationItemsClient) testMigrateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, testMigrateInput)
@@ -682,7 +682,7 @@ func (client *ReplicationMigrationItemsClient) testMigrateCreateRequest(ctx cont
 
 // BeginTestMigrateCleanup - The operation to initiate test migrate cleanup.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -703,7 +703,7 @@ func (client *ReplicationMigrationItemsClient) BeginTestMigrateCleanup(ctx conte
 
 // TestMigrateCleanup - The operation to initiate test migrate cleanup.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationMigrationItemsClient) testMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions) (*http.Response, error) {
 	req, err := client.testMigrateCleanupCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, testMigrateCleanupInput, options)
 	if err != nil {
@@ -751,7 +751,7 @@ func (client *ReplicationMigrationItemsClient) testMigrateCleanupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, testMigrateCleanupInput)
@@ -759,7 +759,7 @@ func (client *ReplicationMigrationItemsClient) testMigrateCleanupCreateRequest(c
 
 // BeginUpdate - The operation to update the recovery settings of an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -780,7 +780,7 @@ func (client *ReplicationMigrationItemsClient) BeginUpdate(ctx context.Context, 
 
 // Update - The operation to update the recovery settings of an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationMigrationItemsClient) update(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, fabricName, protectionContainerName, migrationItemName, input, options)
 	if err != nil {
@@ -828,7 +828,7 @@ func (client *ReplicationMigrationItemsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)

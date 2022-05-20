@@ -62,7 +62,7 @@ func NewReplicationPoliciesClient(resourceName string, resourceGroupName string,
 
 // BeginCreate - The operation to create a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // policyName - Replication policy name.
 // input - Create policy input.
 // options - ReplicationPoliciesClientBeginCreateOptions contains the optional parameters for the ReplicationPoliciesClient.BeginCreate
@@ -81,7 +81,7 @@ func (client *ReplicationPoliciesClient) BeginCreate(ctx context.Context, policy
 
 // Create - The operation to create a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationPoliciesClient) create(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, policyName, input, options)
 	if err != nil {
@@ -121,7 +121,7 @@ func (client *ReplicationPoliciesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)
@@ -129,7 +129,7 @@ func (client *ReplicationPoliciesClient) createCreateRequest(ctx context.Context
 
 // BeginDelete - The operation to delete a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // policyName - Replication policy name.
 // options - ReplicationPoliciesClientBeginDeleteOptions contains the optional parameters for the ReplicationPoliciesClient.BeginDelete
 // method.
@@ -147,7 +147,7 @@ func (client *ReplicationPoliciesClient) BeginDelete(ctx context.Context, policy
 
 // Delete - The operation to delete a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationPoliciesClient) deleteOperation(ctx context.Context, policyName string, options *ReplicationPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, policyName, options)
 	if err != nil {
@@ -187,14 +187,14 @@ func (client *ReplicationPoliciesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the details of a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // policyName - Replication policy name.
 // options - ReplicationPoliciesClientGetOptions contains the optional parameters for the ReplicationPoliciesClient.Get method.
 func (client *ReplicationPoliciesClient) Get(ctx context.Context, policyName string, options *ReplicationPoliciesClientGetOptions) (ReplicationPoliciesClientGetResponse, error) {
@@ -236,7 +236,7 @@ func (client *ReplicationPoliciesClient) getCreateRequest(ctx context.Context, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,7 +253,7 @@ func (client *ReplicationPoliciesClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Lists the replication policies for a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - ReplicationPoliciesClientListOptions contains the optional parameters for the ReplicationPoliciesClient.List
 // method.
 func (client *ReplicationPoliciesClient) NewListPager(options *ReplicationPoliciesClientListOptions) *runtime.Pager[ReplicationPoliciesClientListResponse] {
@@ -304,7 +304,7 @@ func (client *ReplicationPoliciesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *ReplicationPoliciesClient) listHandleResponse(resp *http.Response)
 
 // BeginUpdate - The operation to update a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // policyName - Policy Id.
 // input - Update Policy Input.
 // options - ReplicationPoliciesClientBeginUpdateOptions contains the optional parameters for the ReplicationPoliciesClient.BeginUpdate
@@ -340,7 +340,7 @@ func (client *ReplicationPoliciesClient) BeginUpdate(ctx context.Context, policy
 
 // Update - The operation to update a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationPoliciesClient) update(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, policyName, input, options)
 	if err != nil {
@@ -380,7 +380,7 @@ func (client *ReplicationPoliciesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)

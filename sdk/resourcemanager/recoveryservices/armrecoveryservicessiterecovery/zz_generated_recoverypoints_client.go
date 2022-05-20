@@ -62,7 +62,7 @@ func NewRecoveryPointsClient(resourceName string, resourceGroupName string, subs
 
 // Get - Get the details of specified recovery point.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - The fabric name.
 // protectionContainerName - The protection container name.
 // replicatedProtectedItemName - The replication protected item name.
@@ -119,7 +119,7 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, fabric
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -136,7 +136,7 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 
 // NewListByReplicationProtectedItemsPager - Lists the available recovery points for a replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - The fabric name.
 // protectionContainerName - The protection container name.
 // replicatedProtectedItemName - The replication protected item name.
@@ -202,7 +202,7 @@ func (client *RecoveryPointsClient) listByReplicationProtectedItemsCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

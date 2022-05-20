@@ -62,7 +62,7 @@ func NewReplicationNetworksClient(resourceName string, resourceGroupName string,
 
 // Get - Gets the details of a network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Server Id.
 // networkName - Primary network name.
 // options - ReplicationNetworksClientGetOptions contains the optional parameters for the ReplicationNetworksClient.Get method.
@@ -109,7 +109,7 @@ func (client *ReplicationNetworksClient) getCreateRequest(ctx context.Context, f
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -126,7 +126,7 @@ func (client *ReplicationNetworksClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Lists the networks available in a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - ReplicationNetworksClientListOptions contains the optional parameters for the ReplicationNetworksClient.List
 // method.
 func (client *ReplicationNetworksClient) NewListPager(options *ReplicationNetworksClientListOptions) *runtime.Pager[ReplicationNetworksClientListResponse] {
@@ -177,7 +177,7 @@ func (client *ReplicationNetworksClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -194,7 +194,7 @@ func (client *ReplicationNetworksClient) listHandleResponse(resp *http.Response)
 
 // NewListByReplicationFabricsPager - Lists the networks available for a fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // options - ReplicationNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationNetworksClient.ListByReplicationFabrics
 // method.
@@ -250,7 +250,7 @@ func (client *ReplicationNetworksClient) listByReplicationFabricsCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

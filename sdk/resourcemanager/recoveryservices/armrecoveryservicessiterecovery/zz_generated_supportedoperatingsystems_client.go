@@ -62,7 +62,7 @@ func NewSupportedOperatingSystemsClient(resourceName string, resourceGroupName s
 
 // Get - Gets the data of supported operating systems by SRS.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - SupportedOperatingSystemsClientGetOptions contains the optional parameters for the SupportedOperatingSystemsClient.Get
 // method.
 func (client *SupportedOperatingSystemsClient) Get(ctx context.Context, options *SupportedOperatingSystemsClientGetOptions) (SupportedOperatingSystemsClientGetResponse, error) {
@@ -100,7 +100,7 @@ func (client *SupportedOperatingSystemsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.InstanceType != nil {
 		reqQP.Set("instanceType", *options.InstanceType)
 	}

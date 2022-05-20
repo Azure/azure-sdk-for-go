@@ -62,7 +62,7 @@ func NewReplicationStorageClassificationMappingsClient(resourceName string, reso
 
 // BeginCreate - The operation to create a storage classification mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // storageClassificationName - Storage classification name.
 // storageClassificationMappingName - Storage classification mapping name.
@@ -83,7 +83,7 @@ func (client *ReplicationStorageClassificationMappingsClient) BeginCreate(ctx co
 
 // Create - The operation to create a storage classification mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationStorageClassificationMappingsClient) create(ctx context.Context, fabricName string, storageClassificationName string, storageClassificationMappingName string, pairingInput StorageClassificationMappingInput, options *ReplicationStorageClassificationMappingsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, fabricName, storageClassificationName, storageClassificationMappingName, pairingInput, options)
 	if err != nil {
@@ -131,7 +131,7 @@ func (client *ReplicationStorageClassificationMappingsClient) createCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, pairingInput)
@@ -139,7 +139,7 @@ func (client *ReplicationStorageClassificationMappingsClient) createCreateReques
 
 // BeginDelete - The operation to delete a storage classification mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // storageClassificationName - Storage classification name.
 // storageClassificationMappingName - Storage classification mapping name.
@@ -159,7 +159,7 @@ func (client *ReplicationStorageClassificationMappingsClient) BeginDelete(ctx co
 
 // Delete - The operation to delete a storage classification mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 func (client *ReplicationStorageClassificationMappingsClient) deleteOperation(ctx context.Context, fabricName string, storageClassificationName string, storageClassificationMappingName string, options *ReplicationStorageClassificationMappingsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, fabricName, storageClassificationName, storageClassificationMappingName, options)
 	if err != nil {
@@ -207,14 +207,14 @@ func (client *ReplicationStorageClassificationMappingsClient) deleteCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the details of the specified storage classification mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // storageClassificationName - Storage classification name.
 // storageClassificationMappingName - Storage classification mapping name.
@@ -267,7 +267,7 @@ func (client *ReplicationStorageClassificationMappingsClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -284,7 +284,7 @@ func (client *ReplicationStorageClassificationMappingsClient) getHandleResponse(
 
 // NewListPager - Lists the storage classification mappings in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - ReplicationStorageClassificationMappingsClientListOptions contains the optional parameters for the ReplicationStorageClassificationMappingsClient.List
 // method.
 func (client *ReplicationStorageClassificationMappingsClient) NewListPager(options *ReplicationStorageClassificationMappingsClientListOptions) *runtime.Pager[ReplicationStorageClassificationMappingsClientListResponse] {
@@ -335,7 +335,7 @@ func (client *ReplicationStorageClassificationMappingsClient) listCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -352,7 +352,7 @@ func (client *ReplicationStorageClassificationMappingsClient) listHandleResponse
 
 // NewListByReplicationStorageClassificationsPager - Lists the storage classification mappings for the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // storageClassificationName - Storage classification name.
 // options - ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions contains the optional
@@ -413,7 +413,7 @@ func (client *ReplicationStorageClassificationMappingsClient) listByReplicationS
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

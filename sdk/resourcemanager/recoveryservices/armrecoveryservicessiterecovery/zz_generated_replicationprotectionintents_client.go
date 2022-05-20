@@ -62,7 +62,7 @@ func NewReplicationProtectionIntentsClient(resourceName string, resourceGroupNam
 
 // Create - The operation to create an ASR replication protection intent item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // intentObjectName - A name for the replication protection item.
 // input - Create Protection Intent Input.
 // options - ReplicationProtectionIntentsClientCreateOptions contains the optional parameters for the ReplicationProtectionIntentsClient.Create
@@ -106,7 +106,7 @@ func (client *ReplicationProtectionIntentsClient) createCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)
@@ -123,7 +123,7 @@ func (client *ReplicationProtectionIntentsClient) createHandleResponse(resp *htt
 
 // Get - Gets the details of an ASR replication protection intent.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // intentObjectName - Replication protection intent name.
 // options - ReplicationProtectionIntentsClientGetOptions contains the optional parameters for the ReplicationProtectionIntentsClient.Get
 // method.
@@ -166,7 +166,7 @@ func (client *ReplicationProtectionIntentsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *ReplicationProtectionIntentsClient) getHandleResponse(resp *http.R
 
 // NewListPager - Gets the list of ASR replication protection intent objects in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - ReplicationProtectionIntentsClientListOptions contains the optional parameters for the ReplicationProtectionIntentsClient.List
 // method.
 func (client *ReplicationProtectionIntentsClient) NewListPager(options *ReplicationProtectionIntentsClientListOptions) *runtime.Pager[ReplicationProtectionIntentsClientListResponse] {
@@ -234,7 +234,7 @@ func (client *ReplicationProtectionIntentsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}

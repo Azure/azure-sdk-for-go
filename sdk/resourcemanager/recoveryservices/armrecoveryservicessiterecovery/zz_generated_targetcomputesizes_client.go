@@ -62,7 +62,7 @@ func NewTargetComputeSizesClient(resourceName string, resourceGroupName string, 
 
 // NewListByReplicationProtectedItemsPager - Lists the available target compute sizes for a replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // protectionContainerName - protection container name.
 // replicatedProtectedItemName - Replication protected item name.
@@ -128,7 +128,7 @@ func (client *TargetComputeSizesClient) listByReplicationProtectedItemsCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

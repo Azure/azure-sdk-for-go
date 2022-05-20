@@ -62,7 +62,7 @@ func NewReplicationEventsClient(resourceName string, resourceGroupName string, s
 
 // Get - The operation to get the details of an Azure Site recovery event.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // eventName - The name of the Azure Site Recovery event.
 // options - ReplicationEventsClientGetOptions contains the optional parameters for the ReplicationEventsClient.Get method.
 func (client *ReplicationEventsClient) Get(ctx context.Context, eventName string, options *ReplicationEventsClientGetOptions) (ReplicationEventsClientGetResponse, error) {
@@ -104,7 +104,7 @@ func (client *ReplicationEventsClient) getCreateRequest(ctx context.Context, eve
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -121,7 +121,7 @@ func (client *ReplicationEventsClient) getHandleResponse(resp *http.Response) (R
 
 // NewListPager - Gets the list of Azure Site Recovery events for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - ReplicationEventsClientListOptions contains the optional parameters for the ReplicationEventsClient.List method.
 func (client *ReplicationEventsClient) NewListPager(options *ReplicationEventsClientListOptions) *runtime.Pager[ReplicationEventsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationEventsClientListResponse]{
@@ -171,7 +171,7 @@ func (client *ReplicationEventsClient) listCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

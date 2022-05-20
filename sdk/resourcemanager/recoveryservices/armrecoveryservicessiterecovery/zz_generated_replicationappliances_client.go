@@ -62,7 +62,7 @@ func NewReplicationAppliancesClient(resourceName string, resourceGroupName strin
 
 // NewListPager - Gets the list of Azure Site Recovery appliances for the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.List
 // method.
 func (client *ReplicationAppliancesClient) NewListPager(options *ReplicationAppliancesClientListOptions) *runtime.Pager[ReplicationAppliancesClientListResponse] {
@@ -113,7 +113,7 @@ func (client *ReplicationAppliancesClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

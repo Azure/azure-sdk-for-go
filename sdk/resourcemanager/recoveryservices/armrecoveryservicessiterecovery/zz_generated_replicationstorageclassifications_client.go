@@ -62,7 +62,7 @@ func NewReplicationStorageClassificationsClient(resourceName string, resourceGro
 
 // Get - Gets the details of the specified storage classification.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric name.
 // storageClassificationName - Storage classification name.
 // options - ReplicationStorageClassificationsClientGetOptions contains the optional parameters for the ReplicationStorageClassificationsClient.Get
@@ -110,7 +110,7 @@ func (client *ReplicationStorageClassificationsClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -127,7 +127,7 @@ func (client *ReplicationStorageClassificationsClient) getHandleResponse(resp *h
 
 // NewListPager - Lists the storage classifications in the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // options - ReplicationStorageClassificationsClientListOptions contains the optional parameters for the ReplicationStorageClassificationsClient.List
 // method.
 func (client *ReplicationStorageClassificationsClient) NewListPager(options *ReplicationStorageClassificationsClientListOptions) *runtime.Pager[ReplicationStorageClassificationsClientListResponse] {
@@ -178,7 +178,7 @@ func (client *ReplicationStorageClassificationsClient) listCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -195,7 +195,7 @@ func (client *ReplicationStorageClassificationsClient) listHandleResponse(resp *
 
 // NewListByReplicationFabricsPager - Lists the storage classifications available in the specified fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Site name of interest.
 // options - ReplicationStorageClassificationsClientListByReplicationFabricsOptions contains the optional parameters for the
 // ReplicationStorageClassificationsClient.ListByReplicationFabrics method.
@@ -251,7 +251,7 @@ func (client *ReplicationStorageClassificationsClient) listByReplicationFabricsC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

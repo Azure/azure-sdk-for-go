@@ -62,7 +62,7 @@ func NewMigrationRecoveryPointsClient(resourceName string, resourceGroupName str
 
 // Get - Gets a recovery point for a migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric unique name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -120,7 +120,7 @@ func (client *MigrationRecoveryPointsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -137,7 +137,7 @@ func (client *MigrationRecoveryPointsClient) getHandleResponse(resp *http.Respon
 
 // NewListByReplicationMigrationItemsPager - Gets the recovery points for a migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01
+// Generated from API version 2022-03-01
 // fabricName - Fabric unique name.
 // protectionContainerName - Protection container name.
 // migrationItemName - Migration item name.
@@ -203,7 +203,7 @@ func (client *MigrationRecoveryPointsClient) listByReplicationMigrationItemsCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

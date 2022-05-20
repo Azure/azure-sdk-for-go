@@ -273,38 +273,6 @@ func PossibleEnhancedSecurityStateValues() []EnhancedSecurityState {
 	return []EnhancedSecurityState{EnhancedSecurityStateDisabled, EnhancedSecurityStateEnabled, EnhancedSecurityStateInvalid}
 }
 
-// FabricName enumerates the values for fabric name.
-type FabricName string
-
-const (
-	// FabricNameAzure ...
-	FabricNameAzure FabricName = "Azure"
-	// FabricNameInvalid ...
-	FabricNameInvalid FabricName = "Invalid"
-)
-
-// PossibleFabricNameValues returns an array of possible values for the FabricName const type.
-func PossibleFabricNameValues() []FabricName {
-	return []FabricName{FabricNameAzure, FabricNameInvalid}
-}
-
-// FeatureType enumerates the values for feature type.
-type FeatureType string
-
-const (
-	// FeatureTypeAzureBackupGoals ...
-	FeatureTypeAzureBackupGoals FeatureType = "AzureBackupGoals"
-	// FeatureTypeAzureVMResourceBackup ...
-	FeatureTypeAzureVMResourceBackup FeatureType = "AzureVMResourceBackup"
-	// FeatureTypeFeatureSupportRequest ...
-	FeatureTypeFeatureSupportRequest FeatureType = "FeatureSupportRequest"
-)
-
-// PossibleFeatureTypeValues returns an array of possible values for the FeatureType const type.
-func PossibleFeatureTypeValues() []FeatureType {
-	return []FeatureType{FeatureTypeAzureBackupGoals, FeatureTypeAzureVMResourceBackup, FeatureTypeFeatureSupportRequest}
-}
-
 // HealthState enumerates the values for health state.
 type HealthState string
 
@@ -480,23 +448,6 @@ const (
 // PossibleInquiryStatusValues returns an array of possible values for the InquiryStatus const type.
 func PossibleInquiryStatusValues() []InquiryStatus {
 	return []InquiryStatus{InquiryStatusFailed, InquiryStatusInvalid, InquiryStatusSuccess}
-}
-
-// IntentItemType enumerates the values for intent item type.
-type IntentItemType string
-
-const (
-	// IntentItemTypeInvalid ...
-	IntentItemTypeInvalid IntentItemType = "Invalid"
-	// IntentItemTypeSQLAvailabilityGroupContainer ...
-	IntentItemTypeSQLAvailabilityGroupContainer IntentItemType = "SQLAvailabilityGroupContainer"
-	// IntentItemTypeSQLInstance ...
-	IntentItemTypeSQLInstance IntentItemType = "SQLInstance"
-)
-
-// PossibleIntentItemTypeValues returns an array of possible values for the IntentItemType const type.
-func PossibleIntentItemTypeValues() []IntentItemType {
-	return []IntentItemType{IntentItemTypeInvalid, IntentItemTypeSQLAvailabilityGroupContainer, IntentItemTypeSQLInstance}
 }
 
 // ItemType enumerates the values for item type.
@@ -831,21 +782,6 @@ func PossibleObjectTypeValues() []ObjectType {
 	return []ObjectType{ObjectTypeExportJobsOperationResultInfo, ObjectTypeOperationResultInfo, ObjectTypeOperationResultInfoBase}
 }
 
-// ObjectTypeBasicCrrAccessToken enumerates the values for object type basic crr access token.
-type ObjectTypeBasicCrrAccessToken string
-
-const (
-	// ObjectTypeBasicCrrAccessTokenObjectTypeCrrAccessToken ...
-	ObjectTypeBasicCrrAccessTokenObjectTypeCrrAccessToken ObjectTypeBasicCrrAccessToken = "CrrAccessToken"
-	// ObjectTypeBasicCrrAccessTokenObjectTypeWorkloadCrrAccessToken ...
-	ObjectTypeBasicCrrAccessTokenObjectTypeWorkloadCrrAccessToken ObjectTypeBasicCrrAccessToken = "WorkloadCrrAccessToken"
-)
-
-// PossibleObjectTypeBasicCrrAccessTokenValues returns an array of possible values for the ObjectTypeBasicCrrAccessToken const type.
-func PossibleObjectTypeBasicCrrAccessTokenValues() []ObjectTypeBasicCrrAccessToken {
-	return []ObjectTypeBasicCrrAccessToken{ObjectTypeBasicCrrAccessTokenObjectTypeCrrAccessToken, ObjectTypeBasicCrrAccessTokenObjectTypeWorkloadCrrAccessToken}
-}
-
 // ObjectTypeBasicILRRequest enumerates the values for object type basic ilr request.
 type ObjectTypeBasicILRRequest string
 
@@ -876,13 +812,11 @@ const (
 	ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusJobsExtendedInfo"
 	// ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo ...
 	ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusProvisionILRExtendedInfo"
-	// ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo ...
-	ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusRecoveryPointExtendedInfo"
 )
 
 // PossibleObjectTypeBasicOperationStatusExtendedInfoValues returns an array of possible values for the ObjectTypeBasicOperationStatusExtendedInfo const type.
 func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() []ObjectTypeBasicOperationStatusExtendedInfo {
-	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo, ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo, ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo, ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusRecoveryPointExtendedInfo}
+	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusExtendedInfo, ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobExtendedInfo, ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeBasicOperationStatusExtendedInfoObjectTypeOperationStatusProvisionILRExtendedInfo}
 }
 
 // ObjectTypeBasicRecoveryPoint enumerates the values for object type basic recovery point.
@@ -1236,27 +1170,6 @@ const (
 // PossibleProtectedItemTypeValues returns an array of possible values for the ProtectedItemType const type.
 func PossibleProtectedItemTypeValues() []ProtectedItemType {
 	return []ProtectedItemType{ProtectedItemTypeAzureFileShareProtectedItem, ProtectedItemTypeAzureIaaSVMProtectedItem, ProtectedItemTypeAzureVMWorkloadProtectedItem, ProtectedItemTypeAzureVMWorkloadSAPAseDatabase, ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase, ProtectedItemTypeAzureVMWorkloadSQLDatabase, ProtectedItemTypeDPMProtectedItem, ProtectedItemTypeGenericProtectedItem, ProtectedItemTypeMabFileFolderProtectedItem, ProtectedItemTypeMicrosoftClassicComputevirtualMachines, ProtectedItemTypeMicrosoftComputevirtualMachines, ProtectedItemTypeMicrosoftSqlserversdatabases, ProtectedItemTypeProtectedItem}
-}
-
-// ProtectionIntentItemType enumerates the values for protection intent item type.
-type ProtectionIntentItemType string
-
-const (
-	// ProtectionIntentItemTypeAzureResourceItem ...
-	ProtectionIntentItemTypeAzureResourceItem ProtectionIntentItemType = "AzureResourceItem"
-	// ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent ...
-	ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent ProtectionIntentItemType = "AzureWorkloadAutoProtectionIntent"
-	// ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent ...
-	ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent ProtectionIntentItemType = "AzureWorkloadSQLAutoProtectionIntent"
-	// ProtectionIntentItemTypeProtectionIntent ...
-	ProtectionIntentItemTypeProtectionIntent ProtectionIntentItemType = "ProtectionIntent"
-	// ProtectionIntentItemTypeRecoveryServiceVaultItem ...
-	ProtectionIntentItemTypeRecoveryServiceVaultItem ProtectionIntentItemType = "RecoveryServiceVaultItem"
-)
-
-// PossibleProtectionIntentItemTypeValues returns an array of possible values for the ProtectionIntentItemType const type.
-func PossibleProtectionIntentItemTypeValues() []ProtectionIntentItemType {
-	return []ProtectionIntentItemType{ProtectionIntentItemTypeAzureResourceItem, ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent, ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent, ProtectionIntentItemTypeProtectionIntent, ProtectionIntentItemTypeRecoveryServiceVaultItem}
 }
 
 // ProtectionState enumerates the values for protection state.
@@ -1664,105 +1577,27 @@ func PossibleStorageTypeStateValues() []StorageTypeState {
 	return []StorageTypeState{StorageTypeStateInvalid, StorageTypeStateLocked, StorageTypeStateUnlocked}
 }
 
-// SupportStatus enumerates the values for support status.
-type SupportStatus string
-
-const (
-	// SupportStatusDefaultOFF ...
-	SupportStatusDefaultOFF SupportStatus = "DefaultOFF"
-	// SupportStatusDefaultON ...
-	SupportStatusDefaultON SupportStatus = "DefaultON"
-	// SupportStatusInvalid ...
-	SupportStatusInvalid SupportStatus = "Invalid"
-	// SupportStatusNotSupported ...
-	SupportStatusNotSupported SupportStatus = "NotSupported"
-	// SupportStatusSupported ...
-	SupportStatusSupported SupportStatus = "Supported"
-)
-
-// PossibleSupportStatusValues returns an array of possible values for the SupportStatus const type.
-func PossibleSupportStatusValues() []SupportStatus {
-	return []SupportStatus{SupportStatusDefaultOFF, SupportStatusDefaultON, SupportStatusInvalid, SupportStatusNotSupported, SupportStatusSupported}
-}
-
 // Type enumerates the values for type.
 type Type string
 
 const (
-	// TypeBackupProtectedItemCountSummary ...
-	TypeBackupProtectedItemCountSummary Type = "BackupProtectedItemCountSummary"
-	// TypeBackupProtectionContainerCountSummary ...
-	TypeBackupProtectionContainerCountSummary Type = "BackupProtectionContainerCountSummary"
+	// TypeCopyOnlyFull ...
+	TypeCopyOnlyFull Type = "CopyOnlyFull"
+	// TypeDifferential ...
+	TypeDifferential Type = "Differential"
+	// TypeFull ...
+	TypeFull Type = "Full"
+	// TypeIncremental ...
+	TypeIncremental Type = "Incremental"
 	// TypeInvalid ...
 	TypeInvalid Type = "Invalid"
+	// TypeLog ...
+	TypeLog Type = "Log"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeBackupProtectedItemCountSummary, TypeBackupProtectionContainerCountSummary, TypeInvalid}
-}
-
-// TypeEnum enumerates the values for type enum.
-type TypeEnum string
-
-const (
-	// TypeEnumCopyOnlyFull ...
-	TypeEnumCopyOnlyFull TypeEnum = "CopyOnlyFull"
-	// TypeEnumDifferential ...
-	TypeEnumDifferential TypeEnum = "Differential"
-	// TypeEnumFull ...
-	TypeEnumFull TypeEnum = "Full"
-	// TypeEnumIncremental ...
-	TypeEnumIncremental TypeEnum = "Incremental"
-	// TypeEnumInvalid ...
-	TypeEnumInvalid TypeEnum = "Invalid"
-	// TypeEnumLog ...
-	TypeEnumLog TypeEnum = "Log"
-)
-
-// PossibleTypeEnumValues returns an array of possible values for the TypeEnum const type.
-func PossibleTypeEnumValues() []TypeEnum {
-	return []TypeEnum{TypeEnumCopyOnlyFull, TypeEnumDifferential, TypeEnumFull, TypeEnumIncremental, TypeEnumInvalid, TypeEnumLog}
-}
-
-// UsagesUnit enumerates the values for usages unit.
-type UsagesUnit string
-
-const (
-	// UsagesUnitBytes ...
-	UsagesUnitBytes UsagesUnit = "Bytes"
-	// UsagesUnitBytesPerSecond ...
-	UsagesUnitBytesPerSecond UsagesUnit = "BytesPerSecond"
-	// UsagesUnitCount ...
-	UsagesUnitCount UsagesUnit = "Count"
-	// UsagesUnitCountPerSecond ...
-	UsagesUnitCountPerSecond UsagesUnit = "CountPerSecond"
-	// UsagesUnitPercent ...
-	UsagesUnitPercent UsagesUnit = "Percent"
-	// UsagesUnitSeconds ...
-	UsagesUnitSeconds UsagesUnit = "Seconds"
-)
-
-// PossibleUsagesUnitValues returns an array of possible values for the UsagesUnit const type.
-func PossibleUsagesUnitValues() []UsagesUnit {
-	return []UsagesUnit{UsagesUnitBytes, UsagesUnitBytesPerSecond, UsagesUnitCount, UsagesUnitCountPerSecond, UsagesUnitPercent, UsagesUnitSeconds}
-}
-
-// ValidationStatus enumerates the values for validation status.
-type ValidationStatus string
-
-const (
-	// ValidationStatusFailed ...
-	ValidationStatusFailed ValidationStatus = "Failed"
-	// ValidationStatusInvalid ...
-	ValidationStatusInvalid ValidationStatus = "Invalid"
-	// ValidationStatusSucceeded ...
-	ValidationStatusSucceeded ValidationStatus = "Succeeded"
-)
-
-// PossibleValidationStatusValues returns an array of possible values for the ValidationStatus const type.
-func PossibleValidationStatusValues() []ValidationStatus {
-	return []ValidationStatus{ValidationStatusFailed, ValidationStatusInvalid, ValidationStatusSucceeded}
+	return []Type{TypeCopyOnlyFull, TypeDifferential, TypeFull, TypeIncremental, TypeInvalid, TypeLog}
 }
 
 // WeekOfMonth enumerates the values for week of month.

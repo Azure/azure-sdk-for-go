@@ -444,7 +444,7 @@ func (c *Client) NewListPropertiesOfKeysPager(options *ListPropertiesOfKeysOptio
 			if err != nil {
 				return ListPropertiesOfKeysResponse{}, err
 			}
-			resp, err := c.kvClient.Pl.Do(req)
+			resp, err := c.kvClient.Pipeline().Do(req)
 			if err != nil {
 				return ListPropertiesOfKeysResponse{}, err
 			}
@@ -599,12 +599,12 @@ func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *Begin
 			if err != nil {
 				return nil, err
 			}
-			return c.kvClient.Pl.Do(req)
+			return c.kvClient.Pipeline().Do(req)
 		},
 	}
 
 	if options.ResumeToken != "" {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, c.kvClient.Pl, &runtime.NewPollerFromResumeTokenOptions[DeleteKeyResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, c.kvClient.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeleteKeyResponse]{
 			Handler: &handler,
 		})
 	}
@@ -615,7 +615,7 @@ func (c *Client) BeginDeleteKey(ctx context.Context, name string, options *Begin
 		return nil, err
 	}
 
-	return runtime.NewPoller(rawResp, c.kvClient.Pl, &runtime.NewPollerOptions[DeleteKeyResponse]{
+	return runtime.NewPoller(rawResp, c.kvClient.Pipeline(), &runtime.NewPollerOptions[DeleteKeyResponse]{
 		Handler: &handler,
 	})
 }
@@ -702,12 +702,12 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 			if err != nil {
 				return nil, err
 			}
-			return c.kvClient.Pl.Do(req)
+			return c.kvClient.Pipeline().Do(req)
 		},
 	}
 
 	if options.ResumeToken != "" {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, c.kvClient.Pl, &runtime.NewPollerFromResumeTokenOptions[RecoverDeletedKeyResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, c.kvClient.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoverDeletedKeyResponse]{
 			Handler: &handler,
 		})
 	}
@@ -718,7 +718,7 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 		return nil, err
 	}
 
-	return runtime.NewPoller(rawResp, c.kvClient.Pl, &runtime.NewPollerOptions[RecoverDeletedKeyResponse]{
+	return runtime.NewPoller(rawResp, c.kvClient.Pipeline(), &runtime.NewPollerOptions[RecoverDeletedKeyResponse]{
 		Handler: &handler,
 	})
 }
@@ -807,7 +807,7 @@ func (c *Client) NewListDeletedKeysPager(options *ListDeletedKeysOptions) *runti
 			if err != nil {
 				return ListDeletedKeysResponse{}, err
 			}
-			resp, err := c.kvClient.Pl.Do(req)
+			resp, err := c.kvClient.Pipeline().Do(req)
 			if err != nil {
 				return ListDeletedKeysResponse{}, err
 			}
@@ -885,7 +885,7 @@ func (c *Client) NewListPropertiesOfKeyVersionsPager(keyName string, options *Li
 			if err != nil {
 				return ListPropertiesOfKeyVersionsResponse{}, err
 			}
-			resp, err := c.kvClient.Pl.Do(req)
+			resp, err := c.kvClient.Pipeline().Do(req)
 			if err != nil {
 				return ListPropertiesOfKeyVersionsResponse{}, err
 			}
@@ -1133,7 +1133,7 @@ func (c *Client) GetKeyRotationPolicy(ctx context.Context, keyName string, optio
 // ReleaseKeyOptions contains optional parameters for Client.ReleaseKey.
 type ReleaseKeyOptions struct {
 	// Version is the version of the key to release
-	Version string
+	Version *string
 
 	// Algorithm is the encryption algorithm used to protected exported key material.
 	Algorithm *ExportEncryptionAlg `json:"algorithm,omitempty"`
@@ -1153,12 +1153,15 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, targetAttestationT
 	if options == nil {
 		options = &ReleaseKeyOptions{}
 	}
-
+	version := ""
+	if options.Version != nil {
+		version = *options.Version
+	}
 	resp, err := c.kvClient.Release(
 		ctx,
 		c.vaultURL,
 		name,
-		options.Version,
+		version,
 		generated.KeyReleaseParameters{
 			TargetAttestationToken: &targetAttestationToken,
 			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Algorithm),

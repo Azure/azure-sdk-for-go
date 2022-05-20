@@ -11,26 +11,25 @@ package generated
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KeyVaultClient contains the methods for the KeyVaultClient group.
 // Don't use this type directly, use NewKeyVaultClient() instead.
 type KeyVaultClient struct {
-	Pl runtime.Pipeline
+	pl runtime.Pipeline
 }
 
 // NewKeyVaultClient creates a new instance of KeyVaultClient with the specified values.
 // pl - the pipeline used for sending requests and handling responses.
 func NewKeyVaultClient(pl runtime.Pipeline) *KeyVaultClient {
 	client := &KeyVaultClient{
-		Pl: pl,
+		pl: pl,
 	}
 	return client
 }
@@ -46,6 +45,7 @@ func NewKeyVaultClient(pl runtime.Pipeline) *KeyVaultClient {
 // geographical area. For example, a backup from the US geographical area cannot be restored in an EU geographical area. This
 // operation requires the key/backup permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // options - KeyVaultClientBackupKeyOptions contains the optional parameters for the KeyVaultClient.BackupKey method.
@@ -54,7 +54,7 @@ func (client *KeyVaultClient) BackupKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientBackupKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientBackupKeyResponse{}, err
 	}
@@ -80,7 +80,7 @@ func (client *KeyVaultClient) backupKeyCreateRequest(ctx context.Context, vaultB
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -97,6 +97,7 @@ func (client *KeyVaultClient) backupKeyHandleResponse(resp *http.Response) (KeyV
 // Azure Key Vault creates a new version of the key. It requires the keys/create
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name for the new key. The system will generate the version name for the new key.
 // parameters - The parameters to create a key.
@@ -106,7 +107,7 @@ func (client *KeyVaultClient) CreateKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientCreateKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientCreateKeyResponse{}, err
 	}
@@ -132,7 +133,7 @@ func (client *KeyVaultClient) createKeyCreateRequest(ctx context.Context, vaultB
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -151,6 +152,7 @@ func (client *KeyVaultClient) createKeyHandleResponse(resp *http.Response) (KeyV
 // operation applies to asymmetric and symmetric keys stored in Azure Key Vault
 // since it uses the private portion of the key. This operation requires the keys/decrypt permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // keyVersion - The version of the key.
@@ -161,7 +163,7 @@ func (client *KeyVaultClient) Decrypt(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientDecryptResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientDecryptResponse{}, err
 	}
@@ -180,10 +182,8 @@ func (client *KeyVaultClient) decryptCreateRequest(ctx context.Context, vaultBas
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	if keyVersion == "" {
-		return nil, errors.New("parameter keyVersion cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
+	urlPath = strings.ReplaceAll(urlPath, "//", "/")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -191,7 +191,7 @@ func (client *KeyVaultClient) decryptCreateRequest(ctx context.Context, vaultBas
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -208,6 +208,7 @@ func (client *KeyVaultClient) decryptHandleResponse(resp *http.Response) (KeyVau
 // cryptographic material associated with the key, which means the key is not usable for
 // Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the keys/delete permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key to delete.
 // options - KeyVaultClientDeleteKeyOptions contains the optional parameters for the KeyVaultClient.DeleteKey method.
@@ -216,7 +217,7 @@ func (client *KeyVaultClient) DeleteKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientDeleteKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteKeyResponse{}, err
 	}
@@ -242,7 +243,7 @@ func (client *KeyVaultClient) deleteKeyCreateRequest(ctx context.Context, vaultB
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -263,6 +264,7 @@ func (client *KeyVaultClient) deleteKeyHandleResponse(resp *http.Response) (KeyV
 // for callers that have a key-reference but do not have access to the
 // public key material. This operation requires the keys/encrypt permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // keyVersion - The version of the key.
@@ -273,7 +275,7 @@ func (client *KeyVaultClient) Encrypt(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientEncryptResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientEncryptResponse{}, err
 	}
@@ -292,10 +294,8 @@ func (client *KeyVaultClient) encryptCreateRequest(ctx context.Context, vaultBas
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	if keyVersion == "" {
-		return nil, errors.New("parameter keyVersion cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
+	urlPath = strings.ReplaceAll(urlPath, "//", "/")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -303,7 +303,7 @@ func (client *KeyVaultClient) encryptCreateRequest(ctx context.Context, vaultBas
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -320,6 +320,7 @@ func (client *KeyVaultClient) encryptHandleResponse(resp *http.Response) (KeyVau
 // invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault. This
 // operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // options - KeyVaultClientGetDeletedKeyOptions contains the optional parameters for the KeyVaultClient.GetDeletedKey method.
@@ -328,17 +329,17 @@ func (client *KeyVaultClient) GetDeletedKey(ctx context.Context, vaultBaseURL st
 	if err != nil {
 		return KeyVaultClientGetDeletedKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetDeletedKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return KeyVaultClientGetDeletedKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.getDeletedKeyHandleResponse(resp)
+	return client.GetDeletedKeyHandleResponse(resp)
 }
 
-// getDeletedKeyCreateRequest creates the GetDeletedKey request.
+// GetDeletedKeyCreateRequest creates the GetDeletedKey request.
 func (client *KeyVaultClient) GetDeletedKeyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetDeletedKeyOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
@@ -354,12 +355,12 @@ func (client *KeyVaultClient) GetDeletedKeyCreateRequest(ctx context.Context, va
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// getDeletedKeyHandleResponse handles the GetDeletedKey response.
-func (client *KeyVaultClient) getDeletedKeyHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedKeyResponse, error) {
+// GetDeletedKeyHandleResponse handles the GetDeletedKey response.
+func (client *KeyVaultClient) GetDeletedKeyHandleResponse(resp *http.Response) (KeyVaultClientGetDeletedKeyResponse, error) {
 	result := KeyVaultClientGetDeletedKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedKeyBundle); err != nil {
 		return KeyVaultClientGetDeletedKeyResponse{}, err
@@ -367,15 +368,16 @@ func (client *KeyVaultClient) getDeletedKeyHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// GetDeletedKeys - Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part
-// of a deleted key. This operation includes deletion-specific information. The Get Deleted Keys
+// NewGetDeletedKeysPager - Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public
+// part of a deleted key. This operation includes deletion-specific information. The Get Deleted Keys
 // operation is applicable for vaults enabled for soft-delete. While the operation can be invoked on any vault, it will return
 // an error if invoked on a non soft-delete enabled vault. This operation
 // requires the keys/list permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetDeletedKeysOptions contains the optional parameters for the KeyVaultClient.GetDeletedKeys method.
-func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) *runtime.Pager[KeyVaultClientGetDeletedKeysResponse] {
+func (client *KeyVaultClient) NewGetDeletedKeysPager(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) *runtime.Pager[KeyVaultClientGetDeletedKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetDeletedKeysResponse]{
 		More: func(page KeyVaultClientGetDeletedKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -391,7 +393,7 @@ func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVa
 			if err != nil {
 				return KeyVaultClientGetDeletedKeysResponse{}, err
 			}
-			resp, err := client.Pl.Do(req)
+			resp, err := client.pl.Do(req)
 			if err != nil {
 				return KeyVaultClientGetDeletedKeysResponse{}, err
 			}
@@ -418,7 +420,7 @@ func (client *KeyVaultClient) GetDeletedKeysCreateRequest(ctx context.Context, v
 	}
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -434,6 +436,7 @@ func (client *KeyVaultClient) GetDeletedKeysHandleResponse(resp *http.Response) 
 // GetKey - The get key operation is applicable to all key types. If the requested key is symmetric, then no key material
 // is released in the response. This operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key to get.
 // keyVersion - Adding the version parameter retrieves a specific version of a key. This URI fragment is optional. If not
@@ -444,17 +447,17 @@ func (client *KeyVaultClient) GetKey(ctx context.Context, vaultBaseURL string, k
 	if err != nil {
 		return KeyVaultClientGetKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return KeyVaultClientGetKeyResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.getKeyHandleResponse(resp)
+	return client.GetKeyHandleResponse(resp)
 }
 
-// getKeyCreateRequest creates the GetKey request.
+// GetKeyCreateRequest creates the GetKey request.
 func (client *KeyVaultClient) GetKeyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, options *KeyVaultClientGetKeyOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
@@ -463,10 +466,8 @@ func (client *KeyVaultClient) GetKeyCreateRequest(ctx context.Context, vaultBase
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	// if keyVersion == "" {
-	// 	return nil, errors.New("parameter keyVersion cannot be empty")
-	// }
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
+	urlPath = strings.ReplaceAll(urlPath, "//", "/")
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -474,12 +475,12 @@ func (client *KeyVaultClient) GetKeyCreateRequest(ctx context.Context, vaultBase
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// getKeyHandleResponse handles the GetKey response.
-func (client *KeyVaultClient) getKeyHandleResponse(resp *http.Response) (KeyVaultClientGetKeyResponse, error) {
+// GetKeyHandleResponse handles the GetKey response.
+func (client *KeyVaultClient) GetKeyHandleResponse(resp *http.Response) (KeyVaultClientGetKeyResponse, error) {
 	result := KeyVaultClientGetKeyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
 		return KeyVaultClientGetKeyResponse{}, err
@@ -490,27 +491,28 @@ func (client *KeyVaultClient) getKeyHandleResponse(resp *http.Response) (KeyVaul
 // GetKeyRotationPolicy - The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key
 // vault. This operation requires the keys/get permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key in a given key vault.
 // options - KeyVaultClientGetKeyRotationPolicyOptions contains the optional parameters for the KeyVaultClient.GetKeyRotationPolicy
 // method.
 func (client *KeyVaultClient) GetKeyRotationPolicy(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyRotationPolicyOptions) (KeyVaultClientGetKeyRotationPolicyResponse, error) {
-	req, err := client.getKeyRotationPolicyCreateRequest(ctx, vaultBaseURL, keyName, options)
+	req, err := client.GetKeyRotationPolicyCreateRequest(ctx, vaultBaseURL, keyName, options)
 	if err != nil {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.getKeyRotationPolicyHandleResponse(resp)
+	return client.GetKeyRotationPolicyHandleResponse(resp)
 }
 
-// getKeyRotationPolicyCreateRequest creates the GetKeyRotationPolicy request.
-func (client *KeyVaultClient) getKeyRotationPolicyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyRotationPolicyOptions) (*policy.Request, error) {
+// GetKeyRotationPolicyCreateRequest creates the GetKeyRotationPolicy request.
+func (client *KeyVaultClient) GetKeyRotationPolicyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyRotationPolicyOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/keys/{key-name}/rotationpolicy"
@@ -525,12 +527,12 @@ func (client *KeyVaultClient) getKeyRotationPolicyCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// getKeyRotationPolicyHandleResponse handles the GetKeyRotationPolicy response.
-func (client *KeyVaultClient) getKeyRotationPolicyHandleResponse(resp *http.Response) (KeyVaultClientGetKeyRotationPolicyResponse, error) {
+// GetKeyRotationPolicyHandleResponse handles the GetKeyRotationPolicy response.
+func (client *KeyVaultClient) GetKeyRotationPolicyHandleResponse(resp *http.Response) (KeyVaultClientGetKeyRotationPolicyResponse, error) {
 	result := KeyVaultClientGetKeyRotationPolicyResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyRotationPolicy); err != nil {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
@@ -538,13 +540,14 @@ func (client *KeyVaultClient) getKeyRotationPolicyHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// GetKeyVersions - The full key identifier, attributes, and tags are provided in the response. This operation requires the
-// keys/list permission.
+// NewGetKeyVersionsPager - The full key identifier, attributes, and tags are provided in the response. This operation requires
+// the keys/list permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // options - KeyVaultClientGetKeyVersionsOptions contains the optional parameters for the KeyVaultClient.GetKeyVersions method.
-func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *runtime.Pager[KeyVaultClientGetKeyVersionsResponse] {
+func (client *KeyVaultClient) NewGetKeyVersionsPager(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *runtime.Pager[KeyVaultClientGetKeyVersionsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetKeyVersionsResponse]{
 		More: func(page KeyVaultClientGetKeyVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -560,7 +563,7 @@ func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string
 			if err != nil {
 				return KeyVaultClientGetKeyVersionsResponse{}, err
 			}
-			resp, err := client.Pl.Do(req)
+			resp, err := client.pl.Do(req)
 			if err != nil {
 				return KeyVaultClientGetKeyVersionsResponse{}, err
 			}
@@ -591,7 +594,7 @@ func (client *KeyVaultClient) GetKeyVersionsCreateRequest(ctx context.Context, v
 	}
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -604,14 +607,15 @@ func (client *KeyVaultClient) GetKeyVersionsHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// GetKeys - Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored
-// key. The LIST operation is applicable to all key types, however only the base key
+// NewGetKeysPager - Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part
+// of a stored key. The LIST operation is applicable to all key types, however only the base key
 // identifier, attributes, and tags are provided in the response. Individual versions of a key are not listed in the response.
 // This operation requires the keys/list permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // options - KeyVaultClientGetKeysOptions contains the optional parameters for the KeyVaultClient.GetKeys method.
-func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *runtime.Pager[KeyVaultClientGetKeysResponse] {
+func (client *KeyVaultClient) NewGetKeysPager(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *runtime.Pager[KeyVaultClientGetKeysResponse] {
 	return runtime.NewPager(runtime.PagingHandler[KeyVaultClientGetKeysResponse]{
 		More: func(page KeyVaultClientGetKeysResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -627,7 +631,7 @@ func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClie
 			if err != nil {
 				return KeyVaultClientGetKeysResponse{}, err
 			}
-			resp, err := client.Pl.Do(req)
+			resp, err := client.pl.Do(req)
 			if err != nil {
 				return KeyVaultClientGetKeysResponse{}, err
 			}
@@ -654,7 +658,7 @@ func (client *KeyVaultClient) GetKeysCreateRequest(ctx context.Context, vaultBas
 	}
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -669,26 +673,27 @@ func (client *KeyVaultClient) GetKeysHandleResponse(resp *http.Response) (KeyVau
 
 // GetRandomBytes - Get the requested number of bytes containing random values from a managed HSM.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // parameters - The request object to get random bytes.
 // options - KeyVaultClientGetRandomBytesOptions contains the optional parameters for the KeyVaultClient.GetRandomBytes method.
 func (client *KeyVaultClient) GetRandomBytes(ctx context.Context, vaultBaseURL string, parameters GetRandomBytesRequest, options *KeyVaultClientGetRandomBytesOptions) (KeyVaultClientGetRandomBytesResponse, error) {
-	req, err := client.getRandomBytesCreateRequest(ctx, vaultBaseURL, parameters, options)
+	req, err := client.GetRandomBytesCreateRequest(ctx, vaultBaseURL, parameters, options)
 	if err != nil {
 		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return KeyVaultClientGetRandomBytesResponse{}, runtime.NewResponseError(resp)
 	}
-	return client.getRandomBytesHandleResponse(resp)
+	return client.GetRandomBytesHandleResponse(resp)
 }
 
-// getRandomBytesCreateRequest creates the GetRandomBytes request.
-func (client *KeyVaultClient) getRandomBytesCreateRequest(ctx context.Context, vaultBaseURL string, parameters GetRandomBytesRequest, options *KeyVaultClientGetRandomBytesOptions) (*policy.Request, error) {
+// GetRandomBytesCreateRequest creates the GetRandomBytes request.
+func (client *KeyVaultClient) GetRandomBytesCreateRequest(ctx context.Context, vaultBaseURL string, parameters GetRandomBytesRequest, options *KeyVaultClientGetRandomBytesOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
 	urlPath := "/rng"
@@ -699,12 +704,12 @@ func (client *KeyVaultClient) getRandomBytesCreateRequest(ctx context.Context, v
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// getRandomBytesHandleResponse handles the GetRandomBytes response.
-func (client *KeyVaultClient) getRandomBytesHandleResponse(resp *http.Response) (KeyVaultClientGetRandomBytesResponse, error) {
+// GetRandomBytesHandleResponse handles the GetRandomBytes response.
+func (client *KeyVaultClient) GetRandomBytesHandleResponse(resp *http.Response) (KeyVaultClientGetRandomBytesResponse, error) {
 	result := KeyVaultClientGetRandomBytesResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RandomBytes); err != nil {
 		return KeyVaultClientGetRandomBytesResponse{}, err
@@ -716,6 +721,7 @@ func (client *KeyVaultClient) getRandomBytesHandleResponse(resp *http.Response) 
 // exists, Azure Key Vault creates a new version of the key. This operation requires the
 // keys/import permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - Name for the imported key.
 // parameters - The parameters to import a key.
@@ -725,7 +731,7 @@ func (client *KeyVaultClient) ImportKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientImportKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientImportKeyResponse{}, err
 	}
@@ -751,7 +757,7 @@ func (client *KeyVaultClient) importKeyCreateRequest(ctx context.Context, vaultB
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -768,6 +774,7 @@ func (client *KeyVaultClient) importKeyHandleResponse(resp *http.Response) (KeyV
 // be invoked on any vault, it will return an error if invoked on a non soft-delete enabled vault.
 // This operation requires the keys/purge permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key
 // options - KeyVaultClientPurgeDeletedKeyOptions contains the optional parameters for the KeyVaultClient.PurgeDeletedKey
@@ -777,7 +784,7 @@ func (client *KeyVaultClient) PurgeDeletedKey(ctx context.Context, vaultBaseURL 
 	if err != nil {
 		return KeyVaultClientPurgeDeletedKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientPurgeDeletedKeyResponse{}, err
 	}
@@ -803,7 +810,7 @@ func (client *KeyVaultClient) purgeDeletedKeyCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -812,6 +819,7 @@ func (client *KeyVaultClient) purgeDeletedKeyCreateRequest(ctx context.Context, 
 // key will return an error. Consider this the inverse of the delete operation on soft-delete enabled vaults. This operation
 // requires the keys/recover permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the deleted key.
 // options - KeyVaultClientRecoverDeletedKeyOptions contains the optional parameters for the KeyVaultClient.RecoverDeletedKey
@@ -821,7 +829,7 @@ func (client *KeyVaultClient) RecoverDeletedKey(ctx context.Context, vaultBaseUR
 	if err != nil {
 		return KeyVaultClientRecoverDeletedKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRecoverDeletedKeyResponse{}, err
 	}
@@ -847,7 +855,7 @@ func (client *KeyVaultClient) recoverDeletedKeyCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -863,6 +871,7 @@ func (client *KeyVaultClient) recoverDeletedKeyHandleResponse(resp *http.Respons
 // Release - The release key operation is applicable to all key types. The target key must be marked exportable. This operation
 // requires the keys/release permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key to get.
 // keyVersion - Adding the version parameter retrieves a specific version of a key.
@@ -873,7 +882,7 @@ func (client *KeyVaultClient) Release(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientReleaseResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientReleaseResponse{}, err
 	}
@@ -892,10 +901,8 @@ func (client *KeyVaultClient) releaseCreateRequest(ctx context.Context, vaultBas
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	if keyVersion == "" {
-		return nil, errors.New("parameter keyVersion cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
+	urlPath = strings.ReplaceAll(urlPath, "//", "/")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -903,7 +910,7 @@ func (client *KeyVaultClient) releaseCreateRequest(ctx context.Context, vaultBas
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -926,6 +933,7 @@ func (client *KeyVaultClient) releaseHandleResponse(resp *http.Response) (KeyVau
 // must be owned by the same Microsoft Azure Subscription as the source Key Vault
 // The user must have RESTORE permission in the target Key Vault. This operation requires the keys/restore permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // parameters - The parameters to restore the key.
 // options - KeyVaultClientRestoreKeyOptions contains the optional parameters for the KeyVaultClient.RestoreKey method.
@@ -934,7 +942,7 @@ func (client *KeyVaultClient) RestoreKey(ctx context.Context, vaultBaseURL strin
 	if err != nil {
 		return KeyVaultClientRestoreKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRestoreKeyResponse{}, err
 	}
@@ -956,7 +964,7 @@ func (client *KeyVaultClient) restoreKeyCreateRequest(ctx context.Context, vault
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -971,6 +979,7 @@ func (client *KeyVaultClient) restoreKeyHandleResponse(resp *http.Response) (Key
 
 // RotateKey - The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of key to be rotated. The system will generate a new version in the specified key.
 // options - KeyVaultClientRotateKeyOptions contains the optional parameters for the KeyVaultClient.RotateKey method.
@@ -979,7 +988,7 @@ func (client *KeyVaultClient) RotateKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientRotateKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientRotateKeyResponse{}, err
 	}
@@ -1005,7 +1014,7 @@ func (client *KeyVaultClient) rotateKeyCreateRequest(ctx context.Context, vaultB
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1021,6 +1030,7 @@ func (client *KeyVaultClient) rotateKeyHandleResponse(resp *http.Response) (KeyV
 // Sign - The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation
 // uses the private portion of the key. This operation requires the keys/sign permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // keyVersion - The version of the key.
@@ -1031,7 +1041,7 @@ func (client *KeyVaultClient) Sign(ctx context.Context, vaultBaseURL string, key
 	if err != nil {
 		return KeyVaultClientSignResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientSignResponse{}, err
 	}
@@ -1050,10 +1060,8 @@ func (client *KeyVaultClient) signCreateRequest(ctx context.Context, vaultBaseUR
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	if keyVersion == "" {
-		return nil, errors.New("parameter keyVersion cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
+	urlPath = strings.ReplaceAll(urlPath, "//", "/")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -1061,7 +1069,7 @@ func (client *KeyVaultClient) signCreateRequest(ctx context.Context, vaultBaseUR
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -1079,6 +1087,7 @@ func (client *KeyVaultClient) signHandleResponse(resp *http.Response) (KeyVaultC
 // symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the keys/unwrapKey
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // keyVersion - The version of the key.
@@ -1089,7 +1098,7 @@ func (client *KeyVaultClient) UnwrapKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientUnwrapKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUnwrapKeyResponse{}, err
 	}
@@ -1108,10 +1117,8 @@ func (client *KeyVaultClient) unwrapKeyCreateRequest(ctx context.Context, vaultB
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	if keyVersion == "" {
-		return nil, errors.New("parameter keyVersion cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
+	urlPath = strings.ReplaceAll(urlPath, "//", "/")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -1119,7 +1126,7 @@ func (client *KeyVaultClient) unwrapKeyCreateRequest(ctx context.Context, vaultB
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -1135,6 +1142,7 @@ func (client *KeyVaultClient) unwrapKeyHandleResponse(resp *http.Response) (KeyV
 // UpdateKey - In order to perform this operation, the key must already exist in the Key Vault. Note: The cryptographic material
 // of a key itself cannot be changed. This operation requires the keys/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of key to update.
 // keyVersion - The version of the key to update.
@@ -1145,7 +1153,7 @@ func (client *KeyVaultClient) UpdateKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientUpdateKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateKeyResponse{}, err
 	}
@@ -1164,10 +1172,8 @@ func (client *KeyVaultClient) updateKeyCreateRequest(ctx context.Context, vaultB
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	// if keyVersion == "" {
-	// 	return nil, errors.New("parameter keyVersion cannot be empty")
-	// }
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
+	urlPath = strings.ReplaceAll(urlPath, "//", "/")
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -1175,7 +1181,7 @@ func (client *KeyVaultClient) updateKeyCreateRequest(ctx context.Context, vaultB
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -1191,6 +1197,7 @@ func (client *KeyVaultClient) updateKeyHandleResponse(resp *http.Response) (KeyV
 // UpdateKeyRotationPolicy - Set specified members in the key policy. Leave others as undefined. This operation requires the
 // keys/update permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key in the given vault.
 // keyRotationPolicy - The policy for the key.
@@ -1201,7 +1208,7 @@ func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vault
 	if err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
 	}
@@ -1227,7 +1234,7 @@ func (client *KeyVaultClient) updateKeyRotationPolicyCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, keyRotationPolicy)
 }
 
@@ -1246,6 +1253,7 @@ func (client *KeyVaultClient) updateKeyRotationPolicyHandleResponse(resp *http.R
 // a key-reference and not the public portion of the key. This operation requires
 // the keys/verify permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // keyVersion - The version of the key.
@@ -1256,7 +1264,7 @@ func (client *KeyVaultClient) Verify(ctx context.Context, vaultBaseURL string, k
 	if err != nil {
 		return KeyVaultClientVerifyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientVerifyResponse{}, err
 	}
@@ -1275,10 +1283,8 @@ func (client *KeyVaultClient) verifyCreateRequest(ctx context.Context, vaultBase
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	if keyVersion == "" {
-		return nil, errors.New("parameter keyVersion cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
+	urlPath = strings.ReplaceAll(urlPath, "//", "/")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -1286,7 +1292,7 @@ func (client *KeyVaultClient) verifyCreateRequest(ctx context.Context, vaultBase
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -1306,6 +1312,7 @@ func (client *KeyVaultClient) verifyHandleResponse(resp *http.Response) (KeyVaul
 // callers that have a key-reference but do not have access to the public key material. This operation requires the keys/wrapKey
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
 // vaultBaseURL - The vault name, for example https://myvault.vault.azure.net.
 // keyName - The name of the key.
 // keyVersion - The version of the key.
@@ -1316,7 +1323,7 @@ func (client *KeyVaultClient) WrapKey(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientWrapKeyResponse{}, err
 	}
-	resp, err := client.Pl.Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KeyVaultClientWrapKeyResponse{}, err
 	}
@@ -1335,10 +1342,8 @@ func (client *KeyVaultClient) wrapKeyCreateRequest(ctx context.Context, vaultBas
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	if keyVersion == "" {
-		return nil, errors.New("parameter keyVersion cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
+	urlPath = strings.ReplaceAll(urlPath, "//", "/")
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -1346,7 +1351,7 @@ func (client *KeyVaultClient) wrapKeyCreateRequest(ctx context.Context, vaultBas
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "7.3")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

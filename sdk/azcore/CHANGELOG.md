@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* The one-second floor for `Frequency` when calling `PollUntilDone()` has been removed when running tests.
 
 ## 1.0.0 (2022-05-12)
 

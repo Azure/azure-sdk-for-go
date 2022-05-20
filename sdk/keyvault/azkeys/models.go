@@ -49,7 +49,7 @@ type Properties struct {
 	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// Tags contain application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Last updated time in UTC.
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
@@ -89,13 +89,14 @@ func keyPropertiesFromGenerated(i *generated.KeyAttributes, id *string, name *st
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
 		Exportable:      i.Exportable,
+		ID:              id,
+		Managed:         managed,
+		Name:            name,
 		NotBefore:       i.NotBefore,
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   to.Ptr(string(*i.RecoveryLevel)),
+		Tags:            tags,
 		UpdatedOn:       i.Updated,
-		ID:              id,
-		Managed:         managed,
-		Tags:            convertGeneratedMap(tags),
 		VaultURL:        vaultURL,
 		Version:         version,
 	}
@@ -128,7 +129,7 @@ func (k Key) toKeyUpdateParameters() generated.KeyUpdateParameters {
 
 	var tags map[string]*string
 	if k.Properties != nil && k.Properties.Tags != nil {
-		tags = convertToGeneratedMap(k.Properties.Tags)
+		tags = k.Properties.Tags
 	}
 
 	return generated.KeyUpdateParameters{
@@ -297,7 +298,7 @@ type DeletedKeyItem struct {
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
 	// Tags contain application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; The time when the key was deleted, in UTC
 	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`

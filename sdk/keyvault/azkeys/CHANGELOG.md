@@ -15,6 +15,8 @@
 * Renamed `CreateECKeyOptions.CurveName` to `.Curve`
 * Renamed `ReleaseKeyOptions.Enc` to `.Algorithm`
 * Removed redundant field `DeletedKeyItem.Managed`. Use `DeletedKeyItem.Properties.Managed` instead.
+* Changed type of key `Tags` to `map[string]*string`
+* Changed type of `ListPropertiesOfKeyVersionsResponse.Keys` to `[]*KeyItem`
 
 ### Bugs Fixed
 

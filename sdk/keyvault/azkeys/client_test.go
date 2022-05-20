@@ -76,8 +76,8 @@ func TestCreateKeyRSATags(t *testing.T) {
 	require.NoError(t, err)
 
 	resp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
-		Tags: map[string]string{
-			"Tag1": "Val1",
+		Tags: map[string]*string{
+			"Tag1": to.Ptr("Val1"),
 		},
 	})
 	defer cleanUpKey(t, client, key)
@@ -85,7 +85,7 @@ func TestCreateKeyRSATags(t *testing.T) {
 	validateKey(t, to.Ptr(resp.Key))
 	require.Equal(t, 1, len(resp.Key.Properties.Tags))
 
-	resp.Key.Properties.Tags = map[string]string{}
+	resp.Key.Properties.Tags = map[string]*string{}
 	// Remove the tag
 	resp2, err := client.UpdateKeyProperties(ctx, resp.Key, nil)
 	require.NoError(t, err)
@@ -442,15 +442,15 @@ func TestUpdateKeyProperties(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			createResp.Key.Properties.Tags = map[string]string{
-				"Tag1": "Val1",
+			createResp.Key.Properties.Tags = map[string]*string{
+				"Tag1": to.Ptr("Val1"),
 			}
 			createResp.Key.Properties.ExpiresOn = to.Ptr(time.Now().AddDate(1, 0, 0))
 
 			resp, err := client.UpdateKeyProperties(ctx, createResp.Key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Properties)
-			require.Equal(t, resp.Properties.Tags["Tag1"], "Val1")
+			require.Equal(t, *resp.Properties.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Properties.ExpiresOn)
 
 			createResp.Key.Properties.Name = to.Ptr("doesnotexist")

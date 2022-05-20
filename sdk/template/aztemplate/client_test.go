@@ -23,4 +23,7 @@ func TestOutput(t *testing.T) {
 
 	client.SomeServiceAction(context.TODO(), nil)
 
+	client.NewListValuesPager(nil)
+
+	client.BeginLongRunningOperation(context.TODO(), nil)
 }

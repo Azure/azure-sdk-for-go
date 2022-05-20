@@ -470,27 +470,3 @@ type LifetimeActionsTrigger struct {
 	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
 	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
 }
-
-func convertToGeneratedMap(m map[string]string) map[string]*string {
-	if m == nil {
-		return nil
-	}
-
-	ret := make(map[string]*string)
-	for k, v := range m {
-		ret[k] = &v
-	}
-	return ret
-}
-
-func convertGeneratedMap(m map[string]*string) map[string]string {
-	if m == nil {
-		return nil
-	}
-
-	ret := make(map[string]string)
-	for k, v := range m {
-		ret[k] = *v
-	}
-	return ret
-}

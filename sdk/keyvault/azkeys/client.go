@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -57,7 +58,7 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 		shared.NewKeyVaultChallengePolicy(credential),
 	)
 
-	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
+	pl := runtime.NewPipeline(internal.ModuleName, internal.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 	return &Client{
 		kvClient: generated.NewKeyVaultClient(pl),
 		vaultURL: vaultURL,

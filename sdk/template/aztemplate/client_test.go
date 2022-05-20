@@ -21,9 +21,9 @@ func TestOutput(t *testing.T) {
 
 	client, _ := NewClient(cred, nil)
 
-	client.SomeServiceAction(context.TODO(), nil)
+	_, _ = client.SomeServiceAction(context.TODO(), nil)
 
 	client.NewListValuesPager(nil)
 
-	client.BeginLongRunningOperation(context.TODO(), nil)
+	_, _ = client.BeginLongRunningOperation(context.TODO(), nil)
 }

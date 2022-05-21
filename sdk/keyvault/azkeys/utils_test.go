@@ -8,7 +8,9 @@ package azkeys
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"hash/fnv"
 	"os"
@@ -25,33 +27,31 @@ import (
 )
 
 const (
-	fakeVaultURL = "https://fakekvurl.vault.azure.net"
-	fakeMHSMURL  = "https://fakekvurl.managedhsm.azure.net"
+	fakeAttestationUrl = "https://fakeattestation"
+	fakeVaultURL       = "https://fakekvurl.vault.azure.net"
+	fakeMHSMURL        = "https://fakekvurl.managedhsm.azure.net"
 )
 
 var (
-	enableHSM     bool
-	liveMHSMURL   string
-	liveVaultURL  string
-	pathToPackage = "sdk/keyvault/azkeys/testdata"
+	enableHSM          bool
+	testAttestationURL string
+	testMHSMURL        string
+	testVaultURL       string
+	pathToPackage      = "sdk/keyvault/azkeys/testdata"
 )
 
 func TestMain(m *testing.M) {
-	liveVaultURL = strings.TrimSuffix(os.Getenv("AZURE_KEYVAULT_URL"), "/")
-	liveMHSMURL = strings.TrimSuffix(os.Getenv("AZURE_MANAGEDHSM_URL"), "/")
-	enableHSM = liveMHSMURL != ""
+	testAttestationURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationUrl), "/")
+	testVaultURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL), "/")
+	testMHSMURL = strings.TrimSuffix(recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL), "/")
+	enableHSM = testMHSMURL != fakeMHSMURL
 
-	if recording.GetRecordMode() != recording.LiveMode {
-		err := recording.ResetProxy(nil)
-		if err != nil {
-			panic(err)
-		}
-		defer func() {
-			err := recording.ResetProxy(nil)
-			if err != nil {
-				panic(err)
-			}
-		}()
+	if testVaultURL == fakeVaultURL && recording.GetRecordMode() != recording.PlaybackMode {
+		panic("no value for AZURE_KEYVAULT_URL")
+	}
+	err := recording.ResetProxy(nil)
+	if err != nil {
+		panic(err)
 	}
 	switch recording.GetRecordMode() {
 	case recording.PlaybackMode:
@@ -62,37 +62,59 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 	case recording.RecordingMode:
-		if liveVaultURL == "" {
-			panic("no value for AZURE_KEYVAULT_URL")
+		defer func() {
+			err := recording.ResetProxy(nil)
+			if err != nil {
+				panic(err)
+			}
+		}()
+		err := recording.AddURISanitizer(fakeVaultURL, testVaultURL, nil)
+		if err != nil {
+			panic(err)
 		}
-		err := recording.AddURISanitizer(fakeVaultURL, liveVaultURL, nil)
+		err = recording.AddURISanitizer(fakeAttestationUrl, testAttestationURL, nil)
+		if err != nil {
+			panic(err)
+		}
+		err = recording.AddRemoveHeaderSanitizer([]string{"Set-Cookie"}, nil)
 		if err != nil {
 			panic(err)
 		}
 
 		keyIDPaths := []string{"$.error.message", "$.key.kid", "$.recoveryId"}
 		for _, path := range keyIDPaths {
-			err = recording.AddBodyKeySanitizer(path, fakeVaultURL, liveVaultURL, nil)
+			err = recording.AddBodyKeySanitizer(path, fakeVaultURL, testVaultURL, nil)
 			if err != nil {
 				panic(err)
 			}
 		}
-
+		// these values aren't secret but we redact them anyway to avoid
+		// alerts from automation scanning for JWTs or "token" values
+		for _, attestation := range []string{"$.target", "$.token"} {
+			err = recording.AddBodyKeySanitizer(attestation, "redacted", "", nil)
+			if err != nil {
+				panic(err)
+			}
+		}
+		// we need to replace release policy data because it has the attestation service URL encoded
+		// into it and therefore won't match in playback, when we don't have the URL used while recording
+		realPolicyData := base64.StdEncoding.EncodeToString(getMarshalledReleasePolicy(testAttestationURL))
+		fakePolicyData := base64.RawStdEncoding.EncodeToString(getMarshalledReleasePolicy(fakeAttestationUrl))
+		err = recording.AddBodyKeySanitizer("$.release_policy.data", fakePolicyData, realPolicyData, nil)
+		if err != nil {
+			panic(err)
+		}
 		if enableHSM {
-			err = recording.AddURISanitizer(fakeMHSMURL, liveMHSMURL, nil)
+			err = recording.AddURISanitizer(fakeMHSMURL, testMHSMURL, nil)
 			if err != nil {
 				panic(err)
 			}
 			for _, path := range keyIDPaths {
-				err = recording.AddBodyKeySanitizer(path, fakeMHSMURL, liveMHSMURL, nil)
+				err = recording.AddBodyKeySanitizer(path, fakeMHSMURL, testMHSMURL, nil)
 				if err != nil {
 					panic(err)
 				}
 			}
-		}
-	case recording.LiveMode:
-		if liveVaultURL == "" {
-			panic("no value for AZURE_KEYVAULT_URL")
 		}
 	}
 
@@ -130,11 +152,10 @@ func lookupEnvVar(s string) string {
 }
 
 func createClient(t *testing.T, testType string) (*Client, error) {
-	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL)
+	vaultUrl := testVaultURL
 	if testType == HSMTEST {
-		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeMHSMURL)
+		vaultUrl = testMHSMURL
 	}
-
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
@@ -239,4 +260,21 @@ func validateProperties(t *testing.T, props *Properties) {
 	if props.Version == nil {
 		t.Fatalf("expected Version to be not nil")
 	}
+}
+
+func getMarshalledReleasePolicy(attestationURL string) []byte {
+	data, _ := json.Marshal(map[string]interface{}{
+		"anyOf": []map[string]interface{}{
+			{
+				"anyOf": []map[string]interface{}{
+					{
+						"claim":  "sdk-test",
+						"equals": "true",
+					}},
+				"authority": attestationURL,
+			},
+		},
+		"version": "1.0.0",
+	})
+	return data
 }

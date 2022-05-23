@@ -15,7 +15,7 @@ func WrapWithQueueEnvelope(qd *QueueDescription, tokenProvider auth.TokenProvide
 		Entry: &Entry{
 			AtomSchema: atomSchema,
 		},
-		Content: &queueContent{
+		Content: &QueueContent{
 			Type:             applicationXML,
 			QueueDescription: *qd,
 		},
@@ -31,7 +31,7 @@ func WrapWithTopicEnvelope(td *TopicDescription) *TopicEnvelope {
 		Entry: &Entry{
 			AtomSchema: atomSchema,
 		},
-		Content: &topicContent{
+		Content: &TopicContent{
 			Type:             applicationXML,
 			TopicDescription: *td,
 		},
@@ -45,7 +45,7 @@ func WrapWithSubscriptionEnvelope(sd *SubscriptionDescription) *SubscriptionEnve
 		Entry: &Entry{
 			AtomSchema: atomSchema,
 		},
-		Content: &subscriptionContent{
+		Content: &SubscriptionContent{
 			Type:                    applicationXML,
 			SubscriptionDescription: *sd,
 		},

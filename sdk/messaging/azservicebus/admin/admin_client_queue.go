@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
@@ -429,6 +430,10 @@ func newQueueItem(env *atom.QueueEnvelope) (*QueueItem, error) {
 
 func newQueueRuntimePropertiesItem(env *atom.QueueEnvelope) (*QueueRuntimePropertiesItem, error) {
 	desc := env.Content.QueueDescription
+
+	if desc.CountDetails == nil {
+		return nil, errors.New("invalid queue runtime properties: no CountDetails element")
+	}
 
 	qrt := &QueueRuntimeProperties{
 		SizeInBytes:                    int64OrZero(desc.SizeInBytes),

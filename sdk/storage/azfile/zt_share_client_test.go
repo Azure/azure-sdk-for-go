@@ -20,7 +20,7 @@ func (s *azfileLiveTestSuite) TestShareCreateRootDirectoryURL() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	shareClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, shareClient, nil)
 }
 
@@ -29,7 +29,7 @@ func (s *azfileLiveTestSuite) TestPutAndGetPermission() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -114,7 +114,7 @@ func (s *azfileLiveTestSuite) TestShareCreateNilMetadata() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.Create(ctx, nil)
@@ -143,7 +143,7 @@ func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidMetadata() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.Create(ctx, &ShareCreateOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}, Quota: to.Ptr(int32(0))})
@@ -155,7 +155,7 @@ func (s *azfileLiveTestSuite) TestShareDeleteNegativeNonExistent() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.Delete(ctx, nil)
@@ -167,7 +167,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesNonDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -198,7 +198,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -227,7 +227,7 @@ func (s *azfileLiveTestSuite) TestShareSetQuotaNegative() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -241,7 +241,7 @@ func (s *azfileLiveTestSuite) TestShareGetPropertiesNegative() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.GetProperties(ctx, nil)
@@ -254,7 +254,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -309,7 +309,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefaultMultiple() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -364,7 +364,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -393,7 +393,7 @@ func (s *azfileLiveTestSuite) TestShareGetPermissionNegative() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.GetPermissions(ctx, nil)
@@ -406,7 +406,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNonDefaultDeleteAndModifyAC
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 
 	defer delShare(_require, srClient, nil)
@@ -450,7 +450,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsDeleteAllPolicies() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 
 	defer delShare(_require, srClient, nil)
@@ -487,7 +487,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNegativeInvalidPolicyTimes(
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -516,7 +516,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNilPolicySlice() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 
 	defer delShare(_require, srClient, nil)
@@ -531,7 +531,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNegative() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 
 	defer delShare(_require, srClient, nil)
@@ -564,7 +564,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -593,7 +593,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataNonDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -626,7 +626,7 @@ func (s *azfileLiveTestSuite) TestShareSetMetadataNegative() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -642,7 +642,7 @@ func (s *azfileLiveTestSuite) TestShareGetStats() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -661,7 +661,7 @@ func (s *azfileLiveTestSuite) TestShareGetStats() {
 	// _require.Equal(gResp.LastModified.IsZero(), false) // TODO: Even share is once updated, no LastModified would be returned.
 	_require.NotEqual(*gResp.RequestID, "")
 	_require.NotEqual(*gResp.Version, "")
-	_require.Equal(*gResp.ShareUsageBytes, int32(0))
+	_require.Equal(*gResp.ShareUsageBytes, int64(0))
 }
 
 func (s *azfileLiveTestSuite) TestShareGetStatsNegative() {
@@ -669,7 +669,7 @@ func (s *azfileLiveTestSuite) TestShareGetStatsNegative() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.GetStatistics(ctx, nil)
@@ -682,7 +682,7 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.Create(ctx, &ShareCreateOptions{Quota: to.Ptr(int32(1024))})
@@ -704,61 +704,75 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 	_require.Equal(*getStats.ShareUsageBytes, int64(1024*1024*1024*1024))
 }
 
-//func (s *azfileLiveTestSuite) TestShareCreateSnapshotNonDefault() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	shareName := generateShareName(testName)
-//	srClient := createNewShare(_require, shareName, svcClient)
-//	defer delShare(_require, srClient, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
-//
-//	ctx := context.Background()
-//
-//	md := map[string]string{
-//		"foo": "FooValuE",
-//		"bar": "bArvaLue",
-//	}
-//
-//	cResp, err := srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: md})
-//	_require.Nil(err)
-//	_require.Equal(cResp.RawResponse.StatusCode, chk.Equals, 201)
-//	_require.Equal(cResp.Date().IsZero(), chk.Equals, false)
-//	_require.NotEqual(*cResp.ETag, chk.Not(chk.Equals), ETagNone)
-//	_require.Equal(cResp.LastModified.IsZero(), chk.Equals, false)
-//	_require(cResp.RequestID(), chk.Not(chk.Equals), "")
-//	_require(cResp.Version(), chk.Not(chk.Equals), "")
-//	_require(cResp.Snapshot(), chk.Not(chk.Equals), nil)
-//
-//	cSnapshot := cResp.Snapshot()
-//
-//	lResp, err := svcClient.ListSharesSegment(
-//		ctx, Marker{},
-//		ListSharesOptions{
-//			Detail: ListSharesDetail{
-//				Metadata:  true,
-//				Snapshots: true,
-//			},
-//			Prefix: shareName,
-//		})
-//
-//	_require.Nil(err)
-//	_require(lResp.Response().StatusCode, chk.Equals, 200)
-//	_require(lResp.ShareItems, chk.HasLen, 2)
-//
-//	if lResp.ShareItems[0].Snapshot != nil {
-//		_require(*(lResp.ShareItems[0].Snapshot), chk.Equals, cSnapshot)
-//		_require(lResp.ShareItems[0].Metadata, chk.DeepEquals, md)
-//		_require(len(lResp.ShareItems[1].Metadata), chk.Equals, 0)
-//	} else {
-//		_require(*(lResp.ShareItems[1].Snapshot), chk.Equals, cSnapshot)
-//		_require(lResp.ShareItems[1].Metadata, chk.DeepEquals, md)
-//		_require(len(lResp.ShareItems[0].Metadata), chk.Equals, 0)
-//	}
-//
-//}
+func (s *azfileLiveTestSuite) TestShareCreateSnapshotNonDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(testName)
+	srClient := createNewShare(_require, shareName, svcClient)
+	defer delShare(_require, srClient, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
+
+	ctx := context.Background()
+
+	md := map[string]string{
+		"foo": "FooValuE",
+		"bar": "bArvaLue",
+	}
+
+	cResp, err := srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: md})
+	_require.Nil(err)
+	//_require.Equal(cResp.RawResponse.StatusCode, chk.Equals, 201)
+	_require.Equal(cResp.Date.IsZero(), false)
+	_require.NotNil(cResp.ETag)
+	_require.NotEqual(*cResp.ETag, "")
+	_require.Equal(cResp.LastModified.IsZero(), false)
+	_require.NotNil(cResp.RequestID)
+	_require.NotEqual(*cResp.RequestID, "")
+	_require.NotNil(cResp.Version)
+	_require.NotEqual(cResp.Version, "")
+	_require.NotNil(cResp.Snapshot)
+	_require.NotEqual(cResp.Snapshot, nil)
+
+	cSnapshot := *cResp.Snapshot
+
+	pager := svcClient.ListShares(
+		&ServiceListSharesOptions{
+			Include: []ListSharesIncludeType{
+				ListSharesIncludeTypeMetadata,
+				ListSharesIncludeTypeSnapshots,
+			},
+			Prefix: &shareName,
+		})
+
+	for pager.More() {
+		lResp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		_require.Len(lResp.ShareItems, 2)
+
+		if lResp.ShareItems[0].Snapshot != nil {
+			_require.NotNil(lResp.ShareItems[0].Snapshot)
+			_require.Equal(*(lResp.ShareItems[0].Snapshot), cSnapshot)
+			_require.Len(lResp.ShareItems[0].Metadata, len(md))
+			for key, val1 := range md {
+				if val2, ok := lResp.ShareItems[0].Metadata[key]; !(ok && val1 == *val2) {
+					_require.Fail("metadata mismatch")
+				}
+			}
+			_require.Len(lResp.ShareItems[1].Metadata, 0)
+		} else {
+			_require.NotNil(lResp.ShareItems[1].Snapshot)
+			_require.Equal(*(lResp.ShareItems[1].Snapshot), cSnapshot)
+			_require.Len(lResp.ShareItems[1].Metadata, len(md))
+			for key, val1 := range md {
+				if val2, ok := lResp.ShareItems[1].Metadata[key]; !(ok && val1 == *val2) {
+					_require.Fail("metadata mismatch")
+				}
+			}
+			_require.Len(lResp.ShareItems[0].Metadata, 0)
+		}
+	}
+}
 
 //func (s *azfileLiveTestSuite) TestShareCreateSnapshotDefault() {
 //	credential, accountName := getCredential()
@@ -821,7 +835,7 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeShareNotExist() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: map[string]string{}})
@@ -834,7 +848,7 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeMetadataInvalid() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -848,7 +862,7 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeSnapshotOfSnapshot(
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
 
@@ -874,7 +888,7 @@ func (s *azfileLiveTestSuite) TestShareDeleteSnapshot() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -889,31 +903,33 @@ func (s *azfileLiveTestSuite) TestShareDeleteSnapshot() {
 	validateShareDeleted(_require, snapshotURL)
 }
 
-//func (s *azfileLiveTestSuite) TestShareDeleteSnapshotsInclude() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	shareName := generateShareName(testName)
-//	srClient := createNewShare(_require, shareName, svcClient)
-//
-//	_, err = srClient.CreateSnapshot(ctx, nil)
-//	_require.Nil(err)
-//	_, err = srClient.Delete(ctx, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
-//	_require.Nil(err)
-//
-//	lResp, _ := svcClient.ListSharesSegment(ctx, Marker{}, ListSharesOptions{Detail: ListSharesDetail{Snapshots: true}, Prefix: shareName})
-//	_require(lResp.ShareItems, chk.HasLen, 0)
-//}
+func (s *azfileLiveTestSuite) TestShareDeleteSnapshotsInclude() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(testName)
+	srClient := createNewShare(_require, shareName, svcClient)
+
+	_, err := srClient.CreateSnapshot(ctx, nil)
+	_require.Nil(err)
+	_, err = srClient.Delete(ctx, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
+	_require.Nil(err)
+
+	pager := svcClient.ListShares(&ServiceListSharesOptions{Include: []ListSharesIncludeType{ListSharesIncludeTypeSnapshots}, Prefix: &shareName})
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		_require.Len(resp.ShareItems, 0)
+	}
+}
 
 func (s *azfileLiveTestSuite) TestShareDeleteSnapshotsNoneWithSnapshots() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, &ShareDeleteOptions{DeleteSnapshots: &deleteSnapshotsInclude})
 

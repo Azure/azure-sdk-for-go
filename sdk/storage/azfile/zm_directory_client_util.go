@@ -13,23 +13,7 @@ import (
 )
 
 // ---------------------------------------------------------------------------------------------------------------------
-
-// SMBPropertyHolder is an interface designed for SMBPropertyAdapter, to identify valid responseBody types for adapting.
-type SMBPropertyHolder interface {
-	FileCreationTime() string
-	FileLastWriteTime() string
-	FileAttributes() string
-}
-
-// SMBPropertyAdapter is a wrapper struct that automatically converts the string outputs of FileAttributes, FileCreationTime and FileLastWrite time to time.Time.
-// It is _not_ error resistant. It is expected that the responseBody you're inserting into this is a valid responseBody.
-// File and directory calls that return such properties are: GetProperties, SetProperties, Create
-// File Downloads also return such properties. Insert other responseBody types at your peril.
-type SMBPropertyAdapter struct {
-	PropertySource SMBPropertyHolder
-}
-
-func (s *SMBPropertyAdapter) convertISO8601(input string) time.Time {
+func convertISO8601(input string) time.Time {
 	t, err := time.Parse(ISO8601, input)
 
 	if err != nil {
@@ -38,18 +22,6 @@ func (s *SMBPropertyAdapter) convertISO8601(input string) time.Time {
 	}
 
 	return t
-}
-
-func (s *SMBPropertyAdapter) FileCreationTime() time.Time {
-	return s.convertISO8601(s.PropertySource.FileCreationTime()).UTC()
-}
-
-func (s *SMBPropertyAdapter) FileLastWriteTime() time.Time {
-	return s.convertISO8601(s.PropertySource.FileLastWriteTime()).UTC()
-}
-
-func (s *SMBPropertyAdapter) FileAttributes() FileAttributeFlags {
-	return ParseFileAttributeFlagsString(s.PropertySource.FileAttributes())
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

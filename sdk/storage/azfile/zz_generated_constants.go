@@ -50,7 +50,6 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 type FileRangeWriteType string
 
 const (
-	FileRangeWriteTypeNone   FileRangeWriteType = ""
 	FileRangeWriteTypeUpdate FileRangeWriteType = "update"
 	FileRangeWriteTypeClear  FileRangeWriteType = "clear"
 )

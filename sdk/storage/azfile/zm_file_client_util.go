@@ -316,7 +316,7 @@ func toFileGetPropertiesResponse(resp fileClientGetPropertiesResponse) FileGetPr
 
 //----------------------------------------------------------------------------------------------------------------------
 
-type SetFileHTTPHeadersOptions struct {
+type FileSetHTTPHeadersOptions struct {
 	// Resizes a file to the specified size.
 	// If the specified byte value is less than the current size of the file,
 	// then all ranges above the specified byte value are cleared.
@@ -331,28 +331,29 @@ type SetFileHTTPHeadersOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetFileHTTPHeadersOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string,
-	setHTTPHeadersOptions *fileClientSetHTTPHeadersOptions, fileHTTPHeaders *ShareFileHTTPHeaders,
-	leaseAccessConditions *LeaseAccessConditions, err error) {
+func (o *FileSetHTTPHeadersOptions) format() (string, string, string, *fileClientSetHTTPHeadersOptions,
+	*ShareFileHTTPHeaders, *LeaseAccessConditions, error) {
 
-	fileAttributes, fileCreationTime, fileLastWriteTime = DefaultPreserveString, DefaultPreserveString, DefaultPreserveString
+	fileAttributes, fileCreationTime, fileLastWriteTime := DefaultPreserveString, DefaultPreserveString, DefaultPreserveString
+	if o != nil {
+		fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false, DefaultPreserveString, DefaultPreserveString)
+	}
 
 	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultPreserveString)
 	if err != nil {
-		return
+		return "", "", "", nil, nil, nil, err
 	}
 
-	setHTTPHeadersOptions = &fileClientSetHTTPHeadersOptions{
+	// Set file HTTP Headers
+	setHTTPHeadersOptions := &fileClientSetHTTPHeadersOptions{
 		FilePermission:    filePermission,
 		FilePermissionKey: filePermissionKey,
 	}
-
 	if o != nil {
 		setHTTPHeadersOptions.FileContentLength = o.FileContentLength
-		fileHTTPHeaders = o.ShareFileHTTPHeaders
-		leaseAccessConditions = o.LeaseAccessConditions
 	}
-	return
+
+	return fileAttributes, fileCreationTime, fileLastWriteTime, setHTTPHeadersOptions, o.ShareFileHTTPHeaders, o.LeaseAccessConditions, nil
 }
 
 type FileSetHTTPHeadersResponse struct {
@@ -428,8 +429,6 @@ type FileUploadRangeOptions struct {
 	// header is specified, the File service compares the hash of the content that has
 	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400
 	// (Bad Request).
-	ContentMD5 []byte
-
 	TransactionalMD5 []byte
 
 	FileRangeWrite *FileRangeWriteType
@@ -456,20 +455,20 @@ func (o *FileUploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (s
 
 	httpRange := getSourceRange(to.Ptr(offset), to.Ptr(count))
 	fileRangeWrite := FileRangeWriteTypeUpdate
-	var contentMD5 []byte
+	var transactionalContentMD5 []byte
 	var leaseAccessConditions *LeaseAccessConditions
 
 	if o != nil {
 		if o.FileRangeWrite != nil {
 			fileRangeWrite = *o.FileRangeWrite
 		}
-		if o.ContentMD5 != nil {
-			contentMD5 = o.ContentMD5
+		if o.TransactionalMD5 != nil {
+			transactionalContentMD5 = o.TransactionalMD5
 		}
 		leaseAccessConditions = o.LeaseAccessConditions
 	}
 
-	uploadRangeOptions := &fileClientUploadRangeOptions{ContentMD5: contentMD5, Optionalbody: body}
+	uploadRangeOptions := &fileClientUploadRangeOptions{ContentMD5: transactionalContentMD5, Optionalbody: body}
 	return httpRange, fileRangeWrite, count, uploadRangeOptions, leaseAccessConditions, nil
 }
 

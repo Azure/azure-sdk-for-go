@@ -162,15 +162,15 @@ func (f *FileClient) GetProperties(ctx context.Context, options *FileGetProperti
 
 // SetHTTPHeaders sets file's system properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-file-properties.
-func (f *FileClient) SetHTTPHeaders(ctx context.Context, options *SetFileHTTPHeadersOptions) (FileSetHTTPHeadersResponse, error) {
-	fileAttributes, fileCreationTime, fileLastWriteTime, setHTTPHeadersOptions, fileHTTPHeaders, leaseAccessConditions, err := options.format()
+func (f *FileClient) SetHTTPHeaders(ctx context.Context, options *FileSetHTTPHeadersOptions) (FileSetHTTPHeadersResponse, error) {
+	fileAttributes, fileCreationTime, fileLastWriteTime, setHTTPHeadersOptions, shareFileHTTPHeaders, leaseAccessConditions, err := options.format()
 
 	if err != nil {
 		return FileSetHTTPHeadersResponse{}, err
 	}
 
 	fileSetHTTPHeadersResponse, err := f.client.SetHTTPHeaders(ctx, fileAttributes, fileCreationTime,
-		fileLastWriteTime, setHTTPHeadersOptions, fileHTTPHeaders, leaseAccessConditions)
+		fileLastWriteTime, setHTTPHeadersOptions, shareFileHTTPHeaders, leaseAccessConditions)
 
 	return toFileSetHTTPHeadersResponse(fileSetHTTPHeadersResponse), handleError(err)
 }

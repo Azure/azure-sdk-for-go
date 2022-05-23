@@ -345,7 +345,7 @@ type ShareSmbSettings struct {
 type ShareStats struct {
 	// REQUIRED; The approximate size of the data stored in bytes. Note that this value may not include all recently created or
 	// recently resized files.
-	ShareUsageBytes *int32 `xml:"ShareUsageBytes"`
+	ShareUsageBytes *int64 `xml:"ShareUsageBytes"`
 }
 
 // SignedIdentifier - Signed identifier.

@@ -345,8 +345,9 @@ func generateName(prefix string) string {
 func generateEntityName(testName string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
 }
-func generateShareName(prefix string, testName string) string {
-	return prefix + generateEntityName(testName)
+
+func generateShareName(testName string) string {
+	return sharePrefix + generateEntityName(testName)
 }
 
 func generateDirectoryName(testName string) string {
@@ -355,6 +356,10 @@ func generateDirectoryName(testName string) string {
 
 func generateFileName(testName string) string {
 	return filePrefix + generateEntityName(testName)
+}
+
+func generateEntityNameWithPrefix(prefix, testName string) string {
+	return prefix + generateEntityName(testName)
 }
 
 // 6. Utility Functions ---------------------------------------------------------------------------------------------------

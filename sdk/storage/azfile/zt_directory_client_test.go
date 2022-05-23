@@ -47,7 +47,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -77,7 +77,7 @@ func (s *azfileLiveTestSuite) TestDirSetProperties() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -105,7 +105,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNonDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -158,7 +158,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -206,7 +206,7 @@ func (s *azfileLiveTestSuite) TestDirCreateEndWithSlash() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -235,7 +235,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
@@ -267,7 +267,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataNonDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
@@ -305,7 +305,7 @@ func (s *azfileLiveTestSuite) TestDirSetMetadataNegative() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)
@@ -324,7 +324,7 @@ func (s *azfileLiveTestSuite) TestDirGetPropertiesNegative() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	dirClient := getDirectoryClientFromShare(_require, generateDirectoryName(testName), srClient)
 
@@ -338,7 +338,7 @@ func (s *azfileLiveTestSuite) TestDirGetPropertiesWithBaseDirectory() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient, err := srClient.NewRootDirectoryClient()
@@ -361,7 +361,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	dirClient := createNewDirectoryFromShare(_require, generateDirectoryName(testName), srClient)

@@ -31,7 +31,7 @@ func (s *azfileLiveTestSuite) TestFileCreateDeleteDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	shareName := generateShareName(sharePrefix, testName)
+	shareName := generateShareName(testName)
 	srClient := createNewShare(_require, shareName, svcClient)
 	defer delShare(_require, srClient, nil)
 
@@ -90,7 +90,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
@@ -110,7 +110,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNonDefaultHTTPHeaders() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
@@ -129,7 +129,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
@@ -140,313 +140,298 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 	_require.NotNil(err)
 }
 
-//func (s *azfileLiveTestSuite) TestFileGetSetPropertiesNonDefault() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
-//	defer delShare(_require, srClient, nil)
-//
-//	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
-//	defer delFile(_require, fClient)
-//
-//	md5Str := "MDAwMDAwMDA="
-//	var testMd5 []byte
-//	copy(testMd5[:], md5Str)
-//
-//	attribs := FileAttributeTemporary.Add(FileAttributeHidden)
-//	creationTime := time.Now().Add(-time.Hour)
-//	lastWriteTime := time.Now().Add(-time.Minute * 15)
-//
-//	// Format and re-parse the times so we have the same precision
-//	creationTime, err = time.Parse(ISO8601, creationTime.Format(ISO8601))
-//	_require.Nil(err)
-//	lastWriteTime, err = time.Parse(ISO8601, lastWriteTime.Format(ISO8601))
-//	_require.Nil(err)
-//
-//	options := &SetFileHTTPHeadersOptions{
-//		FilePermissions: &FilePermissions{ PermissionStr: &sampleSDDL},
-//		SMBProperties: &SMBProperties{
-//			FileAttributes:    &attribs,
-//			FileCreationTime:  &creationTime,
-//			FileLastWriteTime: &lastWriteTime,
-//		},
-//		ShareFileHTTPHeaders: &ShareFileHTTPHeaders{
-//			FileContentType:        to.Ptr("text/html"),
-//			FileContentEncoding:    to.Ptr("gzip"),
-//			FileContentLanguage:    to.Ptr("tr,en"),
-//			FileContentMD5:         testMd5,
-//			FileCacheControl:       to.Ptr("no-transform"),
-//			FileContentDisposition: to.Ptr("attachment"),
-//		},
-//	}
-//	setResp, err := fClient.SetHTTPHeaders(ctx, options)
-//	_require.Nil(err)
-//	_require.Equal(setResp.RawResponse.StatusCode, 200)
-//	_require.NotEqual(setResp.ETag, "")
-//	_require.Equal(setResp.LastModified.IsZero(),  false)
-//	_require.NotEqual(setResp.RequestID, "")
-//	_require.NotEqual(setResp.Version, "")
-//	_require.Equal(setResp.Date.IsZero(),  false)
-//	_require.NotNil(setResp.IsServerEncrypted)
-//
-//	getResp, err := fClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.Equal(getResp.RawResponse.StatusCode,  200)
-//	_require.Equal(setResp.LastModified.IsZero(),  false)
-//	_require.Equal(*getResp.FileType,  "File")
-//
-//	_require.EqualValues(getResp.ContentType,  options.ShareFileHTTPHeaders.FileContentType)
-//	_require.EqualValues(getResp.ContentEncoding,  options.ShareFileHTTPHeaders.FileContentEncoding)
-//	_require.EqualValues(getResp.ContentLanguage,  options.ShareFileHTTPHeaders.FileContentLanguage)
-//	_require.EqualValues(getResp.ContentMD5, options.ShareFileHTTPHeaders.FileContentMD5)
-//	_require.EqualValues(getResp.CacheControl,  options.ShareFileHTTPHeaders.FileCacheControl)
-//	_require.EqualValues(getResp.ContentDisposition,  options.ShareFileHTTPHeaders.FileContentDisposition)
-//	_require.Equal(*getResp.ContentLength,  int64(0))
-//	// We'll just ensure a permission exists, no need to test overlapping functionality.
-//	_require.NotEqual(*getResp.PermissionKey, "")
-//	// Ensure our attributes and other properties (after parsing) are equivalent to our original
-//	// There's an overlapping test for this in ntfs_property_bitflags_test.go, but it doesn't hurt to test it alongside other things.
-//	_require.EqualValues(ParseFileAttributeFlagsString(*getResp.FileAttributes),  *options.SMBProperties.FileAttributes)
-//
-//	fct, _ := time.Parse(ISO8601, *getResp.FileCreationTime)
-//	_require.EqualValues(fct, creationTime)
-//	fwt, _ := time.Parse(ISO8601, *getResp.FileLastWriteTime)
-//	_require.Equal(fwt, lastWriteTime)
-//
-//	_require.NotEqual(getResp.ETag, "")
-//	_require.NotEqual(getResp.RequestID, "")
-//	_require.NotEqual(getResp.Version, "")
-//	_require.Equal(getResp.Date.IsZero(),  false)
-//	_require.NotNil(getResp.IsServerEncrypted)
-//}
+func (s *azfileLiveTestSuite) TestFileGetSetPropertiesNonDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
 
-//func (s *azfileLiveTestSuite) TestFilePreservePermissions() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
-//	defer delShare(_require, srClient, nil)
-//
-//	fClient, _ := createNewFileFromShareWithPermissions(c, srClient, 0)
-//	defer delFile(_require, fClient)
-//
-//	// Grab the original perm key before we set file headers.
-//	getResp, err := fClient.GetProperties(ctx)
-//	_require.Nil(err)
-//
-//	oKey := getResp.PermissionKey()
-//	timeAdapter := SMBPropertyAdapter{PropertySource: getResp}
-//	cTime := timeAdapter.FileCreationTime()
-//	lwTime := timeAdapter.FileLastWriteTime()
-//	attribs := getResp.FileAttributes()
-//
-//	md5Str := "MDAwMDAwMDA="
-//	var testMd5 []byte
-//	copy(testMd5[:], md5Str)
-//
-//	properties := ShareFileHTTPHeaders{
-//		FileContentType:        to.Ptr("text/html"),
-//		FileContentEncoding:        to.Ptr("gzip"),
-//		FileContentLanguage:        to.Ptr("tr,en"),
-//		ContentMD5:         testMd5,
-//		CacheControl:       "no-transform",
-//		ContentDisposition: "attachment",
-//		SMBProperties:      SMBProperties{
-//			// SMBProperties, when options are left nil, leads to preserving.
-//		},
-//	}
-//
-//	setResp, err := fClient.SetHTTPHeaders(ctx, properties)
-//	_require.Nil(err)
-//	_require(setResp.RawResponse.StatusCode, chk.Equals, 200)
-//	_require(setResp.ETag, chk.Not(chk.Equals), "")
-//	_require(setResp.LastModified.IsZero(), chk.Equals, false)
-//	_require(setResp.RequestID, chk.Not(chk.Equals), "")
-//	_require(setResp.Version, chk.Not(chk.Equals), "")
-//	_require(setResp.Date.IsZero(), chk.Equals, false)
-//	_require(setResp.IsServerEncrypted, chk.NotNil)
-//
-//	getResp, err = fClient.GetProperties(ctx)
-//	_require.Nil(err)
-//	_require(getResp.RawResponse.StatusCode, chk.Equals, 200)
-//	_require(setResp.LastModified.IsZero(), chk.Equals, false)
-//	_require(getResp.FileType(), chk.Equals, "File")
-//
-//	_require(getResp.ContentType, chk.Equals, properties.ContentType)
-//	_require(getResp.ContentEncoding, chk.Equals, properties.ContentEncoding)
-//	_require(getResp.ContentLanguage, chk.Equals, properties.ContentLanguage)
-//	_require(getResp.ContentMD5,, chk.DeepEquals, properties.ContentMD5)
-//	_require(getResp.CacheControl, chk.Equals, properties.CacheControl)
-//	_require(getResp.ContentDisposition, chk.Equals, properties.ContentDisposition)
-//	_require(getResp.ContentLength, chk.Equals, int64(0))
-//	// Ensure that the permission key gets preserved
-//	_require(getResp.PermissionKey(), chk.Equals, oKey)
-//	timeAdapter = SMBPropertyAdapter{PropertySource: getResp}
-//	c.Log("Original last write time: ", lwTime, " new time: ", timeAdapter.FileLastWriteTime())
-//	_require(timeAdapter.FileLastWriteTime().Equal(lwTime), chk.Equals, true)
-//	c.Log("Original creation time: ", cTime, " new time: ", timeAdapter.FileCreationTime())
-//	_require(timeAdapter.FileCreationTime().Equal(cTime), chk.Equals, true)
-//	_require(getResp.FileAttributes(), chk.Equals, attribs)
-//
-//	_require(getResp.ETag, chk.Not(chk.Equals), "")
-//	_require(getResp.RequestID, chk.Not(chk.Equals), "")
-//	_require(getResp.Version, chk.Not(chk.Equals), "")
-//	_require(getResp.Date.IsZero(), chk.Equals, false)
-//	_require(getResp.IsServerEncrypted, chk.NotNil)
-//}
-//
-//func (s *azfileLiveTestSuite) TestFileGetSetPropertiesSnapshot() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
-//	defer delShare(c, srClient, DeleteSnapshotsOptionInclude)
-//
-//	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
-//
-//	md5Str := "MDAwMDAwMDA="
-//	var testMd5 []byte
-//	copy(testMd5[:], md5Str)
-//
-//	properties := ShareFileHTTPHeaders{
-//		FileContentType:        to.Ptr("text/html"),
-//		FileContentEncoding:        to.Ptr("gzip"),
-//		FileContentLanguage:        to.Ptr("tr,en"),
-//		FileContentMD5:         testMd5,
-//		FileCacheControl:       "no-transform",
-//		ContentDisposition: "attachment",
-//	}
-//	setResp, err := fClient.SetHTTPHeaders(ctx, properties)
-//	_require.Nil(err)
-//	_require(setResp.RawResponse.StatusCode, chk.Equals, 200)
-//	_require(setResp.ETag, chk.Not(chk.Equals), "")
-//	_require(setResp.LastModified.IsZero(), chk.Equals, false)
-//	_require(setResp.RequestID, chk.Not(chk.Equals), "")
-//	_require(setResp.Version, chk.Not(chk.Equals), "")
-//	_require(setResp.Date.IsZero(), chk.Equals, false)
-//	_require(setResp.IsServerEncrypted, chk.NotNil)
-//
-//	metadata := Metadata{
-//		"foo": "foovalue",
-//		"bar": "barvalue",
-//	}
-//	setResp2, err := fClient.SetMetadata(ctx, metadata)
-//	_require.Nil(err)
-//	_require(setResp2.RawResponse.StatusCode, chk.Equals, 200)
-//
-//	resp, _ := srClient.CreateSnapshot(ctx, map[string]string)
-//	snapshotURL := fClient.WithSnapshot(resp.Snapshot())
-//
-//	getResp, err := snapshotURL.GetProperties(ctx)
-//	_require.Nil(err)
-//	_require(getResp.RawResponse.StatusCode, chk.Equals, 200)
-//	_require(setResp.LastModified.IsZero(), chk.Equals, false)
-//	_require(getResp.FileType(), chk.Equals, "File")
-//
-//	_require(getResp.ContentType, chk.Equals, properties.ContentType)
-//	_require(getResp.ContentEncoding, chk.Equals, properties.ContentEncoding)
-//	_require(getResp.ContentLanguage, chk.Equals, properties.ContentLanguage)
-//	_require(getResp.ContentMD5,, chk.DeepEquals, properties.ContentMD5)
-//	_require(getResp.CacheControl, chk.Equals, properties.CacheControl)
-//	_require(getResp.ContentDisposition, chk.Equals, properties.ContentDisposition)
-//	_require(getResp.ContentLength, chk.Equals, int64(0))
-//
-//	_require(getResp.ETag, chk.Not(chk.Equals), "")
-//	_require(getResp.RequestID, chk.Not(chk.Equals), "")
-//	_require(getResp.Version, chk.Not(chk.Equals), "")
-//	_require(getResp.Date.IsZero(), chk.Equals, false)
-//	_require(getResp.IsServerEncrypted, chk.NotNil)
-//	_require(getResp.Metadata, chk.DeepEquals, metadata)
-//}
-//
-//func (s *azfileLiveTestSuite) TestGetSetMetadataNonDefault() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
-//	defer delShare(_require, srClient, nil)
-//	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
-//
-//	metadata := Metadata{
-//		"foo": "foovalue",
-//		"bar": "barvalue",
-//	}
-//	setResp, err := fClient.SetMetadata(ctx, metadata)
-//	_require.Nil(err)
-//	_require(setResp.RawResponse.StatusCode, chk.Equals, 200)
-//	_require(setResp.ETag, chk.Not(chk.Equals), "")
-//	_require(setResp.RequestID, chk.Not(chk.Equals), "")
-//	_require(setResp.Version, chk.Not(chk.Equals), "")
-//	_require(setResp.Date.IsZero(), chk.Equals, false)
-//	_require(setResp.IsServerEncrypted, chk.NotNil)
-//
-//	getResp, err := fClient.GetProperties(ctx)
-//	_require.Nil(err)
-//	_require(getResp.ETag, chk.Not(chk.Equals), "")
-//	_require(getResp.LastModified.IsZero(), chk.Equals, false)
-//	_require(getResp.RequestID, chk.Not(chk.Equals), "")
-//	_require(getResp.Version, chk.Not(chk.Equals), "")
-//	_require(getResp.Date.IsZero(), chk.Equals, false)
-//	md := getResp.Metadata
-//	_require(md, chk.DeepEquals, metadata)
-//}
-//
-//func (s *azfileLiveTestSuite) TestFileSetMetadataNil() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
-//	defer delShare(_require, srClient, nil)
-//	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
-//
-//	_, err := fClient.SetMetadata(ctx, Metadata{"not": "nil"})
-//	_require.Nil(err)
-//
-//	_, err = fClient.SetMetadata(ctx, nil)
-//	_require.Nil(err)
-//
-//	resp, err := fClient.GetProperties(ctx)
-//	_require.Nil(err)
-//	_require(resp.Metadata, chk.HasLen, 0)
-//}
-//
-//func (s *azfileLiveTestSuite) TestFileSetMetadataDefaultEmpty() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
-//	defer delShare(_require, srClient, nil)
-//	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
-//
-//	_, err := fClient.SetMetadata(ctx, Metadata{"not": "nil"})
-//	_require.Nil(err)
-//
-//	_, err = fClient.SetMetadata(ctx, map[string]string)
-//	_require.Nil(err)
-//
-//	resp, err := fClient.GetProperties(ctx)
-//	_require.Nil(err)
-//	_require(resp.Metadata, chk.HasLen, 0)
-//}
+	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
+	defer delFile(_require, fClient)
+
+	md5Str := "MDAwMDAwMDA="
+	var testMd5 []byte
+	copy(testMd5[:], md5Str)
+
+	attribs := FileAttributeTemporary.Add(FileAttributeHidden)
+	creationTime := time.Now().Add(-time.Hour)
+	lastWriteTime := time.Now().Add(-time.Minute * 15)
+
+	// Format and re-parse the times so we have the same precision
+	creationTime, err := time.Parse(ISO8601, creationTime.Format(ISO8601))
+	_require.Nil(err)
+	lastWriteTime, err = time.Parse(ISO8601, lastWriteTime.Format(ISO8601))
+	_require.Nil(err)
+
+	options := &FileSetHTTPHeadersOptions{
+		FilePermissions: &FilePermissions{PermissionStr: &sampleSDDL},
+		SMBProperties: &SMBProperties{
+			FileAttributes:    &attribs,
+			FileCreationTime:  &creationTime,
+			FileLastWriteTime: &lastWriteTime,
+		},
+		ShareFileHTTPHeaders: &ShareFileHTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("tr,en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+	}
+	setResp, err := fClient.SetHTTPHeaders(ctx, options)
+	_require.Nil(err)
+	//_require.Equal(setResp.RawResponse.StatusCode, 200)
+	_require.NotEqual(*setResp.ETag, "")
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotEqual(setResp.RequestID, "")
+	_require.NotEqual(setResp.Version, "")
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
+
+	getResp, err := fClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	//_require.Equal(getResp.StatusCode,  200)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.Equal(*getResp.FileType, "File")
+
+	_require.EqualValues(getResp.ContentType, options.ShareFileHTTPHeaders.ContentType)
+	_require.EqualValues(getResp.ContentEncoding, options.ShareFileHTTPHeaders.ContentEncoding)
+	_require.EqualValues(getResp.ContentLanguage, options.ShareFileHTTPHeaders.ContentLanguage)
+	_require.EqualValues(getResp.ContentMD5, options.ShareFileHTTPHeaders.ContentMD5)
+	_require.EqualValues(getResp.CacheControl, options.ShareFileHTTPHeaders.CacheControl)
+	_require.EqualValues(getResp.ContentDisposition, options.ShareFileHTTPHeaders.ContentDisposition)
+	_require.Equal(*getResp.ContentLength, int64(0))
+	// We'll just ensure a permission exists, no need to test overlapping functionality.
+	_require.NotEqual(getResp.FilePermissionKey, "")
+	// Ensure our attributes and other properties (after parsing) are equivalent to our original
+	// There's an overlapping test for this in ntfs_property_bitflags_test.go, but it doesn't hurt to test it alongside other things.
+	_require.Equal(ParseFileAttributeFlagsString(*getResp.FileAttributes), *options.SMBProperties.FileAttributes)
+
+	fct, _ := time.Parse(ISO8601, *getResp.FileCreationTime)
+	_require.EqualValues(fct, creationTime)
+	fwt, _ := time.Parse(ISO8601, *getResp.FileLastWriteTime)
+	_require.Equal(fwt, lastWriteTime)
+
+	_require.NotEqual(*getResp.ETag, "")
+	_require.NotEqual(*getResp.RequestID, "")
+	_require.NotEqual(*getResp.Version, "")
+	_require.Equal(getResp.Date.IsZero(), false)
+	_require.NotNil(getResp.IsServerEncrypted)
+}
+
+func (s *azfileLiveTestSuite) TestFilePreservePermissions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
+
+	fClient := createNewFileFromShareWithPermissions(_require, generateFileName(testName), 0, srClient)
+	defer delFile(_require, fClient)
+
+	// Grab the original perm key before we set file headers.
+	getResp, err := fClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+
+	oKey := getResp.FilePermissionKey
+	cTime := ParseFileCreationTime(*getResp.FileCreationTime)
+	lwTime := ParseFileLastWriteTime(*getResp.FileLastWriteTime)
+	attribs := ParseFileAttributes(*getResp.FileAttributes)
+
+	md5Str := "MDAwMDAwMDA="
+	var testMd5 []byte
+	copy(testMd5[:], md5Str)
+
+	properties := FileSetHTTPHeadersOptions{
+		ShareFileHTTPHeaders: &ShareFileHTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("tr,en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+		// SMBProperties, when options are left nil, leads to preserving.
+		SMBProperties: &SMBProperties{},
+	}
+
+	setResp, err := fClient.SetHTTPHeaders(ctx, &properties)
+	_require.Nil(err)
+	//_require(setResp.RawResponse.StatusCode, chk.Equals, 200)
+	_require.NotNil(*setResp.ETag)
+	_require.NotNil(setResp.RequestID)
+	_require.NotNil(setResp.LastModified)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotNil(setResp.Version)
+	_require.Equal(setResp.Date.IsZero(), false)
+
+	getResp, err = fClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.NotNil(setResp.LastModified)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.Equal(*getResp.FileType, "File")
+
+	_require.EqualValues(getResp.ContentType, properties.ShareFileHTTPHeaders.ContentType)
+	_require.EqualValues(getResp.ContentEncoding, properties.ShareFileHTTPHeaders.ContentEncoding)
+	_require.EqualValues(getResp.ContentLanguage, properties.ShareFileHTTPHeaders.ContentLanguage)
+	_require.EqualValues(getResp.ContentMD5, properties.ShareFileHTTPHeaders.ContentMD5)
+	_require.EqualValues(getResp.CacheControl, properties.ShareFileHTTPHeaders.CacheControl)
+	_require.EqualValues(getResp.ContentDisposition, properties.ShareFileHTTPHeaders.ContentDisposition)
+	_require.Equal(*getResp.ContentLength, int64(0))
+	// Ensure that the permission key gets preserved
+	_require.EqualValues(getResp.FilePermissionKey, oKey)
+	s.T().Logf("Original creation time: %v. Actual creation time: %v\n", cTime, ParseFileCreationTime(*getResp.FileCreationTime))
+	s.T().Logf("Original last write time: %v. Actual last write time: %v\n", lwTime, ParseFileLastWriteTime(*getResp.FileLastWriteTime))
+	s.T().Logf("Original file attributes: %v. Actual file attributes: %v\n", attribs, ParseFileAttributes(*getResp.FileAttributes))
+	_require.Equal(cTime, ParseFileCreationTime(*getResp.FileCreationTime))
+	_require.Equal(lwTime, ParseFileLastWriteTime(*getResp.FileLastWriteTime))
+	_require.Equal(attribs, ParseFileAttributes(*getResp.FileAttributes))
+
+	_require.NotEqual(*getResp.ETag, "")
+	_require.NotEqual(*getResp.RequestID, "")
+	_require.NotEqual(*getResp.Version, "")
+	_require.Equal(getResp.Date.IsZero(), false)
+	_require.NotNil(getResp.IsServerEncrypted)
+}
+
+func (s *azfileLiveTestSuite) TestFileGetSetPropertiesSnapshot() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, &ShareDeleteOptions{DeleteSnapshots: to.Ptr(DeleteSnapshotsOptionTypeInclude)})
+
+	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
+
+	md5Str := "MDAwMDAwMDA="
+	var testMd5 []byte
+	copy(testMd5[:], md5Str)
+
+	fileSetHTTPHeadersOptions := FileSetHTTPHeadersOptions{
+		ShareFileHTTPHeaders: &ShareFileHTTPHeaders{
+			ContentType:        to.Ptr("text/html"),
+			ContentEncoding:    to.Ptr("gzip"),
+			ContentLanguage:    to.Ptr("tr,en"),
+			ContentMD5:         testMd5,
+			CacheControl:       to.Ptr("no-transform"),
+			ContentDisposition: to.Ptr("attachment"),
+		},
+	}
+	setResp, err := fClient.SetHTTPHeaders(ctx, &fileSetHTTPHeadersOptions)
+	_require.Nil(err)
+	_require.NotEqual(*setResp.ETag, "")
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotEqual(setResp.RequestID, "")
+	_require.NotEqual(setResp.Version, "")
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
+
+	metadata := map[string]string{
+		"Foo": "Foovalue",
+		"Bar": "Barvalue",
+	}
+	_, err = fClient.SetMetadata(ctx, metadata, nil)
+	_require.Nil(err)
+
+	resp, err := srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: map[string]string{}})
+	_require.Nil(err)
+	_require.NotNil(resp.Snapshot)
+	snapshotURL, _ := fClient.WithSnapshot(*resp.Snapshot)
+
+	getResp, err := snapshotURL.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.Equal(*getResp.FileType, "File")
+
+	_require.EqualValues(getResp.ContentType, fileSetHTTPHeadersOptions.ShareFileHTTPHeaders.ContentType)
+	_require.EqualValues(getResp.ContentEncoding, fileSetHTTPHeadersOptions.ShareFileHTTPHeaders.ContentEncoding)
+	_require.EqualValues(getResp.ContentLanguage, fileSetHTTPHeadersOptions.ShareFileHTTPHeaders.ContentLanguage)
+	_require.EqualValues(getResp.ContentMD5, fileSetHTTPHeadersOptions.ShareFileHTTPHeaders.ContentMD5)
+	_require.EqualValues(getResp.CacheControl, fileSetHTTPHeadersOptions.ShareFileHTTPHeaders.CacheControl)
+	_require.EqualValues(getResp.ContentDisposition, fileSetHTTPHeadersOptions.ShareFileHTTPHeaders.ContentDisposition)
+	_require.Equal(*getResp.ContentLength, int64(0))
+
+	_require.NotEqual(*getResp.ETag, "")
+	_require.NotEqual(*getResp.RequestID, "")
+	_require.NotEqual(*getResp.Version, "")
+	_require.Equal(getResp.Date.IsZero(), false)
+	_require.NotNil(getResp.IsServerEncrypted)
+	_require.EqualValues(getResp.Metadata, metadata)
+}
+
+func (s *azfileLiveTestSuite) TestGetSetMetadataNonDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
+	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
+
+	metadata := map[string]string{
+		"Foo": "Foovalue",
+		"Bar": "Barvalue",
+	}
+	setResp, err := fClient.SetMetadata(ctx, metadata, nil)
+	_require.Nil(err)
+	_require.NotEqual(*setResp.ETag, "")
+	_require.NotEqual(setResp.RequestID, "")
+	_require.NotEqual(setResp.Version, "")
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
+
+	getResp, err := fClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.NotEqual(*getResp.ETag, "")
+	_require.NotEqual(*getResp.RequestID, "")
+	_require.NotEqual(*getResp.Version, "")
+	_require.Equal(getResp.Date.IsZero(), false)
+	_require.NotNil(getResp.IsServerEncrypted)
+	_require.EqualValues(getResp.Metadata, metadata)
+}
+
+func (s *azfileLiveTestSuite) TestFileSetMetadataNil() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
+	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
+
+	_, err := fClient.SetMetadata(ctx, map[string]string{"not": "nil"}, nil)
+	_require.Nil(err)
+
+	_, err = fClient.SetMetadata(ctx, nil, nil)
+	_require.Nil(err)
+
+	resp, err := fClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.Len(resp.Metadata, 0)
+}
+
+func (s *azfileLiveTestSuite) TestFileSetMetadataDefaultEmpty() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
+	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
+
+	_, err := fClient.SetMetadata(ctx, map[string]string{"not": "nil"}, nil)
+	_require.Nil(err)
+
+	_, err = fClient.SetMetadata(ctx, map[string]string{}, nil)
+	_require.Nil(err)
+
+	resp, err := fClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.Len(resp.Metadata, 0)
+}
 
 //func (s *azfileLiveTestSuite) TestFileSetMetadataInvalidField() {
 //	_require := require.New(s.T())
@@ -540,7 +525,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyDestEmpty() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShareWithGivenData(_require, "src"+generateFileName(testName), fileDefaultData, srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
@@ -585,7 +570,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyMetadataNil() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, "src"+generateFileName(testName), 0, srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
@@ -609,7 +594,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyMetadataEmpty() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, "src"+generateFileName(testName), 0, srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
@@ -633,7 +618,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyNegativeMetadataInvalidField() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, "src"+generateFileName(testName), 0, srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
@@ -647,7 +632,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, "src"+generateFileName(testName), srClient)
 	copyfClient := getFileClientFromShare(_require, "dst"+generateFileName(testName), srClient)
@@ -820,7 +805,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
 	defer delShare(_require, srClient, nil)
 
@@ -1085,7 +1070,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //
 //	// Set ContentMD5 for the entire file.
 //	_, err = fClient.SetHTTPHeaders(ctx,
-//		&SetFileHTTPHeadersOptions{
+//		&FileSetHTTPHeadersOptions{
 //		ShareFileHTTPHeaders: &ShareFileHTTPHeaders{
 //			FileContentMD5: pResp.ContentMD5,
 //			FileContentLanguage: to.Ptr("test")}})
@@ -1163,7 +1148,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataNonExistentFile() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
@@ -1195,7 +1180,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataOffsetOutOfRange() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
@@ -1225,7 +1210,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataEntireFile() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShareWithGivenData(_require, generateFileName(testName), fileDefaultData, srClient)
 
@@ -1243,7 +1228,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataCountExact() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShareWithGivenData(_require, generateFileName(testName), fileDefaultData, srClient)
 
@@ -1260,7 +1245,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataCountOutOfRange() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShareWithGivenData(_require, generateFileName(testName), fileDefaultData, srClient)
 
@@ -1294,7 +1279,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeNilBody() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
@@ -1308,7 +1293,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeEmptyBody() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
@@ -1322,7 +1307,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeNonExistentFile() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
@@ -1336,17 +1321,17 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeTransactionalMD5() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
 	defer delFile(_require, fClient)
 
 	contentR, contentD := generateData(2048)
-	md5 := md5.Sum(contentD)
+	_md5 := md5.Sum(contentD)
 
 	// Upload range with correct transactional MD5
-	pResp, err := fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{ContentMD5: md5[:]})
+	pResp, err := fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{TransactionalMD5: _md5[:]})
 	_require.Nil(err)
 	_require.NotNil(pResp.ContentMD5)
 	//_require.Equal(pResp.RawResponse.StatusCode, http.StatusCreated)
@@ -1355,13 +1340,12 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeTransactionalMD5() {
 	_require.NotEqual(pResp.RequestID, "")
 	_require.NotEqual(pResp.Version, "")
 	_require.Equal(pResp.Date.IsZero(), false)
-	_require.EqualValues(pResp.ContentMD5, md5[:])
+	_require.EqualValues(pResp.ContentMD5, _md5[:])
 
 	// Upload range with empty MD5, nil MD5 is covered by other cases.
 	pResp, err = fClient.UploadRange(ctx, 1024, internal.NopCloser(bytes.NewReader(contentD[1024:])), nil)
 	_require.Nil(err)
 	_require.NotNil(pResp.ContentMD5)
-	//_require.Equal(pResp.RawResponse.StatusCode, http.StatusCreated)
 
 	resp, err := fClient.Download(ctx, 0, CountToEnd, nil)
 	_require.Nil(err)
@@ -1378,7 +1362,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
@@ -1388,7 +1372,8 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 	_, incorrectMD5 := generateData(16)
 
 	// Upload range with incorrect transactional MD5
-	_, err := fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{ContentMD5: incorrectMD5[:]})
+	_, err := fClient.UploadRange(ctx, 0, contentR, &FileUploadRangeOptions{TransactionalMD5: incorrectMD5[:]})
+	_require.NotNil(err)
 	validateStorageError(_require, err, ShareErrorCodeMD5Mismatch)
 }
 
@@ -1451,7 +1436,7 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
@@ -1474,7 +1459,7 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 	_require.NotEqual(putResp.Version, "")
 	_require.Equal(putResp.Date.IsZero(), false)
 
-	rangeList, err := fClient.GetRangeList(ctx, 0, 1023, nil)
+	rangeList, err := fClient.GetRangeList(ctx, 0, 1024, nil)
 	_require.Nil(err)
 	//_require.Equal(rangeList.RawResponse.StatusCode, 200)
 	_require.Equal(rangeList.LastModified.IsZero(), false)
@@ -1484,7 +1469,8 @@ func (s *azfileLiveTestSuite) TestGetRangeListNonDefaultExact() {
 	_require.NotEqual(rangeList.Version, "")
 	_require.Equal(rangeList.Date.IsZero(), false)
 	_require.Len(rangeList.Ranges, 1)
-	_require.EqualValues(*rangeList.Ranges[0], FileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(1023))})
+	_require.Equal(*rangeList.Ranges[0].Start, int64(0))
+	_require.Equal(*rangeList.Ranges[0].End, int64(1023))
 }
 
 // Default means clear the entire file's range
@@ -1493,7 +1479,7 @@ func (s *azfileLiveTestSuite) TestClearRangeDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
@@ -1517,7 +1503,7 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefault() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 4096, srClient)
@@ -1541,7 +1527,7 @@ func (s *azfileLiveTestSuite) TestClearRangeMultipleRanges() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
@@ -1567,7 +1553,7 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefaultCount() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 
 	fClient := createNewFileFromShare(_require, generateFileName(testName), int64(1), srClient)
@@ -1615,7 +1601,7 @@ func (s *azfileLiveTestSuite) TestFileClearRangeNegativeInvalidCount() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := getShareClient(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := getShareClient(_require, generateShareName(testName), svcClient)
 	fClient := getFileClientFromShare(_require, generateFileName(testName), srClient)
 
 	_, err := fClient.ClearRange(ctx, 0, 0, nil)
@@ -1625,7 +1611,7 @@ func (s *azfileLiveTestSuite) TestFileClearRangeNegativeInvalidCount() {
 
 func setupGetRangeListTest(_require *require.Assertions, testName string) (srClient *ShareClient, fClient *FileClient) {
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
-	srClient = createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient = createNewShare(_require, generateShareName(testName), svcClient)
 	fClient = createNewFileFromShare(_require, generateFileName(testName), int64(testFileRangeSize), srClient)
 
 	rsc, _ := generateData(testFileRangeSize)
@@ -1645,7 +1631,7 @@ func (s *azfileLiveTestSuite) TestFileGetRangeListDefaultEmptyFile() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 	defer delShare(_require, srClient, nil)
 	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
 
@@ -1730,7 +1716,7 @@ func (s *azfileLiveTestSuite) TestUnexpectedEOFRecovery() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := createNewShare(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 
 	defer delShare(_require, srClient, &ShareDeleteOptions{
 		DeleteSnapshots: &deleteSnapshotsInclude,
@@ -1768,7 +1754,7 @@ func (s *azfileLiveTestSuite) TestCreateMaximumSizeFileShare() {
 	testName := s.T().Name()
 	svcClient := getServiceClient(nil, nil, testAccountDefault, nil)
 
-	srClient := getShareClient(_require, generateShareName(sharePrefix, testName), svcClient)
+	srClient := getShareClient(_require, generateShareName(testName), svcClient)
 	_, err := srClient.Create(ctx, &ShareCreateOptions{
 		Quota: &fileShareMaxQuota,
 	})

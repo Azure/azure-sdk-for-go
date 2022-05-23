@@ -8,6 +8,7 @@ package azfile
 
 import (
 	"strings"
+	"time"
 )
 
 // FileAttributeFlags are a subset of the WinNT.h file attribute bitflags.
@@ -109,4 +110,16 @@ func ParseFileAttributeFlagsString(input string) (out FileAttributeFlags) {
 	}
 
 	return
+}
+
+func ParseFileCreationTime(fileCreationTime string) time.Time {
+	return convertISO8601(fileCreationTime).UTC()
+}
+
+func ParseFileLastWriteTime(fileLastWriteTime string) time.Time {
+	return convertISO8601(fileLastWriteTime).UTC()
+}
+
+func ParseFileAttributes(fileAttributes string) FileAttributeFlags {
+	return ParseFileAttributeFlagsString(fileAttributes)
 }

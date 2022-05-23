@@ -464,33 +464,13 @@ func TestUpdateKeyProperties(t *testing.T) {
 func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			if testType == HSMTEST {
-				t.Skip("HSM does not recognize immutable yet.")
-			}
 			stop := startTest(t)
 			defer stop()
-			err := recording.SetBodilessMatcher(t, nil)
-			require.NoError(t, err)
 
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "immuta")
-			require.NoError(t, err)
-
-			marshalledPolicy, err := json.Marshal(map[string]interface{}{
-				"anyOf": []map[string]interface{}{
-					{
-						"anyOf": []map[string]interface{}{
-							{
-								"claim":  "sdk-test",
-								"equals": "true",
-							}},
-						"authority": os.Getenv("AZURE_KEYVAULT_ATTESTATION_URL"),
-					},
-				},
-				"version": "1.0.0",
-			})
 			require.NoError(t, err)
 
 			// retry creating the release policy because Key Vault sometimes can't reach
@@ -504,7 +484,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 					},
 					ReleasePolicy: &ReleasePolicy{
 						Immutable:     to.Ptr(true),
-						EncodedPolicy: marshalledPolicy,
+						EncodedPolicy: getMarshalledReleasePolicy(testAttestationURL),
 					},
 					Operations: []*Operation{to.Ptr(OperationEncrypt), to.Ptr(OperationDecrypt)},
 				})
@@ -518,28 +498,18 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			newMarshalledPolicy, err := json.Marshal(map[string]interface{}{
-				"anyOf": []map[string]interface{}{
-					{
-						"anyOf": []map[string]interface{}{
-							{
-								"claim":  "sdk-test",
-								"equals": "false",
-							}},
-						"authority": os.Getenv("AZURE_KEYVAULT_ATTESTATION_URL"),
-					},
-				},
-				"version": "1.0.0",
-			})
-			require.NoError(t, err)
-
 			createResp.Key.ReleasePolicy = &ReleasePolicy{
 				Immutable:     to.Ptr(true),
-				EncodedPolicy: newMarshalledPolicy,
+				EncodedPolicy: getMarshalledReleasePolicy(fakeAttestationUrl),
+			}
+			createResp.Key.Properties.Enabled = to.Ptr(false)
+			if testType == HSMTEST {
+				// MHSM disallows updating the release policy for a specific version
+				createResp.Key.Properties.Version = nil
 			}
 
 			_, err = client.UpdateKeyProperties(ctx, createResp.Key, nil)
-			require.Error(t, err)
+			require.Contains(t, strings.ToLower(err.Error()), "release policy cannot be modified")
 		})
 	}
 }

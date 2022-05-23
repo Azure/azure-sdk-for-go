@@ -26,10 +26,12 @@ function IsPackageDeprecated($sdk)
     $RETRACT_SECTION_REGEX = "retract\s*((?<retract>(.|\s)*))"
     $DEPRECATE_SECTION_REGEX = "\/\/\s*Deprecated:"
     $modContent = Get-Content (Join-Path $sdk.DirectoryPath 'go.mod') -Raw
-    if ($modContent -match $DEPRECATE_SECTION_REGEX) {
+    if ($modContent -match $DEPRECATE_SECTION_REGEX)
+    {
         return $true
     }
-    if ($modContent -match $RETRACT_SECTION_REGEX) {
+    if ($modContent -match $RETRACT_SECTION_REGEX)
+    {
         return $($matches["retract"]).Indexof($sdk.Version) -ne -1
     }
     return $false
@@ -43,13 +45,31 @@ foreach ($sdk in $sdks)
     {
         continue
     }
+    $parsedSemver = [AzureEngSemanticVersion]::ParseVersionString($sdk.Version)
+
+    
     if ($sdk.Name -eq $PackageDirectory)
     {
         ## Add replace for new package
         $modPath = Join-Path $RepoRoot "sdk" "depcheck" "go.mod"
-        Add-Content $modPath "`nreplace github.com/Azure/azure-sdk-for-go/$($sdk.Name) => ../../$($sdk.Name)`n"
+        if ($parsedSemver.Major -gt 1)
+        {
+            Add-Content $modPath "`nreplace github.com/Azure/azure-sdk-for-go/$($sdk.Name)/v$($parsedSemver.Major) => ../../$($sdk.Name)`n"
+        }
+        else
+        {
+            Add-Content $modPath "`nreplace github.com/Azure/azure-sdk-for-go/$($sdk.Name) => ../../$($sdk.Name)`n"
+        }
     }
-    $packagesImport = $packagesImport + "`t_ `"github.com/Azure/azure-sdk-for-go/$($sdk.Name)`"`n"
+
+    if ($parsedSemver.Major -gt 1)
+    {
+        $packagesImport = $packagesImport + "`t_ `"github.com/Azure/azure-sdk-for-go/$($sdk.Name)/v$($parsedSemver.Major)`"`n"
+    }
+    else
+    {
+        $packagesImport = $packagesImport + "`t_ `"github.com/Azure/azure-sdk-for-go/$($sdk.Name)`"`n"
+    }
 }
 
 ## Add main.go

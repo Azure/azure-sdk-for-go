@@ -12,7 +12,7 @@ package backup
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup"
+	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2022-03-01/backup"
 )
 
 const (
@@ -843,15 +843,6 @@ const (
 	SupportStatusSupported    SupportStatus = original.SupportStatusSupported
 )
 
-type TieringMode = original.TieringMode
-
-const (
-	TieringModeDoNotTier       TieringMode = original.TieringModeDoNotTier
-	TieringModeInvalid         TieringMode = original.TieringModeInvalid
-	TieringModeTierAfter       TieringMode = original.TieringModeTierAfter
-	TieringModeTierRecommended TieringMode = original.TieringModeTierRecommended
-)
-
 type Type = original.Type
 
 const (
@@ -1333,7 +1324,6 @@ type StatusResponse = original.StatusResponse
 type SubProtectionPolicy = original.SubProtectionPolicy
 type TargetAFSRestoreInfo = original.TargetAFSRestoreInfo
 type TargetRestoreInfo = original.TargetRestoreInfo
-type TieringPolicy = original.TieringPolicy
 type TokenInformation = original.TokenInformation
 type TriggerDataMoveRequest = original.TriggerDataMoveRequest
 type UnlockDeleteRequest = original.UnlockDeleteRequest
@@ -1957,9 +1947,6 @@ func PossibleStorageTypeValues() []StorageType {
 }
 func PossibleSupportStatusValues() []SupportStatus {
 	return original.PossibleSupportStatusValues()
-}
-func PossibleTieringModeValues() []TieringMode {
-	return original.PossibleTieringModeValues()
 }
 func PossibleTypeEnumValues() []TypeEnum {
 	return original.PossibleTypeEnumValues()

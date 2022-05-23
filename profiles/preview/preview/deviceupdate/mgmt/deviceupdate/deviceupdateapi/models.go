@@ -9,11 +9,12 @@
 
 package deviceupdateapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate/deviceupdateapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2022-04-01-preview/deviceupdate/deviceupdateapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type BaseClientAPI = original.BaseClientAPI
 type InstancesClientAPI = original.InstancesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionProxiesClientAPI = original.PrivateEndpointConnectionProxiesClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI

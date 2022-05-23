@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## `v64.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2020-03-01/aad`
+- `github.com/Azure/azure-sdk-for-go/services/azurestackhci/mgmt/2022-05-01/azurestackhci`
+- `github.com/Azure/azure-sdk-for-go/services/preview/aad/mgmt/2020-07-01-preview/aad`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-05-01-preview/appplatform`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2022-02-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2022-04-01-preview/deviceupdate`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2022-03-01/backup`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-08-01/network` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/network/mgmt/2021-08-01/network/CHANGELOG.md) |
+
 ## `v64.1.0`
 
 ### New Packages
@@ -10,13 +28,13 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.1.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
 
 ### Breaking Changes
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.1.0/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid/CHANGELOG.md) |
 
 ### Deprecated Packages
 - `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-05-01-preview/videoanalyzer`

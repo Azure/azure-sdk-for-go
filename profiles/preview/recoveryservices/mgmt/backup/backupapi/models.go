@@ -9,7 +9,7 @@
 
 package backupapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup/backupapi"
+import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2022-03-01/backup/backupapi"
 
 type BMSPrepareDataMoveOperationResultClientAPI = original.BMSPrepareDataMoveOperationResultClientAPI
 type BackupsClientAPI = original.BackupsClientAPI

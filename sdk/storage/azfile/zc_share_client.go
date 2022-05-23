@@ -112,7 +112,7 @@ func (s *ShareClient) Create(ctx context.Context, options *ShareCreateOptions) (
 	formattedOptions := options.format()
 	createResponse, err := s.client.Create(ctx, formattedOptions)
 
-	return toShareCreateResponse(createResponse), handleError(err)
+	return toShareCreateResponse(createResponse), err
 }
 
 // CreateSnapshot creates a read-only snapshot of a share.
@@ -121,7 +121,7 @@ func (s *ShareClient) CreateSnapshot(ctx context.Context, options *ShareCreateSn
 	formattedOptions := options.format()
 	createSnapshotResponse, err := s.client.CreateSnapshot(ctx, formattedOptions)
 
-	return toShareCreateSnapshotResponse(createSnapshotResponse), handleError(err)
+	return toShareCreateSnapshotResponse(createSnapshotResponse), err
 }
 
 // Delete marks the specified share or share snapshot for deletion.
@@ -131,7 +131,7 @@ func (s *ShareClient) Delete(ctx context.Context, options *ShareDeleteOptions) (
 	formattedOptions, leaseAccessConditions := options.format()
 	deleteResponse, err := s.client.Delete(ctx, formattedOptions, leaseAccessConditions)
 
-	return toShareDeleteResponse(deleteResponse), handleError(err)
+	return toShareDeleteResponse(deleteResponse), err
 }
 
 // GetProperties returns all user-defined metadata and system properties for the specified share or share snapshot.
@@ -140,7 +140,7 @@ func (s *ShareClient) GetProperties(ctx context.Context, options *ShareGetProper
 	formattedOptions, leaseAccessCondition := options.format()
 	getPropertiesResponse, err := s.client.GetProperties(ctx, formattedOptions, leaseAccessCondition)
 
-	return toShareGetPropertiesResponse(getPropertiesResponse), handleError(err)
+	return toShareGetPropertiesResponse(getPropertiesResponse), err
 }
 
 // SetProperties sets service-defined properties for the specified share.
@@ -149,11 +149,11 @@ func (s *ShareClient) GetProperties(ctx context.Context, options *ShareGetProper
 func (s *ShareClient) SetProperties(ctx context.Context, options *ShareSetPropertiesOptions) (ShareSetPropertiesResponse, error) {
 	formattedOptions, leaseAccessConditions, err := options.format()
 	if err != nil {
-		return ShareSetPropertiesResponse{}, handleError(err)
+		return ShareSetPropertiesResponse{}, err
 	}
 	setPropertiesResponse, err := s.client.SetProperties(ctx, formattedOptions, leaseAccessConditions)
 
-	return toShareSetPropertiesResponse(setPropertiesResponse), handleError(err)
+	return toShareSetPropertiesResponse(setPropertiesResponse), err
 }
 
 // SetMetadata sets the share's metadata.
@@ -166,7 +166,7 @@ func (s *ShareClient) SetMetadata(ctx context.Context, metadata map[string]strin
 
 	setMetadataResponse, err := s.client.SetMetadata(ctx, formattedOptions, leaseAccessConditions)
 
-	return toShareSetMetadataResponse(setMetadataResponse), handleError(err)
+	return toShareSetMetadataResponse(setMetadataResponse), err
 }
 
 // GetPermissions returns information about stored access policies specified on the share.
@@ -175,7 +175,7 @@ func (s *ShareClient) GetPermissions(ctx context.Context, o *ShareGetAccessPolic
 	formattedOptions, leaseAccessConditions := o.format()
 	getAccessPolicyResponse, err := s.client.GetAccessPolicy(ctx, formattedOptions, leaseAccessConditions)
 
-	return toShareGetAccessPolicyResponse(getAccessPolicyResponse), handleError(err)
+	return toShareGetAccessPolicyResponse(getAccessPolicyResponse), err
 }
 
 // CreatePermission uploads a SDDL permission string, and returns a permission key to use in conjunction with a file or folder.
@@ -188,14 +188,14 @@ func (s *ShareClient) CreatePermission(ctx context.Context, sharePermission stri
 	permission, formattedOptions := o.format(sharePermission)
 	createPermissionResponse, err := s.client.CreatePermission(ctx, permission, formattedOptions)
 
-	return toShareCreatePermissionResponse(createPermissionResponse), handleError(err)
+	return toShareCreatePermissionResponse(createPermissionResponse), err
 }
 
 // GetPermission obtains a SDDL permission string from the service using a known permission key.
 func (s *ShareClient) GetPermission(ctx context.Context, filePermissionKey string, o *ShareGetPermissionOptions) (ShareGetPermissionResponse, error) {
 	formattedOptions := o.format()
 	getPermissionResponse, err := s.client.GetPermission(ctx, filePermissionKey, formattedOptions)
-	return toShareGetPermissionResponse(getPermissionResponse), handleError(err)
+	return toShareGetPermissionResponse(getPermissionResponse), err
 }
 
 // SetPermissions sets a stored access policy for use with shared access signatures.
@@ -204,7 +204,7 @@ func (s *ShareClient) SetPermissions(ctx context.Context, shareACLs []*SignedIde
 	shareSetAccessPolicyOptions, leaseAccessConditions := options.format(shareACLs)
 	setAccessPolicyResponse, err := s.client.SetAccessPolicy(ctx, shareSetAccessPolicyOptions, leaseAccessConditions)
 
-	return toShareSetAccessPolicyResponse(setAccessPolicyResponse), handleError(err)
+	return toShareSetAccessPolicyResponse(setAccessPolicyResponse), err
 }
 
 // GetStatistics retrieves statistics related to the share.
@@ -213,5 +213,5 @@ func (s *ShareClient) GetStatistics(ctx context.Context, options *ShareGetStatis
 	formattedOptions, leaseAccessConditions := options.format()
 	shareGetStatisticsResponse, err := s.client.GetStatistics(ctx, formattedOptions, leaseAccessConditions)
 
-	return toShareGetStatisticsResponse(shareGetStatisticsResponse), handleError(err)
+	return toShareGetStatisticsResponse(shareGetStatisticsResponse), err
 }

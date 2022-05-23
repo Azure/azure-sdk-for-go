@@ -94,7 +94,7 @@ func (s *ServiceClient) GetProperties(ctx context.Context, o *ServiceGetProperti
 	options := o.format()
 	getPropertiesResponse, err := s.client.GetProperties(ctx, options)
 
-	return toServiceGetPropertiesResponse(getPropertiesResponse), handleError(err)
+	return toServiceGetPropertiesResponse(getPropertiesResponse), err
 }
 
 // SetProperties sets the properties of the File service.
@@ -103,7 +103,7 @@ func (s *ServiceClient) SetProperties(ctx context.Context, o *ServiceSetProperti
 	properties, serviceSetPropertiesOptions := o.format()
 	setPropertiesResponse, err := s.client.SetProperties(ctx, properties, serviceSetPropertiesOptions)
 
-	return toServiceSetPropertiesResponse(setPropertiesResponse), handleError(err)
+	return toServiceSetPropertiesResponse(setPropertiesResponse), err
 }
 
 // ListShares operation returns a pager of the containers under the specified account.

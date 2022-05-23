@@ -433,78 +433,67 @@ func (s *azfileLiveTestSuite) TestFileSetMetadataDefaultEmpty() {
 	_require.Len(resp.Metadata, 0)
 }
 
-//func (s *azfileLiveTestSuite) TestFileSetMetadataInvalidField() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
-//	defer delShare(_require, srClient, nil)
-//	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
-//
-//	_, err := fClient.SetMetadata(ctx, Metadata{"!@#$%^&*()": "!@#$%^&*()"})
-//	_require.NotNil(err)
-//}
-//
-//func (s *azfileLiveTestSuite) TestStartCopyDefault() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_require, generateShareName(testName), svcClient)
-//	defer delShare(_require, srClient, nil)
-//
-//	srcFile, _ := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
-//	defer delFile(c, srcFile)
-//
-//	destFile, _ := getFileClientFromShare(_require, generateFileName(testName), srClient)
-//	defer delFile(c, destFile)
-//
-//	_, err := srcFile.UploadRange(ctx, 0, generateData(2048), nil)
-//	_require.Nil(err)
-//
-//	copyResp, err := destFile.StartCopy(ctx, srcFile.URL(), nil)
-//	_require.Nil(err)
-//	_require(copyResp.RawResponse.StatusCode, chk.Equals, 202)
-//	_require(copyResp.ETag, chk.Not(chk.Equals), "")
-//	_require(copyResp.LastModified.IsZero(), chk.Equals, false)
-//	_require(copyResp.RequestID, chk.Not(chk.Equals), "")
-//	_require(copyResp.Version, chk.Not(chk.Equals), "")
-//	_require(copyResp.Date.IsZero(), chk.Equals, false)
-//	_require(copyResp.CopyID, chk.Not(chk.Equals), "")
-//	_require(copyResp.CopyStatus, chk.Not(chk.Equals), "")
-//
-//	var copyStatus CopyStatusType
-//	timeout := time.Duration(2) * time.Minute
-//	start := time.Now()
-//
-//	var getResp *FileGetPropertiesResponse
-//
-//	for copyStatus != CopyStatusSuccess && time.Now().Sub(start) < timeout {
-//		getResp, err = destFile.GetProperties(ctx)
-//		_require.Nil(err)
-//		_require(getResp.CopyID, chk.Equals, copyResp.CopyID())
-//		_require(getResp.CopyStatus, chk.Not(chk.Equals), "")
-//		_require(getResp.CopySource, chk.Equals, srcFile.String())
-//		copyStatus = getResp.CopyStatus
-//
-//		time.Sleep(time.Duration(5) * time.Second)
-//	}
-//
-//	if getResp != nil && getResp.CopyStatus == CopyStatusSuccess {
-//		// Abort will fail after copy finished
-//		abortResp, err := destFile.AbortCopy(ctx, copyResp.CopyID())
-//		_require.NotNil(err)
-//		_require(abortResp, chk.IsNil)
-//		se, ok := err.(ShareError)
-//		_require(ok, chk.Equals, true)
-//		_require(se.RawResponse.StatusCode, chk.Equals, http.StatusConflict)
-//	}
-//}
+func (s *azfileLiveTestSuite) TestFileSetMetadataInvalidField() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
+	fClient := createNewFileFromShare(_require, generateFileName(testName), 0, srClient)
+
+	_, err := fClient.SetMetadata(ctx, map[string]string{"!@#$%^&*()": "!@#$%^&*()"}, nil)
+	_require.NotNil(err)
+}
+
+// TODO: Check why this is failing
+func (s *azfileLiveTestSuite) TestStartCopyDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+	srClient := createNewShare(_require, generateShareName(testName), svcClient)
+	defer delShare(_require, srClient, nil)
+
+	srcFile := createNewFileFromShare(_require, generateFileName(testName), 2048, srClient)
+	defer delFile(_require, srcFile)
+
+	destFile := getFileClientFromShare(_require, generateFileName(testName), srClient)
+	defer delFile(_require, destFile)
+
+	contentR, _ := generateData(2048)
+	_, err := srcFile.UploadRange(ctx, 0, contentR, nil)
+	_require.Nil(err)
+
+	copyResp, err := destFile.StartCopy(ctx, srcFile.URL(), nil)
+	_require.Nil(err)
+	_require.NotEqual(*copyResp.ETag, "")
+	_require.Equal(copyResp.LastModified.IsZero(), false)
+	_require.NotEqual(*copyResp.RequestID, "")
+	_require.NotEqual(*copyResp.Version, "")
+	_require.Equal(copyResp.Date.IsZero(), false)
+	_require.NotEqual(copyResp.CopyStatus, "")
+
+	var copyStatus CopyStatusType
+	timeout := time.Duration(2) * time.Minute
+	start := time.Now()
+
+	var getResp FileGetPropertiesResponse
+	for copyStatus != CopyStatusTypeSuccess && time.Now().Sub(start) < timeout {
+		getResp, err = destFile.GetProperties(ctx, nil)
+		_require.Nil(err)
+		_require.EqualValues(getResp.CopyID, copyResp.CopyID)
+		_require.NotEqual(*getResp.CopyStatus, "")
+		_require.Equal(*getResp.CopySource, srcFile.URL())
+		copyStatus = *getResp.CopyStatus
+		time.Sleep(time.Duration(5) * time.Second)
+	}
+
+	if *getResp.CopyStatus == CopyStatusTypeSuccess {
+		// Abort will fail after copy finished
+		_, err = destFile.AbortCopy(ctx, *copyResp.CopyID, nil)
+		_require.NotNil(err)
+		_require.Contains(err.Error(), "NoPendingCopyOperation")
+	}
+}
 
 func waitForCopy(_require *require.Assertions, copyfClient *FileClient, fileCopyResponse FileStartCopyResponse) {
 	status := fileCopyResponse.CopyStatus
@@ -547,7 +536,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopyDestEmpty() {
 //func (s *azfileLiveTestSuite) TestFileStartCopyMetadata() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -644,7 +633,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //func (s *azfileLiveTestSuite) TestFileStartCopyUsingSASSrc() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -686,7 +675,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //func (s *azfileLiveTestSuite) TestFileStartCopyUsingSASDest() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -744,7 +733,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //func (s *azfileLiveTestSuite) TestFileAbortCopyInProgress() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -792,7 +781,7 @@ func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
 //	if err != nil {
 //		// If the error is nil, the test continues as normal.
 //		// If the error is not nil, we want to check if it's because the copy is finished and send a message indicating this.
-//		_require((err.(ShareError)).RawResponse.StatusCode, chk.Equals, 409)
+//		_require((err.(*ShareError)).RawResponse.StatusCode, chk.Equals, 409)
 //		c.Error("The test failed because the copy completed because it was aborted")
 //	}
 //
@@ -817,7 +806,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //func (s *azfileLiveTestSuite) TestResizeFile() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -842,7 +831,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //func (s *azfileLiveTestSuite) TestFileResizeZero() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -862,7 +851,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //func (s *azfileLiveTestSuite) TestFileResizeInvalidSizeNegative() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -872,14 +861,14 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //
 //	_, err := fClient.Resize(ctx, -4)
 //	_require.NotNil(err)
-//	sErr := err.(ShareError)
+//	sErr := err.(*ShareError)
 //	_require(sErr.RawResponse.StatusCode, chk.Equals, http.StatusBadRequest)
 //}
 //
 //func (f *azfileLivetestSuite) TestServiceSASShareSAS() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -931,7 +920,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //func (f *azfileLivetestSuite) TestServiceSASFileSAS() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -987,7 +976,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //func (s *azfileLiveTestSuite) TestDownloadEmptyZeroSizeFile() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -1031,7 +1020,7 @@ func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
 //func (s *azfileLiveTestSuite) TestUploadDownloadDefaultNonDefaultMD5() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -1160,7 +1149,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataNonExistentFile() {
 //// func (s *azfileLiveTestSuite) TestFileDownloadDataNegativeOffset() {
 //// 	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -1192,7 +1181,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataOffsetOutOfRange() {
 //// func (s *azfileLiveTestSuite) TestFileDownloadDataInvalidCount() {
 //// 	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -1261,7 +1250,7 @@ func (s *azfileLiveTestSuite) TestFileDownloadDataCountOutOfRange() {
 //// func (s *azfileLiveTestSuite) TestFileUploadRangeNegativeInvalidOffset() {
 //// 	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -1380,7 +1369,7 @@ func (s *azfileLiveTestSuite) TestFileUploadRangeIncorrectTransactionalMD5() {
 //func (s *azfileLiveTestSuite) TestUploadRangeFromURL() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -1584,7 +1573,7 @@ func (s *azfileLiveTestSuite) TestClearRangeNonDefaultCount() {
 //// func (s *azfileLiveTestSuite) TestFileClearRangeNegativeInvalidOffset() {
 //// 	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}

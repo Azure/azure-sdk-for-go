@@ -66,7 +66,7 @@ func (s *azfileLiveTestSuite) TestShareCreateDirectoryURL() {
 //func (s *azfileLiveTestSuite) TestShareCreateDeleteNonDefault() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}

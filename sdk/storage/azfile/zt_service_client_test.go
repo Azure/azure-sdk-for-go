@@ -44,14 +44,14 @@ func (s *azfileLiveTestSuite) TestAccountNewShareURLValidName() {
 ////
 ////func (s *azfileLiveTestSuite) TestAccountWithPipeline() {
 ////	_require := require.New(s.T())
-////	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+////	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 ////	if err != nil {
 ////		s.Fail("Unable to fetch service client because " + err.Error())
 ////	}
 ////	fsu = svcClient.WithPipeline(testPipeline{}) // testPipeline returns an identifying message as an error
 ////	shareURL := fsu.NewShareURL("name")
 ////
-////	_, err := shareURL.Create(ctx, azfile.Metadata{}, 0)
+////	_, err := shareURL.Create(ctx, map[string]string{}, 0)
 ////
 ////	_require(err.Error(), chk.Equals, testPipelineMessage)
 ////}
@@ -60,7 +60,7 @@ func (s *azfileLiveTestSuite) TestAccountNewShareURLValidName() {
 ////// it need unpredictable time to make updates take effect.
 ////func (s *azfileLiveTestSuite) TestAccountGetSetPropertiesDefault() {
 ////	_require := require.New(s.T())
-////	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+////	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 ////	if err != nil {
 ////		s.Fail("Unable to fetch service client because " + err.Error())
 ////	}

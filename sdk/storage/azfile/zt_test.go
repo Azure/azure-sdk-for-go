@@ -8,7 +8,6 @@ package azfile
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -145,8 +144,5 @@ func (s *azfileLiveTestSuite) AfterTest(suite string, test string) {
 
 func validateStorageError(_require *require.Assertions, err error, code ShareErrorCode) {
 	_require.NotNil(err)
-	var storageError *ShareError
-	_require.Equal(errors.As(err, &storageError), true)
-
-	_require.Equal(code, storageError.ErrorCode)
+	_require.Contains(err.Error(), code)
 }

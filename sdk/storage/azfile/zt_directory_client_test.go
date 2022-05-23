@@ -420,7 +420,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //func (s *azfileLiveTestSuite) TestDirListDefault() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -456,7 +456,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	defer delDirectory(c, innerDir)
 //
 //	innerFile, innerFileName := createNewFileWithPrefix(c, dirClient, "111", 0)
-//	defer delFile(c, innerFile)
+//	defer delFile(_require, innerFile)
 //
 //	// List 1 file, 1 directory
 //	lResp2, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, DirectoryListFilesAndDirectoriesOptions{})
@@ -472,7 +472,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	defer delDirectory(c, innerDir2)
 //
 //	innerFile2, innerFileName2 := createNewFileWithPrefix(c, dirClient, "222", 2)
-//	defer delFile(c, innerFile2)
+//	defer delFile(_require, innerFile2)
 //
 //	// List 2 files and 2 directories
 //	lResp3, err := dirClient.ListFilesAndDirectories(context.Background(), Marker{}, DirectoryListFilesAndDirectoriesOptions{})
@@ -491,7 +491,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //func (s *azfileLiveTestSuite) TestDirListNonDefault() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -543,7 +543,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //func (s *azfileLiveTestSuite) TestDirListNegativeNonexistantPrefix() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -562,7 +562,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //func (s *azfileLiveTestSuite) TestDirListNegativeMaxResults() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -579,7 +579,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //func (s *azfileLiveTestSuite) TestDirListNonDefaultMaxResultsZero() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -597,7 +597,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //func (s *azfileLiveTestSuite) TestDirListNonDefaultMaxResultsExact() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -621,7 +621,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //func (s *azfileLiveTestSuite) TestDirListWithShareSAS() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}

@@ -108,7 +108,7 @@ func (d DirectoryClient) Create(ctx context.Context, options *DirectoryCreateOpt
 	}
 
 	directoryCreateResponse, err := d.client.Create(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, createOptions)
-	return toDirectoryCreateResponse(directoryCreateResponse), handleError(err)
+	return toDirectoryCreateResponse(directoryCreateResponse), err
 }
 
 // Delete removes the specified empty directory. Note that the directory must be empty before it can be deleted..
@@ -116,7 +116,7 @@ func (d DirectoryClient) Create(ctx context.Context, options *DirectoryCreateOpt
 func (d DirectoryClient) Delete(ctx context.Context, options *DirectoryDeleteOptions) (DirectoryDeleteResponse, error) {
 	directoryDeleteOptions := options.format()
 	directoryDeleteResponse, err := d.client.Delete(ctx, directoryDeleteOptions)
-	return toDirectoryDeleteResponse(directoryDeleteResponse), handleError(err)
+	return toDirectoryDeleteResponse(directoryDeleteResponse), err
 }
 
 // GetProperties returns the directory's metadata and system properties.
@@ -124,7 +124,7 @@ func (d DirectoryClient) Delete(ctx context.Context, options *DirectoryDeleteOpt
 func (d DirectoryClient) GetProperties(ctx context.Context, options *DirectoryGetPropertiesOptions) (DirectoryGetPropertiesResponse, error) {
 	directoryGetPropertiesOptions := options.format()
 	directoryGetPropertiesResponse, err := d.client.GetProperties(ctx, directoryGetPropertiesOptions)
-	return toDirectoryGetPropertiesResponse(directoryGetPropertiesResponse), handleError(err)
+	return toDirectoryGetPropertiesResponse(directoryGetPropertiesResponse), err
 }
 
 // SetProperties sets the directory's metadata and system properties.
@@ -134,7 +134,7 @@ func (d DirectoryClient) SetProperties(ctx context.Context, options *DirectorySe
 	fileAttributes, fileCreationTime, fileLastWriteTime, directorySetPropertiesOptions := options.format()
 
 	directorySetPropertiesResponse, err := d.client.SetProperties(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, directorySetPropertiesOptions)
-	return toDirectorySetPropertiesResponse(directorySetPropertiesResponse), handleError(err)
+	return toDirectorySetPropertiesResponse(directorySetPropertiesResponse), err
 }
 
 // SetMetadata sets the directory's metadata.
@@ -146,7 +146,7 @@ func (d DirectoryClient) SetMetadata(ctx context.Context, metadata map[string]st
 	}
 
 	directorySetMetadataResponse, err := d.client.SetMetadata(ctx, formattedOptions)
-	return toDirectorySetMetadataResponse(directorySetMetadataResponse), handleError(err)
+	return toDirectorySetMetadataResponse(directorySetMetadataResponse), err
 }
 
 // ListFilesAndDirectories returns a single segment of files and directories starting from the specified Marker.
@@ -176,29 +176,29 @@ func (d DirectoryClient) ListFilesAndDirectories(options *DirectoryListFilesAndD
 
 			req, err := d.client.listFilesAndDirectoriesSegmentCreateRequest(ctx, &listOptions)
 			if err != nil {
-				return DirectoryListFilesAndDirectoriesResponse{}, handleError(err)
+				return DirectoryListFilesAndDirectoriesResponse{}, err
 			}
 			if marker != nil {
 				queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
 				if err != nil {
-					return DirectoryListFilesAndDirectoriesResponse{}, handleError(err)
+					return DirectoryListFilesAndDirectoriesResponse{}, err
 				}
 				queryValues.Set("marker", *marker)
 				req.Raw().URL.RawQuery = queryValues.Encode()
 				if err != nil {
-					return DirectoryListFilesAndDirectoriesResponse{}, handleError(err)
+					return DirectoryListFilesAndDirectoriesResponse{}, err
 				}
 			}
 
 			resp, err := d.client.pl.Do(req)
 			if err != nil {
-				return DirectoryListFilesAndDirectoriesResponse{}, handleError(err)
+				return DirectoryListFilesAndDirectoriesResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return DirectoryListFilesAndDirectoriesResponse{}, handleError(runtime.NewResponseError(resp))
+				return DirectoryListFilesAndDirectoriesResponse{}, runtime.NewResponseError(resp)
 			}
 			generatedResp, err := d.client.listFilesAndDirectoriesSegmentHandleResponse(resp)
-			return toDirectoryListFilesAndDirectoriesResponse(generatedResp), handleError(err)
+			return toDirectoryListFilesAndDirectoriesResponse(generatedResp), err
 		},
 	})
 }

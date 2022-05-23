@@ -100,7 +100,7 @@ func (f *FileClient) Create(ctx context.Context, options *FileCreateOptions) (Fi
 	fileCreateResponse, err := f.client.Create(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime,
 		fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
 
-	return toFileCreateResponse(fileCreateResponse), handleError(err)
+	return toFileCreateResponse(fileCreateResponse), err
 }
 
 // StartCopy copies the data at the source URL to a file.
@@ -111,7 +111,7 @@ func (f *FileClient) StartCopy(ctx context.Context, sourceURL string, options *F
 		return FileStartCopyResponse{}, err
 	}
 	fileStartCopyResponse, err := f.client.StartCopy(ctx, sourceURL, fileStartCopyOptions, copyFileSmbInfo, leaseAccessConditions)
-	return toFileStartCopyResponse(fileStartCopyResponse), handleError(err)
+	return toFileStartCopyResponse(fileStartCopyResponse), err
 }
 
 // AbortCopy stops a pending copy that was previously started and leaves a destination file with 0 length and metadata.
@@ -119,7 +119,7 @@ func (f *FileClient) StartCopy(ctx context.Context, sourceURL string, options *F
 func (f *FileClient) AbortCopy(ctx context.Context, copyID string, options *FileAbortCopyOptions) (FileAbortCopyResponse, error) {
 	fileAbortCopyOptions, leaseAccessConditions := options.format()
 	fileAbortCopyResponse, err := f.client.AbortCopy(ctx, copyID, fileAbortCopyOptions, leaseAccessConditions)
-	return toFileAbortCopyResponse(fileAbortCopyResponse), handleError(err)
+	return toFileAbortCopyResponse(fileAbortCopyResponse), err
 }
 
 // Download downloads Count bytes of data from the start Offset.
@@ -136,10 +136,10 @@ func (f *FileClient) Download(ctx context.Context, offset, count int64, options 
 
 	fileDownloadResponse, err := f.client.Download(ctx, fileDownloadOptions, leaseAccessConditions)
 	if err != nil {
-		return FileDownloadResponse{}, handleError(err)
+		return FileDownloadResponse{}, err
 	}
 
-	return toFileDownloadResponse(ctx, f, fileDownloadResponse, offset, count), handleError(err)
+	return toFileDownloadResponse(ctx, f, fileDownloadResponse, offset, count), err
 }
 
 // Delete immediately removes the file from the storage account.
@@ -147,7 +147,7 @@ func (f *FileClient) Download(ctx context.Context, offset, count int64, options 
 func (f *FileClient) Delete(ctx context.Context, options *FileDeleteOptions) (FileDeleteResponse, error) {
 	fileDeleteOptions, leaseAccessConditions := options.format()
 	fileDeleteResponse, err := f.client.Delete(ctx, fileDeleteOptions, leaseAccessConditions)
-	return toFileDeleteResponse(fileDeleteResponse), handleError(err)
+	return toFileDeleteResponse(fileDeleteResponse), err
 }
 
 // GetProperties returns the file's metadata and properties.
@@ -157,7 +157,7 @@ func (f *FileClient) GetProperties(ctx context.Context, options *FileGetProperti
 
 	fileGetPropertiesResponse, err := f.client.GetProperties(ctx, fileGetPropertiesOptions, leaseAccessConditions)
 
-	return toFileGetPropertiesResponse(fileGetPropertiesResponse), handleError(err)
+	return toFileGetPropertiesResponse(fileGetPropertiesResponse), err
 }
 
 // SetHTTPHeaders sets file's system properties.
@@ -172,7 +172,7 @@ func (f *FileClient) SetHTTPHeaders(ctx context.Context, options *FileSetHTTPHea
 	fileSetHTTPHeadersResponse, err := f.client.SetHTTPHeaders(ctx, fileAttributes, fileCreationTime,
 		fileLastWriteTime, setHTTPHeadersOptions, shareFileHTTPHeaders, leaseAccessConditions)
 
-	return toFileSetHTTPHeadersResponse(fileSetHTTPHeadersResponse), handleError(err)
+	return toFileSetHTTPHeadersResponse(fileSetHTTPHeadersResponse), err
 }
 
 // SetMetadata sets a file's metadata.
@@ -182,7 +182,7 @@ func (f *FileClient) SetMetadata(ctx context.Context, metadata map[string]string
 
 	fileSetMetadataResponse, err := f.client.SetMetadata(ctx, fileSetMetadataOptions, leaseAccessConditions)
 
-	return toFileSetMetadataResponse(fileSetMetadataResponse), handleError(err)
+	return toFileSetMetadataResponse(fileSetMetadataResponse), err
 }
 
 // Resize resizes the file to the specified size.
@@ -193,7 +193,7 @@ func (f *FileClient) Resize(ctx context.Context, size int64, options *FileResize
 	setHTTPHeadersResponse, err := f.client.SetHTTPHeaders(ctx, fileAttributes, fileCreationTime, fileLastWriteTime,
 		setHTTPHeadersOptions, fileHTTPHeaders, leaseAccessConditions)
 
-	return toFileResizeResponse(setHTTPHeadersResponse), handleError(err)
+	return toFileResizeResponse(setHTTPHeadersResponse), err
 }
 
 // UploadRange writes bytes to a file.
@@ -206,7 +206,7 @@ func (f *FileClient) UploadRange(ctx context.Context, offset int64, body io.Read
 	}
 
 	uploadRangeResponse, err := f.client.UploadRange(ctx, rangeParam, fileRangeWrite, contentLength, fileUploadRangeOptions, leaseAccessConditions)
-	return toFileUploadRangeResponse(uploadRangeResponse), handleError(err)
+	return toFileUploadRangeResponse(uploadRangeResponse), err
 }
 
 // UploadRangeFromURL Update range with bytes from a specific URL.
@@ -218,7 +218,7 @@ func (f *FileClient) UploadRangeFromURL(ctx context.Context, sourceURL string, s
 		sourceModifiedAccessConditions, leaseAccessConditions := options.format(sourceURL, sourceOffset, destinationOffset, count)
 
 	uploadRangeFromURLResponse, err := f.client.UploadRangeFromURL(ctx, rangeParam, copySource, contentLength, uploadRangeFromURLOptions, sourceModifiedAccessConditions, leaseAccessConditions)
-	return toFileUploadRangeFromURLResponse(uploadRangeFromURLResponse), handleError(err)
+	return toFileUploadRangeFromURLResponse(uploadRangeFromURLResponse), err
 }
 
 // ClearRange clears the specified range and releases the space used in storage for that range.
@@ -235,7 +235,7 @@ func (f *FileClient) ClearRange(ctx context.Context, offset, count int64, option
 
 	fileUploadRangeResponse, err := f.client.UploadRange(ctx, rangeParam, fileRangeWrite, contentLength, fileUploadRangeOptions, leaseAccessConditions)
 
-	return toFileClearRangeResponse(fileUploadRangeResponse), handleError(err)
+	return toFileClearRangeResponse(fileUploadRangeResponse), err
 }
 
 // GetRangeList returns the list of valid ranges for a file.
@@ -245,5 +245,5 @@ func (f *FileClient) GetRangeList(ctx context.Context, offset, count int64, opti
 	fileGetRangeListOptions, leaseAccessConditions := options.format(offset, count)
 	getRangeListResponse, err := f.client.GetRangeList(ctx, fileGetRangeListOptions, leaseAccessConditions)
 
-	return toFileGetRangeListResponse(getRangeListResponse), handleError(err)
+	return toFileGetRangeListResponse(getRangeListResponse), err
 }

@@ -1750,3 +1750,17 @@ func createAuthorizationRulesForTest(t *testing.T) []AuthorizationRule {
 		},
 	}
 }
+
+func TestATOMNoCountDetails(t *testing.T) {
+	subRP, err := newSubscriptionRuntimePropertiesItem(&atom.SubscriptionEnvelope{Content: &atom.SubscriptionContent{}}, "topic")
+	require.Nil(t, subRP)
+	require.Error(t, err, "invalid subscription runtime properties: no CountDetails element")
+
+	qRP, err := newQueueRuntimePropertiesItem(&atom.QueueEnvelope{Content: &atom.QueueContent{}})
+	require.Nil(t, qRP)
+	require.Error(t, err, "invalid queue runtime properties: no CountDetails element")
+
+	tRP, err := newTopicRuntimePropertiesItem(&atom.TopicEnvelope{Content: &atom.TopicContent{}})
+	require.Nil(t, tRP)
+	require.Error(t, err, "invalid topic runtime properties: no CountDetails element")
+}

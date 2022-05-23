@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -414,6 +415,10 @@ func newSubscriptionItem(env *atom.SubscriptionEnvelope, topicName string) (*Sub
 
 func newSubscriptionRuntimePropertiesItem(env *atom.SubscriptionEnvelope, topicName string) (*SubscriptionRuntimePropertiesItem, error) {
 	desc := env.Content.SubscriptionDescription
+
+	if desc.CountDetails == nil {
+		return nil, errors.New("invalid subscription runtime properties: no CountDetails element")
+	}
 
 	rtp := SubscriptionRuntimeProperties{
 		TotalMessageCount:              *desc.MessageCount,

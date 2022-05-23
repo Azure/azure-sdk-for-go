@@ -5,6 +5,7 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
@@ -385,6 +386,10 @@ func newTopicItem(te *atom.TopicEnvelope) (*TopicItem, error) {
 
 func newTopicRuntimePropertiesItem(env *atom.TopicEnvelope) (*TopicRuntimePropertiesItem, error) {
 	desc := env.Content.TopicDescription
+
+	if desc.CountDetails == nil {
+		return nil, errors.New("invalid topic runtime properties: no CountDetails element")
+	}
 
 	props := &TopicRuntimeProperties{
 		SizeInBytes:           int64OrZero(desc.SizeInBytes),

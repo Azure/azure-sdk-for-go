@@ -46,11 +46,11 @@ type (
 	// QueueEnvelope is a specialized Queue feed entry
 	QueueEnvelope struct {
 		*Entry
-		Content *queueContent `xml:"content"`
+		Content *QueueContent `xml:"content"`
 	}
 
-	// queueContent is a specialized Queue body for an Atom entry
-	queueContent struct {
+	// QueueContent is a specialized Queue body for an Atom entry
+	QueueContent struct {
 		XMLName          xml.Name         `xml:"content"`
 		Type             string           `xml:"type,attr"`
 		QueueDescription QueueDescription `xml:"QueueDescription"`
@@ -103,11 +103,11 @@ type (
 	// TopicEnvelope is a specialized Topic feed entry
 	TopicEnvelope struct {
 		*Entry
-		Content *topicContent `xml:"content"`
+		Content *TopicContent `xml:"content"`
 	}
 
-	// topicContent is a specialized Topic body for an Atom entry
-	topicContent struct {
+	// TopicContent is a specialized Topic body for an Atom entry
+	TopicContent struct {
 		XMLName          xml.Name         `xml:"content"`
 		Type             string           `xml:"type,attr"`
 		TopicDescription TopicDescription `xml:"TopicDescription"`
@@ -296,11 +296,11 @@ type (
 	// subscriptionEntryContent is a specialized Topic feed Subscription
 	SubscriptionEnvelope struct {
 		*Entry
-		Content *subscriptionContent `xml:"content"`
+		Content *SubscriptionContent `xml:"content"`
 	}
 
-	// subscriptionContent is a specialized Subscription body for an Atom entry
-	subscriptionContent struct {
+	// SubscriptionContent is a specialized Subscription body for an Atom entry
+	SubscriptionContent struct {
 		XMLName                 xml.Name                `xml:"content"`
 		Type                    string                  `xml:"type,attr"`
 		SubscriptionDescription SubscriptionDescription `xml:"SubscriptionDescription"`

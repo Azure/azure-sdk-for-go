@@ -8,10 +8,13 @@ package azfile
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strings"
+	"time"
 )
 
 // A DirectoryClient represents a URL to the Azure Storage directory allowing you to manipulate its directories and files.
@@ -87,7 +90,7 @@ func (d *DirectoryClient) NewFileClient(fileName string) (*FileClient, error) {
 	}, nil
 }
 
-func (d *DirectoryClient) NewDirectoryClient(directoryName string) (*DirectoryClient, error) {
+func (d *DirectoryClient) NewSubdirectoryClient(directoryName string) (*DirectoryClient, error) {
 	directoryURL := appendToURLPath(d.URL(), directoryName)
 
 	return &DirectoryClient{
@@ -101,7 +104,7 @@ func (d *DirectoryClient) NewDirectoryClient(directoryName string) (*DirectoryCl
 // Pass default values for SMB properties (ex: "None" for file attributes).
 // If permissions is empty, the default permission "inherit" is used.
 // For SDDL strings over 9KB, upload using ShareURL.CreatePermission, and supply the permissionKey.
-func (d DirectoryClient) Create(ctx context.Context, options *DirectoryCreateOptions) (DirectoryCreateResponse, error) {
+func (d *DirectoryClient) Create(ctx context.Context, options *DirectoryCreateOptions) (DirectoryCreateResponse, error) {
 	fileAttributes, fileCreationTime, fileLastWriteTime, createOptions, err := options.format()
 	if err != nil {
 		return DirectoryCreateResponse{}, err
@@ -113,7 +116,7 @@ func (d DirectoryClient) Create(ctx context.Context, options *DirectoryCreateOpt
 
 // Delete removes the specified empty directory. Note that the directory must be empty before it can be deleted..
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-directory.
-func (d DirectoryClient) Delete(ctx context.Context, options *DirectoryDeleteOptions) (DirectoryDeleteResponse, error) {
+func (d *DirectoryClient) Delete(ctx context.Context, options *DirectoryDeleteOptions) (DirectoryDeleteResponse, error) {
 	directoryDeleteOptions := options.format()
 	directoryDeleteResponse, err := d.client.Delete(ctx, directoryDeleteOptions)
 	return toDirectoryDeleteResponse(directoryDeleteResponse), err
@@ -121,7 +124,7 @@ func (d DirectoryClient) Delete(ctx context.Context, options *DirectoryDeleteOpt
 
 // GetProperties returns the directory's metadata and system properties.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/get-directory-properties.
-func (d DirectoryClient) GetProperties(ctx context.Context, options *DirectoryGetPropertiesOptions) (DirectoryGetPropertiesResponse, error) {
+func (d *DirectoryClient) GetProperties(ctx context.Context, options *DirectoryGetPropertiesOptions) (DirectoryGetPropertiesResponse, error) {
 	directoryGetPropertiesOptions := options.format()
 	directoryGetPropertiesResponse, err := d.client.GetProperties(ctx, directoryGetPropertiesOptions)
 	return toDirectoryGetPropertiesResponse(directoryGetPropertiesResponse), err
@@ -130,7 +133,7 @@ func (d DirectoryClient) GetProperties(ctx context.Context, options *DirectoryGe
 // SetProperties sets the directory's metadata and system properties.
 // Preserve values for SMB properties.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
-func (d DirectoryClient) SetProperties(ctx context.Context, options *DirectorySetPropertiesOptions) (DirectorySetPropertiesResponse, error) {
+func (d *DirectoryClient) SetProperties(ctx context.Context, options *DirectorySetPropertiesOptions) (DirectorySetPropertiesResponse, error) {
 	fileAttributes, fileCreationTime, fileLastWriteTime, directorySetPropertiesOptions := options.format()
 
 	directorySetPropertiesResponse, err := d.client.SetProperties(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, directorySetPropertiesOptions)
@@ -139,7 +142,7 @@ func (d DirectoryClient) SetProperties(ctx context.Context, options *DirectorySe
 
 // SetMetadata sets the directory's metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-directory-metadata.
-func (d DirectoryClient) SetMetadata(ctx context.Context, metadata map[string]string, options *DirectorySetMetadataOptions) (DirectorySetMetadataResponse, error) {
+func (d *DirectoryClient) SetMetadata(ctx context.Context, metadata map[string]string, options *DirectorySetMetadataOptions) (DirectorySetMetadataResponse, error) {
 	formattedOptions, err := options.format(metadata)
 	if err != nil {
 		return DirectorySetMetadataResponse{}, err
@@ -154,7 +157,7 @@ func (d DirectoryClient) SetMetadata(ctx context.Context, metadata map[string]st
 // After getting a segment, process it, and then call ListFilesAndDirectoriesSegment again (passing the the previously-returned
 // Marker) to get the next segment. This method lists the contents only for a single level of the directory hierarchy.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files.
-func (d DirectoryClient) ListFilesAndDirectories(options *DirectoryListFilesAndDirectoriesOptions) *runtime.Pager[DirectoryListFilesAndDirectoriesResponse] {
+func (d *DirectoryClient) ListFilesAndDirectories(options *DirectoryListFilesAndDirectoriesOptions) *runtime.Pager[DirectoryListFilesAndDirectoriesResponse] {
 	listOptions := options.format()
 	return runtime.NewPager(runtime.PagingHandler[DirectoryListFilesAndDirectoriesResponse]{
 		More: func(page DirectoryListFilesAndDirectoriesResponse) bool {
@@ -201,4 +204,32 @@ func (d DirectoryClient) ListFilesAndDirectories(options *DirectoryListFilesAndD
 			return toDirectoryListFilesAndDirectoriesResponse(generatedResp), err
 		},
 	})
+}
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (d *DirectoryClient) GetSASURL(permissions FileSASPermissions, start time.Time, expiry time.Time) (string, error) {
+	if d.sharedKey == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+	}
+
+	qps, err := FileSASSignatureValues{
+		Version:     SASVersion,
+		Protocol:    SASProtocolHTTPS,
+		Permissions: permissions.String(),
+		StartTime:   start.UTC(),
+		ExpiryTime:  expiry.UTC(),
+	}.Sign(d.sharedKey)
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := d.URL()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+
+	return endpoint, nil
 }

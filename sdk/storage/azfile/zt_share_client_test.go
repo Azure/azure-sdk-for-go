@@ -8,6 +8,7 @@ package azfile
 
 import (
 	"context"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/require"
 	"os"
@@ -62,52 +63,72 @@ func (s *azfileLiveTestSuite) TestShareCreateDirectoryURL() {
 	_require.Equal(dirClient.URL(), correctURL)
 }
 
-// Note: test share create with default parameter is covered with preparing phase for FileURL and etc.
-//func (s *azfileLiveTestSuite) TestShareCreateDeleteNonDefault() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
-//	if err != nil {
-//
-//	}
-//	shareName := generateShareName(testName)
-//	srClient, err := svcClient.NewShareClient(shareName)
-//	_require.Nil(err)
-//
-//	md := map[string]string{
-//		"foo": "FooValuE",
-//		"bar": "bArvaLue",
-//	}
-//
-//	quota := int32(1000)
-//
-//	cResp, err := srClient.Create(context.Background(), &ShareCreateOptions{Quota: to.Int32Ptr(quota), Metadata: md})
-//	_require.Nil(err)
-//	_require(cResp.RawResponse.StatusCode, chk.Equals, 201)
-//	_require(cResp.Date().IsZero(), chk.Equals, false)
-//	_require(cResp.ETag(), chk.Not(chk.Equals), ETagNone)
-//	_require(cResp.LastModified.IsZero(), chk.Equals, false)
-//	_require(cResp.RequestID(), chk.Not(chk.Equals), "")
-//	_require(cResp.Version(), chk.Not(chk.Equals), "")
-//
-//	shares, err := srClient.ListSharesSegment(context.Background(), Marker{}, ListSharesOptions{Prefix: shareName, Detail: ListSharesDetail{Metadata: true}})
-//	_require.Nil(err)
-//	_require(shares.ShareItems, chk.HasLen, 1)
-//	_require(shares.ShareItems[0].Name, chk.Equals, shareName)
-//	_require(shares.ShareItems[0].Metadata, chk.DeepEquals, md)
-//	_require(shares.ShareItems[0].Properties.Quota, chk.Equals, quota)
-//
-//	dResp, err := srClient.Delete(context.Background(), DeleteSnapshotsOptionNone)
-//	_require.Nil(err)
-//	_require(dResp.RawResponse.StatusCode, chk.Equals, 202)
-//	_require(dResp.Date().IsZero(), chk.Equals, false)
-//	_require(dResp.RequestID(), chk.Not(chk.Equals), "")
-//	_require(dResp.Version(), chk.Not(chk.Equals), "")
-//
-//	shares, err = srClient.ListSharesSegment(context.Background(), Marker{}, ListSharesOptions{Prefix: shareName})
-//	_require.Nil(err)
-//	_require(shares.ShareItems, chk.HasLen, 0)
-//}
+func (s *azfileLiveTestSuite) TestShareCreateDeleteNonDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
+
+	shareName := generateShareName(testName)
+	srClient, err := svcClient.NewShareClient(shareName)
+	_require.Nil(err)
+
+	md := map[string]string{
+		"foo": "Bar",
+		"bar": "Bazz",
+	}
+
+	quota := int32(1000)
+
+	cResp, err := srClient.Create(context.Background(), &ShareCreateOptions{Quota: to.Ptr(quota), Metadata: md})
+	defer delShare(_require, srClient, nil)
+	_require.Nil(err)
+	_require.Equal(cResp.Date.IsZero(), false)
+	_require.NotNil(cResp.ETag)
+	_require.NotNil(cResp.LastModified)
+	_require.NotNil(cResp.RequestID, "")
+	_require.NotNil(cResp.Version)
+
+	pager := svcClient.ListShares(&ServiceListSharesOptions{
+		Prefix:  to.Ptr(shareName),
+		Include: []ListSharesIncludeType{ListSharesIncludeTypeMetadata},
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		if err != nil {
+			break
+		}
+		_require.Len(resp.ShareItems, 1)
+		_require.Equal(*resp.ShareItems[0].Name, shareName)
+		for key, val1 := range md {
+			if val2, ok := resp.ShareItems[0].Metadata[key]; !(ok && val1 == *val2) {
+				_require.Fail("metadata mismatch")
+			}
+		}
+		_require.Equal(*resp.ShareItems[0].Properties.Quota, quota)
+	}
+
+	dResp, err := srClient.Delete(context.Background(), nil)
+	_require.Nil(err)
+	_require.NotNil(dResp.Date)
+	_require.NotNil(dResp.RequestID)
+	_require.NotNil(dResp.Version)
+
+	pager1 := svcClient.ListShares(&ServiceListSharesOptions{
+		Prefix:  to.Ptr(shareName),
+		Include: []ListSharesIncludeType{ListSharesIncludeTypeMetadata},
+	})
+	for pager1.More() {
+		resp, err := pager1.NextPage(ctx)
+		_require.Nil(err)
+		if err != nil {
+			break
+		}
+		_require.Len(resp.ShareItems, 0)
+	}
+
+}
 
 func (s *azfileLiveTestSuite) TestShareCreateNilMetadata() {
 	_require := require.New(s.T())
@@ -774,61 +795,69 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNonDefault() {
 	}
 }
 
-//func (s *azfileLiveTestSuite) TestShareCreateSnapshotDefault() {
-//	credential, accountName := getCredential()
-//
-//	ctx := context.Background()
-//
-//	u, _ := url.Parse(fmt.Sprintf("https://%s.file.core.windows.net", accountName))
-//	serviceURL := NewServiceURL(*u, NewPipeline(credential, PipelineOptions{}))
-//
-//	shareName := generateShareName(test)
-//	shareURL := serviceURL.NewShareClient(shareName)
-//
-//	_, err := srClient.Create(ctx, map[string]string{}, 0)
-//	_require.Nil(err)
-//
-//	defer srClient.Delete(ctx, DeleteSnapshotsOptionTypeInclude)
-//
-//	// Let's create a file in the base share.
-//	fileURL := srClient.NewRootDirectoryClient().NewFileURL("myfile")
-//	_, err = fileURL.Create(ctx, 0, ShareFileHTTPHeaders{}, map[string]string{})
-//	_require.Nil(err)
-//
-//	// Create share snapshot, the snapshot contains the create file.
-//	snapshotShare, err := srClient.CreateSnapshot(ctx, map[string]string{})
-//	_require.Nil(err)
-//
-//	// Delete file in base share.
-//	_, err = fileURL.Delete(ctx)
-//	_require.Nil(err)
-//
-//	// Restore file from share snapshot.
-//	// Create a SAS.
-//	sasQueryParams, err := FileSASSignatureValues{
-//		Protocol:   SASProtocolHTTPS,              // Users MUST use HTTPS (not HTTP)
-//		ExpiryTime: time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-//		ShareName:  shareName,
-//
-//		// To produce a share SAS (as opposed to a file SAS), assign to FilePermissions using
-//		// ShareSASPermissions and make sure the DirectoryAndFilePath field is "" (the default).
-//		FilePermissions: ShareSASPermissions{Read: true, Write: true}.String(),
-//	}.Sign(credential)
-//	_require.Nil(err)
-//
-//	// Build a file snapshot URL.
-//	fileParts := NewFileURLParts(fileURL.URL())
-//	fileParts.ShareSnapshot = snapshotShare.Snapshot()
-//	fileParts.SAS = sasQueryParams
-//	sourceURL := fileParts.URL()
-//
-//	// Do restore.
-//	_, err = fileURL.StartCopyFromURL(ctx, sourceURL, map[string]string{})
-//	_require.Nil(err)
-//
-//	_, err = srClient.WithSnapshot(snapshotShare.Snapshot()).Delete(ctx, DeleteSnapshotsOptionNone)
-//	_require.Nil(err)
-//}
+func (s *azfileLiveTestSuite) TestShareCreateSnapshotDefault() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	accountName, accountKey, err := getAccountInfo(nil, testAccountDefault)
+	_require.Nil(err)
+	_require.NotEqual(accountName, "")
+
+	credential, err := NewSharedKeyCredential(accountName, accountKey)
+	_require.Nil(err)
+	svcClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.file.core.windows.net", accountName), credential, nil)
+	_require.Nil(err)
+	shareName := generateShareName(testName)
+	srClient, err := svcClient.NewShareClient(shareName)
+
+	_, err = srClient.Create(ctx, nil)
+	_require.Nil(err)
+
+	defer srClient.Delete(ctx, &ShareDeleteOptions{DeleteSnapshots: to.Ptr(DeleteSnapshotsOptionTypeInclude)})
+
+	// Let's create a file in the base share.
+	dirClient, err := srClient.NewRootDirectoryClient()
+	_require.Nil(err)
+
+	fClient, err := dirClient.NewFileClient("myfile")
+	_, err = fClient.Create(ctx, nil)
+	_require.Nil(err)
+
+	// Create share snapshot, the snapshot contains the create file.
+	snapshotShare, err := srClient.CreateSnapshot(ctx, nil)
+	_require.Nil(err)
+
+	// Delete file in base share.
+	_, err = fClient.Delete(ctx, nil)
+	_require.Nil(err)
+
+	// Restore file from share snapshot.
+	// Create a SAS.
+	sasQueryParams, err := FileSASSignatureValues{
+		Protocol:   SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+		ExpiryTime: time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:  shareName,
+
+		// To produce a share SAS (as opposed to a file SAS), assign to FilePermissions using
+		// ShareSASPermissions and make sure the DirectoryAndFilePath field is "" (the default).
+		Permissions: ShareSASPermissions{Read: true, Write: true}.String(),
+	}.Sign(credential)
+	_require.Nil(err)
+
+	// Build a file snapshot URL.
+	fileParts, err := NewFileURLParts(fClient.URL())
+	_require.Nil(err)
+	fileParts.ShareSnapshot = *snapshotShare.Snapshot
+	fileParts.SAS = sasQueryParams
+	sourceURL := fileParts.URL()
+
+	// Do restore.
+	_, err = fClient.StartCopyFromURL(ctx, sourceURL, nil)
+	_require.Nil(err)
+
+	srClientWithSnapshot, err := srClient.WithSnapshot(*snapshotShare.Snapshot)
+	srClientWithSnapshot.Delete(ctx, nil)
+	_require.Nil(err)
+}
 
 func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeShareNotExist() {
 	_require := require.New(s.T())

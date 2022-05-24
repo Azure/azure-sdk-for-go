@@ -20,7 +20,7 @@ func (s *azfileLiveTestSuite) TestDirNewDirectoryClient() {
 	_require.Nil(err)
 	dirClient, err := srClient.NewDirectoryClient(directoryPrefix)
 	_require.Nil(err)
-	dirClient, err = dirClient.NewDirectoryClient("inner" + directoryPrefix)
+	dirClient, err = dirClient.NewSubdirectoryClient("inner" + directoryPrefix)
 	_require.Nil(err)
 
 	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".file.core.windows.net/" + sharePrefix + "/" + directoryPrefix + "/inner" + directoryPrefix
@@ -167,7 +167,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
 	parentDirClient, err := srClient.NewDirectoryClient(parentDirName)
 	_require.Nil(err)
 
-	subDirClient, err := parentDirClient.NewDirectoryClient(subDirName)
+	subDirClient, err := parentDirClient.NewSubdirectoryClient(subDirName)
 
 	// Directory create with subDirClient
 	_, err = subDirClient.Create(context.Background(), nil)
@@ -650,7 +650,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //		accountName, shareName, dirName, qp)
 //
 //	u, _ := url.Parse(urlToSendToSomeone)
-//	dirURL := NewDirectoryClient(*u, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
+//	dirURL := NewSubdirectoryClient(*u, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
 //
 //	marker := Marker{}
 //	lResp, err := dirURL.ListFilesAndDirectories(context.Background(), marker, DirectoryListFilesAndDirectoriesOptions{})

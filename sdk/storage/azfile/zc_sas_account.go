@@ -85,7 +85,7 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 // AccountSASPermissions type simplifies creating the permissions string for an Azure Storage Account SAS.
 // Initialize an instance of this type and then call its String method to set AccountSASSignatureValues's Permissions field.
 type AccountSASPermissions struct {
-	Read, Write, Delete, DeletePreviousVersion, List, Add, Create, Update, Process bool
+	Read, Write, Delete, DeletePreviousVersion, PermanentDelete, List, Add, Create, Update, Process, FilterByTags, Tag, SetImmutabilityPolicy bool
 }
 
 // String produces the SAS permissions string for an Azure Storage account.
@@ -104,6 +104,9 @@ func (p AccountSASPermissions) String() string {
 	if p.DeletePreviousVersion {
 		buffer.WriteRune('x')
 	}
+	if p.PermanentDelete {
+		buffer.WriteRune('y')
+	}
 	if p.List {
 		buffer.WriteRune('l')
 	}
@@ -119,6 +122,15 @@ func (p AccountSASPermissions) String() string {
 	if p.Process {
 		buffer.WriteRune('p')
 	}
+	if p.FilterByTags {
+		buffer.WriteRune('f')
+	}
+	if p.Tag {
+		buffer.WriteRune('t')
+	}
+	if p.SetImmutabilityPolicy {
+		buffer.WriteRune('i')
+	}
 	return buffer.String()
 }
 
@@ -133,6 +145,8 @@ func (p *AccountSASPermissions) Parse(s string) error {
 			p.Write = true
 		case 'd':
 			p.Delete = true
+		case 'x':
+			p.DeletePreviousVersion = true
 		case 'l':
 			p.List = true
 		case 'a':
@@ -143,8 +157,11 @@ func (p *AccountSASPermissions) Parse(s string) error {
 			p.Update = true
 		case 'p':
 			p.Process = true
-		case 'x':
-			p.Process = true
+		case 'f':
+			p.FilterByTags = true
+		case 't':
+			p.Tag = true
+		case 'i':
 		default:
 			return fmt.Errorf("invalid permission character: '%v'", r)
 		}

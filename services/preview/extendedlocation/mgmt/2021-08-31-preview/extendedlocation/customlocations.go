@@ -83,7 +83,7 @@ func (client CustomLocationsClient) CreateOrUpdatePreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-31-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -178,7 +178,7 @@ func (client CustomLocationsClient) DeletePreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-31-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -215,6 +215,99 @@ func (client CustomLocationsClient) DeleteResponder(resp *http.Response) (result
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
+	return
+}
+
+// FindTargetResourceGroup returns the target resource group associated with the resource sync rules of the Custom
+// Location that match the rules passed in with the Find Target Resource Group Request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// resourceName - custom Locations name.
+// parameters - parameters of the find target resource group request.
+func (client CustomLocationsClient) FindTargetResourceGroup(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocationFindTargetResourceGroupProperties) (result CustomLocationFindTargetResourceGroupResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomLocationsClient.FindTargetResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("extendedlocation.CustomLocationsClient", "FindTargetResourceGroup", err.Error())
+	}
+
+	req, err := client.FindTargetResourceGroupPreparer(ctx, resourceGroupName, resourceName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "extendedlocation.CustomLocationsClient", "FindTargetResourceGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.FindTargetResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "extendedlocation.CustomLocationsClient", "FindTargetResourceGroup", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.FindTargetResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "extendedlocation.CustomLocationsClient", "FindTargetResourceGroup", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// FindTargetResourceGroupPreparer prepares the FindTargetResourceGroup request.
+func (client CustomLocationsClient) FindTargetResourceGroupPreparer(ctx context.Context, resourceGroupName string, resourceName string, parameters CustomLocationFindTargetResourceGroupProperties) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-08-31-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ExtendedLocation/customLocations/{resourceName}/findTargetResourceGroup", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// FindTargetResourceGroupSender sends the FindTargetResourceGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client CustomLocationsClient) FindTargetResourceGroupSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// FindTargetResourceGroupResponder handles the response to the FindTargetResourceGroup request. The method always
+// closes the http.Response Body.
+func (client CustomLocationsClient) FindTargetResourceGroupResponder(resp *http.Response) (result CustomLocationFindTargetResourceGroupResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -276,7 +369,7 @@ func (client CustomLocationsClient) GetPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-31-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -365,7 +458,7 @@ func (client CustomLocationsClient) ListByResourceGroupPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-31-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -485,7 +578,7 @@ func (client CustomLocationsClient) ListBySubscriptionPreparer(ctx context.Conte
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-31-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -616,7 +709,7 @@ func (client CustomLocationsClient) ListEnabledResourceTypesPreparer(ctx context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-31-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -725,7 +818,7 @@ func (client CustomLocationsClient) ListOperations(ctx context.Context) (result 
 
 // ListOperationsPreparer prepares the ListOperations request.
 func (client CustomLocationsClient) ListOperationsPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-31-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -852,7 +945,7 @@ func (client CustomLocationsClient) UpdatePreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-31-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

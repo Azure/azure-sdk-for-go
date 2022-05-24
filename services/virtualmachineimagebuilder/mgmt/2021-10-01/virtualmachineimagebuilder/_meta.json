@@ -1,5 +1,5 @@
 {
-  "commit": "fe0ddc1279ffbfc3b971ba46d4c62ed597b571ae",
+  "commit": "9f3ac7b135ac83007b7f3f68ca8ca9705284cff9",
   "readme": "/_/azure-rest-api-specs/specification/imagebuilder/resource-manager/readme.md",
   "tag": "package-2021-10",
   "use": "@microsoft.azure/autorest.go@2.1.187",

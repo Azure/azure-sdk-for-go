@@ -31,7 +31,7 @@ import (
 
 	"github.com/devigned/tab"
 
-	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 )
 
 type (

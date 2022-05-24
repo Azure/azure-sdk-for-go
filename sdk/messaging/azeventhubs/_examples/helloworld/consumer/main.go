@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	azauth "github.com/Azure/go-autorest/autorest/azure/auth"
 
-	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 )
 
 const (

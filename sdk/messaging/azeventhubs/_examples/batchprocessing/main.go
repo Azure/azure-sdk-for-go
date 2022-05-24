@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"strings"
 
-	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/persist"
+	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/persist"
 )
 
 func main() {

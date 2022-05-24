@@ -1,4 +1,4 @@
-package eventhub
+package internal
 
 const (
 	// Version is the semantic version number

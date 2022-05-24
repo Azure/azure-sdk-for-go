@@ -35,8 +35,8 @@ import (
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-storage-blob-go/azblob"
 
-	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/eph"
+	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eph"
 )
 
 const (

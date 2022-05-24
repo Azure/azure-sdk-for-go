@@ -35,7 +35,7 @@ import (
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/stretchr/testify/suite"
 
-	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 )
 

@@ -1,4 +1,4 @@
-package eventhub_test
+package internal_test
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 
 	"github.com/joho/godotenv"
 
-	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 )
 
 func init() {

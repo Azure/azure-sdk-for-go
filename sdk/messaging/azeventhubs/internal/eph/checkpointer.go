@@ -26,7 +26,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/persist"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/persist"
 )
 
 type (

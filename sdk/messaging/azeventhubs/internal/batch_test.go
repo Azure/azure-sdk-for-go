@@ -1,4 +1,4 @@
-package eventhub_test
+package internal_test
 
 import (
 	"strconv"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 )
 
 func TestNewEventBatch(t *testing.T) {

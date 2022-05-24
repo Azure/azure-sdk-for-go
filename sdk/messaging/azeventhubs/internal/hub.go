@@ -1,5 +1,5 @@
-// Package eventhub provides functionality for interacting with Azure Event Hubs.
-package eventhub
+// package internal provides functionality for interacting with Azure Event Hubs.
+package internal
 
 //	MIT License
 //
@@ -46,8 +46,8 @@ import (
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/devigned/tab"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/persist"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/persist"
 )
 
 const (

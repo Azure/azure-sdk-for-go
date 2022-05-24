@@ -1,4 +1,4 @@
-package eventhub
+package internal
 
 type (
 	// ErrNoMessages is returned when an operation returned no messages. It is not indicative that there will not be

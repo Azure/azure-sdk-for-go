@@ -1,6 +1,7 @@
+//go:build race
 // +build race
 
-package eventhub
+package internal
 
 import (
 	"context"

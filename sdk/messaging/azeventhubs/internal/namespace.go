@@ -1,4 +1,4 @@
-package eventhub
+package internal
 
 //	MIT License
 //

@@ -32,7 +32,7 @@ import (
 	"github.com/Azure/azure-storage-blob-go/azblob"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/internal/test"
 )
 
 type (

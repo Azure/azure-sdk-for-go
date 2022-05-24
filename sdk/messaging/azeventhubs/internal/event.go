@@ -1,4 +1,4 @@
-package eventhub
+package internal
 
 //	MIT License
 //
@@ -31,7 +31,7 @@ import (
 	"github.com/Azure/go-amqp"
 	"github.com/mitchellh/mapstructure"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/persist"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/persist"
 )
 
 const (

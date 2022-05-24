@@ -8,8 +8,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/stress"
+	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/internal/stress"
 	"github.com/devigned/tab"
 	"github.com/joho/godotenv"
 )

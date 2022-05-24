@@ -1,10 +1,10 @@
-package eventhub
+package internal
 
 import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/persist"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/persist"
 	"github.com/stretchr/testify/assert"
 )
 

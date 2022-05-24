@@ -118,6 +118,38 @@ func PossibleKindValues() []Kind {
 	return []Kind{KindAzurebot, KindBot, KindDesigner, KindFunction, KindSdk}
 }
 
+// MsaAppType enumerates the values for msa app type.
+type MsaAppType string
+
+const (
+	// MsaAppTypeMultiTenant ...
+	MsaAppTypeMultiTenant MsaAppType = "MultiTenant"
+	// MsaAppTypeSingleTenant ...
+	MsaAppTypeSingleTenant MsaAppType = "SingleTenant"
+	// MsaAppTypeUserAssignedMSI ...
+	MsaAppTypeUserAssignedMSI MsaAppType = "UserAssignedMSI"
+)
+
+// PossibleMsaAppTypeValues returns an array of possible values for the MsaAppType const type.
+func PossibleMsaAppTypeValues() []MsaAppType {
+	return []MsaAppType{MsaAppTypeMultiTenant, MsaAppTypeSingleTenant, MsaAppTypeUserAssignedMSI}
+}
+
+// PublicNetworkAccess enumerates the values for public network access.
+type PublicNetworkAccess string
+
+const (
+	// PublicNetworkAccessDisabled ...
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	// PublicNetworkAccessEnabled ...
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{PublicNetworkAccessDisabled, PublicNetworkAccessEnabled}
+}
+
 // RegenerateKeysChannelName enumerates the values for regenerate keys channel name.
 type RegenerateKeysChannelName string
 

@@ -446,7 +446,7 @@ func (client ChannelsClient) ListByResourceGroupComplete(ctx context.Context, re
 // resourceGroupName - the name of the Bot resource group in the user subscription.
 // resourceName - the name of the Bot resource.
 // channelName - the name of the Channel resource.
-func (client ChannelsClient) ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName) (result BotChannel, err error) {
+func (client ChannelsClient) ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName) (result ListChannelWithKeysResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ChannelsClient.ListWithKeys")
 		defer func() {
@@ -521,7 +521,7 @@ func (client ChannelsClient) ListWithKeysSender(req *http.Request) (*http.Respon
 
 // ListWithKeysResponder handles the response to the ListWithKeys request. The method always
 // closes the http.Response Body.
-func (client ChannelsClient) ListWithKeysResponder(resp *http.Response) (result BotChannel, err error) {
+func (client ChannelsClient) ListWithKeysResponder(resp *http.Response) (result ListChannelWithKeysResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

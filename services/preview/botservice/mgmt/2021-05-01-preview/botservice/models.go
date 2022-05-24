@@ -3542,7 +3542,7 @@ type SlackChannelProperties struct {
 	RedirectAction *string `json:"redirectAction,omitempty"`
 	// LastSubmissionID - READ-ONLY; The Sms auth token
 	LastSubmissionID *string `json:"lastSubmissionId,omitempty"`
-	// RegisterBeforeOAuthFlow - READ-ONLY; Whether to register the settings before OAuth validation is performed. Recommended to True.
+	// RegisterBeforeOAuthFlow - Whether to register the settings before OAuth validation is performed. Recommended to True.
 	RegisterBeforeOAuthFlow *bool `json:"registerBeforeOAuthFlow,omitempty"`
 	// IsValidated - READ-ONLY; Whether this channel is validated for the bot
 	IsValidated *bool `json:"IsValidated,omitempty"`
@@ -3569,6 +3569,9 @@ func (scp SlackChannelProperties) MarshalJSON() ([]byte, error) {
 	}
 	if scp.LandingPageURL != nil {
 		objectMap["landingPageUrl"] = scp.LandingPageURL
+	}
+	if scp.RegisterBeforeOAuthFlow != nil {
+		objectMap["registerBeforeOAuthFlow"] = scp.RegisterBeforeOAuthFlow
 	}
 	if scp.SigningSecret != nil {
 		objectMap["signingSecret"] = scp.SigningSecret

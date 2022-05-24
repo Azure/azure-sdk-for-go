@@ -17,6 +17,7 @@
 * Removed redundant field `DeletedKeyItem.Managed`. Use `DeletedKeyItem.Properties.Managed` instead.
 * Changed type of key `Tags` to `map[string]*string`
 * Changed type of `ListPropertiesOfKeyVersionsResponse.Keys` to `[]*KeyItem`
+* Changed type of `JSONWebKey.KeyOps` to `[]*Operation`
 
 ### Bugs Fixed
 

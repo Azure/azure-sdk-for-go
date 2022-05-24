@@ -157,8 +157,8 @@ type JSONWebKey struct {
 	E []byte `json:"e,omitempty"`
 
 	// Symmetric key.
-	K      []byte    `json:"k,omitempty"`
-	KeyOps []*string `json:"key_ops,omitempty"`
+	K      []byte       `json:"k,omitempty"`
+	KeyOps []*Operation `json:"key_ops,omitempty"`
 
 	// ID identifies the key
 	ID *string `json:"kid,omitempty"`
@@ -194,6 +194,30 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 		return &JSONWebKey{}
 	}
 
+	ops := make([]*Operation, len(i.KeyOps))
+	for j, op := range i.KeyOps {
+		if op == nil {
+			ops[j] = nil
+		} else {
+			switch *op {
+			case string(OperationDecrypt):
+				ops[j] = to.Ptr(OperationDecrypt)
+			case string(OperationEncrypt):
+				ops[j] = to.Ptr(OperationEncrypt)
+			case string(OperationImport):
+				ops[j] = to.Ptr(OperationImport)
+			case string(OperationSign):
+				ops[j] = to.Ptr(OperationSign)
+			case string(OperationUnwrapKey):
+				ops[j] = to.Ptr(OperationUnwrapKey)
+			case string(OperationVerify):
+				ops[j] = to.Ptr(OperationVerify)
+			case string(OperationWrapKey):
+				ops[j] = to.Ptr(OperationWrapKey)
+			}
+		}
+	}
+
 	return &JSONWebKey{
 		Crv:     (*CurveName)(i.Crv),
 		D:       i.D,
@@ -201,7 +225,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 		DQ:      i.DQ,
 		E:       i.E,
 		K:       i.K,
-		KeyOps:  i.KeyOps,
+		KeyOps:  ops,
 		ID:      i.Kid,
 		KeyType: (*KeyType)(i.Kty),
 		N:       i.N,
@@ -216,6 +240,10 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 
 // converts JSONWebKey to *generated.JSONWebKey
 func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
+	ops := make([]*string, len(j.KeyOps))
+	for i, op := range j.KeyOps {
+		ops[i] = to.Ptr(string(*op))
+	}
 	return &generated.JSONWebKey{
 		Crv:    (*generated.JSONWebKeyCurveName)(j.Crv),
 		D:      j.D,
@@ -223,7 +251,7 @@ func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
 		DQ:     j.DQ,
 		E:      j.E,
 		K:      j.K,
-		KeyOps: j.KeyOps,
+		KeyOps: ops,
 		Kid:    j.ID,
 		Kty:    (*generated.JSONWebKeyType)(j.KeyType),
 		N:      j.N,

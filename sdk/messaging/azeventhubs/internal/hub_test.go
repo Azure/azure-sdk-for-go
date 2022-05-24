@@ -47,7 +47,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 )
 
 type (

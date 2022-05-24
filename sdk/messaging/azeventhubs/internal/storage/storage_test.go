@@ -33,7 +33,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/eph"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 )
 
 const (

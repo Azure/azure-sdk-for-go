@@ -33,7 +33,7 @@ type ClearRange struct {
 	Start *int64 `xml:"Start"`
 }
 
-// CopyFileSmbInfo contains a group of parameters for the fileClient.StartCopy method.
+// CopyFileSmbInfo contains a group of parameters for the fileClient.StartCopyFromURL method.
 type CopyFileSmbInfo struct {
 	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes
 	// to set on a target file.
@@ -371,9 +371,9 @@ type SourceModifiedAccessConditions struct {
 	SourceIfNoneMatchCRC64 []byte
 }
 
-//type ShareError struct {
-//	Message *string `json:"Message,omitempty"`
-//}
+type ShareError struct {
+	Message *string `json:"Message,omitempty"`
+}
 
 // directoryClientCreateOptions contains the optional parameters for the directoryClient.Create method.
 type directoryClientCreateOptions struct {

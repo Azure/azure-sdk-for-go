@@ -8,9 +8,12 @@ package azfile
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
+	"strings"
+	"time"
 )
 
 type FileClient struct {
@@ -103,9 +106,9 @@ func (f *FileClient) Create(ctx context.Context, options *FileCreateOptions) (Fi
 	return toFileCreateResponse(fileCreateResponse), err
 }
 
-// StartCopy copies the data at the source URL to a file.
+// StartCopyFromURL copies the data at the source URL to a file.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-file.
-func (f *FileClient) StartCopy(ctx context.Context, sourceURL string, options *FileStartCopyOptions) (FileStartCopyResponse, error) {
+func (f *FileClient) StartCopyFromURL(ctx context.Context, sourceURL string, options *FileStartCopyOptions) (FileStartCopyResponse, error) {
 	fileStartCopyOptions, copyFileSmbInfo, leaseAccessConditions, err := options.format()
 	if err != nil {
 		return FileStartCopyResponse{}, err
@@ -246,4 +249,32 @@ func (f *FileClient) GetRangeList(ctx context.Context, offset, count int64, opti
 	getRangeListResponse, err := f.client.GetRangeList(ctx, fileGetRangeListOptions, leaseAccessConditions)
 
 	return toFileGetRangeListResponse(getRangeListResponse), err
+}
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (f *FileClient) GetSASURL(permissions FileSASPermissions, start time.Time, expiry time.Time) (string, error) {
+	if f.sharedKey == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+	}
+
+	qps, err := FileSASSignatureValues{
+		Version:     SASVersion,
+		Protocol:    SASProtocolHTTPS,
+		Permissions: permissions.String(),
+		StartTime:   start.UTC(),
+		ExpiryTime:  expiry.UTC(),
+	}.Sign(f.sharedKey)
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := f.URL()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+
+	return endpoint, nil
 }

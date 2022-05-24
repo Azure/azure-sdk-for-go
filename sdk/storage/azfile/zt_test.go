@@ -13,6 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"log"
+	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -142,7 +144,12 @@ func (s *azfileLiveTestSuite) AfterTest(suite string, test string) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-func validateStorageError(_require *require.Assertions, err error, code ShareErrorCode) {
+func validateHTTPErrorCode(_require *require.Assertions, err error, code int) {
+	_require.NotNil(err)
+	_require.Equal(strings.Contains(err.Error(), strconv.Itoa(code)), true)
+}
+
+func validateShareErrorCode(_require *require.Assertions, err error, code ShareErrorCode) {
 	_require.NotNil(err)
 	_require.Contains(err.Error(), code)
 }

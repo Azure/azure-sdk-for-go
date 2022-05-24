@@ -22,7 +22,7 @@ const (
 	SASProtocolHTTPS SASProtocol = "https"
 
 	// SASProtocolHTTPSandHTTP can be specified for a SAS protocol
-	//SASProtocolHTTPSandHTTP SASProtocol = "https,http"
+	SASProtocolHTTPSandHTTP SASProtocol = "https,http"
 )
 
 // FormatTimesForSASSigning converts a time.Time to a snapshotTimeFormat string suitable for a
@@ -80,7 +80,7 @@ func parseSASTimeString(val string) (t time.Time, timeFormat string, err error) 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 
 // A SASQueryParameters object represents the components that make up an Azure Storage SAS' query parameters.
-// You parse a map of query parameters into its fields by calling NewSASQueryParameters(). You add the components
+// You parse a map of query parameters into its fields by calling Sign(). You add the components
 // to a query parameter map by calling AddToValues().
 // NOTE: Changing any field requires computing a new SAS signature using a XxxSASSignatureValues type.
 //
@@ -221,7 +221,7 @@ func (ipr *IPRange) String() string {
 	return start + "-" + ipr.End.String()
 }
 
-// NewSASQueryParameters creates and initializes a SASQueryParameters object based on the
+// Sign creates and initializes a SASQueryParameters object based on the
 // query parameter map's passed-in values. If deleteSASParametersFromValues is true,
 // all SAS-related query parameters are removed from the passed-in map. If
 // deleteSASParametersFromValues is false, the map passed-in map is unaltered.

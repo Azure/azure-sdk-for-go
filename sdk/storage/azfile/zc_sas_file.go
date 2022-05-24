@@ -33,9 +33,9 @@ type FileSASSignatureValues struct {
 	ContentType        string // rsct
 }
 
-// NewSASQueryParameters uses an account's shared key credential to sign this signature values to produce
+// Sign uses an account's shared key credential to sign this signature values to produce
 // the proper SAS query parameters.
-func (v FileSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
+func (v FileSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	if sharedKeyCredential == nil {
 		return SASQueryParameters{}, errors.New("sharedKeyCredential can't be nil")
 	}

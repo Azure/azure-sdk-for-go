@@ -31,6 +31,22 @@ const (
 	FileAttributeNoScrubData       FileAttributeFlags = 131072
 )
 
+var (
+	// DefaultFilePermissionString is a constant for all intents and purposes.
+	// But you can't take the address of a constant string, so it's a variable.
+	// Inherit inherits permissions from the parent folder (default when creating files/folders)
+	DefaultFilePermissionString = "inherit"
+
+	// DefaultCurrentTimeString sets creation/last write times to now
+	DefaultCurrentTimeString = "now"
+
+	// DefaultPreserveString preserves old permissions on the file/folder (default when updating properties)
+	DefaultPreserveString = "preserve"
+
+	// DefaultFileAttributes is defaults for file attributes
+	DefaultFileAttributes = "None"
+)
+
 func (f FileAttributeFlags) String() (out string) {
 	// We choose not to do a map here, as indexing over a map doesn't inherently retain order.
 	attrFlags := []FileAttributeFlags{

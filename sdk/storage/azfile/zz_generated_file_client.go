@@ -1423,8 +1423,8 @@ func (client *fileClient) setMetadataHandleResponse(resp *http.Response) (fileCl
 // account, then you must authenticate the source file or blob using a shared
 // access signature. If the source is a public blob, no authentication is required to perform the copy operation. A file in
 // a share snapshot can also be specified as a copy source.
-// options - fileClientStartCopyOptions contains the optional parameters for the fileClient.StartCopy method.
-// CopyFileSmbInfo - CopyFileSmbInfo contains a group of parameters for the fileClient.StartCopy method.
+// options - fileClientStartCopyOptions contains the optional parameters for the fileClient.StartCopyFromURL method.
+// CopyFileSmbInfo - CopyFileSmbInfo contains a group of parameters for the fileClient.StartCopyFromURL method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the shareClient.GetProperties method.
 func (client *fileClient) StartCopy(ctx context.Context, copySource string, options *fileClientStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (fileClientStartCopyResponse, error) {
 	req, err := client.startCopyCreateRequest(ctx, copySource, options, copyFileSmbInfo, leaseAccessConditions)

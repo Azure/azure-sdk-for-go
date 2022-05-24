@@ -8,8 +8,11 @@ package azfile
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"strings"
+	"time"
 )
 
 type ShareClient struct {
@@ -214,4 +217,32 @@ func (s *ShareClient) GetStatistics(ctx context.Context, options *ShareGetStatis
 	shareGetStatisticsResponse, err := s.client.GetStatistics(ctx, formattedOptions, leaseAccessConditions)
 
 	return toShareGetStatisticsResponse(shareGetStatisticsResponse), err
+}
+
+// GetSASURL is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (s *ShareClient) GetSASURL(permissions ShareSASPermissions, start time.Time, expiry time.Time) (string, error) {
+	if s.sharedKey == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
+	}
+
+	qps, err := FileSASSignatureValues{
+		Version:     SASVersion,
+		Protocol:    SASProtocolHTTPS,
+		Permissions: permissions.String(),
+		StartTime:   start.UTC(),
+		ExpiryTime:  expiry.UTC(),
+	}.Sign(s.sharedKey)
+	if err != nil {
+		return "", err
+	}
+
+	endpoint := s.URL()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+
+	return endpoint, nil
 }

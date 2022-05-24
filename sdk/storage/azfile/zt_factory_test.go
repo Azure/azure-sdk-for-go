@@ -164,10 +164,8 @@ func getShareClient(_require *require.Assertions, shareName string, s *ServiceCl
 
 func createNewShare(_require *require.Assertions, shareName string, serviceClient *ServiceClient) *ShareClient {
 	srClient := getShareClient(_require, shareName, serviceClient)
-
 	_, err := srClient.Create(ctx, nil)
 	_require.Nil(err)
-	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return srClient
 }
 

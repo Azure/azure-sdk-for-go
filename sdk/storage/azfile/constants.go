@@ -13,24 +13,6 @@ const (
 	ISO8601 = "2006-01-02T15:04:05.0000000Z"
 )
 
-var (
-	// DefaultFilePermissionString is a constant for all intents and purposes.
-	// But you can't take the address of a constant string, so it's a variable.
-	// Inherit inherits permissions from the parent folder (default when creating files/folders)
-	DefaultFilePermissionString = "inherit"
-
-	// DefaultCurrentTimeString sets creation/last write times to now
-	DefaultCurrentTimeString = "now"
-
-	// DefaultPreserveString preserves old permissions on the file/folder (default when updating properties)
-	DefaultPreserveString = "preserve"
-
-	// DefaultFileAttributes is defaults for file attributes
-	DefaultFileAttributes = "None"
-
-	//DefaultPermissionCopyMode = PermissionCopyModeTypeNone
-)
-
 //nolint
 const (
 	ServiceVersion = "2020-02-10"

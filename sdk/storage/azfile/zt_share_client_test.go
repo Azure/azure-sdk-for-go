@@ -68,7 +68,7 @@ func (s *azfileLiveTestSuite) TestShareCreateDirectoryURL() {
 //	testName := s.T().Name()
 //	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//
 //	}
 //	shareName := generateShareName(testName)
 //	srClient, err := svcClient.NewShareClient(shareName)
@@ -135,7 +135,7 @@ func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidName() {
 
 	_, err = srClient.Create(ctx, nil)
 
-	validateStorageError(_require, err, ShareErrorCodeInvalidResourceName)
+	validateShareErrorCode(_require, err, ShareErrorCodeInvalidResourceName)
 }
 
 func (s *azfileLiveTestSuite) TestShareCreateNegativeInvalidMetadata() {
@@ -159,7 +159,7 @@ func (s *azfileLiveTestSuite) TestShareDeleteNegativeNonExistent() {
 	srClient := getShareClient(_require, shareName, svcClient)
 
 	_, err := srClient.Delete(ctx, nil)
-	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
+	validateShareErrorCode(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetSetPropertiesNonDefault() {
@@ -246,7 +246,7 @@ func (s *azfileLiveTestSuite) TestShareGetPropertiesNegative() {
 
 	_, err := srClient.GetProperties(ctx, nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
+	validateShareErrorCode(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
@@ -398,7 +398,7 @@ func (s *azfileLiveTestSuite) TestShareGetPermissionNegative() {
 
 	_, err := srClient.GetPermissions(ctx, nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
+	validateShareErrorCode(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareSetPermissionsNonDefaultDeleteAndModifyACL() {
@@ -556,7 +556,7 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNegative() {
 	}
 
 	_, err := srClient.SetPermissions(ctx, permissions, nil)
-	validateStorageError(_require, err, ShareErrorCodeInvalidXMLDocument)
+	validateShareErrorCode(_require, err, ShareErrorCodeInvalidXMLDocument)
 }
 
 func (s *azfileLiveTestSuite) TestShareGetSetMetadataDefault() {
@@ -674,7 +674,7 @@ func (s *azfileLiveTestSuite) TestShareGetStatsNegative() {
 
 	_, err := srClient.GetStatistics(ctx, nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
+	validateShareErrorCode(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
@@ -813,7 +813,7 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNonDefault() {
 //		// To produce a share SAS (as opposed to a file SAS), assign to FilePermissions using
 //		// ShareSASPermissions and make sure the DirectoryAndFilePath field is "" (the default).
 //		FilePermissions: ShareSASPermissions{Read: true, Write: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	_require.Nil(err)
 //
 //	// Build a file snapshot URL.
@@ -823,7 +823,7 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNonDefault() {
 //	sourceURL := fileParts.URL()
 //
 //	// Do restore.
-//	_, err = fileURL.StartCopy(ctx, sourceURL, map[string]string{})
+//	_, err = fileURL.StartCopyFromURL(ctx, sourceURL, map[string]string{})
 //	_require.Nil(err)
 //
 //	_, err = srClient.WithSnapshot(snapshotShare.Snapshot()).Delete(ctx, DeleteSnapshotsOptionNone)
@@ -840,7 +840,7 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeShareNotExist() {
 
 	_, err := srClient.CreateSnapshot(ctx, &ShareCreateSnapshotOptions{Metadata: map[string]string{}})
 	_require.NotNil(err)
-	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
+	validateShareErrorCode(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeMetadataInvalid() {
@@ -880,7 +880,7 @@ func (s *azfileLiveTestSuite) TestShareCreateSnapshotNegativeSnapshotOfSnapshot(
 
 func validateShareDeleted(_require *require.Assertions, srClient *ShareClient) {
 	_, err := srClient.GetProperties(ctx, nil)
-	validateStorageError(_require, err, ShareErrorCodeShareNotFound)
+	validateShareErrorCode(_require, err, ShareErrorCodeShareNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestShareDeleteSnapshot() {
@@ -936,5 +936,5 @@ func (s *azfileLiveTestSuite) TestShareDeleteSnapshotsNoneWithSnapshots() {
 	_, err := srClient.CreateSnapshot(ctx, nil)
 	_require.Nil(err)
 	_, err = srClient.Delete(ctx, nil)
-	validateStorageError(_require, err, ShareErrorCodeShareHasSnapshots)
+	validateShareErrorCode(_require, err, ShareErrorCodeShareHasSnapshots)
 }

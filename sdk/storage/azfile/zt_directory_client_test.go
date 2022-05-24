@@ -138,7 +138,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNonDefault() {
 	_require.NotNil(err)
 	//serr := err.(*ShareError)
 	//_require.Equal(serr.Response().StatusCode,409)
-	validateStorageError(_require, err, ShareErrorCodeResourceAlreadyExists)
+	validateShareErrorCode(_require, err, ShareErrorCodeResourceAlreadyExists)
 
 	dResp, err := dirClient.Delete(context.Background(), nil)
 	_require.Nil(err)
@@ -149,7 +149,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNonDefault() {
 
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, ShareErrorCodeResourceNotFound)
+	validateShareErrorCode(_require, err, ShareErrorCodeResourceNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
@@ -172,7 +172,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
 	// Directory create with subDirClient
 	_, err = subDirClient.Create(context.Background(), nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, ShareErrorCodeParentNotFound)
+	validateShareErrorCode(_require, err, ShareErrorCodeParentNotFound)
 
 	_, err = parentDirClient.Create(context.Background(), nil)
 	_require.Nil(err)
@@ -190,7 +190,7 @@ func (s *azfileLiveTestSuite) TestDirCreateDeleteNegativeMultiLevelDir() {
 	// Delete Non-empty directory should fail
 	_, err = parentDirClient.Delete(context.Background(), nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, ShareErrorCodeDirectoryNotEmpty)
+	validateShareErrorCode(_require, err, ShareErrorCodeDirectoryNotEmpty)
 
 	_, err = subDirClient.Delete(context.Background(), nil)
 	_require.Nil(err)
@@ -330,7 +330,7 @@ func (s *azfileLiveTestSuite) TestDirGetPropertiesNegative() {
 
 	_, err := dirClient.GetProperties(ctx, nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, ShareErrorCodeResourceNotFound)
+	validateShareErrorCode(_require, err, ShareErrorCodeResourceNotFound)
 }
 
 func (s *azfileLiveTestSuite) TestDirGetPropertiesWithBaseDirectory() {
@@ -422,7 +422,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	testName := s.T().Name()
 //	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//
 //	}
 //	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 //
@@ -493,7 +493,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	testName := s.T().Name()
 //	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//
 //	}
 //	srClient := createNewShare(_require, generateShareName(testName), svcClient)
 //
@@ -545,7 +545,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	testName := s.T().Name()
 //	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//
 //	}
 //	shareURL, _ := createNewShare(_require, generateShareName(testName), svcClient)
 //	defer delShare(c, shareURL, DeleteSnapshotsOptionNone)
@@ -564,7 +564,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	testName := s.T().Name()
 //	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//
 //	}
 //	shareURL, _ := createNewShare(_require, generateShareName(testName), svcClient)
 //	defer delShare(c, shareURL, DeleteSnapshotsOptionNone)
@@ -581,7 +581,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	testName := s.T().Name()
 //	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//
 //	}
 //	shareURL, _ := createNewShare(_require, generateShareName(testName), svcClient)
 //	defer delShare(c, shareURL, DeleteSnapshotsOptionNone)
@@ -599,7 +599,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	testName := s.T().Name()
 //	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//
 //	}
 //	shareURL, _ := createNewShare(_require, generateShareName(testName), svcClient)
 //	defer delShare(c, shareURL, DeleteSnapshotsOptionNone)
@@ -623,7 +623,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //	testName := s.T().Name()
 //	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//
 //	}
 //	credential, accountName := getCredential()
 //	share, shareName := createNewShare(_require, generateShareName(testName), svcClient)
@@ -640,7 +640,7 @@ func (s *azfileLiveTestSuite) TestDirGetSetMetadataMergeAndReplace() {
 //		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 //		ShareName:   shareName,
 //		FilePermissions: ShareSASPermissions{Read: true, Write: true, List: true}.String(),
-//	}.NewSASQueryParameters(credential)
+//	}.Sign(credential)
 //	_require.Nil(err)
 //
 //	// Create the URL of the resource you wish to access and append the SAS query parameters.

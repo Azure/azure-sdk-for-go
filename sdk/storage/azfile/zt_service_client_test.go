@@ -46,7 +46,7 @@ func (s *azfileLiveTestSuite) TestAccountNewShareURLValidName() {
 ////	_require := require.New(s.T())
 ////	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 ////	if err != nil {
-////		s.Fail("Unable to fetch service client because " + err.Error())
+////
 ////	}
 ////	fsu = svcClient.WithPipeline(testPipeline{}) // testPipeline returns an identifying message as an error
 ////	shareURL := fsu.NewShareURL("name")
@@ -62,7 +62,7 @@ func (s *azfileLiveTestSuite) TestAccountNewShareURLValidName() {
 ////	_require := require.New(s.T())
 ////	svcClient := getServiceClient(_require, nil, testAccountDefault, nil)
 ////	if err != nil {
-////		s.Fail("Unable to fetch service client because " + err.Error())
+////
 ////	}
 ////
 ////	resp, err := svcClient.SetProperties(context.Background(), &ServiceSetPropertiesOptions{})

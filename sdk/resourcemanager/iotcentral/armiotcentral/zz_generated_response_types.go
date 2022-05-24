@@ -50,10 +50,40 @@ type AppsClientListTemplatesResponse struct {
 
 // AppsClientUpdateResponse contains the response from method AppsClient.Update.
 type AppsClientUpdateResponse struct {
-	App
+	// placeholder for future response values
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationListResult
+}
+
+// PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.Create.
+type PrivateEndpointConnectionsClientCreateResponse struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+type PrivateEndpointConnectionsClientListResponse struct {
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateLinksClientGetResponse contains the response from method PrivateLinksClient.Get.
+type PrivateLinksClientGetResponse struct {
+	PrivateLinkResource
+}
+
+// PrivateLinksClientListResponse contains the response from method PrivateLinksClient.List.
+type PrivateLinksClientListResponse struct {
+	PrivateLinkResourceListResult
 }

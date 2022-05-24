@@ -325,9 +325,6 @@ type DeletedKeyItem struct {
 	// The url of the recovery object, used to identify and recover the deleted key.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Tags contain application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
-
 	// READ-ONLY; The time when the key was deleted, in UTC
 	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
 
@@ -349,7 +346,6 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		Properties:         keyPropertiesFromGenerated(i.Attributes, i.Kid, name, version, i.Managed, vaultURL, i.Tags),
 		ID:                 i.Kid,
 		Name:               name,
-		Tags:               i.Tags,
 	}
 }
 

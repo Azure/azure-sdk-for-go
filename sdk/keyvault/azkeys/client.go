@@ -949,9 +949,6 @@ type ImportKeyOptions struct {
 
 	// Properties is the properties of the key.
 	Properties *Properties `json:"attributes,omitempty"`
-
-	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
@@ -963,7 +960,6 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImp
 		Key:           key.toGenerated(),
 		Hsm:           i.HardwareProtected,
 		KeyAttributes: attribs,
-		Tags:          i.Tags,
 	}
 }
 

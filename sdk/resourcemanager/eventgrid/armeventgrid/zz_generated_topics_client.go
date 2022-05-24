@@ -58,7 +58,7 @@ func NewTopicsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Asynchronously creates a new topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // topicInfo - Topic information.
@@ -78,7 +78,7 @@ func (client *TopicsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 
 // CreateOrUpdate - Asynchronously creates a new topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 func (client *TopicsClient) createOrUpdate(ctx context.Context, resourceGroupName string, topicName string, topicInfo Topic, options *TopicsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, topicName, topicInfo, options)
 	if err != nil {
@@ -114,7 +114,7 @@ func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, topicInfo)
@@ -122,7 +122,7 @@ func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // BeginDelete - Delete existing topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // options - TopicsClientBeginDeleteOptions contains the optional parameters for the TopicsClient.BeginDelete method.
@@ -140,7 +140,7 @@ func (client *TopicsClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Delete existing topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 func (client *TopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, topicName string, options *TopicsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, topicName, options)
 	if err != nil {
@@ -176,14 +176,14 @@ func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get properties of a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // options - TopicsClientGetOptions contains the optional parameters for the TopicsClient.Get method.
@@ -222,7 +222,7 @@ func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -239,7 +239,7 @@ func (client *TopicsClient) getHandleResponse(resp *http.Response) (TopicsClient
 
 // NewListByResourceGroupPager - List all the topics under a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // options - TopicsClientListByResourceGroupOptions contains the optional parameters for the TopicsClient.ListByResourceGroup
 // method.
@@ -287,7 +287,7 @@ func (client *TopicsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -310,7 +310,7 @@ func (client *TopicsClient) listByResourceGroupHandleResponse(resp *http.Respons
 
 // NewListBySubscriptionPager - List all the topics under an Azure subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // options - TopicsClientListBySubscriptionOptions contains the optional parameters for the TopicsClient.ListBySubscription
 // method.
 func (client *TopicsClient) NewListBySubscriptionPager(options *TopicsClientListBySubscriptionOptions) *runtime.Pager[TopicsClientListBySubscriptionResponse] {
@@ -353,7 +353,7 @@ func (client *TopicsClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -376,7 +376,7 @@ func (client *TopicsClient) listBySubscriptionHandleResponse(resp *http.Response
 
 // NewListEventTypesPager - List event types for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // providerNamespace - Namespace of the provider of the topic.
 // resourceTypeName - Name of the topic type.
@@ -432,7 +432,7 @@ func (client *TopicsClient) listEventTypesCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -449,7 +449,7 @@ func (client *TopicsClient) listEventTypesHandleResponse(resp *http.Response) (T
 
 // ListSharedAccessKeys - List the two keys used to publish to a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // options - TopicsClientListSharedAccessKeysOptions contains the optional parameters for the TopicsClient.ListSharedAccessKeys
@@ -489,7 +489,7 @@ func (client *TopicsClient) listSharedAccessKeysCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -506,7 +506,7 @@ func (client *TopicsClient) listSharedAccessKeysHandleResponse(resp *http.Respon
 
 // BeginRegenerateKey - Regenerate a shared access key for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // regenerateKeyRequest - Request body to regenerate key.
@@ -526,7 +526,7 @@ func (client *TopicsClient) BeginRegenerateKey(ctx context.Context, resourceGrou
 
 // RegenerateKey - Regenerate a shared access key for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 func (client *TopicsClient) regenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest, options *TopicsClientBeginRegenerateKeyOptions) (*http.Response, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, topicName, regenerateKeyRequest, options)
 	if err != nil {
@@ -536,7 +536,7 @@ func (client *TopicsClient) regenerateKey(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -562,7 +562,7 @@ func (client *TopicsClient) regenerateKeyCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regenerateKeyRequest)
@@ -570,7 +570,7 @@ func (client *TopicsClient) regenerateKeyCreateRequest(ctx context.Context, reso
 
 // BeginUpdate - Asynchronously updates a topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
 // topicName - Name of the topic.
 // topicUpdateParameters - Topic update information.
@@ -589,7 +589,7 @@ func (client *TopicsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 
 // Update - Asynchronously updates a topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 func (client *TopicsClient) update(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, options *TopicsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, topicName, topicUpdateParameters, options)
 	if err != nil {
@@ -625,7 +625,7 @@ func (client *TopicsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, topicUpdateParameters)

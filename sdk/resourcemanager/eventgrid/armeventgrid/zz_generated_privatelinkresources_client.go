@@ -58,10 +58,10 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // Get - Get properties of a private link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
-// parentType - The type of the parent resource. This can be either \'topics\' or \'domains\'.
-// parentName - The name of the parent resource (namely, either, the topic name or domain name).
+// parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\'.
+// parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace name).
 // privateLinkResourceName - The name of private link resource.
 // options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
 // method.
@@ -108,7 +108,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -123,12 +123,12 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 	return result, nil
 }
 
-// NewListByResourcePager - List all the private link resources under a topic or domain.
+// NewListByResourcePager - List all the private link resources under a topic, domain, or partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2021-10-15-preview
 // resourceGroupName - The name of the resource group within the user's subscription.
-// parentType - The type of the parent resource. This can be either \'topics\' or \'domains\'.
-// parentName - The name of the parent resource (namely, either, the topic name or domain name).
+// parentType - The type of the parent resource. This can be either \'topics\', \'domains\', or \'partnerNamespaces\'.
+// parentName - The name of the parent resource (namely, either, the topic name, domain name, or partner namespace name).
 // options - PrivateLinkResourcesClientListByResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByResource
 // method.
 func (client *PrivateLinkResourcesClient) NewListByResourcePager(resourceGroupName string, parentType string, parentName string, options *PrivateLinkResourcesClientListByResourceOptions) *runtime.Pager[PrivateLinkResourcesClientListByResourceResponse] {
@@ -183,7 +183,7 @@ func (client *PrivateLinkResourcesClient) listByResourceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2021-10-15-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

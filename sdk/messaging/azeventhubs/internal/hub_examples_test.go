@@ -62,6 +62,10 @@ func ExampleHub_helloWorld() {
 
 	for _, partitionID := range *hubEntity.PartitionIDs {
 		_, err = hub.Receive(ctx, partitionID, handler)
+
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// wait for the first handler to get called with "Hello World!"
@@ -124,6 +128,10 @@ func ExampleHub_webSocket() {
 
 	for _, partitionID := range *hubEntity.PartitionIDs {
 		_, err = hub.Receive(ctx, partitionID, handler)
+
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	// wait for the first handler to get called with "Hello World!"

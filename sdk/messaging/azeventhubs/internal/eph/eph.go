@@ -411,8 +411,15 @@ func (h *EventProcessorHost) setup(ctx context.Context) error {
 		scheduler := newScheduler(h)
 
 		for _, partitionID := range h.partitionIDs {
-			h.leaser.EnsureLease(ctx, partitionID)
-			h.checkpointer.EnsureCheckpoint(ctx, partitionID)
+			if _, err := h.leaser.EnsureLease(ctx, partitionID); err != nil {
+				// TODO: these errors were previously being ignored
+				return err
+			}
+
+			if _, err := h.checkpointer.EnsureCheckpoint(ctx, partitionID); err != nil {
+				// TODO: these errors were previously being ignored
+				return err
+			}
 		}
 
 		h.scheduler = scheduler

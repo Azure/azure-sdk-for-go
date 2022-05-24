@@ -1432,6 +1432,9 @@ type SlackChannelProperties struct {
 	// The Slack landing page Url
 	LandingPageURL *string `json:"landingPageUrl,omitempty"`
 
+	// Whether to register the settings before OAuth validation is performed. Recommended to True.
+	RegisterBeforeOAuthFlow *bool `json:"registerBeforeOAuthFlow,omitempty"`
+
 	// The Slack permission scopes.
 	Scopes *string `json:"scopes,omitempty"`
 
@@ -1449,9 +1452,6 @@ type SlackChannelProperties struct {
 
 	// READ-ONLY; The Slack redirect action
 	RedirectAction *string `json:"redirectAction,omitempty" azure:"ro"`
-
-	// READ-ONLY; Whether to register the settings before OAuth validation is performed. Recommended to True.
-	RegisterBeforeOAuthFlow *bool `json:"registerBeforeOAuthFlow,omitempty" azure:"ro"`
 }
 
 // SmsChannel - Sms channel definition

@@ -53,7 +53,7 @@ import (
 	"os/signal"
 	"time"
 	
-	"github.com/Azure/azure-event-hubs-go/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 )
 
 func main() {
@@ -238,7 +238,7 @@ particular partition. You can do this in two ways.
 Sending a batch of messages is more efficient than sending a single message. `SendBatch` takes an `*EventBatchIterator` that will automatically create batches from a slice of `*Event`.
 ```go
 import (
-    eventhub "github.com/Azure/azure-event-hubs-go/v3"
+    eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 )
 ...
 var events []*eventhub.Event
@@ -335,9 +335,9 @@ import (
 	
 	"github.com/Azure/azure-amqp-common-go/v3/conn"
 	"github.com/Azure/azure-amqp-common-go/v3/sas"
-	"github.com/Azure/azure-event-hubs-go/v3"
-	"github.com/Azure/azure-event-hubs-go/v3/eph"
-	"github.com/Azure/azure-event-hubs-go/v3/storage"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/eph"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/storage"
 	"github.com/Azure/azure-storage-blob-go/azblob"
 	"github.com/Azure/go-autorest/autorest/azure"
 )

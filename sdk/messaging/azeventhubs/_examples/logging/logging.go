@@ -11,7 +11,7 @@ import (
 	"log"
 	"os"
 
-	eventhubs "github.com/Azure/azure-event-hubs-go/v3"
+	eventhubs "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	_ "github.com/devigned/tab/opencensus"
 	"github.com/joho/godotenv"
 	"go.opencensus.io/examples/exporter"

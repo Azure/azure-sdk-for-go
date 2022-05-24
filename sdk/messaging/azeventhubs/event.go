@@ -31,7 +31,7 @@ import (
 	"github.com/Azure/go-amqp"
 	"github.com/mitchellh/mapstructure"
 
-	"github.com/Azure/azure-event-hubs-go/v3/persist"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/persist"
 )
 
 const (

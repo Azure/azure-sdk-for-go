@@ -32,8 +32,8 @@ import (
 	"github.com/Azure/azure-storage-blob-go/azblob"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/Azure/azure-event-hubs-go/v3/eph"
-	"github.com/Azure/azure-event-hubs-go/v3/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/eph"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
 )
 
 const (

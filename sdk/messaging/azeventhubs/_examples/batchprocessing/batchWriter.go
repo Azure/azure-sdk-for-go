@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/Azure/azure-event-hubs-go/v3"
-	"github.com/Azure/azure-event-hubs-go/v3/persist"
+	eventhub "github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/persist"
 )
 
 type persistRecord struct {

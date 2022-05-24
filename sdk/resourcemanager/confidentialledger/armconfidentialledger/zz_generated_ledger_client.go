@@ -56,7 +56,7 @@ func NewLedgerClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreate - Creates a Confidential Ledger with the specified ledger parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-13-preview
+// Generated from API version 2022-05-13
 // resourceGroupName - The name of the resource group.
 // ledgerName - Name of the Confidential Ledger
 // confidentialLedger - Confidential Ledger Create Request Body
@@ -77,7 +77,7 @@ func (client *LedgerClient) BeginCreate(ctx context.Context, resourceGroupName s
 
 // Create - Creates a Confidential Ledger with the specified ledger parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-13-preview
+// Generated from API version 2022-05-13
 func (client *LedgerClient) create(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
 	if err != nil {
@@ -113,7 +113,7 @@ func (client *LedgerClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-13-preview")
+	reqQP.Set("api-version", "2022-05-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, confidentialLedger)
@@ -121,7 +121,7 @@ func (client *LedgerClient) createCreateRequest(ctx context.Context, resourceGro
 
 // BeginDelete - Deletes an existing Confidential Ledger.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-13-preview
+// Generated from API version 2022-05-13
 // resourceGroupName - The name of the resource group.
 // ledgerName - Name of the Confidential Ledger
 // options - LedgerClientBeginDeleteOptions contains the optional parameters for the LedgerClient.BeginDelete method.
@@ -139,7 +139,7 @@ func (client *LedgerClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Deletes an existing Confidential Ledger.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-13-preview
+// Generated from API version 2022-05-13
 func (client *LedgerClient) deleteOperation(ctx context.Context, resourceGroupName string, ledgerName string, options *LedgerClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ledgerName, options)
 	if err != nil {
@@ -175,7 +175,7 @@ func (client *LedgerClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-13-preview")
+	reqQP.Set("api-version", "2022-05-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *LedgerClient) deleteCreateRequest(ctx context.Context, resourceGro
 
 // Get - Retrieves the properties of a Confidential Ledger.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-13-preview
+// Generated from API version 2022-05-13
 // resourceGroupName - The name of the resource group.
 // ledgerName - Name of the Confidential Ledger
 // options - LedgerClientGetOptions contains the optional parameters for the LedgerClient.Get method.
@@ -222,7 +222,7 @@ func (client *LedgerClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-13-preview")
+	reqQP.Set("api-version", "2022-05-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -239,7 +239,7 @@ func (client *LedgerClient) getHandleResponse(resp *http.Response) (LedgerClient
 
 // NewListByResourceGroupPager - Retrieves the properties of all Confidential Ledgers.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-13-preview
+// Generated from API version 2022-05-13
 // resourceGroupName - The name of the resource group.
 // options - LedgerClientListByResourceGroupOptions contains the optional parameters for the LedgerClient.ListByResourceGroup
 // method.
@@ -287,7 +287,7 @@ func (client *LedgerClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-13-preview")
+	reqQP.Set("api-version", "2022-05-13")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -307,7 +307,7 @@ func (client *LedgerClient) listByResourceGroupHandleResponse(resp *http.Respons
 
 // NewListBySubscriptionPager - Retrieves the properties of all Confidential Ledgers.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-13-preview
+// Generated from API version 2022-05-13
 // options - LedgerClientListBySubscriptionOptions contains the optional parameters for the LedgerClient.ListBySubscription
 // method.
 func (client *LedgerClient) NewListBySubscriptionPager(options *LedgerClientListBySubscriptionOptions) *runtime.Pager[LedgerClientListBySubscriptionResponse] {
@@ -350,7 +350,7 @@ func (client *LedgerClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-13-preview")
+	reqQP.Set("api-version", "2022-05-13")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -370,7 +370,7 @@ func (client *LedgerClient) listBySubscriptionHandleResponse(resp *http.Response
 
 // BeginUpdate - Updates properties of Confidential Ledger
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-13-preview
+// Generated from API version 2022-05-13
 // resourceGroupName - The name of the resource group.
 // ledgerName - Name of the Confidential Ledger
 // confidentialLedger - Confidential Ledger request body for Updating Ledger
@@ -389,7 +389,7 @@ func (client *LedgerClient) BeginUpdate(ctx context.Context, resourceGroupName s
 
 // Update - Updates properties of Confidential Ledger
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-13-preview
+// Generated from API version 2022-05-13
 func (client *LedgerClient) update(ctx context.Context, resourceGroupName string, ledgerName string, confidentialLedger ConfidentialLedger, options *LedgerClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, ledgerName, confidentialLedger, options)
 	if err != nil {
@@ -425,7 +425,7 @@ func (client *LedgerClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-13-preview")
+	reqQP.Set("api-version", "2022-05-13")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, confidentialLedger)

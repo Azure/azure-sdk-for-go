@@ -12,28 +12,28 @@ import "time"
 
 // Account - NetApp account resource
 type Account struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// NetApp Account properties
 	Properties *AccountProperties `json:"properties,omitempty"`
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -276,28 +276,28 @@ type BackupPoliciesList struct {
 
 // BackupPolicy - Backup policy information
 type BackupPolicy struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// REQUIRED; Backup policy Properties
 	Properties *BackupPolicyProperties `json:"properties,omitempty"`
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -482,28 +482,28 @@ type BreakReplicationRequest struct {
 
 // CapacityPool - Capacity pool resource
 type CapacityPool struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// REQUIRED; Capacity pool properties
 	Properties *PoolProperties `json:"properties,omitempty"`
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -672,6 +672,12 @@ type LdapSearchScopeOpt struct {
 
 	// This specifies the user DN, which overrides the base DN for user lookups.
 	UserDN *string `json:"userDN,omitempty"`
+}
+
+// ListReplications - List Replications
+type ListReplications struct {
+	// A list of replications
+	Value []*Replication `json:"value,omitempty"`
 }
 
 // LogSpecification - Log Definition of a single resource metric.
@@ -928,6 +934,9 @@ type ProxyResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -942,6 +951,21 @@ type QuotaAvailabilityRequest struct {
 
 	// REQUIRED; Resource type used for verification.
 	Type *CheckQuotaNameResourceTypes `json:"type,omitempty"`
+}
+
+// Replication properties
+type Replication struct {
+	// REQUIRED; The resource ID of the remote volume.
+	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
+
+	// Indicates whether the local volume is the source or destination for the Volume Replication
+	EndpointType *EndpointType `json:"endpointType,omitempty"`
+
+	// The remote region for the other end of the Volume Replication.
+	RemoteVolumeRegion *string `json:"remoteVolumeRegion,omitempty"`
+
+	// Schedule
+	ReplicationSchedule *ReplicationSchedule `json:"replicationSchedule,omitempty"`
 }
 
 // ReplicationObject - Replication properties
@@ -987,6 +1011,9 @@ type Resource struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1132,28 +1159,28 @@ type SnapshotPoliciesList struct {
 
 // SnapshotPolicy - Snapshot policy information
 type SnapshotPolicy struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// REQUIRED; Snapshot policy Properties
 	Properties *SnapshotPolicyProperties `json:"properties,omitempty"`
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -1298,7 +1325,7 @@ type SubscriptionQuotaItem struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1331,7 +1358,7 @@ type SubvolumeInfo struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1480,6 +1507,28 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
 }
 
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
 // Vault information
 type Vault struct {
 	// REQUIRED; Resource location
@@ -1517,28 +1566,31 @@ type VaultsClientListOptions struct {
 
 // Volume resource
 type Volume struct {
-	// REQUIRED; Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// REQUIRED; Volume properties
 	Properties *VolumeProperties `json:"properties,omitempty"`
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
+
+	// Availability Zone
+	Zones []*string `json:"zones,omitempty"`
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -1577,9 +1629,6 @@ type VolumeGroup struct {
 	// Volume group properties
 	Properties *VolumeGroupListProperties `json:"properties,omitempty"`
 
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
-
 	// READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty" azure:"ro"`
 
@@ -1597,9 +1646,6 @@ type VolumeGroupDetails struct {
 
 	// Volume group properties
 	Properties *VolumeGroupProperties `json:"properties,omitempty"`
-
-	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -1820,8 +1866,8 @@ type VolumeProperties struct {
 	// Flag indicating whether subvolume operations are enabled on the volume
 	EnableSubvolumes *EnableSubvolumes `json:"enableSubvolumes,omitempty"`
 
-	// Encryption Key Source. Possible values are: 'Microsoft.NetApp'
-	EncryptionKeySource *string `json:"encryptionKeySource,omitempty"`
+	// Source of key used to encrypt data in volume. Possible values (case-insensitive) are: 'Microsoft.NetApp'
+	EncryptionKeySource *EncryptionKeySource `json:"encryptionKeySource,omitempty"`
 
 	// Set of export policy rules
 	ExportPolicy *VolumePropertiesExportPolicy `json:"exportPolicy,omitempty"`
@@ -1896,6 +1942,9 @@ type VolumeProperties struct {
 	// happening on this volume. This value will update every 5 minutes during cloning.
 	CloneProgress *int32 `json:"cloneProgress,omitempty" azure:"ro"`
 
+	// READ-ONLY; Specifies if the volume is encrypted or not. Only available on volumes created or updated after 2022-01-01.
+	Encrypted *bool `json:"encrypted,omitempty" azure:"ro"`
+
 	// READ-ONLY; Unique FileSystem Identifier.
 	FileSystemID *string `json:"fileSystemId,omitempty" azure:"ro"`
 
@@ -1938,6 +1987,99 @@ type VolumePropertiesDataProtection struct {
 type VolumePropertiesExportPolicy struct {
 	// Export policy rule
 	Rules []*ExportPolicyRule `json:"rules,omitempty"`
+}
+
+// VolumeQuotaRule - Quota Rule of a Volume
+type VolumeQuotaRule struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Volume Quota Rule Properties
+	Properties *VolumeQuotaRulesProperties `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// VolumeQuotaRulePatch - Patchable Quota Rule of a Volume
+type VolumeQuotaRulePatch struct {
+	// Volume Quota Rule Properties
+	Properties *VolumeQuotaRulesProperties `json:"properties,omitempty"`
+}
+
+// VolumeQuotaRulesClientBeginCreateOptions contains the optional parameters for the VolumeQuotaRulesClient.BeginCreate method.
+type VolumeQuotaRulesClientBeginCreateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumeQuotaRulesClientBeginDeleteOptions contains the optional parameters for the VolumeQuotaRulesClient.BeginDelete method.
+type VolumeQuotaRulesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumeQuotaRulesClientBeginUpdateOptions contains the optional parameters for the VolumeQuotaRulesClient.BeginUpdate method.
+type VolumeQuotaRulesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumeQuotaRulesClientGetOptions contains the optional parameters for the VolumeQuotaRulesClient.Get method.
+type VolumeQuotaRulesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumeQuotaRulesClientListByVolumeOptions contains the optional parameters for the VolumeQuotaRulesClient.ListByVolume
+// method.
+type VolumeQuotaRulesClientListByVolumeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumeQuotaRulesList - List of Volume Quota Rules
+type VolumeQuotaRulesList struct {
+	// A list of Volume Quota Rules
+	Value []*VolumeQuotaRule `json:"value,omitempty"`
+}
+
+// VolumeQuotaRulesProperties - Volume Quota Rule properties
+type VolumeQuotaRulesProperties struct {
+	// Size of quota
+	QuotaSizeInKiBs *int64 `json:"quotaSizeInKiBs,omitempty"`
+
+	// UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’ command
+	// for the user or group and SID can be found by running
+	QuotaTarget *string `json:"quotaTarget,omitempty"`
+
+	// Type of quota
+	QuotaType *Type `json:"quotaType,omitempty"`
+
+	// READ-ONLY; Gets the status of the VolumeQuotaRule at the time the operation was called.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// VolumeRelocationProperties - Volume relocation properties
+type VolumeRelocationProperties struct {
+	// The id of the bare metal tenant owned by the existing volume
+	OldBareMetalTenantID *string `json:"oldBareMetalTenantId,omitempty"`
+
+	// The id of the old volume that is being relocated
+	OldVolumeID *string `json:"oldVolumeId,omitempty"`
+
+	// Has relocation been requested for this volume
+	RelocationRequested *bool `json:"relocationRequested,omitempty"`
 }
 
 // VolumeRevert - revert a volume to the snapshot
@@ -1989,6 +2131,13 @@ type VolumesClientBeginDeleteReplicationOptions struct {
 	ResumeToken string
 }
 
+// VolumesClientBeginFinalizeRelocationOptions contains the optional parameters for the VolumesClient.BeginFinalizeRelocation
+// method.
+type VolumesClientBeginFinalizeRelocationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // VolumesClientBeginPoolChangeOptions contains the optional parameters for the VolumesClient.BeginPoolChange method.
 type VolumesClientBeginPoolChangeOptions struct {
 	// Resumes the LRO from the provided token.
@@ -1998,6 +2147,19 @@ type VolumesClientBeginPoolChangeOptions struct {
 // VolumesClientBeginReInitializeReplicationOptions contains the optional parameters for the VolumesClient.BeginReInitializeReplication
 // method.
 type VolumesClientBeginReInitializeReplicationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginRelocateOptions contains the optional parameters for the VolumesClient.BeginRelocate method.
+type VolumesClientBeginRelocateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginResetCifsPasswordOptions contains the optional parameters for the VolumesClient.BeginResetCifsPassword
+// method.
+type VolumesClientBeginResetCifsPasswordOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2015,6 +2177,13 @@ type VolumesClientBeginRevertOptions struct {
 	ResumeToken string
 }
 
+// VolumesClientBeginRevertRelocationOptions contains the optional parameters for the VolumesClient.BeginRevertRelocation
+// method.
+type VolumesClientBeginRevertRelocationOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // VolumesClientBeginUpdateOptions contains the optional parameters for the VolumesClient.BeginUpdate method.
 type VolumesClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -2028,6 +2197,11 @@ type VolumesClientGetOptions struct {
 
 // VolumesClientListOptions contains the optional parameters for the VolumesClient.List method.
 type VolumesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumesClientListReplicationsOptions contains the optional parameters for the VolumesClient.ListReplications method.
+type VolumesClientListReplicationsOptions struct {
 	// placeholder for future optional parameters
 }
 

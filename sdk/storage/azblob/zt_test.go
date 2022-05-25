@@ -45,8 +45,8 @@ type azblobUnrecordedTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Live})
-	suite.Run(t, &azblobUnrecordedTestSuite{})
+	suite.Run(t, &azblobTestSuite{mode: testframework.Record})
+	//suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 type testContext struct {

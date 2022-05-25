@@ -216,7 +216,8 @@ type AlertProperties struct {
 
 // AlertsClientChangeStateOptions contains the optional parameters for the AlertsClient.ChangeState method.
 type AlertsClientChangeStateOptions struct {
-	// placeholder for future optional parameters
+	// reason of change alert state
+	Comment *string
 }
 
 // AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.GetAll method.
@@ -618,6 +619,9 @@ type Operation struct {
 
 	// Name of the operation
 	Name *string `json:"name,omitempty"`
+
+	// Origin of the operation
+	Origin *string `json:"origin,omitempty"`
 }
 
 // OperationDisplay - Properties of the operation

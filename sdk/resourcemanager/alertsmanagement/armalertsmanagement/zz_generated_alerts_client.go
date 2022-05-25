@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -96,6 +97,10 @@ func (client *AlertsClient) changeStateCreateRequest(ctx context.Context, alertI
 	reqQP.Set("newState", string(newState))
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Comment != nil {
+		body := streaming.NopCloser(strings.NewReader(*options.Comment))
+		return req, req.SetBody(body, "application/json")
+	}
 	return req, nil
 }
 

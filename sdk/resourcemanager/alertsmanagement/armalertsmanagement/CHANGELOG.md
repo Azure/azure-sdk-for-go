@@ -1,5 +1,12 @@
 # Release History
 
+## 0.7.0 (2022-05-25)
+### Features Added
+
+- New field `Comment` in struct `AlertsClientChangeStateOptions`
+- New field `Origin` in struct `Operation`
+
+
 ## 0.6.0 (2022-05-17)
 ### Breaking Changes
 

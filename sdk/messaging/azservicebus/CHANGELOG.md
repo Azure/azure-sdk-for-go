@@ -1,8 +1,10 @@
 # Release History
 
-## 1.0.2 (Unreleased)
+## 1.0.2-beta.0 (Unreleased)
 
 ### Features Added
+
+- Full access to all AMQP message properties. Send AMQP messages using the new `AMQPMessage` type and `Sender.SendAMQPMessage()`. Access the full set of AMQP message properties using the new `ReceivedMessage.RawAMQPMessage` property. (#TBD)
 
 ### Breaking Changes
 

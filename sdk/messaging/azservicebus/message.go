@@ -120,7 +120,11 @@ type ReceivedMessage struct {
 	// Applications can use this value to indicate the logical destination of the message.
 	To *string
 
-	rawAMQPMessage *amqp.Message
+	// RawAMQPMessage is the AMQP message, as received by the client. This can be useful to get access
+	// to properties that are not exposed by ReceivedMessage such as payloads encoded into the
+	// Value or Sequence section, payloads sent as multiple Data sections, as well as Footer
+	// and Header fields.
+	RawAMQPMessage *AMQPMessage
 
 	// deferred indicates we received it using ReceiveDeferredMessages. These messages
 	// will still go through the normal Receiver.Settle functions but internally will
@@ -310,12 +314,12 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 // serialized byte array in the Data section of the messsage.
 func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 	msg := &ReceivedMessage{
-		rawAMQPMessage: amqpMsg,
+		RawAMQPMessage: newAMQPMessage(amqpMsg),
 		State:          MessageStateActive,
 	}
 
-	if len(msg.rawAMQPMessage.Data) == 1 {
-		msg.Body = msg.rawAMQPMessage.Data[0]
+	if len(msg.RawAMQPMessage.Body.Data) == 1 {
+		msg.Body = msg.RawAMQPMessage.Body.Data[0]
 	}
 
 	if amqpMsg.Properties != nil {

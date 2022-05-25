@@ -507,3 +507,85 @@ func (client SmartDetectorAlertRulesClient) ListByResourceGroupComplete(ctx cont
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
 	return
 }
+
+// Patch patch a specific Smart Detector alert rule.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// alertRuleName - the name of the alert rule.
+// parameters - parameters supplied to the operation.
+func (client SmartDetectorAlertRulesClient) Patch(ctx context.Context, resourceGroupName string, alertRuleName string, parameters AlertRulePatchObject) (result AlertRule, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SmartDetectorAlertRulesClient.Patch")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.PatchPreparer(ctx, resourceGroupName, alertRuleName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartDetectorAlertRulesClient", "Patch", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PatchSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartDetectorAlertRulesClient", "Patch", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PatchResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartDetectorAlertRulesClient", "Patch", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// PatchPreparer prepares the Patch request.
+func (client SmartDetectorAlertRulesClient) PatchPreparer(ctx context.Context, resourceGroupName string, alertRuleName string, parameters AlertRulePatchObject) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"alertRuleName":     autorest.Encode("path", alertRuleName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	parameters.ID = nil
+	parameters.Type = nil
+	parameters.Name = nil
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.alertsManagement/smartDetectorAlertRules/{alertRuleName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PatchSender sends the Patch request. The method will close the
+// http.Response Body if it receives an error.
+func (client SmartDetectorAlertRulesClient) PatchSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// PatchResponder handles the response to the Patch request. The method always
+// closes the http.Response Body.
+func (client SmartDetectorAlertRulesClient) PatchResponder(resp *http.Response) (result AlertRule, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

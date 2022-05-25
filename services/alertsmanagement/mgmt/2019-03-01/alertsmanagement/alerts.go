@@ -39,7 +39,8 @@ func NewAlertsClientWithBaseURI(baseURI string, scope string, subscriptionID str
 // Parameters:
 // alertID - unique ID of an alert instance.
 // newState - new state of the alert.
-func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newState AlertState) (result Alert, err error) {
+// comment - reason of change alert state
+func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newState AlertState, comment string) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ChangeState")
 		defer func() {
@@ -50,7 +51,7 @@ func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newS
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ChangeStatePreparer(ctx, alertID, newState)
+	req, err := client.ChangeStatePreparer(ctx, alertID, newState, comment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "ChangeState", nil, "Failure preparing request")
 		return
@@ -73,7 +74,7 @@ func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newS
 }
 
 // ChangeStatePreparer prepares the ChangeState request.
-func (client AlertsClient) ChangeStatePreparer(ctx context.Context, alertID string, newState AlertState) (*http.Request, error) {
+func (client AlertsClient) ChangeStatePreparer(ctx context.Context, alertID string, newState AlertState, comment string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertId": autorest.Encode("path", alertID),
 		"scope":   client.Scope,
@@ -86,10 +87,15 @@ func (client AlertsClient) ChangeStatePreparer(ctx context.Context, alertID stri
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}/changestate", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
+	if len(comment) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(comment))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

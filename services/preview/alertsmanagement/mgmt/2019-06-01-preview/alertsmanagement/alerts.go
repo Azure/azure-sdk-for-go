@@ -35,7 +35,8 @@ func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsCli
 // Parameters:
 // alertID - unique ID of an alert instance.
 // newState - new state of the alert.
-func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newState AlertState) (result Alert, err error) {
+// comment - reason of change alert state
+func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newState AlertState, comment string) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ChangeState")
 		defer func() {
@@ -52,7 +53,7 @@ func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newS
 		return result, validation.NewError("alertsmanagement.AlertsClient", "ChangeState", err.Error())
 	}
 
-	req, err := client.ChangeStatePreparer(ctx, alertID, newState)
+	req, err := client.ChangeStatePreparer(ctx, alertID, newState, comment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "ChangeState", nil, "Failure preparing request")
 		return
@@ -75,7 +76,7 @@ func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newS
 }
 
 // ChangeStatePreparer prepares the ChangeState request.
-func (client AlertsClient) ChangeStatePreparer(ctx context.Context, alertID string, newState AlertState) (*http.Request, error) {
+func (client AlertsClient) ChangeStatePreparer(ctx context.Context, alertID string, newState AlertState, comment string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"alertId":        autorest.Encode("path", alertID),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -88,10 +89,15 @@ func (client AlertsClient) ChangeStatePreparer(ctx context.Context, alertID stri
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alerts/{alertId}/changestate", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
+	if len(comment) > 0 {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(comment))
+	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -142,7 +148,7 @@ func (client AlertsClient) ChangeStateResponder(resp *http.Response) (result Ale
 // customTimeRange - filter by custom time range in the format <start-time>/<end-time>  where time is in
 // (ISO-8601 format)'. Permissible values is within 30 days from  query time. Either timeRange or
 // customTimeRange could be used but not both. Default is none.
-func (client AlertsClient) GetAll(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, selectParameter string, timeRange TimeRange, customTimeRange string) (result AlertsListPage, err error) {
+func (client AlertsClient) GetAll(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int64, sortBy AlertsSortByFields, sortOrder SortOrder, selectParameter string, timeRange TimeRange, customTimeRange string) (result AlertsListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetAll")
 		defer func() {
@@ -187,7 +193,7 @@ func (client AlertsClient) GetAll(ctx context.Context, targetResource string, ta
 }
 
 // GetAllPreparer prepares the GetAll request.
-func (client AlertsClient) GetAllPreparer(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, selectParameter string, timeRange TimeRange, customTimeRange string) (*http.Request, error) {
+func (client AlertsClient) GetAllPreparer(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int64, sortBy AlertsSortByFields, sortOrder SortOrder, selectParameter string, timeRange TimeRange, customTimeRange string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -296,7 +302,7 @@ func (client AlertsClient) getAllNextResults(ctx context.Context, lastResults Al
 }
 
 // GetAllComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AlertsClient) GetAllComplete(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, selectParameter string, timeRange TimeRange, customTimeRange string) (result AlertsListIterator, err error) {
+func (client AlertsClient) GetAllComplete(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int64, sortBy AlertsSortByFields, sortOrder SortOrder, selectParameter string, timeRange TimeRange, customTimeRange string) (result AlertsListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetAll")
 		defer func() {

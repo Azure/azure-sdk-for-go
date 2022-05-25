@@ -304,6 +304,21 @@ func PossibleSmartGroupsSortByFieldsValues() []SmartGroupsSortByFields {
 	return []SmartGroupsSortByFields{SmartGroupsSortByFieldsAlertsCount, SmartGroupsSortByFieldsLastModifiedDateTime, SmartGroupsSortByFieldsSeverity, SmartGroupsSortByFieldsStartDateTime, SmartGroupsSortByFieldsState}
 }
 
+// SortOrder enumerates the values for sort order.
+type SortOrder string
+
+const (
+	// Asc ...
+	Asc SortOrder = "asc"
+	// Desc ...
+	Desc SortOrder = "desc"
+)
+
+// PossibleSortOrderValues returns an array of possible values for the SortOrder const type.
+func PossibleSortOrderValues() []SortOrder {
+	return []SortOrder{Asc, Desc}
+}
+
 // State enumerates the values for state.
 type State string
 

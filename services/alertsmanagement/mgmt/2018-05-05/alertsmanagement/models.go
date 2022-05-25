@@ -19,6 +19,12 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/alertsmanagement/mgmt/2018-05-05/alertsmanagement"
 
+// ActionStatus action status
+type ActionStatus struct {
+	// IsSuppressed - Value indicating whether alert is suppressed.
+	IsSuppressed *bool `json:"isSuppressed,omitempty"`
+}
+
 // Alert an alert created in alert management service.
 type Alert struct {
 	autorest.Response `json:"-"`
@@ -359,7 +365,10 @@ type Essentials struct {
 	// MonitorConditionResolvedDateTime - READ-ONLY; Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert instance because the rule condition is no longer met.
 	MonitorConditionResolvedDateTime *date.Time `json:"monitorConditionResolvedDateTime,omitempty"`
 	// LastModifiedUserName - READ-ONLY; User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name of the user.
-	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty"`
+	LastModifiedUserName *string       `json:"lastModifiedUserName,omitempty"`
+	ActionStatus         *ActionStatus `json:"actionStatus,omitempty"`
+	// Description - Alert description.
+	Description *string `json:"description,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Essentials.
@@ -376,6 +385,12 @@ func (e Essentials) MarshalJSON() ([]byte, error) {
 	}
 	if e.TargetResourceType != nil {
 		objectMap["targetResourceType"] = e.TargetResourceType
+	}
+	if e.ActionStatus != nil {
+		objectMap["actionStatus"] = e.ActionStatus
+	}
+	if e.Description != nil {
+		objectMap["description"] = e.Description
 	}
 	return json.Marshal(objectMap)
 }

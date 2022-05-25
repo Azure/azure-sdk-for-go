@@ -482,6 +482,12 @@ func NewActionRulesListPage(cur ActionRulesList, getNextPage func(context.Contex
 	}
 }
 
+// ActionStatus action status
+type ActionStatus struct {
+	// IsSuppressed - Value indicating whether alert is suppressed.
+	IsSuppressed *bool `json:"isSuppressed,omitempty"`
+}
+
 // Alert an alert created in alert management service.
 type Alert struct {
 	autorest.Response `json:"-"`
@@ -1234,9 +1240,9 @@ func (as AlertsSummary) MarshalJSON() ([]byte, error) {
 // AlertsSummaryGroup group the result set.
 type AlertsSummaryGroup struct {
 	// Total - Total count of the result set.
-	Total *int32 `json:"total,omitempty"`
+	Total *int64 `json:"total,omitempty"`
 	// SmartGroupsCount - Total count of the smart groups.
-	SmartGroupsCount *int32 `json:"smartGroupsCount,omitempty"`
+	SmartGroupsCount *int64 `json:"smartGroupsCount,omitempty"`
 	// Groupedby - Name of the field aggregated
 	Groupedby *string `json:"groupedby,omitempty"`
 	// Values - List of the items
@@ -1248,7 +1254,7 @@ type AlertsSummaryGroupItem struct {
 	// Name - Value of the aggregated field
 	Name *string `json:"name,omitempty"`
 	// Count - Count of the aggregated field
-	Count *int32 `json:"count,omitempty"`
+	Count *int64 `json:"count,omitempty"`
 	// Groupedby - Name of the field aggregated
 	Groupedby *string `json:"groupedby,omitempty"`
 	// Values - List of the items
@@ -1476,7 +1482,10 @@ type Essentials struct {
 	// MonitorConditionResolvedDateTime - READ-ONLY; Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert instance because the rule condition is no longer met.
 	MonitorConditionResolvedDateTime *date.Time `json:"monitorConditionResolvedDateTime,omitempty"`
 	// LastModifiedUserName - READ-ONLY; User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name of the user.
-	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty"`
+	LastModifiedUserName *string       `json:"lastModifiedUserName,omitempty"`
+	ActionStatus         *ActionStatus `json:"actionStatus,omitempty"`
+	// Description - Alert description.
+	Description *string `json:"description,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Essentials.
@@ -1493,6 +1502,12 @@ func (e Essentials) MarshalJSON() ([]byte, error) {
 	}
 	if e.TargetResourceType != nil {
 		objectMap["targetResourceType"] = e.TargetResourceType
+	}
+	if e.ActionStatus != nil {
+		objectMap["actionStatus"] = e.ActionStatus
+	}
+	if e.Description != nil {
+		objectMap["description"] = e.Description
 	}
 	return json.Marshal(objectMap)
 }
@@ -1573,6 +1588,8 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - Properties of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
+	// Origin - Origin of the operation
+	Origin *string `json:"origin,omitempty"`
 }
 
 // OperationDisplay properties of the operation
@@ -1915,7 +1932,7 @@ type SmartGroupAggregatedProperty struct {
 	// Name - Name of the type.
 	Name *string `json:"name,omitempty"`
 	// Count - Total number of items of type.
-	Count *int32 `json:"count,omitempty"`
+	Count *int64 `json:"count,omitempty"`
 }
 
 // SmartGroupModification alert Modification details
@@ -1982,7 +1999,7 @@ func (sgmp SmartGroupModificationProperties) MarshalJSON() ([]byte, error) {
 // SmartGroupProperties properties of smart group.
 type SmartGroupProperties struct {
 	// AlertsCount - Total number of alerts in smart group
-	AlertsCount *int32 `json:"alertsCount,omitempty"`
+	AlertsCount *int64 `json:"alertsCount,omitempty"`
 	// SmartGroupState - READ-ONLY; Smart group state. Possible values include: 'StateNew', 'StateAcknowledged', 'StateClosed'
 	SmartGroupState State `json:"smartGroupState,omitempty"`
 	// Severity - READ-ONLY; Severity of smart group is the highest(Sev0 >... > Sev4) severity of all the alerts in the group. Possible values include: 'Sev0', 'Sev1', 'Sev2', 'Sev3', 'Sev4'

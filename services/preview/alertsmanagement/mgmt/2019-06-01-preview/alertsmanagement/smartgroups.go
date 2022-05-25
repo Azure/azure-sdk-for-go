@@ -129,7 +129,7 @@ func (client SmartGroupsClient) ChangeStateResponder(resp *http.Response) (resul
 // sortBy - sort the query results by input field. Default value is sort by 'lastModifiedDateTime'.
 // sortOrder - sort the query results order in either ascending or descending.  Default value is 'desc' for
 // time fields and 'asc' for others.
-func (client SmartGroupsClient) GetAll(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, smartGroupState AlertState, timeRange TimeRange, pageCount *int32, sortBy SmartGroupsSortByFields, sortOrder string) (result SmartGroupsListPage, err error) {
+func (client SmartGroupsClient) GetAll(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, smartGroupState AlertState, timeRange TimeRange, pageCount *int64, sortBy SmartGroupsSortByFields, sortOrder SortOrder) (result SmartGroupsListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsClient.GetAll")
 		defer func() {
@@ -174,7 +174,7 @@ func (client SmartGroupsClient) GetAll(ctx context.Context, targetResource strin
 }
 
 // GetAllPreparer prepares the GetAll request.
-func (client SmartGroupsClient) GetAllPreparer(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, smartGroupState AlertState, timeRange TimeRange, pageCount *int32, sortBy SmartGroupsSortByFields, sortOrder string) (*http.Request, error) {
+func (client SmartGroupsClient) GetAllPreparer(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, smartGroupState AlertState, timeRange TimeRange, pageCount *int64, sortBy SmartGroupsSortByFields, sortOrder SortOrder) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -265,7 +265,7 @@ func (client SmartGroupsClient) getAllNextResults(ctx context.Context, lastResul
 }
 
 // GetAllComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SmartGroupsClient) GetAllComplete(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, smartGroupState AlertState, timeRange TimeRange, pageCount *int32, sortBy SmartGroupsSortByFields, sortOrder string) (result SmartGroupsListIterator, err error) {
+func (client SmartGroupsClient) GetAllComplete(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, smartGroupState AlertState, timeRange TimeRange, pageCount *int64, sortBy SmartGroupsSortByFields, sortOrder SortOrder) (result SmartGroupsListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsClient.GetAll")
 		defer func() {

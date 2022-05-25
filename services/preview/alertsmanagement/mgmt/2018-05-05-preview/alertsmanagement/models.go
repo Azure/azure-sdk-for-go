@@ -19,6 +19,12 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2018-05-05-preview/alertsmanagement"
 
+// ActionStatus action status
+type ActionStatus struct {
+	// IsSuppressed - Value indicating whether alert is suppressed.
+	IsSuppressed *bool `json:"isSuppressed,omitempty"`
+}
+
 // Alert an alert created in alert management service.
 type Alert struct {
 	autorest.Response `json:"-"`
@@ -167,6 +173,8 @@ type AlertProperties struct {
 	TargetResourceType *string `json:"targetResourceType,omitempty"`
 	// MonitorService - READ-ONLY; Monitor service which is the source of the alert object. Possible values include: 'Platform', 'ApplicationInsights', 'LogAnalytics', 'InfrastructureInsights', 'ActivityLogAdministrative', 'ActivityLogSecurity', 'ActivityLogRecommendation', 'ActivityLogPolicy', 'ActivityLogAutoscale', 'ServiceHealth', 'SmartDetector', 'Zabbix', 'SCOM', 'Nagios'
 	MonitorService MonitorService `json:"monitorService,omitempty"`
+	// AlertRule - READ-ONLY; Rule(monitor) which fired alert instance. Depending on the monitor service,  this would be ARM id or name of the rule.
+	AlertRule *string `json:"alertRule,omitempty"`
 	// SourceCreatedID - READ-ONLY; Unique Id created by monitor service
 	SourceCreatedID *string `json:"sourceCreatedId,omitempty"`
 	// SmartGroupID - READ-ONLY; Unique Id of the smart group
@@ -180,7 +188,10 @@ type AlertProperties struct {
 	// LastModifiedUserName - READ-ONLY; User who last modified the alert.
 	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty"`
 	// Payload - READ-ONLY; More details which are contextual to the monitor service.
-	Payload interface{} `json:"payload,omitempty"`
+	Payload      interface{}   `json:"payload,omitempty"`
+	ActionStatus *ActionStatus `json:"actionStatus,omitempty"`
+	// Description - Alert description.
+	Description *string `json:"description,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AlertProperties.
@@ -197,6 +208,12 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.TargetResourceType != nil {
 		objectMap["targetResourceType"] = ap.TargetResourceType
+	}
+	if ap.ActionStatus != nil {
+		objectMap["actionStatus"] = ap.ActionStatus
+	}
+	if ap.Description != nil {
+		objectMap["description"] = ap.Description
 	}
 	return json.Marshal(objectMap)
 }

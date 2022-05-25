@@ -22,7 +22,7 @@ var _ OperationsClientAPI = (*alertsmanagement.OperationsClient)(nil)
 
 // AlertsClientAPI contains the set of methods on the AlertsClient type.
 type AlertsClientAPI interface {
-	ChangeState(ctx context.Context, alertID string, newState alertsmanagement.AlertState) (result alertsmanagement.Alert, err error)
+	ChangeState(ctx context.Context, alertID string, newState alertsmanagement.AlertState, comment string) (result alertsmanagement.Alert, err error)
 	GetAll(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService alertsmanagement.MonitorService, monitorCondition alertsmanagement.MonitorCondition, severity alertsmanagement.Severity, alertState alertsmanagement.AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy alertsmanagement.AlertsSortByFields, sortOrder string, selectParameter string, timeRange alertsmanagement.TimeRange, customTimeRange string) (result alertsmanagement.AlertsListPage, err error)
 	GetAllComplete(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService alertsmanagement.MonitorService, monitorCondition alertsmanagement.MonitorCondition, severity alertsmanagement.Severity, alertState alertsmanagement.AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy alertsmanagement.AlertsSortByFields, sortOrder string, selectParameter string, timeRange alertsmanagement.TimeRange, customTimeRange string) (result alertsmanagement.AlertsListIterator, err error)
 	GetByID(ctx context.Context, alertID string) (result alertsmanagement.Alert, err error)
@@ -42,6 +42,7 @@ type SmartDetectorAlertRulesClientAPI interface {
 	ListComplete(ctx context.Context) (result alertsmanagement.AlertRulesListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result alertsmanagement.AlertRulesListPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result alertsmanagement.AlertRulesListIterator, err error)
+	Patch(ctx context.Context, resourceGroupName string, alertRuleName string, parameters alertsmanagement.AlertRulePatchObject) (result alertsmanagement.AlertRule, err error)
 }
 
 var _ SmartDetectorAlertRulesClientAPI = (*alertsmanagement.SmartDetectorAlertRulesClient)(nil)

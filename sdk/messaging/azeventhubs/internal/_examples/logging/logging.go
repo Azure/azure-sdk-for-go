@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package main
 
 // This sample shows how to use OpenCensus to log internal logging from the Event Hubs

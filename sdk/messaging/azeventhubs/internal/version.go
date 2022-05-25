@@ -2,5 +2,5 @@ package internal
 
 const (
 	// Version is the semantic version number
-	Version = "3.3.18"
+	Version = "v0.0.1"
 )

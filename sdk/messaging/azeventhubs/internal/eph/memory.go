@@ -168,18 +168,9 @@ func (s *sharedStore) isLeased(partitionID string) bool {
 	return false
 }
 
-// IsNotOwnedOrExpired indicates that the lease has expired and does not owned by a processor
-func (l *memoryLease) isNotOwnedOrExpired(ctx context.Context) bool {
-	return l.IsExpired(ctx) || l.Owner == ""
-}
-
 // IsExpired indicates that the lease has expired and is no longer valid
 func (l *memoryLease) IsExpired(_ context.Context) bool {
 	return !l.leaser.store.isLeased(l.PartitionID)
-}
-
-func (l *memoryLease) expireAfter(d time.Duration) {
-	l.expirationTime = time.Now().Add(d)
 }
 
 func newMemoryLeaserCheckpointer(leaseDuration time.Duration, store *sharedStore) *memoryLeaserCheckpointer {

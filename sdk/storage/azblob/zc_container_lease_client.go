@@ -45,7 +45,7 @@ func (clc *ContainerLeaseClient) AcquireLease(ctx context.Context, options *Cont
 	if err == nil && resp.LeaseID != nil {
 		clc.leaseID = resp.LeaseID
 	}
-	return toContainerAcquireLeaseResponse(resp), handleError(err)
+	return toContainerAcquireLeaseResponse(resp), err
 }
 
 // BreakLease breaks the container's previously-acquired lease (if it exists).
@@ -53,7 +53,7 @@ func (clc *ContainerLeaseClient) AcquireLease(ctx context.Context, options *Cont
 func (clc *ContainerLeaseClient) BreakLease(ctx context.Context, options *ContainerBreakLeaseOptions) (ContainerBreakLeaseResponse, error) {
 	containerBreakLeaseOptions, modifiedAccessConditions := options.format()
 	resp, err := clc.client.BreakLease(ctx, containerBreakLeaseOptions, modifiedAccessConditions)
-	return toContainerBreakLeaseResponse(resp), handleError(err)
+	return toContainerBreakLeaseResponse(resp), err
 }
 
 // ChangeLease changes the container's lease ID.
@@ -72,7 +72,7 @@ func (clc *ContainerLeaseClient) ChangeLease(ctx context.Context, options *Conta
 	if err == nil && resp.LeaseID != nil {
 		clc.leaseID = resp.LeaseID
 	}
-	return toContainerChangeLeaseResponse(resp), handleError(err)
+	return toContainerChangeLeaseResponse(resp), err
 }
 
 // ReleaseLease releases the container's previously-acquired lease.
@@ -84,7 +84,7 @@ func (clc *ContainerLeaseClient) ReleaseLease(ctx context.Context, options *Cont
 	containerReleaseLeaseOptions, modifiedAccessConditions := options.format()
 	resp, err := clc.client.ReleaseLease(ctx, *clc.leaseID, containerReleaseLeaseOptions, modifiedAccessConditions)
 
-	return toContainerReleaseLeaseResponse(resp), handleError(err)
+	return toContainerReleaseLeaseResponse(resp), err
 }
 
 // RenewLease renews the container's previously-acquired lease.
@@ -98,5 +98,5 @@ func (clc *ContainerLeaseClient) RenewLease(ctx context.Context, options *Contai
 	if err == nil && resp.LeaseID != nil {
 		clc.leaseID = resp.LeaseID
 	}
-	return toContainerRenewLeaseResponse(resp), handleError(err)
+	return toContainerRenewLeaseResponse(resp), err
 }

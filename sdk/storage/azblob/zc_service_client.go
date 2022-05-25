@@ -146,7 +146,7 @@ func appendToURLPath(u string, name string) string {
 func (s *ServiceClient) GetAccountInfo(ctx context.Context, o *ServiceGetAccountInfoOptions) (ServiceGetAccountInfoResponse, error) {
 	getAccountInfoOptions := o.format()
 	resp, err := s.client.GetAccountInfo(ctx, getAccountInfoOptions)
-	return toServiceGetAccountInfoResponse(resp), handleError(err)
+	return toServiceGetAccountInfoResponse(resp), err
 }
 
 // ListContainers operation returns a pager of the containers under the specified account.
@@ -163,11 +163,11 @@ func (s *ServiceClient) ListContainers(o *ServiceListContainersOptions) *Service
 
 	pager.advancer = func(ctx context.Context, response serviceClientListContainersSegmentResponse) (*policy.Request, error) {
 		if response.ListContainersSegmentResponse.NextMarker == nil {
-			return nil, handleError(errors.New("unexpected missing NextMarker"))
+			return nil, errors.New("unexpected missing NextMarker")
 		}
 		req, err := s.client.listContainersSegmentCreateRequest(ctx, listOptions)
 		if err != nil {
-			return nil, handleError(err)
+			return nil, err
 		}
 		queryValues, _ := url.ParseQuery(req.Raw().URL.RawQuery)
 		queryValues.Set("marker", *response.ListContainersSegmentResponse.NextMarker)
@@ -185,7 +185,7 @@ func (s *ServiceClient) GetProperties(ctx context.Context, o *ServiceGetProperti
 	getPropertiesOptions := o.format()
 	resp, err := s.client.GetProperties(ctx, getPropertiesOptions)
 
-	return toServiceGetPropertiesResponse(resp), handleError(err)
+	return toServiceGetPropertiesResponse(resp), err
 }
 
 // SetProperties Sets the properties of a storage account's Blob service, including Azure Storage Analytics.
@@ -194,7 +194,7 @@ func (s *ServiceClient) SetProperties(ctx context.Context, o *ServiceSetProperti
 	properties, setPropertiesOptions := o.format()
 	resp, err := s.client.SetProperties(ctx, properties, setPropertiesOptions)
 
-	return toServiceSetPropertiesResponse(resp), handleError(err)
+	return toServiceSetPropertiesResponse(resp), err
 }
 
 // GetStatistics Retrieves statistics related to replication for the Blob service.
@@ -215,7 +215,7 @@ func (s *ServiceClient) GetStatistics(ctx context.Context, o *ServiceGetStatisti
 	getStatisticsOptions := o.format()
 	resp, err := s.client.GetStatistics(ctx, getStatisticsOptions)
 
-	return toServiceGetStatisticsResponse(resp), handleError(err)
+	return toServiceGetStatisticsResponse(resp), err
 }
 
 // CanGetAccountSASToken checks if shared key in ServiceClient is nil

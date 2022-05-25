@@ -109,7 +109,7 @@ func (b *BlobClient) Download(ctx context.Context, options *BlobDownloadOptions)
 	o, lease, cpk, accessConditions := options.format()
 	dr, err := b.client.Download(ctx, o, lease, cpk, accessConditions)
 	if err != nil {
-		return BlobDownloadResponse{}, handleError(err)
+		return BlobDownloadResponse{}, err
 	}
 
 	offset := int64(0)
@@ -143,7 +143,7 @@ func (b *BlobClient) Delete(ctx context.Context, o *BlobDeleteOptions) (BlobDele
 	basics, leaseInfo, accessConditions := o.format()
 	resp, err := b.client.Delete(ctx, basics, leaseInfo, accessConditions)
 
-	return toBlobDeleteResponse(resp), handleError(err)
+	return toBlobDeleteResponse(resp), err
 }
 
 // Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.
@@ -152,7 +152,7 @@ func (b *BlobClient) Undelete(ctx context.Context, o *BlobUndeleteOptions) (Blob
 	undeleteOptions := o.format()
 	resp, err := b.client.Undelete(ctx, undeleteOptions)
 
-	return toBlobUndeleteResponse(resp), handleError(err)
+	return toBlobUndeleteResponse(resp), err
 }
 
 // SetTier operation sets the tier on a blob. The operation is allowed on a page
@@ -165,7 +165,7 @@ func (b *BlobClient) SetTier(ctx context.Context, tier AccessTier, options *Blob
 	basics, lease, accessConditions := options.format()
 	resp, err := b.client.SetTier(ctx, tier, basics, lease, accessConditions)
 
-	return toBlobSetTierResponse(resp), handleError(err)
+	return toBlobSetTierResponse(resp), err
 }
 
 // GetProperties returns the blob's properties.
@@ -174,7 +174,7 @@ func (b *BlobClient) GetProperties(ctx context.Context, options *BlobGetProperti
 	basics, lease, cpk, access := options.format()
 	resp, err := b.client.GetProperties(ctx, basics, lease, cpk, access)
 
-	return toGetBlobPropertiesResponse(resp), handleError(err)
+	return toGetBlobPropertiesResponse(resp), err
 }
 
 // SetHTTPHeaders changes a blob's HTTP headers.
@@ -183,7 +183,7 @@ func (b *BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHTT
 	basics, lease, access := options.format()
 	resp, err := b.client.SetHTTPHeaders(ctx, basics, &blobHttpHeaders, lease, access)
 
-	return toBlobSetHTTPHeadersResponse(resp), handleError(err)
+	return toBlobSetHTTPHeadersResponse(resp), err
 }
 
 // SetMetadata changes a blob's metadata.
@@ -195,7 +195,7 @@ func (b *BlobClient) SetMetadata(ctx context.Context, metadata map[string]string
 	lease, cpk, cpkScope, access := options.format()
 	resp, err := b.client.SetMetadata(ctx, &basics, lease, cpk, cpkScope, access)
 
-	return toBlobSetMetadataResponse(resp), handleError(err)
+	return toBlobSetMetadataResponse(resp), err
 }
 
 // CreateSnapshot creates a read-only snapshot of a blob.
@@ -207,7 +207,7 @@ func (b *BlobClient) CreateSnapshot(ctx context.Context, options *BlobCreateSnap
 	basics, cpk, cpkScope, access, lease := options.format()
 	resp, err := b.client.CreateSnapshot(ctx, basics, cpk, cpkScope, access, lease)
 
-	return toBlobCreateSnapshotResponse(resp), handleError(err)
+	return toBlobCreateSnapshotResponse(resp), err
 }
 
 // StartCopyFromURL copies the data at the source URL to a blob.
@@ -216,7 +216,7 @@ func (b *BlobClient) StartCopyFromURL(ctx context.Context, copySource string, op
 	basics, srcAccess, destAccess, lease := options.format()
 	resp, err := b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
 
-	return toBlobStartCopyFromURLResponse(resp), handleError(err)
+	return toBlobStartCopyFromURLResponse(resp), err
 }
 
 // AbortCopyFromURL stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
@@ -225,7 +225,7 @@ func (b *BlobClient) AbortCopyFromURL(ctx context.Context, copyID string, option
 	basics, lease := options.format()
 	resp, err := b.client.AbortCopyFromURL(ctx, copyID, basics, lease)
 
-	return toBlobAbortCopyFromURLResponse(resp), handleError(err)
+	return toBlobAbortCopyFromURLResponse(resp), err
 }
 
 // SetTags operation enables users to set tags on a blob or specific blob version, but not snapshot.
@@ -236,7 +236,7 @@ func (b *BlobClient) SetTags(ctx context.Context, options *BlobSetTagsOptions) (
 	blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions := options.format()
 	resp, err := b.client.SetTags(ctx, blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions)
 
-	return toBlobSetTagsResponse(resp), handleError(err)
+	return toBlobSetTagsResponse(resp), err
 }
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.
@@ -245,7 +245,7 @@ func (b *BlobClient) GetTags(ctx context.Context, options *BlobGetTagsOptions) (
 	blobGetTagsOptions, modifiedAccessConditions, leaseAccessConditions := options.format()
 	resp, err := b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions, leaseAccessConditions)
 
-	return toBlobGetTagsResponse(resp), handleError(err)
+	return toBlobGetTagsResponse(resp), err
 
 }
 

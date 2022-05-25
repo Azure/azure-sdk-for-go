@@ -114,7 +114,7 @@ func (ab *AppendBlobClient) Create(ctx context.Context, options *AppendBlobCreat
 	resp, err := ab.client.Create(ctx, 0, appendBlobAppendBlockOptions, blobHttpHeaders,
 		leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 
-	return toAppendBlobCreateResponse(resp), handleError(err)
+	return toAppendBlobCreateResponse(resp), err
 }
 
 // AppendBlock writes a stream to a new block of data to the end of the existing append blob.
@@ -131,7 +131,7 @@ func (ab *AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeekClo
 
 	resp, err := ab.client.AppendBlock(ctx, count, body, appendOptions, leaseAccessConditions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions)
 
-	return toAppendBlobAppendBlockResponse(resp), handleError(err)
+	return toAppendBlobAppendBlockResponse(resp), err
 }
 
 // AppendBlockFromURL copies a new block of data from source URL to the end of the existing append blob.
@@ -142,7 +142,7 @@ func (ab *AppendBlobClient) AppendBlockFromURL(ctx context.Context, source strin
 	// content length should be 0 on * from URL. always. It's a 400 if it isn't.
 	resp, err := ab.client.AppendBlockFromURL(ctx, source, 0, appendBlockFromURLOptions, cpkInfo, cpkScopeInfo,
 		leaseAccessConditions, appendPositionAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
-	return toAppendBlobAppendBlockFromURLResponse(resp), handleError(err)
+	return toAppendBlobAppendBlockFromURLResponse(resp), err
 }
 
 // SealAppendBlob - The purpose of Append Blob Seal is to allow users and applications to seal append blobs, marking them as read only.
@@ -150,5 +150,5 @@ func (ab *AppendBlobClient) AppendBlockFromURL(ctx context.Context, source strin
 func (ab *AppendBlobClient) SealAppendBlob(ctx context.Context, options *AppendBlobSealOptions) (AppendBlobSealResponse, error) {
 	leaseAccessConditions, modifiedAccessConditions, positionAccessConditions := options.format()
 	resp, err := ab.client.Seal(ctx, nil, leaseAccessConditions, modifiedAccessConditions, positionAccessConditions)
-	return toAppendBlobSealResponse(resp), handleError(err)
+	return toAppendBlobSealResponse(resp), err
 }

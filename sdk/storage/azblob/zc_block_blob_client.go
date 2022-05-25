@@ -127,7 +127,7 @@ func (bb *BlockBlobClient) Upload(ctx context.Context, body io.ReadSeekCloser, o
 
 	resp, err := bb.client.Upload(ctx, count, body, basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
 
-	return toBlockBlobUploadResponse(resp), handleError(err)
+	return toBlockBlobUploadResponse(resp), err
 }
 
 // StageBlock uploads the specified block to the block blob's "staging area" to be later committed by a call to CommitBlockList.
@@ -143,7 +143,7 @@ func (bb *BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string,
 	stageBlockOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
 	resp, err := bb.client.StageBlock(ctx, base64BlockID, count, body, stageBlockOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo)
 
-	return toBlockBlobStageBlockResponse(resp), handleError(err)
+	return toBlockBlobStageBlockResponse(resp), err
 }
 
 // StageBlockFromURL copies the specified block from a source URL to the block blob's "staging area" to be later committed by a call to CommitBlockList.
@@ -157,7 +157,7 @@ func (bb *BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID 
 	resp, err := bb.client.StageBlockFromURL(ctx, base64BlockID, contentLength, sourceURL, stageBlockFromURLOptions,
 		cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions)
 
-	return toBlockBlobStageBlockFromURLResponse(resp), handleError(err)
+	return toBlockBlobStageBlockFromURLResponse(resp), err
 }
 
 // CommitBlockList writes a blob by specifying the list of block IDs that make up the blob.
@@ -178,7 +178,7 @@ func (bb *BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs [
 
 	resp, err := bb.client.CommitBlockList(ctx, blockLookupList, commitOptions, headers, leaseAccess, cpkInfo, cpkScope, modifiedAccess)
 
-	return toBlockBlobCommitBlockListResponse(resp), handleError(err)
+	return toBlockBlobCommitBlockListResponse(resp), err
 }
 
 // GetBlockList returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
@@ -188,7 +188,7 @@ func (bb *BlockBlobClient) GetBlockList(ctx context.Context, listType BlockListT
 
 	resp, err := bb.client.GetBlockList(ctx, listType, o, lac, mac)
 
-	return toBlockBlobGetBlockListResponse(resp), handleError(err)
+	return toBlockBlobGetBlockListResponse(resp), err
 }
 
 // CopyFromURL synchronously copies the data at the source URL to a block blob, with sizes up to 256 MB.
@@ -197,5 +197,5 @@ func (bb *BlockBlobClient) CopyFromURL(ctx context.Context, source string, optio
 	copyOptions, smac, mac, lac := options.format()
 	resp, err := bb.BlobClient.client.CopyFromURL(ctx, source, copyOptions, smac, mac, lac)
 
-	return toBlockBlobCopyFromURLResponse(resp), handleError(err)
+	return toBlockBlobCopyFromURLResponse(resp), err
 }

@@ -117,7 +117,7 @@ func (pb *PageBlobClient) Create(ctx context.Context, size int64, o *PageBlobCre
 
 	resp, err := pb.client.Create(ctx, 0, size, createOptions, HTTPHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 
-	return toPageBlobCreateResponse(resp), handleError(err)
+	return toPageBlobCreateResponse(resp), err
 }
 
 // UploadPages writes 1 or more pages to the page blob. The start offset and the stream size must be a multiple of 512 bytes.
@@ -136,7 +136,7 @@ func (pb *PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeekClose
 	resp, err := pb.client.UploadPages(ctx, count, body, uploadPagesOptions, leaseAccessConditions,
 		cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions)
 
-	return toPageBlobUploadPagesResponse(resp), handleError(err)
+	return toPageBlobUploadPagesResponse(resp), err
 }
 
 // UploadPagesFromURL copies 1 or more pages from a source URL to the page blob.
@@ -153,7 +153,7 @@ func (pb *PageBlobClient) UploadPagesFromURL(ctx context.Context, source string,
 		rangeToString(destOffset, count), uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions,
 		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
 
-	return toPageBlobUploadPagesFromURLResponse(resp), handleError(err)
+	return toPageBlobUploadPagesFromURLResponse(resp), err
 }
 
 // ClearPages frees the specified pages from the page blob.
@@ -168,7 +168,7 @@ func (pb *PageBlobClient) ClearPages(ctx context.Context, pageRange HttpRange, o
 	resp, err := pb.client.ClearPages(ctx, 0, clearOptions, leaseAccessConditions, cpkInfo,
 		cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions)
 
-	return toPageBlobClearPagesResponse(resp), handleError(err)
+	return toPageBlobClearPagesResponse(resp), err
 }
 
 // GetPageRanges returns the list of valid page ranges for a page blob or snapshot of a page blob.
@@ -183,11 +183,11 @@ func (pb *PageBlobClient) GetPageRanges(options *PageBlobGetPageRangesOptions) *
 		getPageRangesOptions.Marker = response.NextMarker
 		req, err := pb.client.getPageRangesCreateRequest(ctx, getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
 		if err != nil {
-			return nil, handleError(err)
+			return nil, err
 		}
 		queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
 		if err != nil {
-			return nil, handleError(err)
+			return nil, err
 		}
 		req.Raw().URL.RawQuery = queryValues.Encode()
 		return req, nil
@@ -208,11 +208,11 @@ func (pb *PageBlobClient) GetPageRangesDiff(options *PageBlobGetPageRangesDiffOp
 		getPageRangesDiffOptions.Marker = response.NextMarker
 		req, err := pb.client.getPageRangesDiffCreateRequest(ctx, getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
 		if err != nil {
-			return nil, handleError(err)
+			return nil, err
 		}
 		queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
 		if err != nil {
-			return nil, handleError(err)
+			return nil, err
 		}
 		req.Raw().URL.RawQuery = queryValues.Encode()
 		return req, nil
@@ -228,7 +228,7 @@ func (pb *PageBlobClient) Resize(ctx context.Context, size int64, options *PageB
 
 	resp, err := pb.client.Resize(ctx, size, resizeOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 
-	return toPageBlobResizeResponse(resp), handleError(err)
+	return toPageBlobResizeResponse(resp), err
 }
 
 // UpdateSequenceNumber sets the page blob's sequence number.
@@ -236,7 +236,7 @@ func (pb *PageBlobClient) UpdateSequenceNumber(ctx context.Context, options *Pag
 	actionType, updateOptions, lac, mac := options.format()
 	resp, err := pb.client.UpdateSequenceNumber(ctx, *actionType, updateOptions, lac, mac)
 
-	return toPageBlobUpdateSequenceNumberResponse(resp), handleError(err)
+	return toPageBlobUpdateSequenceNumberResponse(resp), err
 }
 
 // StartCopyIncremental begins an operation to start an incremental copy from one page blob's snapshot to this page blob.
@@ -257,5 +257,5 @@ func (pb *PageBlobClient) StartCopyIncremental(ctx context.Context, copySource s
 	pageBlobCopyIncrementalOptions, modifiedAccessConditions := options.format()
 	resp, err := pb.client.CopyIncremental(ctx, copySourceURL.String(), pageBlobCopyIncrementalOptions, modifiedAccessConditions)
 
-	return toPageBlobCopyIncrementalResponse(resp), handleError(err)
+	return toPageBlobCopyIncrementalResponse(resp), err
 }

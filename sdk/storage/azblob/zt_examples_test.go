@@ -11,7 +11,6 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/binary"
-	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -1188,12 +1187,7 @@ func ExampleStorageError() {
 	_, err = container.Create(context.TODO(), nil)
 
 	if err != nil {
-		var storageError *azblob.StorageError
-		if errors.As(err, &storageError) {
-			fmt.Println(storageError.ErrorCode)
-		} else {
-			log.Fatal("Failed to parse err as StorageError")
-		}
+		fmt.Println(err.Error())
 	}
 }
 
@@ -1310,12 +1304,7 @@ func ExampleBlobAccessConditions() {
 	// This function displays the results of an operation
 	showResult := func(response *azblob.BlobDownloadResponse, err error) {
 		if err != nil {
-			var stgErr *azblob.StorageError
-			if errors.As(err, &stgErr) {
-				log.Fatalf("Failure: %s\n", stgErr.Error())
-			} else {
-				log.Fatal(err) // Network failure
-			}
+			log.Fatalf("Failure: %s\n", err.Error())
 		} else {
 			err := response.Body(nil).Close()
 			if err != nil {
@@ -1334,12 +1323,7 @@ func ExampleBlobAccessConditions() {
 
 	showResultUpload := func(upload azblob.BlockBlobUploadResponse, err error) {
 		if err != nil {
-			var stgErr *azblob.StorageError
-			if errors.As(err, &stgErr) {
-				log.Fatalf("Failure: " + stgErr.Error() + "\n")
-			} else {
-				log.Fatal(err) // Network failure
-			}
+			log.Fatalf("Failure: %s\n", err.Error())
 		}
 		fmt.Print("Success: " + upload.RawResponse.Status + "\n")
 	}

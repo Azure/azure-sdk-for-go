@@ -43,7 +43,7 @@ func (blc *BlobLeaseClient) AcquireLease(ctx context.Context, options *BlobAcqui
 	blobAcquireLeaseOptions.ProposedLeaseID = blc.leaseID
 
 	resp, err := blc.client.AcquireLease(ctx, &blobAcquireLeaseOptions, modifiedAccessConditions)
-	return toBlobAcquireLeaseResponse(resp), handleError(err)
+	return toBlobAcquireLeaseResponse(resp), err
 }
 
 // BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
@@ -52,7 +52,7 @@ func (blc *BlobLeaseClient) AcquireLease(ctx context.Context, options *BlobAcqui
 func (blc *BlobLeaseClient) BreakLease(ctx context.Context, options *BlobBreakLeaseOptions) (BlobBreakLeaseResponse, error) {
 	blobBreakLeaseOptions, modifiedAccessConditions := options.format()
 	resp, err := blc.client.BreakLease(ctx, blobBreakLeaseOptions, modifiedAccessConditions)
-	return toBlobBreakLeaseResponse(resp), handleError(err)
+	return toBlobBreakLeaseResponse(resp), err
 }
 
 // ChangeLease changes the blob's lease ID.
@@ -72,7 +72,7 @@ func (blc *BlobLeaseClient) ChangeLease(ctx context.Context, options *BlobChange
 		blc.leaseID = proposedLeaseID
 	}
 
-	return toBlobChangeLeaseResponse(resp), handleError(err)
+	return toBlobChangeLeaseResponse(resp), err
 }
 
 // RenewLease renews the blob's previously-acquired lease.
@@ -83,7 +83,7 @@ func (blc *BlobLeaseClient) RenewLease(ctx context.Context, options *BlobRenewLe
 	}
 	renewLeaseBlobOptions, modifiedAccessConditions := options.format()
 	resp, err := blc.client.RenewLease(ctx, *blc.leaseID, renewLeaseBlobOptions, modifiedAccessConditions)
-	return toBlobRenewLeaseResponse(resp), handleError(err)
+	return toBlobRenewLeaseResponse(resp), err
 }
 
 // ReleaseLease releases the blob's previously-acquired lease.
@@ -94,5 +94,5 @@ func (blc *BlobLeaseClient) ReleaseLease(ctx context.Context, options *ReleaseLe
 	}
 	renewLeaseBlobOptions, modifiedAccessConditions := options.format()
 	resp, err := blc.client.ReleaseLease(ctx, *blc.leaseID, renewLeaseBlobOptions, modifiedAccessConditions)
-	return toBlobReleaseLeaseResponse(resp), handleError(err)
+	return toBlobReleaseLeaseResponse(resp), err
 }

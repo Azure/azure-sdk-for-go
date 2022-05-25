@@ -141,7 +141,7 @@ func (c *ContainerClient) Create(ctx context.Context, options *ContainerCreateOp
 	basics, cpkInfo := options.format()
 	resp, err := c.client.Create(ctx, basics, cpkInfo)
 
-	return toContainerCreateResponse(resp), handleError(err)
+	return toContainerCreateResponse(resp), err
 }
 
 // Delete marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
@@ -150,7 +150,7 @@ func (c *ContainerClient) Delete(ctx context.Context, o *ContainerDeleteOptions)
 	basics, leaseInfo, accessConditions := o.format()
 	resp, err := c.client.Delete(ctx, basics, leaseInfo, accessConditions)
 
-	return toContainerDeleteResponse(resp), handleError(err)
+	return toContainerDeleteResponse(resp), err
 }
 
 // GetProperties returns the container's properties.
@@ -162,7 +162,7 @@ func (c *ContainerClient) GetProperties(ctx context.Context, o *ContainerGetProp
 	options, leaseAccess := o.format()
 	resp, err := c.client.GetProperties(ctx, options, leaseAccess)
 
-	return toContainerGetPropertiesResponse(resp), handleError(err)
+	return toContainerGetPropertiesResponse(resp), err
 }
 
 // SetMetadata sets the container's metadata.
@@ -171,7 +171,7 @@ func (c *ContainerClient) SetMetadata(ctx context.Context, o *ContainerSetMetada
 	metadataOptions, lac, mac := o.format()
 	resp, err := c.client.SetMetadata(ctx, metadataOptions, lac, mac)
 
-	return toContainerSetMetadataResponse(resp), handleError(err)
+	return toContainerSetMetadataResponse(resp), err
 }
 
 // GetAccessPolicy returns the container's access policy. The access policy indicates whether container's blobs may be accessed publicly.
@@ -180,7 +180,7 @@ func (c *ContainerClient) GetAccessPolicy(ctx context.Context, o *ContainerGetAc
 	options, ac := o.format()
 	resp, err := c.client.GetAccessPolicy(ctx, options, ac)
 
-	return toContainerGetAccessPolicyResponse(resp), handleError(err)
+	return toContainerGetAccessPolicyResponse(resp), err
 }
 
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
@@ -189,7 +189,7 @@ func (c *ContainerClient) SetAccessPolicy(ctx context.Context, o *ContainerSetAc
 	accessPolicy, mac, lac := o.format()
 	resp, err := c.client.SetAccessPolicy(ctx, accessPolicy, mac, lac)
 
-	return toContainerSetAccessPolicyResponse(resp), handleError(err)
+	return toContainerSetAccessPolicyResponse(resp), err
 }
 
 // ListBlobsFlat returns a pager for blobs starting from the specified Marker. Use an empty

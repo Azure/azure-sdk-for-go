@@ -2098,10 +2098,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshotsNoneWithSnapshots() {
 func validateBlobDeleted(_require *require.Assertions, bbClient BlobClient) {
 	_, err := bbClient.GetProperties(ctx, nil)
 	_require.NotNil(err)
-
-	var storageError *StorageError
-	_require.Equal(true, errors.As(err, &storageError))
-	_require.Equal(storageError.ErrorCode, StorageErrorCodeBlobNotFound)
+	_require.Contains(err.Error(), StorageErrorCodeBlobNotFound)
 }
 
 func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceTrue() {
@@ -2420,9 +2417,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceFalse() {
 	}
 	_, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_require.NotNil(err)
-	var storageError *StorageError
-	_require.Equal(errors.As(err, &storageError), true)
-	_require.Equal(storageError.response.StatusCode, 304) // No service code returned for a HEAD
+	validateHTTPErrorCode(_require, err, 304)
 }
 
 func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue() {
@@ -2539,11 +2534,8 @@ func (s *azblobTestSuite) TestBlobGetPropsOnMissingBlob() {
 	bbClient, _ := containerClient.NewBlobClient("MISSING")
 
 	_, err = bbClient.GetProperties(ctx, nil)
-	_require.NotNil(err)
-	var storageError *StorageError
-	_require.Equal(errors.As(err, &storageError), true)
-	_require.Equal(storageError.response.StatusCode, 404)
-	_require.Equal(storageError.response.Header.Get("x-ms-error-code"), string(StorageErrorCodeBlobNotFound))
+	validateHTTPErrorCode(_require, err, 404)
+	validateStorageError(_require, err, StorageErrorCodeBlobNotFound)
 }
 
 func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
@@ -2570,9 +2562,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 	}
 	_, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_require.NotNil(err)
-	var storageError *StorageError
-	_require.Equal(errors.As(err, &storageError), true)
-	_require.Equal(storageError.response.StatusCode, 412)
+	validateHTTPErrorCode(_require, err, 412)
 }
 
 func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
@@ -2633,9 +2623,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse() {
 	}
 	_, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_require.NotNil(err)
-	var storageError *StorageError
-	_require.Equal(errors.As(err, &storageError), true)
-	_require.Equal(storageError.response.StatusCode, 304)
+	validateHTTPErrorCode(_require, err, 304)
 }
 
 func (s *azblobTestSuite) TestBlobSetPropertiesBasic() {

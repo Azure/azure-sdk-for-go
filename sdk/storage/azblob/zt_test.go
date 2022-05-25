@@ -21,6 +21,7 @@ import (
 	"net/url"
 	"os"
 	"runtime"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -44,8 +45,8 @@ type azblobUnrecordedTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-	// suite.Run(t, &azblobUnrecordedTestSuite{})
+	suite.Run(t, &azblobTestSuite{mode: testframework.Live})
+	suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 type testContext struct {
@@ -522,14 +523,14 @@ func blockIDIntToBase64(blockID int) string {
 	return base64.StdEncoding.EncodeToString(binaryBlockID)
 }
 
-// TODO: Figure out in which scenario, the parsing will fail.
+func validateHTTPErrorCode(_require *require.Assertions, err error, code int) {
+	_require.NotNil(err)
+	_require.Equal(strings.Contains(err.Error(), strconv.Itoa(code)), true)
+}
+
 func validateStorageError(_require *require.Assertions, err error, code StorageErrorCode) {
 	_require.NotNil(err)
-	var storageError *StorageError
-	// TOOD: this should really be require.Equal so that if it fails we don't try the next line which will panic
-	_require.Equal(true, errors.As(err, &storageError))
-
-	_require.Equal(storageError.ErrorCode, code)
+	_require.Contains(err.Error(), code)
 }
 
 func blobListToMap(list []string) map[string]bool {

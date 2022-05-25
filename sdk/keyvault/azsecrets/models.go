@@ -162,19 +162,16 @@ type SecretItem struct {
 }
 
 // create a SecretItem from the generated.SecretItem model
-func secretItemFromGenerated(i *generated.SecretItem) SecretItem {
+func secretItemFromGenerated(i *generated.SecretItem) *SecretItem {
 	if i == nil {
-		return SecretItem{}
+		return nil
 	}
 
 	_, name, _ := shared.ParseID(i.ID)
-	return SecretItem{
-		Properties:  secretPropertiesFromGenerated(i.Attributes),
-		ContentType: i.ContentType,
-		ID:          i.ID,
-		Name:        name,
-		Tags:        convertPtrMap(i.Tags),
-		IsManaged:   i.Managed,
+	return &SecretItem{
+		Properties: secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, nil, i.Managed, i.Tags),
+		ID:         i.ID,
+		Name:       name,
 	}
 }
 
@@ -199,47 +196,18 @@ type DeletedSecretItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-func deletedSecretItemFromGenerated(i *generated.DeletedSecretItem) DeletedSecretItem {
+func deletedSecretItemFromGenerated(i *generated.DeletedSecretItem) *DeletedSecretItem {
 	if i == nil {
-		return DeletedSecretItem{}
+		return nil
 	}
 
 	_, name, _ := shared.ParseID(i.ID)
-	return DeletedSecretItem{
-		Properties:         secretPropertiesFromGenerated(i.Attributes),
-		ContentType:        i.ContentType,
+	return &DeletedSecretItem{
+		Properties:         secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, nil, i.Managed, i.Tags),
 		Name:               name,
 		ID:                 i.ID,
 		RecoveryID:         i.RecoveryID,
-		Tags:               convertPtrMap(i.Tags),
 		DeletedOn:          i.DeletedDate,
-		IsManaged:          i.Managed,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
 	}
-}
-
-func convertPtrMap(m map[string]*string) map[string]string {
-	if m == nil {
-		return nil
-	}
-
-	ret := map[string]string{}
-	for key, val := range m {
-		ret[key] = *val
-	}
-
-	return ret
-}
-
-func convertToGeneratedMap(m map[string]string) map[string]*string {
-	if m == nil {
-		return nil
-	}
-
-	ret := map[string]*string{}
-	for key, val := range m {
-		ret[key] = &val
-	}
-
-	return ret
 }

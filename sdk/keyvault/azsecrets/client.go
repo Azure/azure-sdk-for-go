@@ -581,17 +581,13 @@ type ListDeletedSecretsResponse struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// DeletedSecrets is the page's content.
-	DeletedSecrets []DeletedSecretItem `json:"value,omitempty" azure:"ro"`
+	DeletedSecrets []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 func listDeletedSecretsPageFromGenerated(g generated.KeyVaultClientGetDeletedSecretsResponse) ListDeletedSecretsResponse {
-	var items []DeletedSecretItem
-
-	if len(g.DeletedSecretListResult.Value) > 0 {
-		items = make([]DeletedSecretItem, len(g.DeletedSecretListResult.Value))
-		for idx, v := range g.DeletedSecretListResult.Value {
-			items[idx] = deletedSecretItemFromGenerated(v)
-		}
+	var items []*DeletedSecretItem
+	for _, v := range g.DeletedSecretListResult.Value {
+		items = append(items, deletedSecretItemFromGenerated(v))
 	}
 
 	return ListDeletedSecretsResponse{
@@ -649,12 +645,12 @@ type ListPropertiesOfSecretVersionsResponse struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// Secrets is the page's content.
-	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create ListSecretsPage from generated pager
 func listSecretVersionsPageFromGenerated(i generated.KeyVaultClientGetSecretVersionsResponse) ListPropertiesOfSecretVersionsResponse {
-	var secrets []SecretItem
+	var secrets []*SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
@@ -708,12 +704,12 @@ type ListPropertiesOfSecretsResponse struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// Secrets is the page's content.
-	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create a ListSecretsPage from a generated code response
 func listSecretsPageFromGenerated(i generated.KeyVaultClientGetSecretsResponse) ListPropertiesOfSecretsResponse {
-	var secrets []SecretItem
+	var secrets []*SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}

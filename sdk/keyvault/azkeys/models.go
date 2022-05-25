@@ -196,11 +196,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 
 	ops := make([]*Operation, len(i.KeyOps))
 	for j, op := range i.KeyOps {
-		if op == nil {
-			ops[j] = nil
-		} else {
-			ops[j] = to.Ptr(Operation(*op))
-		}
+		ops[j] = (*Operation)(op)
 	}
 
 	return &JSONWebKey{
@@ -227,11 +223,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
 	ops := make([]*string, len(j.KeyOps))
 	for i, op := range j.KeyOps {
-		if op == nil {
-			ops[i] = nil
-		} else {
-			ops[i] = to.Ptr(string(*op))
-		}
+		ops[i] = (*string)(op)
 	}
 	return &generated.JSONWebKey{
 		Crv:    (*generated.JSONWebKeyCurveName)(j.Crv),

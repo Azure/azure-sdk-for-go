@@ -199,22 +199,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 		if op == nil {
 			ops[j] = nil
 		} else {
-			switch *op {
-			case string(OperationDecrypt):
-				ops[j] = to.Ptr(OperationDecrypt)
-			case string(OperationEncrypt):
-				ops[j] = to.Ptr(OperationEncrypt)
-			case string(OperationImport):
-				ops[j] = to.Ptr(OperationImport)
-			case string(OperationSign):
-				ops[j] = to.Ptr(OperationSign)
-			case string(OperationUnwrapKey):
-				ops[j] = to.Ptr(OperationUnwrapKey)
-			case string(OperationVerify):
-				ops[j] = to.Ptr(OperationVerify)
-			case string(OperationWrapKey):
-				ops[j] = to.Ptr(OperationWrapKey)
-			}
+			ops[j] = to.Ptr(Operation(*op))
 		}
 	}
 
@@ -242,7 +227,11 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
 	ops := make([]*string, len(j.KeyOps))
 	for i, op := range j.KeyOps {
-		ops[i] = to.Ptr(string(*op))
+		if op == nil {
+			ops[i] = nil
+		} else {
+			ops[i] = to.Ptr(string(*op))
+		}
 	}
 	return &generated.JSONWebKey{
 		Crv:    (*generated.JSONWebKeyCurveName)(j.Crv),

@@ -56,7 +56,7 @@ func (s Secret) toGeneratedProperties() generated.SecretUpdateParameters {
 	}
 	var tags map[string]*string
 	if s.Properties != nil && s.Properties.Tags != nil {
-		tags = convertToGeneratedMap(s.Properties.Tags)
+		tags = s.Properties.Tags
 	}
 	return generated.SecretUpdateParameters{
 		ContentType:      contentType,
@@ -99,7 +99,7 @@ type Properties struct {
 	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Last updated time in UTC.
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`

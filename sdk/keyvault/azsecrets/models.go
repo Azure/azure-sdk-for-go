@@ -130,22 +130,26 @@ func (s *Properties) toGenerated() *generated.SecretAttributes {
 }
 
 // create a SecretAttributes object from an generated.SecretAttributes object
-func secretPropertiesFromGenerated(i *generated.SecretAttributes) *Properties {
+func secretPropertiesFromGenerated(i *generated.SecretAttributes, ID, contentType, keyID *string, managed *bool, tags map[string]*string) *Properties {
 	if i == nil {
 		return nil
 	}
+	vaultURL, name, version := shared.ParseID(ID)
 	return &Properties{
-		ContentType:     nil,
+		ContentType:     contentType,
 		CreatedOn:       i.Created,
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
-		IsManaged:       nil,
-		KeyID:           nil,
+		IsManaged:       managed,
+		KeyID:           keyID,
+		Name:            name,
 		NotBefore:       i.NotBefore,
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   (*string)(i.RecoveryLevel),
-		Tags:            nil,
+		Tags:            tags,
 		UpdatedOn:       i.Updated,
+		VaultURL:        vaultURL,
+		Version:         version,
 	}
 }
 

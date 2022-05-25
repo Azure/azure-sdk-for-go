@@ -100,10 +100,10 @@ steps:
       filePath: $(Build.SourcesDirectory)/eng/scripts/Create-ApiReview.ps1
       arguments: >
         -ServiceDirectory ${{parameters.ServiceDirectory}}
-        -OutDirectory $(Build.ArtifactStagingDirectory)
-        -APIViewUri "$(azuresdk-apiview-uri)"
-        -APIKey "$(azuresdk-apiview-apikey)"
-        -APILabel "Auto Review - $(Build.SourceVersion)"
+        -OutPath $(Build.ArtifactStagingDirectory)
+        -ApiviewUri "$(azuresdk-apiview-uri)"
+        -ApiKey "$(azuresdk-apiview-apikey)"
+        -ApiLabel "Auto Review - $(Build.SourceVersion)"
         -SourceBranch $(Build.SourceBranchName)
         -DefaultBranch $(DefaultBranch)
         -ConfigFileDir $(Build.ArtifactStagingDirectory)/PackageInfo

@@ -701,6 +701,59 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	_assert.EqualValues(destData, srcData)
 }
 
+/*func (s *azblobUnrecordedTestSuite) TestUserDelegationKey() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	// Set current and past time
+	currentTime := time.Now().UTC().Add(-10 * time.Second).Format(azblob.SASTimeFormat)
+	pastTime := time.Now().UTC().Add(-10 * time.Second).Add(48 * time.Hour).Format(azblob.SASTimeFormat)
+	info := azblob.KeyInfo{
+		Start:  &currentTime,
+		Expiry: &pastTime,
+	}
+
+	ctx := context.Background()
+	udkresp, err := svcClient.NewServiceClientWithUserDelegationCredential(ctx, info, nil, nil)
+	if err != nil {
+		s.Fail("Unable to create user delegation credential because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_assert, generateContainerName(testName)+"01", svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	src, err := containerClient.NewBlockBlobClient("src")
+	if err != nil {
+		s.Fail("Unable to fetch block blob client because " + err.Error())
+	}
+
+	srcBlobParts, _ := NewBlobURLParts(src.URL())
+
+	// new oauth cred
+	clientOptions := azcore.ClientOptions{}
+	opts1 := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: nil}
+	cred, err := azidentity.NewManagedIdentityCredential(&opts1)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	_assert.Nil(err)
+	srcBlobParts.SAS, err = BlobSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,
+		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   BlobSASPermissions{Read: true}.String(),
+	}.NewSASQueryParametersWithUserDelegation(&udkresp)
+	if err != nil {
+		s.T().Fatal(err)
+	}
+}*/
+
 //nolint
 func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	_assert := assert.New(s.T())

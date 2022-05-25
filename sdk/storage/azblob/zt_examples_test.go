@@ -10,6 +10,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"io"
 	"log"
 	"net/http"
@@ -1305,4 +1306,45 @@ func ExampleContainerLeaseClient() {
 		log.Fatal(err)
 	}
 	fmt.Println("The lease was broken, and nobody can acquire a lease for 60 seconds")
+}
+
+func ExampleUserDelegationCredential() {
+	// Create Managed Identity (OAuth) Credentials using Client ID
+	clientOptions := azcore.ClientOptions{}
+	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
+	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	clientOptionsAzBlob := azblob.ClientOptions{} // Same as azcore.ClientOptions using azblob instead
+	svcClient, err := azblob.NewServiceClient("svcURL", cred, &clientOptionsAzBlob)
+
+	// Set current and past time
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	pastTime := currentTime.Add(48 * time.Hour)
+	info := azblob.KeyInfo{
+		Start:  currentTime.UTC().Format(azblob.SASTimeFormat),
+		Expiry: pastTime.UTC().Format(azblob.SASTimeFormat),
+	}
+
+	udkResp, err := svcClient.NewServiceClientWithUserDelegationCredential(context.Background(), info, nil, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("User Delegation Key has been created for ", udkResp.AccountName())
+
+	// Create Managed Identity (OAuth) Credentials using Resource ID
+	optsResourceID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ResourceID("/subscriptions/...")}
+	cred, err = azidentity.NewManagedIdentityCredential(&optsResourceID)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	svcClient, err = azblob.NewServiceClient("svcURL", cred, &clientOptionsAzBlob)
+	udkResp, err = svcClient.NewServiceClientWithUserDelegationCredential(context.Background(), info, nil, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("User Delegation Key has been created for ", udkResp.AccountName())
 }

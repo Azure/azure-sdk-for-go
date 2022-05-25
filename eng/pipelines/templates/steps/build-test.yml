@@ -98,14 +98,14 @@ steps:
       filePath: $(Build.SourcesDirectory)/eng/scripts/Create-ApiReview.ps1
       arguments: >
         -ServiceDirectory ${{parameters.ServiceDirectory}}
-  #       -OutDirectory $(Build.ArtifactStagingDirectory)
-  #      # -APIViewUri $(azuresdk-apiview-uri)
-  #     #  -APIKey $(azuresdk-apiview-apikey)
-  #      # -APILabel "Auto Review - $(Build.SourceVersion)"
-  #       # -PackageName ${{artifact.name}}
-  #       #-SourceBranch $(Build.SourceBranchName)
-  #       #-DefaultBranch $(DefaultBranch)
-  #       #-ConfigFileDir $(Build.ArtifactStagingDirectory)/PackageInfo
+        -OutDirectory $(Build.ArtifactStagingDirectory)
+        -APIViewUri "$(azuresdk-apiview-uri)"
+        -APIKey "$(azuresdk-apiview-apikey)"
+        -APILabel "Auto Review - $(Build.SourceVersion)"
+  #       -PackageName "${{artifact.name}}"
+  #       -SourceBranch $(Build.SourceBranchName)
+  #       -DefaultBranch $(DefaultBranch)
+  #       -ConfigFileDir $(Build.ArtifactStagingDirectory)/PackageInfo
   #     pwsh: true
   #     workingDirectory: $(Pipeline.Workspace)
   #   displayName: Create API review for Go

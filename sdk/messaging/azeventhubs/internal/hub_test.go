@@ -650,13 +650,6 @@ func testHubPartitionRuntimeInformation(ctx context.Context, t *testing.T, clien
 	}
 }
 
-func TestEnvironmentalCreation(t *testing.T) {
-	require.NoError(t, os.Setenv("EVENTHUB_NAME", "foo"))
-	_, err := NewHubFromEnvironment()
-	assert.Nil(t, err)
-	require.NoError(t, os.Unsetenv("EVENTHUB_NAME"))
-}
-
 func (suite *eventHubSuite) newClient(t *testing.T, hubName string, opts ...HubOption) (*Hub, func()) {
 	provider, err := aad.NewJWTProvider(
 		aad.JWTProviderWithEnvironmentVars(),

@@ -33,7 +33,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3"
+	common "github.com/Azure/azure-amqp-common-go/v3"
 	mgmt "github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub"
 	rm "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 	"github.com/Azure/go-autorest/autorest/azure"
@@ -85,6 +85,12 @@ func (suite *BaseSuite) SetupSuite() {
 	}
 
 	suite.SubscriptionID = MustGetEnv("AZURE_SUBSCRIPTION_ID")
+
+	if suite.SubscriptionID == "" {
+		log.Printf("No AZURE_SUBSCRIPTION_ID variable, skipping test")
+		suite.T().Skip()
+	}
+
 	suite.Namespace = MustGetEnv("EVENTHUB_NAMESPACE")
 	suite.ResourceGroupName = MustGetEnv("TEST_EVENTHUB_RESOURCE_GROUP")
 	suite.Location = MustGetEnv("TEST_EVENTHUB_LOCATION")
@@ -374,7 +380,8 @@ func getRmGroupClientWithToken(subscriptionID string, env azure.Environment) *rm
 func MustGetEnv(key string) string {
 	v := os.Getenv(key)
 	if v == "" {
-		panic("Env variable '" + key + "' required for integration tests.")
+		log.Printf("Env variable '" + key + "' required for integration tests.")
+		return ""
 	}
 	return v
 }
@@ -405,7 +412,8 @@ func loadEnv() {
 	}
 
 	if reader == nil {
-		log.Fatalf("no .env files were found in %v", lookForMe)
+		log.Printf("no .env files were found in %v, no integration tests will be run", lookForMe)
+		return
 	}
 
 	defer func() {

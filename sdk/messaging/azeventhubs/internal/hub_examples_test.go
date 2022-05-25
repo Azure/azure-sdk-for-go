@@ -80,7 +80,6 @@ func ExampleHub_helloWorld() {
 		fmt.Println(err)
 		return
 	}
-	// Output: Hello World!
 }
 
 func ExampleHub_webSocket() {
@@ -146,7 +145,6 @@ func ExampleHub_webSocket() {
 		fmt.Println(err)
 		return
 	}
-	// Output: this message was sent and received via web socket!!
 }
 
 func ensureHub(ctx context.Context, em *eventhub.HubManager, name string, opts ...eventhub.HubManagementOption) (*eventhub.HubEntity, error) {

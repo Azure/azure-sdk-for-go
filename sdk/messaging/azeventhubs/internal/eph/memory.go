@@ -26,10 +26,9 @@ type (
 
 	memoryLease struct {
 		Lease
-		expirationTime time.Time
-		Token          string
-		Checkpoint     *persist.Checkpoint
-		leaser         *memoryLeaserCheckpointer
+		Token      string
+		Checkpoint *persist.Checkpoint
+		leaser     *memoryLeaserCheckpointer
 	}
 
 	sharedStore struct {

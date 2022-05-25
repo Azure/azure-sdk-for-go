@@ -117,7 +117,7 @@ func ExampleClient_NewListPropertiesOfSecretsPager() {
 			panic(err)
 		}
 		for _, v := range page.Secrets {
-			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Tags)
+			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Properties.Tags)
 		}
 	}
 }

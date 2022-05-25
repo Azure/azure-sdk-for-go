@@ -114,9 +114,6 @@ type SetSecretOptions struct {
 
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // Convert the exposed struct to the generated code version
@@ -166,14 +163,16 @@ func (c *Client) SetSecret(ctx context.Context, name string, value string, optio
 		options = &SetSecretOptions{}
 	}
 	var secretAttribs generated.SecretAttributes
+	var tags map[string]*string
 	if options.Properties != nil {
 		secretAttribs = *options.Properties.toGenerated()
+		tags = options.Properties.Tags
 	}
 	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, name, generated.SecretSetParameters{
 		Value:            &value,
 		ContentType:      options.ContentType,
 		SecretAttributes: &secretAttribs,
-		Tags:             convertToGeneratedMap(options.Tags),
+		Tags:             tags,
 	}, options.toGenerated())
 	if err != nil {
 		return SetSecretResponse{}, err

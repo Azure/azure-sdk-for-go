@@ -154,20 +154,11 @@ type SecretItem struct {
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Type of the secret value such as a password.
-	ContentType *string `json:"contentType,omitempty"`
-
 	// Secret identifier.
 	ID *string `json:"id,omitempty"`
 
 	// Name of the secret
 	Name *string
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
-	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
 }
 
 // create a SecretItem from the generated.SecretItem model
@@ -192,9 +183,6 @@ type DeletedSecretItem struct {
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Type of the secret value such as a password.
-	ContentType *string `json:"contentType,omitempty"`
-
 	// Secret identifier.
 	ID *string `json:"id,omitempty"`
 
@@ -204,15 +192,8 @@ type DeletedSecretItem struct {
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
 	// READ-ONLY; The time when the secret was deleted, in UTC
 	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed
-	// will be true.
-	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`

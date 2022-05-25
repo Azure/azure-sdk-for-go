@@ -56,8 +56,10 @@ func TestSecretTags(t *testing.T) {
 	defer cleanUpSecret(t, client, secret)
 
 	resp, err := client.SetSecret(context.Background(), secret, value, &SetSecretOptions{
-		Tags: map[string]string{
-			"Tag1": "Val1",
+		Properties: &Properties{
+			Tags: map[string]*string{
+				"Tag1": to.Ptr("Val1"),
+			},
 		},
 	})
 	require.NoError(t, err)
@@ -82,7 +84,6 @@ func TestSecretTags(t *testing.T) {
 	updateResp, err = client.UpdateSecretProperties(context.Background(), updateResp.Secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, 0, len(updateResp.Secret.Properties.Tags))
-	require.NotEqual(t, "Val1", updateResp.Secret.Properties.Tags["Tag1"])
 }
 
 func TestListSecretVersions(t *testing.T) {

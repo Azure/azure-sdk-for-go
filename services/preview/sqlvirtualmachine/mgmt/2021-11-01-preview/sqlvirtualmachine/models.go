@@ -86,7 +86,7 @@ type AutoBackupSettings struct {
 	// FullBackupFrequency - Frequency of full backups. In both cases, full backups begin during the next scheduled time window. Possible values include: 'FullBackupFrequencyTypeDaily', 'FullBackupFrequencyTypeWeekly'
 	FullBackupFrequency FullBackupFrequencyType `json:"fullBackupFrequency,omitempty"`
 	// DaysOfWeek - Days of the week for the backups when FullBackupFrequency is set to Weekly.
-	DaysOfWeek *[]DaysOfWeek `json:"daysOfWeek,omitempty"`
+	DaysOfWeek *[]AutoBackupDaysOfWeek `json:"daysOfWeek,omitempty"`
 	// FullBackupStartTime - Start time of a given day during which full backups can take place. 0-23 hours.
 	FullBackupStartTime *int32 `json:"fullBackupStartTime,omitempty"`
 	// FullBackupWindowHours - Duration of the time window of a given day during which full backups can take place. 1-23 hours.
@@ -99,7 +99,7 @@ type AutoBackupSettings struct {
 type AutoPatchingSettings struct {
 	// Enable - Enable or disable autopatching on SQL virtual machine.
 	Enable *bool `json:"enable,omitempty"`
-	// DayOfWeek - Day of week to apply the patch on. Possible values include: 'DayOfWeekMonday', 'DayOfWeekTuesday', 'DayOfWeekWednesday', 'DayOfWeekThursday', 'DayOfWeekFriday', 'DayOfWeekSaturday', 'DayOfWeekSunday'
+	// DayOfWeek - Day of week to apply the patch on. Possible values include: 'DayOfWeekEveryday', 'DayOfWeekMonday', 'DayOfWeekTuesday', 'DayOfWeekWednesday', 'DayOfWeekThursday', 'DayOfWeekFriday', 'DayOfWeekSaturday', 'DayOfWeekSunday'
 	DayOfWeek DayOfWeek `json:"dayOfWeek,omitempty"`
 	// MaintenanceWindowStartingHour - Hour of the day when patching is initiated. Local VM time.
 	MaintenanceWindowStartingHour *int32 `json:"maintenanceWindowStartingHour,omitempty"`
@@ -1459,8 +1459,8 @@ type Schedule struct {
 	WeeklyInterval *int32 `json:"weeklyInterval,omitempty"`
 	// MonthlyOccurrence - Occurrence of the DayOfWeek day within a month to schedule assessment. Takes values: 1,2,3,4 and -1. Use -1 for last DayOfWeek day of the month
 	MonthlyOccurrence *int32 `json:"monthlyOccurrence,omitempty"`
-	// DayOfWeek - Day of the week to run assessment. Possible values include: 'DayOfWeekMonday', 'DayOfWeekTuesday', 'DayOfWeekWednesday', 'DayOfWeekThursday', 'DayOfWeekFriday', 'DayOfWeekSaturday', 'DayOfWeekSunday'
-	DayOfWeek DayOfWeek `json:"dayOfWeek,omitempty"`
+	// DayOfWeek - Day of the week to run assessment. Possible values include: 'AssessmentDayOfWeekMonday', 'AssessmentDayOfWeekTuesday', 'AssessmentDayOfWeekWednesday', 'AssessmentDayOfWeekThursday', 'AssessmentDayOfWeekFriday', 'AssessmentDayOfWeekSaturday', 'AssessmentDayOfWeekSunday'
+	DayOfWeek AssessmentDayOfWeek `json:"dayOfWeek,omitempty"`
 	// StartTime - Time of the day in HH:mm format. Eg. 17:30
 	StartTime *string `json:"startTime,omitempty"`
 }

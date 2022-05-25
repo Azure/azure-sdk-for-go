@@ -1001,35 +1001,33 @@ func (future *BackupPoliciesUpdateFuture) result(client BackupPoliciesClient) (b
 // BackupPolicy backup policy information
 type BackupPolicy struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// BackupPolicyProperties - Backup policy Properties
 	*BackupPolicyProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for BackupPolicy.
 func (bp BackupPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if bp.Location != nil {
-		objectMap["location"] = bp.Location
+	if bp.BackupPolicyProperties != nil {
+		objectMap["properties"] = bp.BackupPolicyProperties
 	}
 	if bp.Tags != nil {
 		objectMap["tags"] = bp.Tags
 	}
-	if bp.BackupPolicyProperties != nil {
-		objectMap["properties"] = bp.BackupPolicyProperties
+	if bp.Location != nil {
+		objectMap["location"] = bp.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -1043,6 +1041,33 @@ func (bp *BackupPolicy) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				bp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var backupPolicyProperties BackupPolicyProperties
+				err = json.Unmarshal(*v, &backupPolicyProperties)
+				if err != nil {
+					return err
+				}
+				bp.BackupPolicyProperties = &backupPolicyProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				bp.Tags = tags
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -1070,15 +1095,6 @@ func (bp *BackupPolicy) UnmarshalJSON(body []byte) error {
 				}
 				bp.Name = &name
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				bp.Etag = &etag
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -1087,33 +1103,6 @@ func (bp *BackupPolicy) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				bp.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				bp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var backupPolicyProperties BackupPolicyProperties
-				err = json.Unmarshal(*v, &backupPolicyProperties)
-				if err != nil {
-					return err
-				}
-				bp.BackupPolicyProperties = &backupPolicyProperties
-			}
-		case "systemData":
-			if v != nil {
-				var systemData SystemData
-				err = json.Unmarshal(*v, &systemData)
-				if err != nil {
-					return err
-				}
-				bp.SystemData = &systemData
 			}
 		}
 	}
@@ -1559,35 +1548,33 @@ type BreakReplicationRequest struct {
 // CapacityPool capacity pool resource
 type CapacityPool struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// PoolProperties - Capacity pool properties
 	*PoolProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CapacityPool.
 func (cp CapacityPool) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cp.Location != nil {
-		objectMap["location"] = cp.Location
+	if cp.PoolProperties != nil {
+		objectMap["properties"] = cp.PoolProperties
 	}
 	if cp.Tags != nil {
 		objectMap["tags"] = cp.Tags
 	}
-	if cp.PoolProperties != nil {
-		objectMap["properties"] = cp.PoolProperties
+	if cp.Location != nil {
+		objectMap["location"] = cp.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -1601,6 +1588,33 @@ func (cp *CapacityPool) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				cp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var poolProperties PoolProperties
+				err = json.Unmarshal(*v, &poolProperties)
+				if err != nil {
+					return err
+				}
+				cp.PoolProperties = &poolProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				cp.Tags = tags
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -1628,15 +1642,6 @@ func (cp *CapacityPool) UnmarshalJSON(body []byte) error {
 				}
 				cp.Name = &name
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				cp.Etag = &etag
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -1645,33 +1650,6 @@ func (cp *CapacityPool) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				cp.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				cp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var poolProperties PoolProperties
-				err = json.Unmarshal(*v, &poolProperties)
-				if err != nil {
-					return err
-				}
-				cp.PoolProperties = &poolProperties
-			}
-		case "systemData":
-			if v != nil {
-				var systemData SystemData
-				err = json.Unmarshal(*v, &systemData)
-				if err != nil {
-					return err
-				}
-				cp.SystemData = &systemData
 			}
 		}
 	}
@@ -2830,35 +2808,33 @@ func (future *SnapshotPoliciesUpdateFuture) result(client SnapshotPoliciesClient
 // SnapshotPolicy snapshot policy information
 type SnapshotPolicy struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// SnapshotPolicyProperties - Snapshot policy Properties
 	*SnapshotPolicyProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SnapshotPolicy.
 func (sp SnapshotPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sp.Location != nil {
-		objectMap["location"] = sp.Location
+	if sp.SnapshotPolicyProperties != nil {
+		objectMap["properties"] = sp.SnapshotPolicyProperties
 	}
 	if sp.Tags != nil {
 		objectMap["tags"] = sp.Tags
 	}
-	if sp.SnapshotPolicyProperties != nil {
-		objectMap["properties"] = sp.SnapshotPolicyProperties
+	if sp.Location != nil {
+		objectMap["location"] = sp.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -2872,6 +2848,33 @@ func (sp *SnapshotPolicy) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				sp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var snapshotPolicyProperties SnapshotPolicyProperties
+				err = json.Unmarshal(*v, &snapshotPolicyProperties)
+				if err != nil {
+					return err
+				}
+				sp.SnapshotPolicyProperties = &snapshotPolicyProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sp.Tags = tags
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -2899,15 +2902,6 @@ func (sp *SnapshotPolicy) UnmarshalJSON(body []byte) error {
 				}
 				sp.Name = &name
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				sp.Etag = &etag
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -2916,33 +2910,6 @@ func (sp *SnapshotPolicy) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sp.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				sp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var snapshotPolicyProperties SnapshotPolicyProperties
-				err = json.Unmarshal(*v, &snapshotPolicyProperties)
-				if err != nil {
-					return err
-				}
-				sp.SnapshotPolicyProperties = &snapshotPolicyProperties
-			}
-		case "systemData":
-			if v != nil {
-				var systemData SystemData
-				err = json.Unmarshal(*v, &systemData)
-				if err != nil {
-					return err
-				}
-				sp.SystemData = &systemData
 			}
 		}
 	}
@@ -4216,35 +4183,33 @@ type VaultProperties struct {
 // Volume volume resource
 type Volume struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// VolumeProperties - Volume properties
 	*VolumeProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Volume.
 func (vVar Volume) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if vVar.Location != nil {
-		objectMap["location"] = vVar.Location
+	if vVar.VolumeProperties != nil {
+		objectMap["properties"] = vVar.VolumeProperties
 	}
 	if vVar.Tags != nil {
 		objectMap["tags"] = vVar.Tags
 	}
-	if vVar.VolumeProperties != nil {
-		objectMap["properties"] = vVar.VolumeProperties
+	if vVar.Location != nil {
+		objectMap["location"] = vVar.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -4258,6 +4223,33 @@ func (vVar *Volume) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				vVar.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var volumeProperties VolumeProperties
+				err = json.Unmarshal(*v, &volumeProperties)
+				if err != nil {
+					return err
+				}
+				vVar.VolumeProperties = &volumeProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				vVar.Tags = tags
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -4285,15 +4277,6 @@ func (vVar *Volume) UnmarshalJSON(body []byte) error {
 				}
 				vVar.Name = &name
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				vVar.Etag = &etag
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -4302,33 +4285,6 @@ func (vVar *Volume) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vVar.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				vVar.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var volumeProperties VolumeProperties
-				err = json.Unmarshal(*v, &volumeProperties)
-				if err != nil {
-					return err
-				}
-				vVar.VolumeProperties = &volumeProperties
-			}
-		case "systemData":
-			if v != nil {
-				var systemData SystemData
-				err = json.Unmarshal(*v, &systemData)
-				if err != nil {
-					return err
-				}
-				vVar.SystemData = &systemData
 			}
 		}
 	}
@@ -4368,8 +4324,6 @@ type VolumeGroup struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// VolumeGroupListProperties - Volume group properties
 	*VolumeGroupListProperties `json:"properties,omitempty"`
 }
@@ -4379,9 +4333,6 @@ func (vg VolumeGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vg.Location != nil {
 		objectMap["location"] = vg.Location
-	}
-	if vg.Tags != nil {
-		objectMap["tags"] = vg.Tags
 	}
 	if vg.VolumeGroupListProperties != nil {
 		objectMap["properties"] = vg.VolumeGroupListProperties
@@ -4433,15 +4384,6 @@ func (vg *VolumeGroup) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vg.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				vg.Tags = tags
 			}
 		case "properties":
 			if v != nil {

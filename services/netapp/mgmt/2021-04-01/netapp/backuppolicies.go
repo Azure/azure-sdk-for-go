@@ -90,7 +90,9 @@ func (client BackupPoliciesClient) CreatePreparer(ctx context.Context, resourceG
 
 	body.ID = nil
 	body.Name = nil
+	body.Etag = nil
 	body.Type = nil
+	body.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

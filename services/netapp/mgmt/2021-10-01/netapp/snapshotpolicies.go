@@ -51,8 +51,7 @@ func (client SnapshotPoliciesClient) Create(ctx context.Context, body SnapshotPo
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.SnapshotPolicyProperties", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "body.SnapshotPolicyProperties", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -96,11 +95,7 @@ func (client SnapshotPoliciesClient) CreatePreparer(ctx context.Context, body Sn
 		"api-version": APIVersion,
 	}
 
-	body.ID = nil
-	body.Name = nil
 	body.Etag = nil
-	body.Type = nil
-	body.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

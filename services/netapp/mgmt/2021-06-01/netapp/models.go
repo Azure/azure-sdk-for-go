@@ -2008,7 +2008,9 @@ type HourlySchedule struct {
 
 // LogSpecification log Definition of a single resource metric.
 type LogSpecification struct {
-	Name        *string `json:"name,omitempty"`
+	// Name - Name of log specification.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Display name of log specification.
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
@@ -2599,7 +2601,8 @@ func (rs RestoreStatus) MarshalJSON() ([]byte, error) {
 type ServiceSpecification struct {
 	// MetricSpecifications - Metric specifications of operation.
 	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
-	LogSpecifications    *[]LogSpecification    `json:"logSpecifications,omitempty"`
+	// LogSpecifications - Log specification of operation.
+	LogSpecifications *[]LogSpecification `json:"logSpecifications,omitempty"`
 }
 
 // Snapshot snapshot of a Volume
@@ -3371,8 +3374,6 @@ type SubscriptionQuotaItemList struct {
 
 // SubscriptionQuotaItemProperties subscriptionQuotaItem Properties
 type SubscriptionQuotaItemProperties struct {
-	// Name - READ-ONLY; Quota Item name
-	Name *string `json:"name,omitempty"`
 	// Current - READ-ONLY; The current quota value.
 	Current *int32 `json:"current,omitempty"`
 	// Default - READ-ONLY; The default quota value.

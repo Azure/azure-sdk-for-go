@@ -54,8 +54,7 @@ func (client BackupPoliciesClient) Create(ctx context.Context, resourceGroupName
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.BackupPolicyProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "body.BackupPolicyProperties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("netapp.BackupPoliciesClient", "Create", err.Error())
 	}
 
@@ -88,11 +87,7 @@ func (client BackupPoliciesClient) CreatePreparer(ctx context.Context, resourceG
 		"api-version": APIVersion,
 	}
 
-	body.ID = nil
-	body.Name = nil
 	body.Etag = nil
-	body.Type = nil
-	body.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

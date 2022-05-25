@@ -1025,8 +1025,8 @@ type BackupProperties struct {
 	Size *int64 `json:"size,omitempty"`
 	// Label - Label for backup
 	Label *string `json:"label,omitempty"`
-	// BackupType - READ-ONLY; Type of backup adhoc or scheduled
-	BackupType *string `json:"backupType,omitempty"`
+	// BackupType - READ-ONLY; Type of backup Manual or Scheduled. Possible values include: 'Manual', 'Scheduled'
+	BackupType BackupType `json:"backupType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for BackupProperties.
@@ -1689,7 +1689,7 @@ type PoolChangeRequest struct {
 type PoolPatchProperties struct {
 	// Size - Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
 	Size *int64 `json:"size,omitempty"`
-	// QosType - The qos type of the pool. Possible values include: 'Auto', 'Manual'
+	// QosType - The qos type of the pool. Possible values include: 'QosTypeAuto', 'QosTypeManual'
 	QosType QosType `json:"qosType,omitempty"`
 }
 
@@ -1707,7 +1707,7 @@ type PoolProperties struct {
 	TotalThroughputMibps *float64 `json:"totalThroughputMibps,omitempty"`
 	// UtilizedThroughputMibps - READ-ONLY; Utilized throughput of pool in Mibps
 	UtilizedThroughputMibps *float64 `json:"utilizedThroughputMibps,omitempty"`
-	// QosType - The qos type of the pool. Possible values include: 'Auto', 'Manual'
+	// QosType - The qos type of the pool. Possible values include: 'QosTypeAuto', 'QosTypeManual'
 	QosType QosType `json:"qosType,omitempty"`
 }
 
@@ -2893,7 +2893,7 @@ type VolumeProperties struct {
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 	// ExportPolicy - Set of export policy rules
 	ExportPolicy *VolumePropertiesExportPolicy `json:"exportPolicy,omitempty"`
-	// ProtocolTypes - Set of protocol types
+	// ProtocolTypes - Set of protocol types, default NFSv3, CIFS for SMB protocol
 	ProtocolTypes *[]string `json:"protocolTypes,omitempty"`
 	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -2905,7 +2905,7 @@ type VolumeProperties struct {
 	BaremetalTenantID *string `json:"baremetalTenantId,omitempty"`
 	// SubnetID - The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
 	SubnetID *string `json:"subnetId,omitempty"`
-	// MountTargets - List of mount targets
+	// MountTargets - READ-ONLY; List of mount targets
 	MountTargets *[]MountTargetProperties `json:"mountTargets,omitempty"`
 	// VolumeType - What type of volume is this
 	VolumeType *string `json:"volumeType,omitempty"`
@@ -2917,7 +2917,7 @@ type VolumeProperties struct {
 	SnapshotDirectoryVisible *bool `json:"snapshotDirectoryVisible,omitempty"`
 	// KerberosEnabled - Describe if a volume is KerberosEnabled. To be use with swagger version 2020-05-01 or later
 	KerberosEnabled *bool `json:"kerberosEnabled,omitempty"`
-	// SecurityStyle - The security style of volume. Possible values include: 'Ntfs', 'Unix'
+	// SecurityStyle - The security style of volume, default unix, defaults to ntfs for dual protocol or CIFS protocol. Possible values include: 'Ntfs', 'Unix'
 	SecurityStyle   SecurityStyle `json:"securityStyle,omitempty"`
 	ThroughputMibps *float64      `json:"throughputMibps,omitempty"`
 }
@@ -2948,9 +2948,6 @@ func (vp VolumeProperties) MarshalJSON() ([]byte, error) {
 	}
 	if vp.SubnetID != nil {
 		objectMap["subnetId"] = vp.SubnetID
-	}
-	if vp.MountTargets != nil {
-		objectMap["mountTargets"] = vp.MountTargets
 	}
 	if vp.VolumeType != nil {
 		objectMap["volumeType"] = vp.VolumeType

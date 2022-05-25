@@ -114,6 +114,21 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	return []CreatedByType{CreatedByTypeApplication, CreatedByTypeKey, CreatedByTypeManagedIdentity, CreatedByTypeUser}
 }
 
+// EncryptionType enumerates the values for encryption type.
+type EncryptionType string
+
+const (
+	// EncryptionTypeDouble EncryptionType Double, volumes will use double encryption at rest
+	EncryptionTypeDouble EncryptionType = "Double"
+	// EncryptionTypeSingle EncryptionType Single, volumes will use single encryption at rest
+	EncryptionTypeSingle EncryptionType = "Single"
+)
+
+// PossibleEncryptionTypeValues returns an array of possible values for the EncryptionType const type.
+func PossibleEncryptionTypeValues() []EncryptionType {
+	return []EncryptionType{EncryptionTypeDouble, EncryptionTypeSingle}
+}
+
 // EndpointType enumerates the values for endpoint type.
 type EndpointType string
 
@@ -142,6 +157,19 @@ const (
 // PossibleInAvailabilityReasonTypeValues returns an array of possible values for the InAvailabilityReasonType const type.
 func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return []InAvailabilityReasonType{InAvailabilityReasonTypeAlreadyExists, InAvailabilityReasonTypeInvalid}
+}
+
+// MetricAggregationType enumerates the values for metric aggregation type.
+type MetricAggregationType string
+
+const (
+	// MetricAggregationTypeAverage ...
+	MetricAggregationTypeAverage MetricAggregationType = "Average"
+)
+
+// PossibleMetricAggregationTypeValues returns an array of possible values for the MetricAggregationType const type.
+func PossibleMetricAggregationTypeValues() []MetricAggregationType {
+	return []MetricAggregationType{MetricAggregationTypeAverage}
 }
 
 // MirrorState enumerates the values for mirror state.

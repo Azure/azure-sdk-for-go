@@ -50,18 +50,17 @@ func (client PoolsClient) CreateOrUpdate(ctx context.Context, body CapacityPool,
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Location", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.PoolProperties", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "body.PoolProperties.PoolID", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "body.PoolProperties.PoolID", Name: validation.MaxLength, Rule: 36, Chain: nil},
-							{Target: "body.PoolProperties.PoolID", Name: validation.MinLength, Rule: 36, Chain: nil},
-							{Target: "body.PoolProperties.PoolID", Name: validation.Pattern, Rule: `^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$`, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "body.PoolProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "body.PoolProperties.PoolID", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "body.PoolProperties.PoolID", Name: validation.MaxLength, Rule: 36, Chain: nil},
+						{Target: "body.PoolProperties.PoolID", Name: validation.MinLength, Rule: 36, Chain: nil},
+						{Target: "body.PoolProperties.PoolID", Name: validation.Pattern, Rule: `^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$`, Chain: nil},
+					}},
+					{Target: "body.PoolProperties.Size", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "body.PoolProperties.Size", Name: validation.InclusiveMaximum, Rule: int64(549755813888000), Chain: nil},
+							{Target: "body.PoolProperties.Size", Name: validation.InclusiveMinimum, Rule: int64(4398046511104), Chain: nil},
 						}},
-						{Target: "body.PoolProperties.Size", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "body.PoolProperties.Size", Name: validation.InclusiveMaximum, Rule: int64(549755813888000), Chain: nil},
-								{Target: "body.PoolProperties.Size", Name: validation.InclusiveMinimum, Rule: int64(4398046511104), Chain: nil},
-							}},
-					}}}},
+				}}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -102,10 +101,7 @@ func (client PoolsClient) CreateOrUpdatePreparer(ctx context.Context, body Capac
 		"api-version": APIVersion,
 	}
 
-	body.ID = nil
-	body.Name = nil
 	body.Etag = nil
-	body.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

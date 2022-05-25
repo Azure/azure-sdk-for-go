@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// SnapshotsClient is the microsoft NetApp Azure Resource Provider specification
+// SnapshotsClient is the microsoft NetApp Files Azure Resource Provider specification
 type SnapshotsClient struct {
 	BaseClient
 }

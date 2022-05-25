@@ -48,8 +48,6 @@ func (client AccountsClient) CreateOrUpdate(ctx context.Context, body Account, r
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Location", Name: validation.Null, Rule: true, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -85,11 +83,7 @@ func (client AccountsClient) CreateOrUpdatePreparer(ctx context.Context, body Ac
 		"api-version": APIVersion,
 	}
 
-	body.ID = nil
-	body.Name = nil
 	body.Etag = nil
-	body.Type = nil
-	body.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

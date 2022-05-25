@@ -23,35 +23,35 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-08-01/
 // Account netApp account resource
 type Account struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// AccountProperties - NetApp Account properties
 	*AccountProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Account.
 func (a Account) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if a.Location != nil {
-		objectMap["location"] = a.Location
+	if a.AccountProperties != nil {
+		objectMap["properties"] = a.AccountProperties
 	}
 	if a.Tags != nil {
 		objectMap["tags"] = a.Tags
 	}
-	if a.AccountProperties != nil {
-		objectMap["properties"] = a.AccountProperties
+	if a.Location != nil {
+		objectMap["location"] = a.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -65,6 +65,33 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				a.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var accountProperties AccountProperties
+				err = json.Unmarshal(*v, &accountProperties)
+				if err != nil {
+					return err
+				}
+				a.AccountProperties = &accountProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				a.Tags = tags
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -92,15 +119,6 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 				}
 				a.Name = &name
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				a.Etag = &etag
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -109,24 +127,6 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				a.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var accountProperties AccountProperties
-				err = json.Unmarshal(*v, &accountProperties)
-				if err != nil {
-					return err
-				}
-				a.AccountProperties = &accountProperties
 			}
 		case "systemData":
 			if v != nil {
@@ -715,6 +715,8 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AzureEntityResource.
@@ -996,33 +998,35 @@ func (future *BackupPoliciesUpdateFuture) result(client BackupPoliciesClient) (b
 // BackupPolicy backup policy information
 type BackupPolicy struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// BackupPolicyProperties - Backup policy Properties
 	*BackupPolicyProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for BackupPolicy.
 func (bp BackupPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if bp.Location != nil {
-		objectMap["location"] = bp.Location
+	if bp.BackupPolicyProperties != nil {
+		objectMap["properties"] = bp.BackupPolicyProperties
 	}
 	if bp.Tags != nil {
 		objectMap["tags"] = bp.Tags
 	}
-	if bp.BackupPolicyProperties != nil {
-		objectMap["properties"] = bp.BackupPolicyProperties
+	if bp.Location != nil {
+		objectMap["location"] = bp.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -1036,6 +1040,33 @@ func (bp *BackupPolicy) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				bp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var backupPolicyProperties BackupPolicyProperties
+				err = json.Unmarshal(*v, &backupPolicyProperties)
+				if err != nil {
+					return err
+				}
+				bp.BackupPolicyProperties = &backupPolicyProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				bp.Tags = tags
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -1063,15 +1094,6 @@ func (bp *BackupPolicy) UnmarshalJSON(body []byte) error {
 				}
 				bp.Name = &name
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				bp.Etag = &etag
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -1081,23 +1103,14 @@ func (bp *BackupPolicy) UnmarshalJSON(body []byte) error {
 				}
 				bp.Type = &typeVar
 			}
-		case "tags":
+		case "systemData":
 			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
 				if err != nil {
 					return err
 				}
-				bp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var backupPolicyProperties BackupPolicyProperties
-				err = json.Unmarshal(*v, &backupPolicyProperties)
-				if err != nil {
-					return err
-				}
-				bp.BackupPolicyProperties = &backupPolicyProperties
+				bp.SystemData = &systemData
 			}
 		}
 	}
@@ -1543,33 +1556,35 @@ type BreakReplicationRequest struct {
 // CapacityPool capacity pool resource
 type CapacityPool struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// PoolProperties - Capacity pool properties
 	*PoolProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CapacityPool.
 func (cp CapacityPool) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cp.Location != nil {
-		objectMap["location"] = cp.Location
+	if cp.PoolProperties != nil {
+		objectMap["properties"] = cp.PoolProperties
 	}
 	if cp.Tags != nil {
 		objectMap["tags"] = cp.Tags
 	}
-	if cp.PoolProperties != nil {
-		objectMap["properties"] = cp.PoolProperties
+	if cp.Location != nil {
+		objectMap["location"] = cp.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -1583,6 +1598,33 @@ func (cp *CapacityPool) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				cp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var poolProperties PoolProperties
+				err = json.Unmarshal(*v, &poolProperties)
+				if err != nil {
+					return err
+				}
+				cp.PoolProperties = &poolProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				cp.Tags = tags
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -1610,15 +1652,6 @@ func (cp *CapacityPool) UnmarshalJSON(body []byte) error {
 				}
 				cp.Name = &name
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				cp.Etag = &etag
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -1628,23 +1661,14 @@ func (cp *CapacityPool) UnmarshalJSON(body []byte) error {
 				}
 				cp.Type = &typeVar
 			}
-		case "tags":
+		case "systemData":
 			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
 				if err != nil {
 					return err
 				}
-				cp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var poolProperties PoolProperties
-				err = json.Unmarshal(*v, &poolProperties)
-				if err != nil {
-					return err
-				}
-				cp.PoolProperties = &poolProperties
+				cp.SystemData = &systemData
 			}
 		}
 	}
@@ -2009,6 +2033,25 @@ type HourlySchedule struct {
 	UsedBytes *int64 `json:"usedBytes,omitempty"`
 }
 
+// Identity identity for the resource.
+type Identity struct {
+	// PrincipalID - READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The identity type. Possible values include: 'ResourceIdentityTypeSystemAssigned'
+	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // LogSpecification log Definition of a single resource metric.
 type LogSpecification struct {
 	// Name - Name of log specification.
@@ -2306,6 +2349,20 @@ type PlacementKeyValuePairs struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// Plan plan for the resource.
+type Plan struct {
+	// Name - A user defined name of the 3rd Party Artifact that is being procured.
+	Name *string `json:"name,omitempty"`
+	// Publisher - The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
+	Publisher *string `json:"publisher,omitempty"`
+	// Product - The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at the time of Data Market onboarding.
+	Product *string `json:"product,omitempty"`
+	// PromotionCode - A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
+	PromotionCode *string `json:"promotionCode,omitempty"`
+	// Version - The version of the desired product/artifact.
+	Version *string `json:"version,omitempty"`
+}
+
 // PoolChangeRequest pool change request
 type PoolChangeRequest struct {
 	// NewPoolResourceID - Resource id of the pool to move volume to
@@ -2493,6 +2550,8 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ProxyResource.
@@ -2548,6 +2607,8 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
@@ -2573,6 +2634,107 @@ func (ri ResourceIdentity) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = ri.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed
+// properties for a resource. Except properties bag, there cannot be a top level property outside of this
+// set.
+type ResourceModelWithAllowedPropertySet struct {
+	// ManagedBy - The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
+	ManagedBy *string `json:"managedBy,omitempty"`
+	// Kind - Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag     *string                                      `json:"etag,omitempty"`
+	Identity *ResourceModelWithAllowedPropertySetIdentity `json:"identity,omitempty"`
+	Sku      *ResourceModelWithAllowedPropertySetSku      `json:"sku,omitempty"`
+	Plan     *ResourceModelWithAllowedPropertySetPlan     `json:"plan,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceModelWithAllowedPropertySet.
+func (rmwaps ResourceModelWithAllowedPropertySet) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmwaps.ManagedBy != nil {
+		objectMap["managedBy"] = rmwaps.ManagedBy
+	}
+	if rmwaps.Kind != nil {
+		objectMap["kind"] = rmwaps.Kind
+	}
+	if rmwaps.Identity != nil {
+		objectMap["identity"] = rmwaps.Identity
+	}
+	if rmwaps.Sku != nil {
+		objectMap["sku"] = rmwaps.Sku
+	}
+	if rmwaps.Plan != nil {
+		objectMap["plan"] = rmwaps.Plan
+	}
+	if rmwaps.Tags != nil {
+		objectMap["tags"] = rmwaps.Tags
+	}
+	if rmwaps.Location != nil {
+		objectMap["location"] = rmwaps.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// ResourceModelWithAllowedPropertySetIdentity ...
+type ResourceModelWithAllowedPropertySetIdentity struct {
+	// PrincipalID - READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - The identity type. Possible values include: 'ResourceIdentityTypeSystemAssigned'
+	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceModelWithAllowedPropertySetIdentity.
+func (rmwaps ResourceModelWithAllowedPropertySetIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmwaps.Type != "" {
+		objectMap["type"] = rmwaps.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// ResourceModelWithAllowedPropertySetPlan ...
+type ResourceModelWithAllowedPropertySetPlan struct {
+	// Name - A user defined name of the 3rd Party Artifact that is being procured.
+	Name *string `json:"name,omitempty"`
+	// Publisher - The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
+	Publisher *string `json:"publisher,omitempty"`
+	// Product - The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at the time of Data Market onboarding.
+	Product *string `json:"product,omitempty"`
+	// PromotionCode - A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
+	PromotionCode *string `json:"promotionCode,omitempty"`
+	// Version - The version of the desired product/artifact.
+	Version *string `json:"version,omitempty"`
+}
+
+// ResourceModelWithAllowedPropertySetSku ...
+type ResourceModelWithAllowedPropertySetSku struct {
+	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
+	Name *string `json:"name,omitempty"`
+	// Tier - Possible values include: 'SkuTierFree', 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
+	Tier SkuTier `json:"tier,omitempty"`
+	// Size - The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string `json:"size,omitempty"`
+	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+	Capacity *int32 `json:"capacity,omitempty"`
 }
 
 // ResourceNameAvailabilityRequest resource name availability request content.
@@ -2614,6 +2776,20 @@ type ServiceSpecification struct {
 	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
 	// LogSpecifications - Log specification of operation.
 	LogSpecifications *[]LogSpecification `json:"logSpecifications,omitempty"`
+}
+
+// Sku the resource model definition representing SKU
+type Sku struct {
+	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
+	Name *string `json:"name,omitempty"`
+	// Tier - Possible values include: 'SkuTierFree', 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
+	Tier SkuTier `json:"tier,omitempty"`
+	// Size - The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string `json:"size,omitempty"`
+	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+	Capacity *int32 `json:"capacity,omitempty"`
 }
 
 // Snapshot snapshot of a Volume
@@ -2793,33 +2969,35 @@ func (future *SnapshotPoliciesUpdateFuture) result(client SnapshotPoliciesClient
 // SnapshotPolicy snapshot policy information
 type SnapshotPolicy struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// SnapshotPolicyProperties - Snapshot policy Properties
 	*SnapshotPolicyProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SnapshotPolicy.
 func (sp SnapshotPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sp.Location != nil {
-		objectMap["location"] = sp.Location
+	if sp.SnapshotPolicyProperties != nil {
+		objectMap["properties"] = sp.SnapshotPolicyProperties
 	}
 	if sp.Tags != nil {
 		objectMap["tags"] = sp.Tags
 	}
-	if sp.SnapshotPolicyProperties != nil {
-		objectMap["properties"] = sp.SnapshotPolicyProperties
+	if sp.Location != nil {
+		objectMap["location"] = sp.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -2833,6 +3011,33 @@ func (sp *SnapshotPolicy) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				sp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var snapshotPolicyProperties SnapshotPolicyProperties
+				err = json.Unmarshal(*v, &snapshotPolicyProperties)
+				if err != nil {
+					return err
+				}
+				sp.SnapshotPolicyProperties = &snapshotPolicyProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sp.Tags = tags
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -2860,15 +3065,6 @@ func (sp *SnapshotPolicy) UnmarshalJSON(body []byte) error {
 				}
 				sp.Name = &name
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				sp.Etag = &etag
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -2878,23 +3074,14 @@ func (sp *SnapshotPolicy) UnmarshalJSON(body []byte) error {
 				}
 				sp.Type = &typeVar
 			}
-		case "tags":
+		case "systemData":
 			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
 				if err != nil {
 					return err
 				}
-				sp.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var snapshotPolicyProperties SnapshotPolicyProperties
-				err = json.Unmarshal(*v, &snapshotPolicyProperties)
-				if err != nil {
-					return err
-				}
-				sp.SnapshotPolicyProperties = &snapshotPolicyProperties
+				sp.SystemData = &systemData
 			}
 		}
 	}
@@ -3297,14 +3484,14 @@ type SubscriptionQuotaItem struct {
 	autorest.Response `json:"-"`
 	// SubscriptionQuotaItemProperties - SubscriptionQuotaItem properties
 	*SubscriptionQuotaItemProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SubscriptionQuotaItem.
@@ -3334,15 +3521,6 @@ func (sqi *SubscriptionQuotaItem) UnmarshalJSON(body []byte) error {
 				}
 				sqi.SubscriptionQuotaItemProperties = &subscriptionQuotaItemProperties
 			}
-		case "systemData":
-			if v != nil {
-				var systemData SystemData
-				err = json.Unmarshal(*v, &systemData)
-				if err != nil {
-					return err
-				}
-				sqi.SystemData = &systemData
-			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -3369,6 +3547,15 @@ func (sqi *SubscriptionQuotaItem) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sqi.Type = &typeVar
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				sqi.SystemData = &systemData
 			}
 		}
 	}
@@ -3426,6 +3613,8 @@ type TrackedResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TrackedResource.
@@ -3542,33 +3731,35 @@ type VaultProperties struct {
 // Volume volume resource
 type Volume struct {
 	autorest.Response `json:"-"`
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// VolumeProperties - Volume properties
 	*VolumeProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Volume.
 func (vVar Volume) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if vVar.Location != nil {
-		objectMap["location"] = vVar.Location
+	if vVar.VolumeProperties != nil {
+		objectMap["properties"] = vVar.VolumeProperties
 	}
 	if vVar.Tags != nil {
 		objectMap["tags"] = vVar.Tags
 	}
-	if vVar.VolumeProperties != nil {
-		objectMap["properties"] = vVar.VolumeProperties
+	if vVar.Location != nil {
+		objectMap["location"] = vVar.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -3582,6 +3773,33 @@ func (vVar *Volume) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				vVar.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var volumeProperties VolumeProperties
+				err = json.Unmarshal(*v, &volumeProperties)
+				if err != nil {
+					return err
+				}
+				vVar.VolumeProperties = &volumeProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				vVar.Tags = tags
+			}
 		case "location":
 			if v != nil {
 				var location string
@@ -3609,15 +3827,6 @@ func (vVar *Volume) UnmarshalJSON(body []byte) error {
 				}
 				vVar.Name = &name
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				vVar.Etag = &etag
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -3627,23 +3836,14 @@ func (vVar *Volume) UnmarshalJSON(body []byte) error {
 				}
 				vVar.Type = &typeVar
 			}
-		case "tags":
+		case "systemData":
 			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
 				if err != nil {
 					return err
 				}
-				vVar.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var volumeProperties VolumeProperties
-				err = json.Unmarshal(*v, &volumeProperties)
-				if err != nil {
-					return err
-				}
-				vVar.VolumeProperties = &volumeProperties
+				vVar.SystemData = &systemData
 			}
 		}
 	}
@@ -3683,8 +3883,6 @@ type VolumeGroup struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 	// VolumeGroupListProperties - Volume group properties
 	*VolumeGroupListProperties `json:"properties,omitempty"`
 }
@@ -3694,9 +3892,6 @@ func (vg VolumeGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vg.Location != nil {
 		objectMap["location"] = vg.Location
-	}
-	if vg.Tags != nil {
-		objectMap["tags"] = vg.Tags
 	}
 	if vg.VolumeGroupListProperties != nil {
 		objectMap["properties"] = vg.VolumeGroupListProperties
@@ -3748,15 +3943,6 @@ func (vg *VolumeGroup) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vg.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				vg.Tags = tags
 			}
 		case "properties":
 			if v != nil {

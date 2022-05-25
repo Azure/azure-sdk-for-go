@@ -279,6 +279,19 @@ func PossibleReplicationScheduleValues() []ReplicationSchedule {
 	return []ReplicationSchedule{ReplicationSchedule10minutely, ReplicationScheduleDaily, ReplicationScheduleHourly}
 }
 
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
+
+const (
+	// ResourceIdentityTypeSystemAssigned ...
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{ResourceIdentityTypeSystemAssigned}
+}
+
 // SecurityStyle enumerates the values for security style.
 type SecurityStyle string
 
@@ -311,6 +324,25 @@ const (
 // PossibleServiceLevelValues returns an array of possible values for the ServiceLevel const type.
 func PossibleServiceLevelValues() []ServiceLevel {
 	return []ServiceLevel{ServiceLevelPremium, ServiceLevelStandard, ServiceLevelStandardZRS, ServiceLevelUltra}
+}
+
+// SkuTier enumerates the values for sku tier.
+type SkuTier string
+
+const (
+	// SkuTierBasic ...
+	SkuTierBasic SkuTier = "Basic"
+	// SkuTierFree ...
+	SkuTierFree SkuTier = "Free"
+	// SkuTierPremium ...
+	SkuTierPremium SkuTier = "Premium"
+	// SkuTierStandard ...
+	SkuTierStandard SkuTier = "Standard"
+)
+
+// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
+func PossibleSkuTierValues() []SkuTier {
+	return []SkuTier{SkuTierBasic, SkuTierFree, SkuTierPremium, SkuTierStandard}
 }
 
 // VolumeStorageToNetworkProximity enumerates the values for volume storage to network proximity.

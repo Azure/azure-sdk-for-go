@@ -116,6 +116,17 @@ stages:
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 
+      - task: Powershell@2
+        inputs:
+          filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
+          arguments: >
+            -ServiceDirectory ${{parameters.ServiceDirectory}}
+            -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+          pwsh: true
+          workingDirectory: $(Pipeline.Workspace)
+        displayName: Dump Package properties
+        condition: succeeded()
+
     - ${{ if and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal')) }}:
       - template: /eng/pipelines/templates/jobs/mgmt-mock-test.yml
         parameters:

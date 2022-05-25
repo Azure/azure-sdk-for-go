@@ -1,5 +1,40 @@
 # Release History
 
+## 0.6.0 (2022-05-25)
+### Breaking Changes
+
+- Type of `Schedule.DayOfWeek` has been changed from `*DayOfWeek` to `*AssessmentDayOfWeek`
+- Type of `AutoBackupSettings.DaysOfWeek` has been changed from `[]*DaysOfWeek` to `[]*AutoBackupDaysOfWeek`
+- Const `DaysOfWeekFriday` has been removed
+- Const `DaysOfWeekWednesday` has been removed
+- Const `DaysOfWeekSunday` has been removed
+- Const `DaysOfWeekMonday` has been removed
+- Const `DaysOfWeekTuesday` has been removed
+- Const `DaysOfWeekThursday` has been removed
+- Const `DaysOfWeekSaturday` has been removed
+- Function `PossibleDaysOfWeekValues` has been removed
+
+### Features Added
+
+- New const `AssessmentDayOfWeekThursday`
+- New const `AssessmentDayOfWeekFriday`
+- New const `AutoBackupDaysOfWeekFriday`
+- New const `AutoBackupDaysOfWeekSaturday`
+- New const `AssessmentDayOfWeekWednesday`
+- New const `AssessmentDayOfWeekSaturday`
+- New const `AutoBackupDaysOfWeekWednesday`
+- New const `AutoBackupDaysOfWeekSunday`
+- New const `DayOfWeekEveryday`
+- New const `AssessmentDayOfWeekSunday`
+- New const `AutoBackupDaysOfWeekTuesday`
+- New const `AssessmentDayOfWeekTuesday`
+- New const `AutoBackupDaysOfWeekMonday`
+- New const `AutoBackupDaysOfWeekThursday`
+- New const `AssessmentDayOfWeekMonday`
+- New function `PossibleAutoBackupDaysOfWeekValues() []AutoBackupDaysOfWeek`
+- New function `PossibleAssessmentDayOfWeekValues() []AssessmentDayOfWeek`
+
+
 ## 0.5.0 (2022-05-17)
 ### Breaking Changes
 

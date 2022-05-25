@@ -93,11 +93,11 @@ steps:
     displayName: Dump Package properties
     condition: succeeded()
 
-  # - task: Powershell@2
-  #   inputs:
-  #     filePath: $(Build.SourcesDirectory)/eng/scripts/Create-ApiReview.ps1
-  #     arguments: >
-  #       -ServiceDirectory ${{parameters.ServiceDirectory}}
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/Create-ApiReview.ps1
+      arguments: >
+        -ServiceDirectory ${{parameters.ServiceDirectory}}
   #       -OutDirectory $(Build.ArtifactStagingDirectory)
   #      # -APIViewUri $(azuresdk-apiview-uri)
   #     #  -APIKey $(azuresdk-apiview-apikey)

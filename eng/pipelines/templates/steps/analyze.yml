@@ -89,36 +89,6 @@ steps:
     condition: succeededOrFailed()
     workingDirectory: 'eng/tools/doccheck'
 
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
-      arguments: >
-        -ServiceDirectory ${{parameters.ServiceDirectory}}
-        -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
-      pwsh: true
-      workingDirectory: $(Pipeline.Workspace)
-    displayName: Dump Package properties
-    condition: succeeded()
-
-  - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
-  
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/scripts/Create-ApiReview.ps1
-      arguments: >
-        -ServiceDirectory ${{parameters.ServiceDirectory}}
-        -OutDirectory $(Build.ArtifactStagingDirectory)
-        -APIViewUri "$(azuresdk-apiview-uri)"
-        -APIKey "$(azuresdk-apiview-apikey)"
-        -APILabel "Auto Review - $(Build.SourceVersion)"
-        -SourceBranch $(Build.SourceBranchName)
-        -DefaultBranch $(DefaultBranch)
-        -ConfigFileDir $(Build.ArtifactStagingDirectory)/PackageInfo
-      pwsh: true
-      workingDirectory: $(Pipeline.Workspace)
-    displayName: Create API review for Go
-    condition: succeeded()
-
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
   - ${{if eq(parameters.NonShipping, 'false')}}:

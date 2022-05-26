@@ -21,6 +21,7 @@
 * Changed type of `JSONWebKey.KeyOps` to `[]*Operation`
 
 ### Bugs Fixed
+* `ReleaseKey()` returns an error when no key version is specified
 
 ### Other Changes
 

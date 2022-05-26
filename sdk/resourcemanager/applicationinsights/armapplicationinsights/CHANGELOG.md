@@ -1,5 +1,23 @@
 # Release History
 
+## 0.6.0 (2022-05-26)
+### Breaking Changes
+
+- Type of `Workbook.Kind` has been changed from `*Kind` to `*WorkbookSharedTypeKind`
+- Type of `WorkbookUpdateParameters.Kind` has been changed from `*SharedTypeKind` to `*WorkbookUpdateSharedTypeKind`
+- Type of `WorkbookResource.Kind` has been changed from `*Kind` to `*WorkbookSharedTypeKind`
+- Const `SharedTypeKindUser` has been removed
+- Const `SharedTypeKindShared` has been removed
+- Function `PossibleSharedTypeKindValues` has been removed
+
+### Features Added
+
+- New const `WorkbookSharedTypeKindShared`
+- New const `WorkbookUpdateSharedTypeKindShared`
+- New function `PossibleWorkbookUpdateSharedTypeKindValues() []WorkbookUpdateSharedTypeKind`
+- New function `PossibleWorkbookSharedTypeKindValues() []WorkbookSharedTypeKind`
+
+
 ## 0.5.0 (2022-05-17)
 ### Breaking Changes
 

@@ -110,7 +110,8 @@ steps:
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: Create API review for Go
-    condition: and(succeeded, ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
+    continueOnError: true
+    condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
 
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:

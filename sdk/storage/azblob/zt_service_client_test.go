@@ -439,7 +439,7 @@ func (s *azblobUnrecordedTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge
 		_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
 		_require.NotNil(err)
 
-		validateStorageError(_require, err, StorageErrorCodeInvalidXMLDocument)
+		validateStorageErrorCode(_require, err, StorageErrorCodeInvalidXMLDocument)
 	}
 }
 
@@ -457,5 +457,5 @@ func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysOmitted() {
 	_, err = svcClient.SetProperties(ctx, &ServiceSetPropertiesOptions{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidXMLDocument)
 }

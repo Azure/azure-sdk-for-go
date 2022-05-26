@@ -8,6 +8,8 @@ package azblob
 
 import (
 	"context"
+	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"log"
@@ -153,10 +155,22 @@ func validateUpload(_require *require.Assertions, blobClient *BlobClient) {
 
 func validateHTTPErrorCode(_require *require.Assertions, err error, code int) {
 	_require.NotNil(err)
-	_require.Equal(strings.Contains(err.Error(), strconv.Itoa(code)), true)
+	var responseErr *azcore.ResponseError
+	errors.As(err, &responseErr)
+	if responseErr != nil {
+		_require.Equal(responseErr.ErrorCode, code)
+	} else {
+		_require.Equal(strings.Contains(err.Error(), strconv.Itoa(code)), true)
+	}
 }
 
-func validateStorageError(_require *require.Assertions, err error, code StorageErrorCode) {
+func validateStorageErrorCode(_require *require.Assertions, err error, code StorageErrorCode) {
 	_require.NotNil(err)
-	_require.Contains(err.Error(), code)
+	var responseErr *azcore.ResponseError
+	errors.As(err, &responseErr)
+	if responseErr != nil {
+		_require.Equal(responseErr.ErrorCode, code)
+	} else {
+		_require.Contains(err.Error(), code)
+	}
 }

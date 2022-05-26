@@ -258,10 +258,10 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //	p := containerClient2.ListBlobsFlat(nil)
 //	p.NextPage(ctx)
 //	err = p.Err() // grab the next page
-//	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
+//	validateStorageErrorCode(c, err, StorageErrorCodeNoAuthenticationInformation)
 //
 //	_, err = blobURL2.Download(ctx, nil)
-//	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
+//	validateStorageErrorCode(c, err, StorageErrorCodeNoAuthenticationInformation)
 //}
 
 func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessTypeBlob() {
@@ -366,7 +366,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////	anonymousBlobService := NewServiceURL(svcClient.URL(), sasPipeline)
 ////	anonymousContainer := anonymousBlobService.NewContainerClient(containerName)
 ////	_, err = anonymousContainer.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
+////	validateStorageErrorCode(c, err, StorageErrorCodeNoAuthenticationInformation)
 ////}
 
 func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
@@ -408,7 +408,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
@@ -625,7 +625,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidXMLDocument)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
@@ -687,7 +687,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
@@ -749,5 +749,5 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }

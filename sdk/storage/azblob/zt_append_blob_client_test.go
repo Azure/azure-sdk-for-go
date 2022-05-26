@@ -109,7 +109,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	appendResp, err = abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
+	validateStorageErrorCode(_require, err, StorageErrorCodeMD5Mismatch)
 }
 
 //nolint
@@ -310,7 +310,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	}
 	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
+	validateStorageErrorCode(_require, err, StorageErrorCodeMD5Mismatch)
 }
 
 func (s *azblobTestSuite) TestBlobCreateAppendMetadataNonEmpty() {
@@ -502,7 +502,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
@@ -580,7 +580,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobCreateAppendIfMatchTrue() {
@@ -644,7 +644,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchFalse() {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchTrue() {
@@ -709,7 +709,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchFalse() {
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobAppendBlockNilBody() {
@@ -731,7 +731,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNilBody() {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(bytes.NewReader(nil)), nil)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func (s *azblobTestSuite) TestBlobAppendBlockEmptyBody() {
@@ -753,7 +753,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockEmptyBody() {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader("")), nil)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func (s *azblobTestSuite) TestBlobAppendBlockNonExistentBlob() {
@@ -775,7 +775,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNonExistentBlob() {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeBlobNotFound)
+	validateStorageErrorCode(_require, err, StorageErrorCodeBlobNotFound)
 }
 
 func validateBlockAppended(_require *require.Assertions, abClient *AppendBlobClient, expectedSize int) {
@@ -855,7 +855,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceFalse() {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue() {
@@ -929,7 +929,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse() {
 	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobAppendBlockIfMatchTrue() {
@@ -986,7 +986,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchFalse() {
 		},
 	})
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchTrue() {
@@ -1042,7 +1042,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 		},
 	})
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 //// TODO: Fix this
@@ -1139,7 +1139,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne() 
 		},
 	})
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero() {
@@ -1164,7 +1164,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero()
 		},
 	})
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeAppendPositionConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeAppendPositionConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeTrue() {
@@ -1214,7 +1214,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
 		},
 	})
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestSealAppendBlob() {
@@ -1245,7 +1245,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 
 	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, "BlobIsSealed")
+	validateStorageErrorCode(_require, err, "BlobIsSealed")
 
 	getPropResp, err := abClient.GetProperties(ctx, nil)
 	_require.Nil(err)
@@ -1314,7 +1314,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 
 	_, err = copiedBlob1.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, "BlobIsSealed")
+	validateStorageErrorCode(_require, err, "BlobIsSealed")
 
 	copiedBlob2, _ := getAppendBlobClient("copy2"+abName, containerClient)
 	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &BlobStartCopyOptions{
@@ -1328,7 +1328,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 
 	_, err = copiedBlob2.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, "BlobIsSealed")
+	validateStorageErrorCode(_require, err, "BlobIsSealed")
 
 	copiedBlob3, _ := getAppendBlobClient("copy3"+abName, containerClient)
 	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &BlobStartCopyOptions{

@@ -11,6 +11,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -79,7 +80,7 @@ func Example() {
 	// Upload data to the block blob
 	blockBlobUploadOptions := azblob.BlockBlobUploadOptions{
 		Metadata: map[string]string{"Foo": "Bar"},
-		TagsMap:  map[string]string{"Year": "2022"},
+		BlobTags: map[string]string{"Year": "2022"},
 	}
 	_, err = blockBlobClient.Upload(context.TODO(), streaming.NopCloser(strings.NewReader(uploadData)), &blockBlobUploadOptions)
 	if err != nil {
@@ -1155,40 +1156,17 @@ func ExampleContainerLeaseClient() {
 	fmt.Println("The lease was broken, and nobody can acquire a lease for 60 seconds")
 }
 
-func ExampleStorageError() {
-	/* This example demonstrates how to handle errors returned from the various Client methods. All these methods return an
-	   object implementing the azcore.Response interface and an object implementing Go's error interface.
-	   The error result is nil if the request was successful; your code can safely use the Response interface object.
-	   If the error is non-nil, the error could be due to:
-
-	1. An invalid argument passed to the method. You should not write code to handle these errors;
-	   instead, fix these errors as they appear during development/testing.
-
-	2. A network request didn't reach an Azure Storage Service. This usually happens due to a bad URL or
-	   faulty networking infrastructure (like a router issue). In this case, an object implementing the
-	   net.Error interface will be returned. The net.Error interface offers Timeout and Temporary methods
-	   which return true if the network error is determined to be a timeout or temporary condition. If
-	   your pipeline uses the retry policy factory, then this policy looks for Timeout/Temporary and
-	   automatically retries based on the retry options you've configured. Because of the retry policy,
-	   your code will usually not call the Timeout/Temporary methods explicitly other than possibly logging
-	   the network failure.
-
-	3. A network request did reach the Azure Storage Service but the service failed to perform the
-	   requested operation. In this case, an object implementing the StorageError interface is returned.
-	   The StorageError interface also implements the net.Error interface and, if you use the retry policy,
-	   you would most likely ignore the Timeout/Temporary methods. However, the StorageError interface exposes
-	   richer information such as a service error code, an error description, details data, and the
-	   service-returned http.Response. And, from the http.Response, you can get the initiating http.Request.
-	*/
-
-	container, err := azblob.NewContainerClientWithNoCredential("https://myaccount.blob.core.windows.net/mycontainer", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = container.Create(context.TODO(), nil)
-
-	if err != nil {
-		fmt.Println(err.Error())
+func ExampleResponseError() {
+	contClient, err := azblob.NewContainerClientWithNoCredential("https://myaccount.blob.core.windows.net/mycontainer", nil)
+	_, err = contClient.Create(context.TODO(), nil)
+	var responseErr *azcore.ResponseError
+	errors.As(err, &responseErr)
+	if responseErr != nil {
+		fmt.Printf("HTTPErrorCode: %s", responseErr.ErrorCode)
+		fmt.Printf("StorageErrorCode: %d", responseErr.StatusCode)
+		fmt.Printf("ErrorMessage: %s\n", responseErr.Error())
+	} else {
+		fmt.Printf("ErrorMessage: %s\n", err.Error())
 	}
 }
 

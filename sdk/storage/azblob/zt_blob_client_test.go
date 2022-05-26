@@ -381,7 +381,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 		s.T().Skip("Test not valid because primary and secondary accounts are the same")
 	}
 	_, err = copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), nil)
-	validateStorageError(_require, err, StorageErrorCodeCannotVerifyCopySource)
+	validateStorageErrorCode(_require, err, StorageErrorCodeCannotVerifyCopySource)
 }
 
 //nolint
@@ -676,7 +676,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchFalse() {
 	destBlobClient, _ := getBlockBlobClient(destBlobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeSourceConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeSourceConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
@@ -742,7 +742,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
 	destBlobClient, _ := getBlockBlobClient(destBlobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeSourceConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeSourceConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceTrue() {
@@ -809,7 +809,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 		},
 	}
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
-	validateStorageError(_require, err, StorageErrorCodeTargetConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeTargetConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
@@ -948,7 +948,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchFalse() {
 
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeTargetConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeTargetConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
@@ -1017,7 +1017,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeTargetConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeTargetConditionNotMet)
 }
 
 //nolint
@@ -1072,7 +1072,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	if err != nil {
 		// If the error is nil, the test continues as normal.
 		// If the error is not nil, we want to check if it's because the copy is finished and send a message indicating this.
-		validateStorageError(_require, err, StorageErrorCodeNoPendingCopyOperation)
+		validateStorageErrorCode(_require, err, StorageErrorCodeNoPendingCopyOperation)
 		_require.Error(errors.New("the test failed because the copy completed because it was aborted"))
 	}
 
@@ -1098,7 +1098,7 @@ func (s *azblobTestSuite) TestBlobAbortCopyNoCopyStarted() {
 
 	_, err = copyBlobClient.AbortCopyFromURL(ctx, "copynotstarted", nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeInvalidQueryParameterValue)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
 func (s *azblobTestSuite) TestBlobSnapshotMetadata() {
@@ -1256,7 +1256,7 @@ func (s *azblobTestSuite) TestBlobSnapshotOfSnapshot() {
 	// The library allows the server to handle the snapshot of snapshot error
 	_, err = snapshotURL.CreateSnapshot(ctx, nil)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeInvalidQueryParameterValue)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
 func (s *azblobTestSuite) TestBlobSnapshotIfModifiedSinceTrue() {
@@ -1563,7 +1563,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataOffsetOutOfRange() {
 	}
 	_, err = bbClient.Download(ctx, &options)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeInvalidRange)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidRange)
 }
 
 func (s *azblobTestSuite) TestBlobDownloadDataCountNegative() {
@@ -2162,7 +2162,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceFalse() {
 		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceTrue() {
@@ -2226,7 +2226,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceFalse() {
 		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobDeleteIfMatchTrue() {
@@ -2287,7 +2287,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfMatchFalse() {
 		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchTrue() {
@@ -2347,7 +2347,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchFalse() {
 		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue() {
@@ -2535,7 +2535,7 @@ func (s *azblobTestSuite) TestBlobGetPropsOnMissingBlob() {
 
 	_, err = bbClient.GetProperties(ctx, nil)
 	validateHTTPErrorCode(_require, err, 404)
-	validateStorageError(_require, err, StorageErrorCodeBlobNotFound)
+	validateStorageErrorCode(_require, err, StorageErrorCodeBlobNotFound)
 }
 
 func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
@@ -3033,7 +3033,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfModifiedSinceFalse() {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetMetadataIfUnmodifiedSinceTrue() {
@@ -3093,7 +3093,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfUnmodifiedSinceFalse() {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetMetadataIfMatchTrue() {
@@ -3145,7 +3145,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfMatchFalse() {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchTrue() {
@@ -3197,7 +3197,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 	}
 	_, err = bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 //nolint
@@ -3370,7 +3370,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
 ////	_, err = bbClient.SetTier(ctx, AccessTierType("garbage"), LeaseAccessConditions{})
-////	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
+////	validateStorageErrorCode(c, err, StorageErrorCodeInvalidHeaderValue)
 ////}
 ////
 

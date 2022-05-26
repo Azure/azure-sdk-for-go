@@ -13,7 +13,7 @@ import "time"
 // BlockBlobUploadOptions provides set of configurations for UploadBlockBlob operation
 type BlockBlobUploadOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
-	TagsMap map[string]string
+	BlobTags map[string]string
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
 	Metadata map[string]string
@@ -37,7 +37,7 @@ func (o *BlockBlobUploadOptions) format() (*blockBlobClientUploadOptions, *BlobH
 	}
 
 	basics := blockBlobClientUploadOptions{
-		BlobTagsString:          serializeBlobTagsToStrPtr(o.TagsMap),
+		BlobTagsString:          serializeBlobTagsToStrPtr(o.BlobTags),
 		Metadata:                o.Metadata,
 		Tier:                    o.Tier,
 		TransactionalContentMD5: o.TransactionalContentMD5,

@@ -61,7 +61,7 @@ func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeInvalidResourceName)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidResourceName)
 }
 
 func (s *azblobTestSuite) TestContainerCreateEmptyName() {
@@ -83,7 +83,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidQueryParameterValue)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
 func (s *azblobTestSuite) TestContainerCreateNameCollision() {
@@ -110,7 +110,7 @@ func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeContainerAlreadyExists)
+	validateStorageErrorCode(_require, err, StorageErrorCodeContainerAlreadyExists)
 }
 
 func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
@@ -386,7 +386,7 @@ func validateContainerDeleted(_require *require.Assertions, containerClient *Con
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeContainerNotFound)
+	validateStorageErrorCode(_require, err, StorageErrorCodeContainerNotFound)
 }
 
 func (s *azblobTestSuite) TestContainerDelete() {
@@ -460,7 +460,7 @@ func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
 	_, err = containerClient.Delete(ctx, nil)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeContainerNotFound)
+	validateStorageErrorCode(_require, err, StorageErrorCodeContainerNotFound)
 }
 
 func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
@@ -518,7 +518,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
@@ -577,7 +577,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 	_, err = containerClient.Delete(ctx, &deleteContainerOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 ////func (s *azblobTestSuite) TestContainerAccessConditionsUnsupportedConditions() {
@@ -1048,7 +1048,7 @@ func (s *azblobTestSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 	_, err = containerClient.GetProperties(ctx, nil)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeContainerNotFound)
+	validateStorageErrorCode(_require, err, StorageErrorCodeContainerNotFound)
 }
 
 func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
@@ -1144,7 +1144,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 	_, err = containerClient.SetMetadata(ctx, nil)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeContainerNotFound)
+	validateStorageErrorCode(_require, err, StorageErrorCodeContainerNotFound)
 }
 
 //
@@ -1197,7 +1197,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 //	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
 //	_require.NotNil(err)
 //
-//	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+//	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 //}
 
 func (s *azblobTestSuite) TestContainerNewBlobURL() {

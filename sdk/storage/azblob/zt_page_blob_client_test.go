@@ -226,7 +226,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
+	validateStorageErrorCode(_require, err, StorageErrorCodeMD5Mismatch)
 }
 
 //nolint
@@ -481,7 +481,7 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 	})
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
+	validateStorageErrorCode(_require, err, StorageErrorCodeMD5Mismatch)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
@@ -507,7 +507,7 @@ func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
 	_, err = pbClient.Create(ctx, 1, &createPageBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
@@ -731,7 +731,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
@@ -807,7 +807,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
@@ -877,7 +877,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
 	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
@@ -946,7 +946,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 //nolint
@@ -1029,7 +1029,7 @@ func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeBlobNotFound)
+	validateStorageErrorCode(_require, err, StorageErrorCodeBlobNotFound)
 }
 
 func validateUploadPages(_require *require.Assertions, pbClient *PageBlobClient) {
@@ -1122,7 +1122,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 	})
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
@@ -1196,7 +1196,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 	})
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
@@ -1270,7 +1270,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
@@ -1345,7 +1345,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue() {
@@ -1416,7 +1416,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
@@ -1448,7 +1448,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidInput)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidInput)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
@@ -1528,7 +1528,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne() {
@@ -1628,7 +1628,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 //func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne() {
@@ -1745,7 +1745,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 	})
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
@@ -1791,7 +1791,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
 	})
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
@@ -1833,7 +1833,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
@@ -1874,7 +1874,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
@@ -1919,7 +1919,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
@@ -1937,7 +1937,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidInput)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidInput)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
@@ -1982,7 +1982,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
@@ -2000,7 +2000,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidInput)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidInput)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
@@ -2054,7 +2054,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
@@ -2072,7 +2072,7 @@ func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
 	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidInput)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidInput)
 }
 
 func setupGetPageRangesTest(_require *require.Assertions, testName string) (containerClient *ContainerClient, pbClient *PageBlobClient) {
@@ -2324,7 +2324,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 		err := pager.Err()
 		_require.NotNil(err)
 
-		validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+		validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 	}
 
 }
@@ -2365,7 +2365,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 	for pager.NextPage(ctx) {
 		err := pager.Err()
 		_require.NotNil(err)
-		validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+		validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 	}
 }
 
@@ -2476,7 +2476,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() 
 	for pager.NextPage(ctx) {
 		err := pager.Err()
 		_require.NotNil(err)
-		validateStorageError(_require, err, StorageErrorCodePreviousSnapshotNotFound)
+		validateStorageErrorCode(_require, err, StorageErrorCodePreviousSnapshotNotFound)
 	}
 
 }
@@ -2587,7 +2587,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 		err := pager.Err()
 		_require.Nil(err)
 		_require.NotNil(err)
-		validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+		validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 	}
 
 }
@@ -2636,7 +2636,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 
 	for pager.NextPage(ctx) {
 		_require.NotNil(pager.Err())
-		validateStorageError(_require, pager.Err(), StorageErrorCodeConditionNotMet)
+		validateStorageErrorCode(_require, pager.Err(), StorageErrorCodeConditionNotMet)
 	}
 }
 
@@ -2824,7 +2824,7 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
@@ -2896,7 +2896,7 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
@@ -2957,7 +2957,7 @@ func (s *azblobTestSuite) TestBlobResizeIfMatchFalse() {
 	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
@@ -3018,7 +3018,7 @@ func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse() {
 	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
@@ -3046,7 +3046,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
@@ -3079,7 +3079,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeInvalidHeaderValue)
+	validateStorageErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func validateSequenceNumberSet(_require *require.Assertions, pbClient *PageBlobClient) {
@@ -3161,7 +3161,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
@@ -3237,7 +3237,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
@@ -3302,7 +3302,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
@@ -3367,7 +3367,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 ////func setupStartIncrementalCopyTest(_require *require.Assertions, testName string) (containerClient containerClient,
@@ -3438,7 +3438,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 ////    _, err = copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, nil)
 ////    _require.NotNil(err)
 ////
-////    validateStorageError(_require, err, StorageErrorCodeCannotVerifyCopySource)
+////    validateStorageErrorCode(_require, err, StorageErrorCodeCannotVerifyCopySource)
 ////}
 //
 ////func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue() {
@@ -3478,7 +3478,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 ////    _, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 ////    _require.NotNil(err)
 ////
-////    validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+////    validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 ////}
 //
 ////func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue() {
@@ -3518,7 +3518,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 ////    _, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 ////    _require.NotNil(err)
 ////
-////    validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+////    validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 ////}
 //
 ////nolint
@@ -3558,7 +3558,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 ////    _, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 ////    _require.NotNil(err)
 ////
-////    validateStorageError(_require, err, StorageErrorCodeTargetConditionNotMet)
+////    validateStorageErrorCode(_require, err, StorageErrorCodeTargetConditionNotMet)
 ////}
 ////
 //
@@ -3599,5 +3599,5 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 ////    _, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 ////    _require.NotNil(err)
 ////
-////    validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+////    validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 ////}

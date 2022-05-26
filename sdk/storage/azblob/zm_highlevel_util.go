@@ -35,8 +35,8 @@ type UploadOption struct {
 	// AccessTier indicates the tier of blob
 	AccessTier *AccessTier
 
-	// TagsMap
-	TagsMap map[string]string
+	// BlobTags
+	BlobTags map[string]string
 
 	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
 	CpkInfo      *CpkInfo
@@ -61,7 +61,7 @@ func (o *UploadOption) getStageBlockOptions() *BlockBlobStageBlockOptions {
 
 func (o *UploadOption) getUploadBlockBlobOptions() *BlockBlobUploadOptions {
 	return &BlockBlobUploadOptions{
-		TagsMap:              o.TagsMap,
+		BlobTags:             o.BlobTags,
 		Metadata:             o.Metadata,
 		Tier:                 o.AccessTier,
 		HTTPHeaders:          o.HTTPHeaders,
@@ -73,7 +73,7 @@ func (o *UploadOption) getUploadBlockBlobOptions() *BlockBlobUploadOptions {
 
 func (o *UploadOption) getCommitBlockListOptions() *BlockBlobCommitBlockListOptions {
 	return &BlockBlobCommitBlockListOptions{
-		BlobTagsMap:     o.TagsMap,
+		BlobTagsMap:     o.BlobTags,
 		Metadata:        o.Metadata,
 		Tier:            o.AccessTier,
 		BlobHTTPHeaders: o.HTTPHeaders,

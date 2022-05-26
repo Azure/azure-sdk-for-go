@@ -27,7 +27,7 @@ type AppendBlobCreateOptions struct {
 
 	CpkScopeInfo *CpkScopeInfo
 	// Optional. Used to set blob tags in various blob operations.
-	TagsMap map[string]string
+	BlobTags map[string]string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
@@ -44,7 +44,7 @@ func (o *AppendBlobCreateOptions) format() (*appendBlobClientCreateOptions, *Blo
 	}
 
 	options := appendBlobClientCreateOptions{
-		BlobTagsString:           serializeBlobTagsToStrPtr(o.TagsMap),
+		BlobTagsString:           serializeBlobTagsToStrPtr(o.BlobTags),
 		Metadata:                 o.Metadata,
 		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
 		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,

@@ -1164,7 +1164,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	_, err = destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeMD5Mismatch)
+	validateStorageErrorCode(_require, err, StorageErrorCodeMD5Mismatch)
 }
 
 //func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {

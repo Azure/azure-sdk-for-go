@@ -98,6 +98,18 @@ func (r *BlobDownloadResponse) Body(options *RetryReaderOptions) io.ReadCloser {
 	)
 }
 
+// GetHTTPHeaders returns the user-modifiable properties for this blob.
+func (r *BlobDownloadResponse) GetHTTPHeaders() BlobHTTPHeaders {
+	return BlobHTTPHeaders{
+		BlobContentType:        r.ContentType,
+		BlobContentEncoding:    r.ContentEncoding,
+		BlobContentLanguage:    r.ContentLanguage,
+		BlobContentDisposition: r.ContentDisposition,
+		BlobCacheControl:       r.CacheControl,
+		BlobContentMD5:         r.ContentMD5,
+	}
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // BlobDeleteOptions provides set of configurations for Delete blob operation
@@ -227,6 +239,18 @@ func toGetBlobPropertiesResponse(resp blobClientGetPropertiesResponse) BlobGetPr
 	return getResp
 }
 
+// GetHTTPHeaders returns the user-modifiable properties for this blob.
+func (r *BlobGetPropertiesResponse) GetHTTPHeaders() BlobHTTPHeaders {
+	return BlobHTTPHeaders{
+		BlobContentType:        r.ContentType,
+		BlobContentEncoding:    r.ContentEncoding,
+		BlobContentLanguage:    r.ContentLanguage,
+		BlobContentDisposition: r.ContentDisposition,
+		BlobCacheControl:       r.CacheControl,
+		BlobContentMD5:         r.ContentMD5,
+	}
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // BlobSetHTTPHeadersOptions provides set of configurations for SetHTTPHeaders on blob operation
@@ -324,7 +348,7 @@ type BlobStartCopyOptions struct {
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 	// Optional. Used to set blob tags in various blob operations.
-	TagsMap map[string]string
+	BlobTags map[string]string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
@@ -352,7 +376,7 @@ func (o *BlobStartCopyOptions) format() (blobStartCopyFromUrlOptions *blobClient
 	}
 
 	basics := blobClientStartCopyFromURLOptions{
-		BlobTagsString:           serializeBlobTagsToStrPtr(o.TagsMap),
+		BlobTagsString:           serializeBlobTagsToStrPtr(o.BlobTags),
 		Metadata:                 o.Metadata,
 		RehydratePriority:        o.RehydratePriority,
 		SealBlob:                 o.SealBlob,
@@ -410,7 +434,7 @@ type BlobSetTagsOptions struct {
 	// Optional header, Specifies the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
-	TagsMap map[string]string
+	BlobTags map[string]string
 
 	ModifiedAccessConditions *ModifiedAccessConditions
 	LeaseAccessConditions    *LeaseAccessConditions
@@ -422,7 +446,7 @@ func (o *BlobSetTagsOptions) format() (*blobClientSetTagsOptions, *ModifiedAcces
 	}
 
 	options := &blobClientSetTagsOptions{
-		Tags:                      serializeBlobTags(o.TagsMap),
+		Tags:                      serializeBlobTags(o.BlobTags),
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		VersionID:                 o.VersionID,

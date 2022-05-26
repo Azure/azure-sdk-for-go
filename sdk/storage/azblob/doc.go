@@ -161,7 +161,7 @@ Examples
 	// Upload data to the block blob
 	blockBlobUploadOptions := azblob.BlockBlobUploadOptions{
 		Metadata: map[string]string{"Foo": "Bar"},
-		TagsMap:  map[string]string{"Year": "2022"},
+		BlobTags:  map[string]string{"Year": "2022"},
 	}
 	_, err = blockBlobClient.Upload(context.TODO(), streaming.NopCloser(strings.NewReader(uploadData)), &blockBlobUploadOptions)
 	handle(err)

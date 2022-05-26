@@ -601,7 +601,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	_require.NotNil(err)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
@@ -677,7 +677,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 	_, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
 	_ = err
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
@@ -747,7 +747,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
 	}
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &uploadBlockBlobOptions)
 	_require.NotNil(err)
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
@@ -819,7 +819,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
 		},
 	})
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func validateBlobCommitted(_require *require.Assertions, bbClient *BlockBlobClient) {
@@ -908,7 +908,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
 	})
 	_ = err
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
@@ -952,7 +952,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
@@ -990,7 +990,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue() {
@@ -1028,7 +1028,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
 	}
 	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 
-	validateStorageError(_require, err, StorageErrorCodeConditionNotMet)
+	validateStorageErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {

@@ -63,6 +63,16 @@ type ManagementPoliciesClientAPI interface {
 
 var _ ManagementPoliciesClientAPI = (*storage.ManagementPoliciesClient)(nil)
 
+// BlobInventoryPoliciesClientAPI contains the set of methods on the BlobInventoryPoliciesClient type.
+type BlobInventoryPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, properties storage.BlobInventoryPolicy) (result storage.BlobInventoryPolicy, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string) (result storage.BlobInventoryPolicy, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.ListBlobInventoryPolicy, err error)
+}
+
+var _ BlobInventoryPoliciesClientAPI = (*storage.BlobInventoryPoliciesClient)(nil)
+
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result autorest.Response, err error)

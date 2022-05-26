@@ -10,6 +10,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"strings"
 	"time"
 )
@@ -35,7 +36,7 @@ func (v AccountSASSignatureValues) Sign(sharedKeyCredential *SharedKeyCredential
 		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
 	}
 	if v.Version == "" {
-		v.Version = SASVersion
+		v.Version = internal.SASVersion
 	}
 	perms := &AccountSASPermissions{}
 	if err := perms.Parse(v.Permissions); err != nil {

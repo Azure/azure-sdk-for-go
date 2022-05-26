@@ -9,6 +9,7 @@ package azblob
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -29,10 +30,10 @@ func (c *ContainerClient) URL() string {
 
 // NewContainerClient creates a ContainerClient object using the specified URL, Azure AD credential, and options.
 func NewContainerClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*ContainerClient, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(containerURL, conOptions)
+	conn := internal.NewConnection(containerURL, conOptions)
 
 	return &ContainerClient{
 		client: newContainerClient(conn.Endpoint(), conn.Pipeline()),
@@ -42,7 +43,7 @@ func NewContainerClient(containerURL string, cred azcore.TokenCredential, option
 // NewContainerClientWithNoCredential creates a ContainerClient object using the specified URL and options.
 func NewContainerClientWithNoCredential(containerURL string, options *ClientOptions) (*ContainerClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(containerURL, conOptions)
+	conn := internal.NewConnection(containerURL, conOptions)
 
 	return &ContainerClient{
 		client: newContainerClient(conn.Endpoint(), conn.Pipeline()),
@@ -54,7 +55,7 @@ func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredent
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(containerURL, conOptions)
+	conn := internal.NewConnection(containerURL, conOptions)
 
 	return &ContainerClient{
 		client:    newContainerClient(conn.Endpoint(), conn.Pipeline()),

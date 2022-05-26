@@ -8,7 +8,7 @@ package azblob
 
 import (
 	"bytes"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -16,7 +16,7 @@ import (
 func (s *azblobUnrecordedTestSuite) TestBytesWriterWriteAt() {
 	_require := require.New(s.T())
 	b := make([]byte, 10)
-	buffer := newBytesWriter(b)
+	buffer := internal.NewBytesWriter(b)
 
 	count, err := buffer.WriteAt([]byte{1, 2}, 10)
 	_require.Contains(err.Error(), "offset value is out of range")

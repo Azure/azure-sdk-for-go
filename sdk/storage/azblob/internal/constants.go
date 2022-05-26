@@ -4,9 +4,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azblob
+package internal
 
 var SASVersion = "2019-12-12"
+
+const (
+	ModuleName    = "azblob"
+	ModuleVersion = "v0.4.1"
+)
 
 //nolint
 const (
@@ -27,20 +32,20 @@ const (
 )
 
 const (
-	headerAuthorization     = "Authorization"
-	headerXmsDate           = "x-ms-date"
-	headerContentLength     = "Content-Length"
-	headerContentEncoding   = "Content-Encoding"
-	headerContentLanguage   = "Content-Language"
-	headerContentType       = "Content-Type"
-	headerContentMD5        = "Content-MD5"
-	headerIfModifiedSince   = "If-Modified-Since"
-	headerIfMatch           = "If-Match"
-	headerIfNoneMatch       = "If-None-Match"
-	headerIfUnmodifiedSince = "If-Unmodified-Since"
-	headerRange             = "Range"
+	HeaderAuthorization     = "Authorization"
+	HeaderXmsDate           = "x-ms-date"
+	HeaderContentLength     = "Content-Length"
+	HeaderContentEncoding   = "Content-Encoding"
+	HeaderContentLanguage   = "Content-Language"
+	HeaderContentType       = "Content-Type"
+	HeaderContentMD5        = "Content-MD5"
+	HeaderIfModifiedSince   = "If-Modified-Since"
+	HeaderIfMatch           = "If-Match"
+	HeaderIfNoneMatch       = "If-None-Match"
+	HeaderIfUnmodifiedSince = "If-Unmodified-Since"
+	HeaderRange             = "Range"
 )
 
 const (
-	tokenScope = "https://storage.azure.com/.default"
+	TokenScope = "https://storage.azure.com/.default"
 )

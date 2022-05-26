@@ -9,6 +9,7 @@ package azblob
 import (
 	"bytes"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"strings"
 	"time"
 )
@@ -95,7 +96,7 @@ func (v BlobSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *Share
 		v.Permissions = perms.String()
 	}
 	if v.Version == "" {
-		v.Version = SASVersion
+		v.Version = internal.SASVersion
 	}
 	startTime, expiryTime, snapshotTime := FormatTimesForSASSigning(v.StartTime, v.ExpiryTime, v.SnapshotTime)
 

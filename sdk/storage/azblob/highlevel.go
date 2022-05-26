@@ -26,22 +26,22 @@ import (
 func (bb *BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o UploadOption) (*http.Response, error) {
 	if o.BlockSize == 0 {
 		// If bufferSize > (BlockBlobMaxStageBlockBytes * BlockBlobMaxBlocks), then error
-		if readerSize > BlockBlobMaxStageBlockBytes*BlockBlobMaxBlocks {
+		if readerSize > internal.BlockBlobMaxStageBlockBytes*internal.BlockBlobMaxBlocks {
 			return nil, errors.New("buffer is too large to upload to a block blob")
 		}
 		// If bufferSize <= BlockBlobMaxUploadBlobBytes, then Upload should be used with just 1 I/O request
-		if readerSize <= BlockBlobMaxUploadBlobBytes {
-			o.BlockSize = BlockBlobMaxUploadBlobBytes // Default if unspecified
+		if readerSize <= internal.BlockBlobMaxUploadBlobBytes {
+			o.BlockSize = internal.BlockBlobMaxUploadBlobBytes // Default if unspecified
 		} else {
-			o.BlockSize = readerSize / BlockBlobMaxBlocks   // buffer / max blocks = block size to use all 50,000 blocks
-			if o.BlockSize < BlobDefaultDownloadBlockSize { // If the block size is smaller than 4MB, round up to 4MB
-				o.BlockSize = BlobDefaultDownloadBlockSize
+			o.BlockSize = readerSize / internal.BlockBlobMaxBlocks   // buffer / max blocks = block size to use all 50,000 blocks
+			if o.BlockSize < internal.BlobDefaultDownloadBlockSize { // If the block size is smaller than 4MB, round up to 4MB
+				o.BlockSize = internal.BlobDefaultDownloadBlockSize
 			}
 			// StageBlock will be called with blockSize blocks and a Parallelism of (BufferSize / BlockSize).
 		}
 	}
 
-	if readerSize <= BlockBlobMaxUploadBlobBytes {
+	if readerSize <= internal.BlockBlobMaxUploadBlobBytes {
 		// If the size can fit in 1 Upload call, do it this way
 		var body io.ReadSeeker = io.NewSectionReader(reader, 0, readerSize)
 		if o.Progress != nil {
@@ -149,7 +149,7 @@ func (bb *BlockBlobClient) UploadStream(ctx context.Context, body io.Reader, o U
 // Offset and count are optional, pass 0 for both to download the entire blob.
 func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset int64, count int64, writer io.WriterAt, o DownloadOptions) error {
 	if o.BlockSize == 0 {
-		o.BlockSize = BlobDefaultDownloadBlockSize
+		o.BlockSize = internal.BlobDefaultDownloadBlockSize
 	}
 
 	if count == CountToEnd { // If size not specified, calculate it
@@ -197,7 +197,7 @@ func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset int64, count
 						progressLock.Unlock()
 					})
 			}
-			_, err = io.Copy(newSectionWriter(writer, chunkStart, count), body)
+			_, err = io.Copy(internal.NewSectionWriter(writer, chunkStart, count), body)
 			if err != nil {
 				return err
 			}
@@ -214,7 +214,7 @@ func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset int64, count
 // DownloadToBuffer downloads an Azure blob to a buffer with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
 func (b *BlobClient) DownloadToBuffer(ctx context.Context, offset int64, count int64, _bytes []byte, o DownloadOptions) error {
-	return b.DownloadToWriterAt(ctx, offset, count, newBytesWriter(_bytes), o)
+	return b.DownloadToWriterAt(ctx, offset, count, internal.NewBytesWriter(_bytes), o)
 }
 
 // DownloadToFile downloads an Azure blob to a local file.

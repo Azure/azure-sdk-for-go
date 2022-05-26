@@ -4,12 +4,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azblob
+package internal
 
 import (
 	"fmt"
 	"sync"
 )
+
+const _1MiB = 1024 * 1024
 
 // TransferManager provides a buffer and thread pool manager for certain transfer options.
 // It is undefined behavior if code outside this package call any of these methods.

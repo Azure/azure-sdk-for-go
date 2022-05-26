@@ -1232,19 +1232,19 @@ func (s *azblobTestSuite) TestBlobResizeWithCPK() {
 	defer deleteContainer(_require, containerClient)
 
 	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlobWithCPK(_require, pbName, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
+	pbClient := createNewPageBlobWithCPK(_require, pbName, containerClient, internal.PageBlobPageBytes*10, &testCPKByValue, nil)
 
 	resizePageBlobOptions := PageBlobResizeOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	_, err = pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
+	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
 	_require.Nil(err)
 
 	getBlobPropertiesOptions := BlobGetPropertiesOptions{
 		CpkInfo: &testCPKByValue,
 	}
 	resp, _ := pbClient.GetProperties(ctx, &getBlobPropertiesOptions)
-	_require.Equal(*resp.ContentLength, int64(PageBlobPageBytes))
+	_require.Equal(*resp.ContentLength, int64(internal.PageBlobPageBytes))
 }
 
 func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {

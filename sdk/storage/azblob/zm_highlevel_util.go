@@ -9,6 +9,7 @@ package azblob
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 )
 
 const _1MiB = 1024 * 1024
@@ -87,7 +88,7 @@ func (o *UploadOption) getCommitBlockListOptions() *BlockBlobCommitBlockListOpti
 type UploadStreamOptions struct {
 	// TransferManager provides a TransferManager that controls buffer allocation/reuse and
 	// concurrency. This overrides BufferSize and MaxBuffers if set.
-	TransferManager      TransferManager
+	TransferManager      internal.TransferManager
 	transferMangerNotSet bool
 	// BufferSize sizes the buffer used to read data from source. If < 1 MiB, defaults to 1 MiB.
 	BufferSize int
@@ -116,7 +117,7 @@ func (u *UploadStreamOptions) defaults() error {
 	}
 
 	var err error
-	u.TransferManager, err = NewStaticBuffer(u.BufferSize, u.MaxBuffers)
+	u.TransferManager, err = internal.NewStaticBuffer(u.BufferSize, u.MaxBuffers)
 	if err != nil {
 		return fmt.Errorf("bug: default transfer manager could not be created: %s", err)
 	}

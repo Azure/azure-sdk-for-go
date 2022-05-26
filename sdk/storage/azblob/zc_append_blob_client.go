@@ -8,6 +8,7 @@ package azblob
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -22,10 +23,10 @@ type AppendBlobClient struct {
 
 // NewAppendBlobClient creates an AppendBlobClient with the specified URL, Azure AD credential, and options.
 func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*AppendBlobClient, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, conOptions)
+	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &AppendBlobClient{
 		client: newAppendBlobClient(conn.Endpoint(), conn.Pipeline()),
@@ -38,7 +39,7 @@ func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *C
 // NewAppendBlobClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
 func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*AppendBlobClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(blobURL, conOptions)
+	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &AppendBlobClient{
 		client: newAppendBlobClient(conn.Endpoint(), conn.Pipeline()),
@@ -53,7 +54,7 @@ func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential,
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, conOptions)
+	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &AppendBlobClient{
 		client: newAppendBlobClient(conn.Endpoint(), conn.Pipeline()),

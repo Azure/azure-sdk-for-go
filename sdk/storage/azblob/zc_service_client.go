@@ -9,6 +9,7 @@ package azblob
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"net/url"
 	"strings"
 	"time"
@@ -41,10 +42,10 @@ func (s ServiceClient) URL() string {
 // NewServiceClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(serviceURL, conOptions)
+	conn := internal.NewConnection(serviceURL, conOptions)
 
 	return &ServiceClient{
 		client: newServiceClient(conn.Endpoint(), conn.Pipeline()),
@@ -55,7 +56,7 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
 func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(serviceURL, conOptions)
+	conn := internal.NewConnection(serviceURL, conOptions)
 
 	return &ServiceClient{
 		client: newServiceClient(conn.Endpoint(), conn.Pipeline()),
@@ -68,7 +69,7 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(serviceURL, conOptions)
+	conn := internal.NewConnection(serviceURL, conOptions)
 
 	return &ServiceClient{
 		client:    newServiceClient(conn.Endpoint(), conn.Pipeline()),
@@ -232,7 +233,7 @@ func (s *ServiceClient) GetSASURL(resources AccountSASResourceTypes, permissions
 	}
 
 	qps, err := AccountSASSignatureValues{
-		Version:       SASVersion,
+		Version:       internal.SASVersion,
 		Protocol:      SASProtocolHTTPS,
 		Permissions:   permissions.String(),
 		Services:      "b",

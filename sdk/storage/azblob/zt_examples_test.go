@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 	"io/ioutil"
 	"log"
@@ -992,12 +993,12 @@ func ExamplePageBlobClient() {
 		log.Fatal(err)
 	}
 
-	_, err = pageBlobClient.Create(context.TODO(), azblob.PageBlobPageBytes*4, nil)
+	_, err = pageBlobClient.Create(context.TODO(), internal.PageBlobPageBytes*4, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	page := make([]byte, azblob.PageBlobPageBytes)
+	page := make([]byte, internal.PageBlobPageBytes)
 	copy(page, "Page 0")
 	_, err = pageBlobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page)), nil)
 	if err != nil {
@@ -1008,7 +1009,7 @@ func ExamplePageBlobClient() {
 	_, err = pageBlobClient.UploadPages(
 		context.TODO(),
 		streaming.NopCloser(bytes.NewReader(page)),
-		&azblob.PageBlobUploadPagesOptions{PageRange: &azblob.HttpRange{Offset: 0, Count: 2 * azblob.PageBlobPageBytes}},
+		&azblob.PageBlobUploadPagesOptions{PageRange: &azblob.HttpRange{Offset: 0, Count: 2 * internal.PageBlobPageBytes}},
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -1017,7 +1018,7 @@ func ExamplePageBlobClient() {
 	//getPages, err := pageBlobClient.GetPageRanges(context.TODO(), azblob.HttpRange{Offset: 0, Count: }, nil)
 
 	pager := pageBlobClient.GetPageRanges(&azblob.PageBlobGetPageRangesOptions{
-		PageRange: azblob.NewHttpRange(0, 10*azblob.PageBlobPageBytes),
+		PageRange: azblob.NewHttpRange(0, 10*internal.PageBlobPageBytes),
 	})
 
 	for pager.NextPage(context.TODO()) {
@@ -1031,13 +1032,13 @@ func ExamplePageBlobClient() {
 		log.Fatal(pager.Err())
 	}
 
-	_, err = pageBlobClient.ClearPages(context.TODO(), azblob.HttpRange{Offset: 0, Count: 1 * azblob.PageBlobPageBytes}, nil)
+	_, err = pageBlobClient.ClearPages(context.TODO(), azblob.HttpRange{Offset: 0, Count: 1 * internal.PageBlobPageBytes}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	pager = pageBlobClient.GetPageRanges(&azblob.PageBlobGetPageRangesOptions{
-		PageRange: azblob.NewHttpRange(0, 10*azblob.PageBlobPageBytes),
+		PageRange: azblob.NewHttpRange(0, 10*internal.PageBlobPageBytes),
 	})
 
 	for pager.NextPage(context.TODO()) {

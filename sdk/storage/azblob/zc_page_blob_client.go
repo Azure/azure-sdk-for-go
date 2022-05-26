@@ -9,6 +9,7 @@ package azblob
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 	"net/url"
 
@@ -25,10 +26,10 @@ type PageBlobClient struct {
 // NewPageBlobClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
 func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*PageBlobClient, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, conOptions)
+	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &PageBlobClient{
 		client: newPageBlobClient(conn.Endpoint(), conn.Pipeline()),
@@ -42,7 +43,7 @@ func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *Cli
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
 func NewPageBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*PageBlobClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(blobURL, conOptions)
+	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &PageBlobClient{
 		client: newPageBlobClient(conn.Endpoint(), conn.Pipeline()),
@@ -58,7 +59,7 @@ func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, o
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, conOptions)
+	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &PageBlobClient{
 		client: newPageBlobClient(conn.Endpoint(), conn.Pipeline()),

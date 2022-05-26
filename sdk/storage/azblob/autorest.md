@@ -169,3 +169,6 @@ directive:
     $.BlobItemInternal.properties["OrMetadata"] = $.BlobItemInternal.properties["ObjectReplicationMetadata"];
     delete $.BlobItemInternal.properties["ObjectReplicationMetadata"];
 ```
+
+### Note:
+#### 1. Remove ModuleName and ModuleVersion from the generated code and move it to internal/constants.go

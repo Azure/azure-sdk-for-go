@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azblob
+package internal
 
 import (
 	"errors"
@@ -12,7 +12,7 @@ import (
 
 type bytesWriter []byte
 
-func newBytesWriter(b []byte) bytesWriter {
+func NewBytesWriter(b []byte) bytesWriter {
 	return b
 }
 

@@ -4,30 +4,30 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azblob
+package internal
 
 import (
 	"errors"
 	"io"
 )
 
-type sectionWriter struct {
-	count    int64
-	offset   int64
-	position int64
-	writerAt io.WriterAt
+type SectionWriter struct {
+	Count    int64
+	Offset   int64
+	Position int64
+	WriterAt io.WriterAt
 }
 
-func newSectionWriter(c io.WriterAt, off int64, count int64) *sectionWriter {
-	return &sectionWriter{
-		count:    count,
-		offset:   off,
-		writerAt: c,
+func NewSectionWriter(c io.WriterAt, off int64, count int64) *SectionWriter {
+	return &SectionWriter{
+		Count:    count,
+		Offset:   off,
+		WriterAt: c,
 	}
 }
 
-func (c *sectionWriter) Write(p []byte) (int, error) {
-	remaining := c.count - c.position
+func (c *SectionWriter) Write(p []byte) (int, error) {
+	remaining := c.Count - c.Position
 
 	if remaining <= 0 {
 		return 0, errors.New("end of section reached")
@@ -39,8 +39,8 @@ func (c *sectionWriter) Write(p []byte) (int, error) {
 		slice = slice[:remaining]
 	}
 
-	n, err := c.writerAt.WriteAt(slice, c.offset+c.position)
-	c.position += int64(n)
+	n, err := c.WriterAt.WriteAt(slice, c.Offset+c.Position)
+	c.Position += int64(n)
 	if err != nil {
 		return n, err
 	}

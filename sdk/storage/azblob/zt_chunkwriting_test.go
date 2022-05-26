@@ -11,6 +11,7 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 	"math/rand"
 	"os"
@@ -177,7 +178,7 @@ func (s *azblobUnrecordedTestSuite) TestGetErr() {
 		{"Err returned", context.Background(), err, err},
 	}
 
-	tm, err := NewStaticBuffer(_1MiB, 1)
+	tm, err := internal.NewStaticBuffer(_1MiB, 1)
 	if err != nil {
 		panic(err)
 	}
@@ -206,7 +207,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyFromReader() {
 	canceled, cancel := context.WithCancel(context.Background())
 	cancel()
 
-	spm, err := NewSyncPool(_1MiB, 2)
+	spm, err := internal.NewSyncPool(_1MiB, 2)
 	if err != nil {
 		panic(err)
 	}

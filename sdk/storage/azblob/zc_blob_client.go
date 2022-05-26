@@ -9,6 +9,7 @@ package azblob
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -23,10 +24,10 @@ type BlobClient struct {
 
 // NewBlobClient creates a BlobClient object using the specified URL, Azure AD credential, and options.
 func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*BlobClient, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{tokenScope}, nil)
+	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, conOptions)
+	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &BlobClient{
 		client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
@@ -36,7 +37,7 @@ func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientO
 // NewBlobClientWithNoCredential creates a BlobClient object using the specified URL and options.
 func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*BlobClient, error) {
 	conOptions := getConnectionOptions(options)
-	conn := newConnection(blobURL, conOptions)
+	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &BlobClient{
 		client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
@@ -48,7 +49,7 @@ func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, optio
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	conn := newConnection(blobURL, conOptions)
+	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &BlobClient{
 		client:    newBlobClient(blobURL, conn.Pipeline()),
@@ -268,7 +269,7 @@ func (b *BlobClient) GetSASToken(permissions BlobSASPermissions, start time.Time
 		ContainerName: urlParts.ContainerName,
 		BlobName:      urlParts.BlobName,
 		SnapshotTime:  t,
-		Version:       SASVersion,
+		Version:       internal.SASVersion,
 
 		Permissions: permissions.String(),
 

@@ -19,7 +19,7 @@ type ContainerCreateOptions struct {
 	Metadata map[string]string
 
 	// Optional. Specifies the encryption scope settings to set on the container.
-	CpkScope *ContainerCpkScopeInfo
+	CPKScope *ContainerCpkScopeInfo
 }
 
 func (o *ContainerCreateOptions) format() (*containerClientCreateOptions, *ContainerCpkScopeInfo) {
@@ -32,7 +32,7 @@ func (o *ContainerCreateOptions) format() (*containerClientCreateOptions, *Conta
 		Metadata: o.Metadata,
 	}
 
-	return &basicOptions, o.CpkScope
+	return &basicOptions, o.CPKScope
 }
 
 // ContainerCreateResponse is wrapper around containerClientCreateResponse

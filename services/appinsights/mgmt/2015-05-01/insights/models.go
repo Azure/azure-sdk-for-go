@@ -196,7 +196,7 @@ type ApplicationInsightsComponentAnalyticsItem struct {
 	Version *string `json:"Version,omitempty"`
 	// Scope - Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'ItemScopeShared', 'ItemScopeUser'
 	Scope ItemScope `json:"Scope,omitempty"`
-	// Type - Enum indicating the type of the Analytics item. Possible values include: 'Query', 'Function', 'Folder', 'Recent'
+	// Type - Enum indicating the type of the Analytics item. Possible values include: 'None', 'Query', 'Recent', 'Function'
 	Type ItemType `json:"Type,omitempty"`
 	// TimeCreated - READ-ONLY; Date and time in UTC when this item was created.
 	TimeCreated *string `json:"TimeCreated,omitempty"`

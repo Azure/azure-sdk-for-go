@@ -218,7 +218,9 @@ func (client WorkbooksClient) DeleteResponder(resp *http.Response) (result autor
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the Application Insights component resource.
-func (client WorkbooksClient) Get(ctx context.Context, resourceGroupName string, resourceName string) (result Workbook, err error) {
+// canFetchContent - flag indicating whether or not to return the full content for each applicable workbook. If
+// false, only return summary content for workbooks.
+func (client WorkbooksClient) Get(ctx context.Context, resourceGroupName string, resourceName string, canFetchContent *bool) (result Workbook, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkbooksClient.Get")
 		defer func() {
@@ -238,7 +240,7 @@ func (client WorkbooksClient) Get(ctx context.Context, resourceGroupName string,
 		return result, validation.NewError("insights.WorkbooksClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName, canFetchContent)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.WorkbooksClient", "Get", nil, "Failure preparing request")
 		return
@@ -261,7 +263,7 @@ func (client WorkbooksClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkbooksClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
+func (client WorkbooksClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string, canFetchContent *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -271,6 +273,9 @@ func (client WorkbooksClient) GetPreparer(ctx context.Context, resourceGroupName
 	const APIVersion = "2021-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if canFetchContent != nil {
+		queryParameters["canFetchContent"] = autorest.Encode("query", *canFetchContent)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -439,7 +444,7 @@ func (client WorkbooksClient) ListByResourceGroupComplete(ctx context.Context, r
 	return
 }
 
-// ListBySubscription get all private workbooks defined within a specified subscription and category.
+// ListBySubscription get all Workbooks defined within a specified subscription and category.
 // Parameters:
 // category - category of workbook to return.
 // tags - tags presents on each workbook returned.

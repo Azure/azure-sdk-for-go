@@ -2433,7 +2433,7 @@ type Workbook struct {
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Identity - Identity used for BYOS
 	Identity *WorkbookResourceIdentity `json:"identity,omitempty"`
-	// Kind - The kind of workbook. Choices are user and shared. Possible values include: 'KindUser', 'KindShared'
+	// Kind - The kind of workbook. Only valid value is shared. Possible values include: 'KindUser', 'KindShared'
 	Kind Kind `json:"kind,omitempty"`
 	// Etag - Resource etag
 	Etag map[string]*string `json:"etag"`
@@ -2688,7 +2688,7 @@ type WorkbookPropertiesUpdateParameters struct {
 type WorkbookResource struct {
 	// Identity - Identity used for BYOS
 	Identity *WorkbookResourceIdentity `json:"identity,omitempty"`
-	// Kind - The kind of workbook. Choices are user and shared. Possible values include: 'KindUser', 'KindShared'
+	// Kind - The kind of workbook. Only valid value is shared. Possible values include: 'KindUser', 'KindShared'
 	Kind Kind `json:"kind,omitempty"`
 	// Etag - Resource etag
 	Etag map[string]*string `json:"etag"`
@@ -3188,7 +3188,7 @@ func (wtup *WorkbookTemplateUpdateParameters) UnmarshalJSON(body []byte) error {
 // WorkbookUpdateParameters the parameters that can be provided when updating workbook properties
 // properties.
 type WorkbookUpdateParameters struct {
-	// Kind - The kind of workbook. Choices are user and shared. Possible values include: 'SharedTypeKindUser', 'SharedTypeKindShared'
+	// Kind - The kind of workbook. Only valid value is shared. Possible values include: 'SharedTypeKindUser', 'SharedTypeKindShared'
 	Kind SharedTypeKind `json:"kind,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`

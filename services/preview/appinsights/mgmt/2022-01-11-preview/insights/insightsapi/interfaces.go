@@ -174,7 +174,7 @@ var _ MyWorkbooksClientAPI = (*insights.MyWorkbooksClient)(nil)
 type WorkbooksClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, workbookProperties insights.Workbook, sourceID string) (result insights.Workbook, err error)
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, resourceName string) (result insights.Workbook, err error)
+	Get(ctx context.Context, resourceGroupName string, resourceName string, canFetchContent *bool) (result insights.Workbook, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, category insights.CategoryType, tags []string, sourceID string, canFetchContent *bool) (result insights.WorkbooksListResultPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, category insights.CategoryType, tags []string, sourceID string, canFetchContent *bool) (result insights.WorkbooksListResultIterator, err error)
 	ListBySubscription(ctx context.Context, category insights.CategoryType, tags []string, canFetchContent *bool) (result insights.WorkbooksListResultPage, err error)

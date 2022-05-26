@@ -146,10 +146,10 @@ func PossibleItemScopePathValues() []ItemScopePath {
 type ItemType string
 
 const (
-	// ItemTypeFolder ...
-	ItemTypeFolder ItemType = "folder"
 	// ItemTypeFunction ...
 	ItemTypeFunction ItemType = "function"
+	// ItemTypeNone ...
+	ItemTypeNone ItemType = "none"
 	// ItemTypeQuery ...
 	ItemTypeQuery ItemType = "query"
 	// ItemTypeRecent ...
@@ -158,7 +158,7 @@ const (
 
 // PossibleItemTypeValues returns an array of possible values for the ItemType const type.
 func PossibleItemTypeValues() []ItemType {
-	return []ItemType{ItemTypeFolder, ItemTypeFunction, ItemTypeQuery, ItemTypeRecent}
+	return []ItemType{ItemTypeFunction, ItemTypeNone, ItemTypeQuery, ItemTypeRecent}
 }
 
 // ItemTypeParameter enumerates the values for item type parameter.

@@ -13,8 +13,7 @@ output-folder: internal/generated
 openapi-type: "data-plane"
 security: "AADToken"
 security-scopes:  "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.41"
-module-version: 0.5.0
+use: "@autorest/go@4.0.0-preview.42"
 export-clients: true
 
 # export request creators and response handlers for use by pollers and pagers, and remove the keyVersion path param check

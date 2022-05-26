@@ -13,6 +13,12 @@
 * Methods `BeginDeleteKey` and `BeginRecoverDeletedKey` now return a `*runtime.Poller[T]` with their respective response types.
 * Option types with a `ResumeToken` field now take the token by value.
 * Renamed `CreateECKeyOptions.CurveName` to `.Curve`
+* Renamed `ReleaseKeyOptions.Enc` to `.Algorithm`
+* Removed redundant fields `DeletedKeyItem.Managed`. and `.Tags`, and `ImportKeyOptions.Tags`.
+  Use the `DeletedKeyItem.Properties` and `ImportKeyOptions.Properties` fields of the same name instead.
+* Changed type of key `Tags` to `map[string]*string`
+* Changed type of `ListPropertiesOfKeyVersionsResponse.Keys` to `[]*KeyItem`
+* Changed type of `JSONWebKey.KeyOps` to `[]*Operation`
 
 ### Bugs Fixed
 

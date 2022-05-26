@@ -76,8 +76,8 @@ func TestCreateKeyRSATags(t *testing.T) {
 	require.NoError(t, err)
 
 	resp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
-		Tags: map[string]string{
-			"Tag1": "Val1",
+		Tags: map[string]*string{
+			"Tag1": to.Ptr("Val1"),
 		},
 	})
 	defer cleanUpKey(t, client, key)
@@ -85,7 +85,7 @@ func TestCreateKeyRSATags(t *testing.T) {
 	validateKey(t, to.Ptr(resp.Key))
 	require.Equal(t, 1, len(resp.Key.Properties.Tags))
 
-	resp.Key.Properties.Tags = map[string]string{}
+	resp.Key.Properties.Tags = map[string]*string{}
 	// Remove the tag
 	resp2, err := client.UpdateKeyProperties(ctx, resp.Key, nil)
 	require.NoError(t, err)
@@ -442,15 +442,15 @@ func TestUpdateKeyProperties(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			createResp.Key.Properties.Tags = map[string]string{
-				"Tag1": "Val1",
+			createResp.Key.Properties.Tags = map[string]*string{
+				"Tag1": to.Ptr("Val1"),
 			}
 			createResp.Key.Properties.ExpiresOn = to.Ptr(time.Now().AddDate(1, 0, 0))
 
 			resp, err := client.UpdateKeyProperties(ctx, createResp.Key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Properties)
-			require.Equal(t, resp.Properties.Tags["Tag1"], "Val1")
+			require.Equal(t, *resp.Properties.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Properties.ExpiresOn)
 
 			createResp.Key.Properties.Name = to.Ptr("doesnotexist")
@@ -645,7 +645,7 @@ func TestImportKey(t *testing.T) {
 
 			jwk := JSONWebKey{
 				KeyType: to.Ptr(KeyTypeRSA),
-				KeyOps:  to.SliceOfPtrs("encrypt", "decrypt", "sign", "verify", "wrapKey", "unwrapKey"),
+				KeyOps:  to.SliceOfPtrs(OperationEncrypt, OperationDecrypt, OperationSign, OperationVerify, OperationWrapKey, OperationUnwrapKey),
 				N:       toBytes("00a0914d00234ac683b21b4c15d5bed887bdc959c2e57af54ae734e8f00720d775d275e455207e3784ceeb60a50a4655dd72a7a94d271e8ee8f7959a669ca6e775bf0e23badae991b4529d978528b4bd90521d32dd2656796ba82b6bbfc7668c8f5eeb5053747fd199319d29a8440d08f4412d527ff9311eda71825920b47b1c46b11ab3e91d7316407e89c7f340f7b85a34042ce51743b27d4718403d34c7b438af6181be05e4d11eb985d38253d7fe9bf53fc2f1b002d22d2d793fa79a504b6ab42d0492804d7071d727a06cf3a8893aa542b1503f832b296371b6707d4dc6e372f8fe67d8ded1c908fde45ce03bc086a71487fa75e43aa0e0679aa0d20efe35", t),
 				E:       toBytes("10001", t),
 				D:       toBytes("627c7d24668148fe2252c7fa649ea8a5a9ed44d75c766cda42b29b660e99404f0e862d4561a6c95af6a83d213e0a2244b03cd28576473215073785fb067f015da19084ade9f475e08b040a9a2c7ba00253bb8125508c9df140b75161d266be347a5e0f6900fe1d8bbf78ccc25eeb37e0c9d188d6e1fc15169ba4fe12276193d77790d2326928bd60d0d01d6ead8d6ac4861abadceec95358fd6689c50a1671a4a936d2376440a41445501da4e74bfb98f823bd19c45b94eb01d98fc0d2f284507f018ebd929b8180dbe6381fdd434bffb7800aaabdd973d55f9eaf9bb88a6ea7b28c2a80231e72de1ad244826d665582c2362761019de2e9f10cb8bcc2625649", t),

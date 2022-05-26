@@ -90,7 +90,7 @@ type CreateKeyOptions struct {
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // convert CreateKeyOptions to *generated.KeyVaultClientCreateKeyOptions
@@ -120,7 +120,7 @@ func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyC
 		KeyOps:         ops,
 		KeySize:        c.Size,
 		PublicExponent: c.PublicExponent,
-		Tags:           convertToGeneratedMap(c.Tags),
+		Tags:           c.Tags,
 		ReleasePolicy:  c.ReleasePolicy.toGenerated(),
 	}
 }
@@ -165,7 +165,7 @@ type CreateECKeyOptions struct {
 	Curve *CurveName `json:"crv,omitempty"`
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// HardwareProtected determines whether the key is is created in a hardware security module (HSM).
 	HardwareProtected *bool
@@ -192,7 +192,7 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.Ke
 	return generated.KeyCreateParameters{
 		Kty:           keyType.toGenerated(),
 		Curve:         (*generated.JSONWebKeyCurveName)(c.Curve),
-		Tags:          convertToGeneratedMap(c.Tags),
+		Tags:          c.Tags,
 		KeyOps:        keyOps,
 		ReleasePolicy: c.ReleasePolicy.toGenerated(),
 		KeyAttributes: c.Properties.toGenerated(),
@@ -255,7 +255,7 @@ type CreateOctKeyOptions struct {
 	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // conver the CreateOctKeyOptions to generated.KeyCreateParameters
@@ -270,7 +270,7 @@ func (c *CreateOctKeyOptions) toKeyCreateParameters(keyType KeyType) generated.K
 	return generated.KeyCreateParameters{
 		Kty:           keyType.toGenerated(),
 		KeySize:       c.Size,
-		Tags:          convertToGeneratedMap(c.Tags),
+		Tags:          c.Tags,
 		ReleasePolicy: c.ReleasePolicy.toGenerated(),
 		KeyAttributes: c.Properties.toGenerated(),
 		KeyOps:        keyOps,
@@ -325,7 +325,7 @@ type CreateRSAKeyOptions struct {
 	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// Properties is the key's management properties.
 	Properties *Properties `json:"attributes,omitempty"`
@@ -350,7 +350,7 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreat
 		Kty:            k.toGenerated(),
 		KeySize:        c.Size,
 		PublicExponent: c.PublicExponent,
-		Tags:           convertToGeneratedMap(c.Tags),
+		Tags:           c.Tags,
 		KeyAttributes:  c.Properties.toGenerated(),
 		KeyOps:         keyOps,
 		ReleasePolicy:  c.ReleasePolicy.toGenerated(),
@@ -850,15 +850,15 @@ type ListPropertiesOfKeyVersionsResponse struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// Keys is the page's content.
-	Keys []KeyItem `json:"value,omitempty" azure:"ro"`
+	Keys []*KeyItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create ListKeysPage from generated pager
 func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsResponse) ListPropertiesOfKeyVersionsResponse {
-	var keys []KeyItem
+	var keys []*KeyItem
 	for _, s := range i.Value {
 		if s != nil {
-			keys = append(keys, *keyItemFromGenerated(s))
+			keys = append(keys, keyItemFromGenerated(s))
 		}
 	}
 	return ListPropertiesOfKeyVersionsResponse{
@@ -949,9 +949,6 @@ type ImportKeyOptions struct {
 
 	// Properties is the properties of the key.
 	Properties *Properties `json:"attributes,omitempty"`
-
-	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
 }
 
 func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
@@ -963,7 +960,6 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImp
 		Key:           key.toGenerated(),
 		Hsm:           i.HardwareProtected,
 		KeyAttributes: attribs,
-		Tags:          convertToGeneratedMap(i.Tags),
 	}
 }
 
@@ -1138,8 +1134,8 @@ type ReleaseKeyOptions struct {
 	// Version is the version of the key to release
 	Version string
 
-	// Enc is the encryption algorithm used to protected exported key material.
-	Enc *ExportEncryptionAlg `json:"enc,omitempty"`
+	// Algorithm is the encryption algorithm used to protected exported key material.
+	Algorithm *ExportEncryptionAlg `json:"algorithm,omitempty"`
 
 	// Nonce is client-provided nonce for freshness.
 	Nonce *string `json:"nonce,omitempty"`
@@ -1164,7 +1160,7 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, targetAttestationT
 		options.Version,
 		generated.KeyReleaseParameters{
 			TargetAttestationToken: &targetAttestationToken,
-			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Enc),
+			Enc:                    (*generated.KeyEncryptionAlgorithm)(options.Algorithm),
 			Nonce:                  options.Nonce,
 		},
 		&generated.KeyVaultClientReleaseOptions{},

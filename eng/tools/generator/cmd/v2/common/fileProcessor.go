@@ -352,3 +352,30 @@ func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Con
 	var content = strings.ReplaceAll(string(b), "{{NewClientName}}", clientName)
 	return ioutil.WriteFile(path, []byte(content), 0644)
 }
+
+func UpdateModuleDefinition(packageRootPath, rpName, namespaceName string, version *semver.Version) error {
+	if version.Major() > 1 {
+		path := filepath.Join(packageRootPath, "go.mod")
+
+		b, err := ioutil.ReadFile(path)
+		if err != nil {
+			return fmt.Errorf("cannot parse version from changelog")
+		}
+
+		lines := strings.Split(string(b), "\n")
+		for i, line := range lines {
+			if strings.HasPrefix(line, "module") {
+				line = strings.TrimRight(line, "\r")
+				parts := strings.Split(line, "/")
+				if parts[len(parts)-1] != fmt.Sprintf("v%d", version.Major()) {
+					lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/%s/%s/v%d", rpName, namespaceName, version.Major())
+				}
+				break
+			}
+		}
+		if err = ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644); err != nil {
+			return err
+		}
+	}
+	return nil
+}

@@ -97,17 +97,16 @@ func ExampleReceiver_DeadLetterMessage() {
 		ErrorDescription: &deadLetterErrorDescription,
 	}
 
-	ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
 	defer cancel()
-  // How to create a dead letter receiver
+	// How to create a dead letter receiver
 	// https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azservicebus/example_receiver_test.go#L25
-	messages, err := receiver.ReceiveMessages(ctx, 1, nil)
+	messages, err := receiver.ReceiveMessages(context.TODO(), 1, nil)
 	if err != nil {
 		panic(err)
 	}
 
 	if len(messages) == 1 {
-		err := receiver.DeadLetterMessage(ctx, messages[0], deadLetterOptions)
+		err := receiver.DeadLetterMessage(context.TODO(), messages[0], deadLetterOptions)
 		if err != nil {
 			panic(err)
 		}

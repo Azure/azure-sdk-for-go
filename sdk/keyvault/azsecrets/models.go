@@ -81,7 +81,7 @@ type Properties struct {
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
 	// will be true.
-	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
 	// certificate.
@@ -140,8 +140,8 @@ func secretPropertiesFromGenerated(i *generated.SecretAttributes, ID, contentTyp
 		CreatedOn:       i.Created,
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
-		IsManaged:       managed,
 		KeyID:           keyID,
+		Managed:         managed,
 		Name:            name,
 		NotBefore:       i.NotBefore,
 		RecoverableDays: i.RecoverableDays,

@@ -3,6 +3,7 @@
 ## 0.6.0 (Unreleased)
 
 ### Features Added
+* Added `NewCryptoClient()` to `azkeys.Client` to simplify access to the crypto client.
 
 ### Breaking Changes
 * Renamed methods which return `Pager[T]`:

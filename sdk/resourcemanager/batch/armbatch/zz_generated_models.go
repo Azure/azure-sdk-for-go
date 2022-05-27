@@ -130,6 +130,9 @@ type AccountCreateProperties struct {
 	// A reference to the Azure key vault associated with the Batch account.
 	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty"`
 
+	// The network profile only takes effect when publicNetworkAccess is enabled.
+	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+
 	// The pool allocation mode also affects how clients may authenticate to the Batch Service API. If the mode is BatchService,
 	// clients may authenticate using access keys or Azure Active Directory. If the
 	// mode is UserSubscription, clients must use Azure Active Directory. The default is BatchService.
@@ -179,6 +182,12 @@ type AccountListResult struct {
 
 // AccountProperties - Account specific properties.
 type AccountProperties struct {
+	// The network profile only takes effect when publicNetworkAccess is enabled.
+	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+
+	// If not specified, the default value is 'enabled'.
+	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
+
 	// READ-ONLY; The account endpoint used to interact with the Batch service.
 	AccountEndpoint *string `json:"accountEndpoint,omitempty" azure:"ro"`
 
@@ -201,12 +210,9 @@ type AccountProperties struct {
 	// not returned.
 	DedicatedCoreQuotaPerVMFamily []*VirtualMachineFamilyCoreQuota `json:"dedicatedCoreQuotaPerVMFamily,omitempty" azure:"ro"`
 
-	// READ-ONLY; Batch is transitioning its core quota system for dedicated cores to be enforced per Virtual Machine family.
-	// During this transitional phase, the dedicated core quota per Virtual Machine family may not
-	// yet be enforced. If this flag is false, dedicated core quota is enforced via the old dedicatedCoreQuota property on the
-	// account and does not consider Virtual Machine family. If this flag is true,
-	// dedicated core quota is enforced via the dedicatedCoreQuotaPerVMFamily property on the account, and the old dedicatedCoreQuota
-	// does not apply.
+	// READ-ONLY; If this flag is true, dedicated core quota is enforced via both the dedicatedCoreQuotaPerVMFamily and dedicatedCoreQuota
+	// properties on the account. If this flag is false, dedicated core quota is
+	// enforced only via the dedicatedCoreQuota property on the account and does not consider Virtual Machine family.
 	DedicatedCoreQuotaPerVMFamilyEnforced *bool `json:"dedicatedCoreQuotaPerVMFamilyEnforced,omitempty" azure:"ro"`
 
 	// READ-ONLY; Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using
@@ -221,6 +227,9 @@ type AccountProperties struct {
 	// is not returned.
 	LowPriorityCoreQuota *int32 `json:"lowPriorityCoreQuota,omitempty" azure:"ro"`
 
+	// READ-ONLY; The endpoint used by compute node to connect to the Batch node management service.
+	NodeManagementEndpoint *string `json:"nodeManagementEndpoint,omitempty" azure:"ro"`
+
 	// READ-ONLY; The allocation mode for creating pools in the Batch account.
 	PoolAllocationMode *PoolAllocationMode `json:"poolAllocationMode,omitempty" azure:"ro"`
 
@@ -232,9 +241,6 @@ type AccountProperties struct {
 
 	// READ-ONLY; The provisioned state of the resource
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; If not specified, the default value is 'enabled'.
-	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty" azure:"ro"`
 }
 
 // AccountRegenerateKeyParameters - Parameters supplied to the RegenerateKey operation.
@@ -268,6 +274,12 @@ type AccountUpdateProperties struct {
 	// managed key. For additional control, a customer-managed key can be used
 	// instead.
 	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+
+	// The network profile only takes effect when publicNetworkAccess is enabled.
+	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+
+	// If not specified, the default value is 'enabled'.
+	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
 }
 
 // ActivateApplicationPackageParameters - Parameters for an activating an application package.
@@ -915,6 +927,15 @@ type EncryptionProperties struct {
 	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
 }
 
+// EndpointAccessProfile - Network access profile for Batch endpoint.
+type EndpointAccessProfile struct {
+	// REQUIRED; Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
+	DefaultAction *EndpointAccessDefaultAction `json:"defaultAction,omitempty"`
+
+	// Array of IP ranges to filter client IP address.
+	IPRules []*IPRule `json:"ipRules,omitempty"`
+}
+
 // EndpointDependency - A domain name and connection details used to access a dependency.
 type EndpointDependency struct {
 	// READ-ONLY; Human-readable supplemental information about the dependency and when it is applicable.
@@ -957,6 +978,15 @@ type FixedScaleSettings struct {
 
 	// At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
 	TargetLowPriorityNodes *int32 `json:"targetLowPriorityNodes,omitempty"`
+}
+
+// IPRule - Rule to filter client IP address.
+type IPRule struct {
+	// REQUIRED; Action when client IP address is matched.
+	Action *string `json:"action,omitempty"`
+
+	// REQUIRED; IPv4 address, or IPv4 address range in CIDR format.
+	Value *string `json:"value,omitempty"`
 }
 
 // ImageReference - A reference to an Azure Virtual Machines Marketplace image or the Azure Image resource of a custom Virtual
@@ -1202,6 +1232,15 @@ type NetworkConfiguration struct {
 	// on port 443. For cloudServiceConfiguration pools, only 'classic' VNETs are
 	// supported. For more details see: https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration
 	SubnetID *string `json:"subnetId,omitempty"`
+}
+
+// NetworkProfile - Network profile for Batch account, which contains network rule settings for each endpoint.
+type NetworkProfile struct {
+	// Network access profile for batchAccount endpoint (Batch account data plane API).
+	AccountAccess *EndpointAccessProfile `json:"accountAccess,omitempty"`
+
+	// Network access profile for nodeManagement endpoint (Batch service managing compute nodes for Batch pools).
+	NodeManagementAccess *EndpointAccessProfile `json:"nodeManagementAccess,omitempty"`
 }
 
 // NetworkSecurityGroupRule - A network security group rule to apply to an inbound endpoint.
@@ -1479,7 +1518,7 @@ type PoolProperties struct {
 	// READ-ONLY; The number of compute nodes currently in the pool.
 	CurrentDedicatedNodes *int32 `json:"currentDedicatedNodes,omitempty" azure:"ro"`
 
-	// READ-ONLY; The number of Spot/low-priority compute nodes currently in the pool.
+	// READ-ONLY; The number of low-priority compute nodes currently in the pool.
 	CurrentLowPriorityNodes *int32 `json:"currentLowPriorityNodes,omitempty" azure:"ro"`
 
 	// READ-ONLY; This is the last time at which the pool level data, such as the targetDedicatedNodes or autoScaleSettings, changed.
@@ -1521,6 +1560,13 @@ type PrivateEndpointConnection struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// PrivateEndpointConnectionClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginDelete
+// method.
+type PrivateEndpointConnectionClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // PrivateEndpointConnectionClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginUpdate
 // method.
 type PrivateEndpointConnectionClientBeginUpdateOptions struct {
@@ -1546,11 +1592,14 @@ type PrivateEndpointConnectionClientListByBatchAccountOptions struct {
 
 // PrivateEndpointConnectionProperties - Private endpoint connection properties.
 type PrivateEndpointConnectionProperties struct {
-	// The private endpoint of the private endpoint connection.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
-
 	// The private link service connection state of the private endpoint connection
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+
+	// READ-ONLY; The value has one and only one group id.
+	GroupIDs []*string `json:"groupIds,omitempty" azure:"ro"`
+
+	// READ-ONLY; The private endpoint of the private endpoint connection.
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the private endpoint connection.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -1627,9 +1676,9 @@ type ProxyResource struct {
 
 // PublicIPAddressConfiguration - The public IP Address configuration of the networking configuration of a Pool.
 type PublicIPAddressConfiguration struct {
-	// The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100 Spot/low-priority nodes
-	// can be allocated for each public IP. For example, a pool needing 250 dedicated
-	// VMs would need at least 3 public IPs specified. Each element of this collection is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
+	// The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100 low-priority nodes can
+	// be allocated for each public IP. For example, a pool needing 250 dedicated VMs
+	// would need at least 3 public IPs specified. Each element of this collection is of the form: /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
 	IPAddressIDs []*string `json:"ipAddressIds,omitempty"`
 
 	// The default value is BatchManaged
@@ -1668,7 +1717,7 @@ type ResizeOperationStatus struct {
 	// The desired number of dedicated compute nodes in the pool.
 	TargetDedicatedNodes *int32 `json:"targetDedicatedNodes,omitempty"`
 
-	// The desired number of Spot/low-priority compute nodes in the pool.
+	// The desired number of low-priority compute nodes in the pool.
 	TargetLowPriorityNodes *int32 `json:"targetLowPriorityNodes,omitempty"`
 }
 
@@ -1777,8 +1826,7 @@ type StartTask struct {
 	// retries. The Batch service will try the task once, and may then retry up to this
 	// limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries).
 	// If the maximum retry count is 0, the Batch service does not retry the task. If
-	// the maximum retry count is -1, the Batch service retries the task without limit, however this is not recommended for a
-	// start task or any task. The default value is 0 (no retries).
+	// the maximum retry count is -1, the Batch service retries the task without limit.
 	MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
 
 	// A list of files that the Batch service will download to the compute node before running the command line.

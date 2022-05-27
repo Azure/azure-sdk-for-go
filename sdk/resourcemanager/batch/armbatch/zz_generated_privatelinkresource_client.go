@@ -57,7 +57,7 @@ func NewPrivateLinkResourceClient(subscriptionID string, credential azcore.Token
 
 // Get - Gets information about the specified private link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // privateLinkResourceName - The private link resource name. This must be unique within the account.
@@ -101,7 +101,7 @@ func (client *PrivateLinkResourceClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,7 +118,7 @@ func (client *PrivateLinkResourceClient) getHandleResponse(resp *http.Response) 
 
 // NewListByBatchAccountPager - Lists all of the private link resources in the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - PrivateLinkResourceClientListByBatchAccountOptions contains the optional parameters for the PrivateLinkResourceClient.ListByBatchAccount
@@ -171,7 +171,7 @@ func (client *PrivateLinkResourceClient) listByBatchAccountCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}

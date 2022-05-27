@@ -226,6 +226,11 @@ type PoolClientUpdateResponse struct {
 	ETag *string
 }
 
+// PrivateEndpointConnectionClientDeleteResponse contains the response from method PrivateEndpointConnectionClient.Delete.
+type PrivateEndpointConnectionClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
 // PrivateEndpointConnectionClientGetResponse contains the response from method PrivateEndpointConnectionClient.Get.
 type PrivateEndpointConnectionClientGetResponse struct {
 	PrivateEndpointConnection

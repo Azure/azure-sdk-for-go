@@ -57,7 +57,7 @@ func NewAccountClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreate - Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this
 // API and should instead be updated with the Update Batch Account API.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 // 3 and 24 characters in length and must use only numbers and lowercase letters. This name is
@@ -82,7 +82,7 @@ func (client *AccountClient) BeginCreate(ctx context.Context, resourceGroupName 
 // Create - Creates a new Batch account with the specified parameters. Existing accounts cannot be updated with this API and
 // should instead be updated with the Update Batch Account API.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 func (client *AccountClient) create(ctx context.Context, resourceGroupName string, accountName string, parameters AccountCreateParameters, options *AccountClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
@@ -118,7 +118,7 @@ func (client *AccountClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -126,7 +126,7 @@ func (client *AccountClient) createCreateRequest(ctx context.Context, resourceGr
 
 // BeginDelete - Deletes the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - AccountClientBeginDeleteOptions contains the optional parameters for the AccountClient.BeginDelete method.
@@ -146,7 +146,7 @@ func (client *AccountClient) BeginDelete(ctx context.Context, resourceGroupName 
 
 // Delete - Deletes the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 func (client *AccountClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
@@ -182,7 +182,7 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,7 +190,7 @@ func (client *AccountClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Gets information about the specified Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - AccountClientGetOptions contains the optional parameters for the AccountClient.Get method.
@@ -229,7 +229,7 @@ func (client *AccountClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,7 +246,7 @@ func (client *AccountClient) getHandleResponse(resp *http.Response) (AccountClie
 
 // GetDetector - Gets information about the given detector for a given Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // detectorID - The name of the detector.
@@ -290,7 +290,7 @@ func (client *AccountClient) getDetectorCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,7 +310,7 @@ func (client *AccountClient) getDetectorHandleResponse(resp *http.Response) (Acc
 // use shared keys to authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys
 // will fail.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - AccountClientGetKeysOptions contains the optional parameters for the AccountClient.GetKeys method.
@@ -349,7 +349,7 @@ func (client *AccountClient) getKeysCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -366,7 +366,7 @@ func (client *AccountClient) getKeysHandleResponse(resp *http.Response) (Account
 
 // NewListPager - Gets information about the Batch accounts associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // options - AccountClientListOptions contains the optional parameters for the AccountClient.List method.
 func (client *AccountClient) NewListPager(options *AccountClientListOptions) *runtime.Pager[AccountClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountClientListResponse]{
@@ -408,7 +408,7 @@ func (client *AccountClient) listCreateRequest(ctx context.Context, options *Acc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -425,7 +425,7 @@ func (client *AccountClient) listHandleResponse(resp *http.Response) (AccountCli
 
 // NewListByResourceGroupPager - Gets information about the Batch accounts associated with the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // options - AccountClientListByResourceGroupOptions contains the optional parameters for the AccountClient.ListByResourceGroup
 // method.
@@ -473,7 +473,7 @@ func (client *AccountClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -490,7 +490,7 @@ func (client *AccountClient) listByResourceGroupHandleResponse(resp *http.Respon
 
 // NewListDetectorsPager - Gets information about the detectors available for a given Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - AccountClientListDetectorsOptions contains the optional parameters for the AccountClient.ListDetectors method.
@@ -542,7 +542,7 @@ func (client *AccountClient) listDetectorsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -564,7 +564,7 @@ func (client *AccountClient) listDetectorsHandleResponse(resp *http.Response) (A
 // Batch to mark the affected nodes as unusable. For more information about
 // creating a pool inside of a virtual network, see https://docs.microsoft.com/en-us/azure/batch/batch-virtual-network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - AccountClientListOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the AccountClient.ListOutboundNetworkDependenciesEndpoints
@@ -617,7 +617,7 @@ func (client *AccountClient) listOutboundNetworkDependenciesEndpointsCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -637,7 +637,7 @@ func (client *AccountClient) listOutboundNetworkDependenciesEndpointsHandleRespo
 // use shared keys to authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the
 // keys will fail.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // parameters - The type of key to regenerate.
@@ -677,7 +677,7 @@ func (client *AccountClient) regenerateKeyCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -695,7 +695,7 @@ func (client *AccountClient) regenerateKeyHandleResponse(resp *http.Response) (A
 // SynchronizeAutoStorageKeys - Synchronizes access keys for the auto-storage account configured for the specified Batch account,
 // only if storage key authentication is being used.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // options - AccountClientSynchronizeAutoStorageKeysOptions contains the optional parameters for the AccountClient.SynchronizeAutoStorageKeys
@@ -735,7 +735,7 @@ func (client *AccountClient) synchronizeAutoStorageKeysCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -743,7 +743,7 @@ func (client *AccountClient) synchronizeAutoStorageKeysCreateRequest(ctx context
 
 // Update - Updates the properties of an existing Batch account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-06-01
 // resourceGroupName - The name of the resource group that contains the Batch account.
 // accountName - The name of the Batch account.
 // parameters - Additional parameters for account update.
@@ -783,7 +783,7 @@ func (client *AccountClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

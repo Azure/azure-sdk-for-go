@@ -10,7 +10,7 @@ package armbatch
 
 const (
 	moduleName    = "armbatch"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0"
 )
 
 // AccountKeyType - The type of account key to regenerate.
@@ -321,8 +321,8 @@ type DynamicVNetAssignmentScope string
 const (
 	// DynamicVNetAssignmentScopeNone - No dynamic VNet assignment is enabled.
 	DynamicVNetAssignmentScopeNone DynamicVNetAssignmentScope = "none"
-	// DynamicVNetAssignmentScopeJob - Dynamic VNet assignment is done per-job. Don't use this option unless your batch account
-	// has been approved to use this feature.
+	// DynamicVNetAssignmentScopeJob - Dynamic VNet assignment is done per-job. If this value is set, the network configuration
+	// subnet ID must also be set. This feature requires approval before use, please contact support
 	DynamicVNetAssignmentScopeJob DynamicVNetAssignmentScope = "job"
 )
 
@@ -349,6 +349,24 @@ func PossibleElevationLevelValues() []ElevationLevel {
 	return []ElevationLevel{
 		ElevationLevelNonAdmin,
 		ElevationLevelAdmin,
+	}
+}
+
+// EndpointAccessDefaultAction - Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
+type EndpointAccessDefaultAction string
+
+const (
+	// EndpointAccessDefaultActionAllow - Allow client access.
+	EndpointAccessDefaultActionAllow EndpointAccessDefaultAction = "Allow"
+	// EndpointAccessDefaultActionDeny - Deny client access.
+	EndpointAccessDefaultActionDeny EndpointAccessDefaultAction = "Deny"
+)
+
+// PossibleEndpointAccessDefaultActionValues returns the possible values for the EndpointAccessDefaultAction const type.
+func PossibleEndpointAccessDefaultActionValues() []EndpointAccessDefaultAction {
+	return []EndpointAccessDefaultAction{
+		EndpointAccessDefaultActionAllow,
+		EndpointAccessDefaultActionDeny,
 	}
 }
 
@@ -585,23 +603,32 @@ func PossiblePoolProvisioningStateValues() []PoolProvisioningState {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
-	// PrivateEndpointConnectionProvisioningStateSucceeded - The connection status is final and is ready for use if Status is
-	// Approved.
-	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+	// PrivateEndpointConnectionProvisioningStateCreating - The connection is creating.
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
 	// PrivateEndpointConnectionProvisioningStateUpdating - The user has requested that the connection status be updated, but
 	// the update operation has not yet completed. You may not reference the connection when connecting the Batch account.
 	PrivateEndpointConnectionProvisioningStateUpdating PrivateEndpointConnectionProvisioningState = "Updating"
+	// PrivateEndpointConnectionProvisioningStateDeleting - The connection is deleting.
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	// PrivateEndpointConnectionProvisioningStateSucceeded - The connection status is final and is ready for use if Status is
+	// Approved.
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 	// PrivateEndpointConnectionProvisioningStateFailed - The user requested that the connection be updated and it failed. You
 	// may retry the update operation.
 	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
+	// PrivateEndpointConnectionProvisioningStateCancelled - The user has cancelled the connection creation.
+	PrivateEndpointConnectionProvisioningStateCancelled PrivateEndpointConnectionProvisioningState = "Cancelled"
 )
 
 // PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return []PrivateEndpointConnectionProvisioningState{
-		PrivateEndpointConnectionProvisioningStateSucceeded,
+		PrivateEndpointConnectionProvisioningStateCreating,
 		PrivateEndpointConnectionProvisioningStateUpdating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
 		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateCancelled,
 	}
 }
 

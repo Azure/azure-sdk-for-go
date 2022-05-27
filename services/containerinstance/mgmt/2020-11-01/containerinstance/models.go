@@ -1091,7 +1091,7 @@ type ContainerHTTPGet struct {
 	// Scheme - The scheme. Possible values include: 'HTTP', 'HTTPS'
 	Scheme Scheme `json:"scheme,omitempty"`
 	// HTTPHeaders - The HTTP headers.
-	HTTPHeaders *HTTPHeaders `json:"httpHeaders,omitempty"`
+	HTTPHeaders *[]HTTPHeader `json:"httpHeaders,omitempty"`
 }
 
 // ContainerPort the port exposed on the container instance.
@@ -1280,8 +1280,8 @@ type GpuResource struct {
 	Sku GpuSku `json:"sku,omitempty"`
 }
 
-// HTTPHeaders the HTTP headers.
-type HTTPHeaders struct {
+// HTTPHeader the HTTP header.
+type HTTPHeader struct {
 	// Name - The header name.
 	Name *string `json:"name,omitempty"`
 	// Value - The header value.

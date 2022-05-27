@@ -103,21 +103,15 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 		ctx, cancel := context.WithTimeout(ctx, timeoutCLIRequest)
 		defer cancel()
 
-		commandLine := "az account get-access-token -o json --resource " + resource
+		args := []string{"account", "get-access-token", "-o", "json", "--resource", resource}
 		if tenantID != "" {
-			commandLine += " --tenant " + tenantID
+			args = append(args, " --tenant ", tenantID)
 		}
 		var cliCmd *exec.Cmd
 		if runtime.GOOS == "windows" {
-			dir := os.Getenv("SYSTEMROOT")
-			if dir == "" {
-				return nil, newCredentialUnavailableError(credNameAzureCLI, "environment variable 'SYSTEMROOT' has no value")
-			}
-			cliCmd = exec.CommandContext(ctx, "cmd.exe", "/c", commandLine)
-			cliCmd.Dir = dir
+			cliCmd = exec.CommandContext(ctx, "az", args...)
 		} else {
-			cliCmd = exec.CommandContext(ctx, "/bin/sh", "-c", commandLine)
-			cliCmd.Dir = "/bin"
+			cliCmd = exec.CommandContext(ctx, "az", args...)
 		}
 		cliCmd.Env = os.Environ()
 		var stderr bytes.Buffer

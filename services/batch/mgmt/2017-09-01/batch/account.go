@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// AccountClient is the client for the Account methods of the Batch service.
+// AccountClient is the batch Client
 type AccountClient struct {
 	BaseClient
 }

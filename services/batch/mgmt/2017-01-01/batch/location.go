@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-// LocationClient is the client for the Location methods of the Batch service.
+// LocationClient is the batch Client
 type LocationClient struct {
 	BaseClient
 }

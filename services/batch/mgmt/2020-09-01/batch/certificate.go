@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// CertificateClient is the client for the Certificate methods of the Batch service.
+// CertificateClient is the batch Client
 type CertificateClient struct {
 	BaseClient
 }

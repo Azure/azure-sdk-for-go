@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// ApplicationClient is the client for the Application methods of the Batch service.
+// ApplicationClient is the batch Client
 type ApplicationClient struct {
 	BaseClient
 }

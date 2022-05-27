@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// PrivateLinkResourceClient is the client for the PrivateLinkResource methods of the Batch service.
+// PrivateLinkResourceClient is the batch Client
 type PrivateLinkResourceClient struct {
 	BaseClient
 }

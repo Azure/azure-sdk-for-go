@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the client for the Operations methods of the Batch service.
+// OperationsClient is the batch Client
 type OperationsClient struct {
 	BaseClient
 }

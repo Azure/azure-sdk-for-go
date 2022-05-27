@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// PoolClient is the client for the Pool methods of the Batch service.
+// PoolClient is the batch Client
 type PoolClient struct {
 	BaseClient
 }

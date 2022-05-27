@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// PrivateEndpointConnectionClient is the client for the PrivateEndpointConnection methods of the Batch service.
+// PrivateEndpointConnectionClient is the batch Client
 type PrivateEndpointConnectionClient struct {
 	BaseClient
 }

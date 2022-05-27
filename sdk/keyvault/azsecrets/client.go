@@ -69,28 +69,13 @@ type GetSecretResponse struct {
 }
 
 func getSecretResponseFromGenerated(i generated.KeyVaultClientGetSecretResponse) GetSecretResponse {
-	vaultURL, name, version := shared.ParseID(i.ID)
+	props := secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, i.Kid, i.Managed, i.Tags)
 	return GetSecretResponse{
 		Secret: Secret{
-			Properties: &Properties{
-				ContentType:     i.ContentType,
-				CreatedOn:       i.Attributes.Created,
-				Enabled:         i.Attributes.Enabled,
-				ExpiresOn:       i.Attributes.Expires,
-				IsManaged:       i.Managed,
-				KeyID:           i.Kid,
-				NotBefore:       i.Attributes.NotBefore,
-				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
-				Tags:            convertPtrMap(i.Tags),
-				UpdatedOn:       i.Attributes.Updated,
-				VaultURL:        vaultURL,
-				Version:         version,
-				Name:            name,
-			},
-			ID:    i.ID,
-			Name:  name,
-			Value: i.Value,
+			ID:         i.ID,
+			Name:       props.Name,
+			Properties: props,
+			Value:      i.Value,
 		},
 	}
 }
@@ -114,9 +99,6 @@ type SetSecretOptions struct {
 
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // Convert the exposed struct to the generated code version
@@ -134,28 +116,13 @@ type SetSecretResponse struct {
 
 // convert generated response to publicly exposed response.
 func setSecretResponseFromGenerated(i generated.KeyVaultClientSetSecretResponse) SetSecretResponse {
-	vaultURL, name, version := shared.ParseID(i.ID)
+	props := secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, i.Kid, i.Managed, i.Tags)
 	return SetSecretResponse{
 		Secret: Secret{
-			Properties: &Properties{
-				ContentType:     i.ContentType,
-				CreatedOn:       i.Attributes.Created,
-				Enabled:         i.Attributes.Enabled,
-				ExpiresOn:       i.Attributes.Expires,
-				IsManaged:       i.Managed,
-				KeyID:           i.Kid,
-				NotBefore:       i.Attributes.NotBefore,
-				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
-				Tags:            convertPtrMap(i.Tags),
-				UpdatedOn:       i.Attributes.Updated,
-				VaultURL:        vaultURL,
-				Version:         version,
-				Name:            name,
-			},
-			ID:    i.ID,
-			Name:  name,
-			Value: i.Value,
+			ID:         i.ID,
+			Name:       props.Name,
+			Properties: props,
+			Value:      i.Value,
 		},
 	}
 }
@@ -166,14 +133,16 @@ func (c *Client) SetSecret(ctx context.Context, name string, value string, optio
 		options = &SetSecretOptions{}
 	}
 	var secretAttribs generated.SecretAttributes
+	var tags map[string]*string
 	if options.Properties != nil {
 		secretAttribs = *options.Properties.toGenerated()
+		tags = options.Properties.Tags
 	}
 	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, name, generated.SecretSetParameters{
 		Value:            &value,
 		ContentType:      options.ContentType,
 		SecretAttributes: &secretAttribs,
-		Tags:             convertToGeneratedMap(options.Tags),
+		Tags:             tags,
 	}, options.toGenerated())
 	if err != nil {
 		return SetSecretResponse{}, err
@@ -187,27 +156,12 @@ type DeleteSecretResponse struct {
 }
 
 func deleteSecretResponseFromGenerated(i generated.KeyVaultClientDeleteSecretResponse) DeleteSecretResponse {
-	vaultURL, name, version := shared.ParseID(i.ID)
+	props := secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, i.Kid, i.Managed, i.Tags)
 	return DeleteSecretResponse{
 		DeletedSecret: DeletedSecret{
-			ID:   i.ID,
-			Name: name,
-			Properties: &Properties{
-				ContentType:     i.ContentType,
-				CreatedOn:       i.Attributes.Created,
-				Enabled:         i.Attributes.Enabled,
-				ExpiresOn:       i.Attributes.Expires,
-				IsManaged:       i.Managed,
-				KeyID:           i.Kid,
-				NotBefore:       i.Attributes.NotBefore,
-				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
-				Tags:            convertPtrMap(i.Tags),
-				UpdatedOn:       i.Attributes.Updated,
-				VaultURL:        vaultURL,
-				Version:         version,
-				Name:            name,
-			},
+			ID:                 i.ID,
+			Name:               props.Name,
+			Properties:         props,
 			RecoveryID:         i.RecoveryID,
 			DeletedOn:          i.DeletedDate,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,
@@ -274,29 +228,14 @@ type GetDeletedSecretResponse struct {
 
 // Convert the generated response to the publicly exposed version
 func getDeletedSecretResponseFromGenerated(i generated.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
-	vaultURL, name, version := shared.ParseID(i.ID)
+	props := secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, i.Kid, i.Managed, i.Tags)
 	return GetDeletedSecretResponse{
 		DeletedSecret: DeletedSecret{
-			Properties: &Properties{
-				ContentType:     i.ContentType,
-				CreatedOn:       i.Attributes.Created,
-				Enabled:         i.Attributes.Enabled,
-				ExpiresOn:       i.Attributes.Expires,
-				IsManaged:       i.Managed,
-				KeyID:           i.Kid,
-				NotBefore:       i.Attributes.NotBefore,
-				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
-				Tags:            convertPtrMap(i.Tags),
-				UpdatedOn:       i.Attributes.Updated,
-				VaultURL:        vaultURL,
-				Version:         version,
-				Name:            name,
-			},
-			ID:                 i.ID,
-			Name:               name,
-			RecoveryID:         i.RecoveryID,
 			DeletedOn:          i.DeletedDate,
+			ID:                 i.ID,
+			Name:               props.Name,
+			Properties:         props,
+			RecoveryID:         i.RecoveryID,
 			ScheduledPurgeDate: i.ScheduledPurgeDate,
 		},
 	}
@@ -325,28 +264,13 @@ type UpdateSecretPropertiesResponse struct {
 }
 
 func updateSecretPropertiesResponseFromGenerated(i generated.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
-	vaultURL, name, version := shared.ParseID(i.ID)
+	props := secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, i.Kid, i.Managed, i.Tags)
 	return UpdateSecretPropertiesResponse{
 		Secret: Secret{
-			Properties: &Properties{
-				ContentType:     i.ContentType,
-				CreatedOn:       i.Attributes.Created,
-				Enabled:         i.Attributes.Enabled,
-				ExpiresOn:       i.Attributes.Expires,
-				IsManaged:       i.Managed,
-				KeyID:           i.Kid,
-				NotBefore:       i.Attributes.NotBefore,
-				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
-				Tags:            convertPtrMap(i.Tags),
-				UpdatedOn:       i.Attributes.Updated,
-				VaultURL:        vaultURL,
-				Version:         version,
-				Name:            name,
-			},
-			ID:    i.ID,
-			Name:  name,
-			Value: i.Value,
+			ID:         i.ID,
+			Name:       props.Name,
+			Properties: props,
+			Value:      i.Value,
 		},
 	}
 }
@@ -429,28 +353,13 @@ type RestoreSecretBackupResponse struct {
 
 // converts the generated response to the publicly exposed version.
 func restoreSecretBackupResponseFromGenerated(i generated.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
-	vaultURL, name, version := shared.ParseID(i.ID)
+	props := secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, i.Kid, i.Managed, i.Tags)
 	return RestoreSecretBackupResponse{
 		Secret: Secret{
-			ID:    i.ID,
-			Name:  name,
-			Value: i.Value,
-			Properties: &Properties{
-				ContentType:     i.ContentType,
-				CreatedOn:       i.Attributes.Created,
-				Enabled:         i.Attributes.Enabled,
-				ExpiresOn:       i.Attributes.Expires,
-				IsManaged:       i.Managed,
-				KeyID:           i.Kid,
-				NotBefore:       i.Attributes.NotBefore,
-				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
-				Tags:            convertPtrMap(i.Tags),
-				UpdatedOn:       i.Attributes.Updated,
-				VaultURL:        vaultURL,
-				Version:         version,
-				Name:            name,
-			},
+			ID:         i.ID,
+			Name:       props.Name,
+			Properties: props,
+			Value:      i.Value,
 		},
 	}
 }
@@ -516,28 +425,12 @@ type RecoverDeletedSecretResponse struct {
 
 // change recover deleted secret reponse to the generated version.
 func recoverDeletedSecretResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedSecretResponse) RecoverDeletedSecretResponse {
-	var a *Properties
-	if i.Attributes != nil {
-		a = &Properties{
-			Enabled:         i.Attributes.Enabled,
-			ExpiresOn:       i.Attributes.Expires,
-			NotBefore:       i.Attributes.NotBefore,
-			CreatedOn:       i.Attributes.Created,
-			UpdatedOn:       i.Attributes.Updated,
-			RecoverableDays: i.Attributes.RecoverableDays,
-			RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
-		}
-	}
-
-	_, name, _ := shared.ParseID(i.ID)
+	props := secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, i.Kid, i.Managed, i.Tags)
 	return RecoverDeletedSecretResponse{
 		SecretItem: SecretItem{
-			Properties:  a,
-			ContentType: i.ContentType,
-			ID:          i.ID,
-			Name:        name,
-			Tags:        convertPtrMap(i.Tags),
-			IsManaged:   i.Managed,
+			Properties: props,
+			ID:         i.ID,
+			Name:       props.Name,
 		},
 	}
 }
@@ -582,17 +475,13 @@ type ListDeletedSecretsResponse struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// DeletedSecrets is the page's content.
-	DeletedSecrets []DeletedSecretItem `json:"value,omitempty" azure:"ro"`
+	DeletedSecrets []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 func listDeletedSecretsPageFromGenerated(g generated.KeyVaultClientGetDeletedSecretsResponse) ListDeletedSecretsResponse {
-	var items []DeletedSecretItem
-
-	if len(g.DeletedSecretListResult.Value) > 0 {
-		items = make([]DeletedSecretItem, len(g.DeletedSecretListResult.Value))
-		for idx, v := range g.DeletedSecretListResult.Value {
-			items[idx] = deletedSecretItemFromGenerated(v)
-		}
+	var items []*DeletedSecretItem
+	for _, v := range g.DeletedSecretListResult.Value {
+		items = append(items, deletedSecretItemFromGenerated(v))
 	}
 
 	return ListDeletedSecretsResponse{
@@ -650,12 +539,12 @@ type ListPropertiesOfSecretVersionsResponse struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// Secrets is the page's content.
-	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create ListSecretsPage from generated pager
 func listSecretVersionsPageFromGenerated(i generated.KeyVaultClientGetSecretVersionsResponse) ListPropertiesOfSecretVersionsResponse {
-	var secrets []SecretItem
+	var secrets []*SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
@@ -709,12 +598,12 @@ type ListPropertiesOfSecretsResponse struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// Secrets is the page's content.
-	Secrets []SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create a ListSecretsPage from a generated code response
 func listSecretsPageFromGenerated(i generated.KeyVaultClientGetSecretsResponse) ListPropertiesOfSecretsResponse {
-	var secrets []SecretItem
+	var secrets []*SecretItem
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}

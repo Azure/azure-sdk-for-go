@@ -56,33 +56,34 @@ func TestSecretTags(t *testing.T) {
 	defer cleanUpSecret(t, client, secret)
 
 	resp, err := client.SetSecret(context.Background(), secret, value, &SetSecretOptions{
-		Tags: map[string]string{
-			"Tag1": "Val1",
+		Properties: &Properties{
+			Tags: map[string]*string{
+				"Tag1": to.Ptr("Val1"),
+			},
 		},
 	})
 	require.NoError(t, err)
 	require.Equal(t, 1, len(resp.Secret.Properties.Tags))
-	require.Equal(t, "Val1", resp.Secret.Properties.Tags["Tag1"])
+	require.Equal(t, "Val1", *resp.Secret.Properties.Tags["Tag1"])
 
 	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Secret.Value, value)
 	require.Equal(t, 1, len(getResp.Secret.Properties.Tags))
-	require.Equal(t, "Val1", getResp.Secret.Properties.Tags["Tag1"])
+	require.Equal(t, "Val1", *getResp.Secret.Properties.Tags["Tag1"])
 	require.NotNil(t, getResp.Secret.Properties.Name)
 
 	getResp.Secret.Properties.ExpiresOn = to.Ptr(time.Date(2040, time.April, 1, 1, 1, 1, 1, time.UTC))
 	updateResp, err := client.UpdateSecretProperties(context.Background(), getResp.Secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, 1, len(updateResp.Secret.Properties.Tags))
-	require.Equal(t, "Val1", updateResp.Secret.Properties.Tags["Tag1"])
+	require.Equal(t, "Val1", *updateResp.Secret.Properties.Tags["Tag1"])
 
 	// Delete the tags
-	updateResp.Secret.Properties.Tags = map[string]string{}
+	updateResp.Secret.Properties.Tags = map[string]*string{}
 	updateResp, err = client.UpdateSecretProperties(context.Background(), updateResp.Secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, 0, len(updateResp.Secret.Properties.Tags))
-	require.NotEqual(t, "Val1", updateResp.Secret.Properties.Tags["Tag1"])
 }
 
 func TestListSecretVersions(t *testing.T) {
@@ -298,8 +299,8 @@ func TestUpdateSecretProperties(t *testing.T) {
 
 	setResp.Secret.Properties = &Properties{
 		ContentType: to.Ptr("password"),
-		Tags: map[string]string{
-			"Tag1": "TagVal1",
+		Tags: map[string]*string{
+			"Tag1": to.Ptr("TagVal1"),
 		},
 		Enabled:   to.Ptr(true),
 		ExpiresOn: to.Ptr(time.Now().Add(48 * time.Hour)),
@@ -313,7 +314,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 	getResp, err := client.GetSecret(context.Background(), name, nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Secret.Value, value)
-	require.Equal(t, getResp.Secret.Properties.Tags["Tag1"], "TagVal1")
+	require.Equal(t, *getResp.Secret.Properties.Tags["Tag1"], "TagVal1")
 	require.Equal(t, *getResp.Secret.Properties.ContentType, "password")
 }
 

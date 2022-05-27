@@ -14,6 +14,11 @@
   * `NewListPropertiesOfSecretVersionsPager` to `NewListPropertiesOfSecretVersionsPager`
 * Renamed `ListSecretVersionsOptions` to `ListPropertiesOfSecretVersionsOptions` and
   `ListSecretsOptions` to `ListPropertiesOfSecretsOptions`
+* Renamed `Properties.IsManaged` to `.Managed`
+* Deleted redundant fields `ContentType`, `IsManaged` and `Tags` from several types. These fields are available via the types'
+  `Properties` fields, for example `SecretItem.Properties`.
+* Changed paged API content values to pointer types. For example, `ListPropertiesOfSecretsResponse.Secrets`
+  changed type from `[]SecretItem` to `[]*SecretItem`.
 
 ### Bugs Fixed
 

@@ -117,7 +117,7 @@ func ExampleClient_NewListPropertiesOfSecretsPager() {
 			panic(err)
 		}
 		for _, v := range page.Secrets {
-			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Tags)
+			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Properties.Tags)
 		}
 	}
 }
@@ -240,7 +240,7 @@ func ExampleClient_UpdateSecretProperties() {
 		ExpiresOn:   to.Ptr(time.Now().Add(48 * time.Hour)),
 		NotBefore:   to.Ptr(time.Now().Add(-24 * time.Hour)),
 		ContentType: to.Ptr("password"),
-		Tags:        map[string]string{"Tag1": "Tag1Value"},
+		Tags:        map[string]*string{"Tag1": to.Ptr("Tag1Value")},
 		// Remember to preserve the name and version
 		Name:    getResp.Secret.Properties.Name,
 		Version: getResp.Secret.Properties.Version,

@@ -12,6 +12,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/go-git/go-git/v5"
@@ -162,4 +163,23 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 	}
 
 	return &result, nil
+}
+
+func FilterChangelog(changelog *model.Changelog) {
+	if changelog.Modified != nil {
+		if changelog.Modified.AdditiveChanges != nil {
+			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Funcs)
+		}
+		if changelog.Modified.BreakingChanges != nil {
+			removeMarshalUnmarshalFunc(changelog.Modified.BreakingChanges.Removed.Funcs)
+		}
+	}
+}
+
+func removeMarshalUnmarshalFunc(funcs map[string]exports.Func) {
+	for k := range funcs {
+		if strings.HasSuffix(k, ".MarshalJSON") || strings.HasSuffix(k, ".UnmarshalJSON") {
+			delete(funcs, k)
+		}
+	}
 }

@@ -10,7 +10,7 @@ package armvirtualmachineimagebuilder
 
 const (
 	moduleName    = "armvirtualmachineimagebuilder"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0"
 )
 
 // CreatedByType - The type of identity that created the resource.
@@ -44,10 +44,14 @@ const (
 	ProvisioningErrorCodeBadSharedImageDistribute    ProvisioningErrorCode = "BadSharedImageDistribute"
 	ProvisioningErrorCodeBadSharedImageVersionSource ProvisioningErrorCode = "BadSharedImageVersionSource"
 	ProvisioningErrorCodeBadSourceType               ProvisioningErrorCode = "BadSourceType"
+	ProvisioningErrorCodeBadStagingResourceGroup     ProvisioningErrorCode = "BadStagingResourceGroup"
+	ProvisioningErrorCodeBadValidatorType            ProvisioningErrorCode = "BadValidatorType"
 	ProvisioningErrorCodeNoCustomizerScript          ProvisioningErrorCode = "NoCustomizerScript"
+	ProvisioningErrorCodeNoValidatorScript           ProvisioningErrorCode = "NoValidatorScript"
 	ProvisioningErrorCodeOther                       ProvisioningErrorCode = "Other"
 	ProvisioningErrorCodeServerError                 ProvisioningErrorCode = "ServerError"
 	ProvisioningErrorCodeUnsupportedCustomizerType   ProvisioningErrorCode = "UnsupportedCustomizerType"
+	ProvisioningErrorCodeUnsupportedValidatorType    ProvisioningErrorCode = "UnsupportedValidatorType"
 )
 
 // PossibleProvisioningErrorCodeValues returns the possible values for the ProvisioningErrorCode const type.
@@ -60,10 +64,14 @@ func PossibleProvisioningErrorCodeValues() []ProvisioningErrorCode {
 		ProvisioningErrorCodeBadSharedImageDistribute,
 		ProvisioningErrorCodeBadSharedImageVersionSource,
 		ProvisioningErrorCodeBadSourceType,
+		ProvisioningErrorCodeBadStagingResourceGroup,
+		ProvisioningErrorCodeBadValidatorType,
 		ProvisioningErrorCodeNoCustomizerScript,
+		ProvisioningErrorCodeNoValidatorScript,
 		ProvisioningErrorCodeOther,
 		ProvisioningErrorCodeServerError,
 		ProvisioningErrorCodeUnsupportedCustomizerType,
+		ProvisioningErrorCodeUnsupportedValidatorType,
 	}
 }
 
@@ -137,6 +145,7 @@ const (
 	RunSubStateQueued       RunSubState = "Queued"
 	RunSubStateBuilding     RunSubState = "Building"
 	RunSubStateCustomizing  RunSubState = "Customizing"
+	RunSubStateValidating   RunSubState = "Validating"
 	RunSubStateDistributing RunSubState = "Distributing"
 )
 
@@ -146,6 +155,7 @@ func PossibleRunSubStateValues() []RunSubState {
 		RunSubStateQueued,
 		RunSubStateBuilding,
 		RunSubStateCustomizing,
+		RunSubStateValidating,
 		RunSubStateDistributing,
 	}
 }

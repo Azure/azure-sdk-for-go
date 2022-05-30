@@ -312,17 +312,75 @@ func (i *ImageTemplatePowerShellCustomizer) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ImageTemplatePowerShellValidator.
+func (i ImageTemplatePowerShellValidator) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "inline", i.Inline)
+	populate(objectMap, "name", i.Name)
+	populate(objectMap, "runAsSystem", i.RunAsSystem)
+	populate(objectMap, "runElevated", i.RunElevated)
+	populate(objectMap, "sha256Checksum", i.SHA256Checksum)
+	populate(objectMap, "scriptUri", i.ScriptURI)
+	objectMap["type"] = "PowerShell"
+	populate(objectMap, "validExitCodes", i.ValidExitCodes)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplatePowerShellValidator.
+func (i *ImageTemplatePowerShellValidator) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "inline":
+			err = unpopulate(val, "Inline", &i.Inline)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &i.Name)
+			delete(rawMsg, key)
+		case "runAsSystem":
+			err = unpopulate(val, "RunAsSystem", &i.RunAsSystem)
+			delete(rawMsg, key)
+		case "runElevated":
+			err = unpopulate(val, "RunElevated", &i.RunElevated)
+			delete(rawMsg, key)
+		case "sha256Checksum":
+			err = unpopulate(val, "SHA256Checksum", &i.SHA256Checksum)
+			delete(rawMsg, key)
+		case "scriptUri":
+			err = unpopulate(val, "ScriptURI", &i.ScriptURI)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &i.Type)
+			delete(rawMsg, key)
+		case "validExitCodes":
+			err = unpopulate(val, "ValidExitCodes", &i.ValidExitCodes)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ImageTemplateProperties.
 func (i ImageTemplateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "buildTimeoutInMinutes", i.BuildTimeoutInMinutes)
 	populate(objectMap, "customize", i.Customize)
 	populate(objectMap, "distribute", i.Distribute)
+	populate(objectMap, "exactStagingResourceGroup", i.ExactStagingResourceGroup)
 	populate(objectMap, "lastRunStatus", i.LastRunStatus)
 	populate(objectMap, "provisioningError", i.ProvisioningError)
 	populate(objectMap, "provisioningState", i.ProvisioningState)
 	populate(objectMap, "source", i.Source)
+	populate(objectMap, "stagingResourceGroup", i.StagingResourceGroup)
 	populate(objectMap, "vmProfile", i.VMProfile)
+	populate(objectMap, "validate", i.Validate)
 	return json.Marshal(objectMap)
 }
 
@@ -344,6 +402,9 @@ func (i *ImageTemplateProperties) UnmarshalJSON(data []byte) error {
 		case "distribute":
 			i.Distribute, err = unmarshalImageTemplateDistributorClassificationArray(val)
 			delete(rawMsg, key)
+		case "exactStagingResourceGroup":
+			err = unpopulate(val, "ExactStagingResourceGroup", &i.ExactStagingResourceGroup)
+			delete(rawMsg, key)
 		case "lastRunStatus":
 			err = unpopulate(val, "LastRunStatus", &i.LastRunStatus)
 			delete(rawMsg, key)
@@ -356,8 +417,49 @@ func (i *ImageTemplateProperties) UnmarshalJSON(data []byte) error {
 		case "source":
 			i.Source, err = unmarshalImageTemplateSourceClassification(val)
 			delete(rawMsg, key)
+		case "stagingResourceGroup":
+			err = unpopulate(val, "StagingResourceGroup", &i.StagingResourceGroup)
+			delete(rawMsg, key)
 		case "vmProfile":
 			err = unpopulate(val, "VMProfile", &i.VMProfile)
+			delete(rawMsg, key)
+		case "validate":
+			err = unpopulate(val, "Validate", &i.Validate)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ImageTemplatePropertiesValidate.
+func (i ImageTemplatePropertiesValidate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "continueDistributeOnFailure", i.ContinueDistributeOnFailure)
+	populate(objectMap, "inVMValidations", i.InVMValidations)
+	populate(objectMap, "sourceValidationOnly", i.SourceValidationOnly)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplatePropertiesValidate.
+func (i *ImageTemplatePropertiesValidate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "continueDistributeOnFailure":
+			err = unpopulate(val, "ContinueDistributeOnFailure", &i.ContinueDistributeOnFailure)
+			delete(rawMsg, key)
+		case "inVMValidations":
+			i.InVMValidations, err = unmarshalImageTemplateInVMValidatorClassificationArray(val)
+			delete(rawMsg, key)
+		case "sourceValidationOnly":
+			err = unpopulate(val, "SourceValidationOnly", &i.SourceValidationOnly)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -505,6 +607,49 @@ func (i ImageTemplateShellCustomizer) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateShellCustomizer.
 func (i *ImageTemplateShellCustomizer) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "inline":
+			err = unpopulate(val, "Inline", &i.Inline)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &i.Name)
+			delete(rawMsg, key)
+		case "sha256Checksum":
+			err = unpopulate(val, "SHA256Checksum", &i.SHA256Checksum)
+			delete(rawMsg, key)
+		case "scriptUri":
+			err = unpopulate(val, "ScriptURI", &i.ScriptURI)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &i.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ImageTemplateShellValidator.
+func (i ImageTemplateShellValidator) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "inline", i.Inline)
+	populate(objectMap, "name", i.Name)
+	populate(objectMap, "sha256Checksum", i.SHA256Checksum)
+	populate(objectMap, "scriptUri", i.ScriptURI)
+	objectMap["type"] = "Shell"
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ImageTemplateShellValidator.
+func (i *ImageTemplateShellValidator) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %v", i, err)
@@ -684,6 +829,7 @@ func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", t.ID)
 	populate(objectMap, "location", t.Location)
 	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
 	populate(objectMap, "tags", t.Tags)
 	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)

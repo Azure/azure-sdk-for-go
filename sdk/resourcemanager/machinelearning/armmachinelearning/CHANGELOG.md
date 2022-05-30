@@ -1,5 +1,5 @@
 # Release History
 
-## 0.1.0 (2022-05-30)
+## 1.0.0 (2022-05-30)
 
-- Init release.
+- Release stable version.

@@ -138,6 +138,26 @@ type FactoriesClientUpdateResponse struct {
 	Factory
 }
 
+// GlobalParametersClientCreateOrUpdateResponse contains the response from method GlobalParametersClient.CreateOrUpdate.
+type GlobalParametersClientCreateOrUpdateResponse struct {
+	GlobalParameterResource
+}
+
+// GlobalParametersClientDeleteResponse contains the response from method GlobalParametersClient.Delete.
+type GlobalParametersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GlobalParametersClientGetResponse contains the response from method GlobalParametersClient.Get.
+type GlobalParametersClientGetResponse struct {
+	GlobalParameterResource
+}
+
+// GlobalParametersClientListByFactoryResponse contains the response from method GlobalParametersClient.ListByFactory.
+type GlobalParametersClientListByFactoryResponse struct {
+	GlobalParameterListResponse
+}
+
 // IntegrationRuntimeNodesClientDeleteResponse contains the response from method IntegrationRuntimeNodesClient.Delete.
 type IntegrationRuntimeNodesClientDeleteResponse struct {
 	// placeholder for future response values

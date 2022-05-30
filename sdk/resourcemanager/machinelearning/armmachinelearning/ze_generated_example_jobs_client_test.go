@@ -153,8 +153,8 @@ func ExampleJobsClient_CreateOrUpdate() {
 				EnvironmentVariables: map[string]*string{
 					"string": to.Ptr("string"),
 				},
-				Outputs: map[string]armmachinelearning.JobOutput{
-					"string": armmachinelearning.URIFileJobOutput{
+				Outputs: map[string]armmachinelearning.JobOutputClassification{
+					"string": &armmachinelearning.URIFileJobOutput{
 						Mode:          to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
 						URI:           to.Ptr("string"),
 						Description:   to.Ptr("string"),

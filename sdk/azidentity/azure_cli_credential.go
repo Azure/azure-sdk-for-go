@@ -110,8 +110,14 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 		var cliCmd *exec.Cmd
 		if runtime.GOOS == "windows" {
 			cliCmd = exec.CommandContext(ctx, "az", args...)
+			dir := os.Getenv("SYSTEMROOT")
+			if dir == "" {
+				return nil, newCredentialUnavailableError(credNameAzureCLI, "environment variable 'SYSTEMROOT' has no value")
+			}
+			cliCmd.Dir = dir
 		} else {
 			cliCmd = exec.CommandContext(ctx, "az", args...)
+			cliCmd.Dir = "/bin"
 		}
 		cliCmd.Env = os.Environ()
 		var stderr bytes.Buffer

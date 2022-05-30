@@ -174,6 +174,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	if err != nil {
 		return nil, err
 	}
+	FilterChangelog(changelog)
 
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")

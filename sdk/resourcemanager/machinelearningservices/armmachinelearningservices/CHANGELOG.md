@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.1 (2022-05-30)
+
+- Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning instead.
+
 ## 1.0.0 (2022-05-18)
 ### Breaking Changes
 

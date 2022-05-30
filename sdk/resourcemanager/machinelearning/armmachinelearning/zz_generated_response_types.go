@@ -8,6 +8,141 @@
 
 package armmachinelearning
 
+// BatchDeploymentsClientCreateOrUpdateResponse contains the response from method BatchDeploymentsClient.CreateOrUpdate.
+type BatchDeploymentsClientCreateOrUpdateResponse struct {
+	BatchDeploymentData
+}
+
+// BatchDeploymentsClientDeleteResponse contains the response from method BatchDeploymentsClient.Delete.
+type BatchDeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BatchDeploymentsClientGetResponse contains the response from method BatchDeploymentsClient.Get.
+type BatchDeploymentsClientGetResponse struct {
+	BatchDeploymentData
+}
+
+// BatchDeploymentsClientListResponse contains the response from method BatchDeploymentsClient.List.
+type BatchDeploymentsClientListResponse struct {
+	BatchDeploymentTrackedResourceArmPaginatedResult
+}
+
+// BatchDeploymentsClientUpdateResponse contains the response from method BatchDeploymentsClient.Update.
+type BatchDeploymentsClientUpdateResponse struct {
+	BatchDeploymentData
+}
+
+// BatchEndpointsClientCreateOrUpdateResponse contains the response from method BatchEndpointsClient.CreateOrUpdate.
+type BatchEndpointsClientCreateOrUpdateResponse struct {
+	BatchEndpointData
+}
+
+// BatchEndpointsClientDeleteResponse contains the response from method BatchEndpointsClient.Delete.
+type BatchEndpointsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BatchEndpointsClientGetResponse contains the response from method BatchEndpointsClient.Get.
+type BatchEndpointsClientGetResponse struct {
+	BatchEndpointData
+}
+
+// BatchEndpointsClientListKeysResponse contains the response from method BatchEndpointsClient.ListKeys.
+type BatchEndpointsClientListKeysResponse struct {
+	EndpointAuthKeys
+}
+
+// BatchEndpointsClientListResponse contains the response from method BatchEndpointsClient.List.
+type BatchEndpointsClientListResponse struct {
+	BatchEndpointTrackedResourceArmPaginatedResult
+}
+
+// BatchEndpointsClientUpdateResponse contains the response from method BatchEndpointsClient.Update.
+type BatchEndpointsClientUpdateResponse struct {
+	BatchEndpointData
+}
+
+// CodeContainersClientCreateOrUpdateResponse contains the response from method CodeContainersClient.CreateOrUpdate.
+type CodeContainersClientCreateOrUpdateResponse struct {
+	CodeContainerData
+}
+
+// CodeContainersClientDeleteResponse contains the response from method CodeContainersClient.Delete.
+type CodeContainersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CodeContainersClientGetResponse contains the response from method CodeContainersClient.Get.
+type CodeContainersClientGetResponse struct {
+	CodeContainerData
+}
+
+// CodeContainersClientListResponse contains the response from method CodeContainersClient.List.
+type CodeContainersClientListResponse struct {
+	CodeContainerResourceArmPaginatedResult
+}
+
+// CodeVersionsClientCreateOrUpdateResponse contains the response from method CodeVersionsClient.CreateOrUpdate.
+type CodeVersionsClientCreateOrUpdateResponse struct {
+	CodeVersionData
+}
+
+// CodeVersionsClientDeleteResponse contains the response from method CodeVersionsClient.Delete.
+type CodeVersionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CodeVersionsClientGetResponse contains the response from method CodeVersionsClient.Get.
+type CodeVersionsClientGetResponse struct {
+	CodeVersionData
+}
+
+// CodeVersionsClientListResponse contains the response from method CodeVersionsClient.List.
+type CodeVersionsClientListResponse struct {
+	CodeVersionResourceArmPaginatedResult
+}
+
+// ComponentContainersClientCreateOrUpdateResponse contains the response from method ComponentContainersClient.CreateOrUpdate.
+type ComponentContainersClientCreateOrUpdateResponse struct {
+	ComponentContainerData
+}
+
+// ComponentContainersClientDeleteResponse contains the response from method ComponentContainersClient.Delete.
+type ComponentContainersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ComponentContainersClientGetResponse contains the response from method ComponentContainersClient.Get.
+type ComponentContainersClientGetResponse struct {
+	ComponentContainerData
+}
+
+// ComponentContainersClientListResponse contains the response from method ComponentContainersClient.List.
+type ComponentContainersClientListResponse struct {
+	ComponentContainerResourceArmPaginatedResult
+}
+
+// ComponentVersionsClientCreateOrUpdateResponse contains the response from method ComponentVersionsClient.CreateOrUpdate.
+type ComponentVersionsClientCreateOrUpdateResponse struct {
+	ComponentVersionData
+}
+
+// ComponentVersionsClientDeleteResponse contains the response from method ComponentVersionsClient.Delete.
+type ComponentVersionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ComponentVersionsClientGetResponse contains the response from method ComponentVersionsClient.Get.
+type ComponentVersionsClientGetResponse struct {
+	ComponentVersionData
+}
+
+// ComponentVersionsClientListResponse contains the response from method ComponentVersionsClient.List.
+type ComponentVersionsClientListResponse struct {
+	ComponentVersionResourceArmPaginatedResult
+}
+
 // ComputeClientCreateOrUpdateResponse contains the response from method ComputeClient.CreateOrUpdate.
 type ComputeClientCreateOrUpdateResponse struct {
 	ComputeResource
@@ -68,9 +203,264 @@ type ComputeClientUpdateResponse struct {
 	ComputeResource
 }
 
+// DataContainersClientCreateOrUpdateResponse contains the response from method DataContainersClient.CreateOrUpdate.
+type DataContainersClientCreateOrUpdateResponse struct {
+	DataContainerData
+}
+
+// DataContainersClientDeleteResponse contains the response from method DataContainersClient.Delete.
+type DataContainersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DataContainersClientGetResponse contains the response from method DataContainersClient.Get.
+type DataContainersClientGetResponse struct {
+	DataContainerData
+}
+
+// DataContainersClientListResponse contains the response from method DataContainersClient.List.
+type DataContainersClientListResponse struct {
+	DataContainerResourceArmPaginatedResult
+}
+
+// DataVersionsClientCreateOrUpdateResponse contains the response from method DataVersionsClient.CreateOrUpdate.
+type DataVersionsClientCreateOrUpdateResponse struct {
+	DataVersionBaseData
+}
+
+// DataVersionsClientDeleteResponse contains the response from method DataVersionsClient.Delete.
+type DataVersionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DataVersionsClientGetResponse contains the response from method DataVersionsClient.Get.
+type DataVersionsClientGetResponse struct {
+	DataVersionBaseData
+}
+
+// DataVersionsClientListResponse contains the response from method DataVersionsClient.List.
+type DataVersionsClientListResponse struct {
+	DataVersionBaseResourceArmPaginatedResult
+}
+
+// DatastoresClientCreateOrUpdateResponse contains the response from method DatastoresClient.CreateOrUpdate.
+type DatastoresClientCreateOrUpdateResponse struct {
+	DatastoreData
+}
+
+// DatastoresClientDeleteResponse contains the response from method DatastoresClient.Delete.
+type DatastoresClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DatastoresClientGetResponse contains the response from method DatastoresClient.Get.
+type DatastoresClientGetResponse struct {
+	DatastoreData
+}
+
+// DatastoresClientListResponse contains the response from method DatastoresClient.List.
+type DatastoresClientListResponse struct {
+	DatastoreResourceArmPaginatedResult
+}
+
+// DatastoresClientListSecretsResponse contains the response from method DatastoresClient.ListSecrets.
+type DatastoresClientListSecretsResponse struct {
+	DatastoreSecretsClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DatastoresClientListSecretsResponse.
+func (d *DatastoresClientListSecretsResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalDatastoreSecretsClassification(data)
+	if err != nil {
+		return err
+	}
+	d.DatastoreSecretsClassification = res
+	return nil
+}
+
+// EnvironmentContainersClientCreateOrUpdateResponse contains the response from method EnvironmentContainersClient.CreateOrUpdate.
+type EnvironmentContainersClientCreateOrUpdateResponse struct {
+	EnvironmentContainerData
+}
+
+// EnvironmentContainersClientDeleteResponse contains the response from method EnvironmentContainersClient.Delete.
+type EnvironmentContainersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EnvironmentContainersClientGetResponse contains the response from method EnvironmentContainersClient.Get.
+type EnvironmentContainersClientGetResponse struct {
+	EnvironmentContainerData
+}
+
+// EnvironmentContainersClientListResponse contains the response from method EnvironmentContainersClient.List.
+type EnvironmentContainersClientListResponse struct {
+	EnvironmentContainerResourceArmPaginatedResult
+}
+
+// EnvironmentVersionsClientCreateOrUpdateResponse contains the response from method EnvironmentVersionsClient.CreateOrUpdate.
+type EnvironmentVersionsClientCreateOrUpdateResponse struct {
+	EnvironmentVersionData
+}
+
+// EnvironmentVersionsClientDeleteResponse contains the response from method EnvironmentVersionsClient.Delete.
+type EnvironmentVersionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EnvironmentVersionsClientGetResponse contains the response from method EnvironmentVersionsClient.Get.
+type EnvironmentVersionsClientGetResponse struct {
+	EnvironmentVersionData
+}
+
+// EnvironmentVersionsClientListResponse contains the response from method EnvironmentVersionsClient.List.
+type EnvironmentVersionsClientListResponse struct {
+	EnvironmentVersionResourceArmPaginatedResult
+}
+
+// JobsClientCancelResponse contains the response from method JobsClient.Cancel.
+type JobsClientCancelResponse struct {
+	// placeholder for future response values
+}
+
+// JobsClientCreateOrUpdateResponse contains the response from method JobsClient.CreateOrUpdate.
+type JobsClientCreateOrUpdateResponse struct {
+	JobBaseData
+}
+
+// JobsClientDeleteResponse contains the response from method JobsClient.Delete.
+type JobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// JobsClientGetResponse contains the response from method JobsClient.Get.
+type JobsClientGetResponse struct {
+	JobBaseData
+}
+
+// JobsClientListResponse contains the response from method JobsClient.List.
+type JobsClientListResponse struct {
+	JobBaseResourceArmPaginatedResult
+}
+
+// ModelContainersClientCreateOrUpdateResponse contains the response from method ModelContainersClient.CreateOrUpdate.
+type ModelContainersClientCreateOrUpdateResponse struct {
+	ModelContainerData
+}
+
+// ModelContainersClientDeleteResponse contains the response from method ModelContainersClient.Delete.
+type ModelContainersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ModelContainersClientGetResponse contains the response from method ModelContainersClient.Get.
+type ModelContainersClientGetResponse struct {
+	ModelContainerData
+}
+
+// ModelContainersClientListResponse contains the response from method ModelContainersClient.List.
+type ModelContainersClientListResponse struct {
+	ModelContainerResourceArmPaginatedResult
+}
+
+// ModelVersionsClientCreateOrUpdateResponse contains the response from method ModelVersionsClient.CreateOrUpdate.
+type ModelVersionsClientCreateOrUpdateResponse struct {
+	ModelVersionData
+}
+
+// ModelVersionsClientDeleteResponse contains the response from method ModelVersionsClient.Delete.
+type ModelVersionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ModelVersionsClientGetResponse contains the response from method ModelVersionsClient.Get.
+type ModelVersionsClientGetResponse struct {
+	ModelVersionData
+}
+
+// ModelVersionsClientListResponse contains the response from method ModelVersionsClient.List.
+type ModelVersionsClientListResponse struct {
+	ModelVersionResourceArmPaginatedResult
+}
+
+// OnlineDeploymentsClientCreateOrUpdateResponse contains the response from method OnlineDeploymentsClient.CreateOrUpdate.
+type OnlineDeploymentsClientCreateOrUpdateResponse struct {
+	OnlineDeploymentData
+}
+
+// OnlineDeploymentsClientDeleteResponse contains the response from method OnlineDeploymentsClient.Delete.
+type OnlineDeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// OnlineDeploymentsClientGetLogsResponse contains the response from method OnlineDeploymentsClient.GetLogs.
+type OnlineDeploymentsClientGetLogsResponse struct {
+	DeploymentLogs
+}
+
+// OnlineDeploymentsClientGetResponse contains the response from method OnlineDeploymentsClient.Get.
+type OnlineDeploymentsClientGetResponse struct {
+	OnlineDeploymentData
+}
+
+// OnlineDeploymentsClientListResponse contains the response from method OnlineDeploymentsClient.List.
+type OnlineDeploymentsClientListResponse struct {
+	OnlineDeploymentTrackedResourceArmPaginatedResult
+}
+
+// OnlineDeploymentsClientListSKUsResponse contains the response from method OnlineDeploymentsClient.ListSKUs.
+type OnlineDeploymentsClientListSKUsResponse struct {
+	SKUResourceArmPaginatedResult
+}
+
+// OnlineDeploymentsClientUpdateResponse contains the response from method OnlineDeploymentsClient.Update.
+type OnlineDeploymentsClientUpdateResponse struct {
+	OnlineDeploymentData
+}
+
+// OnlineEndpointsClientCreateOrUpdateResponse contains the response from method OnlineEndpointsClient.CreateOrUpdate.
+type OnlineEndpointsClientCreateOrUpdateResponse struct {
+	OnlineEndpointData
+}
+
+// OnlineEndpointsClientDeleteResponse contains the response from method OnlineEndpointsClient.Delete.
+type OnlineEndpointsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// OnlineEndpointsClientGetResponse contains the response from method OnlineEndpointsClient.Get.
+type OnlineEndpointsClientGetResponse struct {
+	OnlineEndpointData
+}
+
+// OnlineEndpointsClientGetTokenResponse contains the response from method OnlineEndpointsClient.GetToken.
+type OnlineEndpointsClientGetTokenResponse struct {
+	EndpointAuthToken
+}
+
+// OnlineEndpointsClientListKeysResponse contains the response from method OnlineEndpointsClient.ListKeys.
+type OnlineEndpointsClientListKeysResponse struct {
+	EndpointAuthKeys
+}
+
+// OnlineEndpointsClientListResponse contains the response from method OnlineEndpointsClient.List.
+type OnlineEndpointsClientListResponse struct {
+	OnlineEndpointTrackedResourceArmPaginatedResult
+}
+
+// OnlineEndpointsClientRegenerateKeysResponse contains the response from method OnlineEndpointsClient.RegenerateKeys.
+type OnlineEndpointsClientRegenerateKeysResponse struct {
+	// placeholder for future response values
+}
+
+// OnlineEndpointsClientUpdateResponse contains the response from method OnlineEndpointsClient.Update.
+type OnlineEndpointsClientUpdateResponse struct {
+	OnlineEndpointData
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
-	OperationListResult
+	AmlOperationListResult
 }
 
 // PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
@@ -141,11 +531,6 @@ type WorkspaceConnectionsClientListResponse struct {
 // WorkspaceFeaturesClientListResponse contains the response from method WorkspaceFeaturesClient.List.
 type WorkspaceFeaturesClientListResponse struct {
 	ListAmlUserFeatureResult
-}
-
-// WorkspaceSKUsClientListResponse contains the response from method WorkspaceSKUsClient.List.
-type WorkspaceSKUsClientListResponse struct {
-	SKUListResult
 }
 
 // WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.CreateOrUpdate.

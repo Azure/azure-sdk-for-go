@@ -10,7 +10,7 @@ package armmachinelearning
 
 const (
 	moduleName    = "armmachinelearning"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 // AllocationState - Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing.
@@ -51,6 +51,59 @@ func PossibleApplicationSharingPolicyValues() []ApplicationSharingPolicy {
 	}
 }
 
+// Autosave - Auto save settings.
+type Autosave string
+
+const (
+	AutosaveLocal  Autosave = "Local"
+	AutosaveNone   Autosave = "None"
+	AutosaveRemote Autosave = "Remote"
+)
+
+// PossibleAutosaveValues returns the possible values for the Autosave const type.
+func PossibleAutosaveValues() []Autosave {
+	return []Autosave{
+		AutosaveLocal,
+		AutosaveNone,
+		AutosaveRemote,
+	}
+}
+
+// BatchLoggingLevel - Log verbosity for batch inferencing. Increasing verbosity order for logging is : Warning, Info and
+// Debug. The default value is Info.
+type BatchLoggingLevel string
+
+const (
+	BatchLoggingLevelDebug   BatchLoggingLevel = "Debug"
+	BatchLoggingLevelInfo    BatchLoggingLevel = "Info"
+	BatchLoggingLevelWarning BatchLoggingLevel = "Warning"
+)
+
+// PossibleBatchLoggingLevelValues returns the possible values for the BatchLoggingLevel const type.
+func PossibleBatchLoggingLevelValues() []BatchLoggingLevel {
+	return []BatchLoggingLevel{
+		BatchLoggingLevelDebug,
+		BatchLoggingLevelInfo,
+		BatchLoggingLevelWarning,
+	}
+}
+
+// BatchOutputAction - Enum to determine how batch inferencing will handle output
+type BatchOutputAction string
+
+const (
+	BatchOutputActionAppendRow   BatchOutputAction = "AppendRow"
+	BatchOutputActionSummaryOnly BatchOutputAction = "SummaryOnly"
+)
+
+// PossibleBatchOutputActionValues returns the possible values for the BatchOutputAction const type.
+func PossibleBatchOutputActionValues() []BatchOutputAction {
+	return []BatchOutputAction{
+		BatchOutputActionAppendRow,
+		BatchOutputActionSummaryOnly,
+	}
+}
+
 // BillingCurrency - Three lettered code specifying the currency of the VM price. Example: USD
 type BillingCurrency string
 
@@ -62,6 +115,171 @@ const (
 func PossibleBillingCurrencyValues() []BillingCurrency {
 	return []BillingCurrency{
 		BillingCurrencyUSD,
+	}
+}
+
+// Caching - Caching type of Data Disk.
+type Caching string
+
+const (
+	CachingNone      Caching = "None"
+	CachingReadOnly  Caching = "ReadOnly"
+	CachingReadWrite Caching = "ReadWrite"
+)
+
+// PossibleCachingValues returns the possible values for the Caching const type.
+func PossibleCachingValues() []Caching {
+	return []Caching{
+		CachingNone,
+		CachingReadOnly,
+		CachingReadWrite,
+	}
+}
+
+// ClassificationModels - Enum for all classification models supported by AutoML.
+type ClassificationModels string
+
+const (
+	// ClassificationModelsBernoulliNaiveBayes - Naive Bayes classifier for multivariate Bernoulli models.
+	ClassificationModelsBernoulliNaiveBayes ClassificationModels = "BernoulliNaiveBayes"
+	// ClassificationModelsDecisionTree - Decision Trees are a non-parametric supervised learning method used for both classification
+	// and regression tasks.
+	// The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from
+	// the data features.
+	ClassificationModelsDecisionTree ClassificationModels = "DecisionTree"
+	// ClassificationModelsExtremeRandomTrees - Extreme Trees is an ensemble machine learning algorithm that combines the predictions
+	// from many decision trees. It is related to the widely used random forest algorithm.
+	ClassificationModelsExtremeRandomTrees ClassificationModels = "ExtremeRandomTrees"
+	// ClassificationModelsGradientBoosting - The technique of transiting week learners into a strong learner is called Boosting.
+	// The gradient boosting algorithm process works on this theory of execution.
+	ClassificationModelsGradientBoosting ClassificationModels = "GradientBoosting"
+	// ClassificationModelsKNN - K-nearest neighbors (KNN) algorithm uses 'feature similarity' to predict the values of new datapoints
+	// which further means that the new data point will be assigned a value based on how closely it matches the points in the
+	// training set.
+	ClassificationModelsKNN ClassificationModels = "KNN"
+	// ClassificationModelsLightGBM - LightGBM is a gradient boosting framework that uses tree based learning algorithms.
+	ClassificationModelsLightGBM ClassificationModels = "LightGBM"
+	// ClassificationModelsLinearSVM - A support vector machine (SVM) is a supervised machine learning model that uses classification
+	// algorithms for two-group classification problems.
+	// After giving an SVM model sets of labeled training data for each category, they're able to categorize new text.
+	// Linear SVM performs best when input data is linear, i.e., data can be easily classified by drawing the straight line between
+	// classified values on a plotted graph.
+	ClassificationModelsLinearSVM ClassificationModels = "LinearSVM"
+	// ClassificationModelsLogisticRegression - Logistic regression is a fundamental classification technique.
+	// It belongs to the group of linear classifiers and is somewhat similar to polynomial and linear regression.
+	// Logistic regression is fast and relatively uncomplicated, and it's convenient for you to interpret the results.
+	// Although it's essentially a method for binary classification, it can also be applied to multiclass problems.
+	ClassificationModelsLogisticRegression ClassificationModels = "LogisticRegression"
+	// ClassificationModelsMultinomialNaiveBayes - The multinomial Naive Bayes classifier is suitable for classification with
+	// discrete features (e.g., word counts for text classification).
+	// The multinomial distribution normally requires integer feature counts. However, in practice, fractional counts such as
+	// tf-idf may also work.
+	ClassificationModelsMultinomialNaiveBayes ClassificationModels = "MultinomialNaiveBayes"
+	// ClassificationModelsRandomForest - Random forest is a supervised learning algorithm.
+	// The "forest" it builds, is an ensemble of decision trees, usually trained with the “bagging” method.
+	// The general idea of the bagging method is that a combination of learning models increases the overall result.
+	ClassificationModelsRandomForest ClassificationModels = "RandomForest"
+	// ClassificationModelsSGD - SGD: Stochastic gradient descent is an optimization algorithm often used in machine learning
+	// applications
+	// to find the model parameters that correspond to the best fit between predicted and actual outputs.
+	ClassificationModelsSGD ClassificationModels = "SGD"
+	// ClassificationModelsSVM - A support vector machine (SVM) is a supervised machine learning model that uses classification
+	// algorithms for two-group classification problems.
+	// After giving an SVM model sets of labeled training data for each category, they're able to categorize new text.
+	ClassificationModelsSVM ClassificationModels = "SVM"
+	// ClassificationModelsXGBoostClassifier - XGBoost: Extreme Gradient Boosting Algorithm. This algorithm is used for structured
+	// data where target column values can be divided into distinct class values.
+	ClassificationModelsXGBoostClassifier ClassificationModels = "XGBoostClassifier"
+)
+
+// PossibleClassificationModelsValues returns the possible values for the ClassificationModels const type.
+func PossibleClassificationModelsValues() []ClassificationModels {
+	return []ClassificationModels{
+		ClassificationModelsBernoulliNaiveBayes,
+		ClassificationModelsDecisionTree,
+		ClassificationModelsExtremeRandomTrees,
+		ClassificationModelsGradientBoosting,
+		ClassificationModelsKNN,
+		ClassificationModelsLightGBM,
+		ClassificationModelsLinearSVM,
+		ClassificationModelsLogisticRegression,
+		ClassificationModelsMultinomialNaiveBayes,
+		ClassificationModelsRandomForest,
+		ClassificationModelsSGD,
+		ClassificationModelsSVM,
+		ClassificationModelsXGBoostClassifier,
+	}
+}
+
+// ClassificationMultilabelPrimaryMetrics - Primary metrics for classification multilabel tasks.
+type ClassificationMultilabelPrimaryMetrics string
+
+const (
+	// ClassificationMultilabelPrimaryMetricsAUCWeighted - AUC is the Area under the curve.
+	// This metric represents arithmetic mean of the score for each class,
+	// weighted by the number of true instances in each class.
+	ClassificationMultilabelPrimaryMetricsAUCWeighted ClassificationMultilabelPrimaryMetrics = "AUCWeighted"
+	// ClassificationMultilabelPrimaryMetricsAccuracy - Accuracy is the ratio of predictions that exactly match the true class
+	// labels.
+	ClassificationMultilabelPrimaryMetricsAccuracy ClassificationMultilabelPrimaryMetrics = "Accuracy"
+	// ClassificationMultilabelPrimaryMetricsAveragePrecisionScoreWeighted - The arithmetic mean of the average precision score
+	// for each class, weighted by
+	// the number of true instances in each class.
+	ClassificationMultilabelPrimaryMetricsAveragePrecisionScoreWeighted ClassificationMultilabelPrimaryMetrics = "AveragePrecisionScoreWeighted"
+	// ClassificationMultilabelPrimaryMetricsIOU - Intersection Over Union. Intersection of predictions divided by union of predictions.
+	ClassificationMultilabelPrimaryMetricsIOU ClassificationMultilabelPrimaryMetrics = "IOU"
+	// ClassificationMultilabelPrimaryMetricsNormMacroRecall - Normalized macro recall is recall macro-averaged and normalized,
+	// so that random
+	// performance has a score of 0, and perfect performance has a score of 1.
+	ClassificationMultilabelPrimaryMetricsNormMacroRecall ClassificationMultilabelPrimaryMetrics = "NormMacroRecall"
+	// ClassificationMultilabelPrimaryMetricsPrecisionScoreWeighted - The arithmetic mean of precision for each class, weighted
+	// by number of true instances in each class.
+	ClassificationMultilabelPrimaryMetricsPrecisionScoreWeighted ClassificationMultilabelPrimaryMetrics = "PrecisionScoreWeighted"
+)
+
+// PossibleClassificationMultilabelPrimaryMetricsValues returns the possible values for the ClassificationMultilabelPrimaryMetrics const type.
+func PossibleClassificationMultilabelPrimaryMetricsValues() []ClassificationMultilabelPrimaryMetrics {
+	return []ClassificationMultilabelPrimaryMetrics{
+		ClassificationMultilabelPrimaryMetricsAUCWeighted,
+		ClassificationMultilabelPrimaryMetricsAccuracy,
+		ClassificationMultilabelPrimaryMetricsAveragePrecisionScoreWeighted,
+		ClassificationMultilabelPrimaryMetricsIOU,
+		ClassificationMultilabelPrimaryMetricsNormMacroRecall,
+		ClassificationMultilabelPrimaryMetricsPrecisionScoreWeighted,
+	}
+}
+
+// ClassificationPrimaryMetrics - Primary metrics for classification tasks.
+type ClassificationPrimaryMetrics string
+
+const (
+	// ClassificationPrimaryMetricsAUCWeighted - AUC is the Area under the curve.
+	// This metric represents arithmetic mean of the score for each class,
+	// weighted by the number of true instances in each class.
+	ClassificationPrimaryMetricsAUCWeighted ClassificationPrimaryMetrics = "AUCWeighted"
+	// ClassificationPrimaryMetricsAccuracy - Accuracy is the ratio of predictions that exactly match the true class labels.
+	ClassificationPrimaryMetricsAccuracy ClassificationPrimaryMetrics = "Accuracy"
+	// ClassificationPrimaryMetricsAveragePrecisionScoreWeighted - The arithmetic mean of the average precision score for each
+	// class, weighted by
+	// the number of true instances in each class.
+	ClassificationPrimaryMetricsAveragePrecisionScoreWeighted ClassificationPrimaryMetrics = "AveragePrecisionScoreWeighted"
+	// ClassificationPrimaryMetricsNormMacroRecall - Normalized macro recall is recall macro-averaged and normalized, so that
+	// random
+	// performance has a score of 0, and perfect performance has a score of 1.
+	ClassificationPrimaryMetricsNormMacroRecall ClassificationPrimaryMetrics = "NormMacroRecall"
+	// ClassificationPrimaryMetricsPrecisionScoreWeighted - The arithmetic mean of precision for each class, weighted by number
+	// of true instances in each class.
+	ClassificationPrimaryMetricsPrecisionScoreWeighted ClassificationPrimaryMetrics = "PrecisionScoreWeighted"
+)
+
+// PossibleClassificationPrimaryMetricsValues returns the possible values for the ClassificationPrimaryMetrics const type.
+func PossibleClassificationPrimaryMetricsValues() []ClassificationPrimaryMetrics {
+	return []ClassificationPrimaryMetrics{
+		ClassificationPrimaryMetricsAUCWeighted,
+		ClassificationPrimaryMetricsAccuracy,
+		ClassificationPrimaryMetricsAveragePrecisionScoreWeighted,
+		ClassificationPrimaryMetricsNormMacroRecall,
+		ClassificationPrimaryMetricsPrecisionScoreWeighted,
 	}
 }
 
@@ -139,6 +357,22 @@ func PossibleComputeInstanceStateValues() []ComputeInstanceState {
 	}
 }
 
+// ComputePowerAction - The compute power action.
+type ComputePowerAction string
+
+const (
+	ComputePowerActionStart ComputePowerAction = "Start"
+	ComputePowerActionStop  ComputePowerAction = "Stop"
+)
+
+// PossibleComputePowerActionValues returns the possible values for the ComputePowerAction const type.
+func PossibleComputePowerActionValues() []ComputePowerAction {
+	return []ComputePowerAction{
+		ComputePowerActionStart,
+		ComputePowerActionStop,
+	}
+}
+
 // ComputeType - The type of compute
 type ComputeType string
 
@@ -171,6 +405,21 @@ func PossibleComputeTypeValues() []ComputeType {
 	}
 }
 
+type ContainerType string
+
+const (
+	ContainerTypeInferenceServer    ContainerType = "InferenceServer"
+	ContainerTypeStorageInitializer ContainerType = "StorageInitializer"
+)
+
+// PossibleContainerTypeValues returns the possible values for the ContainerType const type.
+func PossibleContainerTypeValues() []ContainerType {
+	return []ContainerType{
+		ContainerTypeInferenceServer,
+		ContainerTypeStorageInitializer,
+	}
+}
+
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -188,6 +437,98 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// CredentialsType - Enum to determine the datastore credentials type.
+type CredentialsType string
+
+const (
+	CredentialsTypeAccountKey       CredentialsType = "AccountKey"
+	CredentialsTypeCertificate      CredentialsType = "Certificate"
+	CredentialsTypeKerberosKeytab   CredentialsType = "KerberosKeytab"
+	CredentialsTypeKerberosPassword CredentialsType = "KerberosPassword"
+	CredentialsTypeNone             CredentialsType = "None"
+	CredentialsTypeSas              CredentialsType = "Sas"
+	CredentialsTypeServicePrincipal CredentialsType = "ServicePrincipal"
+)
+
+// PossibleCredentialsTypeValues returns the possible values for the CredentialsType const type.
+func PossibleCredentialsTypeValues() []CredentialsType {
+	return []CredentialsType{
+		CredentialsTypeAccountKey,
+		CredentialsTypeCertificate,
+		CredentialsTypeKerberosKeytab,
+		CredentialsTypeKerberosPassword,
+		CredentialsTypeNone,
+		CredentialsTypeSas,
+		CredentialsTypeServicePrincipal,
+	}
+}
+
+// DataType - Enum to determine the type of data.
+type DataType string
+
+const (
+	DataTypeMLTable   DataType = "MLTable"
+	DataTypeURIFile   DataType = "UriFile"
+	DataTypeURIFolder DataType = "UriFolder"
+)
+
+// PossibleDataTypeValues returns the possible values for the DataType const type.
+func PossibleDataTypeValues() []DataType {
+	return []DataType{
+		DataTypeMLTable,
+		DataTypeURIFile,
+		DataTypeURIFolder,
+	}
+}
+
+// DatastoreType - Enum to determine the datastore contents type.
+type DatastoreType string
+
+const (
+	DatastoreTypeAzureBlob         DatastoreType = "AzureBlob"
+	DatastoreTypeAzureDataLakeGen1 DatastoreType = "AzureDataLakeGen1"
+	DatastoreTypeAzureDataLakeGen2 DatastoreType = "AzureDataLakeGen2"
+	DatastoreTypeAzureFile         DatastoreType = "AzureFile"
+	DatastoreTypeHdfs              DatastoreType = "Hdfs"
+)
+
+// PossibleDatastoreTypeValues returns the possible values for the DatastoreType const type.
+func PossibleDatastoreTypeValues() []DatastoreType {
+	return []DatastoreType{
+		DatastoreTypeAzureBlob,
+		DatastoreTypeAzureDataLakeGen1,
+		DatastoreTypeAzureDataLakeGen2,
+		DatastoreTypeAzureFile,
+		DatastoreTypeHdfs,
+	}
+}
+
+// DeploymentProvisioningState - Possible values for DeploymentProvisioningState.
+type DeploymentProvisioningState string
+
+const (
+	DeploymentProvisioningStateCanceled  DeploymentProvisioningState = "Canceled"
+	DeploymentProvisioningStateCreating  DeploymentProvisioningState = "Creating"
+	DeploymentProvisioningStateDeleting  DeploymentProvisioningState = "Deleting"
+	DeploymentProvisioningStateFailed    DeploymentProvisioningState = "Failed"
+	DeploymentProvisioningStateScaling   DeploymentProvisioningState = "Scaling"
+	DeploymentProvisioningStateSucceeded DeploymentProvisioningState = "Succeeded"
+	DeploymentProvisioningStateUpdating  DeploymentProvisioningState = "Updating"
+)
+
+// PossibleDeploymentProvisioningStateValues returns the possible values for the DeploymentProvisioningState const type.
+func PossibleDeploymentProvisioningStateValues() []DeploymentProvisioningState {
+	return []DeploymentProvisioningState{
+		DeploymentProvisioningStateCanceled,
+		DeploymentProvisioningStateCreating,
+		DeploymentProvisioningStateDeleting,
+		DeploymentProvisioningStateFailed,
+		DeploymentProvisioningStateScaling,
+		DeploymentProvisioningStateSucceeded,
+		DeploymentProvisioningStateUpdating,
 	}
 }
 
@@ -209,6 +550,57 @@ func PossibleDiagnoseResultLevelValues() []DiagnoseResultLevel {
 	}
 }
 
+// DistributionType - Enum to determine the job distribution type.
+type DistributionType string
+
+const (
+	DistributionTypeMpi        DistributionType = "Mpi"
+	DistributionTypePyTorch    DistributionType = "PyTorch"
+	DistributionTypeTensorFlow DistributionType = "TensorFlow"
+)
+
+// PossibleDistributionTypeValues returns the possible values for the DistributionType const type.
+func PossibleDistributionTypeValues() []DistributionType {
+	return []DistributionType{
+		DistributionTypeMpi,
+		DistributionTypePyTorch,
+		DistributionTypeTensorFlow,
+	}
+}
+
+type EarlyTerminationPolicyType string
+
+const (
+	EarlyTerminationPolicyTypeBandit              EarlyTerminationPolicyType = "Bandit"
+	EarlyTerminationPolicyTypeMedianStopping      EarlyTerminationPolicyType = "MedianStopping"
+	EarlyTerminationPolicyTypeTruncationSelection EarlyTerminationPolicyType = "TruncationSelection"
+)
+
+// PossibleEarlyTerminationPolicyTypeValues returns the possible values for the EarlyTerminationPolicyType const type.
+func PossibleEarlyTerminationPolicyTypeValues() []EarlyTerminationPolicyType {
+	return []EarlyTerminationPolicyType{
+		EarlyTerminationPolicyTypeBandit,
+		EarlyTerminationPolicyTypeMedianStopping,
+		EarlyTerminationPolicyTypeTruncationSelection,
+	}
+}
+
+// EgressPublicNetworkAccessType - Enum to determine whether PublicNetworkAccess is Enabled or Disabled for egress of a deployment.
+type EgressPublicNetworkAccessType string
+
+const (
+	EgressPublicNetworkAccessTypeDisabled EgressPublicNetworkAccessType = "Disabled"
+	EgressPublicNetworkAccessTypeEnabled  EgressPublicNetworkAccessType = "Enabled"
+)
+
+// PossibleEgressPublicNetworkAccessTypeValues returns the possible values for the EgressPublicNetworkAccessType const type.
+func PossibleEgressPublicNetworkAccessTypeValues() []EgressPublicNetworkAccessType {
+	return []EgressPublicNetworkAccessType{
+		EgressPublicNetworkAccessTypeDisabled,
+		EgressPublicNetworkAccessTypeEnabled,
+	}
+}
+
 // EncryptionStatus - Indicates whether or not the encryption is enabled for the workspace.
 type EncryptionStatus string
 
@@ -225,6 +617,537 @@ func PossibleEncryptionStatusValues() []EncryptionStatus {
 	}
 }
 
+// EndpointAuthMode - Enum to determine endpoint authentication mode.
+type EndpointAuthMode string
+
+const (
+	EndpointAuthModeAADToken EndpointAuthMode = "AADToken"
+	EndpointAuthModeAMLToken EndpointAuthMode = "AMLToken"
+	EndpointAuthModeKey      EndpointAuthMode = "Key"
+)
+
+// PossibleEndpointAuthModeValues returns the possible values for the EndpointAuthMode const type.
+func PossibleEndpointAuthModeValues() []EndpointAuthMode {
+	return []EndpointAuthMode{
+		EndpointAuthModeAADToken,
+		EndpointAuthModeAMLToken,
+		EndpointAuthModeKey,
+	}
+}
+
+// EndpointComputeType - Enum to determine endpoint compute type.
+type EndpointComputeType string
+
+const (
+	EndpointComputeTypeAzureMLCompute EndpointComputeType = "AzureMLCompute"
+	EndpointComputeTypeKubernetes     EndpointComputeType = "Kubernetes"
+	EndpointComputeTypeManaged        EndpointComputeType = "Managed"
+)
+
+// PossibleEndpointComputeTypeValues returns the possible values for the EndpointComputeType const type.
+func PossibleEndpointComputeTypeValues() []EndpointComputeType {
+	return []EndpointComputeType{
+		EndpointComputeTypeAzureMLCompute,
+		EndpointComputeTypeKubernetes,
+		EndpointComputeTypeManaged,
+	}
+}
+
+// EndpointProvisioningState - State of endpoint provisioning.
+type EndpointProvisioningState string
+
+const (
+	EndpointProvisioningStateCanceled  EndpointProvisioningState = "Canceled"
+	EndpointProvisioningStateCreating  EndpointProvisioningState = "Creating"
+	EndpointProvisioningStateDeleting  EndpointProvisioningState = "Deleting"
+	EndpointProvisioningStateFailed    EndpointProvisioningState = "Failed"
+	EndpointProvisioningStateSucceeded EndpointProvisioningState = "Succeeded"
+	EndpointProvisioningStateUpdating  EndpointProvisioningState = "Updating"
+)
+
+// PossibleEndpointProvisioningStateValues returns the possible values for the EndpointProvisioningState const type.
+func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
+	return []EndpointProvisioningState{
+		EndpointProvisioningStateCanceled,
+		EndpointProvisioningStateCreating,
+		EndpointProvisioningStateDeleting,
+		EndpointProvisioningStateFailed,
+		EndpointProvisioningStateSucceeded,
+		EndpointProvisioningStateUpdating,
+	}
+}
+
+// EnvironmentType - Environment type is either user created or curated by Azure ML service
+type EnvironmentType string
+
+const (
+	EnvironmentTypeCurated     EnvironmentType = "Curated"
+	EnvironmentTypeUserCreated EnvironmentType = "UserCreated"
+)
+
+// PossibleEnvironmentTypeValues returns the possible values for the EnvironmentType const type.
+func PossibleEnvironmentTypeValues() []EnvironmentType {
+	return []EnvironmentType{
+		EnvironmentTypeCurated,
+		EnvironmentTypeUserCreated,
+	}
+}
+
+// FeatureLags - Flag for generating lags for the numeric features.
+type FeatureLags string
+
+const (
+	// FeatureLagsAuto - System auto-generates feature lags.
+	FeatureLagsAuto FeatureLags = "Auto"
+	// FeatureLagsNone - No feature lags generated.
+	FeatureLagsNone FeatureLags = "None"
+)
+
+// PossibleFeatureLagsValues returns the possible values for the FeatureLags const type.
+func PossibleFeatureLagsValues() []FeatureLags {
+	return []FeatureLags{
+		FeatureLagsAuto,
+		FeatureLagsNone,
+	}
+}
+
+// FeaturizationMode - Featurization mode - determines data featurization mode.
+type FeaturizationMode string
+
+const (
+	// FeaturizationModeAuto - Auto mode, system performs featurization without any custom featurization inputs.
+	FeaturizationModeAuto FeaturizationMode = "Auto"
+	// FeaturizationModeCustom - Custom featurization.
+	FeaturizationModeCustom FeaturizationMode = "Custom"
+	// FeaturizationModeOff - Featurization off. 'Forecasting' task cannot use this value.
+	FeaturizationModeOff FeaturizationMode = "Off"
+)
+
+// PossibleFeaturizationModeValues returns the possible values for the FeaturizationMode const type.
+func PossibleFeaturizationModeValues() []FeaturizationMode {
+	return []FeaturizationMode{
+		FeaturizationModeAuto,
+		FeaturizationModeCustom,
+		FeaturizationModeOff,
+	}
+}
+
+// ForecastHorizonMode - Enum to determine forecast horizon selection mode.
+type ForecastHorizonMode string
+
+const (
+	// ForecastHorizonModeAuto - Forecast horizon to be determined automatically.
+	ForecastHorizonModeAuto ForecastHorizonMode = "Auto"
+	// ForecastHorizonModeCustom - Use the custom forecast horizon.
+	ForecastHorizonModeCustom ForecastHorizonMode = "Custom"
+)
+
+// PossibleForecastHorizonModeValues returns the possible values for the ForecastHorizonMode const type.
+func PossibleForecastHorizonModeValues() []ForecastHorizonMode {
+	return []ForecastHorizonMode{
+		ForecastHorizonModeAuto,
+		ForecastHorizonModeCustom,
+	}
+}
+
+// ForecastingModels - Enum for all forecasting models supported by AutoML.
+type ForecastingModels string
+
+const (
+	// ForecastingModelsArimax - An Autoregressive Integrated Moving Average with Explanatory Variable (ARIMAX) model can be viewed
+	// as a multiple regression model with one or more autoregressive (AR) terms and/or one or more moving average (MA) terms.
+	// This method is suitable for forecasting when data is stationary/non stationary, and multivariate with any type of data
+	// pattern, i.e., level/trend /seasonality/cyclicity.
+	ForecastingModelsArimax ForecastingModels = "Arimax"
+	// ForecastingModelsAutoArima - Auto-Autoregressive Integrated Moving Average (ARIMA) model uses time-series data and statistical
+	// analysis to interpret the data and make future predictions.
+	// This model aims to explain data by using time series data on its past values and uses linear regression to make predictions.
+	ForecastingModelsAutoArima ForecastingModels = "AutoArima"
+	// ForecastingModelsAverage - The Average forecasting model makes predictions by carrying forward the average of the target
+	// values for each time-series in the training data.
+	ForecastingModelsAverage ForecastingModels = "Average"
+	// ForecastingModelsDecisionTree - Decision Trees are a non-parametric supervised learning method used for both classification
+	// and regression tasks.
+	// The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from
+	// the data features.
+	ForecastingModelsDecisionTree ForecastingModels = "DecisionTree"
+	// ForecastingModelsElasticNet - Elastic net is a popular type of regularized linear regression that combines two popular
+	// penalties, specifically the L1 and L2 penalty functions.
+	ForecastingModelsElasticNet ForecastingModels = "ElasticNet"
+	// ForecastingModelsExponentialSmoothing - Exponential smoothing is a time series forecasting method for univariate data that
+	// can be extended to support data with a systematic trend or seasonal component.
+	ForecastingModelsExponentialSmoothing ForecastingModels = "ExponentialSmoothing"
+	// ForecastingModelsExtremeRandomTrees - Extreme Trees is an ensemble machine learning algorithm that combines the predictions
+	// from many decision trees. It is related to the widely used random forest algorithm.
+	ForecastingModelsExtremeRandomTrees ForecastingModels = "ExtremeRandomTrees"
+	// ForecastingModelsGradientBoosting - The technique of transiting week learners into a strong learner is called Boosting.
+	// The gradient boosting algorithm process works on this theory of execution.
+	ForecastingModelsGradientBoosting ForecastingModels = "GradientBoosting"
+	// ForecastingModelsKNN - K-nearest neighbors (KNN) algorithm uses 'feature similarity' to predict the values of new datapoints
+	// which further means that the new data point will be assigned a value based on how closely it matches the points in the
+	// training set.
+	ForecastingModelsKNN ForecastingModels = "KNN"
+	// ForecastingModelsLassoLars - Lasso model fit with Least Angle Regression a.k.a. Lars. It is a Linear Model trained with
+	// an L1 prior as regularizer.
+	ForecastingModelsLassoLars ForecastingModels = "LassoLars"
+	// ForecastingModelsLightGBM - LightGBM is a gradient boosting framework that uses tree based learning algorithms.
+	ForecastingModelsLightGBM ForecastingModels = "LightGBM"
+	// ForecastingModelsNaive - The Naive forecasting model makes predictions by carrying forward the latest target value for
+	// each time-series in the training data.
+	ForecastingModelsNaive ForecastingModels = "Naive"
+	// ForecastingModelsProphet - Prophet is a procedure for forecasting time series data based on an additive model where non-linear
+	// trends are fit with yearly, weekly, and daily seasonality, plus holiday effects.
+	// It works best with time series that have strong seasonal effects and several seasons of historical data. Prophet is robust
+	// to missing data and shifts in the trend, and typically handles outliers well.
+	ForecastingModelsProphet ForecastingModels = "Prophet"
+	// ForecastingModelsRandomForest - Random forest is a supervised learning algorithm.
+	// The "forest" it builds, is an ensemble of decision trees, usually trained with the “bagging” method.
+	// The general idea of the bagging method is that a combination of learning models increases the overall result.
+	ForecastingModelsRandomForest ForecastingModels = "RandomForest"
+	// ForecastingModelsSGD - SGD: Stochastic gradient descent is an optimization algorithm often used in machine learning applications
+	// to find the model parameters that correspond to the best fit between predicted and actual outputs.
+	// It's an inexact but powerful technique.
+	ForecastingModelsSGD ForecastingModels = "SGD"
+	// ForecastingModelsSeasonalAverage - The Seasonal Average forecasting model makes predictions by carrying forward the average
+	// value of the latest season of data for each time-series in the training data.
+	ForecastingModelsSeasonalAverage ForecastingModels = "SeasonalAverage"
+	// ForecastingModelsSeasonalNaive - The Seasonal Naive forecasting model makes predictions by carrying forward the latest
+	// season of target values for each time-series in the training data.
+	ForecastingModelsSeasonalNaive ForecastingModels = "SeasonalNaive"
+	// ForecastingModelsTCNForecaster - TCNForecaster: Temporal Convolutional Networks Forecaster.
+	ForecastingModelsTCNForecaster ForecastingModels = "TCNForecaster"
+	// ForecastingModelsXGBoostRegressor - XGBoostRegressor: Extreme Gradient Boosting Regressor is a supervised machine learning
+	// model using ensemble of base learners.
+	ForecastingModelsXGBoostRegressor ForecastingModels = "XGBoostRegressor"
+)
+
+// PossibleForecastingModelsValues returns the possible values for the ForecastingModels const type.
+func PossibleForecastingModelsValues() []ForecastingModels {
+	return []ForecastingModels{
+		ForecastingModelsArimax,
+		ForecastingModelsAutoArima,
+		ForecastingModelsAverage,
+		ForecastingModelsDecisionTree,
+		ForecastingModelsElasticNet,
+		ForecastingModelsExponentialSmoothing,
+		ForecastingModelsExtremeRandomTrees,
+		ForecastingModelsGradientBoosting,
+		ForecastingModelsKNN,
+		ForecastingModelsLassoLars,
+		ForecastingModelsLightGBM,
+		ForecastingModelsNaive,
+		ForecastingModelsProphet,
+		ForecastingModelsRandomForest,
+		ForecastingModelsSGD,
+		ForecastingModelsSeasonalAverage,
+		ForecastingModelsSeasonalNaive,
+		ForecastingModelsTCNForecaster,
+		ForecastingModelsXGBoostRegressor,
+	}
+}
+
+// ForecastingPrimaryMetrics - Primary metrics for Forecasting task.
+type ForecastingPrimaryMetrics string
+
+const (
+	// ForecastingPrimaryMetricsNormalizedMeanAbsoluteError - The Normalized Mean Absolute Error (NMAE) is a validation metric
+	// to compare the Mean Absolute Error (MAE) of (time) series with different scales.
+	ForecastingPrimaryMetricsNormalizedMeanAbsoluteError ForecastingPrimaryMetrics = "NormalizedMeanAbsoluteError"
+	// ForecastingPrimaryMetricsNormalizedRootMeanSquaredError - The Normalized Root Mean Squared Error (NRMSE) the RMSE facilitates
+	// the comparison between models with different scales.
+	ForecastingPrimaryMetricsNormalizedRootMeanSquaredError ForecastingPrimaryMetrics = "NormalizedRootMeanSquaredError"
+	// ForecastingPrimaryMetricsR2Score - The R2 score is one of the performance evaluation measures for forecasting-based machine
+	// learning models.
+	ForecastingPrimaryMetricsR2Score ForecastingPrimaryMetrics = "R2Score"
+	// ForecastingPrimaryMetricsSpearmanCorrelation - The Spearman's rank coefficient of correlation is a non-parametric measure
+	// of rank correlation.
+	ForecastingPrimaryMetricsSpearmanCorrelation ForecastingPrimaryMetrics = "SpearmanCorrelation"
+)
+
+// PossibleForecastingPrimaryMetricsValues returns the possible values for the ForecastingPrimaryMetrics const type.
+func PossibleForecastingPrimaryMetricsValues() []ForecastingPrimaryMetrics {
+	return []ForecastingPrimaryMetrics{
+		ForecastingPrimaryMetricsNormalizedMeanAbsoluteError,
+		ForecastingPrimaryMetricsNormalizedRootMeanSquaredError,
+		ForecastingPrimaryMetricsR2Score,
+		ForecastingPrimaryMetricsSpearmanCorrelation,
+	}
+}
+
+// Goal - Defines supported metric goals for hyperparameter tuning
+type Goal string
+
+const (
+	GoalMaximize Goal = "Maximize"
+	GoalMinimize Goal = "Minimize"
+)
+
+// PossibleGoalValues returns the possible values for the Goal const type.
+func PossibleGoalValues() []Goal {
+	return []Goal{
+		GoalMaximize,
+		GoalMinimize,
+	}
+}
+
+// IdentityConfigurationType - Enum to determine identity framework.
+type IdentityConfigurationType string
+
+const (
+	IdentityConfigurationTypeAMLToken     IdentityConfigurationType = "AMLToken"
+	IdentityConfigurationTypeManaged      IdentityConfigurationType = "Managed"
+	IdentityConfigurationTypeUserIdentity IdentityConfigurationType = "UserIdentity"
+)
+
+// PossibleIdentityConfigurationTypeValues returns the possible values for the IdentityConfigurationType const type.
+func PossibleIdentityConfigurationTypeValues() []IdentityConfigurationType {
+	return []IdentityConfigurationType{
+		IdentityConfigurationTypeAMLToken,
+		IdentityConfigurationTypeManaged,
+		IdentityConfigurationTypeUserIdentity,
+	}
+}
+
+// InputDeliveryMode - Enum to determine the input data delivery mode.
+type InputDeliveryMode string
+
+const (
+	InputDeliveryModeDirect         InputDeliveryMode = "Direct"
+	InputDeliveryModeDownload       InputDeliveryMode = "Download"
+	InputDeliveryModeEvalDownload   InputDeliveryMode = "EvalDownload"
+	InputDeliveryModeEvalMount      InputDeliveryMode = "EvalMount"
+	InputDeliveryModeReadOnlyMount  InputDeliveryMode = "ReadOnlyMount"
+	InputDeliveryModeReadWriteMount InputDeliveryMode = "ReadWriteMount"
+)
+
+// PossibleInputDeliveryModeValues returns the possible values for the InputDeliveryMode const type.
+func PossibleInputDeliveryModeValues() []InputDeliveryMode {
+	return []InputDeliveryMode{
+		InputDeliveryModeDirect,
+		InputDeliveryModeDownload,
+		InputDeliveryModeEvalDownload,
+		InputDeliveryModeEvalMount,
+		InputDeliveryModeReadOnlyMount,
+		InputDeliveryModeReadWriteMount,
+	}
+}
+
+// InstanceSegmentationPrimaryMetrics - Primary metrics for InstanceSegmentation tasks.
+type InstanceSegmentationPrimaryMetrics string
+
+const (
+	// InstanceSegmentationPrimaryMetricsMeanAveragePrecision - Mean Average Precision (MAP) is the average of AP (Average Precision).
+	// AP is calculated for each class and averaged to get the MAP.
+	InstanceSegmentationPrimaryMetricsMeanAveragePrecision InstanceSegmentationPrimaryMetrics = "MeanAveragePrecision"
+)
+
+// PossibleInstanceSegmentationPrimaryMetricsValues returns the possible values for the InstanceSegmentationPrimaryMetrics const type.
+func PossibleInstanceSegmentationPrimaryMetricsValues() []InstanceSegmentationPrimaryMetrics {
+	return []InstanceSegmentationPrimaryMetrics{
+		InstanceSegmentationPrimaryMetricsMeanAveragePrecision,
+	}
+}
+
+// JobInputType - Enum to determine the Job Input Type.
+type JobInputType string
+
+const (
+	JobInputTypeCustomModel JobInputType = "CustomModel"
+	JobInputTypeLiteral     JobInputType = "Literal"
+	JobInputTypeMLFlowModel JobInputType = "MLFlowModel"
+	JobInputTypeMLTable     JobInputType = "MLTable"
+	JobInputTypeTritonModel JobInputType = "TritonModel"
+	JobInputTypeURIFile     JobInputType = "UriFile"
+	JobInputTypeURIFolder   JobInputType = "UriFolder"
+)
+
+// PossibleJobInputTypeValues returns the possible values for the JobInputType const type.
+func PossibleJobInputTypeValues() []JobInputType {
+	return []JobInputType{
+		JobInputTypeCustomModel,
+		JobInputTypeLiteral,
+		JobInputTypeMLFlowModel,
+		JobInputTypeMLTable,
+		JobInputTypeTritonModel,
+		JobInputTypeURIFile,
+		JobInputTypeURIFolder,
+	}
+}
+
+type JobLimitsType string
+
+const (
+	JobLimitsTypeCommand JobLimitsType = "Command"
+	JobLimitsTypeSweep   JobLimitsType = "Sweep"
+)
+
+// PossibleJobLimitsTypeValues returns the possible values for the JobLimitsType const type.
+func PossibleJobLimitsTypeValues() []JobLimitsType {
+	return []JobLimitsType{
+		JobLimitsTypeCommand,
+		JobLimitsTypeSweep,
+	}
+}
+
+// JobOutputType - Enum to determine the Job Output Type.
+type JobOutputType string
+
+const (
+	JobOutputTypeCustomModel JobOutputType = "CustomModel"
+	JobOutputTypeMLFlowModel JobOutputType = "MLFlowModel"
+	JobOutputTypeMLTable     JobOutputType = "MLTable"
+	JobOutputTypeTritonModel JobOutputType = "TritonModel"
+	JobOutputTypeURIFile     JobOutputType = "UriFile"
+	JobOutputTypeURIFolder   JobOutputType = "UriFolder"
+)
+
+// PossibleJobOutputTypeValues returns the possible values for the JobOutputType const type.
+func PossibleJobOutputTypeValues() []JobOutputType {
+	return []JobOutputType{
+		JobOutputTypeCustomModel,
+		JobOutputTypeMLFlowModel,
+		JobOutputTypeMLTable,
+		JobOutputTypeTritonModel,
+		JobOutputTypeURIFile,
+		JobOutputTypeURIFolder,
+	}
+}
+
+// JobStatus - The status of a job.
+type JobStatus string
+
+const (
+	// JobStatusCancelRequested - Cancellation has been requested for the job.
+	JobStatusCancelRequested JobStatus = "CancelRequested"
+	// JobStatusCanceled - Following cancellation request, the job is now successfully canceled.
+	JobStatusCanceled JobStatus = "Canceled"
+	// JobStatusCompleted - Job completed successfully. This reflects that both the job itself and output collection states completed
+	// successfully
+	JobStatusCompleted JobStatus = "Completed"
+	// JobStatusFailed - Job failed.
+	JobStatusFailed JobStatus = "Failed"
+	// JobStatusFinalizing - Job is completed in the target. It is in output collection state now.
+	JobStatusFinalizing JobStatus = "Finalizing"
+	// JobStatusNotResponding - When heartbeat is enabled, if the run isn't updating any information to RunHistory then the run
+	// goes to NotResponding state.
+	// NotResponding is the only state that is exempt from strict transition orders. A run can go from NotResponding to any of
+	// the previous states.
+	JobStatusNotResponding JobStatus = "NotResponding"
+	// JobStatusNotStarted - Run hasn't started yet.
+	JobStatusNotStarted JobStatus = "NotStarted"
+	// JobStatusPaused - The job is paused by users. Some adjustment to labeling jobs can be made only in paused state.
+	JobStatusPaused JobStatus = "Paused"
+	// JobStatusPreparing - The run environment is being prepared.
+	JobStatusPreparing JobStatus = "Preparing"
+	// JobStatusProvisioning - (Not used currently) It will be used if ES is creating the compute target.
+	JobStatusProvisioning JobStatus = "Provisioning"
+	// JobStatusQueued - The job is queued in the compute target. For example, in BatchAI the job is in queued state, while waiting
+	// for all required nodes to be ready.
+	JobStatusQueued JobStatus = "Queued"
+	// JobStatusRunning - The job started to run in the compute target.
+	JobStatusRunning JobStatus = "Running"
+	// JobStatusScheduled - The job is in a scheduled state. Job is not in any active state.
+	JobStatusScheduled JobStatus = "Scheduled"
+	// JobStatusStarting - Run has started. The user has a run ID.
+	JobStatusStarting JobStatus = "Starting"
+	// JobStatusUnknown - Default job status if not mapped to all other statuses
+	JobStatusUnknown JobStatus = "Unknown"
+)
+
+// PossibleJobStatusValues returns the possible values for the JobStatus const type.
+func PossibleJobStatusValues() []JobStatus {
+	return []JobStatus{
+		JobStatusCancelRequested,
+		JobStatusCanceled,
+		JobStatusCompleted,
+		JobStatusFailed,
+		JobStatusFinalizing,
+		JobStatusNotResponding,
+		JobStatusNotStarted,
+		JobStatusPaused,
+		JobStatusPreparing,
+		JobStatusProvisioning,
+		JobStatusQueued,
+		JobStatusRunning,
+		JobStatusScheduled,
+		JobStatusStarting,
+		JobStatusUnknown,
+	}
+}
+
+// JobType - Enum to determine the type of job.
+type JobType string
+
+const (
+	JobTypeAutoML   JobType = "AutoML"
+	JobTypeCommand  JobType = "Command"
+	JobTypePipeline JobType = "Pipeline"
+	JobTypeSweep    JobType = "Sweep"
+)
+
+// PossibleJobTypeValues returns the possible values for the JobType const type.
+func PossibleJobTypeValues() []JobType {
+	return []JobType{
+		JobTypeAutoML,
+		JobTypeCommand,
+		JobTypePipeline,
+		JobTypeSweep,
+	}
+}
+
+type KeyType string
+
+const (
+	KeyTypePrimary   KeyType = "Primary"
+	KeyTypeSecondary KeyType = "Secondary"
+)
+
+// PossibleKeyTypeValues returns the possible values for the KeyType const type.
+func PossibleKeyTypeValues() []KeyType {
+	return []KeyType{
+		KeyTypePrimary,
+		KeyTypeSecondary,
+	}
+}
+
+// LearningRateScheduler - Learning rate scheduler enum.
+type LearningRateScheduler string
+
+const (
+	// LearningRateSchedulerNone - No learning rate scheduler selected.
+	LearningRateSchedulerNone LearningRateScheduler = "None"
+	// LearningRateSchedulerStep - Step learning rate scheduler.
+	LearningRateSchedulerStep LearningRateScheduler = "Step"
+	// LearningRateSchedulerWarmupCosine - Cosine Annealing With Warmup.
+	LearningRateSchedulerWarmupCosine LearningRateScheduler = "WarmupCosine"
+)
+
+// PossibleLearningRateSchedulerValues returns the possible values for the LearningRateScheduler const type.
+func PossibleLearningRateSchedulerValues() []LearningRateScheduler {
+	return []LearningRateScheduler{
+		LearningRateSchedulerNone,
+		LearningRateSchedulerStep,
+		LearningRateSchedulerWarmupCosine,
+	}
+}
+
+type ListViewType string
+
+const (
+	ListViewTypeActiveOnly   ListViewType = "ActiveOnly"
+	ListViewTypeAll          ListViewType = "All"
+	ListViewTypeArchivedOnly ListViewType = "ArchivedOnly"
+)
+
+// PossibleListViewTypeValues returns the possible values for the ListViewType const type.
+func PossibleListViewTypeValues() []ListViewType {
+	return []ListViewType{
+		ListViewTypeActiveOnly,
+		ListViewTypeAll,
+		ListViewTypeArchivedOnly,
+	}
+}
+
 // LoadBalancerType - Load Balancer Type
 type LoadBalancerType string
 
@@ -238,6 +1161,176 @@ func PossibleLoadBalancerTypeValues() []LoadBalancerType {
 	return []LoadBalancerType{
 		LoadBalancerTypeInternalLoadBalancer,
 		LoadBalancerTypePublicIP,
+	}
+}
+
+// LogVerbosity - Enum for setting log verbosity.
+type LogVerbosity string
+
+const (
+	// LogVerbosityCritical - Only critical statements logged.
+	LogVerbosityCritical LogVerbosity = "Critical"
+	// LogVerbosityDebug - Debug and above log statements logged.
+	LogVerbosityDebug LogVerbosity = "Debug"
+	// LogVerbosityError - Error and above log statements logged.
+	LogVerbosityError LogVerbosity = "Error"
+	// LogVerbosityInfo - Info and above log statements logged.
+	LogVerbosityInfo LogVerbosity = "Info"
+	// LogVerbosityNotSet - No logs emitted.
+	LogVerbosityNotSet LogVerbosity = "NotSet"
+	// LogVerbosityWarning - Warning and above log statements logged.
+	LogVerbosityWarning LogVerbosity = "Warning"
+)
+
+// PossibleLogVerbosityValues returns the possible values for the LogVerbosity const type.
+func PossibleLogVerbosityValues() []LogVerbosity {
+	return []LogVerbosity{
+		LogVerbosityCritical,
+		LogVerbosityDebug,
+		LogVerbosityError,
+		LogVerbosityInfo,
+		LogVerbosityNotSet,
+		LogVerbosityWarning,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// ModelSize - Image model size.
+type ModelSize string
+
+const (
+	// ModelSizeExtraLarge - Extra large size.
+	ModelSizeExtraLarge ModelSize = "ExtraLarge"
+	// ModelSizeLarge - Large size.
+	ModelSizeLarge ModelSize = "Large"
+	// ModelSizeMedium - Medium size.
+	ModelSizeMedium ModelSize = "Medium"
+	// ModelSizeNone - No value selected.
+	ModelSizeNone ModelSize = "None"
+	// ModelSizeSmall - Small size.
+	ModelSizeSmall ModelSize = "Small"
+)
+
+// PossibleModelSizeValues returns the possible values for the ModelSize const type.
+func PossibleModelSizeValues() []ModelSize {
+	return []ModelSize{
+		ModelSizeExtraLarge,
+		ModelSizeLarge,
+		ModelSizeMedium,
+		ModelSizeNone,
+		ModelSizeSmall,
+	}
+}
+
+// ModelType - The async operation state.
+type ModelType string
+
+const (
+	ModelTypeCustomModel ModelType = "CustomModel"
+	ModelTypeMLFlowModel ModelType = "MLFlowModel"
+	ModelTypeTritonModel ModelType = "TritonModel"
+)
+
+// PossibleModelTypeValues returns the possible values for the ModelType const type.
+func PossibleModelTypeValues() []ModelType {
+	return []ModelType{
+		ModelTypeCustomModel,
+		ModelTypeMLFlowModel,
+		ModelTypeTritonModel,
+	}
+}
+
+// MountAction - Mount Action.
+type MountAction string
+
+const (
+	MountActionMount   MountAction = "Mount"
+	MountActionUnmount MountAction = "Unmount"
+)
+
+// PossibleMountActionValues returns the possible values for the MountAction const type.
+func PossibleMountActionValues() []MountAction {
+	return []MountAction{
+		MountActionMount,
+		MountActionUnmount,
+	}
+}
+
+// MountState - Mount state.
+type MountState string
+
+const (
+	MountStateMountFailed      MountState = "MountFailed"
+	MountStateMountRequested   MountState = "MountRequested"
+	MountStateMounted          MountState = "Mounted"
+	MountStateUnmountFailed    MountState = "UnmountFailed"
+	MountStateUnmountRequested MountState = "UnmountRequested"
+	MountStateUnmounted        MountState = "Unmounted"
+)
+
+// PossibleMountStateValues returns the possible values for the MountState const type.
+func PossibleMountStateValues() []MountState {
+	return []MountState{
+		MountStateMountFailed,
+		MountStateMountRequested,
+		MountStateMounted,
+		MountStateUnmountFailed,
+		MountStateUnmountRequested,
+		MountStateUnmounted,
+	}
+}
+
+// NCrossValidationsMode - Determines how N-Cross validations value is determined.
+type NCrossValidationsMode string
+
+const (
+	// NCrossValidationsModeAuto - Determine N-Cross validations value automatically. Supported only for 'Forecasting' AutoML
+	// task.
+	NCrossValidationsModeAuto NCrossValidationsMode = "Auto"
+	// NCrossValidationsModeCustom - Use custom N-Cross validations value.
+	NCrossValidationsModeCustom NCrossValidationsMode = "Custom"
+)
+
+// PossibleNCrossValidationsModeValues returns the possible values for the NCrossValidationsMode const type.
+func PossibleNCrossValidationsModeValues() []NCrossValidationsMode {
+	return []NCrossValidationsMode{
+		NCrossValidationsModeAuto,
+		NCrossValidationsModeCustom,
+	}
+}
+
+// Network - network of this container.
+type Network string
+
+const (
+	NetworkBridge Network = "Bridge"
+	NetworkHost   Network = "Host"
+)
+
+// PossibleNetworkValues returns the possible values for the Network const type.
+func PossibleNetworkValues() []Network {
+	return []Network{
+		NetworkBridge,
+		NetworkHost,
 	}
 }
 
@@ -262,6 +1355,38 @@ func PossibleNodeStateValues() []NodeState {
 		NodeStatePreparing,
 		NodeStateRunning,
 		NodeStateUnusable,
+	}
+}
+
+// ObjectDetectionPrimaryMetrics - Primary metrics for Image ObjectDetection task.
+type ObjectDetectionPrimaryMetrics string
+
+const (
+	// ObjectDetectionPrimaryMetricsMeanAveragePrecision - Mean Average Precision (MAP) is the average of AP (Average Precision).
+	// AP is calculated for each class and averaged to get the MAP.
+	ObjectDetectionPrimaryMetricsMeanAveragePrecision ObjectDetectionPrimaryMetrics = "MeanAveragePrecision"
+)
+
+// PossibleObjectDetectionPrimaryMetricsValues returns the possible values for the ObjectDetectionPrimaryMetrics const type.
+func PossibleObjectDetectionPrimaryMetricsValues() []ObjectDetectionPrimaryMetrics {
+	return []ObjectDetectionPrimaryMetrics{
+		ObjectDetectionPrimaryMetricsMeanAveragePrecision,
+	}
+}
+
+// OperatingSystemType - The type of operating system.
+type OperatingSystemType string
+
+const (
+	OperatingSystemTypeLinux   OperatingSystemType = "Linux"
+	OperatingSystemTypeWindows OperatingSystemType = "Windows"
+)
+
+// PossibleOperatingSystemTypeValues returns the possible values for the OperatingSystemType const type.
+func PossibleOperatingSystemTypeValues() []OperatingSystemType {
+	return []OperatingSystemType{
+		OperatingSystemTypeLinux,
+		OperatingSystemTypeWindows,
 	}
 }
 
@@ -317,6 +1442,43 @@ func PossibleOperationStatusValues() []OperationStatus {
 	}
 }
 
+// OperationTrigger - Trigger of operation.
+type OperationTrigger string
+
+const (
+	OperationTriggerIdleShutdown OperationTrigger = "IdleShutdown"
+	OperationTriggerSchedule     OperationTrigger = "Schedule"
+	OperationTriggerUser         OperationTrigger = "User"
+)
+
+// PossibleOperationTriggerValues returns the possible values for the OperationTrigger const type.
+func PossibleOperationTriggerValues() []OperationTrigger {
+	return []OperationTrigger{
+		OperationTriggerIdleShutdown,
+		OperationTriggerSchedule,
+		OperationTriggerUser,
+	}
+}
+
+type OrderString string
+
+const (
+	OrderStringCreatedAtAsc  OrderString = "CreatedAtAsc"
+	OrderStringCreatedAtDesc OrderString = "CreatedAtDesc"
+	OrderStringUpdatedAtAsc  OrderString = "UpdatedAtAsc"
+	OrderStringUpdatedAtDesc OrderString = "UpdatedAtDesc"
+)
+
+// PossibleOrderStringValues returns the possible values for the OrderString const type.
+func PossibleOrderStringValues() []OrderString {
+	return []OrderString{
+		OrderStringCreatedAtAsc,
+		OrderStringCreatedAtDesc,
+		OrderStringUpdatedAtAsc,
+		OrderStringUpdatedAtDesc,
+	}
+}
+
 // OsType - Compute OS Type
 type OsType string
 
@@ -330,6 +1492,22 @@ func PossibleOsTypeValues() []OsType {
 	return []OsType{
 		OsTypeLinux,
 		OsTypeWindows,
+	}
+}
+
+// OutputDeliveryMode - Output data delivery mode enums.
+type OutputDeliveryMode string
+
+const (
+	OutputDeliveryModeReadWriteMount OutputDeliveryMode = "ReadWriteMount"
+	OutputDeliveryModeUpload         OutputDeliveryMode = "Upload"
+)
+
+// PossibleOutputDeliveryModeValues returns the possible values for the OutputDeliveryMode const type.
+func PossibleOutputDeliveryModeValues() []OutputDeliveryMode {
+	return []OutputDeliveryMode{
+		OutputDeliveryModeReadWriteMount,
+		OutputDeliveryModeUpload,
 	}
 }
 
@@ -402,6 +1580,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
+// ProvisioningStatus - The current deployment state of schedule.
+type ProvisioningStatus string
+
+const (
+	ProvisioningStatusCompleted    ProvisioningStatus = "Completed"
+	ProvisioningStatusFailed       ProvisioningStatus = "Failed"
+	ProvisioningStatusProvisioning ProvisioningStatus = "Provisioning"
+)
+
+// PossibleProvisioningStatusValues returns the possible values for the ProvisioningStatus const type.
+func PossibleProvisioningStatusValues() []ProvisioningStatus {
+	return []ProvisioningStatus{
+		ProvisioningStatusCompleted,
+		ProvisioningStatusFailed,
+		ProvisioningStatusProvisioning,
+	}
+}
+
 // PublicNetworkAccess - Whether requests from Public Network are allowed.
 type PublicNetworkAccess string
 
@@ -415,6 +1611,22 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+	}
+}
+
+// PublicNetworkAccessType - Enum to determine whether PublicNetworkAccess is Enabled or Disabled.
+type PublicNetworkAccessType string
+
+const (
+	PublicNetworkAccessTypeDisabled PublicNetworkAccessType = "Disabled"
+	PublicNetworkAccessTypeEnabled  PublicNetworkAccessType = "Enabled"
+)
+
+// PossiblePublicNetworkAccessTypeValues returns the possible values for the PublicNetworkAccessType const type.
+func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
+	return []PublicNetworkAccessType{
+		PublicNetworkAccessTypeDisabled,
+		PublicNetworkAccessTypeEnabled,
 	}
 }
 
@@ -432,21 +1644,148 @@ func PossibleQuotaUnitValues() []QuotaUnit {
 	}
 }
 
-// ReasonCode - The reason for the restriction.
-type ReasonCode string
+// RandomSamplingAlgorithmRule - The specific type of random algorithm
+type RandomSamplingAlgorithmRule string
 
 const (
-	ReasonCodeNotAvailableForRegion       ReasonCode = "NotAvailableForRegion"
-	ReasonCodeNotAvailableForSubscription ReasonCode = "NotAvailableForSubscription"
-	ReasonCodeNotSpecified                ReasonCode = "NotSpecified"
+	RandomSamplingAlgorithmRuleRandom RandomSamplingAlgorithmRule = "Random"
+	RandomSamplingAlgorithmRuleSobol  RandomSamplingAlgorithmRule = "Sobol"
 )
 
-// PossibleReasonCodeValues returns the possible values for the ReasonCode const type.
-func PossibleReasonCodeValues() []ReasonCode {
-	return []ReasonCode{
-		ReasonCodeNotAvailableForRegion,
-		ReasonCodeNotAvailableForSubscription,
-		ReasonCodeNotSpecified,
+// PossibleRandomSamplingAlgorithmRuleValues returns the possible values for the RandomSamplingAlgorithmRule const type.
+func PossibleRandomSamplingAlgorithmRuleValues() []RandomSamplingAlgorithmRule {
+	return []RandomSamplingAlgorithmRule{
+		RandomSamplingAlgorithmRuleRandom,
+		RandomSamplingAlgorithmRuleSobol,
+	}
+}
+
+// RecurrenceFrequency - Enum to describe the frequency of a recurrence schedule
+type RecurrenceFrequency string
+
+const (
+	// RecurrenceFrequencyDay - Day frequency
+	RecurrenceFrequencyDay RecurrenceFrequency = "Day"
+	// RecurrenceFrequencyHour - Hour frequency
+	RecurrenceFrequencyHour RecurrenceFrequency = "Hour"
+	// RecurrenceFrequencyMinute - Minute frequency
+	RecurrenceFrequencyMinute RecurrenceFrequency = "Minute"
+	// RecurrenceFrequencyMonth - Month frequency
+	RecurrenceFrequencyMonth RecurrenceFrequency = "Month"
+	// RecurrenceFrequencyWeek - Week frequency
+	RecurrenceFrequencyWeek RecurrenceFrequency = "Week"
+)
+
+// PossibleRecurrenceFrequencyValues returns the possible values for the RecurrenceFrequency const type.
+func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
+	return []RecurrenceFrequency{
+		RecurrenceFrequencyDay,
+		RecurrenceFrequencyHour,
+		RecurrenceFrequencyMinute,
+		RecurrenceFrequencyMonth,
+		RecurrenceFrequencyWeek,
+	}
+}
+
+// ReferenceType - Enum to determine which reference method to use for an asset.
+type ReferenceType string
+
+const (
+	ReferenceTypeDataPath   ReferenceType = "DataPath"
+	ReferenceTypeID         ReferenceType = "Id"
+	ReferenceTypeOutputPath ReferenceType = "OutputPath"
+)
+
+// PossibleReferenceTypeValues returns the possible values for the ReferenceType const type.
+func PossibleReferenceTypeValues() []ReferenceType {
+	return []ReferenceType{
+		ReferenceTypeDataPath,
+		ReferenceTypeID,
+		ReferenceTypeOutputPath,
+	}
+}
+
+// RegressionModels - Enum for all Regression models supported by AutoML.
+type RegressionModels string
+
+const (
+	// RegressionModelsDecisionTree - Decision Trees are a non-parametric supervised learning method used for both classification
+	// and regression tasks.
+	// The goal is to create a model that predicts the value of a target variable by learning simple decision rules inferred from
+	// the data features.
+	RegressionModelsDecisionTree RegressionModels = "DecisionTree"
+	// RegressionModelsElasticNet - Elastic net is a popular type of regularized linear regression that combines two popular penalties,
+	// specifically the L1 and L2 penalty functions.
+	RegressionModelsElasticNet RegressionModels = "ElasticNet"
+	// RegressionModelsExtremeRandomTrees - Extreme Trees is an ensemble machine learning algorithm that combines the predictions
+	// from many decision trees. It is related to the widely used random forest algorithm.
+	RegressionModelsExtremeRandomTrees RegressionModels = "ExtremeRandomTrees"
+	// RegressionModelsGradientBoosting - The technique of transiting week learners into a strong learner is called Boosting.
+	// The gradient boosting algorithm process works on this theory of execution.
+	RegressionModelsGradientBoosting RegressionModels = "GradientBoosting"
+	// RegressionModelsKNN - K-nearest neighbors (KNN) algorithm uses 'feature similarity' to predict the values of new datapoints
+	// which further means that the new data point will be assigned a value based on how closely it matches the points in the
+	// training set.
+	RegressionModelsKNN RegressionModels = "KNN"
+	// RegressionModelsLassoLars - Lasso model fit with Least Angle Regression a.k.a. Lars. It is a Linear Model trained with
+	// an L1 prior as regularizer.
+	RegressionModelsLassoLars RegressionModels = "LassoLars"
+	// RegressionModelsLightGBM - LightGBM is a gradient boosting framework that uses tree based learning algorithms.
+	RegressionModelsLightGBM RegressionModels = "LightGBM"
+	// RegressionModelsRandomForest - Random forest is a supervised learning algorithm.
+	// The "forest" it builds, is an ensemble of decision trees, usually trained with the “bagging” method.
+	// The general idea of the bagging method is that a combination of learning models increases the overall result.
+	RegressionModelsRandomForest RegressionModels = "RandomForest"
+	// RegressionModelsSGD - SGD: Stochastic gradient descent is an optimization algorithm often used in machine learning applications
+	// to find the model parameters that correspond to the best fit between predicted and actual outputs.
+	// It's an inexact but powerful technique.
+	RegressionModelsSGD RegressionModels = "SGD"
+	// RegressionModelsXGBoostRegressor - XGBoostRegressor: Extreme Gradient Boosting Regressor is a supervised machine learning
+	// model using ensemble of base learners.
+	RegressionModelsXGBoostRegressor RegressionModels = "XGBoostRegressor"
+)
+
+// PossibleRegressionModelsValues returns the possible values for the RegressionModels const type.
+func PossibleRegressionModelsValues() []RegressionModels {
+	return []RegressionModels{
+		RegressionModelsDecisionTree,
+		RegressionModelsElasticNet,
+		RegressionModelsExtremeRandomTrees,
+		RegressionModelsGradientBoosting,
+		RegressionModelsKNN,
+		RegressionModelsLassoLars,
+		RegressionModelsLightGBM,
+		RegressionModelsRandomForest,
+		RegressionModelsSGD,
+		RegressionModelsXGBoostRegressor,
+	}
+}
+
+// RegressionPrimaryMetrics - Primary metrics for Regression task.
+type RegressionPrimaryMetrics string
+
+const (
+	// RegressionPrimaryMetricsNormalizedMeanAbsoluteError - The Normalized Mean Absolute Error (NMAE) is a validation metric
+	// to compare the Mean Absolute Error (MAE) of (time) series with different scales.
+	RegressionPrimaryMetricsNormalizedMeanAbsoluteError RegressionPrimaryMetrics = "NormalizedMeanAbsoluteError"
+	// RegressionPrimaryMetricsNormalizedRootMeanSquaredError - The Normalized Root Mean Squared Error (NRMSE) the RMSE facilitates
+	// the comparison between models with different scales.
+	RegressionPrimaryMetricsNormalizedRootMeanSquaredError RegressionPrimaryMetrics = "NormalizedRootMeanSquaredError"
+	// RegressionPrimaryMetricsR2Score - The R2 score is one of the performance evaluation measures for forecasting-based machine
+	// learning models.
+	RegressionPrimaryMetricsR2Score RegressionPrimaryMetrics = "R2Score"
+	// RegressionPrimaryMetricsSpearmanCorrelation - The Spearman's rank coefficient of correlation is a nonparametric measure
+	// of rank correlation.
+	RegressionPrimaryMetricsSpearmanCorrelation RegressionPrimaryMetrics = "SpearmanCorrelation"
+)
+
+// PossibleRegressionPrimaryMetricsValues returns the possible values for the RegressionPrimaryMetrics const type.
+func PossibleRegressionPrimaryMetricsValues() []RegressionPrimaryMetrics {
+	return []RegressionPrimaryMetrics{
+		RegressionPrimaryMetricsNormalizedMeanAbsoluteError,
+		RegressionPrimaryMetricsNormalizedRootMeanSquaredError,
+		RegressionPrimaryMetricsR2Score,
+		RegressionPrimaryMetricsSpearmanCorrelation,
 	}
 }
 
@@ -472,23 +1811,45 @@ func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
 	}
 }
 
-// ResourceIdentityType - The identity type.
-type ResourceIdentityType string
+// SKUScaleType - Node scaling setting for the compute sku.
+type SKUScaleType string
 
 const (
-	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
-	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned,UserAssigned"
-	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
-	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
+	// SKUScaleTypeAutomatic - Automatically scales node count.
+	SKUScaleTypeAutomatic SKUScaleType = "Automatic"
+	// SKUScaleTypeManual - Node count scaled upon user request.
+	SKUScaleTypeManual SKUScaleType = "Manual"
+	// SKUScaleTypeNone - Fixed set of nodes.
+	SKUScaleTypeNone SKUScaleType = "None"
 )
 
-// PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{
-		ResourceIdentityTypeSystemAssigned,
-		ResourceIdentityTypeSystemAssignedUserAssigned,
-		ResourceIdentityTypeUserAssigned,
-		ResourceIdentityTypeNone,
+// PossibleSKUScaleTypeValues returns the possible values for the SKUScaleType const type.
+func PossibleSKUScaleTypeValues() []SKUScaleType {
+	return []SKUScaleType{
+		SKUScaleTypeAutomatic,
+		SKUScaleTypeManual,
+		SKUScaleTypeNone,
+	}
+}
+
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
+type SKUTier string
+
+const (
+	SKUTierFree     SKUTier = "Free"
+	SKUTierBasic    SKUTier = "Basic"
+	SKUTierStandard SKUTier = "Standard"
+	SKUTierPremium  SKUTier = "Premium"
+)
+
+// PossibleSKUTierValues returns the possible values for the SKUTier const type.
+func PossibleSKUTierValues() []SKUTier {
+	return []SKUTier{
+		SKUTierFree,
+		SKUTierBasic,
+		SKUTierStandard,
+		SKUTierPremium,
 	}
 }
 
@@ -528,6 +1889,218 @@ func PossibleSSLConfigurationStatusValues() []SSLConfigurationStatus {
 	}
 }
 
+type SamplingAlgorithmType string
+
+const (
+	SamplingAlgorithmTypeBayesian SamplingAlgorithmType = "Bayesian"
+	SamplingAlgorithmTypeGrid     SamplingAlgorithmType = "Grid"
+	SamplingAlgorithmTypeRandom   SamplingAlgorithmType = "Random"
+)
+
+// PossibleSamplingAlgorithmTypeValues returns the possible values for the SamplingAlgorithmType const type.
+func PossibleSamplingAlgorithmTypeValues() []SamplingAlgorithmType {
+	return []SamplingAlgorithmType{
+		SamplingAlgorithmTypeBayesian,
+		SamplingAlgorithmTypeGrid,
+		SamplingAlgorithmTypeRandom,
+	}
+}
+
+type ScaleType string
+
+const (
+	ScaleTypeDefault           ScaleType = "Default"
+	ScaleTypeTargetUtilization ScaleType = "TargetUtilization"
+)
+
+// PossibleScaleTypeValues returns the possible values for the ScaleType const type.
+func PossibleScaleTypeValues() []ScaleType {
+	return []ScaleType{
+		ScaleTypeDefault,
+		ScaleTypeTargetUtilization,
+	}
+}
+
+// ScheduleStatus - Enum to describe status of schedule
+type ScheduleStatus string
+
+const (
+	// ScheduleStatusDisabled - Schedule is disabled
+	ScheduleStatusDisabled ScheduleStatus = "Disabled"
+	// ScheduleStatusEnabled - Schedule is enabled
+	ScheduleStatusEnabled ScheduleStatus = "Enabled"
+)
+
+// PossibleScheduleStatusValues returns the possible values for the ScheduleStatus const type.
+func PossibleScheduleStatusValues() []ScheduleStatus {
+	return []ScheduleStatus{
+		ScheduleStatusDisabled,
+		ScheduleStatusEnabled,
+	}
+}
+
+// ScheduleType - Enum to describe type of schedule
+type ScheduleType string
+
+const (
+	// ScheduleTypeCron - Cron schedule type
+	ScheduleTypeCron ScheduleType = "Cron"
+	// ScheduleTypeRecurrence - Recurrence schedule type
+	ScheduleTypeRecurrence ScheduleType = "Recurrence"
+)
+
+// PossibleScheduleTypeValues returns the possible values for the ScheduleType const type.
+func PossibleScheduleTypeValues() []ScheduleType {
+	return []ScheduleType{
+		ScheduleTypeCron,
+		ScheduleTypeRecurrence,
+	}
+}
+
+// SeasonalityMode - Forecasting seasonality mode.
+type SeasonalityMode string
+
+const (
+	// SeasonalityModeAuto - Seasonality to be determined automatically.
+	SeasonalityModeAuto SeasonalityMode = "Auto"
+	// SeasonalityModeCustom - Use the custom seasonality value.
+	SeasonalityModeCustom SeasonalityMode = "Custom"
+)
+
+// PossibleSeasonalityModeValues returns the possible values for the SeasonalityMode const type.
+func PossibleSeasonalityModeValues() []SeasonalityMode {
+	return []SeasonalityMode{
+		SeasonalityModeAuto,
+		SeasonalityModeCustom,
+	}
+}
+
+// SecretsType - Enum to determine the datastore secrets type.
+type SecretsType string
+
+const (
+	SecretsTypeAccountKey       SecretsType = "AccountKey"
+	SecretsTypeCertificate      SecretsType = "Certificate"
+	SecretsTypeKerberosKeytab   SecretsType = "KerberosKeytab"
+	SecretsTypeKerberosPassword SecretsType = "KerberosPassword"
+	SecretsTypeSas              SecretsType = "Sas"
+	SecretsTypeServicePrincipal SecretsType = "ServicePrincipal"
+)
+
+// PossibleSecretsTypeValues returns the possible values for the SecretsType const type.
+func PossibleSecretsTypeValues() []SecretsType {
+	return []SecretsType{
+		SecretsTypeAccountKey,
+		SecretsTypeCertificate,
+		SecretsTypeKerberosKeytab,
+		SecretsTypeKerberosPassword,
+		SecretsTypeSas,
+		SecretsTypeServicePrincipal,
+	}
+}
+
+type ServiceDataAccessAuthIdentity string
+
+const (
+	// ServiceDataAccessAuthIdentityNone - Do not use any identity for service data access.
+	ServiceDataAccessAuthIdentityNone ServiceDataAccessAuthIdentity = "None"
+	// ServiceDataAccessAuthIdentityWorkspaceSystemAssignedIdentity - Use the system assigned managed identity of the Workspace
+	// to authenticate service data access.
+	ServiceDataAccessAuthIdentityWorkspaceSystemAssignedIdentity ServiceDataAccessAuthIdentity = "WorkspaceSystemAssignedIdentity"
+	// ServiceDataAccessAuthIdentityWorkspaceUserAssignedIdentity - Use the user assigned managed identity of the Workspace to
+	// authenticate service data access.
+	ServiceDataAccessAuthIdentityWorkspaceUserAssignedIdentity ServiceDataAccessAuthIdentity = "WorkspaceUserAssignedIdentity"
+)
+
+// PossibleServiceDataAccessAuthIdentityValues returns the possible values for the ServiceDataAccessAuthIdentity const type.
+func PossibleServiceDataAccessAuthIdentityValues() []ServiceDataAccessAuthIdentity {
+	return []ServiceDataAccessAuthIdentity{
+		ServiceDataAccessAuthIdentityNone,
+		ServiceDataAccessAuthIdentityWorkspaceSystemAssignedIdentity,
+		ServiceDataAccessAuthIdentityWorkspaceUserAssignedIdentity,
+	}
+}
+
+// ShortSeriesHandlingConfiguration - The parameter defining how if AutoML should handle short time series.
+type ShortSeriesHandlingConfiguration string
+
+const (
+	// ShortSeriesHandlingConfigurationAuto - Short series will be padded if there are no long series, otherwise short series
+	// will be dropped.
+	ShortSeriesHandlingConfigurationAuto ShortSeriesHandlingConfiguration = "Auto"
+	// ShortSeriesHandlingConfigurationDrop - All the short series will be dropped.
+	ShortSeriesHandlingConfigurationDrop ShortSeriesHandlingConfiguration = "Drop"
+	// ShortSeriesHandlingConfigurationNone - Represents no/null value.
+	ShortSeriesHandlingConfigurationNone ShortSeriesHandlingConfiguration = "None"
+	// ShortSeriesHandlingConfigurationPad - All the short series will be padded.
+	ShortSeriesHandlingConfigurationPad ShortSeriesHandlingConfiguration = "Pad"
+)
+
+// PossibleShortSeriesHandlingConfigurationValues returns the possible values for the ShortSeriesHandlingConfiguration const type.
+func PossibleShortSeriesHandlingConfigurationValues() []ShortSeriesHandlingConfiguration {
+	return []ShortSeriesHandlingConfiguration{
+		ShortSeriesHandlingConfigurationAuto,
+		ShortSeriesHandlingConfigurationDrop,
+		ShortSeriesHandlingConfigurationNone,
+		ShortSeriesHandlingConfigurationPad,
+	}
+}
+
+// SourceType - Data source type.
+type SourceType string
+
+const (
+	SourceTypeDataset   SourceType = "Dataset"
+	SourceTypeDatastore SourceType = "Datastore"
+	SourceTypeURI       SourceType = "URI"
+)
+
+// PossibleSourceTypeValues returns the possible values for the SourceType const type.
+func PossibleSourceTypeValues() []SourceType {
+	return []SourceType{
+		SourceTypeDataset,
+		SourceTypeDatastore,
+		SourceTypeURI,
+	}
+}
+
+// StackMetaLearnerType - The meta-learner is a model trained on the output of the individual heterogeneous models. Default
+// meta-learners are LogisticRegression for classification tasks (or LogisticRegressionCV if
+// cross-validation is enabled) and ElasticNet for regression/forecasting tasks (or ElasticNetCV if cross-validation is enabled).
+// This parameter can be one of the following strings: LogisticRegression,
+// LogisticRegressionCV, LightGBMClassifier, ElasticNet, ElasticNetCV, LightGBMRegressor, or LinearRegression
+type StackMetaLearnerType string
+
+const (
+	// StackMetaLearnerTypeElasticNet - Default meta-learners are LogisticRegression for regression task.
+	StackMetaLearnerTypeElasticNet StackMetaLearnerType = "ElasticNet"
+	// StackMetaLearnerTypeElasticNetCV - Default meta-learners are LogisticRegression for regression task when CV is on.
+	StackMetaLearnerTypeElasticNetCV       StackMetaLearnerType = "ElasticNetCV"
+	StackMetaLearnerTypeLightGBMClassifier StackMetaLearnerType = "LightGBMClassifier"
+	StackMetaLearnerTypeLightGBMRegressor  StackMetaLearnerType = "LightGBMRegressor"
+	StackMetaLearnerTypeLinearRegression   StackMetaLearnerType = "LinearRegression"
+	// StackMetaLearnerTypeLogisticRegression - Default meta-learners are LogisticRegression for classification tasks.
+	StackMetaLearnerTypeLogisticRegression StackMetaLearnerType = "LogisticRegression"
+	// StackMetaLearnerTypeLogisticRegressionCV - Default meta-learners are LogisticRegression for classification task when CV
+	// is on.
+	StackMetaLearnerTypeLogisticRegressionCV StackMetaLearnerType = "LogisticRegressionCV"
+	StackMetaLearnerTypeNone                 StackMetaLearnerType = "None"
+)
+
+// PossibleStackMetaLearnerTypeValues returns the possible values for the StackMetaLearnerType const type.
+func PossibleStackMetaLearnerTypeValues() []StackMetaLearnerType {
+	return []StackMetaLearnerType{
+		StackMetaLearnerTypeElasticNet,
+		StackMetaLearnerTypeElasticNetCV,
+		StackMetaLearnerTypeLightGBMClassifier,
+		StackMetaLearnerTypeLightGBMRegressor,
+		StackMetaLearnerTypeLinearRegression,
+		StackMetaLearnerTypeLogisticRegression,
+		StackMetaLearnerTypeLogisticRegressionCV,
+		StackMetaLearnerTypeNone,
+	}
+}
+
 // Status - Status of update workspace quota.
 type Status string
 
@@ -553,6 +2126,165 @@ func PossibleStatusValues() []Status {
 		StatusOperationNotSupportedForSKU,
 		StatusSuccess,
 		StatusUndefined,
+	}
+}
+
+// StochasticOptimizer - Stochastic optimizer for image models.
+type StochasticOptimizer string
+
+const (
+	// StochasticOptimizerAdam - Adam is algorithm the optimizes stochastic objective functions based on adaptive estimates of
+	// moments
+	StochasticOptimizerAdam StochasticOptimizer = "Adam"
+	// StochasticOptimizerAdamw - AdamW is a variant of the optimizer Adam that has an improved implementation of weight decay.
+	StochasticOptimizerAdamw StochasticOptimizer = "Adamw"
+	// StochasticOptimizerNone - No optimizer selected.
+	StochasticOptimizerNone StochasticOptimizer = "None"
+	// StochasticOptimizerSgd - Stochastic Gradient Descent optimizer.
+	StochasticOptimizerSgd StochasticOptimizer = "Sgd"
+)
+
+// PossibleStochasticOptimizerValues returns the possible values for the StochasticOptimizer const type.
+func PossibleStochasticOptimizerValues() []StochasticOptimizer {
+	return []StochasticOptimizer{
+		StochasticOptimizerAdam,
+		StochasticOptimizerAdamw,
+		StochasticOptimizerNone,
+		StochasticOptimizerSgd,
+	}
+}
+
+// StorageAccountType - type of this storage account.
+type StorageAccountType string
+
+const (
+	StorageAccountTypePremiumLRS  StorageAccountType = "Premium_LRS"
+	StorageAccountTypeStandardLRS StorageAccountType = "Standard_LRS"
+)
+
+// PossibleStorageAccountTypeValues returns the possible values for the StorageAccountType const type.
+func PossibleStorageAccountTypeValues() []StorageAccountType {
+	return []StorageAccountType{
+		StorageAccountTypePremiumLRS,
+		StorageAccountTypeStandardLRS,
+	}
+}
+
+// TargetAggregationFunction - Target aggregate function.
+type TargetAggregationFunction string
+
+const (
+	TargetAggregationFunctionMax  TargetAggregationFunction = "Max"
+	TargetAggregationFunctionMean TargetAggregationFunction = "Mean"
+	TargetAggregationFunctionMin  TargetAggregationFunction = "Min"
+	// TargetAggregationFunctionNone - Represent no value set.
+	TargetAggregationFunctionNone TargetAggregationFunction = "None"
+	TargetAggregationFunctionSum  TargetAggregationFunction = "Sum"
+)
+
+// PossibleTargetAggregationFunctionValues returns the possible values for the TargetAggregationFunction const type.
+func PossibleTargetAggregationFunctionValues() []TargetAggregationFunction {
+	return []TargetAggregationFunction{
+		TargetAggregationFunctionMax,
+		TargetAggregationFunctionMean,
+		TargetAggregationFunctionMin,
+		TargetAggregationFunctionNone,
+		TargetAggregationFunctionSum,
+	}
+}
+
+// TargetLagsMode - Target lags selection modes.
+type TargetLagsMode string
+
+const (
+	// TargetLagsModeAuto - Target lags to be determined automatically.
+	TargetLagsModeAuto TargetLagsMode = "Auto"
+	// TargetLagsModeCustom - Use the custom target lags.
+	TargetLagsModeCustom TargetLagsMode = "Custom"
+)
+
+// PossibleTargetLagsModeValues returns the possible values for the TargetLagsMode const type.
+func PossibleTargetLagsModeValues() []TargetLagsMode {
+	return []TargetLagsMode{
+		TargetLagsModeAuto,
+		TargetLagsModeCustom,
+	}
+}
+
+// TargetRollingWindowSizeMode - Target rolling windows size mode.
+type TargetRollingWindowSizeMode string
+
+const (
+	// TargetRollingWindowSizeModeAuto - Determine rolling windows size automatically.
+	TargetRollingWindowSizeModeAuto TargetRollingWindowSizeMode = "Auto"
+	// TargetRollingWindowSizeModeCustom - Use the specified rolling window size.
+	TargetRollingWindowSizeModeCustom TargetRollingWindowSizeMode = "Custom"
+)
+
+// PossibleTargetRollingWindowSizeModeValues returns the possible values for the TargetRollingWindowSizeMode const type.
+func PossibleTargetRollingWindowSizeModeValues() []TargetRollingWindowSizeMode {
+	return []TargetRollingWindowSizeMode{
+		TargetRollingWindowSizeModeAuto,
+		TargetRollingWindowSizeModeCustom,
+	}
+}
+
+// TaskType - AutoMLJob Task type.
+type TaskType string
+
+const (
+	// TaskTypeClassification - Classification in machine learning and statistics is a supervised learning approach in which
+	// the computer program learns from the data given to it and make new observations or classifications.
+	TaskTypeClassification TaskType = "Classification"
+	// TaskTypeForecasting - Forecasting is a special kind of regression task that deals with time-series data and creates forecasting
+	// model
+	// that can be used to predict the near future values based on the inputs.
+	TaskTypeForecasting TaskType = "Forecasting"
+	// TaskTypeImageClassification - Image Classification. Multi-class image classification is used when an image is classified
+	// with only a single label
+	// from a set of classes - e.g. each image is classified as either an image of a 'cat' or a 'dog' or a 'duck'.
+	TaskTypeImageClassification TaskType = "ImageClassification"
+	// TaskTypeImageClassificationMultilabel - Image Classification Multilabel. Multi-label image classification is used when
+	// an image could have one or more labels
+	// from a set of labels - e.g. an image could be labeled with both 'cat' and 'dog'.
+	TaskTypeImageClassificationMultilabel TaskType = "ImageClassificationMultilabel"
+	// TaskTypeImageInstanceSegmentation - Image Instance Segmentation. Instance segmentation is used to identify objects in an
+	// image at the pixel level,
+	// drawing a polygon around each object in the image.
+	TaskTypeImageInstanceSegmentation TaskType = "ImageInstanceSegmentation"
+	// TaskTypeImageObjectDetection - Image Object Detection. Object detection is used to identify objects in an image and locate
+	// each object with a
+	// bounding box e.g. locate all dogs and cats in an image and draw a bounding box around each.
+	TaskTypeImageObjectDetection TaskType = "ImageObjectDetection"
+	// TaskTypeRegression - Regression means to predict the value using the input data. Regression models are used to predict
+	// a continuous value.
+	TaskTypeRegression TaskType = "Regression"
+	// TaskTypeTextClassification - Text classification (also known as text tagging or text categorization) is the process of
+	// sorting texts into categories.
+	// Categories are mutually exclusive.
+	TaskTypeTextClassification TaskType = "TextClassification"
+	// TaskTypeTextClassificationMultilabel - Multilabel classification task assigns each sample to a group (zero or more) of
+	// target labels.
+	TaskTypeTextClassificationMultilabel TaskType = "TextClassificationMultilabel"
+	// TaskTypeTextNER - Text Named Entity Recognition a.k.a. TextNER.
+	// Named Entity Recognition (NER) is the ability to take free-form text and identify the occurrences of entities such as people,
+	// locations, organizations, and more.
+	TaskTypeTextNER TaskType = "TextNER"
+)
+
+// PossibleTaskTypeValues returns the possible values for the TaskType const type.
+func PossibleTaskTypeValues() []TaskType {
+	return []TaskType{
+		TaskTypeClassification,
+		TaskTypeForecasting,
+		TaskTypeImageClassification,
+		TaskTypeImageClassificationMultilabel,
+		TaskTypeImageInstanceSegmentation,
+		TaskTypeImageObjectDetection,
+		TaskTypeRegression,
+		TaskTypeTextClassification,
+		TaskTypeTextClassificationMultilabel,
+		TaskTypeTextNER,
 	}
 }
 
@@ -596,6 +2328,25 @@ const (
 func PossibleUsageUnitValues() []UsageUnit {
 	return []UsageUnit{
 		UsageUnitCount,
+	}
+}
+
+// UseStl - Configure STL Decomposition of the time-series target column.
+type UseStl string
+
+const (
+	// UseStlNone - No stl decomposition.
+	UseStlNone        UseStl = "None"
+	UseStlSeason      UseStl = "Season"
+	UseStlSeasonTrend UseStl = "SeasonTrend"
+)
+
+// PossibleUseStlValues returns the possible values for the UseStl const type.
+func PossibleUseStlValues() []UseStl {
+	return []UseStl{
+		UseStlNone,
+		UseStlSeason,
+		UseStlSeasonTrend,
 	}
 }
 
@@ -649,6 +2400,30 @@ func PossibleVMTierValues() []VMTier {
 	}
 }
 
+// ValidationMetricType - Metric computation method to use for validation metrics in image tasks.
+type ValidationMetricType string
+
+const (
+	// ValidationMetricTypeCoco - Coco metric.
+	ValidationMetricTypeCoco ValidationMetricType = "Coco"
+	// ValidationMetricTypeCocoVoc - CocoVoc metric.
+	ValidationMetricTypeCocoVoc ValidationMetricType = "CocoVoc"
+	// ValidationMetricTypeNone - No metric.
+	ValidationMetricTypeNone ValidationMetricType = "None"
+	// ValidationMetricTypeVoc - Voc metric.
+	ValidationMetricTypeVoc ValidationMetricType = "Voc"
+)
+
+// PossibleValidationMetricTypeValues returns the possible values for the ValidationMetricType const type.
+func PossibleValidationMetricTypeValues() []ValidationMetricType {
+	return []ValidationMetricType{
+		ValidationMetricTypeCoco,
+		ValidationMetricTypeCocoVoc,
+		ValidationMetricTypeNone,
+		ValidationMetricTypeVoc,
+	}
+}
+
 // ValueFormat - format for the workspace connection value
 type ValueFormat string
 
@@ -660,5 +2435,38 @@ const (
 func PossibleValueFormatValues() []ValueFormat {
 	return []ValueFormat{
 		ValueFormatJSON,
+	}
+}
+
+// Weekday - Enum of weekdays
+type Weekday string
+
+const (
+	// WeekdayFriday - Friday weekday
+	WeekdayFriday Weekday = "Friday"
+	// WeekdayMonday - Monday weekday
+	WeekdayMonday Weekday = "Monday"
+	// WeekdaySaturday - Saturday weekday
+	WeekdaySaturday Weekday = "Saturday"
+	// WeekdaySunday - Sunday weekday
+	WeekdaySunday Weekday = "Sunday"
+	// WeekdayThursday - Thursday weekday
+	WeekdayThursday Weekday = "Thursday"
+	// WeekdayTuesday - Tuesday weekday
+	WeekdayTuesday Weekday = "Tuesday"
+	// WeekdayWednesday - Wednesday weekday
+	WeekdayWednesday Weekday = "Wednesday"
+)
+
+// PossibleWeekdayValues returns the possible values for the Weekday const type.
+func PossibleWeekdayValues() []Weekday {
+	return []Weekday{
+		WeekdayFriday,
+		WeekdayMonday,
+		WeekdaySaturday,
+		WeekdaySunday,
+		WeekdayThursday,
+		WeekdayTuesday,
+		WeekdayWednesday,
 	}
 }

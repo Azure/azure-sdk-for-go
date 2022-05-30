@@ -1,10 +1,6 @@
 # Release History
 
-## 2.0.0 (2022-05-30)
-### Breaking Changes
-
-- Struct `SubResource` has been removed
-
+## 1.1.0 (2022-05-30)
 ### Features Added
 
 - New const `ProvisioningErrorCodeBadValidatorType`

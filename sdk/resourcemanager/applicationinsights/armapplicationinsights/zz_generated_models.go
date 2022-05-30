@@ -1583,7 +1583,7 @@ type WorkItemCreateConfiguration struct {
 	WorkItemProperties map[string]*string `json:"WorkItemProperties,omitempty"`
 }
 
-// Workbook - An Application Insights workbook definition.
+// Workbook - A workbook definition.
 type Workbook struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
@@ -1595,7 +1595,7 @@ type Workbook struct {
 	Identity *WorkbookResourceIdentity `json:"identity,omitempty"`
 
 	// The kind of workbook. Only valid value is shared.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *WorkbookSharedTypeKind `json:"kind,omitempty"`
 
 	// Metadata describing a workbook for an Azure resource.
 	Properties *WorkbookProperties `json:"properties,omitempty"`
@@ -1709,7 +1709,7 @@ type WorkbookResource struct {
 	Identity *WorkbookResourceIdentity `json:"identity,omitempty"`
 
 	// The kind of workbook. Only valid value is shared.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *WorkbookSharedTypeKind `json:"kind,omitempty"`
 
 	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -1904,7 +1904,7 @@ type WorkbookTemplatesListResult struct {
 // WorkbookUpdateParameters - The parameters that can be provided when updating workbook properties properties.
 type WorkbookUpdateParameters struct {
 	// The kind of workbook. Only valid value is shared.
-	Kind *SharedTypeKind `json:"kind,omitempty"`
+	Kind *WorkbookUpdateSharedTypeKind `json:"kind,omitempty"`
 
 	// Metadata describing a workbook for an Azure resource.
 	Properties *WorkbookPropertiesUpdateParameters `json:"properties,omitempty"`

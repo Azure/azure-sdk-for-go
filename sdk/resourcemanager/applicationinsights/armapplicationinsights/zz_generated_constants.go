@@ -10,7 +10,7 @@ package armapplicationinsights
 
 const (
 	moduleName    = "armapplicationinsights"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.6.0"
 )
 
 // ApplicationType - Type of application being monitored.
@@ -320,22 +320,6 @@ func PossibleRequestSourceValues() []RequestSource {
 	}
 }
 
-// SharedTypeKind - The kind of workbook. Only valid value is shared.
-type SharedTypeKind string
-
-const (
-	SharedTypeKindShared SharedTypeKind = "shared"
-	SharedTypeKindUser   SharedTypeKind = "user"
-)
-
-// PossibleSharedTypeKindValues returns the possible values for the SharedTypeKind const type.
-func PossibleSharedTypeKindValues() []SharedTypeKind {
-	return []SharedTypeKind{
-		SharedTypeKindShared,
-		SharedTypeKindUser,
-	}
-}
-
 type StorageType string
 
 const (
@@ -362,5 +346,33 @@ func PossibleWebTestKindValues() []WebTestKind {
 	return []WebTestKind{
 		WebTestKindPing,
 		WebTestKindMultistep,
+	}
+}
+
+// WorkbookSharedTypeKind - The kind of workbook. Only valid value is shared.
+type WorkbookSharedTypeKind string
+
+const (
+	WorkbookSharedTypeKindShared WorkbookSharedTypeKind = "shared"
+)
+
+// PossibleWorkbookSharedTypeKindValues returns the possible values for the WorkbookSharedTypeKind const type.
+func PossibleWorkbookSharedTypeKindValues() []WorkbookSharedTypeKind {
+	return []WorkbookSharedTypeKind{
+		WorkbookSharedTypeKindShared,
+	}
+}
+
+// WorkbookUpdateSharedTypeKind - The kind of workbook. Only valid value is shared.
+type WorkbookUpdateSharedTypeKind string
+
+const (
+	WorkbookUpdateSharedTypeKindShared WorkbookUpdateSharedTypeKind = "shared"
+)
+
+// PossibleWorkbookUpdateSharedTypeKindValues returns the possible values for the WorkbookUpdateSharedTypeKind const type.
+func PossibleWorkbookUpdateSharedTypeKindValues() []WorkbookUpdateSharedTypeKind {
+	return []WorkbookUpdateSharedTypeKind{
+		WorkbookUpdateSharedTypeKindShared,
 	}
 }

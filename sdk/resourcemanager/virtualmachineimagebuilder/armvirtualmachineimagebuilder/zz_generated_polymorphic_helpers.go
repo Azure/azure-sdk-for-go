@@ -96,6 +96,45 @@ func unmarshalImageTemplateDistributorClassificationArray(rawMsg json.RawMessage
 	return fArray, nil
 }
 
+func unmarshalImageTemplateInVMValidatorClassification(rawMsg json.RawMessage) (ImageTemplateInVMValidatorClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ImageTemplateInVMValidatorClassification
+	switch m["type"] {
+	case "PowerShell":
+		b = &ImageTemplatePowerShellValidator{}
+	case "Shell":
+		b = &ImageTemplateShellValidator{}
+	default:
+		b = &ImageTemplateInVMValidator{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalImageTemplateInVMValidatorClassificationArray(rawMsg json.RawMessage) ([]ImageTemplateInVMValidatorClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]ImageTemplateInVMValidatorClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalImageTemplateInVMValidatorClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalImageTemplateSourceClassification(rawMsg json.RawMessage) (ImageTemplateSourceClassification, error) {
 	if rawMsg == nil {
 		return nil, nil

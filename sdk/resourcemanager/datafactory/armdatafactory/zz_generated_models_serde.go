@@ -17742,6 +17742,17 @@ func (g *GetMetadataActivityTypeProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type GlobalParameterResource.
+func (g GlobalParameterResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "etag", g.Etag)
+	populate(objectMap, "id", g.ID)
+	populate(objectMap, "name", g.Name)
+	populate(objectMap, "properties", g.Properties)
+	populate(objectMap, "type", g.Type)
+	return json.Marshal(objectMap)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type GoogleAdWordsLinkedService.
 func (g GoogleAdWordsLinkedService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

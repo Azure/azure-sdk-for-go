@@ -12441,6 +12441,33 @@ type GitHubClientSecret struct {
 	ByoaSecretName *string `json:"byoaSecretName,omitempty"`
 }
 
+// GlobalParameterListResponse - A list of Global parameters.
+type GlobalParameterListResponse struct {
+	// REQUIRED; List of global parameters.
+	Value []*GlobalParameterResource `json:"value,omitempty"`
+
+	// The link to the next page of results, if any remaining results exist.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GlobalParameterResource - Global parameters resource type.
+type GlobalParameterResource struct {
+	// REQUIRED; Properties of the global parameter.
+	Properties map[string]*GlobalParameterSpecification `json:"properties,omitempty"`
+
+	// READ-ONLY; Etag identifies change in the resource.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource identifier.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
 // GlobalParameterSpecification - Definition of a single parameter for an entity.
 type GlobalParameterSpecification struct {
 	// REQUIRED; Global Parameter type.
@@ -12448,6 +12475,28 @@ type GlobalParameterSpecification struct {
 
 	// REQUIRED; Value of parameter.
 	Value interface{} `json:"value,omitempty"`
+}
+
+// GlobalParametersClientCreateOrUpdateOptions contains the optional parameters for the GlobalParametersClient.CreateOrUpdate
+// method.
+type GlobalParametersClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GlobalParametersClientDeleteOptions contains the optional parameters for the GlobalParametersClient.Delete method.
+type GlobalParametersClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GlobalParametersClientGetOptions contains the optional parameters for the GlobalParametersClient.Get method.
+type GlobalParametersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GlobalParametersClientListByFactoryOptions contains the optional parameters for the GlobalParametersClient.ListByFactory
+// method.
+type GlobalParametersClientListByFactoryOptions struct {
+	// placeholder for future optional parameters
 }
 
 // GoogleAdWordsLinkedService - Google AdWords service linked service.

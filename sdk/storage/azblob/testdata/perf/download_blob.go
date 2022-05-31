@@ -45,16 +45,14 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Gl
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.containerName, nil)
-	if err != nil {
-		return nil, err
-	}
-	_, err = containerClient.Create(context.Background(), nil)
+	containerClient := azblob.NewContainerClientFromConnectionString(connStr, d.containerName, nil)
+
+	_, err := containerClient.Create(context.Background(), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	blobClient, err := containerClient.NewBlockBlobClient(d.blobName)
+	blobClient := containerClient.NewBlockBlobClient(d.blobName)
 	if err != nil {
 		return nil, err
 	}
@@ -78,12 +76,9 @@ func (d *downloadTestGlobal) GlobalCleanup(ctx context.Context) error {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.containerName, nil)
-	if err != nil {
-		return err
-	}
+	containerClient := azblob.NewContainerClientFromConnectionString(connStr, d.containerName, nil)
 
-	_, err = containerClient.Delete(context.Background(), nil)
+	_, err := containerClient.Delete(context.Background(), nil)
 	return err
 }
 
@@ -106,16 +101,11 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &azblob.ClientOptions{
+	containerClient := azblob.NewContainerClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &azblob.ClientOptions{
 		Transport: d.PerfTestOptions.Transporter,
 	})
-	if err != nil {
-		return nil, err
-	}
-	bc, err := containerClient.NewBlockBlobClient(d.blobName)
-	if err != nil {
-		return nil, err
-	}
+
+	bc := containerClient.NewBlockBlobClient(d.blobName)
 	d.blobClient = bc
 
 	data, err := perf.NewRandomStream(downloadTestOpts.size)

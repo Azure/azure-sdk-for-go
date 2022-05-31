@@ -41,7 +41,7 @@ func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	_require.Nil(err)
 	_require.Equal(serviceURL, "https://"+accountName+".blob.core.windows.net/")
 
-	svcClient, err := NewServiceClientWithSharedKey(serviceURL, cred, nil)
+	svcClient := NewServiceClientWithSharedKey(serviceURL, cred, nil)
 	_require.Nil(err)
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
@@ -59,7 +59,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient, _ := getContainerClient(containerName, svcClient)
+	containerClient := getContainerClient(containerName, svcClient)
 	_, err = containerClient.Create(ctx, &ContainerCreateOptions{Metadata: md})
 	defer func(containerClient *ContainerClient, ctx context.Context, options *ContainerDeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)
@@ -118,7 +118,7 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient, _ := getContainerClient(containerName, svcClient)
+	containerClient := getContainerClient(containerName, svcClient)
 	_, err = containerClient.Create(ctx, &ContainerCreateOptions{Metadata: md})
 	defer func(containerClient *ContainerClient, ctx context.Context, options *ContainerDeleteOptions) {
 		_, err := containerClient.Delete(ctx, options)

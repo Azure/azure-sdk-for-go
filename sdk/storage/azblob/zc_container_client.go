@@ -29,7 +29,7 @@ func (c *ContainerClient) URL() string {
 }
 
 // NewContainerClient creates a ContainerClient object using the specified URL, Azure AD credential, and options.
-func NewContainerClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*ContainerClient, error) {
+func NewContainerClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) *ContainerClient {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -37,21 +37,21 @@ func NewContainerClient(containerURL string, cred azcore.TokenCredential, option
 
 	return &ContainerClient{
 		client: newContainerClient(conn.Endpoint(), conn.Pipeline()),
-	}, nil
+	}
 }
 
 // NewContainerClientWithNoCredential creates a ContainerClient object using the specified URL and options.
-func NewContainerClientWithNoCredential(containerURL string, options *ClientOptions) (*ContainerClient, error) {
+func NewContainerClientWithNoCredential(containerURL string, options *ClientOptions) *ContainerClient {
 	conOptions := getConnectionOptions(options)
 	conn := internal.NewConnection(containerURL, conOptions)
 
 	return &ContainerClient{
 		client: newContainerClient(conn.Endpoint(), conn.Pipeline()),
-	}, nil
+	}
 }
 
 // NewContainerClientWithSharedKey creates a ContainerClient object using the specified URL, shared key, and options.
-func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*ContainerClient, error) {
+func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredential, options *ClientOptions) *ContainerClient {
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -60,15 +60,12 @@ func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredent
 	return &ContainerClient{
 		client:    newContainerClient(conn.Endpoint(), conn.Pipeline()),
 		sharedKey: cred,
-	}, nil
+	}
 }
 
 // NewContainerClientFromConnectionString creates a ContainerClient object using connection string of an account
-func NewContainerClientFromConnectionString(connectionString string, containerName string, options *ClientOptions) (*ContainerClient, error) {
-	svcClient, err := NewServiceClientFromConnectionString(connectionString, options)
-	if err != nil {
-		return nil, err
-	}
+func NewContainerClientFromConnectionString(connectionString string, containerName string, options *ClientOptions) *ContainerClient {
+	svcClient := NewServiceClientFromConnectionString(connectionString, options)
 	return svcClient.NewContainerClient(containerName)
 }
 
@@ -77,13 +74,13 @@ func NewContainerClientFromConnectionString(connectionString string, containerNa
 // To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewBlobClient instead of calling this object's
 // NewBlobClient method.
-func (c *ContainerClient) NewBlobClient(blobName string) (*BlobClient, error) {
+func (c *ContainerClient) NewBlobClient(blobName string) *BlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
 
 	return &BlobClient{
 		client:    newBlobClient(blobURL, c.client.pl),
 		sharedKey: c.sharedKey,
-	}, nil
+	}
 }
 
 // NewAppendBlobClient creates a new AppendBlobURL object by concatenating blobName to the end of
@@ -91,7 +88,7 @@ func (c *ContainerClient) NewBlobClient(blobName string) (*BlobClient, error) {
 // To change the pipeline, create the AppendBlobURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewAppendBlobClient instead of calling this object's
 // NewAppendBlobClient method.
-func (c *ContainerClient) NewAppendBlobClient(blobName string) (*AppendBlobClient, error) {
+func (c *ContainerClient) NewAppendBlobClient(blobName string) *AppendBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
 
 	return &AppendBlobClient{
@@ -100,7 +97,7 @@ func (c *ContainerClient) NewAppendBlobClient(blobName string) (*AppendBlobClien
 			sharedKey: c.sharedKey,
 		},
 		client: newAppendBlobClient(blobURL, c.client.pl),
-	}, nil
+	}
 }
 
 // NewBlockBlobClient creates a new BlockBlobClient object by concatenating blobName to the end of
@@ -108,7 +105,7 @@ func (c *ContainerClient) NewAppendBlobClient(blobName string) (*AppendBlobClien
 // To change the pipeline, create the BlockBlobClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewBlockBlobClient instead of calling this object's
 // NewBlockBlobClient method.
-func (c *ContainerClient) NewBlockBlobClient(blobName string) (*BlockBlobClient, error) {
+func (c *ContainerClient) NewBlockBlobClient(blobName string) *BlockBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
 
 	return &BlockBlobClient{
@@ -117,14 +114,14 @@ func (c *ContainerClient) NewBlockBlobClient(blobName string) (*BlockBlobClient,
 			sharedKey: c.sharedKey,
 		},
 		client: newBlockBlobClient(blobURL, c.client.pl),
-	}, nil
+	}
 }
 
 // NewPageBlobClient creates a new PageBlobURL object by concatenating blobName to the end of ContainerClient's URL. The new PageBlobURL uses the same request policy pipeline as the ContainerClient.
 // To change the pipeline, create the PageBlobURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewPageBlobClient instead of calling this object's
 // NewPageBlobClient method.
-func (c *ContainerClient) NewPageBlobClient(blobName string) (*PageBlobClient, error) {
+func (c *ContainerClient) NewPageBlobClient(blobName string) *PageBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
 
 	return &PageBlobClient{
@@ -133,7 +130,7 @@ func (c *ContainerClient) NewPageBlobClient(blobName string) (*PageBlobClient, e
 			sharedKey: c.sharedKey,
 		},
 		client: newPageBlobClient(blobURL, c.client.pl),
-	}, nil
+	}
 }
 
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.

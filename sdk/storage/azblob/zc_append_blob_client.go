@@ -22,7 +22,7 @@ type AppendBlobClient struct {
 }
 
 // NewAppendBlobClient creates an AppendBlobClient with the specified URL, Azure AD credential, and options.
-func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*AppendBlobClient, error) {
+func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) *AppendBlobClient {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -33,11 +33,11 @@ func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *C
 		BlobClient: BlobClient{
 			client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
 		},
-	}, nil
+	}
 }
 
 // NewAppendBlobClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
-func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*AppendBlobClient, error) {
+func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions) *AppendBlobClient {
 	conOptions := getConnectionOptions(options)
 	conn := internal.NewConnection(blobURL, conOptions)
 
@@ -46,11 +46,11 @@ func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions)
 		BlobClient: BlobClient{
 			client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
 		},
-	}, nil
+	}
 }
 
 // NewAppendBlobClientWithSharedKey creates an AppendBlobClient with the specified URL, shared key, and options.
-func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*AppendBlobClient, error) {
+func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) *AppendBlobClient {
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -62,7 +62,7 @@ func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential,
 			client:    newBlobClient(conn.Endpoint(), conn.Pipeline()),
 			sharedKey: cred,
 		},
-	}, nil
+	}
 }
 
 // WithSnapshot creates a new AppendBlobURL object identical to the source but with the specified snapshot timestamp.

@@ -41,7 +41,7 @@ func (s ServiceClient) URL() string {
 
 // NewServiceClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) *ServiceClient {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -49,23 +49,23 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 
 	return &ServiceClient{
 		client: newServiceClient(conn.Endpoint(), conn.Pipeline()),
-	}, nil
+	}
 }
 
 // NewServiceClientWithNoCredential creates a ServiceClient object using the specified URL and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
-func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
+func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) *ServiceClient {
 	conOptions := getConnectionOptions(options)
 	conn := internal.NewConnection(serviceURL, conOptions)
 
 	return &ServiceClient{
 		client: newServiceClient(conn.Endpoint(), conn.Pipeline()),
-	}, nil
+	}
 }
 
 // NewServiceClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
+func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) *ServiceClient {
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -74,16 +74,13 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 	return &ServiceClient{
 		client:    newServiceClient(conn.Endpoint(), conn.Pipeline()),
 		sharedKey: cred,
-	}, nil
+	}
 }
 
 // NewServiceClientFromConnectionString creates a service client from the given connection string.
 //nolint
-func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (*ServiceClient, error) {
-	endpoint, credential, err := parseConnectionString(connectionString)
-	if err != nil {
-		return nil, err
-	}
+func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) *ServiceClient {
+	endpoint, credential, _ := parseConnectionString(connectionString)
 	return NewServiceClientWithSharedKey(endpoint, credential, options)
 }
 
@@ -92,22 +89,19 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 // To change the pipeline, create the ContainerClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewContainerClient instead of calling this object's
 // NewContainerClient method.
-func (s *ServiceClient) NewContainerClient(containerName string) (*ContainerClient, error) {
+func (s *ServiceClient) NewContainerClient(containerName string) *ContainerClient {
 	containerURL := appendToURLPath(s.client.endpoint, containerName)
 	return &ContainerClient{
 		client:    newContainerClient(containerURL, s.client.pl),
 		sharedKey: s.sharedKey,
-	}, nil
+	}
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.
 // If the container with the same name already exists, a ResourceExistsError will be raised.
 // This method returns a client with which to interact with the newly created container.
 func (s *ServiceClient) CreateContainer(ctx context.Context, containerName string, options *ContainerCreateOptions) (ContainerCreateResponse, error) {
-	containerClient, err := s.NewContainerClient(containerName)
-	if err != nil {
-		return ContainerCreateResponse{}, err
-	}
+	containerClient := s.NewContainerClient(containerName)
 	containerCreateResp, err := containerClient.Create(ctx, options)
 	return containerCreateResp, err
 }
@@ -116,7 +110,7 @@ func (s *ServiceClient) CreateContainer(ctx context.Context, containerName strin
 // The container and any blobs contained within it are later deleted during garbage collection.
 // If the container is not found, a ResourceNotFoundError will be raised.
 func (s *ServiceClient) DeleteContainer(ctx context.Context, containerName string, options *ContainerDeleteOptions) (ContainerDeleteResponse, error) {
-	containerClient, _ := s.NewContainerClient(containerName)
+	containerClient := s.NewContainerClient(containerName)
 	containerDeleteResp, err := containerClient.Delete(ctx, options)
 	return containerDeleteResp, err
 }

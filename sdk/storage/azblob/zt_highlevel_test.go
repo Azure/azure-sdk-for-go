@@ -46,7 +46,7 @@ func performUploadStreamToBlockBlobTest(_require *require.Assertions, testName s
 
 	// Set up test blob
 	blobName := generateBlobName(testName)
-	blobClient, _ := getBlockBlobClient(blobName, containerClient)
+	blobClient := getBlockBlobClient(blobName, containerClient)
 
 	// Create some data to test the upload stream
 	blobContentReader, blobData := generateData(blobSize)
@@ -150,7 +150,7 @@ func performUploadAndDownloadFileTest(_require *require.Assertions, testName str
 	defer deleteContainer(_require, containerClient)
 
 	// Set up test blob
-	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Upload the file to a block blob
 	response, err := bbClient.UploadFile(context.Background(), file,
@@ -312,7 +312,7 @@ func performUploadAndDownloadBufferTest(_require *require.Assertions, testName s
 	defer deleteContainer(_require, containerClient)
 
 	// Set up test blob
-	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
 	response, err := bbClient.UploadBuffer(context.Background(), bytesToUpload,
@@ -561,7 +561,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 
 	// Set up test blob
 	blobName := generateBlobName(testName)
-	bbClient, err := getBlockBlobClient(blobName, containerClient)
+	bbClient := getBlockBlobClient(blobName, containerClient)
 	_require.Nil(err)
 	// Create some data to test the upload stream
 	blobContentReader, blobData := generateData(blobSize)

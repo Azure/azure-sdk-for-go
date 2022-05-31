@@ -22,7 +22,7 @@ func (s *azblobTestSuite) TestBlobListWrapper() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient, _ := getContainerClient(containerName, svcClient)
+	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
 	_require.Nil(err)
@@ -61,7 +61,7 @@ func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	containerClient, _ := getContainerClient(generateContainerName(testName), svcClient)
+	containerClient := getContainerClient(generateContainerName(testName), svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
 	_require.Nil(err)
@@ -99,7 +99,7 @@ func (s *azblobTestSuite) TestBlobListWrapperListingError() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	containerClient, _ := getContainerClient(generateContainerName(testName), svcClient)
+	containerClient := getContainerClient(generateContainerName(testName), svcClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
 

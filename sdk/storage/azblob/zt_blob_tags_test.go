@@ -30,7 +30,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
 		"azure":    "bbClient",
 		"bbClient": "sdk",
@@ -74,7 +74,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
 		"Go":         "CPlusPlus",
 		"Python":     "CSharp",
@@ -134,7 +134,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTa
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	blobTagsMap := map[string]string{
 		"+-./:=_ ": "firsttag",
 		"tag2":     "+-./:=_",
@@ -174,7 +174,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
 	base64BlockIDs := make([]string, len(data))
@@ -246,8 +246,8 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := generateData(contentSize)
 	ctx := ctx // Use default Background context
-	srcBlob, _ := containerClient.NewBlockBlobClient("sourceBlob")
-	destBlob, _ := containerClient.NewBlockBlobClient("destBlob")
+	srcBlob := containerClient.NewBlockBlobClient("sourceBlob")
+	destBlob := containerClient.NewBlockBlobClient("destBlob")
 
 	blobTagsMap := map[string]string{
 		"Go":         "CPlusPlus",
@@ -355,8 +355,8 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	contentSize := 1 * 1024 * 1024 // 1MB
 	r, sourceData := generateData(contentSize)
 	sourceDataMD5Value := md5.Sum(sourceData)
-	srcBlob, _ := containerClient.NewBlockBlobClient("srcBlob")
-	destBlob, _ := containerClient.NewBlockBlobClient("destBlob")
+	srcBlob := containerClient.NewBlockBlobClient("srcBlob")
+	destBlob := containerClient.NewBlockBlobClient("destBlob")
 
 	blobTagsMap := map[string]string{
 		"Go":         "CPlusPlus",
@@ -439,7 +439,7 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		BlobTags:    basicBlobTagsMap,
@@ -803,7 +803,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	abClient, _ := getAppendBlobClient(generateBlobName(testName), containerClient)
+	abClient := getAppendBlobClient(generateBlobName(testName), containerClient)
 
 	createAppendBlobOptions := AppendBlobCreateOptions{
 		BlobTags: specialCharBlobTagsMap,

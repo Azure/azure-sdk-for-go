@@ -161,7 +161,7 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 	}
 
 	serviceURL, _ := url.Parse("https://" + cred.AccountName() + ".blob.core.windows.net/")
-	serviceClient, err := NewServiceClientWithSharedKey(serviceURL.String(), cred, options)
+	serviceClient := NewServiceClientWithSharedKey(serviceURL.String(), cred, options)
 
 	return serviceClient, err
 }
@@ -191,18 +191,18 @@ func getServiceClientFromConnectionString(recording *testframework.Recording, ac
 		return nil, err
 	}
 
-	svcClient, err := NewServiceClientWithSharedKey(primaryURL, cred, options)
+	svcClient := NewServiceClientWithSharedKey(primaryURL, cred, options)
 	return svcClient, err
 }
 
 // 2. ContainerClient --------------------------------------------------------------------------------------------------
 
-func getContainerClient(containerName string, s *ServiceClient) (*ContainerClient, error) {
+func getContainerClient(containerName string, s *ServiceClient) *ContainerClient {
 	return s.NewContainerClient(containerName)
 }
 
 func createNewContainer(_require *require.Assertions, containerName string, serviceClient *ServiceClient) *ContainerClient {
-	containerClient, _ := getContainerClient(containerName, serviceClient)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_require.Nil(err)
@@ -226,12 +226,12 @@ func createNewBlobs(_require *require.Assertions, blobNames []string, containerC
 
 // 2a. BlockBlobClient -------------------------------------------------------------------------------------------------------
 
-func getBlockBlobClient(blockBlobName string, containerClient *ContainerClient) (*BlockBlobClient, error) {
+func getBlockBlobClient(blockBlobName string, containerClient *ContainerClient) *BlockBlobClient {
 	return containerClient.NewBlockBlobClient(blockBlobName)
 }
 
 func createNewBlockBlob(_require *require.Assertions, blockBlobName string, containerClient *ContainerClient) *BlockBlobClient {
-	bbClient, _ := getBlockBlobClient(blockBlobName, containerClient)
+	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 
@@ -242,7 +242,7 @@ func createNewBlockBlob(_require *require.Assertions, blockBlobName string, cont
 }
 
 func createNewBlockBlobWithCPK(_require *require.Assertions, blockBlobName string, containerClient *ContainerClient, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (bbClient *BlockBlobClient) {
-	bbClient, _ = getBlockBlobClient(blockBlobName, containerClient)
+	bbClient = getBlockBlobClient(blockBlobName, containerClient)
 
 	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		CpkInfo:      cpkInfo,
@@ -263,12 +263,12 @@ func createNewBlockBlobWithCPK(_require *require.Assertions, blockBlobName strin
 
 // 2b. AppendBlobClient -------------------------------------------------------------------------------------------------------
 
-func getAppendBlobClient(appendBlobName string, containerClient *ContainerClient) (*AppendBlobClient, error) {
+func getAppendBlobClient(appendBlobName string, containerClient *ContainerClient) *AppendBlobClient {
 	return containerClient.NewAppendBlobClient(appendBlobName)
 }
 
 func createNewAppendBlob(_require *require.Assertions, appendBlobName string, containerClient *ContainerClient) *AppendBlobClient {
-	abClient, _ := getAppendBlobClient(appendBlobName, containerClient)
+	abClient := getAppendBlobClient(appendBlobName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
@@ -279,7 +279,7 @@ func createNewAppendBlob(_require *require.Assertions, appendBlobName string, co
 
 // 2c. PageBlobClient -------------------------------------------------------------------------------------------------------
 
-func getPageBlobClient(pageBlobName string, containerClient *ContainerClient) (*PageBlobClient, error) {
+func getPageBlobClient(pageBlobName string, containerClient *ContainerClient) *PageBlobClient {
 	return containerClient.NewPageBlobClient(pageBlobName)
 }
 
@@ -289,7 +289,7 @@ func createNewPageBlob(_require *require.Assertions, pageBlobName string, contai
 
 func createNewPageBlobWithSize(_require *require.Assertions, pageBlobName string,
 	containerClient *ContainerClient, sizeInBytes int64) *PageBlobClient {
-	pbClient, _ := getPageBlobClient(pageBlobName, containerClient)
+	pbClient := getPageBlobClient(pageBlobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, sizeInBytes, nil)
 	_require.Nil(err)
@@ -298,7 +298,7 @@ func createNewPageBlobWithSize(_require *require.Assertions, pageBlobName string
 }
 
 func createNewPageBlobWithCPK(_require *require.Assertions, pageBlobName string, container *ContainerClient, sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient *PageBlobClient) {
-	pbClient, _ = getPageBlobClient(pageBlobName, container)
+	pbClient = getPageBlobClient(pageBlobName, container)
 
 	resp, err := pbClient.Create(ctx, sizeInBytes, &PageBlobCreateOptions{
 		CpkInfo:      cpkInfo,

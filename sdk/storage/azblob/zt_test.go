@@ -37,7 +37,7 @@ type azblobUnrecordedTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Record})
+	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
 	//suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
@@ -158,7 +158,7 @@ func validateHTTPErrorCode(_require *require.Assertions, err error, code int) {
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)
 	if responseErr != nil {
-		_require.Equal(responseErr.ErrorCode, code)
+		_require.Equal(responseErr.StatusCode, code)
 	} else {
 		_require.Equal(strings.Contains(err.Error(), strconv.Itoa(code)), true)
 	}
@@ -169,7 +169,7 @@ func validateStorageErrorCode(_require *require.Assertions, err error, code Stor
 	var responseErr *azcore.ResponseError
 	errors.As(err, &responseErr)
 	if responseErr != nil {
-		_require.Equal(responseErr.ErrorCode, code)
+		_require.Equal(responseErr.ErrorCode, string(code))
 	} else {
 		_require.Contains(err.Error(), code)
 	}

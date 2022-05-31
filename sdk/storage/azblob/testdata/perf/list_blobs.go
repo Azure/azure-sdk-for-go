@@ -43,17 +43,15 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, l.containerName, nil)
-	if err != nil {
-		return nil, err
-	}
-	_, err = containerClient.Create(context.Background(), nil)
+	containerClient := azblob.NewContainerClientFromConnectionString(connStr, l.containerName, nil)
+
+	_, err := containerClient.Create(context.Background(), nil)
 	if err != nil {
 		return nil, err
 	}
 
 	for i := 0; i < 100; i++ {
-		blobClient, err := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobName, i))
+		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobName, i))
 		if err != nil {
 			return nil, err
 		}
@@ -76,12 +74,9 @@ func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, l.containerName, nil)
-	if err != nil {
-		return err
-	}
+	containerClient := azblob.NewContainerClientFromConnectionString(connStr, l.containerName, nil)
 
-	_, err = containerClient.Delete(context.Background(), nil)
+	_, err := containerClient.Delete(context.Background(), nil)
 	return err
 }
 
@@ -103,16 +98,14 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient, err := azblob.NewContainerClientFromConnectionString(
+	containerClient := azblob.NewContainerClientFromConnectionString(
 		connStr,
 		u.listTestGlobal.containerName,
 		&azblob.ClientOptions{
 			Transport: u.PerfTestOptions.Transporter,
 		},
 	)
-	if err != nil {
-		return nil, err
-	}
+
 	u.containerClient = containerClient
 
 	return u, nil

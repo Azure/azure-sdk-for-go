@@ -29,6 +29,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
+func handleError(err error) {
+	var responseErr *azcore.ResponseError
+	errors.As(err, &responseErr)
+	if responseErr != nil {
+		log.Fatalf("HTTPErrorCode: %s\nStorageErrorCode: %dErrorMessage: %s\n", responseErr.ErrorCode, responseErr.StatusCode, responseErr.Error())
+	} else {
+		log.Fatal(err.Error())
+	}
+}
+
 // This example is a quick-starter and demonstrates how to get started using the Azure Blob Storage SDK for Go.
 func Example() {
 	// Your account name and key can be obtained from the Azure Portal.
@@ -42,40 +52,30 @@ func Example() {
 		panic("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY could not be found")
 	}
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// The service URL for blob endpoints is usually in the form: http(s)://<account>.blob.core.windows.net/
-	serviceClient, err := azblob.NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	serviceClient := azblob.NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	handleError(err)
 
 	// ===== 1. Create a container =====
 
 	// First, create a container client, and use the Create method to create a new container in your account
-	containerClient, err := serviceClient.NewContainerClient("testcontainer")
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := serviceClient.NewContainerClient("testcontainer")
+	handleError(err)
 
 	// All APIs have an options' bag struct as a parameter.
 	// The options' bag struct allows you to specify optional parameters such as metadata, public access types, etc.
 	// If you want to use the default options, pass in nil.
 	_, err = containerClient.Create(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// ===== 2. Upload and Download a block blob =====
 	uploadData := "Hello world!"
 
 	// Create a new blockBlobClient from the containerClient
-	blockBlobClient, err := containerClient.NewBlockBlobClient("HelloWorld.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
+	blockBlobClient := containerClient.NewBlockBlobClient("HelloWorld.txt")
+	handleError(err)
 
 	// Upload data to the block blob
 	blockBlobUploadOptions := azblob.BlockBlobUploadOptions{
@@ -83,23 +83,17 @@ func Example() {
 		BlobTags: map[string]string{"Year": "2022"},
 	}
 	_, err = blockBlobClient.Upload(context.TODO(), streaming.NopCloser(strings.NewReader(uploadData)), &blockBlobUploadOptions)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Download the blob's contents and ensure that the download worked properly
 	blobDownloadResponse, err := blockBlobClient.Download(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Use the bytes.Buffer object to read the downloaded data.
 	// RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
 	reader := blobDownloadResponse.Body(nil)
 	downloadData, err := ioutil.ReadAll(reader)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	if string(downloadData) != uploadData {
 		log.Fatal("Uploaded data should be same as downloaded data")
 	}
@@ -128,15 +122,11 @@ func Example() {
 
 	// Delete the blob.
 	_, err = blockBlobClient.Delete(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Delete the container.
 	_, err = containerClient.Delete(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -149,14 +139,10 @@ func ExampleNewServiceClient() {
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	serviceClient, err := azblob.NewServiceClient(serviceURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(serviceClient)
+	handleError(err)
+	serviceClient := azblob.NewServiceClient(serviceURL, cred, nil)
+	handleError(err)
+	fmt.Println(serviceClient.URL())
 }
 
 func ExampleNewServiceClientWithSharedKey() {
@@ -171,14 +157,10 @@ func ExampleNewServiceClientWithSharedKey() {
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	serviceClient, err := azblob.NewServiceClientWithSharedKey(serviceURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(serviceClient)
+	handleError(err)
+	serviceClient := azblob.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+	handleError(err)
+	fmt.Println(serviceClient.URL())
 }
 
 func ExampleNewServiceClientWithNoCredential() {
@@ -192,11 +174,8 @@ func ExampleNewServiceClientWithNoCredential() {
 	}
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, sharedAccessSignature)
 
-	serviceClient, err := azblob.NewServiceClientWithNoCredential(serviceURL, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(serviceClient)
+	serviceClient := azblob.NewServiceClientWithNoCredential(serviceURL, nil)
+	fmt.Println(serviceClient.URL())
 }
 
 func ExampleNewServiceClientFromConnectionString() {
@@ -206,11 +185,8 @@ func ExampleNewServiceClientFromConnectionString() {
 		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	serviceClient, err := azblob.NewServiceClientFromConnectionString(connectionString, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(serviceClient)
+	serviceClient := azblob.NewServiceClientFromConnectionString(connectionString, nil)
+	fmt.Println(serviceClient.URL())
 }
 
 func ExampleServiceClient_CreateContainer() {
@@ -221,18 +197,11 @@ func ExampleServiceClient_CreateContainer() {
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	serviceClient, err := azblob.NewServiceClient(serviceURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
+	serviceClient := azblob.NewServiceClient(serviceURL, cred, nil)
 
 	_, err = serviceClient.CreateContainer(context.TODO(), "testcontainer", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// ======== 2. Delete a container ========
 	defer func(serviceClient1 *azblob.ServiceClient, ctx context.Context, containerName string, options *azblob.ContainerDeleteOptions) {
@@ -251,18 +220,12 @@ func ExampleServiceClient_DeleteContainer() {
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	serviceClient, err := azblob.NewServiceClient(serviceURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
+	serviceClient := azblob.NewServiceClient(serviceURL, cred, nil)
+	handleError(err)
 
 	_, err = serviceClient.DeleteContainer(context.TODO(), "testcontainer", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 }
 
 func ExampleServiceClient_ListContainers() {
@@ -273,13 +236,9 @@ func ExampleServiceClient_ListContainers() {
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	serviceClient, err := azblob.NewServiceClient(serviceURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
+	serviceClient := azblob.NewServiceClient(serviceURL, cred, nil)
+	handleError(err)
 
 	listContainersOptions := azblob.ServiceListContainersOptions{
 		Include: azblob.ListContainersDetail{
@@ -304,28 +263,20 @@ func ExampleServiceClient_ListContainers() {
 
 func ExampleServiceClient_GetSASURL() {
 	cred, err := azblob.NewSharedKeyCredential("myAccountName", "myAccountKey")
-	if err != nil {
-		log.Fatal(err)
-	}
-	serviceClient, err := azblob.NewServiceClientWithSharedKey("https://<myAccountName>.blob.core.windows.net", cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
+	serviceClient := azblob.NewServiceClientWithSharedKey("https://<myAccountName>.blob.core.windows.net", cred, nil)
+	handleError(err)
 
 	resources := azblob.AccountSASResourceTypes{Service: true}
 	permission := azblob.AccountSASPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
 	sasURL, err := serviceClient.GetSASURL(resources, permission, start, expiry)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	serviceURL := fmt.Sprintf("https://<myAccountName>.blob.core.windows.net/?%s", sasURL)
-	serviceClientWithSAS, err := azblob.NewServiceClientWithNoCredential(serviceURL, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	serviceClientWithSAS := azblob.NewServiceClientWithNoCredential(serviceURL, nil)
+	handleError(err)
 	_ = serviceClientWithSAS
 }
 
@@ -337,13 +288,9 @@ func ExampleServiceClient_SetProperties() {
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	serviceClient, err := azblob.NewServiceClient(serviceURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
+	serviceClient := azblob.NewServiceClient(serviceURL, cred, nil)
+	handleError(err)
 
 	enabled := true  // enabling retention period
 	days := int32(5) // setting retention period to 5 days
@@ -351,9 +298,7 @@ func ExampleServiceClient_SetProperties() {
 		DeleteRetentionPolicy: &azblob.RetentionPolicy{Enabled: &enabled, Days: &days},
 	})
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println(serviceSetPropertiesResponse)
 }
 
@@ -365,17 +310,11 @@ func ExampleServiceClient_GetProperties() {
 	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	serviceClient, err := azblob.NewServiceClient(serviceURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
+	serviceClient := azblob.NewServiceClient(serviceURL, cred, nil)
+	handleError(err)
 	serviceGetPropertiesResponse, err := serviceClient.GetProperties(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println(serviceGetPropertiesResponse)
 }
 
@@ -390,15 +329,11 @@ func ExampleNewContainerClient() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(containerClient)
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
+	fmt.Println(containerClient.URL())
 }
 
 func ExampleNewContainerClientWithSharedKey() {
@@ -414,14 +349,10 @@ func ExampleNewContainerClientWithSharedKey() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	containerClient, err := azblob.NewContainerClientWithSharedKey(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(containerClient)
+	handleError(err)
+	containerClient := azblob.NewContainerClientWithSharedKey(containerURL, cred, nil)
+	handleError(err)
+	fmt.Println(containerClient.URL())
 }
 
 func ExampleNewContainerClientWithNoCredential() {
@@ -436,11 +367,8 @@ func ExampleNewContainerClientWithNoCredential() {
 	containerName := "testcontainer"
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s?%s", accountName, containerName, sharedAccessSignature)
 
-	containerClient, err := azblob.NewContainerClientWithNoCredential(containerURL, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(containerClient)
+	containerClient := azblob.NewContainerClientWithNoCredential(containerURL, nil)
+	fmt.Println(containerClient.URL())
 }
 
 func ExampleNewContainerClientFromConnectionString() {
@@ -450,11 +378,8 @@ func ExampleNewContainerClientFromConnectionString() {
 		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 	containerName := "testcontainer"
-	containerClient, err := azblob.NewContainerClientFromConnectionString(connectionString, containerName, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(containerClient)
+	containerClient := azblob.NewContainerClientFromConnectionString(connectionString, containerName, nil)
+	fmt.Println(containerClient.URL())
 }
 
 func ExampleContainerClient_NewAppendBlobClient() {
@@ -466,20 +391,14 @@ func ExampleContainerClient_NewAppendBlobClient() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
-	appendBlobClient, err := containerClient.NewAppendBlobClient("test_append_blob")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(appendBlobClient)
+	appendBlobClient := containerClient.NewAppendBlobClient("test_append_blob")
+	handleError(err)
+	fmt.Println(appendBlobClient.URL())
 }
 
 func ExampleContainerClient_NewBlobClient() {
@@ -491,20 +410,14 @@ func ExampleContainerClient_NewBlobClient() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
-	blobClient, err := containerClient.NewBlobClient("test_blob")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(blobClient)
+	blobClient := containerClient.NewBlobClient("test_blob")
+	handleError(err)
+	fmt.Println(blobClient.URL())
 }
 
 func ExampleContainerClient_NewBlockBlobClient() {
@@ -516,20 +429,14 @@ func ExampleContainerClient_NewBlockBlobClient() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
-	blockBlobClient, err := containerClient.NewBlockBlobClient("test_block_blob")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(blockBlobClient)
+	blockBlobClient := containerClient.NewBlockBlobClient("test_block_blob")
+	handleError(err)
+	fmt.Println(blockBlobClient.URL())
 }
 
 func ExampleContainerClient_NewPageBlobClient() {
@@ -541,20 +448,14 @@ func ExampleContainerClient_NewPageBlobClient() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
-	pageBlobClient, err := containerClient.NewPageBlobClient("test_page_blob")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(pageBlobClient)
+	pageBlobClient := containerClient.NewPageBlobClient("test_page_blob")
+	handleError(err)
+	fmt.Println(pageBlobClient.URL())
 }
 
 func ExampleContainerClient_Create() {
@@ -566,21 +467,15 @@ func ExampleContainerClient_Create() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
 	containerCreateResponse, err := containerClient.Create(context.TODO(), &azblob.ContainerCreateOptions{
 		Metadata: map[string]string{"Foo": "Bar"},
 	})
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println(containerCreateResponse)
 }
 
@@ -593,19 +488,13 @@ func ExampleContainerClient_Delete() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
 	containerDeleteResponse, err := containerClient.Delete(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println(containerDeleteResponse)
 }
 
@@ -618,14 +507,10 @@ func ExampleContainerClient_ListBlobsFlat() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
 	pager := containerClient.ListBlobsFlat(&azblob.ContainerListBlobsFlatOptions{
 		Include: []azblob.ListBlobsIncludeItem{azblob.ListBlobsIncludeItemSnapshots, azblob.ListBlobsIncludeItemVersions},
@@ -652,14 +537,10 @@ func ExampleContainerClient_ListBlobsHierarchy() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
 	maxResults := int32(5)
 	pager := containerClient.ListBlobsHierarchy("/", &azblob.ContainerListBlobsHierarchyOptions{
@@ -690,22 +571,16 @@ func ExampleContainerClient_GetSASURL() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
 	permission := azblob.ContainerSASPermissions{Read: true}
 	start := time.Now()
 	expiry := start.AddDate(1, 0, 0)
 	sasURL, err := containerClient.GetSASURL(permission, start, expiry)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	_ = sasURL
 }
 
@@ -719,37 +594,25 @@ func ExampleContainerClient_SetAccessPolicy() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
 	// Create the container
 	_, err = containerClient.Create(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Upload a simple blob.
-	blockBlobClient, err := containerClient.NewBlockBlobClient("HelloWorld.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
+	blockBlobClient := containerClient.NewBlockBlobClient("HelloWorld.txt")
+	handleError(err)
 
 	_, err = blockBlobClient.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("Hello World!")), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Attempt to read the blob
 	get, err := http.Get(blockBlobClient.URL())
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	if get.StatusCode == http.StatusNotFound {
 		// Change the blob to be public access blob
 		_, err := containerClient.SetAccessPolicy(
@@ -789,31 +652,21 @@ func ExampleContainerClient_SetMetadata() {
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	containerClient, err := azblob.NewContainerClient(containerURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClient(containerURL, cred, nil)
+	handleError(err)
 
 	// Create a container with some metadata, key names are converted to lowercase before being sent to the service.
 	// You should always use lowercase letters, especially when querying a map for a metadata key.
 	creatingApp, err := os.Executable()
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	_, err = containerClient.Create(context.TODO(), &azblob.ContainerCreateOptions{Metadata: map[string]string{"author": "azblob", "app": creatingApp}})
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Query the container's metadata
 	containerGetPropertiesResponse, err := containerClient.GetProperties(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	if containerGetPropertiesResponse.Metadata == nil {
 		log.Fatal("metadata is empty!")
@@ -826,9 +679,7 @@ func ExampleContainerClient_SetMetadata() {
 	// Update the metadata and write it back to the container
 	containerGetPropertiesResponse.Metadata["author"] = "Mohit"
 	_, err = containerClient.SetMetadata(context.TODO(), &azblob.ContainerSetMetadataOptions{Metadata: containerGetPropertiesResponse.Metadata})
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// NOTE: SetMetadata & SetProperties methods update the container's ETag & LastModified properties
 }
@@ -847,14 +698,10 @@ func ExampleBlockBlobClient() {
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	blockBlobClient, err := azblob.NewBlockBlobClient(blobURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// NOTE: The blockID must be <= 64 bytes and ALL blockIDs for the block must be the same length
 	blockIDBinaryToBase64 := func(blockID []byte) string { return base64.StdEncoding.EncodeToString(blockID) }
@@ -890,24 +737,18 @@ func ExampleBlockBlobClient() {
 
 	// After all the blocks are uploaded, atomically commit them to the blob.
 	_, err = blockBlobClient.CommitBlockList(context.TODO(), base64BlockIDs, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// For the blob, show each block (ID and size) that is a committed part of it.
 	getBlock, err := blockBlobClient.GetBlockList(context.TODO(), azblob.BlockListTypeAll, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	for _, block := range getBlock.BlockList.CommittedBlocks {
 		fmt.Printf("Block ID=%d, Size=%d\n", blockIDBase64ToInt(*block.Name), block.Size)
 	}
 
 	// Download the blob in its entirety; download operations do not take blocks into account.
 	blobDownloadResponse, err := blockBlobClient.Download(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	blobData := &bytes.Buffer{}
 	reader := blobDownloadResponse.Body(nil)
@@ -934,19 +775,13 @@ func ExampleAppendBlobClient() {
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
-	appendBlobClient, err := azblob.NewAppendBlobClient(blobURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	appendBlobClient := azblob.NewAppendBlobClient(blobURL, cred, nil)
+	handleError(err)
 
 	_, err = appendBlobClient.Create(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	for i := 0; i < 5; i++ { // Append 5 blocks to the append blob
 		_, err := appendBlobClient.AppendBlock(context.TODO(), streaming.NopCloser(strings.NewReader(fmt.Sprintf("Appending block #%d\n", i))), nil)
@@ -957,9 +792,7 @@ func ExampleAppendBlobClient() {
 
 	// Download the entire append blob's contents and read into a bytes.Buffer.
 	get, err := appendBlobClient.Download(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	b := bytes.Buffer{}
 	reader := get.Body(nil)
 	_, err = b.ReadFrom(reader)
@@ -985,26 +818,18 @@ func ExamplePageBlobClient() {
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/%s", accountName, blobName)
 
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	pageBlobClient, err := azblob.NewPageBlobClient(blobURL, cred, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	_, err = pageBlobClient.Create(context.TODO(), internal.PageBlobPageBytes*4, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	page := make([]byte, internal.PageBlobPageBytes)
 	copy(page, "Page 0")
 	_, err = pageBlobClient.UploadPages(context.TODO(), streaming.NopCloser(bytes.NewReader(page)), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	copy(page, "Page 1")
 	_, err = pageBlobClient.UploadPages(
@@ -1012,9 +837,7 @@ func ExamplePageBlobClient() {
 		streaming.NopCloser(bytes.NewReader(page)),
 		&azblob.PageBlobUploadPagesOptions{PageRange: &azblob.HttpRange{Offset: 0, Count: 2 * internal.PageBlobPageBytes}},
 	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	//getPages, err := pageBlobClient.GetPageRanges(context.TODO(), azblob.HttpRange{Offset: 0, Count: }, nil)
 
@@ -1034,9 +857,7 @@ func ExamplePageBlobClient() {
 	}
 
 	_, err = pageBlobClient.ClearPages(context.TODO(), azblob.HttpRange{Offset: 0, Count: 1 * internal.PageBlobPageBytes}, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	pager = pageBlobClient.GetPageRanges(&azblob.PageBlobGetPageRangesOptions{
 		PageRange: azblob.NewHttpRange(0, 10*internal.PageBlobPageBytes),
@@ -1054,9 +875,7 @@ func ExamplePageBlobClient() {
 	}
 
 	get, err := pageBlobClient.Download(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	blobData := &bytes.Buffer{}
 	reader := get.Body(nil)
 	_, err = blobData.ReadFrom(reader)
@@ -1082,32 +901,24 @@ func ExampleContainerLeaseClient() {
 
 	// Use your Storage account's name and key to create a credential object; this is used to access your account.
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Create an containerClient object that wraps the container's URL and a default pipeline.
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	containerClient, err := azblob.NewContainerClientWithSharedKey(containerURL, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClientWithSharedKey(containerURL, credential, nil)
+	handleError(err)
 
 	// Create a unique ID for the lease
 	// A lease ID can be any valid GUID string format. To generate UUIDs, consider the github.com/google/uuid package
 	leaseID := "36b1a876-cf98-4eb2-a5c3-6d68489658ff"
 	containerLeaseClient, err := containerClient.NewContainerLeaseClient(to.Ptr(leaseID))
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Now acquire a lease on the container.
 	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
 	duration := int32(60)
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(context.TODO(), &azblob.ContainerAcquireLeaseOptions{Duration: &duration})
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println("The container is leased for delete operations with lease ID", *acquireLeaseResponse.LeaseID)
 
 	// The container cannot be deleted without providing the lease ID.
@@ -1119,55 +930,37 @@ func ExampleContainerLeaseClient() {
 
 	// We can release the lease now and the container can be deleted.
 	_, err = containerLeaseClient.ReleaseLease(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println("The lease on the container is now released")
 
 	// Acquire a lease again to perform other operations.
 	// Duration is still 60
 	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(context.TODO(), &azblob.ContainerAcquireLeaseOptions{Duration: &duration})
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println("The container is leased again with lease ID", *acquireLeaseResponse.LeaseID)
 
 	// We can change the ID of an existing lease.
 	newLeaseID := "6b3e65e5-e1bb-4a3f-8b72-13e9bc9cd3bf"
 	changeLeaseResponse, err := containerLeaseClient.ChangeLease(context.TODO(),
 		&azblob.ContainerChangeLeaseOptions{ProposedLeaseID: to.Ptr(newLeaseID)})
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
 
 	// The lease can be renewed.
 	renewLeaseResponse, err := containerLeaseClient.RenewLease(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println("The lease was renewed with the same ID", *renewLeaseResponse.LeaseID)
 
 	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
 	_, err = containerLeaseClient.BreakLease(context.TODO(), &azblob.ContainerBreakLeaseOptions{BreakPeriod: to.Ptr(int32(60))})
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Println("The lease was broken, and nobody can acquire a lease for 60 seconds")
 }
 
 func ExampleResponseError() {
-	contClient, err := azblob.NewContainerClientWithNoCredential("https://myaccount.blob.core.windows.net/mycontainer", nil)
-	_, err = contClient.Create(context.TODO(), nil)
-	var responseErr *azcore.ResponseError
-	errors.As(err, &responseErr)
-	if responseErr != nil {
-		fmt.Printf("HTTPErrorCode: %s", responseErr.ErrorCode)
-		fmt.Printf("StorageErrorCode: %d", responseErr.StatusCode)
-		fmt.Printf("ErrorMessage: %s\n", responseErr.Error())
-	} else {
-		fmt.Printf("ErrorMessage: %s\n", err.Error())
-	}
+	contClient := azblob.NewContainerClientWithNoCredential("https://myaccount.blob.core.windows.net/mycontainer", nil)
+	_, err := contClient.Create(context.TODO(), nil)
+	handleError(err)
 }
 
 // This example demonstrates splitting a URL into its parts so you can examine and modify the URL in an Azure Storage fluent way.
@@ -1200,9 +993,7 @@ func ExampleAccountSASSignatureValues_Sign() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	sasQueryParams, err := azblob.AccountSASSignatureValues{
 		Protocol:      azblob.SASProtocolHTTPS,
@@ -1211,18 +1002,14 @@ func ExampleAccountSASSignatureValues_Sign() {
 		Services:      azblob.AccountSASServices{Blob: true}.String(),
 		ResourceTypes: azblob.AccountSASResourceTypes{Container: true, Object: true}.String(),
 	}.Sign(credential)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	queryParams := sasQueryParams.Encode()
 	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, queryParams)
 
 	// This URL can be used to authenticate requests now
-	serviceClient, err := azblob.NewServiceClientWithNoCredential(sasURL, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	serviceClient := azblob.NewServiceClientWithNoCredential(sasURL, nil)
+	handleError(err)
 
 	// You can also break a blob URL up into it's constituent parts
 	blobURLParts, _ := azblob.NewBlobURLParts(serviceClient.URL())
@@ -1234,9 +1021,7 @@ func ExampleBlobSASSignatureValues() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	containerName := "mycontainer"
 	blobName := "HelloWorld.txt"
@@ -1248,19 +1033,15 @@ func ExampleBlobSASSignatureValues() {
 		BlobName:      blobName,
 		Permissions:   azblob.BlobSASPermissions{Add: true, Read: true, Write: true}.String(),
 	}.NewSASQueryParameters(credential)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Create the SAS URL for the resource you wish to access, and append the SAS query parameters.
 	qp := sasQueryParams.Encode()
 	sasURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s/%s?%s", accountName, containerName, blobName, qp)
 
 	// Access the SAS-protected resource
-	blob, err := azblob.NewBlobClientWithNoCredential(sasURL, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	blob := azblob.NewBlobClientWithNoCredential(sasURL, nil)
+	handleError(err)
 
 	// if you have a SAS query parameter string, you can parse it into it's parts.
 	blobURLParts, _ := azblob.NewBlobURLParts(blob.URL())
@@ -1272,13 +1053,9 @@ func ExampleBlobAccessConditions() {
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	blockBlob, err := azblob.NewBlockBlobClientWithSharedKey(fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/Data.txt", accountName), credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// This function displays the results of an operation
 	showResult := func(response *azblob.BlobDownloadResponse, err error) {
@@ -1374,35 +1151,25 @@ func ExampleBlobClient_SetMetadata() {
 	// Create a blob client
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/ReadMe.txt", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	blobClient, err := azblob.NewBlockBlobClientWithSharedKey(u, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Create a blob with metadata (string key/value pairs)
 	// Metadata key names are always converted to lowercase before being sent to the Storage Service.
 	// Always use lowercase letters; especially when querying a map for a metadata key.
 	creatingApp, err := os.Executable()
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	_, err = blobClient.Upload(
 		context.TODO(),
 		streaming.NopCloser(strings.NewReader("Some text")),
 		&azblob.BlockBlobUploadOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}},
 	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Query the blob's properties and metadata
 	get, err := blobClient.GetProperties(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Show some of the blob's read-only properties
 	fmt.Printf("BlobType: %s\nETag: %s\nLastModified: %s\n", *get.BlobType, *get.ETag, *get.LastModified)
@@ -1419,9 +1186,7 @@ func ExampleBlobClient_SetMetadata() {
 	// Update the blob's metadata and write it back to the blob
 	get.Metadata["editor"] = "Grant"
 	_, err = blobClient.SetMetadata(context.TODO(), get.Metadata, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 }
 
 // This examples shows how to create a blob with HTTP Headers, how to read, and how to update the blob's HTTP headers.
@@ -1431,13 +1196,9 @@ func ExampleBlobHTTPHeaders() {
 	// Create a blob client
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/ReadMe.txt", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	blobClient, err := azblob.NewBlockBlobClientWithSharedKey(u, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Create a blob with HTTP headers
 	_, err = blobClient.Upload(
@@ -1448,15 +1209,11 @@ func ExampleBlobHTTPHeaders() {
 			BlobContentDisposition: to.Ptr("attachment"),
 		}},
 	)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// GetMetadata returns the blob's properties, HTTP headers, and metadata
 	get, err := blobClient.GetProperties(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Show some of the blob's read-only properties
 	fmt.Printf("BlobType: %s\nETag: %s\nLastModified: %s\n", *get.BlobType, *get.ETag, *get.LastModified)
@@ -1468,9 +1225,7 @@ func ExampleBlobHTTPHeaders() {
 	// Update the blob's HTTP Headers and write them back to the blob
 	httpHeaders.BlobContentType = to.Ptr("text/plain")
 	_, err = blobClient.SetHTTPHeaders(context.TODO(), httpHeaders, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 }
 
 // This example show how to create a blob, take a snapshot of it, update the base blob,
@@ -1480,41 +1235,29 @@ func Example_blobSnapshots() {
 
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	containerClient, err := azblob.NewContainerClientWithSharedKey(u, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
+	containerClient := azblob.NewContainerClientWithSharedKey(u, credential, nil)
+	handleError(err)
 
 	// Create a blockBlobClient object to a blob in the container.
-	baseBlobClient, _ := containerClient.NewBlockBlobClient("Original.txt")
+	baseBlobClient := containerClient.NewBlockBlobClient("Original.txt")
 
 	// Create the original blob:
 	_, err = baseBlobClient.Upload(context.TODO(), streaming.NopCloser(streaming.NopCloser(strings.NewReader("Some text"))), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Create a snapshot of the original blob & save its timestamp:
 	createSnapshot, err := baseBlobClient.CreateSnapshot(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	snapshot := *createSnapshot.Snapshot
 
 	// Modify the original blob:
 	_, err = baseBlobClient.Upload(context.TODO(), streaming.NopCloser(strings.NewReader("New text")), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Download the modified blob:
 	get, err := baseBlobClient.Download(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	b := bytes.Buffer{}
 	reader := get.Body(nil)
 	_, err = b.ReadFrom(reader)
@@ -1530,9 +1273,7 @@ func Example_blobSnapshots() {
 	// Show snapshot blob via original blob URI & snapshot time:
 	snapshotBlobClient, _ := baseBlobClient.WithSnapshot(snapshot)
 	get, err = snapshotBlobClient.Download(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	b.Reset()
 	reader = get.Body(nil)
 	_, err = b.ReadFrom(reader)
@@ -1570,39 +1311,31 @@ func Example_blobSnapshots() {
 
 	// Promote read-only snapshot to writable base blob:
 	_, err = baseBlobClient.StartCopyFromURL(context.TODO(), snapshotBlobClient.URL(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// When calling Delete on a base blob:
 	// DeleteSnapshotsOptionOnly deletes all the base blob's snapshots but not the base blob itself
 	// DeleteSnapshotsOptionInclude deletes the base blob & all its snapshots.
 	// DeleteSnapshotOptionNone produces an error if the base blob has any snapshots.
 	_, err = baseBlobClient.Delete(context.TODO(), &azblob.BlobDeleteOptions{DeleteSnapshots: azblob.DeleteSnapshotsOptionTypeInclude.ToPtr()})
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 }
 
 func Example_progressUploadDownload() {
 	// Create a credentials object with your Azure Storage Account name and key.
 	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 
 	// Create an serviceClient object that wraps the service URL and a request pipeline to making requests.
-	containerClient, err := azblob.NewContainerClientWithSharedKey(containerURL, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	containerClient := azblob.NewContainerClientWithSharedKey(containerURL, credential, nil)
+	handleError(err)
 
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
-	blobClient, _ := containerClient.NewBlockBlobClient("Data.bin")
+	blobClient := containerClient.NewBlockBlobClient("Data.bin")
 
 	// requestBody is the stream of data to write
 	requestBody := streaming.NopCloser(strings.NewReader("Some text to write"))
@@ -1617,15 +1350,11 @@ func Example_progressUploadDownload() {
 			BlobContentDisposition: to.Ptr("attachment"),
 		},
 	})
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Here's how to read the blob's data with progress reporting:
 	get, err := blobClient.Download(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	// Wrap the response body in a ResponseBodyProgress and pass a callback function for progress reporting.
 	responseBody := streaming.NewResponseProgress(
@@ -1655,19 +1384,13 @@ func ExampleBlobClient_startCopy() {
 	// Create a blockBlobClient object to a blob in the container.
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/CopiedBlob.bin", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	blobClient, err := azblob.NewBlobClientWithSharedKey(blobURL, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
+	blobClient := azblob.NewBlobClientWithSharedKey(blobURL, credential, nil)
+	handleError(err)
 
 	src := "https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"
 	startCopy, err := blobClient.StartCopyFromURL(context.TODO(), src, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 
 	copyID := *startCopy.CopyID
 	copyStatus := *startCopy.CopyStatus
@@ -1759,21 +1482,15 @@ func ExampleBlobClient_Download() {
 	// Create a blobClient object to a blob in the container (we assume the container & blob already exist).
 	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlob.bin", accountName)
 	credential, err := azblob.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	blobClient, err := azblob.NewBlobClientWithSharedKey(blobURL, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
+	blobClient := azblob.NewBlobClientWithSharedKey(blobURL, credential, nil)
+	handleError(err)
 
 	contentLength := int64(0) // Used for progress reporting to report the total number of bytes being downloaded.
 
 	// Download returns an intelligent retryable stream around a blob; it returns an io.ReadCloser.
 	dr, err := blobClient.Download(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	rs := dr.Body(nil)
 
 	// NewResponseBodyProgress wraps the GetRetryStream with progress reporting; it returns an io.ReadCloser.
@@ -1791,9 +1508,7 @@ func ExampleBlobClient_Download() {
 	}(stream) // The client must close the response body when finished with it
 
 	file, err := os.Create("BigFile.bin") // Create the file to hold the downloaded blob contents.
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	defer func(file *os.File) {
 		err := file.Close()
 		if err != nil {
@@ -1802,9 +1517,7 @@ func ExampleBlobClient_Download() {
 	}(file)
 
 	written, err := io.Copy(file, stream) // Write to the file by reading from the blob (with intelligent retries).
-	if err != nil {
-		log.Fatal(err)
-	}
+	handleError(err)
 	fmt.Printf("Wrote %d bytes.\n", written)
 }
 

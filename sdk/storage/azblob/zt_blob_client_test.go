@@ -162,7 +162,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient, _ := getContainerClient(containerName, svcClient)
+	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
 	_require.Nil(err)
@@ -172,7 +172,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	bbClient := createNewBlockBlob(_require, blobName, containerClient)
 
 	anotherBlobName := "copy" + blobName
-	copyBlobClient, _ := getBlockBlobClient(anotherBlobName, containerClient)
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
 
 	blobCopyResponse, err := copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), nil)
 	_require.Nil(err)
@@ -199,7 +199,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
 	}
 
 	containerName := generateContainerName(testName)
-	containerClient, _ := getContainerClient(containerName, svcClient)
+	containerClient := getContainerClient(containerName, svcClient)
 
 	_, err = containerClient.Create(ctx, nil)
 	_require.Nil(err)
@@ -209,7 +209,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
 	bbClient := createNewBlockBlob(_require, blobName, containerClient)
 
 	anotherBlobName := "copy" + blobName
-	copyBlobClient, _ := getBlockBlobClient(anotherBlobName, containerClient)
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
 
 	metadata := make(map[string]string)
 	metadata["Bla"] = "foo"
@@ -242,7 +242,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataNil() {
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
 	anotherBlobName := "copy" + blockBlobName
-	copyBlobClient, _ := getBlockBlobClient(anotherBlobName, containerClient)
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
 
 	// Have the destination start with metadata, so we ensure the nil metadata passed later takes effect
 	_, err = copyBlobClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), nil)
@@ -275,7 +275,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataEmpty() {
 	bbClient := createNewBlockBlob(_require, blobName, containerClient)
 
 	anotherBlobName := "copy" + blobName
-	copyBlobClient, _ := getBlockBlobClient(anotherBlobName, containerClient)
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
 
 	// Have the destination start with metadata, so we ensure the empty metadata passed later takes effect
 	_, err = copyBlobClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), nil)
@@ -312,7 +312,7 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataInvalidField() {
 	bbClient := createNewBlockBlob(_require, blobName, containerClient)
 
 	anotherBlobName := "copy" + generateBlobName(testName)
-	copyBlobClient, _ := getBlockBlobClient(anotherBlobName, containerClient)
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
 
 	metadata := make(map[string]string)
 	metadata["I nvalid."] = "foo"
@@ -338,10 +338,10 @@ func (s *azblobTestSuite) TestBlobStartCopySourceNonExistent() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(blobName, containerClient)
+	bbClient := getBlockBlobClient(blobName, containerClient)
 
 	anotherBlobName := "copy" + blobName
-	copyBlobClient, _ := getBlockBlobClient(anotherBlobName, containerClient)
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
 
 	_, err = copyBlobClient.StartCopyFromURL(ctx, bbClient.URL(), nil)
 	_require.NotNil(err)
@@ -375,7 +375,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 	copyContainerClient := createNewContainer(_require, "cpyc"+containerName, serviceClient2)
 	defer deleteContainer(_require, copyContainerClient)
 	copyBlobName := "copyb" + generateBlobName(testName)
-	copyBlobClient, _ := getBlockBlobClient(copyBlobName, copyContainerClient)
+	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
 
 	if svcClient.URL() == serviceClient2.URL() {
 		s.T().Skip("Test not valid because primary and secondary accounts are the same")
@@ -439,7 +439,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	defer deleteContainer(_require, copyContainerClient)
 
 	copyBlobName := "copy" + generateBlobName(testName)
-	copyBlobClient, _ := getBlockBlobClient(copyBlobName, copyContainerClient)
+	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
 
 	resp, err := copyBlobClient.StartCopyFromURL(ctx, sasURL.URL(), nil)
 	_require.Nil(err)
@@ -499,7 +499,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfModifiedSinceTrue() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	_require.Equal(cResp.RawResponse.StatusCode, 201)
@@ -511,7 +511,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfModifiedSinceTrue() {
 		},
 	}
 
-	destBlobClient, _ := getBlockBlobClient("dst"+generateBlobName(testName), containerClient)
+	destBlobClient := getBlockBlobClient("dst"+generateBlobName(testName), containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.Nil(err)
 
@@ -533,7 +533,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(blobName, containerClient)
+	bbClient := getBlockBlobClient(blobName, containerClient)
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	_require.Equal(cResp.RawResponse.StatusCode, 201)
@@ -545,7 +545,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfModifiedSinceFalse() {
 		},
 	}
 
-	destBlobClient, _ := getBlockBlobClient("dst"+blobName, containerClient)
+	destBlobClient := getBlockBlobClient("dst"+blobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.NotNil(err)
 }
@@ -564,7 +564,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(blobName, containerClient)
+	bbClient := getBlockBlobClient(blobName, containerClient)
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	_require.Equal(cResp.RawResponse.StatusCode, 201)
@@ -576,7 +576,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfUnmodifiedSinceTrue() {
 		},
 	}
 
-	destBlobClient, _ := getBlockBlobClient("dst"+generateBlobName(testName), containerClient)
+	destBlobClient := getBlockBlobClient("dst"+generateBlobName(testName), containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.Nil(err)
 
@@ -598,7 +598,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(blobName, containerClient)
+	bbClient := getBlockBlobClient(blobName, containerClient)
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
 	_require.Equal(cResp.RawResponse.StatusCode, 201)
@@ -609,7 +609,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfUnmodifiedSinceFalse() {
 			SourceIfUnmodifiedSince: &currentTime,
 		},
 	}
-	destBlobClient, _ := getBlockBlobClient("dst"+blobName, containerClient)
+	destBlobClient := getBlockBlobClient("dst"+blobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.NotNil(err)
 }
@@ -640,7 +640,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchTrue() {
 	}
 
 	destBlobName := "dest" + generateBlobName(testName)
-	destBlobClient, _ := getBlockBlobClient(destBlobName, containerClient)
+	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.Nil(err)
 
@@ -673,7 +673,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchFalse() {
 	}
 
 	destBlobName := "dest" + generateBlobName(testName)
-	destBlobClient, _ := getBlockBlobClient(destBlobName, containerClient)
+	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.NotNil(err)
 	validateStorageErrorCode(_require, err, StorageErrorCodeSourceConditionNotMet)
@@ -705,7 +705,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 	}
 
 	destBlobName := "dest" + generateBlobName(testName)
-	destBlobClient, _ := getBlockBlobClient(destBlobName, containerClient)
+	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.Nil(err)
 
@@ -739,7 +739,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
 	}
 
 	destBlobName := "dest" + generateBlobName(testName)
-	destBlobClient, _ := getBlockBlobClient(destBlobName, containerClient)
+	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
 	_, err = destBlobClient.StartCopyFromURL(ctx, bbClient.URL(), &options)
 	_require.NotNil(err)
 	validateStorageErrorCode(_require, err, StorageErrorCodeSourceConditionNotMet)
@@ -759,7 +759,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -794,7 +794,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -826,7 +826,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -862,7 +862,7 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -1034,7 +1034,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	defer deleteContainer(_require, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(blockBlobName, containerClient)
+	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	// Create a large blob that takes time to copy
 	blobSize := 8 * 1024 * 1024
@@ -1059,7 +1059,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 	copyContainerClient := createNewContainer(_require, copyContainerName, serviceClient2)
 
 	copyBlobName := "copy" + generateBlobName(testName)
-	copyBlobClient, _ := getBlockBlobClient(copyBlobName, copyContainerClient)
+	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
 
 	defer deleteContainer(_require, copyContainerClient)
 
@@ -1094,7 +1094,7 @@ func (s *azblobTestSuite) TestBlobAbortCopyNoCopyStarted() {
 	defer deleteContainer(_require, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	copyBlobClient, _ := getBlockBlobClient(blockBlobName, containerClient)
+	copyBlobClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	_, err = copyBlobClient.AbortCopyFromURL(ctx, "copynotstarted", nil)
 	_require.NotNil(err)
@@ -1228,7 +1228,7 @@ func (s *azblobTestSuite) TestBlobSnapshotBlobNotExist() {
 	defer deleteContainer(_require, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(blockBlobName, containerClient)
+	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
 	_, err = bbClient.CreateSnapshot(ctx, nil)
 	_require.NotNil(err)
@@ -1273,7 +1273,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -1306,7 +1306,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -1338,7 +1338,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -1370,7 +1370,7 @@ func (s *azblobTestSuite) TestBlobSnapshotIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -1513,7 +1513,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataNonExistentBlob() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	bbClient, _ := containerClient.NewBlobClient(blobName)
+	bbClient := containerClient.NewBlobClient(blobName)
 
 	_, err = bbClient.Download(ctx, nil)
 	_require.NotNil(err)
@@ -1741,7 +1741,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -1773,7 +1773,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	bbClient, _ := getBlockBlobClient(generateBlobName(testName), containerClient)
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -1805,7 +1805,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -1837,7 +1837,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -1991,7 +1991,7 @@ func (s *azblobTestSuite) TestBlobDeleteNonExistent() {
 	defer deleteContainer(_require, containerClient)
 
 	blockBlobName := generateBlobName(testName)
-	bbClient, _ := containerClient.NewBlockBlobClient(blockBlobName)
+	bbClient := containerClient.NewBlockBlobClient(blockBlobName)
 
 	_, err = bbClient.Delete(ctx, nil)
 	_require.NotNil(err)
@@ -2115,7 +2115,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2148,7 +2148,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2179,7 +2179,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2212,7 +2212,7 @@ func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2364,7 +2364,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2399,7 +2399,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2434,7 +2434,7 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2531,7 +2531,7 @@ func (s *azblobTestSuite) TestBlobGetPropsOnMissingBlob() {
 	containerClient := createNewContainer(_require, containerName, svcClient)
 	defer deleteContainer(_require, containerClient)
 
-	bbClient, _ := containerClient.NewBlobClient("MISSING")
+	bbClient := containerClient.NewBlobClient("MISSING")
 
 	_, err = bbClient.GetProperties(ctx, nil)
 	validateHTTPErrorCode(_require, err, 404)
@@ -2702,7 +2702,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2731,7 +2731,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2758,7 +2758,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2787,7 +2787,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -2990,7 +2990,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -3021,7 +3021,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -3050,7 +3050,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
@@ -3081,7 +3081,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	bbName := generateBlobName(testName)
-	bbClient, _ := getBlockBlobClient(bbName, containerClient)
+	bbClient := getBlockBlobClient(bbName, containerClient)
 
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)

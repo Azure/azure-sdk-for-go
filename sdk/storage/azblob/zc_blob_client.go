@@ -23,7 +23,7 @@ type BlobClient struct {
 }
 
 // NewBlobClient creates a BlobClient object using the specified URL, Azure AD credential, and options.
-func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*BlobClient, error) {
+func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) *BlobClient {
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{internal.TokenScope}, nil)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -31,21 +31,21 @@ func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientO
 
 	return &BlobClient{
 		client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
-	}, nil
+	}
 }
 
 // NewBlobClientWithNoCredential creates a BlobClient object using the specified URL and options.
-func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) (*BlobClient, error) {
+func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) *BlobClient {
 	conOptions := getConnectionOptions(options)
 	conn := internal.NewConnection(blobURL, conOptions)
 
 	return &BlobClient{
 		client: newBlobClient(conn.Endpoint(), conn.Pipeline()),
-	}, nil
+	}
 }
 
 // NewBlobClientWithSharedKey creates a BlobClient object using the specified URL, shared key, and options.
-func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (*BlobClient, error) {
+func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) *BlobClient {
 	authPolicy := newSharedKeyCredPolicy(cred)
 	conOptions := getConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -54,17 +54,13 @@ func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, optio
 	return &BlobClient{
 		client:    newBlobClient(blobURL, conn.Pipeline()),
 		sharedKey: cred,
-	}, nil
+	}
 }
 
 // NewBlobClientFromConnectionString creates BlobClient from a connection String
 //nolint
-func NewBlobClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (*BlobClient, error) {
-	containerClient, err := NewContainerClientFromConnectionString(connectionString, containerName, options)
-	if err != nil {
-		return nil, err
-	}
-	return containerClient.NewBlobClient(blobName)
+func NewBlobClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) *BlobClient {
+	return NewContainerClientFromConnectionString(connectionString, containerName, options).NewBlobClient(blobName)
 }
 
 // URL returns the URL endpoint used by the BlobClient object.

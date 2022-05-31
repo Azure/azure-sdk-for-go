@@ -331,7 +331,7 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	snapshotResp, err := srcBlob.CreateSnapshot(context.Background(), nil)
 	_require.Nil(err)
 
-	dstBlob, _ := containerClient.NewPageBlobClient("dst" + generateBlobName(testName))
+	dstBlob := containerClient.NewPageBlobClient("dst" + generateBlobName(testName))
 
 	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshotResp.Snapshot, nil)
 	_require.Nil(err)
@@ -498,7 +498,7 @@ func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := PageBlobCreateOptions{
@@ -524,7 +524,7 @@ func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(-1)
 	createPageBlobOptions := PageBlobCreateOptions{
@@ -548,7 +548,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := PageBlobCreateOptions{
@@ -578,7 +578,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := PageBlobCreateOptions{
@@ -607,7 +607,7 @@ func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := PageBlobCreateOptions{
@@ -634,7 +634,7 @@ func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	sequenceNumber := int64(0)
 	createPageBlobOptions := PageBlobCreateOptions{
@@ -672,7 +672,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResp, err := pbClient.Create(ctx, internal.PageBlobPageBytes, nil)
 	_require.Nil(err)
@@ -710,7 +710,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResp, err := pbClient.Create(ctx, internal.PageBlobPageBytes, nil)
 	_require.Nil(err)
@@ -748,7 +748,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResp, err := pbClient.Create(ctx, internal.PageBlobPageBytes, nil)
 	_require.Nil(err)
@@ -786,7 +786,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResp, err := pbClient.Create(ctx, internal.PageBlobPageBytes, nil)
 	_require.Nil(err)
@@ -1021,7 +1021,7 @@ func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	r, _ := generateData(internal.PageBlobPageBytes)
 	offset, count := int64(0), int64(internal.PageBlobPageBytes)
@@ -1065,7 +1065,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
 	_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
@@ -1102,7 +1102,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
 	_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
@@ -1139,7 +1139,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
 	_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
@@ -1176,7 +1176,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
 	_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
@@ -1213,7 +1213,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
 	_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
@@ -1250,7 +1250,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
 	_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
@@ -1287,7 +1287,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
 	_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
@@ -1324,7 +1324,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
 	_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
@@ -2769,7 +2769,7 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
@@ -2805,7 +2805,7 @@ func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
@@ -2841,7 +2841,7 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
@@ -2877,7 +2877,7 @@ func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
@@ -3102,7 +3102,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
@@ -3140,7 +3140,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
@@ -3178,7 +3178,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)
@@ -3216,7 +3216,7 @@ func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 	defer deleteContainer(_require, containerClient)
 
 	blobName := generateBlobName(testName)
-	pbClient, _ := getPageBlobClient(blobName, containerClient)
+	pbClient := getPageBlobClient(blobName, containerClient)
 
 	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
 	_require.Nil(err)

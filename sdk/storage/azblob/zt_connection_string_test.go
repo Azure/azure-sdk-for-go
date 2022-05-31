@@ -28,7 +28,7 @@ func (s *azblobTestSuite) TestConnectionStringParser() {
 	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
-	client, err := NewServiceClientFromConnectionString(connStr, nil)
+	client := NewServiceClientFromConnectionString(connStr, nil)
 	_require.Nil(err)
 	_require.NotNil(client)
 	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
@@ -49,7 +49,7 @@ func (s *azblobTestSuite) TestConnectionStringParserHTTP() {
 	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
-	client, err := NewServiceClientFromConnectionString(connStr, nil)
+	client := NewServiceClientFromConnectionString(connStr, nil)
 	_require.Nil(err)
 	_require.NotNil(client)
 	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
@@ -69,7 +69,7 @@ func (s *azblobTestSuite) TestConnectionStringParserBasic() {
 	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
-	client, err := NewServiceClientFromConnectionString(connStr, nil)
+	client := NewServiceClientFromConnectionString(connStr, nil)
 	_require.Nil(err)
 	_require.NotNil(client)
 	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
@@ -89,7 +89,7 @@ func (s *azblobTestSuite) TestConnectionStringParserCustomDomain() {
 	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
 	_require.Equal(getAccountKey(sharedKeyCred), "secretkeykey")
 
-	client, err := NewServiceClientFromConnectionString(connStr, nil)
+	client := NewServiceClientFromConnectionString(connStr, nil)
 	_require.Nil(err)
 	_require.NotNil(client)
 	_require.Equal(sharedKeyCred.accountName, "dummyaccount")
@@ -126,7 +126,7 @@ func (s *azblobTestSuite) TestConnectionStringSAS() {
 	_require.Equal(serviceURL, "https://dummyaccount.blob.core.windows.net/?fakesharedaccesssignature")
 	_require.Nil(cred)
 
-	client, err := NewServiceClientFromConnectionString(connStr, nil)
+	client := NewServiceClientFromConnectionString(connStr, nil)
 	_require.Nil(err)
 	_require.NotNil(client)
 	_require.True(strings.HasPrefix(client.client.endpoint, "https://"))
@@ -141,7 +141,7 @@ func (s *azblobTestSuite) TestConnectionStringChinaCloud() {
 	_require.Equal(serviceURL, "http://dummyaccountname.blob.core.chinacloudapi.cn")
 	_require.NotNil(cred)
 
-	client, err := NewServiceClientFromConnectionString(connStr, nil)
+	client := NewServiceClientFromConnectionString(connStr, nil)
 	_require.Nil(err)
 	_require.NotNil(client)
 	_require.True(strings.HasPrefix(client.client.endpoint, "http://"))
@@ -160,7 +160,7 @@ func (s *azblobTestSuite) TestConnectionStringAzurite() {
 	_require.Equal(serviceURL, "http://local-machine:11002/custom/account/path/faketokensignature")
 	_require.NotNil(cred)
 
-	client, err := NewServiceClientFromConnectionString(connStr, nil)
+	client := NewServiceClientFromConnectionString(connStr, nil)
 	_require.Nil(err)
 	_require.NotNil(client)
 	_require.True(strings.HasPrefix(client.client.endpoint, "http://"))

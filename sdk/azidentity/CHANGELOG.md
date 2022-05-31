@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Upgrade `microsoft-authentication-library-for-go` requirement to v0.5.1
+  ([#18176](https://github.com/Azure/azure-sdk-for-go/issues/18176))
 
 ## 1.0.0 (2022-05-12)
 

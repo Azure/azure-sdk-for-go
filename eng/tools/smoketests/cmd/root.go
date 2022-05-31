@@ -115,29 +115,29 @@ func NewSemVerFromTag(s string) (*semver.Version, error) {
 }
 
 // Find the most recent SemVer tag for a given package.
-func findLatestTag(p string, tags []string) (string, error) {
+func findLatestTag(p string, tags []string) (*semver.Version, error) {
 	var v *semver.Version
 	var err error
 	for i, tag := range tags {
 		if strings.Contains(tag, p) {
 			v, err = NewSemVerFromTag(tag)
 			if err != nil {
-				return "", fmt.Errorf("could not parse version for tag %s", tag)
+				return nil, fmt.Errorf("could not parse version for tag %s", tag)
 			}
 			for strings.Contains(tags[i+1], p) {
 				newV, err := NewSemVerFromTag(tags[i+1])
 				if err != nil {
-					return "", fmt.Errorf("could not parse version for tag %s", tags[i+1])
+					return nil, fmt.Errorf("could not parse version for tag %s", tags[i+1])
 				}
 				if newV.GreaterThan(v) {
 					v = newV
 				}
 				i += 1
 			}
-			return "v" + v.String(), nil
+			return v, nil
 		}
 	}
-	return "", fmt.Errorf("could not find a version for module %s", p)
+	return nil, fmt.Errorf("could not find a version for module %s", p)
 }
 
 // Creates a slice of modules matched with the most recent version
@@ -151,11 +151,21 @@ func matchModulesAndTags(goModFiles []string, tags []string) []Module {
 		if err != nil {
 			fmt.Println(err.Error())
 		} else {
-			m = append(m, Module{
-				Name:    goModFile,
-				Replace: fmt.Sprintf("../%s", relativePackagePath),
-				Version: version,
-			})
+			if version.Major() > 1 {
+				m = append(m, Module{
+					Name:    goModFile,
+					Package: fmt.Sprintf("%s/v%d", goModFile, version.Major()),
+					Replace: fmt.Sprintf("../%s", relativePackagePath),
+					Version: "v" + version.String(),
+				})
+			} else {
+				m = append(m, Module{
+					Name:    goModFile,
+					Package: goModFile,
+					Replace: fmt.Sprintf("../%s", relativePackagePath),
+					Version: "v" + version.String(),
+				})
+			}
 		}
 	}
 
@@ -184,7 +194,7 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 	replaceString := "replace %s => %s\n"
 	if serviceDirectory == "notset" {
 		for _, module := range modules {
-			s := fmt.Sprintf(replaceString, module.Name, module.Replace)
+			s := fmt.Sprintf(replaceString, module.Package, module.Replace)
 			_, err = f.Write([]byte(s))
 			handle(err)
 		}
@@ -192,7 +202,7 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 		fmt.Printf("Replace directive for %s\n", serviceDirectory)
 		for _, module := range modules {
 			if strings.Contains(module.Name, serviceDirectory) {
-				s := fmt.Sprintf(replaceString, module.Name, module.Replace)
+				s := fmt.Sprintf(replaceString, module.Package, module.Replace)
 				_, err = f.Write([]byte(s))
 				handle(err)
 			}
@@ -207,7 +217,7 @@ func BuildModFile(modules []Module, serviceDirectory string) error {
 
 	requireString := "\t%s %s\n"
 	for _, module := range modules {
-		s := fmt.Sprintf(requireString, module.Name, module.Version)
+		s := fmt.Sprintf(requireString, module.Package, module.Version)
 		_, err = f.Write([]byte(s))
 		handle(err)
 	}

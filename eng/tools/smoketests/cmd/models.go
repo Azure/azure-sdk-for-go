@@ -12,6 +12,7 @@ type Package struct {
 
 type Module struct {
 	Name    string
+	Package string
 	Version string
 	Replace string
 }

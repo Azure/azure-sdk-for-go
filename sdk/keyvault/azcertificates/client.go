@@ -434,8 +434,8 @@ func (c *Client) ImportCertificate(ctx context.Context, certificateName string, 
 	}, nil
 }
 
-// ListCertificatesOptions contains optional parameters for Client.ListCertificates
-type ListCertificatesOptions struct {
+// ListPropertiesOfCertificatesOptions contains optional parameters for Client.ListCertificates
+type ListPropertiesOfCertificatesOptions struct {
 	// placeholder for future optional parameters.
 }
 
@@ -469,7 +469,7 @@ func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesRespons
 // public part of a stored certificate. The LIST operation is applicable to all certificate types, however only the
 // base certificate identifier, attributes, and tags are provided in the response. Individual versions of a
 // certificate are not listed in the response. This operation requires the certificates/list permission.
-func (c *Client) NewListPropertiesOfCertificatesPager(options *ListCertificatesOptions) *runtime.Pager[ListPropertiesOfCertificatesResponse] {
+func (c *Client) NewListPropertiesOfCertificatesPager(options *ListPropertiesOfCertificatesOptions) *runtime.Pager[ListPropertiesOfCertificatesResponse] {
 	pager := c.genClient.NewGetCertificatesPager(c.vaultURL, nil)
 	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfCertificatesResponse]{
 		More: func(page ListPropertiesOfCertificatesResponse) bool {
@@ -485,8 +485,8 @@ func (c *Client) NewListPropertiesOfCertificatesPager(options *ListCertificatesO
 	})
 }
 
-// ListCertificateVersionsOptions contains optional parameters for Client.ListCertificateVersions
-type ListCertificateVersionsOptions struct {
+// ListPropertiesOfCertificateVersionsOptions contains optional parameters for Client.ListCertificateVersions
+type ListPropertiesOfCertificateVersionsOptions struct {
 	// placeholder for future optional parameters.
 }
 
@@ -518,7 +518,7 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 // NewListPropertiesOfCertificateVersionsPager lists all versions of the specified certificate. The full certificate identifer and
 // attributes are provided in the response. No values are returned for the certificates. This operation
 // requires the certificates/list permission.
-func (c *Client) NewListPropertiesOfCertificateVersionsPager(certificateName string, options *ListCertificateVersionsOptions) *runtime.Pager[ListPropertiesOfCertificateVersionsResponse] {
+func (c *Client) NewListPropertiesOfCertificateVersionsPager(certificateName string, options *ListPropertiesOfCertificateVersionsOptions) *runtime.Pager[ListPropertiesOfCertificateVersionsResponse] {
 	pager := c.genClient.NewGetCertificateVersionsPager(c.vaultURL, certificateName, nil)
 	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfCertificateVersionsResponse]{
 		More: func(page ListPropertiesOfCertificateVersionsResponse) bool {

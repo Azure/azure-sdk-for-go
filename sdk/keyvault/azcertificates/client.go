@@ -1240,7 +1240,7 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certificate
 // ListDeletedCertificatesResponse contains response field for ListDeletedCertificatesPager.NextPage
 type ListDeletedCertificatesResponse struct {
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page of deleted certificates
-	Certificates []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
+	DeletedCertificates []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
 
 	// NextLink gives the next page of items to fetch
 	NextLink *string
@@ -1266,8 +1266,8 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 	}
 
 	return ListDeletedCertificatesResponse{
-		Certificates: certs,
-		NextLink:     g.NextLink,
+		DeletedCertificates: certs,
+		NextLink:            g.NextLink,
 	}
 }
 

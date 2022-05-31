@@ -56,7 +56,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 
 // CreateOrUpdate - Update the state of specified private endpoint connection associated with the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-01
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the workspace
@@ -102,7 +102,7 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
@@ -119,7 +119,7 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateHandleResponse(res
 
 // Delete - Deletes the specified private endpoint connection associated with the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-01
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the workspace
@@ -164,7 +164,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,7 +172,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 
 // Get - Gets the specified private endpoint connection associated with the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-01
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // privateEndpointConnectionName - The name of the private endpoint connection associated with the workspace
@@ -217,7 +217,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -234,7 +234,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - List all the private endpoint connections associated with the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-01
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
@@ -281,7 +281,7 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

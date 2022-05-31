@@ -15,9 +15,6 @@ type AKS struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
 
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
-
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
 
@@ -25,10 +22,13 @@ type AKS struct {
 	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
 
 	// AKS properties
-	Properties *AKSProperties `json:"properties,omitempty"`
+	Properties *AKSSchemaProperties `json:"properties,omitempty"`
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -63,8 +63,13 @@ func (a *AKS) GetCompute() *Compute {
 	}
 }
 
-// AKSProperties - AKS properties
-type AKSProperties struct {
+type AKSSchema struct {
+	// AKS properties
+	Properties *AKSSchemaProperties `json:"properties,omitempty"`
+}
+
+// AKSSchemaProperties - AKS properties
+type AKSSchemaProperties struct {
 	// Number of agents
 	AgentCount *int32 `json:"agentCount,omitempty"`
 
@@ -91,6 +96,38 @@ type AKSProperties struct {
 
 	// READ-ONLY; System services
 	SystemServices []*SystemService `json:"systemServices,omitempty" azure:"ro"`
+}
+
+// AccountKeyDatastoreCredentials - Account key datastore credentials configuration.
+type AccountKeyDatastoreCredentials struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	CredentialsType *CredentialsType `json:"credentialsType,omitempty"`
+
+	// REQUIRED; [Required] Storage account secrets.
+	Secrets *AccountKeyDatastoreSecrets `json:"secrets,omitempty"`
+}
+
+// GetDatastoreCredentials implements the DatastoreCredentialsClassification interface for type AccountKeyDatastoreCredentials.
+func (a *AccountKeyDatastoreCredentials) GetDatastoreCredentials() *DatastoreCredentials {
+	return &DatastoreCredentials{
+		CredentialsType: a.CredentialsType,
+	}
+}
+
+// AccountKeyDatastoreSecrets - Datastore account key secrets.
+type AccountKeyDatastoreSecrets struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	SecretsType *SecretsType `json:"secretsType,omitempty"`
+
+	// Storage account key.
+	Key *string `json:"key,omitempty"`
+}
+
+// GetDatastoreSecrets implements the DatastoreSecretsClassification interface for type AccountKeyDatastoreSecrets.
+func (a *AccountKeyDatastoreSecrets) GetDatastoreSecrets() *DatastoreSecrets {
+	return &DatastoreSecrets{
+		SecretsType: a.SecretsType,
+	}
 }
 
 // AksComputeSecrets - Secrets related to a Machine Learning compute based on AKS.
@@ -144,13 +181,10 @@ type AksNetworkingConfiguration struct {
 	SubnetID *string `json:"subnetId,omitempty"`
 }
 
-// AmlCompute - Properties(top level) of AmlCompute
+// AmlCompute - An Azure Machine Learning compute.
 type AmlCompute struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
-
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
 
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -163,6 +197,9 @@ type AmlCompute struct {
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -240,6 +277,9 @@ type AmlComputeProperties struct {
 	// Compute OS Type
 	OSType *OsType `json:"osType,omitempty"`
 
+	// A property bag containing additional properties.
+	PropertyBag map[string]interface{} `json:"propertyBag,omitempty"`
+
 	// State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes
 	// of the cluster. Enabled - Indicates that the public ssh port is open on all
 	// nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is
@@ -290,6 +330,58 @@ type AmlComputeProperties struct {
 	TargetNodeCount *int32 `json:"targetNodeCount,omitempty" azure:"ro"`
 }
 
+// AmlComputeSchema - Properties(top level) of AmlCompute
+type AmlComputeSchema struct {
+	// Properties of AmlCompute
+	Properties *AmlComputeProperties `json:"properties,omitempty"`
+}
+
+// AmlOperation - Azure Machine Learning workspace REST API operation
+type AmlOperation struct {
+	// Display name of operation
+	Display *AmlOperationDisplay `json:"display,omitempty"`
+
+	// Indicates whether the operation applies to data-plane
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
+	// Operation name: {provider}/{resource}/{operation}
+	Name *string `json:"name,omitempty"`
+}
+
+// AmlOperationDisplay - Display name of operation
+type AmlOperationDisplay struct {
+	// The description for the operation.
+	Description *string `json:"description,omitempty"`
+
+	// The operation that users can perform.
+	Operation *string `json:"operation,omitempty"`
+
+	// The resource provider name: Microsoft.MachineLearningExperimentation
+	Provider *string `json:"provider,omitempty"`
+
+	// The resource on which the operation is performed.
+	Resource *string `json:"resource,omitempty"`
+}
+
+// AmlOperationListResult - An array of operations supported by the resource provider.
+type AmlOperationListResult struct {
+	// List of AML workspace operations supported by the AML workspace resource provider.
+	Value []*AmlOperation `json:"value,omitempty"`
+}
+
+// AmlToken - AML Token identity configuration.
+type AmlToken struct {
+	// REQUIRED; [Required] Specifies the type of identity framework.
+	IdentityType *IdentityConfigurationType `json:"identityType,omitempty"`
+}
+
+// GetIdentityConfiguration implements the IdentityConfigurationClassification interface for type AmlToken.
+func (a *AmlToken) GetIdentityConfiguration() *IdentityConfiguration {
+	return &IdentityConfiguration{
+		IdentityType: a.IdentityType,
+	}
+}
+
 // AmlUserFeature - Features enabled for a workspace
 type AmlUserFeature struct {
 	// Describes the feature for user experience
@@ -302,6 +394,79 @@ type AmlUserFeature struct {
 	ID *string `json:"id,omitempty"`
 }
 
+type AssetBase struct {
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// If the name version are system generated (anonymous registration).
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+type AssetContainer struct {
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The latest version inside this container.
+	LatestVersion *string `json:"latestVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The next auto incremental version
+	NextVersion *string `json:"nextVersion,omitempty" azure:"ro"`
+}
+
+// AssetJobInput - Asset input type.
+type AssetJobInput struct {
+	// REQUIRED; [Required] Input Asset URI.
+	URI *string `json:"uri,omitempty"`
+
+	// Input Asset Delivery Mode.
+	Mode *InputDeliveryMode `json:"mode,omitempty"`
+}
+
+// AssetJobOutput - Asset output type.
+type AssetJobOutput struct {
+	// Output Asset Delivery Mode.
+	Mode *OutputDeliveryMode `json:"mode,omitempty"`
+
+	// Output Asset URI.
+	URI *string `json:"uri,omitempty"`
+}
+
+// AssetReferenceBaseClassification provides polymorphic access to related types.
+// Call the interface's GetAssetReferenceBase() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AssetReferenceBase, *DataPathAssetReference, *IDAssetReference, *OutputPathAssetReference
+type AssetReferenceBaseClassification interface {
+	// GetAssetReferenceBase returns the AssetReferenceBase content of the underlying type.
+	GetAssetReferenceBase() *AssetReferenceBase
+}
+
+// AssetReferenceBase - Base definition for asset references.
+type AssetReferenceBase struct {
+	// REQUIRED; [Required] Specifies the type of asset reference.
+	ReferenceType *ReferenceType `json:"referenceType,omitempty"`
+}
+
+// GetAssetReferenceBase implements the AssetReferenceBaseClassification interface for type AssetReferenceBase.
+func (a *AssetReferenceBase) GetAssetReferenceBase() *AssetReferenceBase { return a }
+
 // AssignedUser - A user that can be assigned to a compute instance.
 type AssignedUser struct {
 	// REQUIRED; User’s AAD Object Id.
@@ -309,6 +474,130 @@ type AssignedUser struct {
 
 	// REQUIRED; User’s AAD Tenant Id.
 	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// AutoForecastHorizon - Forecast horizon determined automatically by system.
+type AutoForecastHorizon struct {
+	// REQUIRED; [Required] Set forecast horizon value selection mode.
+	Mode *ForecastHorizonMode `json:"mode,omitempty"`
+}
+
+// GetForecastHorizon implements the ForecastHorizonClassification interface for type AutoForecastHorizon.
+func (a *AutoForecastHorizon) GetForecastHorizon() *ForecastHorizon {
+	return &ForecastHorizon{
+		Mode: a.Mode,
+	}
+}
+
+// AutoMLJob class. Use this class for executing AutoML tasks like Classification/Regression etc. See TaskType enum for all
+// the tasks supported.
+type AutoMLJob struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobType *JobType `json:"jobType,omitempty"`
+
+	// REQUIRED; [Required] This represents scenario which can be one of Tables/NLP/Image
+	TaskDetails AutoMLVerticalClassification `json:"taskDetails,omitempty"`
+
+	// ARM resource ID of the compute resource.
+	ComputeID *string `json:"computeId,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Display name of job.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The ARM resource ID of the Environment specification for the job. This is optional value to provide, if not provided, AutoML
+	// will default this to Production AutoML curated environment version when
+	// running the job.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+
+	// Environment variables included in the job.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// The name of the experiment the job belongs to. If not set, the job is placed in the "Default" experiment.
+	ExperimentName *string `json:"experimentName,omitempty"`
+
+	// Identity configuration. If set, this should be one of AmlToken, ManagedIdentity, UserIdentity or null. Defaults to AmlToken
+	// if null.
+	Identity IdentityConfigurationClassification `json:"identity,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// Mapping of output data bindings used in the job.
+	Outputs map[string]JobOutputClassification `json:"outputs,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Compute Resource configuration for the job.
+	Resources *ResourceConfiguration `json:"resources,omitempty"`
+
+	// Schedule definition of job. If no schedule is provided, the job is run once and immediately after submission.
+	Schedule ScheduleBaseClassification `json:"schedule,omitempty"`
+
+	// List of JobEndpoints. For local jobs, a job endpoint will have an endpoint value of FileStreamObject.
+	Services map[string]*JobService `json:"services,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Status of the job.
+	Status *JobStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetJobBaseDetails implements the JobBaseDetailsClassification interface for type AutoMLJob.
+func (a *AutoMLJob) GetJobBaseDetails() *JobBaseDetails {
+	return &JobBaseDetails{
+		ComputeID:      a.ComputeID,
+		DisplayName:    a.DisplayName,
+		ExperimentName: a.ExperimentName,
+		Identity:       a.Identity,
+		IsArchived:     a.IsArchived,
+		JobType:        a.JobType,
+		Schedule:       a.Schedule,
+		Services:       a.Services,
+		Status:         a.Status,
+		Description:    a.Description,
+		Properties:     a.Properties,
+		Tags:           a.Tags,
+	}
+}
+
+// AutoMLVerticalClassification provides polymorphic access to related types.
+// Call the interface's GetAutoMLVertical() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AutoMLVertical, *Classification, *Forecasting, *ImageClassification, *ImageClassificationMultilabel, *ImageInstanceSegmentation,
+// - *ImageObjectDetection, *Regression, *TextClassification, *TextClassificationMultilabel, *TextNer
+type AutoMLVerticalClassification interface {
+	// GetAutoMLVertical returns the AutoMLVertical content of the underlying type.
+	GetAutoMLVertical() *AutoMLVertical
+}
+
+// AutoMLVertical - AutoML vertical class. Base class for AutoML verticals - TableVertical/ImageVertical/NLPVertical
+type AutoMLVertical struct {
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type AutoMLVertical.
+func (a *AutoMLVertical) GetAutoMLVertical() *AutoMLVertical { return a }
+
+// AutoNCrossValidations - N-Cross validations determined automatically.
+type AutoNCrossValidations struct {
+	// REQUIRED; [Required] Mode for determining N-Cross validations.
+	Mode *NCrossValidationsMode `json:"mode,omitempty"`
+}
+
+// GetNCrossValidations implements the NCrossValidationsClassification interface for type AutoNCrossValidations.
+func (a *AutoNCrossValidations) GetNCrossValidations() *NCrossValidations {
+	return &NCrossValidations{
+		Mode: a.Mode,
+	}
 }
 
 // AutoPauseProperties - Auto pause properties
@@ -324,6 +613,614 @@ type AutoScaleProperties struct {
 	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
 }
 
+type AutoSeasonality struct {
+	// REQUIRED; [Required] Seasonality mode.
+	Mode *SeasonalityMode `json:"mode,omitempty"`
+}
+
+// GetSeasonality implements the SeasonalityClassification interface for type AutoSeasonality.
+func (a *AutoSeasonality) GetSeasonality() *Seasonality {
+	return &Seasonality{
+		Mode: a.Mode,
+	}
+}
+
+type AutoTargetLags struct {
+	// REQUIRED; [Required] Set target lags mode - Auto/Custom
+	Mode *TargetLagsMode `json:"mode,omitempty"`
+}
+
+// GetTargetLags implements the TargetLagsClassification interface for type AutoTargetLags.
+func (a *AutoTargetLags) GetTargetLags() *TargetLags {
+	return &TargetLags{
+		Mode: a.Mode,
+	}
+}
+
+// AutoTargetRollingWindowSize - Target lags rolling window determined automatically.
+type AutoTargetRollingWindowSize struct {
+	// REQUIRED; [Required] TargetRollingWindowSiz detection mode.
+	Mode *TargetRollingWindowSizeMode `json:"mode,omitempty"`
+}
+
+// GetTargetRollingWindowSize implements the TargetRollingWindowSizeClassification interface for type AutoTargetRollingWindowSize.
+func (a *AutoTargetRollingWindowSize) GetTargetRollingWindowSize() *TargetRollingWindowSize {
+	return &TargetRollingWindowSize{
+		Mode: a.Mode,
+	}
+}
+
+// AzureBlobDatastore - Azure Blob datastore configuration.
+type AzureBlobDatastore struct {
+	// REQUIRED; [Required] Account credentials.
+	Credentials DatastoreCredentialsClassification `json:"credentials,omitempty"`
+
+	// REQUIRED; [Required] Storage type backing the datastore.
+	DatastoreType *DatastoreType `json:"datastoreType,omitempty"`
+
+	// Storage account name.
+	AccountName *string `json:"accountName,omitempty"`
+
+	// Storage account container name.
+	ContainerName *string `json:"containerName,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Azure cloud endpoint for the storage account.
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Protocol used to communicate with the storage account.
+	Protocol *string `json:"protocol,omitempty"`
+
+	// Indicates which identity to use to authenticate service data access to customer's storage.
+	ServiceDataAccessAuthIdentity *ServiceDataAccessAuthIdentity `json:"serviceDataAccessAuthIdentity,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Readonly property to indicate if datastore is the workspace default datastore
+	IsDefault *bool `json:"isDefault,omitempty" azure:"ro"`
+}
+
+// GetDatastoreDetails implements the DatastoreDetailsClassification interface for type AzureBlobDatastore.
+func (a *AzureBlobDatastore) GetDatastoreDetails() *DatastoreDetails {
+	return &DatastoreDetails{
+		Credentials:   a.Credentials,
+		DatastoreType: a.DatastoreType,
+		IsDefault:     a.IsDefault,
+		Description:   a.Description,
+		Properties:    a.Properties,
+		Tags:          a.Tags,
+	}
+}
+
+// AzureDataLakeGen1Datastore - Azure Data Lake Gen1 datastore configuration.
+type AzureDataLakeGen1Datastore struct {
+	// REQUIRED; [Required] Account credentials.
+	Credentials DatastoreCredentialsClassification `json:"credentials,omitempty"`
+
+	// REQUIRED; [Required] Storage type backing the datastore.
+	DatastoreType *DatastoreType `json:"datastoreType,omitempty"`
+
+	// REQUIRED; [Required] Azure Data Lake store name.
+	StoreName *string `json:"storeName,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Indicates which identity to use to authenticate service data access to customer's storage.
+	ServiceDataAccessAuthIdentity *ServiceDataAccessAuthIdentity `json:"serviceDataAccessAuthIdentity,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Readonly property to indicate if datastore is the workspace default datastore
+	IsDefault *bool `json:"isDefault,omitempty" azure:"ro"`
+}
+
+// GetDatastoreDetails implements the DatastoreDetailsClassification interface for type AzureDataLakeGen1Datastore.
+func (a *AzureDataLakeGen1Datastore) GetDatastoreDetails() *DatastoreDetails {
+	return &DatastoreDetails{
+		Credentials:   a.Credentials,
+		DatastoreType: a.DatastoreType,
+		IsDefault:     a.IsDefault,
+		Description:   a.Description,
+		Properties:    a.Properties,
+		Tags:          a.Tags,
+	}
+}
+
+// AzureDataLakeGen2Datastore - Azure Data Lake Gen2 datastore configuration.
+type AzureDataLakeGen2Datastore struct {
+	// REQUIRED; [Required] Storage account name.
+	AccountName *string `json:"accountName,omitempty"`
+
+	// REQUIRED; [Required] Account credentials.
+	Credentials DatastoreCredentialsClassification `json:"credentials,omitempty"`
+
+	// REQUIRED; [Required] Storage type backing the datastore.
+	DatastoreType *DatastoreType `json:"datastoreType,omitempty"`
+
+	// REQUIRED; [Required] The name of the Data Lake Gen2 filesystem.
+	Filesystem *string `json:"filesystem,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Azure cloud endpoint for the storage account.
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Protocol used to communicate with the storage account.
+	Protocol *string `json:"protocol,omitempty"`
+
+	// Indicates which identity to use to authenticate service data access to customer's storage.
+	ServiceDataAccessAuthIdentity *ServiceDataAccessAuthIdentity `json:"serviceDataAccessAuthIdentity,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Readonly property to indicate if datastore is the workspace default datastore
+	IsDefault *bool `json:"isDefault,omitempty" azure:"ro"`
+}
+
+// GetDatastoreDetails implements the DatastoreDetailsClassification interface for type AzureDataLakeGen2Datastore.
+func (a *AzureDataLakeGen2Datastore) GetDatastoreDetails() *DatastoreDetails {
+	return &DatastoreDetails{
+		Credentials:   a.Credentials,
+		DatastoreType: a.DatastoreType,
+		IsDefault:     a.IsDefault,
+		Description:   a.Description,
+		Properties:    a.Properties,
+		Tags:          a.Tags,
+	}
+}
+
+// AzureFileDatastore - Azure File datastore configuration.
+type AzureFileDatastore struct {
+	// REQUIRED; [Required] Storage account name.
+	AccountName *string `json:"accountName,omitempty"`
+
+	// REQUIRED; [Required] Account credentials.
+	Credentials DatastoreCredentialsClassification `json:"credentials,omitempty"`
+
+	// REQUIRED; [Required] Storage type backing the datastore.
+	DatastoreType *DatastoreType `json:"datastoreType,omitempty"`
+
+	// REQUIRED; [Required] The name of the Azure file share that the datastore points to.
+	FileShareName *string `json:"fileShareName,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Azure cloud endpoint for the storage account.
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Protocol used to communicate with the storage account.
+	Protocol *string `json:"protocol,omitempty"`
+
+	// Indicates which identity to use to authenticate service data access to customer's storage.
+	ServiceDataAccessAuthIdentity *ServiceDataAccessAuthIdentity `json:"serviceDataAccessAuthIdentity,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Readonly property to indicate if datastore is the workspace default datastore
+	IsDefault *bool `json:"isDefault,omitempty" azure:"ro"`
+}
+
+// GetDatastoreDetails implements the DatastoreDetailsClassification interface for type AzureFileDatastore.
+func (a *AzureFileDatastore) GetDatastoreDetails() *DatastoreDetails {
+	return &DatastoreDetails{
+		Credentials:   a.Credentials,
+		DatastoreType: a.DatastoreType,
+		IsDefault:     a.IsDefault,
+		Description:   a.Description,
+		Properties:    a.Properties,
+		Tags:          a.Tags,
+	}
+}
+
+// BanditPolicy - Defines an early termination policy based on slack criteria, and a frequency and delay interval for evaluation
+type BanditPolicy struct {
+	// REQUIRED; [Required] Name of policy configuration
+	PolicyType *EarlyTerminationPolicyType `json:"policyType,omitempty"`
+
+	// Number of intervals by which to delay the first evaluation.
+	DelayEvaluation *int32 `json:"delayEvaluation,omitempty"`
+
+	// Interval (number of runs) between policy evaluations.
+	EvaluationInterval *int32 `json:"evaluationInterval,omitempty"`
+
+	// Absolute distance allowed from the best performing run.
+	SlackAmount *float32 `json:"slackAmount,omitempty"`
+
+	// Ratio of the allowed distance from the best performing run.
+	SlackFactor *float32 `json:"slackFactor,omitempty"`
+}
+
+// GetEarlyTerminationPolicy implements the EarlyTerminationPolicyClassification interface for type BanditPolicy.
+func (b *BanditPolicy) GetEarlyTerminationPolicy() *EarlyTerminationPolicy {
+	return &EarlyTerminationPolicy{
+		DelayEvaluation:    b.DelayEvaluation,
+		EvaluationInterval: b.EvaluationInterval,
+		PolicyType:         b.PolicyType,
+	}
+}
+
+type BatchDeploymentData struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *BatchDeploymentDetails `json:"properties,omitempty"`
+
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
+	Kind *string `json:"kind,omitempty"`
+
+	// Sku details required for ARM contract for Autoscaling.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// BatchDeploymentDetails - Batch inference settings per deployment.
+type BatchDeploymentDetails struct {
+	// Code configuration for the endpoint deployment.
+	CodeConfiguration *CodeConfiguration `json:"codeConfiguration,omitempty"`
+
+	// Compute target for batch inference operation.
+	Compute *string `json:"compute,omitempty"`
+
+	// Description of the endpoint deployment.
+	Description *string `json:"description,omitempty"`
+
+	// ARM resource ID of the environment specification for the endpoint deployment.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+
+	// Environment variables configuration for the deployment.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// Error threshold, if the error count for the entire input goes above this value, the batch inference will be aborted. Range
+	// is [-1, int.MaxValue]. For FileDataset, this value is the count of file
+	// failures. For TabularDataset, this value is the count of record failures. If set to -1 (the lower bound), all failures
+	// during batch inference will be ignored.
+	ErrorThreshold *int32 `json:"errorThreshold,omitempty"`
+
+	// Logging level for batch inference operation.
+	LoggingLevel *BatchLoggingLevel `json:"loggingLevel,omitempty"`
+
+	// Indicates maximum number of parallelism per instance.
+	MaxConcurrencyPerInstance *int32 `json:"maxConcurrencyPerInstance,omitempty"`
+
+	// Size of the mini-batch passed to each batch invocation. For FileDataset, this is the number of files per mini-batch. For
+	// TabularDataset, this is the size of the records in bytes, per mini-batch.
+	MiniBatchSize *int64 `json:"miniBatchSize,omitempty"`
+
+	// Reference to the model asset for the endpoint deployment.
+	Model AssetReferenceBaseClassification `json:"model,omitempty"`
+
+	// Indicates how the output will be organized.
+	OutputAction *BatchOutputAction `json:"outputAction,omitempty"`
+
+	// Customized output file name for append_row output action.
+	OutputFileName *string `json:"outputFileName,omitempty"`
+
+	// Property dictionary. Properties can be added, but not removed or altered.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Indicates compute configuration for the job. If not provided, will default to the defaults defined in ResourceConfiguration.
+	Resources *ResourceConfiguration `json:"resources,omitempty"`
+
+	// Retry Settings for the batch inference operation. If not provided, will default to the defaults defined in BatchRetrySettings.
+	RetrySettings *BatchRetrySettings `json:"retrySettings,omitempty"`
+
+	// READ-ONLY; Provisioning state for the endpoint deployment.
+	ProvisioningState *DeploymentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// BatchDeploymentTrackedResourceArmPaginatedResult - A paginated list of BatchDeployment entities.
+type BatchDeploymentTrackedResourceArmPaginatedResult struct {
+	// The link to the next page of BatchDeployment objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type BatchDeployment.
+	Value []*BatchDeploymentData `json:"value,omitempty"`
+}
+
+// BatchDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the BatchDeploymentsClient.BeginCreateOrUpdate
+// method.
+type BatchDeploymentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BatchDeploymentsClientBeginDeleteOptions contains the optional parameters for the BatchDeploymentsClient.BeginDelete method.
+type BatchDeploymentsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BatchDeploymentsClientBeginUpdateOptions contains the optional parameters for the BatchDeploymentsClient.BeginUpdate method.
+type BatchDeploymentsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BatchDeploymentsClientGetOptions contains the optional parameters for the BatchDeploymentsClient.Get method.
+type BatchDeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BatchDeploymentsClientListOptions contains the optional parameters for the BatchDeploymentsClient.List method.
+type BatchDeploymentsClientListOptions struct {
+	// Ordering of list.
+	OrderBy *string
+	// Continuation token for pagination.
+	Skip *string
+	// Top of list.
+	Top *int32
+}
+
+type BatchEndpointData struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *BatchEndpointDetails `json:"properties,omitempty"`
+
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
+	Kind *string `json:"kind,omitempty"`
+
+	// Sku details required for ARM contract for Autoscaling.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// BatchEndpointDefaults - Batch endpoint default values
+type BatchEndpointDefaults struct {
+	// Name of the deployment that will be default for the endpoint. This deployment will end up getting 100% traffic when the
+	// endpoint scoring URL is invoked.
+	DeploymentName *string `json:"deploymentName,omitempty"`
+}
+
+// BatchEndpointDetails - Batch endpoint configuration.
+type BatchEndpointDetails struct {
+	// REQUIRED; [Required] Use 'Key' for key based authentication and 'AMLToken' for Azure Machine Learning token-based authentication.
+	// 'Key' doesn't expire but 'AMLToken' does.
+	AuthMode *EndpointAuthMode `json:"authMode,omitempty"`
+
+	// Default values for Batch Endpoint
+	Defaults *BatchEndpointDefaults `json:"defaults,omitempty"`
+
+	// Description of the inference endpoint.
+	Description *string `json:"description,omitempty"`
+
+	// EndpointAuthKeys to set initially on an Endpoint. This property will always be returned as null. AuthKey values must be
+	// retrieved using the ListKeys API.
+	Keys *EndpointAuthKeys `json:"keys,omitempty"`
+
+	// Property dictionary. Properties can be added, but not removed or altered.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// READ-ONLY; Provisioning state for the endpoint.
+	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Endpoint URI.
+	ScoringURI *string `json:"scoringUri,omitempty" azure:"ro"`
+
+	// READ-ONLY; Endpoint Swagger URI.
+	SwaggerURI *string `json:"swaggerUri,omitempty" azure:"ro"`
+}
+
+// BatchEndpointTrackedResourceArmPaginatedResult - A paginated list of BatchEndpoint entities.
+type BatchEndpointTrackedResourceArmPaginatedResult struct {
+	// The link to the next page of BatchEndpoint objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type BatchEndpoint.
+	Value []*BatchEndpointData `json:"value,omitempty"`
+}
+
+// BatchEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the BatchEndpointsClient.BeginCreateOrUpdate
+// method.
+type BatchEndpointsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BatchEndpointsClientBeginDeleteOptions contains the optional parameters for the BatchEndpointsClient.BeginDelete method.
+type BatchEndpointsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BatchEndpointsClientBeginUpdateOptions contains the optional parameters for the BatchEndpointsClient.BeginUpdate method.
+type BatchEndpointsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// BatchEndpointsClientGetOptions contains the optional parameters for the BatchEndpointsClient.Get method.
+type BatchEndpointsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BatchEndpointsClientListKeysOptions contains the optional parameters for the BatchEndpointsClient.ListKeys method.
+type BatchEndpointsClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BatchEndpointsClientListOptions contains the optional parameters for the BatchEndpointsClient.List method.
+type BatchEndpointsClientListOptions struct {
+	// Number of endpoints to be retrieved in a page of results.
+	Count *int32
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// BatchRetrySettings - Retry settings for a batch inference operation.
+type BatchRetrySettings struct {
+	// Maximum retry count for a mini-batch
+	MaxRetries *int32 `json:"maxRetries,omitempty"`
+
+	// Invocation timeout for a mini-batch, in ISO 8601 format.
+	Timeout *string `json:"timeout,omitempty"`
+}
+
+// BayesianSamplingAlgorithm - Defines a Sampling Algorithm that generates values based on previous values
+type BayesianSamplingAlgorithm struct {
+	// REQUIRED; [Required] The algorithm used for generating hyperparameter values, along with configuration properties
+	SamplingAlgorithmType *SamplingAlgorithmType `json:"samplingAlgorithmType,omitempty"`
+}
+
+// GetSamplingAlgorithm implements the SamplingAlgorithmClassification interface for type BayesianSamplingAlgorithm.
+func (b *BayesianSamplingAlgorithm) GetSamplingAlgorithm() *SamplingAlgorithm {
+	return &SamplingAlgorithm{
+		SamplingAlgorithmType: b.SamplingAlgorithmType,
+	}
+}
+
+// BuildContext - Configuration settings for Docker build context
+type BuildContext struct {
+	// REQUIRED; [Required] URI of the Docker build context used to build the image. Supports blob URIs on environment creation
+	// and may return blob or Git URIs.
+	ContextURI *string `json:"contextUri,omitempty"`
+
+	// Path to the Dockerfile in the build context.
+	DockerfilePath *string `json:"dockerfilePath,omitempty"`
+}
+
+// CertificateDatastoreCredentials - Certificate datastore credentials configuration.
+type CertificateDatastoreCredentials struct {
+	// REQUIRED; [Required] Service principal client ID.
+	ClientID *string `json:"clientId,omitempty"`
+
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	CredentialsType *CredentialsType `json:"credentialsType,omitempty"`
+
+	// REQUIRED; [Required] Service principal secrets.
+	Secrets *CertificateDatastoreSecrets `json:"secrets,omitempty"`
+
+	// REQUIRED; [Required] ID of the tenant to which the service principal belongs.
+	TenantID *string `json:"tenantId,omitempty"`
+
+	// REQUIRED; [Required] Thumbprint of the certificate used for authentication.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+
+	// Authority URL used for authentication.
+	AuthorityURL *string `json:"authorityUrl,omitempty"`
+
+	// Resource the service principal has access to.
+	ResourceURL *string `json:"resourceUrl,omitempty"`
+}
+
+// GetDatastoreCredentials implements the DatastoreCredentialsClassification interface for type CertificateDatastoreCredentials.
+func (c *CertificateDatastoreCredentials) GetDatastoreCredentials() *DatastoreCredentials {
+	return &DatastoreCredentials{
+		CredentialsType: c.CredentialsType,
+	}
+}
+
+// CertificateDatastoreSecrets - Datastore certificate secrets.
+type CertificateDatastoreSecrets struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	SecretsType *SecretsType `json:"secretsType,omitempty"`
+
+	// Service principal certificate.
+	Certificate *string `json:"certificate,omitempty"`
+}
+
+// GetDatastoreSecrets implements the DatastoreSecretsClassification interface for type CertificateDatastoreSecrets.
+func (c *CertificateDatastoreSecrets) GetDatastoreSecrets() *DatastoreSecrets {
+	return &DatastoreSecrets{
+		SecretsType: c.SecretsType,
+	}
+}
+
+// Classification task in AutoML Table vertical.
+type Classification struct {
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Allowed models for classification task.
+	AllowedModels []*ClassificationModels `json:"allowedModels,omitempty"`
+
+	// Blocked models for classification task.
+	BlockedModels []*ClassificationModels `json:"blockedModels,omitempty"`
+
+	// Data inputs for AutoMLJob.
+	DataSettings *TableVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// Featurization inputs needed for AutoML job.
+	FeaturizationSettings *TableVerticalFeaturizationSettings `json:"featurizationSettings,omitempty"`
+
+	// Execution constraints for AutoMLJob.
+	LimitSettings *TableVerticalLimitSettings `json:"limitSettings,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// Primary metric for the task.
+	PrimaryMetric *ClassificationPrimaryMetrics `json:"primaryMetric,omitempty"`
+
+	// Inputs for training phase for an AutoML Job.
+	TrainingSettings *TrainingSettings `json:"trainingSettings,omitempty"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type Classification.
+func (c *Classification) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: c.LogVerbosity,
+		TaskType:     c.TaskType,
+	}
+}
+
 // ClusterUpdateParameters - AmlCompute update parameters.
 type ClusterUpdateParameters struct {
 	// The properties of the amlCompute.
@@ -336,9 +1233,419 @@ type ClusterUpdateProperties struct {
 	Properties *ScaleSettingsInformation `json:"properties,omitempty"`
 }
 
-type Components1D3SwueSchemasComputeresourceAllof1 struct {
-	// Compute properties
-	Properties ComputeClassification `json:"properties,omitempty"`
+// CodeConfiguration - Configuration for a scoring code asset.
+type CodeConfiguration struct {
+	// REQUIRED; [Required] The script to execute on startup. eg. "score.py"
+	ScoringScript *string `json:"scoringScript,omitempty"`
+
+	// ARM resource ID of the code asset.
+	CodeID *string `json:"codeId,omitempty"`
+}
+
+// CodeContainerData - Azure Resource Manager resource envelope.
+type CodeContainerData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *CodeContainerDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CodeContainerDetails - Container for code asset versions.
+type CodeContainerDetails struct {
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The latest version inside this container.
+	LatestVersion *string `json:"latestVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The next auto incremental version
+	NextVersion *string `json:"nextVersion,omitempty" azure:"ro"`
+}
+
+// CodeContainerResourceArmPaginatedResult - A paginated list of CodeContainer entities.
+type CodeContainerResourceArmPaginatedResult struct {
+	// The link to the next page of CodeContainer objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type CodeContainer.
+	Value []*CodeContainerData `json:"value,omitempty"`
+}
+
+// CodeContainersClientCreateOrUpdateOptions contains the optional parameters for the CodeContainersClient.CreateOrUpdate
+// method.
+type CodeContainersClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CodeContainersClientDeleteOptions contains the optional parameters for the CodeContainersClient.Delete method.
+type CodeContainersClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CodeContainersClientGetOptions contains the optional parameters for the CodeContainersClient.Get method.
+type CodeContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CodeContainersClientListOptions contains the optional parameters for the CodeContainersClient.List method.
+type CodeContainersClientListOptions struct {
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// CodeVersionData - Azure Resource Manager resource envelope.
+type CodeVersionData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *CodeVersionDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// CodeVersionDetails - Code asset version details.
+type CodeVersionDetails struct {
+	// Uri where code is located
+	CodeURI *string `json:"codeUri,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// If the name version are system generated (anonymous registration).
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// CodeVersionResourceArmPaginatedResult - A paginated list of CodeVersion entities.
+type CodeVersionResourceArmPaginatedResult struct {
+	// The link to the next page of CodeVersion objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type CodeVersion.
+	Value []*CodeVersionData `json:"value,omitempty"`
+}
+
+// CodeVersionsClientCreateOrUpdateOptions contains the optional parameters for the CodeVersionsClient.CreateOrUpdate method.
+type CodeVersionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CodeVersionsClientDeleteOptions contains the optional parameters for the CodeVersionsClient.Delete method.
+type CodeVersionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CodeVersionsClientGetOptions contains the optional parameters for the CodeVersionsClient.Get method.
+type CodeVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CodeVersionsClientListOptions contains the optional parameters for the CodeVersionsClient.List method.
+type CodeVersionsClientListOptions struct {
+	// Ordering of list.
+	OrderBy *string
+	// Continuation token for pagination.
+	Skip *string
+	// Maximum number of records to return.
+	Top *int32
+}
+
+// ColumnTransformer - Column transformer parameters.
+type ColumnTransformer struct {
+	// Fields to apply transformer logic on.
+	Fields []*string `json:"fields,omitempty"`
+
+	// Different properties to be passed to transformer. Input expected is dictionary of key,value pairs in JSON format.
+	Parameters interface{} `json:"parameters,omitempty"`
+}
+
+// CommandJob - Command job definition.
+type CommandJob struct {
+	// REQUIRED; [Required] The command to execute on startup of the job. eg. "python train.py"
+	Command *string `json:"command,omitempty"`
+
+	// REQUIRED; [Required] The ARM resource ID of the Environment specification for the job.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+
+	// REQUIRED; [Required] Specifies the type of job.
+	JobType *JobType `json:"jobType,omitempty"`
+
+	// ARM resource ID of the code asset.
+	CodeID *string `json:"codeId,omitempty"`
+
+	// ARM resource ID of the compute resource.
+	ComputeID *string `json:"computeId,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Display name of job.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Distribution configuration of the job. If set, this should be one of Mpi, Tensorflow, PyTorch, or null.
+	Distribution DistributionConfigurationClassification `json:"distribution,omitempty"`
+
+	// Environment variables included in the job.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// The name of the experiment the job belongs to. If not set, the job is placed in the "Default" experiment.
+	ExperimentName *string `json:"experimentName,omitempty"`
+
+	// Identity configuration. If set, this should be one of AmlToken, ManagedIdentity, UserIdentity or null. Defaults to AmlToken
+	// if null.
+	Identity IdentityConfigurationClassification `json:"identity,omitempty"`
+
+	// Mapping of input data bindings used in the job.
+	Inputs map[string]JobInputClassification `json:"inputs,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// Command Job limit.
+	Limits *CommandJobLimits `json:"limits,omitempty"`
+
+	// Mapping of output data bindings used in the job.
+	Outputs map[string]JobOutputClassification `json:"outputs,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Compute Resource configuration for the job.
+	Resources *ResourceConfiguration `json:"resources,omitempty"`
+
+	// Schedule definition of job. If no schedule is provided, the job is run once and immediately after submission.
+	Schedule ScheduleBaseClassification `json:"schedule,omitempty"`
+
+	// List of JobEndpoints. For local jobs, a job endpoint will have an endpoint value of FileStreamObject.
+	Services map[string]*JobService `json:"services,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Input parameters.
+	Parameters interface{} `json:"parameters,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of the job.
+	Status *JobStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetJobBaseDetails implements the JobBaseDetailsClassification interface for type CommandJob.
+func (c *CommandJob) GetJobBaseDetails() *JobBaseDetails {
+	return &JobBaseDetails{
+		ComputeID:      c.ComputeID,
+		DisplayName:    c.DisplayName,
+		ExperimentName: c.ExperimentName,
+		Identity:       c.Identity,
+		IsArchived:     c.IsArchived,
+		JobType:        c.JobType,
+		Schedule:       c.Schedule,
+		Services:       c.Services,
+		Status:         c.Status,
+		Description:    c.Description,
+		Properties:     c.Properties,
+		Tags:           c.Tags,
+	}
+}
+
+// CommandJobLimits - Command Job limit class.
+type CommandJobLimits struct {
+	// REQUIRED; [Required] JobLimit type.
+	JobLimitsType *JobLimitsType `json:"jobLimitsType,omitempty"`
+
+	// The max run duration in ISO 8601 format, after which the job will be cancelled. Only supports duration with precision as
+	// low as Seconds.
+	Timeout *string `json:"timeout,omitempty"`
+}
+
+// GetJobLimits implements the JobLimitsClassification interface for type CommandJobLimits.
+func (c *CommandJobLimits) GetJobLimits() *JobLimits {
+	return &JobLimits{
+		JobLimitsType: c.JobLimitsType,
+		Timeout:       c.Timeout,
+	}
+}
+
+// ComponentContainerData - Azure Resource Manager resource envelope.
+type ComponentContainerData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *ComponentContainerDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ComponentContainerDetails - Component container definition.
+type ComponentContainerDetails struct {
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The latest version inside this container.
+	LatestVersion *string `json:"latestVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The next auto incremental version
+	NextVersion *string `json:"nextVersion,omitempty" azure:"ro"`
+}
+
+// ComponentContainerResourceArmPaginatedResult - A paginated list of ComponentContainer entities.
+type ComponentContainerResourceArmPaginatedResult struct {
+	// The link to the next page of ComponentContainer objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type ComponentContainer.
+	Value []*ComponentContainerData `json:"value,omitempty"`
+}
+
+// ComponentContainersClientCreateOrUpdateOptions contains the optional parameters for the ComponentContainersClient.CreateOrUpdate
+// method.
+type ComponentContainersClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentContainersClientDeleteOptions contains the optional parameters for the ComponentContainersClient.Delete method.
+type ComponentContainersClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentContainersClientGetOptions contains the optional parameters for the ComponentContainersClient.Get method.
+type ComponentContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentContainersClientListOptions contains the optional parameters for the ComponentContainersClient.List method.
+type ComponentContainersClientListOptions struct {
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// ComponentVersionData - Azure Resource Manager resource envelope.
+type ComponentVersionData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *ComponentVersionDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ComponentVersionDetails - Definition of a component version: defines resources that span component types.
+type ComponentVersionDetails struct {
+	// Defines Component definition details.
+	ComponentSpec interface{} `json:"componentSpec,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// If the name version are system generated (anonymous registration).
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// ComponentVersionResourceArmPaginatedResult - A paginated list of ComponentVersion entities.
+type ComponentVersionResourceArmPaginatedResult struct {
+	// The link to the next page of ComponentVersion objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type ComponentVersion.
+	Value []*ComponentVersionData `json:"value,omitempty"`
+}
+
+// ComponentVersionsClientCreateOrUpdateOptions contains the optional parameters for the ComponentVersionsClient.CreateOrUpdate
+// method.
+type ComponentVersionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentVersionsClientDeleteOptions contains the optional parameters for the ComponentVersionsClient.Delete method.
+type ComponentVersionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentVersionsClientGetOptions contains the optional parameters for the ComponentVersionsClient.Get method.
+type ComponentVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentVersionsClientListOptions contains the optional parameters for the ComponentVersionsClient.List method.
+type ComponentVersionsClientListOptions struct {
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+	// Ordering of list.
+	OrderBy *string
+	// Continuation token for pagination.
+	Skip *string
+	// Maximum number of records to return.
+	Top *int32
 }
 
 // ComputeClassification provides polymorphic access to related types.
@@ -356,9 +1663,6 @@ type Compute struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
 
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
-
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
 
@@ -367,6 +1671,9 @@ type Compute struct {
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -445,13 +1752,10 @@ type ComputeClientListOptions struct {
 	Skip *string
 }
 
-// ComputeInstance - Properties(top level) of ComputeInstance
+// ComputeInstance - An Azure Machine Learning compute instance.
 type ComputeInstance struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
-
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
 
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -464,6 +1768,9 @@ type ComputeInstance struct {
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -516,6 +1823,27 @@ type ComputeInstanceConnectivityEndpoints struct {
 	PublicIPAddress *string `json:"publicIpAddress,omitempty" azure:"ro"`
 }
 
+// ComputeInstanceContainer - Defines an Aml Instance container.
+type ComputeInstanceContainer struct {
+	// Auto save settings.
+	Autosave *Autosave `json:"autosave,omitempty"`
+
+	// Environment information of this container.
+	Environment *ComputeInstanceEnvironmentInfo `json:"environment,omitempty"`
+
+	// Information of GPU.
+	Gpu *string `json:"gpu,omitempty"`
+
+	// Name of the ComputeInstance container.
+	Name *string `json:"name,omitempty"`
+
+	// network of this container.
+	Network *Network `json:"network,omitempty"`
+
+	// READ-ONLY; services of this containers.
+	Services []interface{} `json:"services,omitempty" azure:"ro"`
+}
+
 // ComputeInstanceCreatedBy - Describes information on user who created this ComputeInstance.
 type ComputeInstanceCreatedBy struct {
 	// READ-ONLY; Uniquely identifies the user within his/her organization.
@@ -528,6 +1856,60 @@ type ComputeInstanceCreatedBy struct {
 	UserOrgID *string `json:"userOrgId,omitempty" azure:"ro"`
 }
 
+// ComputeInstanceDataDisk - Defines an Aml Instance DataDisk.
+type ComputeInstanceDataDisk struct {
+	// Caching type of Data Disk.
+	Caching *Caching `json:"caching,omitempty"`
+
+	// The initial disk size in gigabytes.
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+
+	// The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct lun.
+	Lun *int32 `json:"lun,omitempty"`
+
+	// type of this storage account.
+	StorageAccountType *StorageAccountType `json:"storageAccountType,omitempty"`
+}
+
+// ComputeInstanceDataMount - Defines an Aml Instance DataMount.
+type ComputeInstanceDataMount struct {
+	// who this data mount created by.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// Error of this data mount.
+	Error *string `json:"error,omitempty"`
+
+	// Mount Action.
+	MountAction *MountAction `json:"mountAction,omitempty"`
+
+	// name of the ComputeInstance data mount.
+	MountName *string `json:"mountName,omitempty"`
+
+	// Path of this data mount.
+	MountPath *string `json:"mountPath,omitempty"`
+
+	// Mount state.
+	MountState *MountState `json:"mountState,omitempty"`
+
+	// The time when the disk mounted.
+	MountedOn *time.Time `json:"mountedOn,omitempty"`
+
+	// Source of the ComputeInstance data mount.
+	Source *string `json:"source,omitempty"`
+
+	// Data source type.
+	SourceType *SourceType `json:"sourceType,omitempty"`
+}
+
+// ComputeInstanceEnvironmentInfo - Environment information
+type ComputeInstanceEnvironmentInfo struct {
+	// name of environment.
+	Name *string `json:"name,omitempty"`
+
+	// version of environment.
+	Version *string `json:"version,omitempty"`
+}
+
 // ComputeInstanceLastOperation - The last operation on ComputeInstance.
 type ComputeInstanceLastOperation struct {
 	// Name of the last operation.
@@ -538,6 +1920,9 @@ type ComputeInstanceLastOperation struct {
 
 	// Time of the last operation.
 	OperationTime *time.Time `json:"operationTime,omitempty"`
+
+	// Trigger of operation.
+	OperationTrigger *OperationTrigger `json:"operationTrigger,omitempty"`
 }
 
 // ComputeInstanceProperties - Compute Instance properties
@@ -549,6 +1934,11 @@ type ComputeInstanceProperties struct {
 
 	// The Compute Instance Authorization type. Available values are personal (default).
 	ComputeInstanceAuthorizationType *ComputeInstanceAuthorizationType `json:"computeInstanceAuthorizationType,omitempty"`
+
+	// Enable or disable node public IP address provisioning. Possible values are: Possible values are: true - Indicates that
+	// the compute nodes will have public IPs provisioned. false - Indicates that the
+	// compute nodes will have a private endpoint and no public IPs.
+	EnableNodePublicIP *bool `json:"enableNodePublicIp,omitempty"`
 
 	// Settings for a personal compute instance.
 	PersonalComputeInstanceSettings *PersonalComputeInstanceSettings `json:"personalComputeInstanceSettings,omitempty"`
@@ -571,8 +1961,17 @@ type ComputeInstanceProperties struct {
 	// READ-ONLY; Describes all connectivity endpoints available for this ComputeInstance.
 	ConnectivityEndpoints *ComputeInstanceConnectivityEndpoints `json:"connectivityEndpoints,omitempty" azure:"ro"`
 
+	// READ-ONLY; Describes informations of containers on this ComputeInstance.
+	Containers []*ComputeInstanceContainer `json:"containers,omitempty" azure:"ro"`
+
 	// READ-ONLY; Describes information on user who created this ComputeInstance.
 	CreatedBy *ComputeInstanceCreatedBy `json:"createdBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes informations of dataDisks on this ComputeInstance.
+	DataDisks []*ComputeInstanceDataDisk `json:"dataDisks,omitempty" azure:"ro"`
+
+	// READ-ONLY; Describes informations of dataMounts on this ComputeInstance.
+	DataMounts []*ComputeInstanceDataMount `json:"dataMounts,omitempty" azure:"ro"`
 
 	// READ-ONLY; Collection of errors encountered on this ComputeInstance.
 	Errors []*ErrorResponse `json:"errors,omitempty" azure:"ro"`
@@ -580,8 +1979,14 @@ type ComputeInstanceProperties struct {
 	// READ-ONLY; The last operation on ComputeInstance.
 	LastOperation *ComputeInstanceLastOperation `json:"lastOperation,omitempty" azure:"ro"`
 
+	// READ-ONLY; The list of schedules to be applied on the computes.
+	Schedules *ComputeSchedules `json:"schedules,omitempty" azure:"ro"`
+
 	// READ-ONLY; The current state of this ComputeInstance.
 	State *ComputeInstanceState `json:"state,omitempty" azure:"ro"`
+
+	// READ-ONLY; ComputeInstance version.
+	Versions *ComputeInstanceVersion `json:"versions,omitempty" azure:"ro"`
 }
 
 // ComputeInstanceSSHSettings - Specifies policy and settings for SSH access.
@@ -601,10 +2006,22 @@ type ComputeInstanceSSHSettings struct {
 	SSHPort *int32 `json:"sshPort,omitempty" azure:"ro"`
 }
 
+// ComputeInstanceSchema - Properties(top level) of ComputeInstance
+type ComputeInstanceSchema struct {
+	// Properties of ComputeInstance
+	Properties *ComputeInstanceProperties `json:"properties,omitempty"`
+}
+
+// ComputeInstanceVersion - Version of computeInstance.
+type ComputeInstanceVersion struct {
+	// Runtime of compute instance.
+	Runtime *string `json:"runtime,omitempty"`
+}
+
 // ComputeResource - Machine Learning compute object wrapped into ARM resource envelope.
 type ComputeResource struct {
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -624,11 +2041,22 @@ type ComputeResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; System data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+type ComputeResourceSchema struct {
+	// Compute properties
+	Properties ComputeClassification `json:"properties,omitempty"`
+}
+
+// ComputeSchedules - The list of schedules to be applied on the computes
+type ComputeSchedules struct {
+	// The list of compute start stop schedules to be applied.
+	ComputeStartStop []*ComputeStartStopSchedule `json:"computeStartStop,omitempty"`
 }
 
 // ComputeSecretsClassification provides polymorphic access to related types.
@@ -649,25 +2077,39 @@ type ComputeSecrets struct {
 // GetComputeSecrets implements the ComputeSecretsClassification interface for type ComputeSecrets.
 func (c *ComputeSecrets) GetComputeSecrets() *ComputeSecrets { return c }
 
-// ContainerResourceRequirements - The resource requirements for the container (cpu and memory).
+// ComputeStartStopSchedule - Compute start stop schedule properties
+type ComputeStartStopSchedule struct {
+	// The compute power action.
+	Action *ComputePowerAction `json:"action,omitempty"`
+
+	// Base definition of a schedule
+	Schedule ScheduleBaseClassification `json:"schedule,omitempty"`
+
+	// READ-ONLY; Schedule id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The current deployment state of schedule.
+	ProvisioningStatus *ProvisioningStatus `json:"provisioningStatus,omitempty" azure:"ro"`
+}
+
+// ContainerResourceRequirements - Resource requirements for each container instance within an online deployment.
 type ContainerResourceRequirements struct {
-	// The minimum amount of CPU cores to be used by the container. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
-	CPU *float64 `json:"cpu,omitempty"`
+	// Container resource limit info:
+	ContainerResourceLimits *ContainerResourceSettings `json:"containerResourceLimits,omitempty"`
 
-	// The maximum amount of CPU cores allowed to be used by the container. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
-	CPULimit *float64 `json:"cpuLimit,omitempty"`
+	// Container resource request info:
+	ContainerResourceRequests *ContainerResourceSettings `json:"containerResourceRequests,omitempty"`
+}
 
-	// The number of FPGA PCIE devices exposed to the container. Must be multiple of 2.
-	Fpga *int32 `json:"fpga,omitempty"`
+type ContainerResourceSettings struct {
+	// Number of vCPUs request/limit for container. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+	CPU *string `json:"cpu,omitempty"`
 
-	// The number of GPU cores in the container.
-	Gpu *int32 `json:"gpu,omitempty"`
+	// Number of Nvidia GPU cards request/limit for container. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+	Gpu *string `json:"gpu,omitempty"`
 
-	// The minimum amount of memory (in GB) to be used by the container. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
-	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
-
-	// The maximum amount of memory (in GB) allowed to be used by the container. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
-	MemoryInGBLimit *float64 `json:"memoryInGBLimit,omitempty"`
+	// Memory size request/limit for container. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+	Memory *string `json:"memory,omitempty"`
 }
 
 type CosmosDbSettings struct {
@@ -675,13 +2117,238 @@ type CosmosDbSettings struct {
 	CollectionsThroughput *int32 `json:"collectionsThroughput,omitempty"`
 }
 
+// CronSchedule - Cron schedule definition
+type CronSchedule struct {
+	// REQUIRED; [Required] Specifies cron expression of schedule. The expression should follow NCronTab format.
+	Expression *string `json:"expression,omitempty"`
+
+	// REQUIRED; [Required] Specifies the schedule type
+	ScheduleType *ScheduleType `json:"scheduleType,omitempty"`
+
+	// Specifies end time of schedule in ISO 8601 format. If not present, the schedule will run indefinitely
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Specifies the schedule's status
+	ScheduleStatus *ScheduleStatus `json:"scheduleStatus,omitempty"`
+
+	// Specifies start time of schedule in ISO 8601 format.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Specifies time zone in which the schedule runs. TimeZone should follow Windows time zone format.
+	TimeZone *string `json:"timeZone,omitempty"`
+}
+
+// GetScheduleBase implements the ScheduleBaseClassification interface for type CronSchedule.
+func (c *CronSchedule) GetScheduleBase() *ScheduleBase {
+	return &ScheduleBase{
+		EndTime:        c.EndTime,
+		ScheduleStatus: c.ScheduleStatus,
+		ScheduleType:   c.ScheduleType,
+		StartTime:      c.StartTime,
+		TimeZone:       c.TimeZone,
+	}
+}
+
+// CustomForecastHorizon - The desired maximum forecast horizon in units of time-series frequency.
+type CustomForecastHorizon struct {
+	// REQUIRED; [Required] Set forecast horizon value selection mode.
+	Mode *ForecastHorizonMode `json:"mode,omitempty"`
+
+	// REQUIRED; [Required] Forecast horizon value.
+	Value *int32 `json:"value,omitempty"`
+}
+
+// GetForecastHorizon implements the ForecastHorizonClassification interface for type CustomForecastHorizon.
+func (c *CustomForecastHorizon) GetForecastHorizon() *ForecastHorizon {
+	return &ForecastHorizon{
+		Mode: c.Mode,
+	}
+}
+
+type CustomModelJobInput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobInputType *JobInputType `json:"jobInputType,omitempty"`
+
+	// REQUIRED; [Required] Input Asset URI.
+	URI *string `json:"uri,omitempty"`
+
+	// Description for the input.
+	Description *string `json:"description,omitempty"`
+
+	// Input Asset Delivery Mode.
+	Mode *InputDeliveryMode `json:"mode,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type CustomModelJobInput.
+func (c *CustomModelJobInput) GetJobInput() *JobInput {
+	return &JobInput{
+		Description:  c.Description,
+		JobInputType: c.JobInputType,
+	}
+}
+
+type CustomModelJobOutput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobOutputType *JobOutputType `json:"jobOutputType,omitempty"`
+
+	// Description for the output.
+	Description *string `json:"description,omitempty"`
+
+	// Output Asset Delivery Mode.
+	Mode *OutputDeliveryMode `json:"mode,omitempty"`
+
+	// Output Asset URI.
+	URI *string `json:"uri,omitempty"`
+}
+
+// GetJobOutput implements the JobOutputClassification interface for type CustomModelJobOutput.
+func (c *CustomModelJobOutput) GetJobOutput() *JobOutput {
+	return &JobOutput{
+		Description:   c.Description,
+		JobOutputType: c.JobOutputType,
+	}
+}
+
+// CustomNCrossValidations - N-Cross validations are specified by user.
+type CustomNCrossValidations struct {
+	// REQUIRED; [Required] Mode for determining N-Cross validations.
+	Mode *NCrossValidationsMode `json:"mode,omitempty"`
+
+	// REQUIRED; [Required] N-Cross validations value.
+	Value *int32 `json:"value,omitempty"`
+}
+
+// GetNCrossValidations implements the NCrossValidationsClassification interface for type CustomNCrossValidations.
+func (c *CustomNCrossValidations) GetNCrossValidations() *NCrossValidations {
+	return &NCrossValidations{
+		Mode: c.Mode,
+	}
+}
+
+type CustomSeasonality struct {
+	// REQUIRED; [Required] Seasonality mode.
+	Mode *SeasonalityMode `json:"mode,omitempty"`
+
+	// REQUIRED; [Required] Seasonality value.
+	Value *int32 `json:"value,omitempty"`
+}
+
+// GetSeasonality implements the SeasonalityClassification interface for type CustomSeasonality.
+func (c *CustomSeasonality) GetSeasonality() *Seasonality {
+	return &Seasonality{
+		Mode: c.Mode,
+	}
+}
+
+type CustomTargetLags struct {
+	// REQUIRED; [Required] Set target lags mode - Auto/Custom
+	Mode *TargetLagsMode `json:"mode,omitempty"`
+
+	// REQUIRED; [Required] Set target lags values.
+	Values []*int32 `json:"values,omitempty"`
+}
+
+// GetTargetLags implements the TargetLagsClassification interface for type CustomTargetLags.
+func (c *CustomTargetLags) GetTargetLags() *TargetLags {
+	return &TargetLags{
+		Mode: c.Mode,
+	}
+}
+
+type CustomTargetRollingWindowSize struct {
+	// REQUIRED; [Required] TargetRollingWindowSiz detection mode.
+	Mode *TargetRollingWindowSizeMode `json:"mode,omitempty"`
+
+	// REQUIRED; [Required] TargetRollingWindowSize value.
+	Value *int32 `json:"value,omitempty"`
+}
+
+// GetTargetRollingWindowSize implements the TargetRollingWindowSizeClassification interface for type CustomTargetRollingWindowSize.
+func (c *CustomTargetRollingWindowSize) GetTargetRollingWindowSize() *TargetRollingWindowSize {
+	return &TargetRollingWindowSize{
+		Mode: c.Mode,
+	}
+}
+
+// DataContainerData - Azure Resource Manager resource envelope.
+type DataContainerData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *DataContainerDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DataContainerDetails - Container for data asset versions.
+type DataContainerDetails struct {
+	// REQUIRED; [Required] Specifies the type of data.
+	DataType *DataType `json:"dataType,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The latest version inside this container.
+	LatestVersion *string `json:"latestVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The next auto incremental version
+	NextVersion *string `json:"nextVersion,omitempty" azure:"ro"`
+}
+
+// DataContainerResourceArmPaginatedResult - A paginated list of DataContainer entities.
+type DataContainerResourceArmPaginatedResult struct {
+	// The link to the next page of DataContainer objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type DataContainer.
+	Value []*DataContainerData `json:"value,omitempty"`
+}
+
+// DataContainersClientCreateOrUpdateOptions contains the optional parameters for the DataContainersClient.CreateOrUpdate
+// method.
+type DataContainersClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataContainersClientDeleteOptions contains the optional parameters for the DataContainersClient.Delete method.
+type DataContainersClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataContainersClientGetOptions contains the optional parameters for the DataContainersClient.Get method.
+type DataContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataContainersClientListOptions contains the optional parameters for the DataContainersClient.List method.
+type DataContainersClientListOptions struct {
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+	// Continuation token for pagination.
+	Skip *string
+}
+
 // DataFactory - A DataFactory compute.
 type DataFactory struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
-
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
 
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -691,6 +2358,9 @@ type DataFactory struct {
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -730,18 +2400,18 @@ type DataLakeAnalytics struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
 
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
-
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
 
 	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
-	DisableLocalAuth *bool                        `json:"disableLocalAuth,omitempty"`
-	Properties       *DataLakeAnalyticsProperties `json:"properties,omitempty"`
+	DisableLocalAuth *bool                              `json:"disableLocalAuth,omitempty"`
+	Properties       *DataLakeAnalyticsSchemaProperties `json:"properties,omitempty"`
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -776,18 +2446,146 @@ func (d *DataLakeAnalytics) GetCompute() *Compute {
 	}
 }
 
-type DataLakeAnalyticsProperties struct {
+type DataLakeAnalyticsSchema struct {
+	Properties *DataLakeAnalyticsSchemaProperties `json:"properties,omitempty"`
+}
+
+type DataLakeAnalyticsSchemaProperties struct {
 	// DataLake Store Account Name
 	DataLakeStoreAccountName *string `json:"dataLakeStoreAccountName,omitempty"`
+}
+
+// DataPathAssetReference - Reference to an asset via its path in a datastore.
+type DataPathAssetReference struct {
+	// REQUIRED; [Required] Specifies the type of asset reference.
+	ReferenceType *ReferenceType `json:"referenceType,omitempty"`
+
+	// ARM resource ID of the datastore where the asset is located.
+	DatastoreID *string `json:"datastoreId,omitempty"`
+
+	// The path of the file/directory in the datastore.
+	Path *string `json:"path,omitempty"`
+}
+
+// GetAssetReferenceBase implements the AssetReferenceBaseClassification interface for type DataPathAssetReference.
+func (d *DataPathAssetReference) GetAssetReferenceBase() *AssetReferenceBase {
+	return &AssetReferenceBase{
+		ReferenceType: d.ReferenceType,
+	}
+}
+
+// DataSettings - Collection of registered Tabular Dataset Ids and other data settings required for training and validating
+// models.
+type DataSettings struct {
+	// REQUIRED; [Required] Target column name: This is prediction values column. Also known as label column name in context of
+	// classification tasks.
+	TargetColumnName *string `json:"targetColumnName,omitempty"`
+
+	// REQUIRED; [Required] Training data input.
+	TrainingData *TrainingDataSettings `json:"trainingData,omitempty"`
+
+	// Test data input.
+	TestData *TestDataSettings `json:"testData,omitempty"`
+}
+
+// DataVersionBaseData - Azure Resource Manager resource envelope.
+type DataVersionBaseData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties DataVersionBaseDetailsClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DataVersionBaseDetailsClassification provides polymorphic access to related types.
+// Call the interface's GetDataVersionBaseDetails() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DataVersionBaseDetails, *MLTableData, *URIFileDataVersion, *URIFolderDataVersion
+type DataVersionBaseDetailsClassification interface {
+	// GetDataVersionBaseDetails returns the DataVersionBaseDetails content of the underlying type.
+	GetDataVersionBaseDetails() *DataVersionBaseDetails
+}
+
+// DataVersionBaseDetails - Data version base definition
+type DataVersionBaseDetails struct {
+	// REQUIRED; [Required] Specifies the type of data.
+	DataType *DataType `json:"dataType,omitempty"`
+
+	// REQUIRED; [Required] Uri of the data. Usage/meaning depends on Microsoft.MachineLearning.ManagementFrontEnd.Contracts.V20220201Preview.Assets.DataVersionBase.DataType
+	DataURI *string `json:"dataUri,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// If the name version are system generated (anonymous registration).
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// GetDataVersionBaseDetails implements the DataVersionBaseDetailsClassification interface for type DataVersionBaseDetails.
+func (d *DataVersionBaseDetails) GetDataVersionBaseDetails() *DataVersionBaseDetails { return d }
+
+// DataVersionBaseResourceArmPaginatedResult - A paginated list of DataVersionBase entities.
+type DataVersionBaseResourceArmPaginatedResult struct {
+	// The link to the next page of DataVersionBase objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type DataVersionBase.
+	Value []*DataVersionBaseData `json:"value,omitempty"`
+}
+
+// DataVersionsClientCreateOrUpdateOptions contains the optional parameters for the DataVersionsClient.CreateOrUpdate method.
+type DataVersionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataVersionsClientDeleteOptions contains the optional parameters for the DataVersionsClient.Delete method.
+type DataVersionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataVersionsClientGetOptions contains the optional parameters for the DataVersionsClient.Get method.
+type DataVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataVersionsClientListOptions contains the optional parameters for the DataVersionsClient.List method.
+type DataVersionsClientListOptions struct {
+	// [ListViewType.ActiveOnly, ListViewType.ArchivedOnly, ListViewType.All]View type for including/excluding (for example) archived
+	// entities.
+	ListViewType *ListViewType
+	// Please choose OrderBy value from ['createdtime', 'modifiedtime']
+	OrderBy *string
+	// Continuation token for pagination.
+	Skip *string
+	// Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2
+	Tags *string
+	// Top count of results, top count cannot be greater than the page size. If topCount > page size, results with be default
+	// page size count will be returned
+	Top *int32
 }
 
 // Databricks - A DataFactory compute.
 type Databricks struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
-
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
 
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -800,6 +2598,9 @@ type Databricks struct {
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -865,6 +2666,174 @@ type DatabricksProperties struct {
 	WorkspaceURL *string `json:"workspaceUrl,omitempty"`
 }
 
+type DatabricksSchema struct {
+	// Properties of Databricks
+	Properties *DatabricksProperties `json:"properties,omitempty"`
+}
+
+// DatastoreCredentialsClassification provides polymorphic access to related types.
+// Call the interface's GetDatastoreCredentials() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AccountKeyDatastoreCredentials, *CertificateDatastoreCredentials, *DatastoreCredentials, *KerberosKeytabCredentials,
+// - *KerberosPasswordCredentials, *NoneDatastoreCredentials, *SasDatastoreCredentials, *ServicePrincipalDatastoreCredentials
+type DatastoreCredentialsClassification interface {
+	// GetDatastoreCredentials returns the DatastoreCredentials content of the underlying type.
+	GetDatastoreCredentials() *DatastoreCredentials
+}
+
+// DatastoreCredentials - Base definition for datastore credentials.
+type DatastoreCredentials struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	CredentialsType *CredentialsType `json:"credentialsType,omitempty"`
+}
+
+// GetDatastoreCredentials implements the DatastoreCredentialsClassification interface for type DatastoreCredentials.
+func (d *DatastoreCredentials) GetDatastoreCredentials() *DatastoreCredentials { return d }
+
+// DatastoreData - Azure Resource Manager resource envelope.
+type DatastoreData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties DatastoreDetailsClassification `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DatastoreDetailsClassification provides polymorphic access to related types.
+// Call the interface's GetDatastoreDetails() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureBlobDatastore, *AzureDataLakeGen1Datastore, *AzureDataLakeGen2Datastore, *AzureFileDatastore, *DatastoreDetails,
+// - *HdfsDatastore
+type DatastoreDetailsClassification interface {
+	// GetDatastoreDetails returns the DatastoreDetails content of the underlying type.
+	GetDatastoreDetails() *DatastoreDetails
+}
+
+// DatastoreDetails - Base definition for datastore contents configuration.
+type DatastoreDetails struct {
+	// REQUIRED; [Required] Account credentials.
+	Credentials DatastoreCredentialsClassification `json:"credentials,omitempty"`
+
+	// REQUIRED; [Required] Storage type backing the datastore.
+	DatastoreType *DatastoreType `json:"datastoreType,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Readonly property to indicate if datastore is the workspace default datastore
+	IsDefault *bool `json:"isDefault,omitempty" azure:"ro"`
+}
+
+// GetDatastoreDetails implements the DatastoreDetailsClassification interface for type DatastoreDetails.
+func (d *DatastoreDetails) GetDatastoreDetails() *DatastoreDetails { return d }
+
+// DatastoreResourceArmPaginatedResult - A paginated list of Datastore entities.
+type DatastoreResourceArmPaginatedResult struct {
+	// The link to the next page of Datastore objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type Datastore.
+	Value []*DatastoreData `json:"value,omitempty"`
+}
+
+// DatastoreSecretsClassification provides polymorphic access to related types.
+// Call the interface's GetDatastoreSecrets() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AccountKeyDatastoreSecrets, *CertificateDatastoreSecrets, *DatastoreSecrets, *KerberosKeytabSecrets, *KerberosPasswordSecrets,
+// - *SasDatastoreSecrets, *ServicePrincipalDatastoreSecrets
+type DatastoreSecretsClassification interface {
+	// GetDatastoreSecrets returns the DatastoreSecrets content of the underlying type.
+	GetDatastoreSecrets() *DatastoreSecrets
+}
+
+// DatastoreSecrets - Base definition for datastore secrets.
+type DatastoreSecrets struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	SecretsType *SecretsType `json:"secretsType,omitempty"`
+}
+
+// GetDatastoreSecrets implements the DatastoreSecretsClassification interface for type DatastoreSecrets.
+func (d *DatastoreSecrets) GetDatastoreSecrets() *DatastoreSecrets { return d }
+
+// DatastoresClientCreateOrUpdateOptions contains the optional parameters for the DatastoresClient.CreateOrUpdate method.
+type DatastoresClientCreateOrUpdateOptions struct {
+	// Flag to skip validation.
+	SkipValidation *bool
+}
+
+// DatastoresClientDeleteOptions contains the optional parameters for the DatastoresClient.Delete method.
+type DatastoresClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatastoresClientGetOptions contains the optional parameters for the DatastoresClient.Get method.
+type DatastoresClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatastoresClientListOptions contains the optional parameters for the DatastoresClient.List method.
+type DatastoresClientListOptions struct {
+	// Maximum number of results to return.
+	Count *int32
+	// Filter down to the workspace default datastore.
+	IsDefault *bool
+	// Names of datastores to return.
+	Names []string
+	// Order by property (createdtime | modifiedtime | name).
+	OrderBy *string
+	// Order by property in ascending order.
+	OrderByAsc *bool
+	// Text to search for in the datastore names.
+	SearchText *string
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// DatastoresClientListSecretsOptions contains the optional parameters for the DatastoresClient.ListSecrets method.
+type DatastoresClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+type DefaultScaleSettings struct {
+	// REQUIRED; [Required] Type of deployment scaling algorithm
+	ScaleType *ScaleType `json:"scaleType,omitempty"`
+}
+
+// GetOnlineScaleSettings implements the OnlineScaleSettingsClassification interface for type DefaultScaleSettings.
+func (d *DefaultScaleSettings) GetOnlineScaleSettings() *OnlineScaleSettings {
+	return &OnlineScaleSettings{
+		ScaleType: d.ScaleType,
+	}
+}
+
+type DeploymentLogs struct {
+	// The retrieved online deployment logs.
+	Content *string `json:"content,omitempty"`
+}
+
+type DeploymentLogsRequest struct {
+	// The type of container to retrieve logs from.
+	ContainerType *ContainerType `json:"containerType,omitempty"`
+
+	// The maximum number of lines to tail.
+	Tail *int32 `json:"tail,omitempty"`
+}
+
 type DiagnoseRequestProperties struct {
 	// Setting for diagnosing dependent application insights
 	ApplicationInsights map[string]interface{} `json:"applicationInsights,omitempty"`
@@ -928,15 +2897,298 @@ type DiagnoseWorkspaceParameters struct {
 	Value *DiagnoseRequestProperties `json:"value,omitempty"`
 }
 
+// DistributionConfigurationClassification provides polymorphic access to related types.
+// Call the interface's GetDistributionConfiguration() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DistributionConfiguration, *Mpi, *PyTorch, *TensorFlow
+type DistributionConfigurationClassification interface {
+	// GetDistributionConfiguration returns the DistributionConfiguration content of the underlying type.
+	GetDistributionConfiguration() *DistributionConfiguration
+}
+
+// DistributionConfiguration - Base definition for job distribution configuration.
+type DistributionConfiguration struct {
+	// REQUIRED; [Required] Specifies the type of distribution framework.
+	DistributionType *DistributionType `json:"distributionType,omitempty"`
+}
+
+// GetDistributionConfiguration implements the DistributionConfigurationClassification interface for type DistributionConfiguration.
+func (d *DistributionConfiguration) GetDistributionConfiguration() *DistributionConfiguration {
+	return d
+}
+
+// EarlyTerminationPolicyClassification provides polymorphic access to related types.
+// Call the interface's GetEarlyTerminationPolicy() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BanditPolicy, *EarlyTerminationPolicy, *MedianStoppingPolicy, *TruncationSelectionPolicy
+type EarlyTerminationPolicyClassification interface {
+	// GetEarlyTerminationPolicy returns the EarlyTerminationPolicy content of the underlying type.
+	GetEarlyTerminationPolicy() *EarlyTerminationPolicy
+}
+
+// EarlyTerminationPolicy - Early termination policies enable canceling poor-performing runs before they complete
+type EarlyTerminationPolicy struct {
+	// REQUIRED; [Required] Name of policy configuration
+	PolicyType *EarlyTerminationPolicyType `json:"policyType,omitempty"`
+
+	// Number of intervals by which to delay the first evaluation.
+	DelayEvaluation *int32 `json:"delayEvaluation,omitempty"`
+
+	// Interval (number of runs) between policy evaluations.
+	EvaluationInterval *int32 `json:"evaluationInterval,omitempty"`
+}
+
+// GetEarlyTerminationPolicy implements the EarlyTerminationPolicyClassification interface for type EarlyTerminationPolicy.
+func (e *EarlyTerminationPolicy) GetEarlyTerminationPolicy() *EarlyTerminationPolicy { return e }
+
+type EncryptionKeyVaultProperties struct {
+	// REQUIRED; Key vault uri to access the encryption key.
+	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+
+	// REQUIRED; The ArmId of the keyVault where the customer owned encryption key is present.
+	KeyVaultArmID *string `json:"keyVaultArmId,omitempty"`
+
+	// For future use - The client id of the identity which will be used to access key vault.
+	IdentityClientID *string `json:"identityClientId,omitempty"`
+}
+
 type EncryptionProperty struct {
 	// REQUIRED; Customer Key vault properties.
-	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *EncryptionKeyVaultProperties `json:"keyVaultProperties,omitempty"`
 
 	// REQUIRED; Indicates whether or not the encryption is enabled for the workspace.
 	Status *EncryptionStatus `json:"status,omitempty"`
 
 	// The identity that will be used to access the key vault for encryption at rest.
 	Identity *IdentityForCmk `json:"identity,omitempty"`
+}
+
+// EndpointAuthKeys - Keys for endpoint authentication.
+type EndpointAuthKeys struct {
+	// The primary key.
+	PrimaryKey *string `json:"primaryKey,omitempty"`
+
+	// The secondary key.
+	SecondaryKey *string `json:"secondaryKey,omitempty"`
+}
+
+// EndpointAuthToken - Service Token
+type EndpointAuthToken struct {
+	// Access token for endpoint authentication.
+	AccessToken *string `json:"accessToken,omitempty"`
+
+	// Access token expiry time (UTC).
+	ExpiryTimeUTC *int64 `json:"expiryTimeUtc,omitempty"`
+
+	// Refresh access token after time (UTC).
+	RefreshAfterTimeUTC *int64 `json:"refreshAfterTimeUtc,omitempty"`
+
+	// Access token type.
+	TokenType *string `json:"tokenType,omitempty"`
+}
+
+// EndpointDeploymentPropertiesBase - Base definition for endpoint deployment.
+type EndpointDeploymentPropertiesBase struct {
+	// Code configuration for the endpoint deployment.
+	CodeConfiguration *CodeConfiguration `json:"codeConfiguration,omitempty"`
+
+	// Description of the endpoint deployment.
+	Description *string `json:"description,omitempty"`
+
+	// ARM resource ID of the environment specification for the endpoint deployment.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+
+	// Environment variables configuration for the deployment.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// Property dictionary. Properties can be added, but not removed or altered.
+	Properties map[string]*string `json:"properties,omitempty"`
+}
+
+// EndpointPropertiesBase - Inference Endpoint base definition
+type EndpointPropertiesBase struct {
+	// REQUIRED; [Required] Use 'Key' for key based authentication and 'AMLToken' for Azure Machine Learning token-based authentication.
+	// 'Key' doesn't expire but 'AMLToken' does.
+	AuthMode *EndpointAuthMode `json:"authMode,omitempty"`
+
+	// Description of the inference endpoint.
+	Description *string `json:"description,omitempty"`
+
+	// EndpointAuthKeys to set initially on an Endpoint. This property will always be returned as null. AuthKey values must be
+	// retrieved using the ListKeys API.
+	Keys *EndpointAuthKeys `json:"keys,omitempty"`
+
+	// Property dictionary. Properties can be added, but not removed or altered.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// READ-ONLY; Endpoint URI.
+	ScoringURI *string `json:"scoringUri,omitempty" azure:"ro"`
+
+	// READ-ONLY; Endpoint Swagger URI.
+	SwaggerURI *string `json:"swaggerUri,omitempty" azure:"ro"`
+}
+
+// EnvironmentContainerData - Azure Resource Manager resource envelope.
+type EnvironmentContainerData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *EnvironmentContainerDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// EnvironmentContainerDetails - Container for environment specification versions.
+type EnvironmentContainerDetails struct {
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The latest version inside this container.
+	LatestVersion *string `json:"latestVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The next auto incremental version
+	NextVersion *string `json:"nextVersion,omitempty" azure:"ro"`
+}
+
+// EnvironmentContainerResourceArmPaginatedResult - A paginated list of EnvironmentContainer entities.
+type EnvironmentContainerResourceArmPaginatedResult struct {
+	// The link to the next page of EnvironmentContainer objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type EnvironmentContainer.
+	Value []*EnvironmentContainerData `json:"value,omitempty"`
+}
+
+// EnvironmentContainersClientCreateOrUpdateOptions contains the optional parameters for the EnvironmentContainersClient.CreateOrUpdate
+// method.
+type EnvironmentContainersClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentContainersClientDeleteOptions contains the optional parameters for the EnvironmentContainersClient.Delete method.
+type EnvironmentContainersClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentContainersClientGetOptions contains the optional parameters for the EnvironmentContainersClient.Get method.
+type EnvironmentContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentContainersClientListOptions contains the optional parameters for the EnvironmentContainersClient.List method.
+type EnvironmentContainersClientListOptions struct {
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// EnvironmentVersionData - Azure Resource Manager resource envelope.
+type EnvironmentVersionData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *EnvironmentVersionDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// EnvironmentVersionDetails - Environment version details.
+type EnvironmentVersionDetails struct {
+	// Configuration settings for Docker build context.
+	Build *BuildContext `json:"build,omitempty"`
+
+	// Standard configuration file used by Conda that lets you install any kind of package, including Python, R, and C/C++ packages.
+	CondaFile *string `json:"condaFile,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Name of the image that will be used for the environment.
+	Image *string `json:"image,omitempty"`
+
+	// Defines configuration specific to inference.
+	InferenceConfig *InferenceContainerProperties `json:"inferenceConfig,omitempty"`
+
+	// If the name version are system generated (anonymous registration).
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The OS type of the environment.
+	OSType *OperatingSystemType `json:"osType,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Environment type is either user managed or curated by the Azure ML service
+	EnvironmentType *EnvironmentType `json:"environmentType,omitempty" azure:"ro"`
+}
+
+// EnvironmentVersionResourceArmPaginatedResult - A paginated list of EnvironmentVersion entities.
+type EnvironmentVersionResourceArmPaginatedResult struct {
+	// The link to the next page of EnvironmentVersion objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type EnvironmentVersion.
+	Value []*EnvironmentVersionData `json:"value,omitempty"`
+}
+
+// EnvironmentVersionsClientCreateOrUpdateOptions contains the optional parameters for the EnvironmentVersionsClient.CreateOrUpdate
+// method.
+type EnvironmentVersionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentVersionsClientDeleteOptions contains the optional parameters for the EnvironmentVersionsClient.Delete method.
+type EnvironmentVersionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentVersionsClientGetOptions contains the optional parameters for the EnvironmentVersionsClient.Get method.
+type EnvironmentVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EnvironmentVersionsClientListOptions contains the optional parameters for the EnvironmentVersionsClient.List method.
+type EnvironmentVersionsClientListOptions struct {
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+	// Ordering of list.
+	OrderBy *string
+	// Continuation token for pagination.
+	Skip *string
+	// Maximum number of records to return.
+	Top *int32
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -1019,13 +3271,144 @@ type FQDNEndpointsProperties struct {
 	Endpoints []*FQDNEndpoint `json:"endpoints,omitempty"`
 }
 
+// FeaturizationSettings - Featurization Configuration.
+type FeaturizationSettings struct {
+	// Dataset language, useful for the text data.
+	DatasetLanguage *string `json:"datasetLanguage,omitempty"`
+}
+
+type FlavorData struct {
+	// Model flavor-specific data.
+	Data map[string]*string `json:"data,omitempty"`
+}
+
+// ForecastHorizonClassification provides polymorphic access to related types.
+// Call the interface's GetForecastHorizon() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AutoForecastHorizon, *CustomForecastHorizon, *ForecastHorizon
+type ForecastHorizonClassification interface {
+	// GetForecastHorizon returns the ForecastHorizon content of the underlying type.
+	GetForecastHorizon() *ForecastHorizon
+}
+
+// ForecastHorizon - The desired maximum forecast horizon in units of time-series frequency.
+type ForecastHorizon struct {
+	// REQUIRED; [Required] Set forecast horizon value selection mode.
+	Mode *ForecastHorizonMode `json:"mode,omitempty"`
+}
+
+// GetForecastHorizon implements the ForecastHorizonClassification interface for type ForecastHorizon.
+func (f *ForecastHorizon) GetForecastHorizon() *ForecastHorizon { return f }
+
+// Forecasting task in AutoML Table vertical.
+type Forecasting struct {
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Allowed models for forecasting task.
+	AllowedModels []*ForecastingModels `json:"allowedModels,omitempty"`
+
+	// Blocked models for forecasting task.
+	BlockedModels []*ForecastingModels `json:"blockedModels,omitempty"`
+
+	// Data inputs for AutoMLJob.
+	DataSettings *TableVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// Featurization inputs needed for AutoML job.
+	FeaturizationSettings *TableVerticalFeaturizationSettings `json:"featurizationSettings,omitempty"`
+
+	// Forecasting task specific inputs.
+	ForecastingSettings *ForecastingSettings `json:"forecastingSettings,omitempty"`
+
+	// Execution constraints for AutoMLJob.
+	LimitSettings *TableVerticalLimitSettings `json:"limitSettings,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// Primary metric for forecasting task.
+	PrimaryMetric *ForecastingPrimaryMetrics `json:"primaryMetric,omitempty"`
+
+	// Inputs for training phase for an AutoML Job.
+	TrainingSettings *TrainingSettings `json:"trainingSettings,omitempty"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type Forecasting.
+func (f *Forecasting) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: f.LogVerbosity,
+		TaskType:     f.TaskType,
+	}
+}
+
+// ForecastingSettings - Forecasting specific parameters.
+type ForecastingSettings struct {
+	// Country or region for holidays for forecasting tasks. These should be ISO 3166 two-letter country/region codes, for example
+	// 'US' or 'GB'.
+	CountryOrRegionForHolidays *string `json:"countryOrRegionForHolidays,omitempty"`
+
+	// Number of periods between the origin time of one CV fold and the next fold. For example, if CVStepSize = 3 for daily data,
+	// the origin time for each fold will be three days apart.
+	CvStepSize *int32 `json:"cvStepSize,omitempty"`
+
+	// Flag for generating lags for the numeric features with 'auto' or null.
+	FeatureLags *FeatureLags `json:"featureLags,omitempty"`
+
+	// The desired maximum forecast horizon in units of time-series frequency.
+	ForecastHorizon ForecastHorizonClassification `json:"forecastHorizon,omitempty"`
+
+	// When forecasting, this parameter represents the period with which the forecast is desired, for example daily, weekly, yearly,
+	// etc. The forecast frequency is dataset frequency by default.
+	Frequency *string `json:"frequency,omitempty"`
+
+	// Set time series seasonality as an integer multiple of the series frequency. If seasonality is set to 'auto', it will be
+	// inferred.
+	Seasonality SeasonalityClassification `json:"seasonality,omitempty"`
+
+	// The parameter defining how if AutoML should handle short time series.
+	ShortSeriesHandlingConfig *ShortSeriesHandlingConfiguration `json:"shortSeriesHandlingConfig,omitempty"`
+
+	// The function to be used to aggregate the time series target column to conform to a user specified frequency. If the TargetAggregateFunction
+	// is set i.e. not 'None', but the freq parameter is not set,
+	// the error is raised. The possible target aggregation functions are: "sum", "max", "min" and "mean".
+	TargetAggregateFunction *TargetAggregationFunction `json:"targetAggregateFunction,omitempty"`
+
+	// The number of past periods to lag from the target column.
+	TargetLags TargetLagsClassification `json:"targetLags,omitempty"`
+
+	// The number of past periods used to create a rolling window average of the target column.
+	TargetRollingWindowSize TargetRollingWindowSizeClassification `json:"targetRollingWindowSize,omitempty"`
+
+	// The name of the time column. This parameter is required when forecasting to specify the datetime column in the input data
+	// used for building the time series and inferring its frequency.
+	TimeColumnName *string `json:"timeColumnName,omitempty"`
+
+	// The names of columns used to group a timeseries. It can be used to create multiple series. If grain is not defined, the
+	// data set is assumed to be one time-series. This parameter is used with task type
+	// forecasting.
+	TimeSeriesIDColumnNames []*string `json:"timeSeriesIdColumnNames,omitempty"`
+
+	// Configure STL Decomposition of the time-series target column.
+	UseStl *UseStl `json:"useStl,omitempty"`
+}
+
+// GridSamplingAlgorithm - Defines a Sampling Algorithm that exhaustively generates every value combination in the space
+type GridSamplingAlgorithm struct {
+	// REQUIRED; [Required] The algorithm used for generating hyperparameter values, along with configuration properties
+	SamplingAlgorithmType *SamplingAlgorithmType `json:"samplingAlgorithmType,omitempty"`
+}
+
+// GetSamplingAlgorithm implements the SamplingAlgorithmClassification interface for type GridSamplingAlgorithm.
+func (g *GridSamplingAlgorithm) GetSamplingAlgorithm() *SamplingAlgorithm {
+	return &SamplingAlgorithm{
+		SamplingAlgorithmType: g.SamplingAlgorithmType,
+	}
+}
+
 // HDInsight - A HDInsight compute.
 type HDInsight struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
-
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
 
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -1038,6 +3421,9 @@ type HDInsight struct {
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -1084,25 +3470,1148 @@ type HDInsightProperties struct {
 	SSHPort *int32 `json:"sshPort,omitempty"`
 }
 
-// Identity for the resource.
-type Identity struct {
-	// The identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
-
-	// The user assigned identities associated with the resource.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
-
-	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+type HDInsightSchema struct {
+	// HDInsight compute properties
+	Properties *HDInsightProperties `json:"properties,omitempty"`
 }
+
+type HdfsDatastore struct {
+	// REQUIRED; [Required] Account credentials.
+	Credentials DatastoreCredentialsClassification `json:"credentials,omitempty"`
+
+	// REQUIRED; [Required] Storage type backing the datastore.
+	DatastoreType *DatastoreType `json:"datastoreType,omitempty"`
+
+	// REQUIRED; [Required] IP Address or DNS HostName.
+	NameNodeAddress *string `json:"nameNodeAddress,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// The TLS cert of the HDFS server. Needs to be a base64 encoded string. Required if "Https" protocol is selected.
+	HdfsServerCertificate *string `json:"hdfsServerCertificate,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Protocol used to communicate with the storage account (Https/Http).
+	Protocol *string `json:"protocol,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Readonly property to indicate if datastore is the workspace default datastore
+	IsDefault *bool `json:"isDefault,omitempty" azure:"ro"`
+}
+
+// GetDatastoreDetails implements the DatastoreDetailsClassification interface for type HdfsDatastore.
+func (h *HdfsDatastore) GetDatastoreDetails() *DatastoreDetails {
+	return &DatastoreDetails{
+		Credentials:   h.Credentials,
+		DatastoreType: h.DatastoreType,
+		IsDefault:     h.IsDefault,
+		Description:   h.Description,
+		Properties:    h.Properties,
+		Tags:          h.Tags,
+	}
+}
+
+// IDAssetReference - Reference to an asset via its ARM resource ID.
+type IDAssetReference struct {
+	// REQUIRED; [Required] ARM resource ID of the asset.
+	AssetID *string `json:"assetId,omitempty"`
+
+	// REQUIRED; [Required] Specifies the type of asset reference.
+	ReferenceType *ReferenceType `json:"referenceType,omitempty"`
+}
+
+// GetAssetReferenceBase implements the AssetReferenceBaseClassification interface for type IDAssetReference.
+func (i *IDAssetReference) GetAssetReferenceBase() *AssetReferenceBase {
+	return &AssetReferenceBase{
+		ReferenceType: i.ReferenceType,
+	}
+}
+
+// IdentityConfigurationClassification provides polymorphic access to related types.
+// Call the interface's GetIdentityConfiguration() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AmlToken, *IdentityConfiguration, *ManagedIdentity, *UserIdentity
+type IdentityConfigurationClassification interface {
+	// GetIdentityConfiguration returns the IdentityConfiguration content of the underlying type.
+	GetIdentityConfiguration() *IdentityConfiguration
+}
+
+// IdentityConfiguration - Base definition for identity configuration.
+type IdentityConfiguration struct {
+	// REQUIRED; [Required] Specifies the type of identity framework.
+	IdentityType *IdentityConfigurationType `json:"identityType,omitempty"`
+}
+
+// GetIdentityConfiguration implements the IdentityConfigurationClassification interface for type IdentityConfiguration.
+func (i *IdentityConfiguration) GetIdentityConfiguration() *IdentityConfiguration { return i }
 
 // IdentityForCmk - Identity that will be used to access key vault for encryption at rest
 type IdentityForCmk struct {
 	// The ArmId of the user assigned identity that will be used to access the customer managed key vault
 	UserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
+}
+
+// ImageClassification - Image Classification. Multi-class image classification is used when an image is classified with only
+// a single label from a set of classes - e.g. each image is classified as either an image of a 'cat'
+// or a 'dog' or a 'duck'.
+type ImageClassification struct {
+	// REQUIRED; [Required] Collection of registered Tabular Dataset Ids and other data settings required for training and validating
+	// models.
+	DataSettings *ImageVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// REQUIRED; [Required] Limit settings for the AutoML job.
+	LimitSettings *ImageLimitSettings `json:"limitSettings,omitempty"`
+
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// Settings used for training the model.
+	ModelSettings *ImageModelSettingsClassification `json:"modelSettings,omitempty"`
+
+	// Primary metric to optimize for this task.
+	PrimaryMetric *ClassificationPrimaryMetrics `json:"primaryMetric,omitempty"`
+
+	// Search space for sampling different combinations of models and their hyperparameters.
+	SearchSpace []*ImageModelDistributionSettingsClassification `json:"searchSpace,omitempty"`
+
+	// Model sweeping and hyperparameter sweeping related settings.
+	SweepSettings *ImageSweepSettings `json:"sweepSettings,omitempty"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type ImageClassification.
+func (i *ImageClassification) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: i.LogVerbosity,
+		TaskType:     i.TaskType,
+	}
+}
+
+type ImageClassificationBase struct {
+	// REQUIRED; [Required] Collection of registered Tabular Dataset Ids and other data settings required for training and validating
+	// models.
+	DataSettings *ImageVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// REQUIRED; [Required] Limit settings for the AutoML job.
+	LimitSettings *ImageLimitSettings `json:"limitSettings,omitempty"`
+
+	// Settings used for training the model.
+	ModelSettings *ImageModelSettingsClassification `json:"modelSettings,omitempty"`
+
+	// Search space for sampling different combinations of models and their hyperparameters.
+	SearchSpace []*ImageModelDistributionSettingsClassification `json:"searchSpace,omitempty"`
+
+	// Model sweeping and hyperparameter sweeping related settings.
+	SweepSettings *ImageSweepSettings `json:"sweepSettings,omitempty"`
+}
+
+// ImageClassificationMultilabel - Image Classification Multilabel. Multi-label image classification is used when an image
+// could have one or more labels from a set of labels - e.g. an image could be labeled with both 'cat' and 'dog'.
+type ImageClassificationMultilabel struct {
+	// REQUIRED; [Required] Collection of registered Tabular Dataset Ids and other data settings required for training and validating
+	// models.
+	DataSettings *ImageVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// REQUIRED; [Required] Limit settings for the AutoML job.
+	LimitSettings *ImageLimitSettings `json:"limitSettings,omitempty"`
+
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// Settings used for training the model.
+	ModelSettings *ImageModelSettingsClassification `json:"modelSettings,omitempty"`
+
+	// Primary metric to optimize for this task.
+	PrimaryMetric *ClassificationMultilabelPrimaryMetrics `json:"primaryMetric,omitempty"`
+
+	// Search space for sampling different combinations of models and their hyperparameters.
+	SearchSpace []*ImageModelDistributionSettingsClassification `json:"searchSpace,omitempty"`
+
+	// Model sweeping and hyperparameter sweeping related settings.
+	SweepSettings *ImageSweepSettings `json:"sweepSettings,omitempty"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type ImageClassificationMultilabel.
+func (i *ImageClassificationMultilabel) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: i.LogVerbosity,
+		TaskType:     i.TaskType,
+	}
+}
+
+// ImageInstanceSegmentation - Image Instance Segmentation. Instance segmentation is used to identify objects in an image
+// at the pixel level, drawing a polygon around each object in the image.
+type ImageInstanceSegmentation struct {
+	// REQUIRED; [Required] Collection of registered Tabular Dataset Ids and other data settings required for training and validating
+	// models.
+	DataSettings *ImageVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// REQUIRED; [Required] Limit settings for the AutoML job.
+	LimitSettings *ImageLimitSettings `json:"limitSettings,omitempty"`
+
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// Settings used for training the model.
+	ModelSettings *ImageModelSettingsObjectDetection `json:"modelSettings,omitempty"`
+
+	// Primary metric to optimize for this task.
+	PrimaryMetric *InstanceSegmentationPrimaryMetrics `json:"primaryMetric,omitempty"`
+
+	// Search space for sampling different combinations of models and their hyperparameters.
+	SearchSpace []*ImageModelDistributionSettingsObjectDetection `json:"searchSpace,omitempty"`
+
+	// Model sweeping and hyperparameter sweeping related settings.
+	SweepSettings *ImageSweepSettings `json:"sweepSettings,omitempty"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type ImageInstanceSegmentation.
+func (i *ImageInstanceSegmentation) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: i.LogVerbosity,
+		TaskType:     i.TaskType,
+	}
+}
+
+// ImageLimitSettings - Limit settings for the AutoML job.
+type ImageLimitSettings struct {
+	// Maximum number of concurrent AutoML iterations.
+	MaxConcurrentTrials *int32 `json:"maxConcurrentTrials,omitempty"`
+
+	// Maximum number of AutoML iterations.
+	MaxTrials *int32 `json:"maxTrials,omitempty"`
+
+	// AutoML job timeout.
+	Timeout *string `json:"timeout,omitempty"`
+}
+
+// ImageModelDistributionSettings - Distribution expressions to sweep over values of model settings.Some examples are:ModelName
+// = "choice('seresnext', 'resnest50')"; LearningRate = "uniform(0.001, 0.01)"; LayersToFreeze = "choice(0,
+// 2)";All distributions can be specified as distribution_name(min, max) or choice(val1, val2, …, valn) where distribution
+// name can be: uniform, quniform, loguniform, etc For more details on how to
+// compose distribution expressions please check the documentation: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters
+// For more information on the available settings
+// please visit the official documentation: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+type ImageModelDistributionSettings struct {
+	// Enable AMSGrad when optimizer is 'adam' or 'adamw'.
+	AmsGradient *string `json:"amsGradient,omitempty"`
+
+	// Settings for using Augmentations.
+	Augmentations *string `json:"augmentations,omitempty"`
+
+	// Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta1 *string `json:"beta1,omitempty"`
+
+	// Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta2 *string `json:"beta2,omitempty"`
+
+	// Whether to use distributer training.
+	Distributed *string `json:"distributed,omitempty"`
+
+	// Enable early stopping logic during training.
+	EarlyStopping *string `json:"earlyStopping,omitempty"`
+
+	// Minimum number of epochs or validation evaluations to wait before primary metric improvement is tracked for early stopping.
+	// Must be a positive integer.
+	EarlyStoppingDelay *string `json:"earlyStoppingDelay,omitempty"`
+
+	// Minimum number of epochs or validation evaluations with no primary metric improvement before the run is stopped. Must be
+	// a positive integer.
+	EarlyStoppingPatience *string `json:"earlyStoppingPatience,omitempty"`
+
+	// Enable normalization when exporting ONNX model.
+	EnableOnnxNormalization *string `json:"enableOnnxNormalization,omitempty"`
+
+	// Frequency to evaluate validation dataset to get metric scores. Must be a positive integer.
+	EvaluationFrequency *string `json:"evaluationFrequency,omitempty"`
+
+	// Gradient accumulation means running a configured number of "GradAccumulationStep" steps without updating the model weights
+	// while accumulating the gradients of those steps, and then using the
+	// accumulated gradients to compute the weight updates. Must be a positive integer.
+	GradientAccumulationStep *string `json:"gradientAccumulationStep,omitempty"`
+
+	// Number of layers to freeze for the model. Must be a positive integer. For instance, passing 2 as value for 'seresnext'
+	// means freezing layer0 and layer1. For a full list of models supported and details
+	// on layer freeze, please see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	LayersToFreeze *string `json:"layersToFreeze,omitempty"`
+
+	// Initial learning rate. Must be a float in the range [0, 1].
+	LearningRate *string `json:"learningRate,omitempty"`
+
+	// Type of learning rate scheduler. Must be 'warmup_cosine' or 'step'.
+	LearningRateScheduler *string `json:"learningRateScheduler,omitempty"`
+
+	// Name of the model to use for training. For more information on the available models please visit the official documentation:
+	// https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	ModelName *string `json:"modelName,omitempty"`
+
+	// Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
+	Momentum *string `json:"momentum,omitempty"`
+
+	// Enable nesterov when optimizer is 'sgd'.
+	Nesterov *string `json:"nesterov,omitempty"`
+
+	// Number of training epochs. Must be a positive integer.
+	NumberOfEpochs *string `json:"numberOfEpochs,omitempty"`
+
+	// Number of data loader workers. Must be a non-negative integer.
+	NumberOfWorkers *string `json:"numberOfWorkers,omitempty"`
+
+	// Type of optimizer. Must be either 'sgd', 'adam', or 'adamw'.
+	Optimizer *string `json:"optimizer,omitempty"`
+
+	// Random seed to be used when using deterministic training.
+	RandomSeed *string `json:"randomSeed,omitempty"`
+
+	// If validation data is not defined, this specifies the split ratio for splitting train data into random train and validation
+	// subsets. Must be a float in the range [0, 1].
+	SplitRatio *string `json:"splitRatio,omitempty"`
+
+	// Value of gamma when learning rate scheduler is 'step'. Must be a float in the range [0, 1].
+	StepLRGamma *string `json:"stepLRGamma,omitempty"`
+
+	// Value of step size when learning rate scheduler is 'step'. Must be a positive integer.
+	StepLRStepSize *string `json:"stepLRStepSize,omitempty"`
+
+	// Training batch size. Must be a positive integer.
+	TrainingBatchSize *string `json:"trainingBatchSize,omitempty"`
+
+	// Validation batch size. Must be a positive integer.
+	ValidationBatchSize *string `json:"validationBatchSize,omitempty"`
+
+	// Value of cosine cycle when learning rate scheduler is 'warmup_cosine'. Must be a float in the range [0, 1].
+	WarmupCosineLRCycles *string `json:"warmupCosineLRCycles,omitempty"`
+
+	// Value of warmup epochs when learning rate scheduler is 'warmup_cosine'. Must be a positive integer.
+	WarmupCosineLRWarmupEpochs *string `json:"warmupCosineLRWarmupEpochs,omitempty"`
+
+	// Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float in the range[0, 1].
+	WeightDecay *string `json:"weightDecay,omitempty"`
+}
+
+// ImageModelDistributionSettingsClassification - Distribution expressions to sweep over values of model settings.Some examples
+// are:ModelName = "choice('seresnext', 'resnest50')"; LearningRate = "uniform(0.001, 0.01)"; LayersToFreeze = "choice(0,
+// 2)";For more details on how to compose distribution expressions please check the documentation: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters
+// For more information
+// on the available settings please visit the official documentation: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+type ImageModelDistributionSettingsClassification struct {
+	// Enable AMSGrad when optimizer is 'adam' or 'adamw'.
+	AmsGradient *string `json:"amsGradient,omitempty"`
+
+	// Settings for using Augmentations.
+	Augmentations *string `json:"augmentations,omitempty"`
+
+	// Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta1 *string `json:"beta1,omitempty"`
+
+	// Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta2 *string `json:"beta2,omitempty"`
+
+	// Whether to use distributer training.
+	Distributed *string `json:"distributed,omitempty"`
+
+	// Enable early stopping logic during training.
+	EarlyStopping *string `json:"earlyStopping,omitempty"`
+
+	// Minimum number of epochs or validation evaluations to wait before primary metric improvement is tracked for early stopping.
+	// Must be a positive integer.
+	EarlyStoppingDelay *string `json:"earlyStoppingDelay,omitempty"`
+
+	// Minimum number of epochs or validation evaluations with no primary metric improvement before the run is stopped. Must be
+	// a positive integer.
+	EarlyStoppingPatience *string `json:"earlyStoppingPatience,omitempty"`
+
+	// Enable normalization when exporting ONNX model.
+	EnableOnnxNormalization *string `json:"enableOnnxNormalization,omitempty"`
+
+	// Frequency to evaluate validation dataset to get metric scores. Must be a positive integer.
+	EvaluationFrequency *string `json:"evaluationFrequency,omitempty"`
+
+	// Gradient accumulation means running a configured number of "GradAccumulationStep" steps without updating the model weights
+	// while accumulating the gradients of those steps, and then using the
+	// accumulated gradients to compute the weight updates. Must be a positive integer.
+	GradientAccumulationStep *string `json:"gradientAccumulationStep,omitempty"`
+
+	// Number of layers to freeze for the model. Must be a positive integer. For instance, passing 2 as value for 'seresnext'
+	// means freezing layer0 and layer1. For a full list of models supported and details
+	// on layer freeze, please see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	LayersToFreeze *string `json:"layersToFreeze,omitempty"`
+
+	// Initial learning rate. Must be a float in the range [0, 1].
+	LearningRate *string `json:"learningRate,omitempty"`
+
+	// Type of learning rate scheduler. Must be 'warmup_cosine' or 'step'.
+	LearningRateScheduler *string `json:"learningRateScheduler,omitempty"`
+
+	// Name of the model to use for training. For more information on the available models please visit the official documentation:
+	// https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	ModelName *string `json:"modelName,omitempty"`
+
+	// Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
+	Momentum *string `json:"momentum,omitempty"`
+
+	// Enable nesterov when optimizer is 'sgd'.
+	Nesterov *string `json:"nesterov,omitempty"`
+
+	// Number of training epochs. Must be a positive integer.
+	NumberOfEpochs *string `json:"numberOfEpochs,omitempty"`
+
+	// Number of data loader workers. Must be a non-negative integer.
+	NumberOfWorkers *string `json:"numberOfWorkers,omitempty"`
+
+	// Type of optimizer. Must be either 'sgd', 'adam', or 'adamw'.
+	Optimizer *string `json:"optimizer,omitempty"`
+
+	// Random seed to be used when using deterministic training.
+	RandomSeed *string `json:"randomSeed,omitempty"`
+
+	// If validation data is not defined, this specifies the split ratio for splitting train data into random train and validation
+	// subsets. Must be a float in the range [0, 1].
+	SplitRatio *string `json:"splitRatio,omitempty"`
+
+	// Value of gamma when learning rate scheduler is 'step'. Must be a float in the range [0, 1].
+	StepLRGamma *string `json:"stepLRGamma,omitempty"`
+
+	// Value of step size when learning rate scheduler is 'step'. Must be a positive integer.
+	StepLRStepSize *string `json:"stepLRStepSize,omitempty"`
+
+	// Training batch size. Must be a positive integer.
+	TrainingBatchSize *string `json:"trainingBatchSize,omitempty"`
+
+	// Image crop size that is input to the neural network for the training dataset. Must be a positive integer.
+	TrainingCropSize *string `json:"trainingCropSize,omitempty"`
+
+	// Validation batch size. Must be a positive integer.
+	ValidationBatchSize *string `json:"validationBatchSize,omitempty"`
+
+	// Image crop size that is input to the neural network for the validation dataset. Must be a positive integer.
+	ValidationCropSize *string `json:"validationCropSize,omitempty"`
+
+	// Image size to which to resize before cropping for validation dataset. Must be a positive integer.
+	ValidationResizeSize *string `json:"validationResizeSize,omitempty"`
+
+	// Value of cosine cycle when learning rate scheduler is 'warmup_cosine'. Must be a float in the range [0, 1].
+	WarmupCosineLRCycles *string `json:"warmupCosineLRCycles,omitempty"`
+
+	// Value of warmup epochs when learning rate scheduler is 'warmup_cosine'. Must be a positive integer.
+	WarmupCosineLRWarmupEpochs *string `json:"warmupCosineLRWarmupEpochs,omitempty"`
+
+	// Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float in the range[0, 1].
+	WeightDecay *string `json:"weightDecay,omitempty"`
+
+	// Weighted loss. The accepted values are 0 for no weighted loss. 1 for weighted loss with sqrt.(classweights). 2 for weighted
+	// loss with classweights. Must be 0 or 1 or 2.
+	WeightedLoss *string `json:"weightedLoss,omitempty"`
+}
+
+// ImageModelDistributionSettingsObjectDetection - Distribution expressions to sweep over values of model settings.Some examples
+// are:ModelName = "choice('seresnext', 'resnest50')"; LearningRate = "uniform(0.001, 0.01)"; LayersToFreeze = "choice(0,
+// 2)";For more details on how to compose distribution expressions please check the documentation: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters
+// For more information
+// on the available settings please visit the official documentation: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+type ImageModelDistributionSettingsObjectDetection struct {
+	// Enable AMSGrad when optimizer is 'adam' or 'adamw'.
+	AmsGradient *string `json:"amsGradient,omitempty"`
+
+	// Settings for using Augmentations.
+	Augmentations *string `json:"augmentations,omitempty"`
+
+	// Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta1 *string `json:"beta1,omitempty"`
+
+	// Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta2 *string `json:"beta2,omitempty"`
+
+	// Maximum number of detections per image, for all classes. Must be a positive integer. Note: This settings is not supported
+	// for the 'yolov5' algorithm.
+	BoxDetectionsPerImage *string `json:"boxDetectionsPerImage,omitempty"`
+
+	// During inference, only return proposals with a classification score greater than BoxScoreThreshold. Must be a float in
+	// the range[0, 1].
+	BoxScoreThreshold *string `json:"boxScoreThreshold,omitempty"`
+
+	// Whether to use distributer training.
+	Distributed *string `json:"distributed,omitempty"`
+
+	// Enable early stopping logic during training.
+	EarlyStopping *string `json:"earlyStopping,omitempty"`
+
+	// Minimum number of epochs or validation evaluations to wait before primary metric improvement is tracked for early stopping.
+	// Must be a positive integer.
+	EarlyStoppingDelay *string `json:"earlyStoppingDelay,omitempty"`
+
+	// Minimum number of epochs or validation evaluations with no primary metric improvement before the run is stopped. Must be
+	// a positive integer.
+	EarlyStoppingPatience *string `json:"earlyStoppingPatience,omitempty"`
+
+	// Enable normalization when exporting ONNX model.
+	EnableOnnxNormalization *string `json:"enableOnnxNormalization,omitempty"`
+
+	// Frequency to evaluate validation dataset to get metric scores. Must be a positive integer.
+	EvaluationFrequency *string `json:"evaluationFrequency,omitempty"`
+
+	// Gradient accumulation means running a configured number of "GradAccumulationStep" steps without updating the model weights
+	// while accumulating the gradients of those steps, and then using the
+	// accumulated gradients to compute the weight updates. Must be a positive integer.
+	GradientAccumulationStep *string `json:"gradientAccumulationStep,omitempty"`
+
+	// Image size for train and validation. Must be a positive integer. Note: The training run may get into CUDA OOM if the size
+	// is too big. Note: This settings is only supported for the 'yolov5' algorithm.
+	ImageSize *string `json:"imageSize,omitempty"`
+
+	// Number of layers to freeze for the model. Must be a positive integer. For instance, passing 2 as value for 'seresnext'
+	// means freezing layer0 and layer1. For a full list of models supported and details
+	// on layer freeze, please see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	LayersToFreeze *string `json:"layersToFreeze,omitempty"`
+
+	// Initial learning rate. Must be a float in the range [0, 1].
+	LearningRate *string `json:"learningRate,omitempty"`
+
+	// Type of learning rate scheduler. Must be 'warmup_cosine' or 'step'.
+	LearningRateScheduler *string `json:"learningRateScheduler,omitempty"`
+
+	// Maximum size of the image to be rescaled before feeding it to the backbone. Must be a positive integer. Note: training
+	// run may get into CUDA OOM if the size is too big. Note: This settings is not
+	// supported for the 'yolov5' algorithm.
+	MaxSize *string `json:"maxSize,omitempty"`
+
+	// Minimum size of the image to be rescaled before feeding it to the backbone. Must be a positive integer. Note: training
+	// run may get into CUDA OOM if the size is too big. Note: This settings is not
+	// supported for the 'yolov5' algorithm.
+	MinSize *string `json:"minSize,omitempty"`
+
+	// Name of the model to use for training. For more information on the available models please visit the official documentation:
+	// https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	ModelName *string `json:"modelName,omitempty"`
+
+	// Model size. Must be 'small', 'medium', 'large', or 'xlarge'. Note: training run may get into CUDA OOM if the model size
+	// is too big. Note: This settings is only supported for the 'yolov5' algorithm.
+	ModelSize *string `json:"modelSize,omitempty"`
+
+	// Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
+	Momentum *string `json:"momentum,omitempty"`
+
+	// Enable multi-scale image by varying image size by +/- 50%. Note: training run may get into CUDA OOM if no sufficient GPU
+	// memory. Note: This settings is only supported for the 'yolov5' algorithm.
+	MultiScale *string `json:"multiScale,omitempty"`
+
+	// Enable nesterov when optimizer is 'sgd'.
+	Nesterov *string `json:"nesterov,omitempty"`
+
+	// IOU threshold used during inference in NMS post processing. Must be float in the range [0, 1].
+	NmsIouThreshold *string `json:"nmsIouThreshold,omitempty"`
+
+	// Number of training epochs. Must be a positive integer.
+	NumberOfEpochs *string `json:"numberOfEpochs,omitempty"`
+
+	// Number of data loader workers. Must be a non-negative integer.
+	NumberOfWorkers *string `json:"numberOfWorkers,omitempty"`
+
+	// Type of optimizer. Must be either 'sgd', 'adam', or 'adamw'.
+	Optimizer *string `json:"optimizer,omitempty"`
+
+	// Random seed to be used when using deterministic training.
+	RandomSeed *string `json:"randomSeed,omitempty"`
+
+	// If validation data is not defined, this specifies the split ratio for splitting train data into random train and validation
+	// subsets. Must be a float in the range [0, 1].
+	SplitRatio *string `json:"splitRatio,omitempty"`
+
+	// Value of gamma when learning rate scheduler is 'step'. Must be a float in the range [0, 1].
+	StepLRGamma *string `json:"stepLRGamma,omitempty"`
+
+	// Value of step size when learning rate scheduler is 'step'. Must be a positive integer.
+	StepLRStepSize *string `json:"stepLRStepSize,omitempty"`
+
+	// The grid size to use for tiling each image. Note: TileGridSize must not be None to enable small object detection logic.
+	// A string containing two integers in mxn format. Note: This settings is not
+	// supported for the 'yolov5' algorithm.
+	TileGridSize *string `json:"tileGridSize,omitempty"`
+
+	// Overlap ratio between adjacent tiles in each dimension. Must be float in the range [0, 1). Note: This settings is not supported
+	// for the 'yolov5' algorithm.
+	TileOverlapRatio *string `json:"tileOverlapRatio,omitempty"`
+
+	// The IOU threshold to use to perform NMS while merging predictions from tiles and image. Used in validation/ inference.
+	// Must be float in the range [0, 1]. Note: This settings is not supported for the
+	// 'yolov5' algorithm. NMS: Non-maximum suppression
+	TilePredictionsNmsThreshold *string `json:"tilePredictionsNmsThreshold,omitempty"`
+
+	// Training batch size. Must be a positive integer.
+	TrainingBatchSize *string `json:"trainingBatchSize,omitempty"`
+
+	// Validation batch size. Must be a positive integer.
+	ValidationBatchSize *string `json:"validationBatchSize,omitempty"`
+
+	// IOU threshold to use when computing validation metric. Must be float in the range [0, 1].
+	ValidationIouThreshold *string `json:"validationIouThreshold,omitempty"`
+
+	// Metric computation method to use for validation metrics. Must be 'none', 'coco', 'voc', or 'coco_voc'.
+	ValidationMetricType *string `json:"validationMetricType,omitempty"`
+
+	// Value of cosine cycle when learning rate scheduler is 'warmup_cosine'. Must be a float in the range [0, 1].
+	WarmupCosineLRCycles *string `json:"warmupCosineLRCycles,omitempty"`
+
+	// Value of warmup epochs when learning rate scheduler is 'warmup_cosine'. Must be a positive integer.
+	WarmupCosineLRWarmupEpochs *string `json:"warmupCosineLRWarmupEpochs,omitempty"`
+
+	// Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float in the range[0, 1].
+	WeightDecay *string `json:"weightDecay,omitempty"`
+}
+
+// ImageModelSettings - Settings used for training the model. For more information on the available settings please visit
+// the official documentation:
+// https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+type ImageModelSettings struct {
+	// Settings for advanced scenarios.
+	AdvancedSettings *string `json:"advancedSettings,omitempty"`
+
+	// Enable AMSGrad when optimizer is 'adam' or 'adamw'.
+	AmsGradient *bool `json:"amsGradient,omitempty"`
+
+	// Settings for using Augmentations.
+	Augmentations *string `json:"augmentations,omitempty"`
+
+	// Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta1 *float32 `json:"beta1,omitempty"`
+
+	// Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta2 *float32 `json:"beta2,omitempty"`
+
+	// FileDataset id for pretrained checkpoint(s) for incremental training. Make sure to pass CheckpointFilename along with CheckpointDatasetId.
+	CheckpointDatasetID *string `json:"checkpointDatasetId,omitempty"`
+
+	// The pretrained checkpoint filename in FileDataset for incremental training. Make sure to pass CheckpointDatasetId along
+	// with CheckpointFilename.
+	CheckpointFilename *string `json:"checkpointFilename,omitempty"`
+
+	// Frequency to store model checkpoints. Must be a positive integer.
+	CheckpointFrequency *int32 `json:"checkpointFrequency,omitempty"`
+
+	// The id of a previous run that has a pretrained checkpoint for incremental training.
+	CheckpointRunID *string `json:"checkpointRunId,omitempty"`
+
+	// Whether to use distributed training.
+	Distributed *bool `json:"distributed,omitempty"`
+
+	// Enable early stopping logic during training.
+	EarlyStopping *bool `json:"earlyStopping,omitempty"`
+
+	// Minimum number of epochs or validation evaluations to wait before primary metric improvement is tracked for early stopping.
+	// Must be a positive integer.
+	EarlyStoppingDelay *int32 `json:"earlyStoppingDelay,omitempty"`
+
+	// Minimum number of epochs or validation evaluations with no primary metric improvement before the run is stopped. Must be
+	// a positive integer.
+	EarlyStoppingPatience *int32 `json:"earlyStoppingPatience,omitempty"`
+
+	// Enable normalization when exporting ONNX model.
+	EnableOnnxNormalization *bool `json:"enableOnnxNormalization,omitempty"`
+
+	// Frequency to evaluate validation dataset to get metric scores. Must be a positive integer.
+	EvaluationFrequency *int32 `json:"evaluationFrequency,omitempty"`
+
+	// Gradient accumulation means running a configured number of "GradAccumulationStep" steps without updating the model weights
+	// while accumulating the gradients of those steps, and then using the
+	// accumulated gradients to compute the weight updates. Must be a positive integer.
+	GradientAccumulationStep *int32 `json:"gradientAccumulationStep,omitempty"`
+
+	// Number of layers to freeze for the model. Must be a positive integer. For instance, passing 2 as value for 'seresnext'
+	// means freezing layer0 and layer1. For a full list of models supported and details
+	// on layer freeze, please see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	LayersToFreeze *int32 `json:"layersToFreeze,omitempty"`
+
+	// Initial learning rate. Must be a float in the range [0, 1].
+	LearningRate *float32 `json:"learningRate,omitempty"`
+
+	// Type of learning rate scheduler. Must be 'warmup_cosine' or 'step'.
+	LearningRateScheduler *LearningRateScheduler `json:"learningRateScheduler,omitempty"`
+
+	// Name of the model to use for training. For more information on the available models please visit the official documentation:
+	// https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	ModelName *string `json:"modelName,omitempty"`
+
+	// Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
+	Momentum *float32 `json:"momentum,omitempty"`
+
+	// Enable nesterov when optimizer is 'sgd'.
+	Nesterov *bool `json:"nesterov,omitempty"`
+
+	// Number of training epochs. Must be a positive integer.
+	NumberOfEpochs *int32 `json:"numberOfEpochs,omitempty"`
+
+	// Number of data loader workers. Must be a non-negative integer.
+	NumberOfWorkers *int32 `json:"numberOfWorkers,omitempty"`
+
+	// Type of optimizer.
+	Optimizer *StochasticOptimizer `json:"optimizer,omitempty"`
+
+	// Random seed to be used when using deterministic training.
+	RandomSeed *int32 `json:"randomSeed,omitempty"`
+
+	// If validation data is not defined, this specifies the split ratio for splitting train data into random train and validation
+	// subsets. Must be a float in the range [0, 1].
+	SplitRatio *float32 `json:"splitRatio,omitempty"`
+
+	// Value of gamma when learning rate scheduler is 'step'. Must be a float in the range [0, 1].
+	StepLRGamma *float32 `json:"stepLRGamma,omitempty"`
+
+	// Value of step size when learning rate scheduler is 'step'. Must be a positive integer.
+	StepLRStepSize *int32 `json:"stepLRStepSize,omitempty"`
+
+	// Training batch size. Must be a positive integer.
+	TrainingBatchSize *int32 `json:"trainingBatchSize,omitempty"`
+
+	// Validation batch size. Must be a positive integer.
+	ValidationBatchSize *int32 `json:"validationBatchSize,omitempty"`
+
+	// Value of cosine cycle when learning rate scheduler is 'warmup_cosine'. Must be a float in the range [0, 1].
+	WarmupCosineLRCycles *float32 `json:"warmupCosineLRCycles,omitempty"`
+
+	// Value of warmup epochs when learning rate scheduler is 'warmup_cosine'. Must be a positive integer.
+	WarmupCosineLRWarmupEpochs *int32 `json:"warmupCosineLRWarmupEpochs,omitempty"`
+
+	// Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float in the range[0, 1].
+	WeightDecay *float32 `json:"weightDecay,omitempty"`
+}
+
+// ImageModelSettingsClassification - Settings used for training the model. For more information on the available settings
+// please visit the official documentation:
+// https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+type ImageModelSettingsClassification struct {
+	// Settings for advanced scenarios.
+	AdvancedSettings *string `json:"advancedSettings,omitempty"`
+
+	// Enable AMSGrad when optimizer is 'adam' or 'adamw'.
+	AmsGradient *bool `json:"amsGradient,omitempty"`
+
+	// Settings for using Augmentations.
+	Augmentations *string `json:"augmentations,omitempty"`
+
+	// Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta1 *float32 `json:"beta1,omitempty"`
+
+	// Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta2 *float32 `json:"beta2,omitempty"`
+
+	// FileDataset id for pretrained checkpoint(s) for incremental training. Make sure to pass CheckpointFilename along with CheckpointDatasetId.
+	CheckpointDatasetID *string `json:"checkpointDatasetId,omitempty"`
+
+	// The pretrained checkpoint filename in FileDataset for incremental training. Make sure to pass CheckpointDatasetId along
+	// with CheckpointFilename.
+	CheckpointFilename *string `json:"checkpointFilename,omitempty"`
+
+	// Frequency to store model checkpoints. Must be a positive integer.
+	CheckpointFrequency *int32 `json:"checkpointFrequency,omitempty"`
+
+	// The id of a previous run that has a pretrained checkpoint for incremental training.
+	CheckpointRunID *string `json:"checkpointRunId,omitempty"`
+
+	// Whether to use distributed training.
+	Distributed *bool `json:"distributed,omitempty"`
+
+	// Enable early stopping logic during training.
+	EarlyStopping *bool `json:"earlyStopping,omitempty"`
+
+	// Minimum number of epochs or validation evaluations to wait before primary metric improvement is tracked for early stopping.
+	// Must be a positive integer.
+	EarlyStoppingDelay *int32 `json:"earlyStoppingDelay,omitempty"`
+
+	// Minimum number of epochs or validation evaluations with no primary metric improvement before the run is stopped. Must be
+	// a positive integer.
+	EarlyStoppingPatience *int32 `json:"earlyStoppingPatience,omitempty"`
+
+	// Enable normalization when exporting ONNX model.
+	EnableOnnxNormalization *bool `json:"enableOnnxNormalization,omitempty"`
+
+	// Frequency to evaluate validation dataset to get metric scores. Must be a positive integer.
+	EvaluationFrequency *int32 `json:"evaluationFrequency,omitempty"`
+
+	// Gradient accumulation means running a configured number of "GradAccumulationStep" steps without updating the model weights
+	// while accumulating the gradients of those steps, and then using the
+	// accumulated gradients to compute the weight updates. Must be a positive integer.
+	GradientAccumulationStep *int32 `json:"gradientAccumulationStep,omitempty"`
+
+	// Number of layers to freeze for the model. Must be a positive integer. For instance, passing 2 as value for 'seresnext'
+	// means freezing layer0 and layer1. For a full list of models supported and details
+	// on layer freeze, please see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	LayersToFreeze *int32 `json:"layersToFreeze,omitempty"`
+
+	// Initial learning rate. Must be a float in the range [0, 1].
+	LearningRate *float32 `json:"learningRate,omitempty"`
+
+	// Type of learning rate scheduler. Must be 'warmup_cosine' or 'step'.
+	LearningRateScheduler *LearningRateScheduler `json:"learningRateScheduler,omitempty"`
+
+	// Name of the model to use for training. For more information on the available models please visit the official documentation:
+	// https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	ModelName *string `json:"modelName,omitempty"`
+
+	// Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
+	Momentum *float32 `json:"momentum,omitempty"`
+
+	// Enable nesterov when optimizer is 'sgd'.
+	Nesterov *bool `json:"nesterov,omitempty"`
+
+	// Number of training epochs. Must be a positive integer.
+	NumberOfEpochs *int32 `json:"numberOfEpochs,omitempty"`
+
+	// Number of data loader workers. Must be a non-negative integer.
+	NumberOfWorkers *int32 `json:"numberOfWorkers,omitempty"`
+
+	// Type of optimizer.
+	Optimizer *StochasticOptimizer `json:"optimizer,omitempty"`
+
+	// Random seed to be used when using deterministic training.
+	RandomSeed *int32 `json:"randomSeed,omitempty"`
+
+	// If validation data is not defined, this specifies the split ratio for splitting train data into random train and validation
+	// subsets. Must be a float in the range [0, 1].
+	SplitRatio *float32 `json:"splitRatio,omitempty"`
+
+	// Value of gamma when learning rate scheduler is 'step'. Must be a float in the range [0, 1].
+	StepLRGamma *float32 `json:"stepLRGamma,omitempty"`
+
+	// Value of step size when learning rate scheduler is 'step'. Must be a positive integer.
+	StepLRStepSize *int32 `json:"stepLRStepSize,omitempty"`
+
+	// Training batch size. Must be a positive integer.
+	TrainingBatchSize *int32 `json:"trainingBatchSize,omitempty"`
+
+	// Image crop size that is input to the neural network for the training dataset. Must be a positive integer.
+	TrainingCropSize *int32 `json:"trainingCropSize,omitempty"`
+
+	// Validation batch size. Must be a positive integer.
+	ValidationBatchSize *int32 `json:"validationBatchSize,omitempty"`
+
+	// Image crop size that is input to the neural network for the validation dataset. Must be a positive integer.
+	ValidationCropSize *int32 `json:"validationCropSize,omitempty"`
+
+	// Image size to which to resize before cropping for validation dataset. Must be a positive integer.
+	ValidationResizeSize *int32 `json:"validationResizeSize,omitempty"`
+
+	// Value of cosine cycle when learning rate scheduler is 'warmup_cosine'. Must be a float in the range [0, 1].
+	WarmupCosineLRCycles *float32 `json:"warmupCosineLRCycles,omitempty"`
+
+	// Value of warmup epochs when learning rate scheduler is 'warmup_cosine'. Must be a positive integer.
+	WarmupCosineLRWarmupEpochs *int32 `json:"warmupCosineLRWarmupEpochs,omitempty"`
+
+	// Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float in the range[0, 1].
+	WeightDecay *float32 `json:"weightDecay,omitempty"`
+
+	// Weighted loss. The accepted values are 0 for no weighted loss. 1 for weighted loss with sqrt.(classweights). 2 for weighted
+	// loss with classweights. Must be 0 or 1 or 2.
+	WeightedLoss *int32 `json:"weightedLoss,omitempty"`
+}
+
+// ImageModelSettingsObjectDetection - Settings used for training the model. For more information on the available settings
+// please visit the official documentation:
+// https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+type ImageModelSettingsObjectDetection struct {
+	// Settings for advanced scenarios.
+	AdvancedSettings *string `json:"advancedSettings,omitempty"`
+
+	// Enable AMSGrad when optimizer is 'adam' or 'adamw'.
+	AmsGradient *bool `json:"amsGradient,omitempty"`
+
+	// Settings for using Augmentations.
+	Augmentations *string `json:"augmentations,omitempty"`
+
+	// Value of 'beta1' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta1 *float32 `json:"beta1,omitempty"`
+
+	// Value of 'beta2' when optimizer is 'adam' or 'adamw'. Must be a float in the range [0, 1].
+	Beta2 *float32 `json:"beta2,omitempty"`
+
+	// Maximum number of detections per image, for all classes. Must be a positive integer. Note: This settings is not supported
+	// for the 'yolov5' algorithm.
+	BoxDetectionsPerImage *int32 `json:"boxDetectionsPerImage,omitempty"`
+
+	// During inference, only return proposals with a classification score greater than BoxScoreThreshold. Must be a float in
+	// the range[0, 1].
+	BoxScoreThreshold *float32 `json:"boxScoreThreshold,omitempty"`
+
+	// FileDataset id for pretrained checkpoint(s) for incremental training. Make sure to pass CheckpointFilename along with CheckpointDatasetId.
+	CheckpointDatasetID *string `json:"checkpointDatasetId,omitempty"`
+
+	// The pretrained checkpoint filename in FileDataset for incremental training. Make sure to pass CheckpointDatasetId along
+	// with CheckpointFilename.
+	CheckpointFilename *string `json:"checkpointFilename,omitempty"`
+
+	// Frequency to store model checkpoints. Must be a positive integer.
+	CheckpointFrequency *int32 `json:"checkpointFrequency,omitempty"`
+
+	// The id of a previous run that has a pretrained checkpoint for incremental training.
+	CheckpointRunID *string `json:"checkpointRunId,omitempty"`
+
+	// Whether to use distributed training.
+	Distributed *bool `json:"distributed,omitempty"`
+
+	// Enable early stopping logic during training.
+	EarlyStopping *bool `json:"earlyStopping,omitempty"`
+
+	// Minimum number of epochs or validation evaluations to wait before primary metric improvement is tracked for early stopping.
+	// Must be a positive integer.
+	EarlyStoppingDelay *int32 `json:"earlyStoppingDelay,omitempty"`
+
+	// Minimum number of epochs or validation evaluations with no primary metric improvement before the run is stopped. Must be
+	// a positive integer.
+	EarlyStoppingPatience *int32 `json:"earlyStoppingPatience,omitempty"`
+
+	// Enable normalization when exporting ONNX model.
+	EnableOnnxNormalization *bool `json:"enableOnnxNormalization,omitempty"`
+
+	// Frequency to evaluate validation dataset to get metric scores. Must be a positive integer.
+	EvaluationFrequency *int32 `json:"evaluationFrequency,omitempty"`
+
+	// Gradient accumulation means running a configured number of "GradAccumulationStep" steps without updating the model weights
+	// while accumulating the gradients of those steps, and then using the
+	// accumulated gradients to compute the weight updates. Must be a positive integer.
+	GradientAccumulationStep *int32 `json:"gradientAccumulationStep,omitempty"`
+
+	// Image size for train and validation. Must be a positive integer. Note: The training run may get into CUDA OOM if the size
+	// is too big. Note: This settings is only supported for the 'yolov5' algorithm.
+	ImageSize *int32 `json:"imageSize,omitempty"`
+
+	// Number of layers to freeze for the model. Must be a positive integer. For instance, passing 2 as value for 'seresnext'
+	// means freezing layer0 and layer1. For a full list of models supported and details
+	// on layer freeze, please see: https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	LayersToFreeze *int32 `json:"layersToFreeze,omitempty"`
+
+	// Initial learning rate. Must be a float in the range [0, 1].
+	LearningRate *float32 `json:"learningRate,omitempty"`
+
+	// Type of learning rate scheduler. Must be 'warmup_cosine' or 'step'.
+	LearningRateScheduler *LearningRateScheduler `json:"learningRateScheduler,omitempty"`
+
+	// Maximum size of the image to be rescaled before feeding it to the backbone. Must be a positive integer. Note: training
+	// run may get into CUDA OOM if the size is too big. Note: This settings is not
+	// supported for the 'yolov5' algorithm.
+	MaxSize *int32 `json:"maxSize,omitempty"`
+
+	// Minimum size of the image to be rescaled before feeding it to the backbone. Must be a positive integer. Note: training
+	// run may get into CUDA OOM if the size is too big. Note: This settings is not
+	// supported for the 'yolov5' algorithm.
+	MinSize *int32 `json:"minSize,omitempty"`
+
+	// Name of the model to use for training. For more information on the available models please visit the official documentation:
+	// https://docs.microsoft.com/en-us/azure/machine-learning/how-to-auto-train-image-models.
+	ModelName *string `json:"modelName,omitempty"`
+
+	// Model size. Must be 'small', 'medium', 'large', or 'xlarge'. Note: training run may get into CUDA OOM if the model size
+	// is too big. Note: This settings is only supported for the 'yolov5' algorithm.
+	ModelSize *ModelSize `json:"modelSize,omitempty"`
+
+	// Value of momentum when optimizer is 'sgd'. Must be a float in the range [0, 1].
+	Momentum *float32 `json:"momentum,omitempty"`
+
+	// Enable multi-scale image by varying image size by +/- 50%. Note: training run may get into CUDA OOM if no sufficient GPU
+	// memory. Note: This settings is only supported for the 'yolov5' algorithm.
+	MultiScale *bool `json:"multiScale,omitempty"`
+
+	// Enable nesterov when optimizer is 'sgd'.
+	Nesterov *bool `json:"nesterov,omitempty"`
+
+	// IOU threshold used during inference in NMS post processing. Must be a float in the range [0, 1].
+	NmsIouThreshold *float32 `json:"nmsIouThreshold,omitempty"`
+
+	// Number of training epochs. Must be a positive integer.
+	NumberOfEpochs *int32 `json:"numberOfEpochs,omitempty"`
+
+	// Number of data loader workers. Must be a non-negative integer.
+	NumberOfWorkers *int32 `json:"numberOfWorkers,omitempty"`
+
+	// Type of optimizer.
+	Optimizer *StochasticOptimizer `json:"optimizer,omitempty"`
+
+	// Random seed to be used when using deterministic training.
+	RandomSeed *int32 `json:"randomSeed,omitempty"`
+
+	// If validation data is not defined, this specifies the split ratio for splitting train data into random train and validation
+	// subsets. Must be a float in the range [0, 1].
+	SplitRatio *float32 `json:"splitRatio,omitempty"`
+
+	// Value of gamma when learning rate scheduler is 'step'. Must be a float in the range [0, 1].
+	StepLRGamma *float32 `json:"stepLRGamma,omitempty"`
+
+	// Value of step size when learning rate scheduler is 'step'. Must be a positive integer.
+	StepLRStepSize *int32 `json:"stepLRStepSize,omitempty"`
+
+	// The grid size to use for tiling each image. Note: TileGridSize must not be None to enable small object detection logic.
+	// A string containing two integers in mxn format. Note: This settings is not
+	// supported for the 'yolov5' algorithm.
+	TileGridSize *string `json:"tileGridSize,omitempty"`
+
+	// Overlap ratio between adjacent tiles in each dimension. Must be float in the range [0, 1). Note: This settings is not supported
+	// for the 'yolov5' algorithm.
+	TileOverlapRatio *float32 `json:"tileOverlapRatio,omitempty"`
+
+	// The IOU threshold to use to perform NMS while merging predictions from tiles and image. Used in validation/ inference.
+	// Must be float in the range [0, 1]. Note: This settings is not supported for the
+	// 'yolov5' algorithm.
+	TilePredictionsNmsThreshold *float32 `json:"tilePredictionsNmsThreshold,omitempty"`
+
+	// Training batch size. Must be a positive integer.
+	TrainingBatchSize *int32 `json:"trainingBatchSize,omitempty"`
+
+	// Validation batch size. Must be a positive integer.
+	ValidationBatchSize *int32 `json:"validationBatchSize,omitempty"`
+
+	// IOU threshold to use when computing validation metric. Must be float in the range [0, 1].
+	ValidationIouThreshold *float32 `json:"validationIouThreshold,omitempty"`
+
+	// Metric computation method to use for validation metrics.
+	ValidationMetricType *ValidationMetricType `json:"validationMetricType,omitempty"`
+
+	// Value of cosine cycle when learning rate scheduler is 'warmup_cosine'. Must be a float in the range [0, 1].
+	WarmupCosineLRCycles *float32 `json:"warmupCosineLRCycles,omitempty"`
+
+	// Value of warmup epochs when learning rate scheduler is 'warmup_cosine'. Must be a positive integer.
+	WarmupCosineLRWarmupEpochs *int32 `json:"warmupCosineLRWarmupEpochs,omitempty"`
+
+	// Value of weight decay when optimizer is 'sgd', 'adam', or 'adamw'. Must be a float in the range[0, 1].
+	WeightDecay *float32 `json:"weightDecay,omitempty"`
+}
+
+// ImageObjectDetection - Image Object Detection. Object detection is used to identify objects in an image and locate each
+// object with a bounding box e.g. locate all dogs and cats in an image and draw a bounding box around
+// each.
+type ImageObjectDetection struct {
+	// REQUIRED; [Required] Collection of registered Tabular Dataset Ids and other data settings required for training and validating
+	// models.
+	DataSettings *ImageVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// REQUIRED; [Required] Limit settings for the AutoML job.
+	LimitSettings *ImageLimitSettings `json:"limitSettings,omitempty"`
+
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// Settings used for training the model.
+	ModelSettings *ImageModelSettingsObjectDetection `json:"modelSettings,omitempty"`
+
+	// Primary metric to optimize for this task.
+	PrimaryMetric *ObjectDetectionPrimaryMetrics `json:"primaryMetric,omitempty"`
+
+	// Search space for sampling different combinations of models and their hyperparameters.
+	SearchSpace []*ImageModelDistributionSettingsObjectDetection `json:"searchSpace,omitempty"`
+
+	// Model sweeping and hyperparameter sweeping related settings.
+	SweepSettings *ImageSweepSettings `json:"sweepSettings,omitempty"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type ImageObjectDetection.
+func (i *ImageObjectDetection) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: i.LogVerbosity,
+		TaskType:     i.TaskType,
+	}
+}
+
+type ImageObjectDetectionBase struct {
+	// REQUIRED; [Required] Collection of registered Tabular Dataset Ids and other data settings required for training and validating
+	// models.
+	DataSettings *ImageVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// REQUIRED; [Required] Limit settings for the AutoML job.
+	LimitSettings *ImageLimitSettings `json:"limitSettings,omitempty"`
+
+	// Settings used for training the model.
+	ModelSettings *ImageModelSettingsObjectDetection `json:"modelSettings,omitempty"`
+
+	// Search space for sampling different combinations of models and their hyperparameters.
+	SearchSpace []*ImageModelDistributionSettingsObjectDetection `json:"searchSpace,omitempty"`
+
+	// Model sweeping and hyperparameter sweeping related settings.
+	SweepSettings *ImageSweepSettings `json:"sweepSettings,omitempty"`
+}
+
+// ImageSweepLimitSettings - Limit settings for model sweeping and hyperparameter sweeping.
+type ImageSweepLimitSettings struct {
+	// Maximum number of concurrent iterations for the underlying Sweep job.
+	MaxConcurrentTrials *int32 `json:"maxConcurrentTrials,omitempty"`
+
+	// Maximum number of iterations for the underlying Sweep job.
+	MaxTrials *int32 `json:"maxTrials,omitempty"`
+}
+
+// ImageSweepSettings - Model sweeping and hyperparameter sweeping related settings.
+type ImageSweepSettings struct {
+	// REQUIRED; [Required] Limit settings for model sweeping and hyperparameter sweeping.
+	Limits *ImageSweepLimitSettings `json:"limits,omitempty"`
+
+	// REQUIRED; [Required] Type of the hyperparameter sampling algorithms.
+	SamplingAlgorithm *SamplingAlgorithmType `json:"samplingAlgorithm,omitempty"`
+
+	// Type of early termination policy.
+	EarlyTermination EarlyTerminationPolicyClassification `json:"earlyTermination,omitempty"`
+}
+
+// ImageVertical - Abstract class for AutoML tasks that train image (computer vision) models - such as Image Classification
+// / Image Classification Multilabel / Image Object Detection / Image Instance Segmentation.
+type ImageVertical struct {
+	// REQUIRED; [Required] Collection of registered Tabular Dataset Ids and other data settings required for training and validating
+	// models.
+	DataSettings *ImageVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// REQUIRED; [Required] Limit settings for the AutoML job.
+	LimitSettings *ImageLimitSettings `json:"limitSettings,omitempty"`
+
+	// Model sweeping and hyperparameter sweeping related settings.
+	SweepSettings *ImageSweepSettings `json:"sweepSettings,omitempty"`
+}
+
+// ImageVerticalDataSettings - Collection of registered Tabular Dataset Ids and other data settings required for training
+// and validating models.
+type ImageVerticalDataSettings struct {
+	// REQUIRED; [Required] Target column name: This is prediction values column. Also known as label column name in context of
+	// classification tasks.
+	TargetColumnName *string `json:"targetColumnName,omitempty"`
+
+	// REQUIRED; [Required] Training data input.
+	TrainingData *TrainingDataSettings `json:"trainingData,omitempty"`
+
+	// Test data input.
+	TestData *TestDataSettings `json:"testData,omitempty"`
+
+	// Settings for the validation dataset.
+	ValidationData *ImageVerticalValidationDataSettings `json:"validationData,omitempty"`
+}
+
+type ImageVerticalValidationDataSettings struct {
+	// Validation data MLTable.
+	Data *MLTableJobInput `json:"data,omitempty"`
+
+	// The fraction of training dataset that needs to be set aside for validation purpose. Values between (0.0 , 1.0) Applied
+	// when validation dataset is not provided.
+	ValidationDataSize *float64 `json:"validationDataSize,omitempty"`
+}
+
+type InferenceContainerProperties struct {
+	// The route to check the liveness of the inference server container.
+	LivenessRoute *Route `json:"livenessRoute,omitempty"`
+
+	// The route to check the readiness of the inference server container.
+	ReadinessRoute *Route `json:"readinessRoute,omitempty"`
+
+	// The port to send the scoring requests to, within the inference server container.
+	ScoringRoute *Route `json:"scoringRoute,omitempty"`
 }
 
 // InstanceTypeSchema - Instance type schema.
@@ -1123,24 +4632,304 @@ type InstanceTypeSchemaResources struct {
 	Requests map[string]*string `json:"requests,omitempty"`
 }
 
-type KeyVaultProperties struct {
-	// REQUIRED; Key vault uri to access the encryption key.
-	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+// JobBaseData - Azure Resource Manager resource envelope.
+type JobBaseData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties JobBaseDetailsClassification `json:"properties,omitempty"`
 
-	// REQUIRED; The ArmId of the keyVault where the customer owned encryption key is present.
-	KeyVaultArmID *string `json:"keyVaultArmId,omitempty"`
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// For future use - The client id of the identity which will be used to access key vault.
-	IdentityClientID *string `json:"identityClientId,omitempty"`
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// JobBaseDetailsClassification provides polymorphic access to related types.
+// Call the interface's GetJobBaseDetails() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AutoMLJob, *CommandJob, *JobBaseDetails, *PipelineJob, *SweepJob
+type JobBaseDetailsClassification interface {
+	// GetJobBaseDetails returns the JobBaseDetails content of the underlying type.
+	GetJobBaseDetails() *JobBaseDetails
+}
+
+// JobBaseDetails - Base definition for a job.
+type JobBaseDetails struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobType *JobType `json:"jobType,omitempty"`
+
+	// ARM resource ID of the compute resource.
+	ComputeID *string `json:"computeId,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Display name of job.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The name of the experiment the job belongs to. If not set, the job is placed in the "Default" experiment.
+	ExperimentName *string `json:"experimentName,omitempty"`
+
+	// Identity configuration. If set, this should be one of AmlToken, ManagedIdentity, UserIdentity or null. Defaults to AmlToken
+	// if null.
+	Identity IdentityConfigurationClassification `json:"identity,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Schedule definition of job. If no schedule is provided, the job is run once and immediately after submission.
+	Schedule ScheduleBaseClassification `json:"schedule,omitempty"`
+
+	// List of JobEndpoints. For local jobs, a job endpoint will have an endpoint value of FileStreamObject.
+	Services map[string]*JobService `json:"services,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Status of the job.
+	Status *JobStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetJobBaseDetails implements the JobBaseDetailsClassification interface for type JobBaseDetails.
+func (j *JobBaseDetails) GetJobBaseDetails() *JobBaseDetails { return j }
+
+// JobBaseResourceArmPaginatedResult - A paginated list of JobBase entities.
+type JobBaseResourceArmPaginatedResult struct {
+	// The link to the next page of JobBase objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type JobBase.
+	Value []*JobBaseData `json:"value,omitempty"`
+}
+
+// JobInputClassification provides polymorphic access to related types.
+// Call the interface's GetJobInput() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CustomModelJobInput, *JobInput, *LiteralJobInput, *MLFlowModelJobInput, *MLTableJobInput, *TritonModelJobInput, *URIFileJobInput,
+// - *URIFolderJobInput
+type JobInputClassification interface {
+	// GetJobInput returns the JobInput content of the underlying type.
+	GetJobInput() *JobInput
+}
+
+// JobInput - Command job definition.
+type JobInput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobInputType *JobInputType `json:"jobInputType,omitempty"`
+
+	// Description for the input.
+	Description *string `json:"description,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type JobInput.
+func (j *JobInput) GetJobInput() *JobInput { return j }
+
+// JobLimitsClassification provides polymorphic access to related types.
+// Call the interface's GetJobLimits() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CommandJobLimits, *JobLimits, *SweepJobLimits
+type JobLimitsClassification interface {
+	// GetJobLimits returns the JobLimits content of the underlying type.
+	GetJobLimits() *JobLimits
+}
+
+type JobLimits struct {
+	// REQUIRED; [Required] JobLimit type.
+	JobLimitsType *JobLimitsType `json:"jobLimitsType,omitempty"`
+
+	// The max run duration in ISO 8601 format, after which the job will be cancelled. Only supports duration with precision as
+	// low as Seconds.
+	Timeout *string `json:"timeout,omitempty"`
+}
+
+// GetJobLimits implements the JobLimitsClassification interface for type JobLimits.
+func (j *JobLimits) GetJobLimits() *JobLimits { return j }
+
+// JobOutputClassification provides polymorphic access to related types.
+// Call the interface's GetJobOutput() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CustomModelJobOutput, *JobOutput, *MLFlowModelJobOutput, *MLTableJobOutput, *TritonModelJobOutput, *URIFileJobOutput,
+// - *URIFolderJobOutput
+type JobOutputClassification interface {
+	// GetJobOutput returns the JobOutput content of the underlying type.
+	GetJobOutput() *JobOutput
+}
+
+// JobOutput - Job output definition container information on where to find job output/logs.
+type JobOutput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobOutputType *JobOutputType `json:"jobOutputType,omitempty"`
+
+	// Description for the output.
+	Description *string `json:"description,omitempty"`
+}
+
+// GetJobOutput implements the JobOutputClassification interface for type JobOutput.
+func (j *JobOutput) GetJobOutput() *JobOutput { return j }
+
+// JobService - Job endpoint definition
+type JobService struct {
+	// Url for endpoint.
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// Endpoint type.
+	JobServiceType *string `json:"jobServiceType,omitempty"`
+
+	// Port for endpoint.
+	Port *int32 `json:"port,omitempty"`
+
+	// Additional properties to set on the endpoint.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// READ-ONLY; Any error in the service.
+	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+
+	// READ-ONLY; Status of endpoint.
+	Status *string `json:"status,omitempty" azure:"ro"`
+}
+
+// JobsClientBeginDeleteOptions contains the optional parameters for the JobsClient.BeginDelete method.
+type JobsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// JobsClientCancelOptions contains the optional parameters for the JobsClient.Cancel method.
+type JobsClientCancelOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobsClientCreateOrUpdateOptions contains the optional parameters for the JobsClient.CreateOrUpdate method.
+type JobsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
+type JobsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// JobsClientListOptions contains the optional parameters for the JobsClient.List method.
+type JobsClientListOptions struct {
+	// Type of job to be returned.
+	JobType *string
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+	// The scheduled id for listing the job triggered from
+	ScheduleID *string
+	// Indicator whether the job is scheduled job.
+	Scheduled *bool
+	// Continuation token for pagination.
+	Skip *string
+	// Jobs returned will have this tag key.
+	Tag *string
+}
+
+type KerberosCredentials struct {
+	// REQUIRED; [Required] IP Address or DNS HostName.
+	KerberosKdcAddress *string `json:"kerberosKdcAddress,omitempty"`
+
+	// REQUIRED; [Required] Kerberos Username
+	KerberosPrincipal *string `json:"kerberosPrincipal,omitempty"`
+
+	// REQUIRED; [Required] Domain over which a Kerberos authentication server has the authority to authenticate a user, host
+	// or service.
+	KerberosRealm *string `json:"kerberosRealm,omitempty"`
+}
+
+type KerberosKeytabCredentials struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	CredentialsType *CredentialsType `json:"credentialsType,omitempty"`
+
+	// REQUIRED; [Required] IP Address or DNS HostName.
+	KerberosKdcAddress *string `json:"kerberosKdcAddress,omitempty"`
+
+	// REQUIRED; [Required] Kerberos Username
+	KerberosPrincipal *string `json:"kerberosPrincipal,omitempty"`
+
+	// REQUIRED; [Required] Domain over which a Kerberos authentication server has the authority to authenticate a user, host
+	// or service.
+	KerberosRealm *string `json:"kerberosRealm,omitempty"`
+
+	// REQUIRED; [Required] Keytab secrets.
+	Secrets *KerberosKeytabSecrets `json:"secrets,omitempty"`
+}
+
+// GetDatastoreCredentials implements the DatastoreCredentialsClassification interface for type KerberosKeytabCredentials.
+func (k *KerberosKeytabCredentials) GetDatastoreCredentials() *DatastoreCredentials {
+	return &DatastoreCredentials{
+		CredentialsType: k.CredentialsType,
+	}
+}
+
+type KerberosKeytabSecrets struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	SecretsType *SecretsType `json:"secretsType,omitempty"`
+
+	// Kerberos keytab secret.
+	KerberosKeytab *string `json:"kerberosKeytab,omitempty"`
+}
+
+// GetDatastoreSecrets implements the DatastoreSecretsClassification interface for type KerberosKeytabSecrets.
+func (k *KerberosKeytabSecrets) GetDatastoreSecrets() *DatastoreSecrets {
+	return &DatastoreSecrets{
+		SecretsType: k.SecretsType,
+	}
+}
+
+type KerberosPasswordCredentials struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	CredentialsType *CredentialsType `json:"credentialsType,omitempty"`
+
+	// REQUIRED; [Required] IP Address or DNS HostName.
+	KerberosKdcAddress *string `json:"kerberosKdcAddress,omitempty"`
+
+	// REQUIRED; [Required] Kerberos Username
+	KerberosPrincipal *string `json:"kerberosPrincipal,omitempty"`
+
+	// REQUIRED; [Required] Domain over which a Kerberos authentication server has the authority to authenticate a user, host
+	// or service.
+	KerberosRealm *string `json:"kerberosRealm,omitempty"`
+
+	// REQUIRED; [Required] Kerberos password secrets.
+	Secrets *KerberosPasswordSecrets `json:"secrets,omitempty"`
+}
+
+// GetDatastoreCredentials implements the DatastoreCredentialsClassification interface for type KerberosPasswordCredentials.
+func (k *KerberosPasswordCredentials) GetDatastoreCredentials() *DatastoreCredentials {
+	return &DatastoreCredentials{
+		CredentialsType: k.CredentialsType,
+	}
+}
+
+type KerberosPasswordSecrets struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	SecretsType *SecretsType `json:"secretsType,omitempty"`
+
+	// Kerberos password secret.
+	KerberosPassword *string `json:"kerberosPassword,omitempty"`
+}
+
+// GetDatastoreSecrets implements the DatastoreSecretsClassification interface for type KerberosPasswordSecrets.
+func (k *KerberosPasswordSecrets) GetDatastoreSecrets() *DatastoreSecrets {
+	return &DatastoreSecrets{
+		SecretsType: k.SecretsType,
+	}
 }
 
 // Kubernetes - A Machine Learning compute based on Kubernetes Compute.
 type Kubernetes struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
-
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
 
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -1153,6 +4942,9 @@ type Kubernetes struct {
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -1184,6 +4976,88 @@ func (k *Kubernetes) GetCompute() *Compute {
 		ProvisioningErrors: k.ProvisioningErrors,
 		IsAttachedCompute:  k.IsAttachedCompute,
 		DisableLocalAuth:   k.DisableLocalAuth,
+	}
+}
+
+// KubernetesOnlineDeployment - Properties specific to a KubernetesOnlineDeployment.
+type KubernetesOnlineDeployment struct {
+	// REQUIRED; [Required] The compute type of the endpoint.
+	EndpointComputeType *EndpointComputeType `json:"endpointComputeType,omitempty"`
+
+	// If true, enables Application Insights logging.
+	AppInsightsEnabled *bool `json:"appInsightsEnabled,omitempty"`
+
+	// Code configuration for the endpoint deployment.
+	CodeConfiguration *CodeConfiguration `json:"codeConfiguration,omitempty"`
+
+	// The resource requirements for the container (cpu and memory).
+	ContainerResourceRequirements *ContainerResourceRequirements `json:"containerResourceRequirements,omitempty"`
+
+	// Description of the endpoint deployment.
+	Description *string `json:"description,omitempty"`
+
+	// If Enabled, allow egress public network access. If Disabled, this will create secure egress. Default: Enabled.
+	EgressPublicNetworkAccess *EgressPublicNetworkAccessType `json:"egressPublicNetworkAccess,omitempty"`
+
+	// ARM resource ID of the environment specification for the endpoint deployment.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+
+	// Environment variables configuration for the deployment.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// Compute instance type.
+	InstanceType *string `json:"instanceType,omitempty"`
+
+	// Liveness probe monitors the health of the container regularly.
+	LivenessProbe *ProbeSettings `json:"livenessProbe,omitempty"`
+
+	// The URI path to the model.
+	Model *string `json:"model,omitempty"`
+
+	// The path to mount the model in custom container.
+	ModelMountPath *string `json:"modelMountPath,omitempty"`
+
+	// If true, enable private network connection. DEPRECATED for future API versions. Use EgressPublicNetworkAccess.
+	PrivateNetworkConnection *bool `json:"privateNetworkConnection,omitempty"`
+
+	// Property dictionary. Properties can be added, but not removed or altered.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Readiness probe validates if the container is ready to serve traffic. The properties and defaults are the same as liveness
+	// probe.
+	ReadinessProbe *ProbeSettings `json:"readinessProbe,omitempty"`
+
+	// Request settings for the deployment.
+	RequestSettings *OnlineRequestSettings `json:"requestSettings,omitempty"`
+
+	// Scale settings for the deployment. If it is null or not provided, it defaults to TargetUtilizationScaleSettings for KubernetesOnlineDeployment
+	// and to DefaultScaleSettings for ManagedOnlineDeployment.
+	ScaleSettings OnlineScaleSettingsClassification `json:"scaleSettings,omitempty"`
+
+	// READ-ONLY; Provisioning state for the endpoint deployment.
+	ProvisioningState *DeploymentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetOnlineDeploymentDetails implements the OnlineDeploymentDetailsClassification interface for type KubernetesOnlineDeployment.
+func (k *KubernetesOnlineDeployment) GetOnlineDeploymentDetails() *OnlineDeploymentDetails {
+	return &OnlineDeploymentDetails{
+		AppInsightsEnabled:        k.AppInsightsEnabled,
+		EgressPublicNetworkAccess: k.EgressPublicNetworkAccess,
+		EndpointComputeType:       k.EndpointComputeType,
+		InstanceType:              k.InstanceType,
+		LivenessProbe:             k.LivenessProbe,
+		Model:                     k.Model,
+		ModelMountPath:            k.ModelMountPath,
+		PrivateNetworkConnection:  k.PrivateNetworkConnection,
+		ProvisioningState:         k.ProvisioningState,
+		ReadinessProbe:            k.ReadinessProbe,
+		RequestSettings:           k.RequestSettings,
+		ScaleSettings:             k.ScaleSettings,
+		CodeConfiguration:         k.CodeConfiguration,
+		Description:               k.Description,
+		EnvironmentID:             k.EnvironmentID,
+		EnvironmentVariables:      k.EnvironmentVariables,
+		Properties:                k.Properties,
 	}
 }
 
@@ -1280,6 +5154,553 @@ type ListWorkspaceQuotas struct {
 	Value []*ResourceQuota `json:"value,omitempty" azure:"ro"`
 }
 
+// LiteralJobInput - Literal input type.
+type LiteralJobInput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobInputType *JobInputType `json:"jobInputType,omitempty"`
+
+	// REQUIRED; [Required] Literal value for the input.
+	Value *string `json:"value,omitempty"`
+
+	// Description for the input.
+	Description *string `json:"description,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type LiteralJobInput.
+func (l *LiteralJobInput) GetJobInput() *JobInput {
+	return &JobInput{
+		Description:  l.Description,
+		JobInputType: l.JobInputType,
+	}
+}
+
+type MLFlowModelJobInput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobInputType *JobInputType `json:"jobInputType,omitempty"`
+
+	// REQUIRED; [Required] Input Asset URI.
+	URI *string `json:"uri,omitempty"`
+
+	// Description for the input.
+	Description *string `json:"description,omitempty"`
+
+	// Input Asset Delivery Mode.
+	Mode *InputDeliveryMode `json:"mode,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type MLFlowModelJobInput.
+func (m *MLFlowModelJobInput) GetJobInput() *JobInput {
+	return &JobInput{
+		Description:  m.Description,
+		JobInputType: m.JobInputType,
+	}
+}
+
+type MLFlowModelJobOutput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobOutputType *JobOutputType `json:"jobOutputType,omitempty"`
+
+	// Description for the output.
+	Description *string `json:"description,omitempty"`
+
+	// Output Asset Delivery Mode.
+	Mode *OutputDeliveryMode `json:"mode,omitempty"`
+
+	// Output Asset URI.
+	URI *string `json:"uri,omitempty"`
+}
+
+// GetJobOutput implements the JobOutputClassification interface for type MLFlowModelJobOutput.
+func (m *MLFlowModelJobOutput) GetJobOutput() *JobOutput {
+	return &JobOutput{
+		Description:   m.Description,
+		JobOutputType: m.JobOutputType,
+	}
+}
+
+// MLTableData - MLTable data definition
+type MLTableData struct {
+	// REQUIRED; [Required] Specifies the type of data.
+	DataType *DataType `json:"dataType,omitempty"`
+
+	// REQUIRED; [Required] Uri of the data. Usage/meaning depends on Microsoft.MachineLearning.ManagementFrontEnd.Contracts.V20220201Preview.Assets.DataVersionBase.DataType
+	DataURI *string `json:"dataUri,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// If the name version are system generated (anonymous registration).
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Uris referenced in the MLTable definition (required for lineage)
+	ReferencedUris []*string `json:"referencedUris,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// GetDataVersionBaseDetails implements the DataVersionBaseDetailsClassification interface for type MLTableData.
+func (m *MLTableData) GetDataVersionBaseDetails() *DataVersionBaseDetails {
+	return &DataVersionBaseDetails{
+		DataType:    m.DataType,
+		DataURI:     m.DataURI,
+		IsAnonymous: m.IsAnonymous,
+		IsArchived:  m.IsArchived,
+		Description: m.Description,
+		Properties:  m.Properties,
+		Tags:        m.Tags,
+	}
+}
+
+type MLTableJobInput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobInputType *JobInputType `json:"jobInputType,omitempty"`
+
+	// REQUIRED; [Required] Input Asset URI.
+	URI *string `json:"uri,omitempty"`
+
+	// Description for the input.
+	Description *string `json:"description,omitempty"`
+
+	// Input Asset Delivery Mode.
+	Mode *InputDeliveryMode `json:"mode,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type MLTableJobInput.
+func (m *MLTableJobInput) GetJobInput() *JobInput {
+	return &JobInput{
+		Description:  m.Description,
+		JobInputType: m.JobInputType,
+	}
+}
+
+type MLTableJobOutput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobOutputType *JobOutputType `json:"jobOutputType,omitempty"`
+
+	// Description for the output.
+	Description *string `json:"description,omitempty"`
+
+	// Output Asset Delivery Mode.
+	Mode *OutputDeliveryMode `json:"mode,omitempty"`
+
+	// Output Asset URI.
+	URI *string `json:"uri,omitempty"`
+}
+
+// GetJobOutput implements the JobOutputClassification interface for type MLTableJobOutput.
+func (m *MLTableJobOutput) GetJobOutput() *JobOutput {
+	return &JobOutput{
+		Description:   m.Description,
+		JobOutputType: m.JobOutputType,
+	}
+}
+
+// ManagedIdentity - Managed identity configuration.
+type ManagedIdentity struct {
+	// REQUIRED; [Required] Specifies the type of identity framework.
+	IdentityType *IdentityConfigurationType `json:"identityType,omitempty"`
+
+	// Specifies a user-assigned identity by client ID. For system-assigned, do not set this field.
+	ClientID *string `json:"clientId,omitempty"`
+
+	// Specifies a user-assigned identity by object ID. For system-assigned, do not set this field.
+	ObjectID *string `json:"objectId,omitempty"`
+
+	// Specifies a user-assigned identity by ARM resource ID. For system-assigned, do not set this field.
+	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// GetIdentityConfiguration implements the IdentityConfigurationClassification interface for type ManagedIdentity.
+func (m *ManagedIdentity) GetIdentityConfiguration() *IdentityConfiguration {
+	return &IdentityConfiguration{
+		IdentityType: m.IdentityType,
+	}
+}
+
+// ManagedOnlineDeployment - Properties specific to a ManagedOnlineDeployment.
+type ManagedOnlineDeployment struct {
+	// REQUIRED; [Required] The compute type of the endpoint.
+	EndpointComputeType *EndpointComputeType `json:"endpointComputeType,omitempty"`
+
+	// If true, enables Application Insights logging.
+	AppInsightsEnabled *bool `json:"appInsightsEnabled,omitempty"`
+
+	// Code configuration for the endpoint deployment.
+	CodeConfiguration *CodeConfiguration `json:"codeConfiguration,omitempty"`
+
+	// Description of the endpoint deployment.
+	Description *string `json:"description,omitempty"`
+
+	// If Enabled, allow egress public network access. If Disabled, this will create secure egress. Default: Enabled.
+	EgressPublicNetworkAccess *EgressPublicNetworkAccessType `json:"egressPublicNetworkAccess,omitempty"`
+
+	// ARM resource ID of the environment specification for the endpoint deployment.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+
+	// Environment variables configuration for the deployment.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// Compute instance type.
+	InstanceType *string `json:"instanceType,omitempty"`
+
+	// Liveness probe monitors the health of the container regularly.
+	LivenessProbe *ProbeSettings `json:"livenessProbe,omitempty"`
+
+	// The URI path to the model.
+	Model *string `json:"model,omitempty"`
+
+	// The path to mount the model in custom container.
+	ModelMountPath *string `json:"modelMountPath,omitempty"`
+
+	// If true, enable private network connection. DEPRECATED for future API versions. Use EgressPublicNetworkAccess.
+	PrivateNetworkConnection *bool `json:"privateNetworkConnection,omitempty"`
+
+	// Property dictionary. Properties can be added, but not removed or altered.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Readiness probe validates if the container is ready to serve traffic. The properties and defaults are the same as liveness
+	// probe.
+	ReadinessProbe *ProbeSettings `json:"readinessProbe,omitempty"`
+
+	// Request settings for the deployment.
+	RequestSettings *OnlineRequestSettings `json:"requestSettings,omitempty"`
+
+	// Scale settings for the deployment. If it is null or not provided, it defaults to TargetUtilizationScaleSettings for KubernetesOnlineDeployment
+	// and to DefaultScaleSettings for ManagedOnlineDeployment.
+	ScaleSettings OnlineScaleSettingsClassification `json:"scaleSettings,omitempty"`
+
+	// READ-ONLY; Provisioning state for the endpoint deployment.
+	ProvisioningState *DeploymentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetOnlineDeploymentDetails implements the OnlineDeploymentDetailsClassification interface for type ManagedOnlineDeployment.
+func (m *ManagedOnlineDeployment) GetOnlineDeploymentDetails() *OnlineDeploymentDetails {
+	return &OnlineDeploymentDetails{
+		AppInsightsEnabled:        m.AppInsightsEnabled,
+		EgressPublicNetworkAccess: m.EgressPublicNetworkAccess,
+		EndpointComputeType:       m.EndpointComputeType,
+		InstanceType:              m.InstanceType,
+		LivenessProbe:             m.LivenessProbe,
+		Model:                     m.Model,
+		ModelMountPath:            m.ModelMountPath,
+		PrivateNetworkConnection:  m.PrivateNetworkConnection,
+		ProvisioningState:         m.ProvisioningState,
+		ReadinessProbe:            m.ReadinessProbe,
+		RequestSettings:           m.RequestSettings,
+		ScaleSettings:             m.ScaleSettings,
+		CodeConfiguration:         m.CodeConfiguration,
+		Description:               m.Description,
+		EnvironmentID:             m.EnvironmentID,
+		EnvironmentVariables:      m.EnvironmentVariables,
+		Properties:                m.Properties,
+	}
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// MedianStoppingPolicy - Defines an early termination policy based on running averages of the primary metric of all runs
+type MedianStoppingPolicy struct {
+	// REQUIRED; [Required] Name of policy configuration
+	PolicyType *EarlyTerminationPolicyType `json:"policyType,omitempty"`
+
+	// Number of intervals by which to delay the first evaluation.
+	DelayEvaluation *int32 `json:"delayEvaluation,omitempty"`
+
+	// Interval (number of runs) between policy evaluations.
+	EvaluationInterval *int32 `json:"evaluationInterval,omitempty"`
+}
+
+// GetEarlyTerminationPolicy implements the EarlyTerminationPolicyClassification interface for type MedianStoppingPolicy.
+func (m *MedianStoppingPolicy) GetEarlyTerminationPolicy() *EarlyTerminationPolicy {
+	return &EarlyTerminationPolicy{
+		DelayEvaluation:    m.DelayEvaluation,
+		EvaluationInterval: m.EvaluationInterval,
+		PolicyType:         m.PolicyType,
+	}
+}
+
+// ModelContainerData - Azure Resource Manager resource envelope.
+type ModelContainerData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *ModelContainerDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+type ModelContainerDetails struct {
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The latest version inside this container.
+	LatestVersion *string `json:"latestVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The next auto incremental version
+	NextVersion *string `json:"nextVersion,omitempty" azure:"ro"`
+}
+
+// ModelContainerResourceArmPaginatedResult - A paginated list of ModelContainer entities.
+type ModelContainerResourceArmPaginatedResult struct {
+	// The link to the next page of ModelContainer objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type ModelContainer.
+	Value []*ModelContainerData `json:"value,omitempty"`
+}
+
+// ModelContainersClientCreateOrUpdateOptions contains the optional parameters for the ModelContainersClient.CreateOrUpdate
+// method.
+type ModelContainersClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelContainersClientDeleteOptions contains the optional parameters for the ModelContainersClient.Delete method.
+type ModelContainersClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelContainersClientGetOptions contains the optional parameters for the ModelContainersClient.Get method.
+type ModelContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelContainersClientListOptions contains the optional parameters for the ModelContainersClient.List method.
+type ModelContainersClientListOptions struct {
+	// Maximum number of results to return.
+	Count *int32
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+	// Continuation token for pagination.
+	Skip *string
+}
+
+// ModelVersionData - Azure Resource Manager resource envelope.
+type ModelVersionData struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *ModelVersionDetails `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ModelVersionDetails - Model asset version details.
+type ModelVersionDetails struct {
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Mapping of model flavors to their properties.
+	Flavors map[string]*FlavorData `json:"flavors,omitempty"`
+
+	// If the name version are system generated (anonymous registration).
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// Name of the training job which produced this model
+	JobName *string `json:"jobName,omitempty"`
+
+	// The storage format for this entity. Used for NCD.
+	ModelType *ModelType `json:"modelType,omitempty"`
+
+	// The URI path to the model contents.
+	ModelURI *string `json:"modelUri,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// ModelVersionResourceArmPaginatedResult - A paginated list of ModelVersion entities.
+type ModelVersionResourceArmPaginatedResult struct {
+	// The link to the next page of ModelVersion objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type ModelVersion.
+	Value []*ModelVersionData `json:"value,omitempty"`
+}
+
+// ModelVersionsClientCreateOrUpdateOptions contains the optional parameters for the ModelVersionsClient.CreateOrUpdate method.
+type ModelVersionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelVersionsClientDeleteOptions contains the optional parameters for the ModelVersionsClient.Delete method.
+type ModelVersionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelVersionsClientGetOptions contains the optional parameters for the ModelVersionsClient.Get method.
+type ModelVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelVersionsClientListOptions contains the optional parameters for the ModelVersionsClient.List method.
+type ModelVersionsClientListOptions struct {
+	// Model description.
+	Description *string
+	// Name of the feed.
+	Feed *string
+	// View type for including/excluding (for example) archived entities.
+	ListViewType *ListViewType
+	// Number of initial results to skip.
+	Offset *int32
+	// Ordering of list.
+	OrderBy *string
+	// Comma-separated list of property names (and optionally values). Example: prop1,prop2=value2
+	Properties *string
+	// Continuation token for pagination.
+	Skip *string
+	// Comma-separated list of tag names (and optionally values). Example: tag1,tag2=value2
+	Tags *string
+	// Maximum number of records to return.
+	Top *int32
+	// Model version.
+	Version *string
+}
+
+// Mpi - MPI distribution configuration.
+type Mpi struct {
+	// REQUIRED; [Required] Specifies the type of distribution framework.
+	DistributionType *DistributionType `json:"distributionType,omitempty"`
+
+	// Number of processes per MPI node.
+	ProcessCountPerInstance *int32 `json:"processCountPerInstance,omitempty"`
+}
+
+// GetDistributionConfiguration implements the DistributionConfigurationClassification interface for type Mpi.
+func (m *Mpi) GetDistributionConfiguration() *DistributionConfiguration {
+	return &DistributionConfiguration{
+		DistributionType: m.DistributionType,
+	}
+}
+
+// NCrossValidationsClassification provides polymorphic access to related types.
+// Call the interface's GetNCrossValidations() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AutoNCrossValidations, *CustomNCrossValidations, *NCrossValidations
+type NCrossValidationsClassification interface {
+	// GetNCrossValidations returns the NCrossValidations content of the underlying type.
+	GetNCrossValidations() *NCrossValidations
+}
+
+// NCrossValidations - N-Cross validations value.
+type NCrossValidations struct {
+	// REQUIRED; [Required] Mode for determining N-Cross validations.
+	Mode *NCrossValidationsMode `json:"mode,omitempty"`
+}
+
+// GetNCrossValidations implements the NCrossValidationsClassification interface for type NCrossValidations.
+func (n *NCrossValidations) GetNCrossValidations() *NCrossValidations { return n }
+
+// NlpVertical - Abstract class for NLP related AutoML tasks. NLP - Natural Language Processing.
+type NlpVertical struct {
+	// Data inputs for AutoMLJob.
+	DataSettings *NlpVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// Featurization inputs needed for AutoML job.
+	FeaturizationSettings *NlpVerticalFeaturizationSettings `json:"featurizationSettings,omitempty"`
+
+	// Execution constraints for AutoMLJob.
+	LimitSettings *NlpVerticalLimitSettings `json:"limitSettings,omitempty"`
+}
+
+// NlpVerticalDataSettings - Class for data inputs. NLP - Natural Language Processing.
+type NlpVerticalDataSettings struct {
+	// REQUIRED; [Required] Target column name: This is prediction values column. Also known as label column name in context of
+	// classification tasks.
+	TargetColumnName *string `json:"targetColumnName,omitempty"`
+
+	// REQUIRED; [Required] Training data input.
+	TrainingData *TrainingDataSettings `json:"trainingData,omitempty"`
+
+	// Test data input.
+	TestData *TestDataSettings `json:"testData,omitempty"`
+
+	// Validation data inputs.
+	ValidationData *NlpVerticalValidationDataSettings `json:"validationData,omitempty"`
+}
+
+type NlpVerticalFeaturizationSettings struct {
+	// Dataset language, useful for the text data.
+	DatasetLanguage *string `json:"datasetLanguage,omitempty"`
+}
+
+// NlpVerticalLimitSettings - Job execution constraints.
+type NlpVerticalLimitSettings struct {
+	// Maximum Concurrent AutoML iterations.
+	MaxConcurrentTrials *int32 `json:"maxConcurrentTrials,omitempty"`
+
+	// Number of AutoML iterations.
+	MaxTrials *int32 `json:"maxTrials,omitempty"`
+
+	// AutoML job timeout.
+	Timeout *string `json:"timeout,omitempty"`
+}
+
+type NlpVerticalValidationDataSettings struct {
+	// Validation data MLTable.
+	Data *MLTableJobInput `json:"data,omitempty"`
+
+	// The fraction of training dataset that needs to be set aside for validation purpose. Values between (0.0 , 1.0) Applied
+	// when validation dataset is not provided.
+	ValidationDataSize *float64 `json:"validationDataSize,omitempty"`
+}
+
 // NodeStateCounts - Counts of various compute node states on the amlCompute.
 type NodeStateCounts struct {
 	// READ-ONLY; Number of compute nodes in idle state.
@@ -1299,6 +5720,19 @@ type NodeStateCounts struct {
 
 	// READ-ONLY; Number of compute nodes which are in unusable state.
 	UnusableNodeCount *int32 `json:"unusableNodeCount,omitempty" azure:"ro"`
+}
+
+// NoneDatastoreCredentials - Empty/none datastore credentials.
+type NoneDatastoreCredentials struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	CredentialsType *CredentialsType `json:"credentialsType,omitempty"`
+}
+
+// GetDatastoreCredentials implements the DatastoreCredentialsClassification interface for type NoneDatastoreCredentials.
+func (n *NoneDatastoreCredentials) GetDatastoreCredentials() *DatastoreCredentials {
+	return &DatastoreCredentials{
+		CredentialsType: n.CredentialsType,
+	}
 }
 
 type NotebookAccessTokenResult struct {
@@ -1342,39 +5776,365 @@ type NotebookResourceInfo struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// Operation - Azure Machine Learning workspace REST API operation
-type Operation struct {
-	// Display name of operation
-	Display *OperationDisplay `json:"display,omitempty"`
+// Objective - Optimization objective.
+type Objective struct {
+	// REQUIRED; [Required] Defines supported metric goals for hyperparameter tuning
+	Goal *Goal `json:"goal,omitempty"`
 
-	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	// REQUIRED; [Required] Name of the metric to optimize.
+	PrimaryMetric *string `json:"primaryMetric,omitempty"`
 }
 
-// OperationDisplay - Display name of operation
-type OperationDisplay struct {
-	// The description for the operation.
+type OnlineDeploymentData struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties OnlineDeploymentDetailsClassification `json:"properties,omitempty"`
+
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
+	Kind *string `json:"kind,omitempty"`
+
+	// Sku details required for ARM contract for Autoscaling.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// OnlineDeploymentDetailsClassification provides polymorphic access to related types.
+// Call the interface's GetOnlineDeploymentDetails() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *KubernetesOnlineDeployment, *ManagedOnlineDeployment, *OnlineDeploymentDetails
+type OnlineDeploymentDetailsClassification interface {
+	// GetOnlineDeploymentDetails returns the OnlineDeploymentDetails content of the underlying type.
+	GetOnlineDeploymentDetails() *OnlineDeploymentDetails
+}
+
+type OnlineDeploymentDetails struct {
+	// REQUIRED; [Required] The compute type of the endpoint.
+	EndpointComputeType *EndpointComputeType `json:"endpointComputeType,omitempty"`
+
+	// If true, enables Application Insights logging.
+	AppInsightsEnabled *bool `json:"appInsightsEnabled,omitempty"`
+
+	// Code configuration for the endpoint deployment.
+	CodeConfiguration *CodeConfiguration `json:"codeConfiguration,omitempty"`
+
+	// Description of the endpoint deployment.
 	Description *string `json:"description,omitempty"`
 
-	// The operation that users can perform.
-	Operation *string `json:"operation,omitempty"`
+	// If Enabled, allow egress public network access. If Disabled, this will create secure egress. Default: Enabled.
+	EgressPublicNetworkAccess *EgressPublicNetworkAccessType `json:"egressPublicNetworkAccess,omitempty"`
 
-	// The resource provider name: Microsoft.MachineLearningExperimentation
-	Provider *string `json:"provider,omitempty"`
+	// ARM resource ID of the environment specification for the endpoint deployment.
+	EnvironmentID *string `json:"environmentId,omitempty"`
 
-	// The resource on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	// Environment variables configuration for the deployment.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// Compute instance type.
+	InstanceType *string `json:"instanceType,omitempty"`
+
+	// Liveness probe monitors the health of the container regularly.
+	LivenessProbe *ProbeSettings `json:"livenessProbe,omitempty"`
+
+	// The URI path to the model.
+	Model *string `json:"model,omitempty"`
+
+	// The path to mount the model in custom container.
+	ModelMountPath *string `json:"modelMountPath,omitempty"`
+
+	// If true, enable private network connection. DEPRECATED for future API versions. Use EgressPublicNetworkAccess.
+	PrivateNetworkConnection *bool `json:"privateNetworkConnection,omitempty"`
+
+	// Property dictionary. Properties can be added, but not removed or altered.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Readiness probe validates if the container is ready to serve traffic. The properties and defaults are the same as liveness
+	// probe.
+	ReadinessProbe *ProbeSettings `json:"readinessProbe,omitempty"`
+
+	// Request settings for the deployment.
+	RequestSettings *OnlineRequestSettings `json:"requestSettings,omitempty"`
+
+	// Scale settings for the deployment. If it is null or not provided, it defaults to TargetUtilizationScaleSettings for KubernetesOnlineDeployment
+	// and to DefaultScaleSettings for ManagedOnlineDeployment.
+	ScaleSettings OnlineScaleSettingsClassification `json:"scaleSettings,omitempty"`
+
+	// READ-ONLY; Provisioning state for the endpoint deployment.
+	ProvisioningState *DeploymentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
-// OperationListResult - An array of operations supported by the resource provider.
-type OperationListResult struct {
-	// List of AML workspace operations supported by the AML workspace resource provider.
-	Value []*Operation `json:"value,omitempty"`
+// GetOnlineDeploymentDetails implements the OnlineDeploymentDetailsClassification interface for type OnlineDeploymentDetails.
+func (o *OnlineDeploymentDetails) GetOnlineDeploymentDetails() *OnlineDeploymentDetails { return o }
+
+// OnlineDeploymentTrackedResourceArmPaginatedResult - A paginated list of OnlineDeployment entities.
+type OnlineDeploymentTrackedResourceArmPaginatedResult struct {
+	// The link to the next page of OnlineDeployment objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type OnlineDeployment.
+	Value []*OnlineDeploymentData `json:"value,omitempty"`
 }
+
+// OnlineDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the OnlineDeploymentsClient.BeginCreateOrUpdate
+// method.
+type OnlineDeploymentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// OnlineDeploymentsClientBeginDeleteOptions contains the optional parameters for the OnlineDeploymentsClient.BeginDelete
+// method.
+type OnlineDeploymentsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// OnlineDeploymentsClientBeginUpdateOptions contains the optional parameters for the OnlineDeploymentsClient.BeginUpdate
+// method.
+type OnlineDeploymentsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// OnlineDeploymentsClientGetLogsOptions contains the optional parameters for the OnlineDeploymentsClient.GetLogs method.
+type OnlineDeploymentsClientGetLogsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OnlineDeploymentsClientGetOptions contains the optional parameters for the OnlineDeploymentsClient.Get method.
+type OnlineDeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OnlineDeploymentsClientListOptions contains the optional parameters for the OnlineDeploymentsClient.List method.
+type OnlineDeploymentsClientListOptions struct {
+	// Ordering of list.
+	OrderBy *string
+	// Continuation token for pagination.
+	Skip *string
+	// Top of list.
+	Top *int32
+}
+
+// OnlineDeploymentsClientListSKUsOptions contains the optional parameters for the OnlineDeploymentsClient.ListSKUs method.
+type OnlineDeploymentsClientListSKUsOptions struct {
+	// Number of Skus to be retrieved in a page of results.
+	Count *int32
+	// Continuation token for pagination.
+	Skip *string
+}
+
+type OnlineEndpointData struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *OnlineEndpointDetails `json:"properties,omitempty"`
+
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
+	Kind *string `json:"kind,omitempty"`
+
+	// Sku details required for ARM contract for Autoscaling.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// OnlineEndpointDetails - Online endpoint configuration
+type OnlineEndpointDetails struct {
+	// REQUIRED; [Required] Use 'Key' for key based authentication and 'AMLToken' for Azure Machine Learning token-based authentication.
+	// 'Key' doesn't expire but 'AMLToken' does.
+	AuthMode *EndpointAuthMode `json:"authMode,omitempty"`
+
+	// ARM resource ID of the compute if it exists. optional
+	Compute *string `json:"compute,omitempty"`
+
+	// Description of the inference endpoint.
+	Description *string `json:"description,omitempty"`
+
+	// EndpointAuthKeys to set initially on an Endpoint. This property will always be returned as null. AuthKey values must be
+	// retrieved using the ListKeys API.
+	Keys *EndpointAuthKeys `json:"keys,omitempty"`
+
+	// Percentage of traffic to be mirrored to each deployment without using returned scoring. Traffic values need to sum to utmost
+	// 50.
+	MirrorTraffic map[string]*int32 `json:"mirrorTraffic,omitempty"`
+
+	// Property dictionary. Properties can be added, but not removed or altered.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Set to "Enabled" for endpoints that should allow public access when Private Link is enabled.
+	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
+
+	// Percentage of traffic from endpoint to divert to each deployment. Traffic values need to sum to 100.
+	Traffic map[string]*int32 `json:"traffic,omitempty"`
+
+	// READ-ONLY; Provisioning state for the endpoint.
+	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Endpoint URI.
+	ScoringURI *string `json:"scoringUri,omitempty" azure:"ro"`
+
+	// READ-ONLY; Endpoint Swagger URI.
+	SwaggerURI *string `json:"swaggerUri,omitempty" azure:"ro"`
+}
+
+// OnlineEndpointTrackedResourceArmPaginatedResult - A paginated list of OnlineEndpoint entities.
+type OnlineEndpointTrackedResourceArmPaginatedResult struct {
+	// The link to the next page of OnlineEndpoint objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type OnlineEndpoint.
+	Value []*OnlineEndpointData `json:"value,omitempty"`
+}
+
+// OnlineEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the OnlineEndpointsClient.BeginCreateOrUpdate
+// method.
+type OnlineEndpointsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// OnlineEndpointsClientBeginDeleteOptions contains the optional parameters for the OnlineEndpointsClient.BeginDelete method.
+type OnlineEndpointsClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// OnlineEndpointsClientBeginRegenerateKeysOptions contains the optional parameters for the OnlineEndpointsClient.BeginRegenerateKeys
+// method.
+type OnlineEndpointsClientBeginRegenerateKeysOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// OnlineEndpointsClientBeginUpdateOptions contains the optional parameters for the OnlineEndpointsClient.BeginUpdate method.
+type OnlineEndpointsClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// OnlineEndpointsClientGetOptions contains the optional parameters for the OnlineEndpointsClient.Get method.
+type OnlineEndpointsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OnlineEndpointsClientGetTokenOptions contains the optional parameters for the OnlineEndpointsClient.GetToken method.
+type OnlineEndpointsClientGetTokenOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OnlineEndpointsClientListKeysOptions contains the optional parameters for the OnlineEndpointsClient.ListKeys method.
+type OnlineEndpointsClientListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OnlineEndpointsClientListOptions contains the optional parameters for the OnlineEndpointsClient.List method.
+type OnlineEndpointsClientListOptions struct {
+	// EndpointComputeType to be filtered by.
+	ComputeType *EndpointComputeType
+	// Number of endpoints to be retrieved in a page of results.
+	Count *int32
+	// Name of the endpoint.
+	Name *string
+	// The option to order the response.
+	OrderBy *OrderString
+	// A set of properties with which to filter the returned models. It is a comma separated string of properties key and/or properties
+	// key=value Example: propKey1,propKey2,propKey3=value3 .
+	Properties *string
+	// Continuation token for pagination.
+	Skip *string
+	// A set of tags with which to filter the returned models. It is a comma separated string of tags key or tags key=value. Example:
+	// tagKey1,tagKey2,tagKey3=value3 .
+	Tags *string
+}
+
+// OnlineRequestSettings - Online deployment scoring requests configuration.
+type OnlineRequestSettings struct {
+	// The number of maximum concurrent requests per node allowed per deployment. Defaults to 1.
+	MaxConcurrentRequestsPerInstance *int32 `json:"maxConcurrentRequestsPerInstance,omitempty"`
+
+	// The maximum amount of time a request will stay in the queue in ISO 8601 format. Defaults to 500ms.
+	MaxQueueWait *string `json:"maxQueueWait,omitempty"`
+
+	// The scoring timeout in ISO 8601 format. Defaults to 5000ms.
+	RequestTimeout *string `json:"requestTimeout,omitempty"`
+}
+
+// OnlineScaleSettingsClassification provides polymorphic access to related types.
+// Call the interface's GetOnlineScaleSettings() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DefaultScaleSettings, *OnlineScaleSettings, *TargetUtilizationScaleSettings
+type OnlineScaleSettingsClassification interface {
+	// GetOnlineScaleSettings returns the OnlineScaleSettings content of the underlying type.
+	GetOnlineScaleSettings() *OnlineScaleSettings
+}
+
+// OnlineScaleSettings - Online deployment scaling configuration.
+type OnlineScaleSettings struct {
+	// REQUIRED; [Required] Type of deployment scaling algorithm
+	ScaleType *ScaleType `json:"scaleType,omitempty"`
+}
+
+// GetOnlineScaleSettings implements the OnlineScaleSettingsClassification interface for type OnlineScaleSettings.
+func (o *OnlineScaleSettings) GetOnlineScaleSettings() *OnlineScaleSettings { return o }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// OutputPathAssetReference - Reference to an asset via its path in a job output.
+type OutputPathAssetReference struct {
+	// REQUIRED; [Required] Specifies the type of asset reference.
+	ReferenceType *ReferenceType `json:"referenceType,omitempty"`
+
+	// ARM resource ID of the job.
+	JobID *string `json:"jobId,omitempty"`
+
+	// The path of the file/directory in the job output.
+	Path *string `json:"path,omitempty"`
+}
+
+// GetAssetReferenceBase implements the AssetReferenceBaseClassification interface for type OutputPathAssetReference.
+func (o *OutputPathAssetReference) GetAssetReferenceBase() *AssetReferenceBase {
+	return &AssetReferenceBase{
+		ReferenceType: o.ReferenceType,
+	}
 }
 
 // PaginatedComputeResourcesList - Paginated list of Machine Learning compute objects wrapped in ARM resource envelope.
@@ -1395,6 +6155,327 @@ type PaginatedWorkspaceConnectionsList struct {
 	Value []*WorkspaceConnection `json:"value,omitempty"`
 }
 
+// PartialAssetReferenceBaseClassification provides polymorphic access to related types.
+// Call the interface's GetPartialAssetReferenceBase() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *PartialAssetReferenceBase, *PartialDataPathAssetReference, *PartialIDAssetReference, *PartialOutputPathAssetReference
+type PartialAssetReferenceBaseClassification interface {
+	// GetPartialAssetReferenceBase returns the PartialAssetReferenceBase content of the underlying type.
+	GetPartialAssetReferenceBase() *PartialAssetReferenceBase
+}
+
+// PartialAssetReferenceBase - Base definition for asset references.
+type PartialAssetReferenceBase struct {
+	// REQUIRED; [Required] Specifies the type of asset reference.
+	ReferenceType *ReferenceType `json:"referenceType,omitempty"`
+}
+
+// GetPartialAssetReferenceBase implements the PartialAssetReferenceBaseClassification interface for type PartialAssetReferenceBase.
+func (p *PartialAssetReferenceBase) GetPartialAssetReferenceBase() *PartialAssetReferenceBase {
+	return p
+}
+
+// PartialBatchDeployment - Mutable batch inference settings per deployment.
+type PartialBatchDeployment struct {
+	// Code configuration for the endpoint deployment.
+	CodeConfiguration *PartialCodeConfiguration `json:"codeConfiguration,omitempty"`
+
+	// Compute binding definition.
+	Compute *string `json:"compute,omitempty"`
+
+	// Description of the endpoint deployment.
+	Description *string `json:"description,omitempty"`
+
+	// ARM resource ID of the environment specification for the endpoint deployment.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+
+	// Environment variables configuration for the deployment.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// Error threshold, if the error count for the entire input goes above this value, the batch inference will be aborted. Range
+	// is [-1, int.MaxValue]. For FileDataset, this value is the count of file
+	// failures. For TabularDataset, this value is the count of record failures. If set to -1 (the lower bound), all failures
+	// during batch inference will be ignored.
+	ErrorThreshold *int32 `json:"errorThreshold,omitempty"`
+
+	// Logging level for batch inference operation.
+	LoggingLevel *BatchLoggingLevel `json:"loggingLevel,omitempty"`
+
+	// Indicates number of processes per instance
+	MaxConcurrencyPerInstance *int32 `json:"maxConcurrencyPerInstance,omitempty"`
+
+	// Size of the mini-batch passed to each batch invocation. For FileDataset, this is the number of files per mini-batch. For
+	// TabularDataset, this is the size of the records in bytes, per mini-batch.
+	MiniBatchSize *int64 `json:"miniBatchSize,omitempty"`
+
+	// Reference to the model asset for the endpoint deployment.
+	Model PartialAssetReferenceBaseClassification `json:"model,omitempty"`
+
+	// Indicates how the output will be organized.
+	OutputAction *BatchOutputAction `json:"outputAction,omitempty"`
+
+	// Customized output file name for append_row output action.
+	OutputFileName *string `json:"outputFileName,omitempty"`
+
+	// Property dictionary. Properties can be added, but not removed or altered.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Retry Settings for the batch inference operation.
+	RetrySettings *PartialBatchRetrySettings `json:"retrySettings,omitempty"`
+}
+
+// PartialBatchDeploymentPartialTrackedResource - Strictly used in update requests.
+type PartialBatchDeploymentPartialTrackedResource struct {
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *PartialManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
+	Kind *string `json:"kind,omitempty"`
+
+	// The geo-location where the resource lives.
+	Location *string `json:"location,omitempty"`
+
+	// Additional attributes of the entity.
+	Properties *PartialBatchDeployment `json:"properties,omitempty"`
+
+	// Sku details required for ARM contract for Autoscaling.
+	SKU *PartialSKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// PartialBatchEndpoint - Mutable Batch endpoint configuration
+type PartialBatchEndpoint struct {
+	// Default values for Batch Endpoint
+	Defaults *BatchEndpointDefaults `json:"defaults,omitempty"`
+}
+
+// PartialBatchEndpointPartialTrackedResource - Strictly used in update requests.
+type PartialBatchEndpointPartialTrackedResource struct {
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *PartialManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
+	Kind *string `json:"kind,omitempty"`
+
+	// The geo-location where the resource lives.
+	Location *string `json:"location,omitempty"`
+
+	// Additional attributes of the entity.
+	Properties *PartialBatchEndpoint `json:"properties,omitempty"`
+
+	// Sku details required for ARM contract for Autoscaling.
+	SKU *PartialSKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// PartialBatchRetrySettings - Retry settings for a batch inference operation.
+type PartialBatchRetrySettings struct {
+	// Maximum retry count for a mini-batch
+	MaxRetries *int32 `json:"maxRetries,omitempty"`
+
+	// Invocation timeout for a mini-batch, in ISO 8601 format.
+	Timeout *string `json:"timeout,omitempty"`
+}
+
+// PartialCodeConfiguration - Configuration for a scoring code asset.
+type PartialCodeConfiguration struct {
+	// ARM resource ID of the code asset.
+	CodeID *string `json:"codeId,omitempty"`
+
+	// The script to execute on startup. eg. "score.py"
+	ScoringScript *string `json:"scoringScript,omitempty"`
+}
+
+// PartialDataPathAssetReference - Reference to an asset via its path in a datastore.
+type PartialDataPathAssetReference struct {
+	// REQUIRED; [Required] Specifies the type of asset reference.
+	ReferenceType *ReferenceType `json:"referenceType,omitempty"`
+
+	// ARM resource ID of the datastore where the asset is located.
+	DatastoreID *string `json:"datastoreId,omitempty"`
+
+	// The path of the file/directory in the datastore.
+	Path *string `json:"path,omitempty"`
+}
+
+// GetPartialAssetReferenceBase implements the PartialAssetReferenceBaseClassification interface for type PartialDataPathAssetReference.
+func (p *PartialDataPathAssetReference) GetPartialAssetReferenceBase() *PartialAssetReferenceBase {
+	return &PartialAssetReferenceBase{
+		ReferenceType: p.ReferenceType,
+	}
+}
+
+// PartialIDAssetReference - Reference to an asset via its ARM resource ID.
+type PartialIDAssetReference struct {
+	// REQUIRED; [Required] Specifies the type of asset reference.
+	ReferenceType *ReferenceType `json:"referenceType,omitempty"`
+
+	// ARM resource ID of the asset.
+	AssetID *string `json:"assetId,omitempty"`
+}
+
+// GetPartialAssetReferenceBase implements the PartialAssetReferenceBaseClassification interface for type PartialIDAssetReference.
+func (p *PartialIDAssetReference) GetPartialAssetReferenceBase() *PartialAssetReferenceBase {
+	return &PartialAssetReferenceBase{
+		ReferenceType: p.ReferenceType,
+	}
+}
+
+// PartialKubernetesOnlineDeployment - Properties specific to a KubernetesOnlineDeployment.
+type PartialKubernetesOnlineDeployment struct {
+	// REQUIRED; [Required] The compute type of the endpoint.
+	EndpointComputeType *EndpointComputeType `json:"endpointComputeType,omitempty"`
+}
+
+// GetPartialOnlineDeployment implements the PartialOnlineDeploymentClassification interface for type PartialKubernetesOnlineDeployment.
+func (p *PartialKubernetesOnlineDeployment) GetPartialOnlineDeployment() *PartialOnlineDeployment {
+	return &PartialOnlineDeployment{
+		EndpointComputeType: p.EndpointComputeType,
+	}
+}
+
+// PartialManagedOnlineDeployment - Properties specific to a ManagedOnlineDeployment.
+type PartialManagedOnlineDeployment struct {
+	// REQUIRED; [Required] The compute type of the endpoint.
+	EndpointComputeType *EndpointComputeType `json:"endpointComputeType,omitempty"`
+}
+
+// GetPartialOnlineDeployment implements the PartialOnlineDeploymentClassification interface for type PartialManagedOnlineDeployment.
+func (p *PartialManagedOnlineDeployment) GetPartialOnlineDeployment() *PartialOnlineDeployment {
+	return &PartialOnlineDeployment{
+		EndpointComputeType: p.EndpointComputeType,
+	}
+}
+
+// PartialManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type PartialManagedServiceIdentity struct {
+	// Managed service identity (system assigned and/or user assigned identities)
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]interface{} `json:"userAssignedIdentities,omitempty"`
+}
+
+// PartialOnlineDeploymentClassification provides polymorphic access to related types.
+// Call the interface's GetPartialOnlineDeployment() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *PartialKubernetesOnlineDeployment, *PartialManagedOnlineDeployment, *PartialOnlineDeployment
+type PartialOnlineDeploymentClassification interface {
+	// GetPartialOnlineDeployment returns the PartialOnlineDeployment content of the underlying type.
+	GetPartialOnlineDeployment() *PartialOnlineDeployment
+}
+
+// PartialOnlineDeployment - Mutable online deployment configuration
+type PartialOnlineDeployment struct {
+	// REQUIRED; [Required] The compute type of the endpoint.
+	EndpointComputeType *EndpointComputeType `json:"endpointComputeType,omitempty"`
+}
+
+// GetPartialOnlineDeployment implements the PartialOnlineDeploymentClassification interface for type PartialOnlineDeployment.
+func (p *PartialOnlineDeployment) GetPartialOnlineDeployment() *PartialOnlineDeployment { return p }
+
+// PartialOnlineDeploymentPartialTrackedResource - Strictly used in update requests.
+type PartialOnlineDeploymentPartialTrackedResource struct {
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *PartialManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
+	Kind *string `json:"kind,omitempty"`
+
+	// The geo-location where the resource lives.
+	Location *string `json:"location,omitempty"`
+
+	// Additional attributes of the entity.
+	Properties PartialOnlineDeploymentClassification `json:"properties,omitempty"`
+
+	// Sku details required for ARM contract for Autoscaling.
+	SKU *PartialSKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// PartialOnlineEndpoint - Mutable online endpoint configuration
+type PartialOnlineEndpoint struct {
+	// Percentage of traffic to be mirrored to each deployment without using returned scoring. Traffic values need to sum to utmost
+	// 50.
+	MirrorTraffic map[string]*int32 `json:"mirrorTraffic,omitempty"`
+
+	// Set to "Enabled" for endpoints that should allow public access when Private Link is enabled.
+	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
+
+	// Percentage of traffic from endpoint to divert to each deployment. Traffic values need to sum to 100.
+	Traffic map[string]*int32 `json:"traffic,omitempty"`
+}
+
+// PartialOnlineEndpointPartialTrackedResource - Strictly used in update requests.
+type PartialOnlineEndpointPartialTrackedResource struct {
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *PartialManagedServiceIdentity `json:"identity,omitempty"`
+
+	// Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type.
+	Kind *string `json:"kind,omitempty"`
+
+	// The geo-location where the resource lives.
+	Location *string `json:"location,omitempty"`
+
+	// Additional attributes of the entity.
+	Properties *PartialOnlineEndpoint `json:"properties,omitempty"`
+
+	// Sku details required for ARM contract for Autoscaling.
+	SKU *PartialSKU `json:"sku,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// PartialOutputPathAssetReference - Reference to an asset via its path in a job output.
+type PartialOutputPathAssetReference struct {
+	// REQUIRED; [Required] Specifies the type of asset reference.
+	ReferenceType *ReferenceType `json:"referenceType,omitempty"`
+
+	// ARM resource ID of the job.
+	JobID *string `json:"jobId,omitempty"`
+
+	// The path of the file/directory in the job output.
+	Path *string `json:"path,omitempty"`
+}
+
+// GetPartialAssetReferenceBase implements the PartialAssetReferenceBaseClassification interface for type PartialOutputPathAssetReference.
+func (p *PartialOutputPathAssetReference) GetPartialAssetReferenceBase() *PartialAssetReferenceBase {
+	return &PartialAssetReferenceBase{
+		ReferenceType: p.ReferenceType,
+	}
+}
+
+// PartialSKU - Common SKU definition.
+type PartialSKU struct {
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32 `json:"capacity,omitempty"`
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+
+	// The name of the SKU. Ex - P3. It is typically a letter+number code.
+	Name *string `json:"name,omitempty"`
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string `json:"size,omitempty"`
+
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
+	Tier *SKUTier `json:"tier,omitempty"`
+}
+
 type Password struct {
 	// READ-ONLY
 	Name *string `json:"name,omitempty" azure:"ro"`
@@ -1409,6 +6490,76 @@ type PersonalComputeInstanceSettings struct {
 	AssignedUser *AssignedUser `json:"assignedUser,omitempty"`
 }
 
+// PipelineJob - Pipeline Job definition: defines generic to MFE attributes.
+type PipelineJob struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobType *JobType `json:"jobType,omitempty"`
+
+	// ARM resource ID of the compute resource.
+	ComputeID *string `json:"computeId,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Display name of job.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The name of the experiment the job belongs to. If not set, the job is placed in the "Default" experiment.
+	ExperimentName *string `json:"experimentName,omitempty"`
+
+	// Identity configuration. If set, this should be one of AmlToken, ManagedIdentity, UserIdentity or null. Defaults to AmlToken
+	// if null.
+	Identity IdentityConfigurationClassification `json:"identity,omitempty"`
+
+	// Inputs for the pipeline job.
+	Inputs map[string]JobInputClassification `json:"inputs,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// Jobs construct the Pipeline Job.
+	Jobs map[string]interface{} `json:"jobs,omitempty"`
+
+	// Outputs for the pipeline job
+	Outputs map[string]JobOutputClassification `json:"outputs,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Schedule definition of job. If no schedule is provided, the job is run once and immediately after submission.
+	Schedule ScheduleBaseClassification `json:"schedule,omitempty"`
+
+	// List of JobEndpoints. For local jobs, a job endpoint will have an endpoint value of FileStreamObject.
+	Services map[string]*JobService `json:"services,omitempty"`
+
+	// Pipeline settings, for things like ContinueRunOnStepFailure etc.
+	Settings interface{} `json:"settings,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Status of the job.
+	Status *JobStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetJobBaseDetails implements the JobBaseDetailsClassification interface for type PipelineJob.
+func (p *PipelineJob) GetJobBaseDetails() *JobBaseDetails {
+	return &JobBaseDetails{
+		ComputeID:      p.ComputeID,
+		DisplayName:    p.DisplayName,
+		ExperimentName: p.ExperimentName,
+		Identity:       p.Identity,
+		IsArchived:     p.IsArchived,
+		JobType:        p.JobType,
+		Schedule:       p.Schedule,
+		Services:       p.Services,
+		Status:         p.Status,
+		Description:    p.Description,
+		Properties:     p.Properties,
+		Tags:           p.Tags,
+	}
+}
+
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
@@ -1421,7 +6572,7 @@ type PrivateEndpoint struct {
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1441,7 +6592,7 @@ type PrivateEndpointConnection struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; System data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1493,7 +6644,7 @@ type PrivateEndpointConnectionsClientListOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -1513,7 +6664,7 @@ type PrivateLinkResource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; System data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -1556,6 +6707,40 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
+// ProbeSettings - Deployment container liveness/readiness probe configuration.
+type ProbeSettings struct {
+	// The number of failures to allow before returning an unhealthy status.
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	// The delay before the first probe in ISO 8601 format.
+	InitialDelay *string `json:"initialDelay,omitempty"`
+
+	// The length of time between probes in ISO 8601 format.
+	Period *string `json:"period,omitempty"`
+
+	// The number of successful probes before returning a healthy status.
+	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+
+	// The probe timeout in ISO 8601 format.
+	Timeout *string `json:"timeout,omitempty"`
+}
+
+// PyTorch distribution configuration.
+type PyTorch struct {
+	// REQUIRED; [Required] Specifies the type of distribution framework.
+	DistributionType *DistributionType `json:"distributionType,omitempty"`
+
+	// Number of processes per node.
+	ProcessCountPerInstance *int32 `json:"processCountPerInstance,omitempty"`
+}
+
+// GetDistributionConfiguration implements the DistributionConfigurationClassification interface for type PyTorch.
+func (p *PyTorch) GetDistributionConfiguration() *DistributionConfiguration {
+	return &DistributionConfiguration{
+		DistributionType: p.DistributionType,
+	}
+}
+
 // QuotaBaseProperties - The properties for Quota update or retrieval.
 type QuotaBaseProperties struct {
 	// Specifies the resource ID.
@@ -1590,6 +6775,83 @@ type QuotasClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RandomSamplingAlgorithm - Defines a Sampling Algorithm that generates values randomly
+type RandomSamplingAlgorithm struct {
+	// REQUIRED; [Required] The algorithm used for generating hyperparameter values, along with configuration properties
+	SamplingAlgorithmType *SamplingAlgorithmType `json:"samplingAlgorithmType,omitempty"`
+
+	// The specific type of random algorithm
+	Rule *RandomSamplingAlgorithmRule `json:"rule,omitempty"`
+
+	// An optional integer to use as the seed for random number generation
+	Seed *int32 `json:"seed,omitempty"`
+}
+
+// GetSamplingAlgorithm implements the SamplingAlgorithmClassification interface for type RandomSamplingAlgorithm.
+func (r *RandomSamplingAlgorithm) GetSamplingAlgorithm() *SamplingAlgorithm {
+	return &SamplingAlgorithm{
+		SamplingAlgorithmType: r.SamplingAlgorithmType,
+	}
+}
+
+// RecurrencePattern - Recurrence schedule pattern definition
+type RecurrencePattern struct {
+	// REQUIRED; [Required] List of hours for recurrence schedule pattern
+	Hours []*int32 `json:"hours,omitempty"`
+
+	// REQUIRED; [Required] List of minutes for recurrence schedule pattern
+	Minutes []*int32 `json:"minutes,omitempty"`
+
+	// List of weekdays for recurrence schedule pattern
+	Weekdays []*Weekday `json:"weekdays,omitempty"`
+}
+
+// RecurrenceSchedule - Recurrence schedule definition
+type RecurrenceSchedule struct {
+	// REQUIRED; [Required] Specifies frequency with with which to trigger schedule
+	Frequency *RecurrenceFrequency `json:"frequency,omitempty"`
+
+	// REQUIRED; [Required] Specifies schedule interval in conjunction with frequency
+	Interval *int32 `json:"interval,omitempty"`
+
+	// REQUIRED; [Required] Specifies the schedule type
+	ScheduleType *ScheduleType `json:"scheduleType,omitempty"`
+
+	// Specifies end time of schedule in ISO 8601 format. If not present, the schedule will run indefinitely
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Specifies the recurrence schedule pattern
+	Pattern *RecurrencePattern `json:"pattern,omitempty"`
+
+	// Specifies the schedule's status
+	ScheduleStatus *ScheduleStatus `json:"scheduleStatus,omitempty"`
+
+	// Specifies start time of schedule in ISO 8601 format.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Specifies time zone in which the schedule runs. TimeZone should follow Windows time zone format.
+	TimeZone *string `json:"timeZone,omitempty"`
+}
+
+// GetScheduleBase implements the ScheduleBaseClassification interface for type RecurrenceSchedule.
+func (r *RecurrenceSchedule) GetScheduleBase() *ScheduleBase {
+	return &ScheduleBase{
+		EndTime:        r.EndTime,
+		ScheduleStatus: r.ScheduleStatus,
+		ScheduleType:   r.ScheduleType,
+		StartTime:      r.StartTime,
+		TimeZone:       r.TimeZone,
+	}
+}
+
+type RegenerateEndpointKeysRequest struct {
+	// REQUIRED; [Required] Specification for which type of key to generate. Primary or Secondary.
+	KeyType *KeyType `json:"keyType,omitempty"`
+
+	// The value the key is set to.
+	KeyValue *string `json:"keyValue,omitempty"`
+}
+
 type RegistryListCredentialsResult struct {
 	Passwords []*Password `json:"passwords,omitempty"`
 
@@ -1600,6 +6862,44 @@ type RegistryListCredentialsResult struct {
 	Username *string `json:"username,omitempty" azure:"ro"`
 }
 
+// Regression task in AutoML Table vertical.
+type Regression struct {
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Allowed models for regression task.
+	AllowedModels []*RegressionModels `json:"allowedModels,omitempty"`
+
+	// Blocked models for regression task.
+	BlockedModels []*RegressionModels `json:"blockedModels,omitempty"`
+
+	// Data inputs for AutoMLJob.
+	DataSettings *TableVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// Featurization inputs needed for AutoML job.
+	FeaturizationSettings *TableVerticalFeaturizationSettings `json:"featurizationSettings,omitempty"`
+
+	// Execution constraints for AutoMLJob.
+	LimitSettings *TableVerticalLimitSettings `json:"limitSettings,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// Primary metric for regression task.
+	PrimaryMetric *RegressionPrimaryMetrics `json:"primaryMetric,omitempty"`
+
+	// Inputs for training phase for an AutoML Job.
+	TrainingSettings *TrainingSettings `json:"trainingSettings,omitempty"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type Regression.
+func (r *Regression) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: r.LogVerbosity,
+		TaskType:     r.TaskType,
+	}
+}
+
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1608,8 +6908,33 @@ type Resource struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+type ResourceBase struct {
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+type ResourceConfiguration struct {
+	// Optional number of instances or nodes used by the compute target.
+	InstanceCount *int32 `json:"instanceCount,omitempty"`
+
+	// Optional type of VM used as supported by the compute target.
+	InstanceType *string `json:"instanceType,omitempty"`
+
+	// Additional properties bag.
+	Properties map[string]interface{} `json:"properties,omitempty"`
 }
 
 // ResourceID - Represents a resource ID. For example, for a subnet, it is the resource URL for the subnet.
@@ -1648,62 +6973,78 @@ type ResourceQuota struct {
 	Unit *QuotaUnit `json:"unit,omitempty" azure:"ro"`
 }
 
-type ResourceSKULocationInfo struct {
-	// READ-ONLY; Location of the SKU
-	Location *string `json:"location,omitempty" azure:"ro"`
+type Route struct {
+	// REQUIRED; [Required] The path for the route.
+	Path *string `json:"path,omitempty"`
 
-	// READ-ONLY; Details of capabilities available to a SKU in specific zones.
-	ZoneDetails []*ResourceSKUZoneDetails `json:"zoneDetails,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of availability zones where the SKU is supported.
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	// REQUIRED; [Required] The port for the route.
+	Port *int32 `json:"port,omitempty"`
 }
 
-// ResourceSKUZoneDetails - Describes The zonal capabilities of a SKU.
-type ResourceSKUZoneDetails struct {
-	// READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
-	Capabilities []*SKUCapability `json:"capabilities,omitempty" azure:"ro"`
-
-	// READ-ONLY; The set of zones that the SKU is available in with the specified capabilities.
-	Name []*string `json:"name,omitempty" azure:"ro"`
-}
-
-// Restriction - The restriction because of which SKU cannot be used.
-type Restriction struct {
-	// The reason for the restriction.
-	ReasonCode *ReasonCode `json:"reasonCode,omitempty"`
-
-	// READ-ONLY; The type of restrictions. As of now only possible value for this is location.
-	Type *string `json:"type,omitempty" azure:"ro"`
-
-	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where
-	// the SKU is restricted.
-	Values []*string `json:"values,omitempty" azure:"ro"`
-}
-
-// SKU - Sku of the resource
+// SKU - The resource model definition representing SKU
 type SKU struct {
-	// Name of the sku
+	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string `json:"name,omitempty"`
 
-	// Tier of the sku like Basic or Enterprise
-	Tier *string `json:"tier,omitempty"`
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32 `json:"capacity,omitempty"`
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string `json:"family,omitempty"`
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string `json:"size,omitempty"`
+
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
+	Tier *SKUTier `json:"tier,omitempty"`
 }
 
-// SKUCapability - Features/user capabilities associated with the sku
-type SKUCapability struct {
-	// Capability/Feature ID
+// SKUCapacity - SKU capacity information
+type SKUCapacity struct {
+	// Gets or sets the default capacity.
+	Default *int32 `json:"default,omitempty"`
+
+	// Gets or sets the maximum.
+	Maximum *int32 `json:"maximum,omitempty"`
+
+	// Gets or sets the minimum.
+	Minimum *int32 `json:"minimum,omitempty"`
+
+	// Gets or sets the type of the scale.
+	ScaleType *SKUScaleType `json:"scaleType,omitempty"`
+}
+
+// SKUResource - Fulfills ARM Contract requirement to list all available SKUS for a resource.
+type SKUResource struct {
+	// Gets or sets the Sku Capacity.
+	Capacity *SKUCapacity `json:"capacity,omitempty"`
+
+	// Gets or sets the Sku.
+	SKU *SKUSetting `json:"sku,omitempty"`
+
+	// READ-ONLY; The resource type name.
+	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+}
+
+// SKUResourceArmPaginatedResult - A paginated list of SkuResource entities.
+type SKUResourceArmPaginatedResult struct {
+	// The link to the next page of SkuResource objects. If null, there are no additional pages.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of objects of type SkuResource.
+	Value []*SKUResource `json:"value,omitempty"`
+}
+
+// SKUSetting - SkuSetting fulfills the need for stripped down SKU info in ARM contract.
+type SKUSetting struct {
+	// REQUIRED; [Required] The name of the SKU. Ex - P3. It is typically a letter+number code.
 	Name *string `json:"name,omitempty"`
 
-	// Details about the feature/capability
-	Value *string `json:"value,omitempty"`
-}
-
-// SKUListResult - List of skus with features
-type SKUListResult struct {
-	// The URI to fetch the next page of Workspace Skus. Call ListNext() with this URI to fetch the next page of Workspace Skus
-	NextLink *string         `json:"nextLink,omitempty"`
-	Value    []*WorkspaceSKU `json:"value,omitempty"`
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
+	Tier *SKUTier `json:"tier,omitempty"`
 }
 
 // SSLConfiguration - The ssl configuration for scoring
@@ -1727,6 +7068,57 @@ type SSLConfiguration struct {
 	Status *SSLConfigurationStatus `json:"status,omitempty"`
 }
 
+// SamplingAlgorithmClassification provides polymorphic access to related types.
+// Call the interface's GetSamplingAlgorithm() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BayesianSamplingAlgorithm, *GridSamplingAlgorithm, *RandomSamplingAlgorithm, *SamplingAlgorithm
+type SamplingAlgorithmClassification interface {
+	// GetSamplingAlgorithm returns the SamplingAlgorithm content of the underlying type.
+	GetSamplingAlgorithm() *SamplingAlgorithm
+}
+
+// SamplingAlgorithm - The Sampling Algorithm used to generate hyperparameter values, along with properties to configure the
+// algorithm
+type SamplingAlgorithm struct {
+	// REQUIRED; [Required] The algorithm used for generating hyperparameter values, along with configuration properties
+	SamplingAlgorithmType *SamplingAlgorithmType `json:"samplingAlgorithmType,omitempty"`
+}
+
+// GetSamplingAlgorithm implements the SamplingAlgorithmClassification interface for type SamplingAlgorithm.
+func (s *SamplingAlgorithm) GetSamplingAlgorithm() *SamplingAlgorithm { return s }
+
+// SasDatastoreCredentials - SAS datastore credentials configuration.
+type SasDatastoreCredentials struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	CredentialsType *CredentialsType `json:"credentialsType,omitempty"`
+
+	// REQUIRED; [Required] Storage container secrets.
+	Secrets *SasDatastoreSecrets `json:"secrets,omitempty"`
+}
+
+// GetDatastoreCredentials implements the DatastoreCredentialsClassification interface for type SasDatastoreCredentials.
+func (s *SasDatastoreCredentials) GetDatastoreCredentials() *DatastoreCredentials {
+	return &DatastoreCredentials{
+		CredentialsType: s.CredentialsType,
+	}
+}
+
+// SasDatastoreSecrets - Datastore SAS secrets.
+type SasDatastoreSecrets struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	SecretsType *SecretsType `json:"secretsType,omitempty"`
+
+	// Storage container SAS token.
+	SasToken *string `json:"sasToken,omitempty"`
+}
+
+// GetDatastoreSecrets implements the DatastoreSecretsClassification interface for type SasDatastoreSecrets.
+func (s *SasDatastoreSecrets) GetDatastoreSecrets() *DatastoreSecrets {
+	return &DatastoreSecrets{
+		SecretsType: s.SecretsType,
+	}
+}
+
 // ScaleSettings - scale settings for AML Compute
 type ScaleSettings struct {
 	// REQUIRED; Max number of nodes to use
@@ -1744,6 +7136,36 @@ type ScaleSettingsInformation struct {
 	// scale settings for AML Compute
 	ScaleSettings *ScaleSettings `json:"scaleSettings,omitempty"`
 }
+
+// ScheduleBaseClassification provides polymorphic access to related types.
+// Call the interface's GetScheduleBase() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *CronSchedule, *RecurrenceSchedule, *ScheduleBase
+type ScheduleBaseClassification interface {
+	// GetScheduleBase returns the ScheduleBase content of the underlying type.
+	GetScheduleBase() *ScheduleBase
+}
+
+// ScheduleBase - Base definition of a schedule
+type ScheduleBase struct {
+	// REQUIRED; [Required] Specifies the schedule type
+	ScheduleType *ScheduleType `json:"scheduleType,omitempty"`
+
+	// Specifies end time of schedule in ISO 8601 format. If not present, the schedule will run indefinitely
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// Specifies the schedule's status
+	ScheduleStatus *ScheduleStatus `json:"scheduleStatus,omitempty"`
+
+	// Specifies start time of schedule in ISO 8601 format.
+	StartTime *time.Time `json:"startTime,omitempty"`
+
+	// Specifies time zone in which the schedule runs. TimeZone should follow Windows time zone format.
+	TimeZone *string `json:"timeZone,omitempty"`
+}
+
+// GetScheduleBase implements the ScheduleBaseClassification interface for type ScheduleBase.
+func (s *ScheduleBase) GetScheduleBase() *ScheduleBase { return s }
 
 // ScriptReference - Script reference
 type ScriptReference struct {
@@ -1769,18 +7191,71 @@ type ScriptsToExecute struct {
 	StartupScript *ScriptReference `json:"startupScript,omitempty"`
 }
 
+// SeasonalityClassification provides polymorphic access to related types.
+// Call the interface's GetSeasonality() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AutoSeasonality, *CustomSeasonality, *Seasonality
+type SeasonalityClassification interface {
+	// GetSeasonality returns the Seasonality content of the underlying type.
+	GetSeasonality() *Seasonality
+}
+
+// Seasonality - Forecasting seasonality.
+type Seasonality struct {
+	// REQUIRED; [Required] Seasonality mode.
+	Mode *SeasonalityMode `json:"mode,omitempty"`
+}
+
+// GetSeasonality implements the SeasonalityClassification interface for type Seasonality.
+func (s *Seasonality) GetSeasonality() *Seasonality { return s }
+
 type ServiceManagedResourcesSettings struct {
 	// The settings for the service managed cosmosdb account.
 	CosmosDb *CosmosDbSettings `json:"cosmosDb,omitempty"`
 }
 
-// ServicePrincipalCredentials - Service principal credentials.
-type ServicePrincipalCredentials struct {
-	// REQUIRED; Client Id
+// ServicePrincipalDatastoreCredentials - Service Principal datastore credentials configuration.
+type ServicePrincipalDatastoreCredentials struct {
+	// REQUIRED; [Required] Service principal client ID.
 	ClientID *string `json:"clientId,omitempty"`
 
-	// REQUIRED; Client secret
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	CredentialsType *CredentialsType `json:"credentialsType,omitempty"`
+
+	// REQUIRED; [Required] Service principal secrets.
+	Secrets *ServicePrincipalDatastoreSecrets `json:"secrets,omitempty"`
+
+	// REQUIRED; [Required] ID of the tenant to which the service principal belongs.
+	TenantID *string `json:"tenantId,omitempty"`
+
+	// Authority URL used for authentication.
+	AuthorityURL *string `json:"authorityUrl,omitempty"`
+
+	// Resource the service principal has access to.
+	ResourceURL *string `json:"resourceUrl,omitempty"`
+}
+
+// GetDatastoreCredentials implements the DatastoreCredentialsClassification interface for type ServicePrincipalDatastoreCredentials.
+func (s *ServicePrincipalDatastoreCredentials) GetDatastoreCredentials() *DatastoreCredentials {
+	return &DatastoreCredentials{
+		CredentialsType: s.CredentialsType,
+	}
+}
+
+// ServicePrincipalDatastoreSecrets - Datastore Service Principal secrets.
+type ServicePrincipalDatastoreSecrets struct {
+	// REQUIRED; [Required] Credential type used to authentication with storage.
+	SecretsType *SecretsType `json:"secretsType,omitempty"`
+
+	// Service principal secret.
 	ClientSecret *string `json:"clientSecret,omitempty"`
+}
+
+// GetDatastoreSecrets implements the DatastoreSecretsClassification interface for type ServicePrincipalDatastoreSecrets.
+func (s *ServicePrincipalDatastoreSecrets) GetDatastoreSecrets() *DatastoreSecrets {
+	return &DatastoreSecrets{
+		SecretsType: s.SecretsType,
+	}
 }
 
 // SetupScripts - Details of customized scripts to execute for setting up the cluster.
@@ -1812,13 +7287,133 @@ type SharedPrivateLinkResourceProperty struct {
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
+// StackEnsembleSettings - Advances setting to customize StackEnsemble run.
+type StackEnsembleSettings struct {
+	// Optional parameters to pass to the initializer of the meta-learner.
+	StackMetaLearnerKWargs interface{} `json:"stackMetaLearnerKWargs,omitempty"`
+
+	// Specifies the proportion of the training set (when choosing train and validation type of training) to be reserved for training
+	// the meta-learner. Default value is 0.2.
+	StackMetaLearnerTrainPercentage *float64 `json:"stackMetaLearnerTrainPercentage,omitempty"`
+
+	// The meta-learner is a model trained on the output of the individual heterogeneous models.
+	StackMetaLearnerType *StackMetaLearnerType `json:"stackMetaLearnerType,omitempty"`
+}
+
+// SweepJob - Sweep job definition.
+type SweepJob struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobType *JobType `json:"jobType,omitempty"`
+
+	// REQUIRED; [Required] Optimization objective.
+	Objective *Objective `json:"objective,omitempty"`
+
+	// REQUIRED; [Required] The hyperparameter sampling algorithm
+	SamplingAlgorithm SamplingAlgorithmClassification `json:"samplingAlgorithm,omitempty"`
+
+	// REQUIRED; [Required] A dictionary containing each parameter and its distribution. The dictionary key is the name of the
+	// parameter
+	SearchSpace interface{} `json:"searchSpace,omitempty"`
+
+	// REQUIRED; [Required] Trial component definition.
+	Trial *TrialComponent `json:"trial,omitempty"`
+
+	// ARM resource ID of the compute resource.
+	ComputeID *string `json:"computeId,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// Display name of job.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Early termination policies enable canceling poor-performing runs before they complete
+	EarlyTermination EarlyTerminationPolicyClassification `json:"earlyTermination,omitempty"`
+
+	// The name of the experiment the job belongs to. If not set, the job is placed in the "Default" experiment.
+	ExperimentName *string `json:"experimentName,omitempty"`
+
+	// Identity configuration. If set, this should be one of AmlToken, ManagedIdentity, UserIdentity or null. Defaults to AmlToken
+	// if null.
+	Identity IdentityConfigurationClassification `json:"identity,omitempty"`
+
+	// Mapping of input data bindings used in the job.
+	Inputs map[string]JobInputClassification `json:"inputs,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// Sweep Job limit.
+	Limits *SweepJobLimits `json:"limits,omitempty"`
+
+	// Mapping of output data bindings used in the job.
+	Outputs map[string]JobOutputClassification `json:"outputs,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Schedule definition of job. If no schedule is provided, the job is run once and immediately after submission.
+	Schedule ScheduleBaseClassification `json:"schedule,omitempty"`
+
+	// List of JobEndpoints. For local jobs, a job endpoint will have an endpoint value of FileStreamObject.
+	Services map[string]*JobService `json:"services,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Status of the job.
+	Status *JobStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// GetJobBaseDetails implements the JobBaseDetailsClassification interface for type SweepJob.
+func (s *SweepJob) GetJobBaseDetails() *JobBaseDetails {
+	return &JobBaseDetails{
+		ComputeID:      s.ComputeID,
+		DisplayName:    s.DisplayName,
+		ExperimentName: s.ExperimentName,
+		Identity:       s.Identity,
+		IsArchived:     s.IsArchived,
+		JobType:        s.JobType,
+		Schedule:       s.Schedule,
+		Services:       s.Services,
+		Status:         s.Status,
+		Description:    s.Description,
+		Properties:     s.Properties,
+		Tags:           s.Tags,
+	}
+}
+
+// SweepJobLimits - Sweep Job limit class.
+type SweepJobLimits struct {
+	// REQUIRED; [Required] JobLimit type.
+	JobLimitsType *JobLimitsType `json:"jobLimitsType,omitempty"`
+
+	// Sweep Job max concurrent trials.
+	MaxConcurrentTrials *int32 `json:"maxConcurrentTrials,omitempty"`
+
+	// Sweep Job max total trials.
+	MaxTotalTrials *int32 `json:"maxTotalTrials,omitempty"`
+
+	// The max run duration in ISO 8601 format, after which the job will be cancelled. Only supports duration with precision as
+	// low as Seconds.
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Sweep Job Trial timeout value.
+	TrialTimeout *string `json:"trialTimeout,omitempty"`
+}
+
+// GetJobLimits implements the JobLimitsClassification interface for type SweepJobLimits.
+func (s *SweepJobLimits) GetJobLimits() *JobLimits {
+	return &JobLimits{
+		JobLimitsType: s.JobLimitsType,
+		Timeout:       s.Timeout,
+	}
+}
+
 // SynapseSpark - A SynapseSpark compute.
 type SynapseSpark struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
-
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
 
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -1829,6 +7424,9 @@ type SynapseSpark struct {
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -1928,6 +7526,592 @@ type SystemService struct {
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
 
+// TableVertical - Abstract class for AutoML tasks that use table dataset as input - such as Classification/Regression/Forecasting.
+type TableVertical struct {
+	// Data inputs for AutoMLJob.
+	DataSettings *TableVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// Featurization inputs needed for AutoML job.
+	FeaturizationSettings *TableVerticalFeaturizationSettings `json:"featurizationSettings,omitempty"`
+
+	// Execution constraints for AutoMLJob.
+	LimitSettings *TableVerticalLimitSettings `json:"limitSettings,omitempty"`
+
+	// Inputs for training phase for an AutoML Job.
+	TrainingSettings *TrainingSettings `json:"trainingSettings,omitempty"`
+}
+
+// TableVerticalDataSettings - Class for data inputs.
+type TableVerticalDataSettings struct {
+	// REQUIRED; [Required] Target column name: This is prediction values column. Also known as label column name in context of
+	// classification tasks.
+	TargetColumnName *string `json:"targetColumnName,omitempty"`
+
+	// REQUIRED; [Required] Training data input.
+	TrainingData *TrainingDataSettings `json:"trainingData,omitempty"`
+
+	// Test data input.
+	TestData *TestDataSettings `json:"testData,omitempty"`
+
+	// Validation data inputs.
+	ValidationData *TableVerticalValidationDataSettings `json:"validationData,omitempty"`
+
+	// The name of the sample weight column. Automated ML supports a weighted column as an input, causing rows in the data to
+	// be weighted up or down.
+	WeightColumnName *string `json:"weightColumnName,omitempty"`
+}
+
+// TableVerticalFeaturizationSettings - Featurization Configuration.
+type TableVerticalFeaturizationSettings struct {
+	// These transformers shall not be used in featurization.
+	BlockedTransformers []*string `json:"blockedTransformers,omitempty"`
+
+	// Dictionary of column name and its type (int, float, string, datetime etc).
+	ColumnNameAndTypes map[string]*string `json:"columnNameAndTypes,omitempty"`
+
+	// Dataset language, useful for the text data.
+	DatasetLanguage *string `json:"datasetLanguage,omitempty"`
+
+	// Columns to be dropped from data during featurization.
+	DropColumns []*string `json:"dropColumns,omitempty"`
+
+	// Determines whether to use Dnn based featurizers for data featurization.
+	EnableDnnFeaturization *bool `json:"enableDnnFeaturization,omitempty"`
+
+	// Featurization mode - User can keep the default 'Auto' mode and AutoML will take care of necessary transformation of the
+	// data in featurization phase. If 'Off' is selected then no featurization is done.
+	// If 'Custom' is selected then user can specify additional inputs to customize how featurization is done.
+	Mode *FeaturizationMode `json:"mode,omitempty"`
+
+	// User can specify additional transformers to be used along with the columns to which it would be applied and parameters
+	// for the transformer constructor.
+	TransformerParams map[string][]*ColumnTransformer `json:"transformerParams,omitempty"`
+}
+
+// TableVerticalLimitSettings - Job execution constraints.
+type TableVerticalLimitSettings struct {
+	// Enable early termination, determines whether or not if AutoMLJob will terminate early if there is no score improvement
+	// in last 20 iterations.
+	EnableEarlyTermination *bool `json:"enableEarlyTermination,omitempty"`
+
+	// Exit score for the AutoML job.
+	ExitScore *float64 `json:"exitScore,omitempty"`
+
+	// Maximum Concurrent iterations.
+	MaxConcurrentTrials *int32 `json:"maxConcurrentTrials,omitempty"`
+
+	// Max cores per iteration.
+	MaxCoresPerTrial *int32 `json:"maxCoresPerTrial,omitempty"`
+
+	// Number of iterations.
+	MaxTrials *int32 `json:"maxTrials,omitempty"`
+
+	// AutoML job timeout.
+	Timeout *string `json:"timeout,omitempty"`
+
+	// Iteration timeout.
+	TrialTimeout *string `json:"trialTimeout,omitempty"`
+}
+
+// TableVerticalValidationDataSettings - Validation settings for AutoML Table vertical tasks - Classification/Regression/Forecasting.
+type TableVerticalValidationDataSettings struct {
+	// Columns to use for CVSplit data.
+	CvSplitColumnNames []*string `json:"cvSplitColumnNames,omitempty"`
+
+	// Validation data MLTable.
+	Data *MLTableJobInput `json:"data,omitempty"`
+
+	// Number of cross validation folds to be applied on training dataset when validation dataset is not provided.
+	NCrossValidations NCrossValidationsClassification `json:"nCrossValidations,omitempty"`
+
+	// The fraction of training dataset that needs to be set aside for validation purpose. Values between (0.0 , 1.0) Applied
+	// when validation dataset is not provided.
+	ValidationDataSize *float64 `json:"validationDataSize,omitempty"`
+}
+
+// TargetLagsClassification provides polymorphic access to related types.
+// Call the interface's GetTargetLags() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AutoTargetLags, *CustomTargetLags, *TargetLags
+type TargetLagsClassification interface {
+	// GetTargetLags returns the TargetLags content of the underlying type.
+	GetTargetLags() *TargetLags
+}
+
+// TargetLags - The number of past periods to lag from the target column.
+type TargetLags struct {
+	// REQUIRED; [Required] Set target lags mode - Auto/Custom
+	Mode *TargetLagsMode `json:"mode,omitempty"`
+}
+
+// GetTargetLags implements the TargetLagsClassification interface for type TargetLags.
+func (t *TargetLags) GetTargetLags() *TargetLags { return t }
+
+// TargetRollingWindowSizeClassification provides polymorphic access to related types.
+// Call the interface's GetTargetRollingWindowSize() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AutoTargetRollingWindowSize, *CustomTargetRollingWindowSize, *TargetRollingWindowSize
+type TargetRollingWindowSizeClassification interface {
+	// GetTargetRollingWindowSize returns the TargetRollingWindowSize content of the underlying type.
+	GetTargetRollingWindowSize() *TargetRollingWindowSize
+}
+
+// TargetRollingWindowSize - Forecasting target rolling window size.
+type TargetRollingWindowSize struct {
+	// REQUIRED; [Required] TargetRollingWindowSiz detection mode.
+	Mode *TargetRollingWindowSizeMode `json:"mode,omitempty"`
+}
+
+// GetTargetRollingWindowSize implements the TargetRollingWindowSizeClassification interface for type TargetRollingWindowSize.
+func (t *TargetRollingWindowSize) GetTargetRollingWindowSize() *TargetRollingWindowSize { return t }
+
+type TargetUtilizationScaleSettings struct {
+	// REQUIRED; [Required] Type of deployment scaling algorithm
+	ScaleType *ScaleType `json:"scaleType,omitempty"`
+
+	// The maximum number of instances that the deployment can scale to. The quota will be reserved for max_instances.
+	MaxInstances *int32 `json:"maxInstances,omitempty"`
+
+	// The minimum number of instances to always be present.
+	MinInstances *int32 `json:"minInstances,omitempty"`
+
+	// The polling interval in ISO 8691 format. Only supports duration with precision as low as Seconds.
+	PollingInterval *string `json:"pollingInterval,omitempty"`
+
+	// Target CPU usage for the autoscaler.
+	TargetUtilizationPercentage *int32 `json:"targetUtilizationPercentage,omitempty"`
+}
+
+// GetOnlineScaleSettings implements the OnlineScaleSettingsClassification interface for type TargetUtilizationScaleSettings.
+func (t *TargetUtilizationScaleSettings) GetOnlineScaleSettings() *OnlineScaleSettings {
+	return &OnlineScaleSettings{
+		ScaleType: t.ScaleType,
+	}
+}
+
+// TensorFlow distribution configuration.
+type TensorFlow struct {
+	// REQUIRED; [Required] Specifies the type of distribution framework.
+	DistributionType *DistributionType `json:"distributionType,omitempty"`
+
+	// Number of parameter server tasks.
+	ParameterServerCount *int32 `json:"parameterServerCount,omitempty"`
+
+	// Number of workers. If not specified, will default to the instance count.
+	WorkerCount *int32 `json:"workerCount,omitempty"`
+}
+
+// GetDistributionConfiguration implements the DistributionConfigurationClassification interface for type TensorFlow.
+func (t *TensorFlow) GetDistributionConfiguration() *DistributionConfiguration {
+	return &DistributionConfiguration{
+		DistributionType: t.DistributionType,
+	}
+}
+
+// TestDataSettings - Test data inputs.
+type TestDataSettings struct {
+	// Test data MLTable.
+	Data *MLTableJobInput `json:"data,omitempty"`
+
+	// The fraction of test dataset that needs to be set aside for validation purpose. Values between (0.0 , 1.0) Applied when
+	// validation dataset is not provided.
+	TestDataSize *float64 `json:"testDataSize,omitempty"`
+}
+
+// TextClassification - Text Classification task in AutoML NLP vertical. NLP - Natural Language Processing.
+type TextClassification struct {
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Data inputs for AutoMLJob.
+	DataSettings *NlpVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// Featurization inputs needed for AutoML job.
+	FeaturizationSettings *NlpVerticalFeaturizationSettings `json:"featurizationSettings,omitempty"`
+
+	// Execution constraints for AutoMLJob.
+	LimitSettings *NlpVerticalLimitSettings `json:"limitSettings,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// Primary metric for Text-Classification task.
+	PrimaryMetric *ClassificationPrimaryMetrics `json:"primaryMetric,omitempty"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type TextClassification.
+func (t *TextClassification) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: t.LogVerbosity,
+		TaskType:     t.TaskType,
+	}
+}
+
+// TextClassificationMultilabel - Text Classification Multilabel task in AutoML NLP vertical. NLP - Natural Language Processing.
+type TextClassificationMultilabel struct {
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Data inputs for AutoMLJob.
+	DataSettings *NlpVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// Featurization inputs needed for AutoML job.
+	FeaturizationSettings *NlpVerticalFeaturizationSettings `json:"featurizationSettings,omitempty"`
+
+	// Execution constraints for AutoMLJob.
+	LimitSettings *NlpVerticalLimitSettings `json:"limitSettings,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// READ-ONLY; Primary metric for Text-Classification-Multilabel task. Currently only Accuracy is supported as primary metric,
+	// hence user need not set it explicitly.
+	PrimaryMetric *ClassificationMultilabelPrimaryMetrics `json:"primaryMetric,omitempty" azure:"ro"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type TextClassificationMultilabel.
+func (t *TextClassificationMultilabel) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: t.LogVerbosity,
+		TaskType:     t.TaskType,
+	}
+}
+
+// TextNer - Text-NER task in AutoML NLP vertical. NER - Named Entity Recognition. NLP - Natural Language Processing.
+type TextNer struct {
+	// REQUIRED; [Required] Task type for AutoMLJob.
+	TaskType *TaskType `json:"taskType,omitempty"`
+
+	// Data inputs for AutoMLJob.
+	DataSettings *NlpVerticalDataSettings `json:"dataSettings,omitempty"`
+
+	// Featurization inputs needed for AutoML job.
+	FeaturizationSettings *NlpVerticalFeaturizationSettings `json:"featurizationSettings,omitempty"`
+
+	// Execution constraints for AutoMLJob.
+	LimitSettings *NlpVerticalLimitSettings `json:"limitSettings,omitempty"`
+
+	// Log verbosity for the job.
+	LogVerbosity *LogVerbosity `json:"logVerbosity,omitempty"`
+
+	// READ-ONLY; Primary metric for Text-NER task. Only 'Accuracy' is supported for Text-NER, so user need not set this explicitly.
+	PrimaryMetric *ClassificationPrimaryMetrics `json:"primaryMetric,omitempty" azure:"ro"`
+}
+
+// GetAutoMLVertical implements the AutoMLVerticalClassification interface for type TextNer.
+func (t *TextNer) GetAutoMLVertical() *AutoMLVertical {
+	return &AutoMLVertical{
+		LogVerbosity: t.LogVerbosity,
+		TaskType:     t.TaskType,
+	}
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// TrainingDataSettings - Training data input.
+type TrainingDataSettings struct {
+	// REQUIRED; [Required] Training data MLTable.
+	Data *MLTableJobInput `json:"data,omitempty"`
+}
+
+// TrainingSettings - Training related configuration.
+type TrainingSettings struct {
+	// Enable recommendation of DNN models.
+	EnableDnnTraining *bool `json:"enableDnnTraining,omitempty"`
+
+	// Flag to turn on explainability on best model.
+	EnableModelExplainability *bool `json:"enableModelExplainability,omitempty"`
+
+	// Flag for enabling onnx compatible models.
+	EnableOnnxCompatibleModels *bool `json:"enableOnnxCompatibleModels,omitempty"`
+
+	// Enable stack ensemble run.
+	EnableStackEnsemble *bool `json:"enableStackEnsemble,omitempty"`
+
+	// Enable voting ensemble run.
+	EnableVoteEnsemble *bool `json:"enableVoteEnsemble,omitempty"`
+
+	// During VotingEnsemble and StackEnsemble model generation, multiple fitted models from the previous child runs are downloaded.
+	// Configure this parameter with a higher value than 300 secs, if more time
+	// is needed.
+	EnsembleModelDownloadTimeout *string `json:"ensembleModelDownloadTimeout,omitempty"`
+
+	// Stack ensemble settings for stack ensemble run.
+	StackEnsembleSettings *StackEnsembleSettings `json:"stackEnsembleSettings,omitempty"`
+}
+
+// TrialComponent - Trial component definition.
+type TrialComponent struct {
+	// REQUIRED; [Required] The command to execute on startup of the job. eg. "python train.py"
+	Command *string `json:"command,omitempty"`
+
+	// REQUIRED; [Required] The ARM resource ID of the Environment specification for the job.
+	EnvironmentID *string `json:"environmentId,omitempty"`
+
+	// ARM resource ID of the code asset.
+	CodeID *string `json:"codeId,omitempty"`
+
+	// Distribution configuration of the job. If set, this should be one of Mpi, Tensorflow, PyTorch, or null.
+	Distribution DistributionConfigurationClassification `json:"distribution,omitempty"`
+
+	// Environment variables included in the job.
+	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
+
+	// Compute Resource configuration for the job.
+	Resources *ResourceConfiguration `json:"resources,omitempty"`
+}
+
+type TritonModelJobInput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobInputType *JobInputType `json:"jobInputType,omitempty"`
+
+	// REQUIRED; [Required] Input Asset URI.
+	URI *string `json:"uri,omitempty"`
+
+	// Description for the input.
+	Description *string `json:"description,omitempty"`
+
+	// Input Asset Delivery Mode.
+	Mode *InputDeliveryMode `json:"mode,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type TritonModelJobInput.
+func (t *TritonModelJobInput) GetJobInput() *JobInput {
+	return &JobInput{
+		Description:  t.Description,
+		JobInputType: t.JobInputType,
+	}
+}
+
+type TritonModelJobOutput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobOutputType *JobOutputType `json:"jobOutputType,omitempty"`
+
+	// Description for the output.
+	Description *string `json:"description,omitempty"`
+
+	// Output Asset Delivery Mode.
+	Mode *OutputDeliveryMode `json:"mode,omitempty"`
+
+	// Output Asset URI.
+	URI *string `json:"uri,omitempty"`
+}
+
+// GetJobOutput implements the JobOutputClassification interface for type TritonModelJobOutput.
+func (t *TritonModelJobOutput) GetJobOutput() *JobOutput {
+	return &JobOutput{
+		Description:   t.Description,
+		JobOutputType: t.JobOutputType,
+	}
+}
+
+// TruncationSelectionPolicy - Defines an early termination policy that cancels a given percentage of runs at each evaluation
+// interval.
+type TruncationSelectionPolicy struct {
+	// REQUIRED; [Required] Name of policy configuration
+	PolicyType *EarlyTerminationPolicyType `json:"policyType,omitempty"`
+
+	// Number of intervals by which to delay the first evaluation.
+	DelayEvaluation *int32 `json:"delayEvaluation,omitempty"`
+
+	// Interval (number of runs) between policy evaluations.
+	EvaluationInterval *int32 `json:"evaluationInterval,omitempty"`
+
+	// The percentage of runs to cancel at each evaluation interval.
+	TruncationPercentage *int32 `json:"truncationPercentage,omitempty"`
+}
+
+// GetEarlyTerminationPolicy implements the EarlyTerminationPolicyClassification interface for type TruncationSelectionPolicy.
+func (t *TruncationSelectionPolicy) GetEarlyTerminationPolicy() *EarlyTerminationPolicy {
+	return &EarlyTerminationPolicy{
+		DelayEvaluation:    t.DelayEvaluation,
+		EvaluationInterval: t.EvaluationInterval,
+		PolicyType:         t.PolicyType,
+	}
+}
+
+// URIFileDataVersion - uri-file data version entity
+type URIFileDataVersion struct {
+	// REQUIRED; [Required] Specifies the type of data.
+	DataType *DataType `json:"dataType,omitempty"`
+
+	// REQUIRED; [Required] Uri of the data. Usage/meaning depends on Microsoft.MachineLearning.ManagementFrontEnd.Contracts.V20220201Preview.Assets.DataVersionBase.DataType
+	DataURI *string `json:"dataUri,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// If the name version are system generated (anonymous registration).
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// GetDataVersionBaseDetails implements the DataVersionBaseDetailsClassification interface for type URIFileDataVersion.
+func (u *URIFileDataVersion) GetDataVersionBaseDetails() *DataVersionBaseDetails {
+	return &DataVersionBaseDetails{
+		DataType:    u.DataType,
+		DataURI:     u.DataURI,
+		IsAnonymous: u.IsAnonymous,
+		IsArchived:  u.IsArchived,
+		Description: u.Description,
+		Properties:  u.Properties,
+		Tags:        u.Tags,
+	}
+}
+
+type URIFileJobInput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobInputType *JobInputType `json:"jobInputType,omitempty"`
+
+	// REQUIRED; [Required] Input Asset URI.
+	URI *string `json:"uri,omitempty"`
+
+	// Description for the input.
+	Description *string `json:"description,omitempty"`
+
+	// Input Asset Delivery Mode.
+	Mode *InputDeliveryMode `json:"mode,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type URIFileJobInput.
+func (u *URIFileJobInput) GetJobInput() *JobInput {
+	return &JobInput{
+		Description:  u.Description,
+		JobInputType: u.JobInputType,
+	}
+}
+
+type URIFileJobOutput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobOutputType *JobOutputType `json:"jobOutputType,omitempty"`
+
+	// Description for the output.
+	Description *string `json:"description,omitempty"`
+
+	// Output Asset Delivery Mode.
+	Mode *OutputDeliveryMode `json:"mode,omitempty"`
+
+	// Output Asset URI.
+	URI *string `json:"uri,omitempty"`
+}
+
+// GetJobOutput implements the JobOutputClassification interface for type URIFileJobOutput.
+func (u *URIFileJobOutput) GetJobOutput() *JobOutput {
+	return &JobOutput{
+		Description:   u.Description,
+		JobOutputType: u.JobOutputType,
+	}
+}
+
+// URIFolderDataVersion - uri-folder data version entity
+type URIFolderDataVersion struct {
+	// REQUIRED; [Required] Specifies the type of data.
+	DataType *DataType `json:"dataType,omitempty"`
+
+	// REQUIRED; [Required] Uri of the data. Usage/meaning depends on Microsoft.MachineLearning.ManagementFrontEnd.Contracts.V20220201Preview.Assets.DataVersionBase.DataType
+	DataURI *string `json:"dataUri,omitempty"`
+
+	// The asset description text.
+	Description *string `json:"description,omitempty"`
+
+	// If the name version are system generated (anonymous registration).
+	IsAnonymous *bool `json:"isAnonymous,omitempty"`
+
+	// Is the asset archived?
+	IsArchived *bool `json:"isArchived,omitempty"`
+
+	// The asset property dictionary.
+	Properties map[string]*string `json:"properties,omitempty"`
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// GetDataVersionBaseDetails implements the DataVersionBaseDetailsClassification interface for type URIFolderDataVersion.
+func (u *URIFolderDataVersion) GetDataVersionBaseDetails() *DataVersionBaseDetails {
+	return &DataVersionBaseDetails{
+		DataType:    u.DataType,
+		DataURI:     u.DataURI,
+		IsAnonymous: u.IsAnonymous,
+		IsArchived:  u.IsArchived,
+		Description: u.Description,
+		Properties:  u.Properties,
+		Tags:        u.Tags,
+	}
+}
+
+type URIFolderJobInput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobInputType *JobInputType `json:"jobInputType,omitempty"`
+
+	// REQUIRED; [Required] Input Asset URI.
+	URI *string `json:"uri,omitempty"`
+
+	// Description for the input.
+	Description *string `json:"description,omitempty"`
+
+	// Input Asset Delivery Mode.
+	Mode *InputDeliveryMode `json:"mode,omitempty"`
+}
+
+// GetJobInput implements the JobInputClassification interface for type URIFolderJobInput.
+func (u *URIFolderJobInput) GetJobInput() *JobInput {
+	return &JobInput{
+		Description:  u.Description,
+		JobInputType: u.JobInputType,
+	}
+}
+
+type URIFolderJobOutput struct {
+	// REQUIRED; [Required] Specifies the type of job.
+	JobOutputType *JobOutputType `json:"jobOutputType,omitempty"`
+
+	// Description for the output.
+	Description *string `json:"description,omitempty"`
+
+	// Output Asset Delivery Mode.
+	Mode *OutputDeliveryMode `json:"mode,omitempty"`
+
+	// Output Asset URI.
+	URI *string `json:"uri,omitempty"`
+}
+
+// GetJobOutput implements the JobOutputClassification interface for type URIFolderJobOutput.
+func (u *URIFolderJobOutput) GetJobOutput() *JobOutput {
+	return &JobOutput{
+		Description:   u.Description,
+		JobOutputType: u.JobOutputType,
+	}
+}
+
 // UpdateWorkspaceQuotas - The properties for update Quota response.
 type UpdateWorkspaceQuotas struct {
 	// The maximum permitted quota of the resource.
@@ -2006,16 +8190,36 @@ type UserAccountCredentials struct {
 	AdminUserSSHPublicKey *string `json:"adminUserSshPublicKey,omitempty"`
 }
 
-// UserAssignedIdentity - User Assigned Identity
+// UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
-	// READ-ONLY; The clientId(aka appId) of the user assigned identity.
+	// READ-ONLY; The client ID of the assigned identity.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 
-	// READ-ONLY; The principal ID of the user assigned identity.
+	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+}
 
-	// READ-ONLY; The tenant ID of the user assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+// UserIdentity - User identity configuration.
+type UserIdentity struct {
+	// REQUIRED; [Required] Specifies the type of identity framework.
+	IdentityType *IdentityConfigurationType `json:"identityType,omitempty"`
+}
+
+// GetIdentityConfiguration implements the IdentityConfigurationClassification interface for type UserIdentity.
+func (u *UserIdentity) GetIdentityConfiguration() *IdentityConfiguration {
+	return &IdentityConfiguration{
+		IdentityType: u.IdentityType,
+	}
+}
+
+// ValidationDataSettings - Validation settings.
+type ValidationDataSettings struct {
+	// Validation data MLTable.
+	Data *MLTableJobInput `json:"data,omitempty"`
+
+	// The fraction of training dataset that needs to be set aside for validation purpose. Values between (0.0 , 1.0) Applied
+	// when validation dataset is not provided.
+	ValidationDataSize *float64 `json:"validationDataSize,omitempty"`
 }
 
 // VirtualMachine - A Machine Learning compute based on Azure Virtual Machines.
@@ -2023,18 +8227,18 @@ type VirtualMachine struct {
 	// REQUIRED; The type of compute
 	ComputeType *ComputeType `json:"computeType,omitempty"`
 
-	// Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
-
 	// The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
 
 	// Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.
-	DisableLocalAuth *bool                     `json:"disableLocalAuth,omitempty"`
-	Properties       *VirtualMachineProperties `json:"properties,omitempty"`
+	DisableLocalAuth *bool                           `json:"disableLocalAuth,omitempty"`
+	Properties       *VirtualMachineSchemaProperties `json:"properties,omitempty"`
 
 	// ARM resource id of the underlying compute
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// READ-ONLY; Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time at which the compute was created.
 	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
@@ -2075,23 +8279,6 @@ type VirtualMachineImage struct {
 	ID *string `json:"id,omitempty"`
 }
 
-type VirtualMachineProperties struct {
-	// Public IP address of the virtual machine.
-	Address *string `json:"address,omitempty"`
-
-	// Admin credentials for virtual machine
-	AdministratorAccount *VirtualMachineSSHCredentials `json:"administratorAccount,omitempty"`
-
-	// Indicates whether this compute will be used for running notebooks.
-	IsNotebookInstanceCompute *bool `json:"isNotebookInstanceCompute,omitempty"`
-
-	// Port open for ssh connections.
-	SSHPort *int32 `json:"sshPort,omitempty"`
-
-	// Virtual Machine size
-	VirtualMachineSize *string `json:"virtualMachineSize,omitempty"`
-}
-
 // VirtualMachineSSHCredentials - Admin credentials for virtual machine
 type VirtualMachineSSHCredentials struct {
 	// Password of admin account
@@ -2105,6 +8292,30 @@ type VirtualMachineSSHCredentials struct {
 
 	// Username of admin account
 	Username *string `json:"username,omitempty"`
+}
+
+type VirtualMachineSchema struct {
+	Properties *VirtualMachineSchemaProperties `json:"properties,omitempty"`
+}
+
+type VirtualMachineSchemaProperties struct {
+	// Public IP address of the virtual machine.
+	Address *string `json:"address,omitempty"`
+
+	// Admin credentials for virtual machine
+	AdministratorAccount *VirtualMachineSSHCredentials `json:"administratorAccount,omitempty"`
+
+	// Indicates whether this compute will be used for running notebooks.
+	IsNotebookInstanceCompute *bool `json:"isNotebookInstanceCompute,omitempty"`
+
+	// Notebook server port open for ssh connections.
+	NotebookServerPort *int32 `json:"notebookServerPort,omitempty"`
+
+	// Port open for ssh connections.
+	SSHPort *int32 `json:"sshPort,omitempty"`
+
+	// Virtual Machine size
+	VirtualMachineSize *string `json:"virtualMachineSize,omitempty"`
 }
 
 // VirtualMachineSecrets - Secrets related to a Machine Learning compute based on AKS.
@@ -2121,6 +8332,11 @@ func (v *VirtualMachineSecrets) GetComputeSecrets() *ComputeSecrets {
 	return &ComputeSecrets{
 		ComputeType: v.ComputeType,
 	}
+}
+
+type VirtualMachineSecretsSchema struct {
+	// Admin credentials for virtual machine.
+	AdministratorAccount *VirtualMachineSSHCredentials `json:"administratorAccount,omitempty"`
 }
 
 // VirtualMachineSize - Describes the properties of a VM size.
@@ -2173,7 +8389,7 @@ type VirtualMachineSizesClientListOptions struct {
 // Workspace - An object that represents a machine learning workspace.
 type Workspace struct {
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// Specifies the location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -2193,7 +8409,7 @@ type Workspace struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; System data
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -2205,13 +8421,16 @@ type WorkspaceConnection struct {
 	// Properties of workspace connection.
 	Properties *WorkspaceConnectionProps `json:"properties,omitempty"`
 
-	// READ-ONLY; ResourceId of the workspace connection.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Friendly name of the workspace connection.
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Resource type of workspace connection.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -2276,10 +8495,10 @@ type WorkspaceProperties struct {
 	// The flag to indicate whether to allow public access when behind VNet.
 	AllowPublicAccessWhenBehindVnet *bool `json:"allowPublicAccessWhenBehindVnet,omitempty"`
 
-	// ARM id of the application insights associated with this workspace. This cannot be changed once the workspace has been created
+	// ARM id of the application insights associated with this workspace.
 	ApplicationInsights *string `json:"applicationInsights,omitempty"`
 
-	// ARM id of the container registry associated with this workspace. This cannot be changed once the workspace has been created
+	// ARM id of the container registry associated with this workspace.
 	ContainerRegistry *string `json:"containerRegistry,omitempty"`
 
 	// The description of this workspace.
@@ -2350,6 +8569,12 @@ type WorkspaceProperties struct {
 
 // WorkspacePropertiesUpdateParameters - The parameters for updating the properties of a machine learning workspace.
 type WorkspacePropertiesUpdateParameters struct {
+	// ARM id of the application insights associated with this workspace.
+	ApplicationInsights *string `json:"applicationInsights,omitempty"`
+
+	// ARM id of the container registry associated with this workspace.
+	ContainerRegistry *string `json:"containerRegistry,omitempty"`
+
 	// The description of this workspace.
 	Description *string `json:"description,omitempty"`
 
@@ -2369,40 +8594,10 @@ type WorkspacePropertiesUpdateParameters struct {
 	ServiceManagedResourcesSettings *ServiceManagedResourcesSettings `json:"serviceManagedResourcesSettings,omitempty"`
 }
 
-// WorkspaceSKU - Describes Workspace Sku details and features
-type WorkspaceSKU struct {
-	// The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
-	Restrictions []*Restriction `json:"restrictions,omitempty"`
-
-	// READ-ONLY; List of features/user capabilities associated with the sku
-	Capabilities []*SKUCapability `json:"capabilities,omitempty" azure:"ro"`
-
-	// READ-ONLY; A list of locations and availability zones in those locations where the SKU is available.
-	LocationInfo []*ResourceSKULocationInfo `json:"locationInfo,omitempty" azure:"ro"`
-
-	// READ-ONLY; The set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g.
-	// West US, East US, Southeast Asia, etc.).
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
-
-	// READ-ONLY
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
-
-	// READ-ONLY; Sku Tier like Basic or Enterprise
-	Tier *string `json:"tier,omitempty" azure:"ro"`
-}
-
-// WorkspaceSKUsClientListOptions contains the optional parameters for the WorkspaceSKUsClient.List method.
-type WorkspaceSKUsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // WorkspaceUpdateParameters - The parameters for updating a machine learning workspace.
 type WorkspaceUpdateParameters struct {
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 
 	// The properties that the machine learning workspace will be updated with.
 	Properties *WorkspacePropertiesUpdateParameters `json:"properties,omitempty"`
@@ -2444,6 +8639,12 @@ type WorkspacesClientBeginPrepareNotebookOptions struct {
 
 // WorkspacesClientBeginResyncKeysOptions contains the optional parameters for the WorkspacesClient.BeginResyncKeys method.
 type WorkspacesClientBeginResyncKeysOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
+type WorkspacesClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -2492,10 +8693,5 @@ type WorkspacesClientListOutboundNetworkDependenciesEndpointsOptions struct {
 // WorkspacesClientListStorageAccountKeysOptions contains the optional parameters for the WorkspacesClient.ListStorageAccountKeys
 // method.
 type WorkspacesClientListStorageAccountKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkspacesClientUpdateOptions contains the optional parameters for the WorkspacesClient.Update method.
-type WorkspacesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }

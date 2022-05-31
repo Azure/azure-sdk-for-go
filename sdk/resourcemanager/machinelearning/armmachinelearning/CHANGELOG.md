@@ -1,5 +1,1248 @@
 # Release History
 
+## 2.0.0-beta.1 (2022-05-30)
+### Breaking Changes
+
+- Type of `PrivateEndpointConnection.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
+- Type of `EncryptionProperty.KeyVaultProperties` has been changed from `*KeyVaultProperties` to `*EncryptionKeyVaultProperties`
+- Type of `WorkspaceUpdateParameters.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
+- Type of `ComputeResource.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
+- Type of `SKU.Tier` has been changed from `*string` to `*SKUTier`
+- Type of `VirtualMachine.Properties` has been changed from `*VirtualMachineProperties` to `*VirtualMachineSchemaProperties`
+- Type of `AKS.Properties` has been changed from `*AKSProperties` to `*AKSSchemaProperties`
+- Type of `Workspace.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
+- Type of `DataLakeAnalytics.Properties` has been changed from `*DataLakeAnalyticsProperties` to `*DataLakeAnalyticsSchemaProperties`
+- Type of `PrivateLinkResource.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
+- Const `ReasonCodeNotAvailableForRegion` has been removed
+- Const `ResourceIdentityTypeUserAssigned` has been removed
+- Const `ReasonCodeNotSpecified` has been removed
+- Const `ResourceIdentityTypeNone` has been removed
+- Const `ReasonCodeNotAvailableForSubscription` has been removed
+- Const `ResourceIdentityTypeSystemAssigned` has been removed
+- Const `ResourceIdentityTypeSystemAssignedUserAssigned` has been removed
+- Function `PossibleResourceIdentityTypeValues` has been removed
+- Function `PossibleReasonCodeValues` has been removed
+- Function `Identity.MarshalJSON` has been removed
+- Function `NewWorkspaceSKUsClient` has been removed
+- Function `Components1D3SwueSchemasComputeresourceAllof1.MarshalJSON` has been removed
+- Function `*WorkspaceSKUsClient.NewListPager` has been removed
+- Function `AKSProperties.MarshalJSON` has been removed
+- Function `*WorkspacesClient.Update` has been removed
+- Function `*Components1D3SwueSchemasComputeresourceAllof1.UnmarshalJSON` has been removed
+- Struct `AKSProperties` has been removed
+- Struct `Components1D3SwueSchemasComputeresourceAllof1` has been removed
+- Struct `DataLakeAnalyticsProperties` has been removed
+- Struct `Identity` has been removed
+- Struct `KeyVaultProperties` has been removed
+- Struct `Operation` has been removed
+- Struct `OperationDisplay` has been removed
+- Struct `OperationListResult` has been removed
+- Struct `ResourceSKULocationInfo` has been removed
+- Struct `ResourceSKUZoneDetails` has been removed
+- Struct `Restriction` has been removed
+- Struct `SKUCapability` has been removed
+- Struct `SKUListResult` has been removed
+- Struct `ServicePrincipalCredentials` has been removed
+- Struct `VirtualMachineProperties` has been removed
+- Struct `WorkspaceSKU` has been removed
+- Struct `WorkspaceSKUsClient` has been removed
+- Struct `WorkspaceSKUsClientListOptions` has been removed
+- Struct `WorkspaceSKUsClientListResponse` has been removed
+- Struct `WorkspacesClientUpdateOptions` has been removed
+- Field `TenantID` of struct `UserAssignedIdentity` has been removed
+- Field `OperationListResult` of struct `OperationsClientListResponse` has been removed
+- Field `CPU` of struct `ContainerResourceRequirements` has been removed
+- Field `CPULimit` of struct `ContainerResourceRequirements` has been removed
+- Field `Fpga` of struct `ContainerResourceRequirements` has been removed
+- Field `Gpu` of struct `ContainerResourceRequirements` has been removed
+- Field `MemoryInGB` of struct `ContainerResourceRequirements` has been removed
+- Field `MemoryInGBLimit` of struct `ContainerResourceRequirements` has been removed
+
+### Features Added
+
+- New const `ShortSeriesHandlingConfigurationDrop`
+- New const `JobStatusQueued`
+- New const `JobStatusPaused`
+- New const `JobOutputTypeURIFolder`
+- New const `ReferenceTypeOutputPath`
+- New const `ListViewTypeAll`
+- New const `DeploymentProvisioningStateUpdating`
+- New const `ForecastingModelsExponentialSmoothing`
+- New const `TargetRollingWindowSizeModeAuto`
+- New const `SamplingAlgorithmTypeGrid`
+- New const `RandomSamplingAlgorithmRuleSobol`
+- New const `ForecastHorizonModeCustom`
+- New const `ModelTypeCustomModel`
+- New const `ClassificationModelsKNN`
+- New const `CredentialsTypeKerberosKeytab`
+- New const `SamplingAlgorithmTypeRandom`
+- New const `CredentialsTypeNone`
+- New const `ModelSizeLarge`
+- New const `RegressionPrimaryMetricsR2Score`
+- New const `ProvisioningStatusFailed`
+- New const `CredentialsTypeServicePrincipal`
+- New const `ClassificationPrimaryMetricsAccuracy`
+- New const `ListViewTypeActiveOnly`
+- New const `ScheduleTypeCron`
+- New const `OrderStringUpdatedAtDesc`
+- New const `JobStatusProvisioning`
+- New const `ClassificationMultilabelPrimaryMetricsIOU`
+- New const `StackMetaLearnerTypeLightGBMClassifier`
+- New const `FeatureLagsNone`
+- New const `DeploymentProvisioningStateCanceled`
+- New const `JobInputTypeURIFile`
+- New const `TargetRollingWindowSizeModeCustom`
+- New const `ClassificationMultilabelPrimaryMetricsPrecisionScoreWeighted`
+- New const `ClassificationPrimaryMetricsPrecisionScoreWeighted`
+- New const `WeekdayFriday`
+- New const `SeasonalityModeAuto`
+- New const `JobStatusStarting`
+- New const `ClassificationModelsExtremeRandomTrees`
+- New const `KeyTypeSecondary`
+- New const `SKUTierStandard`
+- New const `ForecastingPrimaryMetricsNormalizedMeanAbsoluteError`
+- New const `ForecastingModelsDecisionTree`
+- New const `ForecastingModelsExtremeRandomTrees`
+- New const `RegressionModelsRandomForest`
+- New const `DistributionTypeTensorFlow`
+- New const `ForecastingModelsLassoLars`
+- New const `JobOutputTypeMLFlowModel`
+- New const `SecretsTypeSas`
+- New const `ManagedServiceIdentityTypeUserAssigned`
+- New const `ServiceDataAccessAuthIdentityWorkspaceUserAssignedIdentity`
+- New const `OperationTriggerUser`
+- New const `JobLimitsTypeCommand`
+- New const `ReferenceTypeID`
+- New const `RecurrenceFrequencyWeek`
+- New const `ClassificationPrimaryMetricsNormMacroRecall`
+- New const `RegressionModelsLightGBM`
+- New const `JobInputTypeURIFolder`
+- New const `JobOutputTypeTritonModel`
+- New const `MountStateUnmounted`
+- New const `ProvisioningStatusProvisioning`
+- New const `ClassificationModelsGradientBoosting`
+- New const `JobStatusScheduled`
+- New const `JobStatusCanceled`
+- New const `EndpointProvisioningStateSucceeded`
+- New const `FeaturizationModeAuto`
+- New const `DatastoreTypeAzureDataLakeGen2`
+- New const `DeploymentProvisioningStateScaling`
+- New const `RecurrenceFrequencyMonth`
+- New const `WeekdayThursday`
+- New const `RecurrenceFrequencyDay`
+- New const `TargetLagsModeCustom`
+- New const `JobTypeAutoML`
+- New const `StackMetaLearnerTypeNone`
+- New const `ListViewTypeArchivedOnly`
+- New const `ForecastingModelsProphet`
+- New const `LogVerbosityDebug`
+- New const `DatastoreTypeAzureFile`
+- New const `EndpointAuthModeAMLToken`
+- New const `TaskTypeImageClassificationMultilabel`
+- New const `ScheduleStatusDisabled`
+- New const `SourceTypeURI`
+- New const `CredentialsTypeSas`
+- New const `JobStatusFinalizing`
+- New const `InputDeliveryModeReadWriteMount`
+- New const `ContainerTypeInferenceServer`
+- New const `LogVerbosityInfo`
+- New const `OrderStringUpdatedAtAsc`
+- New const `ClassificationMultilabelPrimaryMetricsAveragePrecisionScoreWeighted`
+- New const `PublicNetworkAccessTypeEnabled`
+- New const `LogVerbosityError`
+- New const `SKUTierFree`
+- New const `RecurrenceFrequencyHour`
+- New const `InputDeliveryModeEvalDownload`
+- New const `WeekdaySaturday`
+- New const `NCrossValidationsModeCustom`
+- New const `ForecastingModelsRandomForest`
+- New const `OperatingSystemTypeLinux`
+- New const `ShortSeriesHandlingConfigurationAuto`
+- New const `CachingReadOnly`
+- New const `DatastoreTypeAzureDataLakeGen1`
+- New const `SKUScaleTypeAutomatic`
+- New const `ForecastingPrimaryMetricsSpearmanCorrelation`
+- New const `IdentityConfigurationTypeAMLToken`
+- New const `SecretsTypeKerberosKeytab`
+- New const `SourceTypeDataset`
+- New const `EndpointComputeTypeAzureMLCompute`
+- New const `TaskTypeImageObjectDetection`
+- New const `EndpointComputeTypeManaged`
+- New const `JobStatusNotStarted`
+- New const `ClassificationModelsBernoulliNaiveBayes`
+- New const `TaskTypeTextNER`
+- New const `SecretsTypeServicePrincipal`
+- New const `SamplingAlgorithmTypeBayesian`
+- New const `BatchLoggingLevelInfo`
+- New const `ManagedServiceIdentityTypeSystemAssigned`
+- New const `ServiceDataAccessAuthIdentityWorkspaceSystemAssignedIdentity`
+- New const `ValidationMetricTypeCocoVoc`
+- New const `ForecastingModelsTCNForecaster`
+- New const `BatchOutputActionSummaryOnly`
+- New const `DataTypeURIFolder`
+- New const `ClassificationModelsLogisticRegression`
+- New const `TaskTypeClassification`
+- New const `UseStlNone`
+- New const `ClassificationModelsMultinomialNaiveBayes`
+- New const `GoalMinimize`
+- New const `KeyTypePrimary`
+- New const `MountActionUnmount`
+- New const `JobInputTypeTritonModel`
+- New const `JobStatusNotResponding`
+- New const `SecretsTypeAccountKey`
+- New const `ScaleTypeTargetUtilization`
+- New const `RegressionModelsElasticNet`
+- New const `EnvironmentTypeUserCreated`
+- New const `NetworkHost`
+- New const `TargetAggregationFunctionMean`
+- New const `ClassificationModelsSVM`
+- New const `ClassificationMultilabelPrimaryMetricsAccuracy`
+- New const `ClassificationPrimaryMetricsAUCWeighted`
+- New const `ForecastingModelsArimax`
+- New const `OrderStringCreatedAtAsc`
+- New const `ObjectDetectionPrimaryMetricsMeanAveragePrecision`
+- New const `NetworkBridge`
+- New const `ManagedServiceIdentityTypeNone`
+- New const `ServiceDataAccessAuthIdentityNone`
+- New const `ComputePowerActionStart`
+- New const `InputDeliveryModeDownload`
+- New const `SeasonalityModeCustom`
+- New const `JobTypeCommand`
+- New const `MountStateMountRequested`
+- New const `TargetAggregationFunctionNone`
+- New const `StochasticOptimizerNone`
+- New const `DataTypeMLTable`
+- New const `EndpointComputeTypeKubernetes`
+- New const `JobOutputTypeMLTable`
+- New const `DeploymentProvisioningStateFailed`
+- New const `IdentityConfigurationTypeUserIdentity`
+- New const `JobStatusCancelRequested`
+- New const `EgressPublicNetworkAccessTypeEnabled`
+- New const `OperatingSystemTypeWindows`
+- New const `ModelSizeSmall`
+- New const `ClassificationModelsLinearSVM`
+- New const `JobTypeSweep`
+- New const `ClassificationModelsXGBoostClassifier`
+- New const `BatchOutputActionAppendRow`
+- New const `FeatureLagsAuto`
+- New const `FeaturizationModeOff`
+- New const `BatchLoggingLevelDebug`
+- New const `StochasticOptimizerAdamw`
+- New const `RegressionPrimaryMetricsNormalizedMeanAbsoluteError`
+- New const `RegressionModelsSGD`
+- New const `EndpointAuthModeAADToken`
+- New const `TaskTypeImageClassification`
+- New const `RegressionModelsLassoLars`
+- New const `TaskTypeRegression`
+- New const `ContainerTypeStorageInitializer`
+- New const `TaskTypeTextClassification`
+- New const `StackMetaLearnerTypeLightGBMRegressor`
+- New const `ValidationMetricTypeVoc`
+- New const `JobOutputTypeURIFile`
+- New const `CredentialsTypeKerberosPassword`
+- New const `ClassificationMultilabelPrimaryMetricsAUCWeighted`
+- New const `RegressionModelsDecisionTree`
+- New const `JobLimitsTypeSweep`
+- New const `ForecastHorizonModeAuto`
+- New const `StochasticOptimizerAdam`
+- New const `DatastoreTypeAzureBlob`
+- New const `InputDeliveryModeReadOnlyMount`
+- New const `JobOutputTypeCustomModel`
+- New const `IdentityConfigurationTypeManaged`
+- New const `ForecastingPrimaryMetricsNormalizedRootMeanSquaredError`
+- New const `RegressionModelsGradientBoosting`
+- New const `EndpointAuthModeKey`
+- New const `ForecastingModelsSeasonalNaive`
+- New const `BatchLoggingLevelWarning`
+- New const `CachingReadWrite`
+- New const `RecurrenceFrequencyMinute`
+- New const `ClassificationModelsLightGBM`
+- New const `InputDeliveryModeDirect`
+- New const `ModelSizeMedium`
+- New const `PublicNetworkAccessTypeDisabled`
+- New const `TargetAggregationFunctionSum`
+- New const `ScaleTypeDefault`
+- New const `ShortSeriesHandlingConfigurationNone`
+- New const `SKUTierPremium`
+- New const `SecretsTypeKerberosPassword`
+- New const `ClassificationModelsRandomForest`
+- New const `MountStateMountFailed`
+- New const `ClassificationMultilabelPrimaryMetricsNormMacroRecall`
+- New const `JobInputTypeLiteral`
+- New const `CredentialsTypeAccountKey`
+- New const `EndpointProvisioningStateCreating`
+- New const `ForecastingModelsAverage`
+- New const `SourceTypeDatastore`
+- New const `EnvironmentTypeCurated`
+- New const `JobStatusRunning`
+- New const `OperationTriggerIdleShutdown`
+- New const `ComputePowerActionStop`
+- New const `MountStateUnmountFailed`
+- New const `OperationTriggerSchedule`
+- New const `ForecastingModelsSGD`
+- New const `ModelSizeExtraLarge`
+- New const `ModelTypeTritonModel`
+- New const `EndpointProvisioningStateCanceled`
+- New const `ForecastingPrimaryMetricsR2Score`
+- New const `EarlyTerminationPolicyTypeBandit`
+- New const `LogVerbosityNotSet`
+- New const `LearningRateSchedulerWarmupCosine`
+- New const `DatastoreTypeHdfs`
+- New const `ClassificationModelsSGD`
+- New const `JobTypePipeline`
+- New const `EndpointProvisioningStateUpdating`
+- New const `StorageAccountTypePremiumLRS`
+- New const `JobStatusFailed`
+- New const `ReferenceTypeDataPath`
+- New const `ForecastingModelsKNN`
+- New const `CachingNone`
+- New const `EgressPublicNetworkAccessTypeDisabled`
+- New const `RegressionPrimaryMetricsSpearmanCorrelation`
+- New const `JobInputTypeMLFlowModel`
+- New const `RegressionModelsExtremeRandomTrees`
+- New const `EndpointProvisioningStateDeleting`
+- New const `ForecastingModelsXGBoostRegressor`
+- New const `RegressionPrimaryMetricsNormalizedRootMeanSquaredError`
+- New const `JobInputTypeCustomModel`
+- New const `ForecastingModelsElasticNet`
+- New const `RegressionModelsXGBoostRegressor`
+- New const `WeekdayWednesday`
+- New const `TargetAggregationFunctionMax`
+- New const `EndpointProvisioningStateFailed`
+- New const `DistributionTypeMpi`
+- New const `FeaturizationModeCustom`
+- New const `MountStateMounted`
+- New const `UseStlSeason`
+- New const `StackMetaLearnerTypeLogisticRegressionCV`
+- New const `NCrossValidationsModeAuto`
+- New const `TargetLagsModeAuto`
+- New const `SKUTierBasic`
+- New const `MountActionMount`
+- New const `WeekdayMonday`
+- New const `TaskTypeImageInstanceSegmentation`
+- New const `TaskTypeForecasting`
+- New const `ForecastingModelsAutoArima`
+- New const `WeekdaySunday`
+- New const `ClassificationModelsDecisionTree`
+- New const `InstanceSegmentationPrimaryMetricsMeanAveragePrecision`
+- New const `AutosaveRemote`
+- New const `DistributionTypePyTorch`
+- New const `ValidationMetricTypeNone`
+- New const `ForecastingModelsLightGBM`
+- New const `StackMetaLearnerTypeLogisticRegression`
+- New const `MountStateUnmountRequested`
+- New const `EarlyTerminationPolicyTypeTruncationSelection`
+- New const `DataTypeURIFile`
+- New const `ScheduleStatusEnabled`
+- New const `StorageAccountTypeStandardLRS`
+- New const `OrderStringCreatedAtDesc`
+- New const `SecretsTypeCertificate`
+- New const `StackMetaLearnerTypeElasticNet`
+- New const `AutosaveLocal`
+- New const `ClassificationPrimaryMetricsAveragePrecisionScoreWeighted`
+- New const `DeploymentProvisioningStateSucceeded`
+- New const `LogVerbosityWarning`
+- New const `JobStatusPreparing`
+- New const `ForecastingModelsSeasonalAverage`
+- New const `ModelSizeNone`
+- New const `OutputDeliveryModeReadWriteMount`
+- New const `RegressionModelsKNN`
+- New const `ForecastingModelsGradientBoosting`
+- New const `LogVerbosityCritical`
+- New const `StochasticOptimizerSgd`
+- New const `WeekdayTuesday`
+- New const `ValidationMetricTypeCoco`
+- New const `JobInputTypeMLTable`
+- New const `StackMetaLearnerTypeElasticNetCV`
+- New const `ShortSeriesHandlingConfigurationPad`
+- New const `JobStatusUnknown`
+- New const `AutosaveNone`
+- New const `DeploymentProvisioningStateCreating`
+- New const `TaskTypeTextClassificationMultilabel`
+- New const `EarlyTerminationPolicyTypeMedianStopping`
+- New const `OutputDeliveryModeUpload`
+- New const `ForecastingModelsNaive`
+- New const `ManagedServiceIdentityTypeSystemAssignedUserAssigned`
+- New const `JobStatusCompleted`
+- New const `SKUScaleTypeNone`
+- New const `TargetAggregationFunctionMin`
+- New const `LearningRateSchedulerStep`
+- New const `SKUScaleTypeManual`
+- New const `LearningRateSchedulerNone`
+- New const `ScheduleTypeRecurrence`
+- New const `ModelTypeMLFlowModel`
+- New const `CredentialsTypeCertificate`
+- New const `UseStlSeasonTrend`
+- New const `DeploymentProvisioningStateDeleting`
+- New const `GoalMaximize`
+- New const `ProvisioningStatusCompleted`
+- New const `RandomSamplingAlgorithmRuleRandom`
+- New const `StackMetaLearnerTypeLinearRegression`
+- New const `InputDeliveryModeEvalMount`
+- New function `DataContainerDetails.MarshalJSON() ([]byte, error)`
+- New function `ResourceConfiguration.MarshalJSON() ([]byte, error)`
+- New function `*URIFileJobOutput.UnmarshalJSON([]byte) error`
+- New function `*TextNer.GetAutoMLVertical() *AutoMLVertical`
+- New function `ScheduleBase.MarshalJSON() ([]byte, error)`
+- New function `PossibleObjectDetectionPrimaryMetricsValues() []ObjectDetectionPrimaryMetrics`
+- New function `*AutoForecastHorizon.UnmarshalJSON([]byte) error`
+- New function `*AutoTargetLags.GetTargetLags() *TargetLags`
+- New function `PossibleScaleTypeValues() []ScaleType`
+- New function `*AssetReferenceBase.GetAssetReferenceBase() *AssetReferenceBase`
+- New function `OutputPathAssetReference.MarshalJSON() ([]byte, error)`
+- New function `*PartialOutputPathAssetReference.UnmarshalJSON([]byte) error`
+- New function `*URIFileDataVersion.GetDataVersionBaseDetails() *DataVersionBaseDetails`
+- New function `*JobBaseData.UnmarshalJSON([]byte) error`
+- New function `URIFolderDataVersion.MarshalJSON() ([]byte, error)`
+- New function `*URIFolderJobOutput.UnmarshalJSON([]byte) error`
+- New function `*CustomForecastHorizon.GetForecastHorizon() *ForecastHorizon`
+- New function `*URIFolderJobOutput.GetJobOutput() *JobOutput`
+- New function `BatchDeploymentData.MarshalJSON() ([]byte, error)`
+- New function `*ComputeStartStopSchedule.UnmarshalJSON([]byte) error`
+- New function `CertificateDatastoreCredentials.MarshalJSON() ([]byte, error)`
+- New function `*DataPathAssetReference.GetAssetReferenceBase() *AssetReferenceBase`
+- New function `*OnlineDeploymentDetails.UnmarshalJSON([]byte) error`
+- New function `*DatastoresClientListSecretsResponse.UnmarshalJSON([]byte) error`
+- New function `*AzureDataLakeGen2Datastore.UnmarshalJSON([]byte) error`
+- New function `PossibleUseStlValues() []UseStl`
+- New function `*AzureFileDatastore.GetDatastoreDetails() *DatastoreDetails`
+- New function `*JobInput.GetJobInput() *JobInput`
+- New function `*AutoTargetLags.UnmarshalJSON([]byte) error`
+- New function `PossibleContainerTypeValues() []ContainerType`
+- New function `PartialOutputPathAssetReference.MarshalJSON() ([]byte, error)`
+- New function `*RandomSamplingAlgorithm.GetSamplingAlgorithm() *SamplingAlgorithm`
+- New function `*TextClassificationMultilabel.GetAutoMLVertical() *AutoMLVertical`
+- New function `*SweepJobLimits.GetJobLimits() *JobLimits`
+- New function `PossibleScheduleStatusValues() []ScheduleStatus`
+- New function `PossibleTaskTypeValues() []TaskType`
+- New function `AutoForecastHorizon.MarshalJSON() ([]byte, error)`
+- New function `*AutoSeasonality.GetSeasonality() *Seasonality`
+- New function `*ScheduleBase.UnmarshalJSON([]byte) error`
+- New function `*ImageClassificationMultilabel.GetAutoMLVertical() *AutoMLVertical`
+- New function `*CustomNCrossValidations.GetNCrossValidations() *NCrossValidations`
+- New function `PossibleBatchLoggingLevelValues() []BatchLoggingLevel`
+- New function `*KubernetesOnlineDeployment.UnmarshalJSON([]byte) error`
+- New function `SasDatastoreSecrets.MarshalJSON() ([]byte, error)`
+- New function `*ImageInstanceSegmentation.UnmarshalJSON([]byte) error`
+- New function `PossibleInstanceSegmentationPrimaryMetricsValues() []InstanceSegmentationPrimaryMetrics`
+- New function `*CronSchedule.GetScheduleBase() *ScheduleBase`
+- New function `PossibleValidationMetricTypeValues() []ValidationMetricType`
+- New function `*TrialComponent.UnmarshalJSON([]byte) error`
+- New function `PossibleKeyTypeValues() []KeyType`
+- New function `*Regression.GetAutoMLVertical() *AutoMLVertical`
+- New function `PossibleTargetAggregationFunctionValues() []TargetAggregationFunction`
+- New function `*TritonModelJobInput.GetJobInput() *JobInput`
+- New function `CertificateDatastoreSecrets.MarshalJSON() ([]byte, error)`
+- New function `PossibleScheduleTypeValues() []ScheduleType`
+- New function `RecurrencePattern.MarshalJSON() ([]byte, error)`
+- New function `*KerberosPasswordCredentials.UnmarshalJSON([]byte) error`
+- New function `Classification.MarshalJSON() ([]byte, error)`
+- New function `PossibleLearningRateSchedulerValues() []LearningRateScheduler`
+- New function `OnlineEndpointDetails.MarshalJSON() ([]byte, error)`
+- New function `BatchEndpointData.MarshalJSON() ([]byte, error)`
+- New function `*CustomModelJobInput.UnmarshalJSON([]byte) error`
+- New function `PossibleTargetLagsModeValues() []TargetLagsMode`
+- New function `PossibleStochasticOptimizerValues() []StochasticOptimizer`
+- New function `*MedianStoppingPolicy.UnmarshalJSON([]byte) error`
+- New function `*URIFolderJobInput.GetJobInput() *JobInput`
+- New function `*ServicePrincipalDatastoreCredentials.UnmarshalJSON([]byte) error`
+- New function `PossibleDataTypeValues() []DataType`
+- New function `PossibleSourceTypeValues() []SourceType`
+- New function `*Mpi.UnmarshalJSON([]byte) error`
+- New function `PyTorch.MarshalJSON() ([]byte, error)`
+- New function `AssetBase.MarshalJSON() ([]byte, error)`
+- New function `AccountKeyDatastoreSecrets.MarshalJSON() ([]byte, error)`
+- New function `*TargetUtilizationScaleSettings.UnmarshalJSON([]byte) error`
+- New function `*LiteralJobInput.UnmarshalJSON([]byte) error`
+- New function `PossibleEndpointAuthModeValues() []EndpointAuthMode`
+- New function `MLTableJobOutput.MarshalJSON() ([]byte, error)`
+- New function `RecurrenceSchedule.MarshalJSON() ([]byte, error)`
+- New function `CustomSeasonality.MarshalJSON() ([]byte, error)`
+- New function `*CertificateDatastoreSecrets.UnmarshalJSON([]byte) error`
+- New function `*TensorFlow.UnmarshalJSON([]byte) error`
+- New function `ImageObjectDetection.MarshalJSON() ([]byte, error)`
+- New function `TableVerticalFeaturizationSettings.MarshalJSON() ([]byte, error)`
+- New function `*CustomNCrossValidations.UnmarshalJSON([]byte) error`
+- New function `ModelVersionDetails.MarshalJSON() ([]byte, error)`
+- New function `ComputeStartStopSchedule.MarshalJSON() ([]byte, error)`
+- New function `PossibleProvisioningStatusValues() []ProvisioningStatus`
+- New function `MedianStoppingPolicy.MarshalJSON() ([]byte, error)`
+- New function `*BayesianSamplingAlgorithm.GetSamplingAlgorithm() *SamplingAlgorithm`
+- New function `PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType`
+- New function `*PipelineJob.GetJobBaseDetails() *JobBaseDetails`
+- New function `*ImageSweepSettings.UnmarshalJSON([]byte) error`
+- New function `*PartialIDAssetReference.UnmarshalJSON([]byte) error`
+- New function `HdfsDatastore.MarshalJSON() ([]byte, error)`
+- New function `*SasDatastoreCredentials.GetDatastoreCredentials() *DatastoreCredentials`
+- New function `*DefaultScaleSettings.GetOnlineScaleSettings() *OnlineScaleSettings`
+- New function `PossibleEndpointComputeTypeValues() []EndpointComputeType`
+- New function `KerberosPasswordCredentials.MarshalJSON() ([]byte, error)`
+- New function `*ComputeResourceSchema.UnmarshalJSON([]byte) error`
+- New function `*CustomTargetRollingWindowSize.GetTargetRollingWindowSize() *TargetRollingWindowSize`
+- New function `TableVerticalValidationDataSettings.MarshalJSON() ([]byte, error)`
+- New function `*Mpi.GetDistributionConfiguration() *DistributionConfiguration`
+- New function `*PartialDataPathAssetReference.UnmarshalJSON([]byte) error`
+- New function `ComponentContainerDetails.MarshalJSON() ([]byte, error)`
+- New function `*AutoForecastHorizon.GetForecastHorizon() *ForecastHorizon`
+- New function `PossibleClassificationPrimaryMetricsValues() []ClassificationPrimaryMetrics`
+- New function `TextClassification.MarshalJSON() ([]byte, error)`
+- New function `*IDAssetReference.UnmarshalJSON([]byte) error`
+- New function `CronSchedule.MarshalJSON() ([]byte, error)`
+- New function `*PartialBatchDeployment.UnmarshalJSON([]byte) error`
+- New function `*AutoSeasonality.UnmarshalJSON([]byte) error`
+- New function `TrialComponent.MarshalJSON() ([]byte, error)`
+- New function `*CommandJobLimits.GetJobLimits() *JobLimits`
+- New function `*ManagedIdentity.GetIdentityConfiguration() *IdentityConfiguration`
+- New function `PossibleListViewTypeValues() []ListViewType`
+- New function `BatchDeploymentDetails.MarshalJSON() ([]byte, error)`
+- New function `TritonModelJobOutput.MarshalJSON() ([]byte, error)`
+- New function `*PipelineJob.UnmarshalJSON([]byte) error`
+- New function `AccountKeyDatastoreCredentials.MarshalJSON() ([]byte, error)`
+- New function `ForecastingSettings.MarshalJSON() ([]byte, error)`
+- New function `*ImageClassification.UnmarshalJSON([]byte) error`
+- New function `CustomNCrossValidations.MarshalJSON() ([]byte, error)`
+- New function `*TensorFlow.GetDistributionConfiguration() *DistributionConfiguration`
+- New function `URIFileJobOutput.MarshalJSON() ([]byte, error)`
+- New function `*PartialOnlineDeploymentPartialTrackedResource.UnmarshalJSON([]byte) error`
+- New function `NoneDatastoreCredentials.MarshalJSON() ([]byte, error)`
+- New function `JobBaseData.MarshalJSON() ([]byte, error)`
+- New function `SweepJobLimits.MarshalJSON() ([]byte, error)`
+- New function `PossibleLogVerbosityValues() []LogVerbosity`
+- New function `ComputeSchedules.MarshalJSON() ([]byte, error)`
+- New function `PossibleReferenceTypeValues() []ReferenceType`
+- New function `*AutoNCrossValidations.UnmarshalJSON([]byte) error`
+- New function `EndpointDeploymentPropertiesBase.MarshalJSON() ([]byte, error)`
+- New function `TrackedResource.MarshalJSON() ([]byte, error)`
+- New function `*TargetLags.GetTargetLags() *TargetLags`
+- New function `*KerberosKeytabSecrets.UnmarshalJSON([]byte) error`
+- New function `URIFileJobInput.MarshalJSON() ([]byte, error)`
+- New function `AzureBlobDatastore.MarshalJSON() ([]byte, error)`
+- New function `TargetUtilizationScaleSettings.MarshalJSON() ([]byte, error)`
+- New function `*ForecastHorizon.GetForecastHorizon() *ForecastHorizon`
+- New function `ResourceBase.MarshalJSON() ([]byte, error)`
+- New function `*Classification.GetAutoMLVertical() *AutoMLVertical`
+- New function `DatastoreDetails.MarshalJSON() ([]byte, error)`
+- New function `*AccountKeyDatastoreSecrets.UnmarshalJSON([]byte) error`
+- New function `AssetContainer.MarshalJSON() ([]byte, error)`
+- New function `PossibleIdentityConfigurationTypeValues() []IdentityConfigurationType`
+- New function `CodeVersionDetails.MarshalJSON() ([]byte, error)`
+- New function `PartialOnlineEndpoint.MarshalJSON() ([]byte, error)`
+- New function `*KerberosKeytabCredentials.GetDatastoreCredentials() *DatastoreCredentials`
+- New function `PartialBatchDeployment.MarshalJSON() ([]byte, error)`
+- New function `*ManagedIdentity.UnmarshalJSON([]byte) error`
+- New function `ImageClassificationMultilabel.MarshalJSON() ([]byte, error)`
+- New function `*TruncationSelectionPolicy.UnmarshalJSON([]byte) error`
+- New function `PossibleFeatureLagsValues() []FeatureLags`
+- New function `*AutoTargetRollingWindowSize.UnmarshalJSON([]byte) error`
+- New function `*DatastoreSecrets.GetDatastoreSecrets() *DatastoreSecrets`
+- New function `*BanditPolicy.GetEarlyTerminationPolicy() *EarlyTerminationPolicy`
+- New function `*CustomModelJobOutput.GetJobOutput() *JobOutput`
+- New function `ImageSweepSettings.MarshalJSON() ([]byte, error)`
+- New function `PossibleNetworkValues() []Network`
+- New function `*URIFolderJobInput.UnmarshalJSON([]byte) error`
+- New function `EndpointPropertiesBase.MarshalJSON() ([]byte, error)`
+- New function `URIFileDataVersion.MarshalJSON() ([]byte, error)`
+- New function `ManagedOnlineDeployment.MarshalJSON() ([]byte, error)`
+- New function `PossibleForecastingPrimaryMetricsValues() []ForecastingPrimaryMetrics`
+- New function `*CommandJob.GetJobBaseDetails() *JobBaseDetails`
+- New function `PossibleOperationTriggerValues() []OperationTrigger`
+- New function `CommandJobLimits.MarshalJSON() ([]byte, error)`
+- New function `*CustomTargetRollingWindowSize.UnmarshalJSON([]byte) error`
+- New function `*CustomTargetLags.GetTargetLags() *TargetLags`
+- New function `ImageClassification.MarshalJSON() ([]byte, error)`
+- New function `PossibleSamplingAlgorithmTypeValues() []SamplingAlgorithmType`
+- New function `*URIFileDataVersion.UnmarshalJSON([]byte) error`
+- New function `*RandomSamplingAlgorithm.UnmarshalJSON([]byte) error`
+- New function `*TritonModelJobInput.UnmarshalJSON([]byte) error`
+- New function `*BanditPolicy.UnmarshalJSON([]byte) error`
+- New function `URIFolderJobInput.MarshalJSON() ([]byte, error)`
+- New function `PossibleServiceDataAccessAuthIdentityValues() []ServiceDataAccessAuthIdentity`
+- New function `CustomModelJobOutput.MarshalJSON() ([]byte, error)`
+- New function `DataVersionBaseData.MarshalJSON() ([]byte, error)`
+- New function `PossibleJobTypeValues() []JobType`
+- New function `*ComputeInstanceDataMount.UnmarshalJSON([]byte) error`
+- New function `PossibleInputDeliveryModeValues() []InputDeliveryMode`
+- New function `TritonModelJobInput.MarshalJSON() ([]byte, error)`
+- New function `*MLFlowModelJobOutput.UnmarshalJSON([]byte) error`
+- New function `EnvironmentVersionDetails.MarshalJSON() ([]byte, error)`
+- New function `OnlineDeploymentDetails.MarshalJSON() ([]byte, error)`
+- New function `UserIdentity.MarshalJSON() ([]byte, error)`
+- New function `ManagedServiceIdentity.MarshalJSON() ([]byte, error)`
+- New function `*CustomForecastHorizon.UnmarshalJSON([]byte) error`
+- New function `PossibleForecastingModelsValues() []ForecastingModels`
+- New function `PossibleEgressPublicNetworkAccessTypeValues() []EgressPublicNetworkAccessType`
+- New function `ComputeResourceSchema.MarshalJSON() ([]byte, error)`
+- New function `PossibleEnvironmentTypeValues() []EnvironmentType`
+- New function `*NoneDatastoreCredentials.GetDatastoreCredentials() *DatastoreCredentials`
+- New function `MLFlowModelJobOutput.MarshalJSON() ([]byte, error)`
+- New function `*WorkspacesClient.BeginUpdate(context.Context, string, string, WorkspaceUpdateParameters, *WorkspacesClientBeginUpdateOptions) (*runtime.Poller[WorkspacesClientUpdateResponse], error)`
+- New function `PartialKubernetesOnlineDeployment.MarshalJSON() ([]byte, error)`
+- New function `*PartialAssetReferenceBase.GetPartialAssetReferenceBase() *PartialAssetReferenceBase`
+- New function `*Forecasting.UnmarshalJSON([]byte) error`
+- New function `*OutputPathAssetReference.GetAssetReferenceBase() *AssetReferenceBase`
+- New function `PossibleJobStatusValues() []JobStatus`
+- New function `TruncationSelectionPolicy.MarshalJSON() ([]byte, error)`
+- New function `PossibleRegressionPrimaryMetricsValues() []RegressionPrimaryMetrics`
+- New function `PossibleModelSizeValues() []ModelSize`
+- New function `PipelineJob.MarshalJSON() ([]byte, error)`
+- New function `DataVersionBaseDetails.MarshalJSON() ([]byte, error)`
+- New function `*TritonModelJobOutput.UnmarshalJSON([]byte) error`
+- New function `PossibleBatchOutputActionValues() []BatchOutputAction`
+- New function `PossibleForecastHorizonModeValues() []ForecastHorizonMode`
+- New function `*LiteralJobInput.GetJobInput() *JobInput`
+- New function `PossibleEndpointProvisioningStateValues() []EndpointProvisioningState`
+- New function `*PartialManagedOnlineDeployment.UnmarshalJSON([]byte) error`
+- New function `*ImageObjectDetection.GetAutoMLVertical() *AutoMLVertical`
+- New function `*SamplingAlgorithm.GetSamplingAlgorithm() *SamplingAlgorithm`
+- New function `*ManagedOnlineDeployment.GetOnlineDeploymentDetails() *OnlineDeploymentDetails`
+- New function `*BatchDeploymentDetails.UnmarshalJSON([]byte) error`
+- New function `*NCrossValidations.GetNCrossValidations() *NCrossValidations`
+- New function `AutoSeasonality.MarshalJSON() ([]byte, error)`
+- New function `*IdentityConfiguration.GetIdentityConfiguration() *IdentityConfiguration`
+- New function `PartialManagedOnlineDeployment.MarshalJSON() ([]byte, error)`
+- New function `*HdfsDatastore.UnmarshalJSON([]byte) error`
+- New function `*SasDatastoreSecrets.GetDatastoreSecrets() *DatastoreSecrets`
+- New function `*AzureBlobDatastore.UnmarshalJSON([]byte) error`
+- New function `*JobLimits.GetJobLimits() *JobLimits`
+- New function `JobBaseDetails.MarshalJSON() ([]byte, error)`
+- New function `CustomModelJobInput.MarshalJSON() ([]byte, error)`
+- New function `ImageClassificationBase.MarshalJSON() ([]byte, error)`
+- New function `*DistributionConfiguration.GetDistributionConfiguration() *DistributionConfiguration`
+- New function `PartialDataPathAssetReference.MarshalJSON() ([]byte, error)`
+- New function `*CustomModelJobInput.GetJobInput() *JobInput`
+- New function `*AutoMLVertical.GetAutoMLVertical() *AutoMLVertical`
+- New function `*TargetUtilizationScaleSettings.GetOnlineScaleSettings() *OnlineScaleSettings`
+- New function `*OutputPathAssetReference.UnmarshalJSON([]byte) error`
+- New function `ImageObjectDetectionBase.MarshalJSON() ([]byte, error)`
+- New function `*CertificateDatastoreCredentials.GetDatastoreCredentials() *DatastoreCredentials`
+- New function `CodeContainerDetails.MarshalJSON() ([]byte, error)`
+- New function `CommandJob.MarshalJSON() ([]byte, error)`
+- New function `*KubernetesOnlineDeployment.GetOnlineDeploymentDetails() *OnlineDeploymentDetails`
+- New function `*TritonModelJobOutput.GetJobOutput() *JobOutput`
+- New function `*BayesianSamplingAlgorithm.UnmarshalJSON([]byte) error`
+- New function `*AzureDataLakeGen1Datastore.GetDatastoreDetails() *DatastoreDetails`
+- New function `BanditPolicy.MarshalJSON() ([]byte, error)`
+- New function `*ImageClassificationMultilabel.UnmarshalJSON([]byte) error`
+- New function `*AutoMLJob.GetJobBaseDetails() *JobBaseDetails`
+- New function `*AutoNCrossValidations.GetNCrossValidations() *NCrossValidations`
+- New function `*CustomTargetLags.UnmarshalJSON([]byte) error`
+- New function `MLTableData.MarshalJSON() ([]byte, error)`
+- New function `FlavorData.MarshalJSON() ([]byte, error)`
+- New function `*PartialKubernetesOnlineDeployment.GetPartialOnlineDeployment() *PartialOnlineDeployment`
+- New function `PossibleSecretsTypeValues() []SecretsType`
+- New function `*TargetRollingWindowSize.GetTargetRollingWindowSize() *TargetRollingWindowSize`
+- New function `*Classification.UnmarshalJSON([]byte) error`
+- New function `PossibleMountActionValues() []MountAction`
+- New function `PossibleOutputDeliveryModeValues() []OutputDeliveryMode`
+- New function `PossibleSeasonalityModeValues() []SeasonalityMode`
+- New function `*DataPathAssetReference.UnmarshalJSON([]byte) error`
+- New function `*Seasonality.GetSeasonality() *Seasonality`
+- New function `Mpi.MarshalJSON() ([]byte, error)`
+- New function `LiteralJobInput.MarshalJSON() ([]byte, error)`
+- New function `*PyTorch.GetDistributionConfiguration() *DistributionConfiguration`
+- New function `BayesianSamplingAlgorithm.MarshalJSON() ([]byte, error)`
+- New function `PartialOnlineDeploymentPartialTrackedResource.MarshalJSON() ([]byte, error)`
+- New function `*URIFolderDataVersion.UnmarshalJSON([]byte) error`
+- New function `ModelContainerDetails.MarshalJSON() ([]byte, error)`
+- New function `*CertificateDatastoreSecrets.GetDatastoreSecrets() *DatastoreSecrets`
+- New function `*DataVersionBaseDetails.GetDataVersionBaseDetails() *DataVersionBaseDetails`
+- New function `*AzureDataLakeGen1Datastore.UnmarshalJSON([]byte) error`
+- New function `AutoMLJob.MarshalJSON() ([]byte, error)`
+- New function `*Regression.UnmarshalJSON([]byte) error`
+- New function `*OnlineScaleSettings.GetOnlineScaleSettings() *OnlineScaleSettings`
+- New function `*AmlToken.GetIdentityConfiguration() *IdentityConfiguration`
+- New function `PossibleClassificationModelsValues() []ClassificationModels`
+- New function `*DatastoreCredentials.GetDatastoreCredentials() *DatastoreCredentials`
+- New function `*IDAssetReference.GetAssetReferenceBase() *AssetReferenceBase`
+- New function `PossibleRecurrenceFrequencyValues() []RecurrenceFrequency`
+- New function `*MLTableData.UnmarshalJSON([]byte) error`
+- New function `AmlToken.MarshalJSON() ([]byte, error)`
+- New function `*MLTableData.GetDataVersionBaseDetails() *DataVersionBaseDetails`
+- New function `*TextClassificationMultilabel.UnmarshalJSON([]byte) error`
+- New function `*DatastoreDetails.GetDatastoreDetails() *DatastoreDetails`
+- New function `*ServicePrincipalDatastoreSecrets.GetDatastoreSecrets() *DatastoreSecrets`
+- New function `*CronSchedule.UnmarshalJSON([]byte) error`
+- New function `PossibleRandomSamplingAlgorithmRuleValues() []RandomSamplingAlgorithmRule`
+- New function `*DatastoreData.UnmarshalJSON([]byte) error`
+- New function `PossibleJobInputTypeValues() []JobInputType`
+- New function `*URIFolderDataVersion.GetDataVersionBaseDetails() *DataVersionBaseDetails`
+- New function `*TextClassification.GetAutoMLVertical() *AutoMLVertical`
+- New function `PossibleOperatingSystemTypeValues() []OperatingSystemType`
+- New function `PossibleSKUScaleTypeValues() []SKUScaleType`
+- New function `ComputeInstanceContainer.MarshalJSON() ([]byte, error)`
+- New function `ServicePrincipalDatastoreSecrets.MarshalJSON() ([]byte, error)`
+- New function `PossibleStorageAccountTypeValues() []StorageAccountType`
+- New function `*OnlineDeploymentDetails.GetOnlineDeploymentDetails() *OnlineDeploymentDetails`
+- New function `IDAssetReference.MarshalJSON() ([]byte, error)`
+- New function `KerberosPasswordSecrets.MarshalJSON() ([]byte, error)`
+- New function `PossibleDeploymentProvisioningStateValues() []DeploymentProvisioningState`
+- New function `*SweepJob.GetJobBaseDetails() *JobBaseDetails`
+- New function `*ServicePrincipalDatastoreCredentials.GetDatastoreCredentials() *DatastoreCredentials`
+- New function `AzureFileDatastore.MarshalJSON() ([]byte, error)`
+- New function `AzureDataLakeGen2Datastore.MarshalJSON() ([]byte, error)`
+- New function `*SweepJob.UnmarshalJSON([]byte) error`
+- New function `*DatastoreDetails.UnmarshalJSON([]byte) error`
+- New function `*AzureBlobDatastore.GetDatastoreDetails() *DatastoreDetails`
+- New function `PossibleDistributionTypeValues() []DistributionType`
+- New function `*KerberosPasswordSecrets.GetDatastoreSecrets() *DatastoreSecrets`
+- New function `*ImageClassification.GetAutoMLVertical() *AutoMLVertical`
+- New function `*MLTableJobInput.UnmarshalJSON([]byte) error`
+- New function `RandomSamplingAlgorithm.MarshalJSON() ([]byte, error)`
+- New function `*JobOutput.GetJobOutput() *JobOutput`
+- New function `EnvironmentContainerDetails.MarshalJSON() ([]byte, error)`
+- New function `*CommandJob.UnmarshalJSON([]byte) error`
+- New function `TensorFlow.MarshalJSON() ([]byte, error)`
+- New function `*GridSamplingAlgorithm.GetSamplingAlgorithm() *SamplingAlgorithm`
+- New function `Regression.MarshalJSON() ([]byte, error)`
+- New function `*KerberosPasswordSecrets.UnmarshalJSON([]byte) error`
+- New function `PossibleClassificationMultilabelPrimaryMetricsValues() []ClassificationMultilabelPrimaryMetrics`
+- New function `*URIFileJobInput.UnmarshalJSON([]byte) error`
+- New function `PossibleNCrossValidationsModeValues() []NCrossValidationsMode`
+- New function `PartialBatchDeploymentPartialTrackedResource.MarshalJSON() ([]byte, error)`
+- New function `CustomTargetLags.MarshalJSON() ([]byte, error)`
+- New function `CustomTargetRollingWindowSize.MarshalJSON() ([]byte, error)`
+- New function `*RecurrenceSchedule.UnmarshalJSON([]byte) error`
+- New function `MLTableJobInput.MarshalJSON() ([]byte, error)`
+- New function `DatastoreData.MarshalJSON() ([]byte, error)`
+- New function `*Forecasting.GetAutoMLVertical() *AutoMLVertical`
+- New function `*TextClassification.UnmarshalJSON([]byte) error`
+- New function `*OnlineDeploymentData.UnmarshalJSON([]byte) error`
+- New function `*PartialOutputPathAssetReference.GetPartialAssetReferenceBase() *PartialAssetReferenceBase`
+- New function `*EarlyTerminationPolicy.GetEarlyTerminationPolicy() *EarlyTerminationPolicy`
+- New function `*ImageObjectDetection.UnmarshalJSON([]byte) error`
+- New function `*MedianStoppingPolicy.GetEarlyTerminationPolicy() *EarlyTerminationPolicy`
+- New function `PartialOnlineEndpointPartialTrackedResource.MarshalJSON() ([]byte, error)`
+- New function `*URIFileJobInput.GetJobInput() *JobInput`
+- New function `*NoneDatastoreCredentials.UnmarshalJSON([]byte) error`
+- New function `PossibleModelTypeValues() []ModelType`
+- New function `*PartialManagedOnlineDeployment.GetPartialOnlineDeployment() *PartialOnlineDeployment`
+- New function `PossibleDatastoreTypeValues() []DatastoreType`
+- New function `*PartialOnlineDeployment.GetPartialOnlineDeployment() *PartialOnlineDeployment`
+- New function `PossibleFeaturizationModeValues() []FeaturizationMode`
+- New function `*ImageInstanceSegmentation.GetAutoMLVertical() *AutoMLVertical`
+- New function `*ForecastingSettings.UnmarshalJSON([]byte) error`
+- New function `PossibleJobLimitsTypeValues() []JobLimitsType`
+- New function `PossibleRegressionModelsValues() []RegressionModels`
+- New function `PossibleMountStateValues() []MountState`
+- New function `*RecurrenceSchedule.GetScheduleBase() *ScheduleBase`
+- New function `*DefaultScaleSettings.UnmarshalJSON([]byte) error`
+- New function `PossibleTargetRollingWindowSizeModeValues() []TargetRollingWindowSizeMode`
+- New function `PossibleCredentialsTypeValues() []CredentialsType`
+- New function `*ManagedOnlineDeployment.UnmarshalJSON([]byte) error`
+- New function `AutoNCrossValidations.MarshalJSON() ([]byte, error)`
+- New function `KerberosKeytabSecrets.MarshalJSON() ([]byte, error)`
+- New function `PartialIDAssetReference.MarshalJSON() ([]byte, error)`
+- New function `*AutoTargetRollingWindowSize.GetTargetRollingWindowSize() *TargetRollingWindowSize`
+- New function `AutoTargetRollingWindowSize.MarshalJSON() ([]byte, error)`
+- New function `PossibleStackMetaLearnerTypeValues() []StackMetaLearnerType`
+- New function `AutoTargetLags.MarshalJSON() ([]byte, error)`
+- New function `URIFolderJobOutput.MarshalJSON() ([]byte, error)`
+- New function `ColumnTransformer.MarshalJSON() ([]byte, error)`
+- New function `*TextNer.UnmarshalJSON([]byte) error`
+- New function `TextNer.MarshalJSON() ([]byte, error)`
+- New function `Forecasting.MarshalJSON() ([]byte, error)`
+- New function `AKSSchemaProperties.MarshalJSON() ([]byte, error)`
+- New function `*URIFileJobOutput.GetJobOutput() *JobOutput`
+- New function `ComputeInstanceDataMount.MarshalJSON() ([]byte, error)`
+- New function `*TruncationSelectionPolicy.GetEarlyTerminationPolicy() *EarlyTerminationPolicy`
+- New function `*CustomModelJobOutput.UnmarshalJSON([]byte) error`
+- New function `DataPathAssetReference.MarshalJSON() ([]byte, error)`
+- New function `*KerberosPasswordCredentials.GetDatastoreCredentials() *DatastoreCredentials`
+- New function `ImageInstanceSegmentation.MarshalJSON() ([]byte, error)`
+- New function `CustomForecastHorizon.MarshalJSON() ([]byte, error)`
+- New function `*AutoMLJob.UnmarshalJSON([]byte) error`
+- New function `JobService.MarshalJSON() ([]byte, error)`
+- New function `*SasDatastoreSecrets.UnmarshalJSON([]byte) error`
+- New function `*ServicePrincipalDatastoreSecrets.UnmarshalJSON([]byte) error`
+- New function `*MLFlowModelJobOutput.GetJobOutput() *JobOutput`
+- New function `*CertificateDatastoreCredentials.UnmarshalJSON([]byte) error`
+- New function `*MLTableJobOutput.GetJobOutput() *JobOutput`
+- New function `*TableVerticalValidationDataSettings.UnmarshalJSON([]byte) error`
+- New function `*AzureDataLakeGen2Datastore.GetDatastoreDetails() *DatastoreDetails`
+- New function `*PartialKubernetesOnlineDeployment.UnmarshalJSON([]byte) error`
+- New function `*JobBaseDetails.UnmarshalJSON([]byte) error`
+- New function `*SweepJobLimits.UnmarshalJSON([]byte) error`
+- New function `*AccountKeyDatastoreCredentials.UnmarshalJSON([]byte) error`
+- New function `AzureDataLakeGen1Datastore.MarshalJSON() ([]byte, error)`
+- New function `PossibleJobOutputTypeValues() []JobOutputType`
+- New function `*ScheduleBase.GetScheduleBase() *ScheduleBase`
+- New function `BatchEndpointDetails.MarshalJSON() ([]byte, error)`
+- New function `*DataVersionBaseData.UnmarshalJSON([]byte) error`
+- New function `DefaultScaleSettings.MarshalJSON() ([]byte, error)`
+- New function `PartialBatchEndpointPartialTrackedResource.MarshalJSON() ([]byte, error)`
+- New function `*UserIdentity.GetIdentityConfiguration() *IdentityConfiguration`
+- New function `OnlineDeploymentData.MarshalJSON() ([]byte, error)`
+- New function `PartialManagedServiceIdentity.MarshalJSON() ([]byte, error)`
+- New function `*CustomSeasonality.UnmarshalJSON([]byte) error`
+- New function `*CustomSeasonality.GetSeasonality() *Seasonality`
+- New function `GridSamplingAlgorithm.MarshalJSON() ([]byte, error)`
+- New function `MLFlowModelJobInput.MarshalJSON() ([]byte, error)`
+- New function `PossibleAutosaveValues() []Autosave`
+- New function `PossibleWeekdayValues() []Weekday`
+- New function `*AmlToken.UnmarshalJSON([]byte) error`
+- New function `*CommandJobLimits.UnmarshalJSON([]byte) error`
+- New function `*KerberosKeytabSecrets.GetDatastoreSecrets() *DatastoreSecrets`
+- New function `*JobBaseDetails.GetJobBaseDetails() *JobBaseDetails`
+- New function `*MLFlowModelJobInput.GetJobInput() *JobInput`
+- New function `ManagedIdentity.MarshalJSON() ([]byte, error)`
+- New function `*GridSamplingAlgorithm.UnmarshalJSON([]byte) error`
+- New function `*UserIdentity.UnmarshalJSON([]byte) error`
+- New function `SweepJob.MarshalJSON() ([]byte, error)`
+- New function `OnlineEndpointData.MarshalJSON() ([]byte, error)`
+- New function `ServicePrincipalDatastoreCredentials.MarshalJSON() ([]byte, error)`
+- New function `*PartialDataPathAssetReference.GetPartialAssetReferenceBase() *PartialAssetReferenceBase`
+- New function `*MLTableJobInput.GetJobInput() *JobInput`
+- New function `TextClassificationMultilabel.MarshalJSON() ([]byte, error)`
+- New function `*PartialIDAssetReference.GetPartialAssetReferenceBase() *PartialAssetReferenceBase`
+- New function `PossibleEarlyTerminationPolicyTypeValues() []EarlyTerminationPolicyType`
+- New function `PossibleOrderStringValues() []OrderString`
+- New function `*PyTorch.UnmarshalJSON([]byte) error`
+- New function `*MLTableJobOutput.UnmarshalJSON([]byte) error`
+- New function `PossibleShortSeriesHandlingConfigurationValues() []ShortSeriesHandlingConfiguration`
+- New function `PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType`
+- New function `*SasDatastoreCredentials.UnmarshalJSON([]byte) error`
+- New function `*MLFlowModelJobInput.UnmarshalJSON([]byte) error`
+- New function `*AccountKeyDatastoreCredentials.GetDatastoreCredentials() *DatastoreCredentials`
+- New function `PossibleSKUTierValues() []SKUTier`
+- New function `ComponentVersionDetails.MarshalJSON() ([]byte, error)`
+- New function `SasDatastoreCredentials.MarshalJSON() ([]byte, error)`
+- New function `PossibleComputePowerActionValues() []ComputePowerAction`
+- New function `*AzureFileDatastore.UnmarshalJSON([]byte) error`
+- New function `*AccountKeyDatastoreSecrets.GetDatastoreSecrets() *DatastoreSecrets`
+- New function `*HdfsDatastore.GetDatastoreDetails() *DatastoreDetails`
+- New function `PossibleCachingValues() []Caching`
+- New function `KubernetesOnlineDeployment.MarshalJSON() ([]byte, error)`
+- New function `*KerberosKeytabCredentials.UnmarshalJSON([]byte) error`
+- New function `KerberosKeytabCredentials.MarshalJSON() ([]byte, error)`
+- New function `PossibleGoalValues() []Goal`
+- New struct `AKSSchema`
+- New struct `AKSSchemaProperties`
+- New struct `AccountKeyDatastoreCredentials`
+- New struct `AccountKeyDatastoreSecrets`
+- New struct `AmlComputeSchema`
+- New struct `AmlOperation`
+- New struct `AmlOperationDisplay`
+- New struct `AmlOperationListResult`
+- New struct `AmlToken`
+- New struct `AssetBase`
+- New struct `AssetContainer`
+- New struct `AssetJobInput`
+- New struct `AssetJobOutput`
+- New struct `AssetReferenceBase`
+- New struct `AutoForecastHorizon`
+- New struct `AutoMLJob`
+- New struct `AutoMLVertical`
+- New struct `AutoNCrossValidations`
+- New struct `AutoSeasonality`
+- New struct `AutoTargetLags`
+- New struct `AutoTargetRollingWindowSize`
+- New struct `AzureBlobDatastore`
+- New struct `AzureDataLakeGen1Datastore`
+- New struct `AzureDataLakeGen2Datastore`
+- New struct `AzureFileDatastore`
+- New struct `BanditPolicy`
+- New struct `BatchDeploymentData`
+- New struct `BatchDeploymentDetails`
+- New struct `BatchDeploymentTrackedResourceArmPaginatedResult`
+- New struct `BatchDeploymentsClientBeginCreateOrUpdateOptions`
+- New struct `BatchDeploymentsClientBeginDeleteOptions`
+- New struct `BatchDeploymentsClientBeginUpdateOptions`
+- New struct `BatchDeploymentsClientCreateOrUpdateResponse`
+- New struct `BatchDeploymentsClientDeleteResponse`
+- New struct `BatchDeploymentsClientGetOptions`
+- New struct `BatchDeploymentsClientGetResponse`
+- New struct `BatchDeploymentsClientListOptions`
+- New struct `BatchDeploymentsClientListResponse`
+- New struct `BatchDeploymentsClientUpdateResponse`
+- New struct `BatchEndpointData`
+- New struct `BatchEndpointDefaults`
+- New struct `BatchEndpointDetails`
+- New struct `BatchEndpointTrackedResourceArmPaginatedResult`
+- New struct `BatchEndpointsClientBeginCreateOrUpdateOptions`
+- New struct `BatchEndpointsClientBeginDeleteOptions`
+- New struct `BatchEndpointsClientBeginUpdateOptions`
+- New struct `BatchEndpointsClientCreateOrUpdateResponse`
+- New struct `BatchEndpointsClientDeleteResponse`
+- New struct `BatchEndpointsClientGetOptions`
+- New struct `BatchEndpointsClientGetResponse`
+- New struct `BatchEndpointsClientListKeysOptions`
+- New struct `BatchEndpointsClientListKeysResponse`
+- New struct `BatchEndpointsClientListOptions`
+- New struct `BatchEndpointsClientListResponse`
+- New struct `BatchEndpointsClientUpdateResponse`
+- New struct `BatchRetrySettings`
+- New struct `BayesianSamplingAlgorithm`
+- New struct `BuildContext`
+- New struct `CertificateDatastoreCredentials`
+- New struct `CertificateDatastoreSecrets`
+- New struct `Classification`
+- New struct `CodeConfiguration`
+- New struct `CodeContainerData`
+- New struct `CodeContainerDetails`
+- New struct `CodeContainerResourceArmPaginatedResult`
+- New struct `CodeContainersClientCreateOrUpdateOptions`
+- New struct `CodeContainersClientCreateOrUpdateResponse`
+- New struct `CodeContainersClientDeleteOptions`
+- New struct `CodeContainersClientDeleteResponse`
+- New struct `CodeContainersClientGetOptions`
+- New struct `CodeContainersClientGetResponse`
+- New struct `CodeContainersClientListOptions`
+- New struct `CodeContainersClientListResponse`
+- New struct `CodeVersionData`
+- New struct `CodeVersionDetails`
+- New struct `CodeVersionResourceArmPaginatedResult`
+- New struct `CodeVersionsClientCreateOrUpdateOptions`
+- New struct `CodeVersionsClientCreateOrUpdateResponse`
+- New struct `CodeVersionsClientDeleteOptions`
+- New struct `CodeVersionsClientDeleteResponse`
+- New struct `CodeVersionsClientGetOptions`
+- New struct `CodeVersionsClientGetResponse`
+- New struct `CodeVersionsClientListOptions`
+- New struct `CodeVersionsClientListResponse`
+- New struct `ColumnTransformer`
+- New struct `CommandJob`
+- New struct `CommandJobLimits`
+- New struct `ComponentContainerData`
+- New struct `ComponentContainerDetails`
+- New struct `ComponentContainerResourceArmPaginatedResult`
+- New struct `ComponentContainersClientCreateOrUpdateOptions`
+- New struct `ComponentContainersClientCreateOrUpdateResponse`
+- New struct `ComponentContainersClientDeleteOptions`
+- New struct `ComponentContainersClientDeleteResponse`
+- New struct `ComponentContainersClientGetOptions`
+- New struct `ComponentContainersClientGetResponse`
+- New struct `ComponentContainersClientListOptions`
+- New struct `ComponentContainersClientListResponse`
+- New struct `ComponentVersionData`
+- New struct `ComponentVersionDetails`
+- New struct `ComponentVersionResourceArmPaginatedResult`
+- New struct `ComponentVersionsClientCreateOrUpdateOptions`
+- New struct `ComponentVersionsClientCreateOrUpdateResponse`
+- New struct `ComponentVersionsClientDeleteOptions`
+- New struct `ComponentVersionsClientDeleteResponse`
+- New struct `ComponentVersionsClientGetOptions`
+- New struct `ComponentVersionsClientGetResponse`
+- New struct `ComponentVersionsClientListOptions`
+- New struct `ComponentVersionsClientListResponse`
+- New struct `ComputeInstanceContainer`
+- New struct `ComputeInstanceDataDisk`
+- New struct `ComputeInstanceDataMount`
+- New struct `ComputeInstanceEnvironmentInfo`
+- New struct `ComputeInstanceSchema`
+- New struct `ComputeInstanceVersion`
+- New struct `ComputeResourceSchema`
+- New struct `ComputeSchedules`
+- New struct `ComputeStartStopSchedule`
+- New struct `ContainerResourceSettings`
+- New struct `CronSchedule`
+- New struct `CustomForecastHorizon`
+- New struct `CustomModelJobInput`
+- New struct `CustomModelJobOutput`
+- New struct `CustomNCrossValidations`
+- New struct `CustomSeasonality`
+- New struct `CustomTargetLags`
+- New struct `CustomTargetRollingWindowSize`
+- New struct `DataContainerData`
+- New struct `DataContainerDetails`
+- New struct `DataContainerResourceArmPaginatedResult`
+- New struct `DataContainersClientCreateOrUpdateOptions`
+- New struct `DataContainersClientCreateOrUpdateResponse`
+- New struct `DataContainersClientDeleteOptions`
+- New struct `DataContainersClientDeleteResponse`
+- New struct `DataContainersClientGetOptions`
+- New struct `DataContainersClientGetResponse`
+- New struct `DataContainersClientListOptions`
+- New struct `DataContainersClientListResponse`
+- New struct `DataLakeAnalyticsSchema`
+- New struct `DataLakeAnalyticsSchemaProperties`
+- New struct `DataPathAssetReference`
+- New struct `DataSettings`
+- New struct `DataVersionBaseData`
+- New struct `DataVersionBaseDetails`
+- New struct `DataVersionBaseResourceArmPaginatedResult`
+- New struct `DataVersionsClientCreateOrUpdateOptions`
+- New struct `DataVersionsClientCreateOrUpdateResponse`
+- New struct `DataVersionsClientDeleteOptions`
+- New struct `DataVersionsClientDeleteResponse`
+- New struct `DataVersionsClientGetOptions`
+- New struct `DataVersionsClientGetResponse`
+- New struct `DataVersionsClientListOptions`
+- New struct `DataVersionsClientListResponse`
+- New struct `DatabricksSchema`
+- New struct `DatastoreCredentials`
+- New struct `DatastoreData`
+- New struct `DatastoreDetails`
+- New struct `DatastoreResourceArmPaginatedResult`
+- New struct `DatastoreSecrets`
+- New struct `DatastoresClientCreateOrUpdateOptions`
+- New struct `DatastoresClientCreateOrUpdateResponse`
+- New struct `DatastoresClientDeleteOptions`
+- New struct `DatastoresClientDeleteResponse`
+- New struct `DatastoresClientGetOptions`
+- New struct `DatastoresClientGetResponse`
+- New struct `DatastoresClientListOptions`
+- New struct `DatastoresClientListResponse`
+- New struct `DatastoresClientListSecretsOptions`
+- New struct `DatastoresClientListSecretsResponse`
+- New struct `DefaultScaleSettings`
+- New struct `DeploymentLogs`
+- New struct `DeploymentLogsRequest`
+- New struct `DistributionConfiguration`
+- New struct `EarlyTerminationPolicy`
+- New struct `EncryptionKeyVaultProperties`
+- New struct `EndpointAuthKeys`
+- New struct `EndpointAuthToken`
+- New struct `EndpointDeploymentPropertiesBase`
+- New struct `EndpointPropertiesBase`
+- New struct `EnvironmentContainerData`
+- New struct `EnvironmentContainerDetails`
+- New struct `EnvironmentContainerResourceArmPaginatedResult`
+- New struct `EnvironmentContainersClientCreateOrUpdateOptions`
+- New struct `EnvironmentContainersClientCreateOrUpdateResponse`
+- New struct `EnvironmentContainersClientDeleteOptions`
+- New struct `EnvironmentContainersClientDeleteResponse`
+- New struct `EnvironmentContainersClientGetOptions`
+- New struct `EnvironmentContainersClientGetResponse`
+- New struct `EnvironmentContainersClientListOptions`
+- New struct `EnvironmentContainersClientListResponse`
+- New struct `EnvironmentVersionData`
+- New struct `EnvironmentVersionDetails`
+- New struct `EnvironmentVersionResourceArmPaginatedResult`
+- New struct `EnvironmentVersionsClientCreateOrUpdateOptions`
+- New struct `EnvironmentVersionsClientCreateOrUpdateResponse`
+- New struct `EnvironmentVersionsClientDeleteOptions`
+- New struct `EnvironmentVersionsClientDeleteResponse`
+- New struct `EnvironmentVersionsClientGetOptions`
+- New struct `EnvironmentVersionsClientGetResponse`
+- New struct `EnvironmentVersionsClientListOptions`
+- New struct `EnvironmentVersionsClientListResponse`
+- New struct `FeaturizationSettings`
+- New struct `FlavorData`
+- New struct `ForecastHorizon`
+- New struct `Forecasting`
+- New struct `ForecastingSettings`
+- New struct `GridSamplingAlgorithm`
+- New struct `HDInsightSchema`
+- New struct `HdfsDatastore`
+- New struct `IDAssetReference`
+- New struct `IdentityConfiguration`
+- New struct `ImageClassification`
+- New struct `ImageClassificationBase`
+- New struct `ImageClassificationMultilabel`
+- New struct `ImageInstanceSegmentation`
+- New struct `ImageLimitSettings`
+- New struct `ImageModelDistributionSettings`
+- New struct `ImageModelDistributionSettingsClassification`
+- New struct `ImageModelDistributionSettingsObjectDetection`
+- New struct `ImageModelSettings`
+- New struct `ImageModelSettingsClassification`
+- New struct `ImageModelSettingsObjectDetection`
+- New struct `ImageObjectDetection`
+- New struct `ImageObjectDetectionBase`
+- New struct `ImageSweepLimitSettings`
+- New struct `ImageSweepSettings`
+- New struct `ImageVertical`
+- New struct `ImageVerticalDataSettings`
+- New struct `ImageVerticalValidationDataSettings`
+- New struct `InferenceContainerProperties`
+- New struct `JobBaseData`
+- New struct `JobBaseDetails`
+- New struct `JobBaseResourceArmPaginatedResult`
+- New struct `JobInput`
+- New struct `JobLimits`
+- New struct `JobOutput`
+- New struct `JobService`
+- New struct `JobsClientBeginDeleteOptions`
+- New struct `JobsClientCancelOptions`
+- New struct `JobsClientCancelResponse`
+- New struct `JobsClientCreateOrUpdateOptions`
+- New struct `JobsClientCreateOrUpdateResponse`
+- New struct `JobsClientDeleteResponse`
+- New struct `JobsClientGetOptions`
+- New struct `JobsClientGetResponse`
+- New struct `JobsClientListOptions`
+- New struct `JobsClientListResponse`
+- New struct `KerberosCredentials`
+- New struct `KerberosKeytabCredentials`
+- New struct `KerberosKeytabSecrets`
+- New struct `KerberosPasswordCredentials`
+- New struct `KerberosPasswordSecrets`
+- New struct `KubernetesOnlineDeployment`
+- New struct `LiteralJobInput`
+- New struct `MLFlowModelJobInput`
+- New struct `MLFlowModelJobOutput`
+- New struct `MLTableData`
+- New struct `MLTableJobInput`
+- New struct `MLTableJobOutput`
+- New struct `ManagedIdentity`
+- New struct `ManagedOnlineDeployment`
+- New struct `ManagedServiceIdentity`
+- New struct `MedianStoppingPolicy`
+- New struct `ModelContainerData`
+- New struct `ModelContainerDetails`
+- New struct `ModelContainerResourceArmPaginatedResult`
+- New struct `ModelContainersClientCreateOrUpdateOptions`
+- New struct `ModelContainersClientCreateOrUpdateResponse`
+- New struct `ModelContainersClientDeleteOptions`
+- New struct `ModelContainersClientDeleteResponse`
+- New struct `ModelContainersClientGetOptions`
+- New struct `ModelContainersClientGetResponse`
+- New struct `ModelContainersClientListOptions`
+- New struct `ModelContainersClientListResponse`
+- New struct `ModelVersionData`
+- New struct `ModelVersionDetails`
+- New struct `ModelVersionResourceArmPaginatedResult`
+- New struct `ModelVersionsClientCreateOrUpdateOptions`
+- New struct `ModelVersionsClientCreateOrUpdateResponse`
+- New struct `ModelVersionsClientDeleteOptions`
+- New struct `ModelVersionsClientDeleteResponse`
+- New struct `ModelVersionsClientGetOptions`
+- New struct `ModelVersionsClientGetResponse`
+- New struct `ModelVersionsClientListOptions`
+- New struct `ModelVersionsClientListResponse`
+- New struct `Mpi`
+- New struct `NCrossValidations`
+- New struct `NlpVertical`
+- New struct `NlpVerticalDataSettings`
+- New struct `NlpVerticalFeaturizationSettings`
+- New struct `NlpVerticalLimitSettings`
+- New struct `NlpVerticalValidationDataSettings`
+- New struct `NoneDatastoreCredentials`
+- New struct `Objective`
+- New struct `OnlineDeploymentData`
+- New struct `OnlineDeploymentDetails`
+- New struct `OnlineDeploymentTrackedResourceArmPaginatedResult`
+- New struct `OnlineDeploymentsClientBeginCreateOrUpdateOptions`
+- New struct `OnlineDeploymentsClientBeginDeleteOptions`
+- New struct `OnlineDeploymentsClientBeginUpdateOptions`
+- New struct `OnlineDeploymentsClientCreateOrUpdateResponse`
+- New struct `OnlineDeploymentsClientDeleteResponse`
+- New struct `OnlineDeploymentsClientGetLogsOptions`
+- New struct `OnlineDeploymentsClientGetLogsResponse`
+- New struct `OnlineDeploymentsClientGetOptions`
+- New struct `OnlineDeploymentsClientGetResponse`
+- New struct `OnlineDeploymentsClientListOptions`
+- New struct `OnlineDeploymentsClientListResponse`
+- New struct `OnlineDeploymentsClientListSKUsOptions`
+- New struct `OnlineDeploymentsClientListSKUsResponse`
+- New struct `OnlineDeploymentsClientUpdateResponse`
+- New struct `OnlineEndpointData`
+- New struct `OnlineEndpointDetails`
+- New struct `OnlineEndpointTrackedResourceArmPaginatedResult`
+- New struct `OnlineEndpointsClientBeginCreateOrUpdateOptions`
+- New struct `OnlineEndpointsClientBeginDeleteOptions`
+- New struct `OnlineEndpointsClientBeginRegenerateKeysOptions`
+- New struct `OnlineEndpointsClientBeginUpdateOptions`
+- New struct `OnlineEndpointsClientCreateOrUpdateResponse`
+- New struct `OnlineEndpointsClientDeleteResponse`
+- New struct `OnlineEndpointsClientGetOptions`
+- New struct `OnlineEndpointsClientGetResponse`
+- New struct `OnlineEndpointsClientGetTokenOptions`
+- New struct `OnlineEndpointsClientGetTokenResponse`
+- New struct `OnlineEndpointsClientListKeysOptions`
+- New struct `OnlineEndpointsClientListKeysResponse`
+- New struct `OnlineEndpointsClientListOptions`
+- New struct `OnlineEndpointsClientListResponse`
+- New struct `OnlineEndpointsClientRegenerateKeysResponse`
+- New struct `OnlineEndpointsClientUpdateResponse`
+- New struct `OnlineRequestSettings`
+- New struct `OnlineScaleSettings`
+- New struct `OutputPathAssetReference`
+- New struct `PartialAssetReferenceBase`
+- New struct `PartialBatchDeployment`
+- New struct `PartialBatchDeploymentPartialTrackedResource`
+- New struct `PartialBatchEndpoint`
+- New struct `PartialBatchEndpointPartialTrackedResource`
+- New struct `PartialBatchRetrySettings`
+- New struct `PartialCodeConfiguration`
+- New struct `PartialDataPathAssetReference`
+- New struct `PartialIDAssetReference`
+- New struct `PartialKubernetesOnlineDeployment`
+- New struct `PartialManagedOnlineDeployment`
+- New struct `PartialManagedServiceIdentity`
+- New struct `PartialOnlineDeployment`
+- New struct `PartialOnlineDeploymentPartialTrackedResource`
+- New struct `PartialOnlineEndpoint`
+- New struct `PartialOnlineEndpointPartialTrackedResource`
+- New struct `PartialOutputPathAssetReference`
+- New struct `PartialSKU`
+- New struct `PipelineJob`
+- New struct `ProbeSettings`
+- New struct `PyTorch`
+- New struct `RandomSamplingAlgorithm`
+- New struct `RecurrencePattern`
+- New struct `RecurrenceSchedule`
+- New struct `RegenerateEndpointKeysRequest`
+- New struct `Regression`
+- New struct `ResourceBase`
+- New struct `ResourceConfiguration`
+- New struct `Route`
+- New struct `SKUCapacity`
+- New struct `SKUResource`
+- New struct `SKUResourceArmPaginatedResult`
+- New struct `SKUSetting`
+- New struct `SamplingAlgorithm`
+- New struct `SasDatastoreCredentials`
+- New struct `SasDatastoreSecrets`
+- New struct `ScheduleBase`
+- New struct `Seasonality`
+- New struct `ServicePrincipalDatastoreCredentials`
+- New struct `ServicePrincipalDatastoreSecrets`
+- New struct `StackEnsembleSettings`
+- New struct `SweepJob`
+- New struct `SweepJobLimits`
+- New struct `TableVertical`
+- New struct `TableVerticalDataSettings`
+- New struct `TableVerticalFeaturizationSettings`
+- New struct `TableVerticalLimitSettings`
+- New struct `TableVerticalValidationDataSettings`
+- New struct `TargetLags`
+- New struct `TargetRollingWindowSize`
+- New struct `TargetUtilizationScaleSettings`
+- New struct `TensorFlow`
+- New struct `TestDataSettings`
+- New struct `TextClassification`
+- New struct `TextClassificationMultilabel`
+- New struct `TextNer`
+- New struct `TrackedResource`
+- New struct `TrainingDataSettings`
+- New struct `TrainingSettings`
+- New struct `TrialComponent`
+- New struct `TritonModelJobInput`
+- New struct `TritonModelJobOutput`
+- New struct `TruncationSelectionPolicy`
+- New struct `URIFileDataVersion`
+- New struct `URIFileJobInput`
+- New struct `URIFileJobOutput`
+- New struct `URIFolderDataVersion`
+- New struct `URIFolderJobInput`
+- New struct `URIFolderJobOutput`
+- New struct `UserIdentity`
+- New struct `ValidationDataSettings`
+- New struct `VirtualMachineSchema`
+- New struct `VirtualMachineSchemaProperties`
+- New struct `VirtualMachineSecretsSchema`
+- New struct `WorkspacesClientBeginUpdateOptions`
+- New field `OperationTrigger` in struct `ComputeInstanceLastOperation`
+- New field `SystemData` in struct `Resource`
+- New field `Versions` in struct `ComputeInstanceProperties`
+- New field `EnableNodePublicIP` in struct `ComputeInstanceProperties`
+- New field `DataMounts` in struct `ComputeInstanceProperties`
+- New field `DataDisks` in struct `ComputeInstanceProperties`
+- New field `Containers` in struct `ComputeInstanceProperties`
+- New field `Schedules` in struct `ComputeInstanceProperties`
+- New field `SystemData` in struct `WorkspaceConnection`
+- New field `PropertyBag` in struct `AmlComputeProperties`
+- New field `Family` in struct `SKU`
+- New field `Size` in struct `SKU`
+- New field `Capacity` in struct `SKU`
+- New field `ContainerResourceLimits` in struct `ContainerResourceRequirements`
+- New field `ContainerResourceRequests` in struct `ContainerResourceRequirements`
+- New anonymous field `AmlOperationListResult` in struct `OperationsClientListResponse`
+- New field `ApplicationInsights` in struct `WorkspacePropertiesUpdateParameters`
+- New field `ContainerRegistry` in struct `WorkspacePropertiesUpdateParameters`
+
+
 ## 1.0.0 (2022-05-30)
 
 - Release stable version.

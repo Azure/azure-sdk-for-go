@@ -56,7 +56,7 @@ func NewWorkspaceConnectionsClient(subscriptionID string, credential azcore.Toke
 
 // Create - Add a new workspace connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-01
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // connectionName - Friendly name of the workspace connection
@@ -102,7 +102,7 @@ func (client *WorkspaceConnectionsClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -119,7 +119,7 @@ func (client *WorkspaceConnectionsClient) createHandleResponse(resp *http.Respon
 
 // Delete - Delete a workspace connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-01
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // connectionName - Friendly name of the workspace connection
@@ -164,7 +164,7 @@ func (client *WorkspaceConnectionsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,7 +172,7 @@ func (client *WorkspaceConnectionsClient) deleteCreateRequest(ctx context.Contex
 
 // Get - Get the detail of a workspace connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-01
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // connectionName - Friendly name of the workspace connection
@@ -217,7 +217,7 @@ func (client *WorkspaceConnectionsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -234,7 +234,7 @@ func (client *WorkspaceConnectionsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - List all connections under a AML workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-01
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - WorkspaceConnectionsClientListOptions contains the optional parameters for the WorkspaceConnectionsClient.List
@@ -281,7 +281,7 @@ func (client *WorkspaceConnectionsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	if options != nil && options.Target != nil {
 		reqQP.Set("target", *options.Target)
 	}

@@ -1047,14 +1047,8 @@ func (c *Client) GetCertificatePolicy(ctx context.Context, certificateName strin
 
 // UpdateCertificatePropertiesOptions contains optional parameters for Client.UpdateCertificateProperties
 type UpdateCertificatePropertiesOptions struct {
-	// The version of the certificate to update
-	Version string
+	// placeholder for future optional parameters
 
-	// The attributes of the certificate (optional).
-	Properties *Properties `json:"attributes,omitempty"`
-
-	// The management policy for the certificate.
-	CertificatePolicy *Policy `json:"policy,omitempty"`
 }
 
 func (u *UpdateCertificatePropertiesOptions) toGenerated() *generated.KeyVaultClientUpdateCertificateOptions {
@@ -1072,11 +1066,15 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certificateNam
 	if options == nil {
 		options = &UpdateCertificatePropertiesOptions{}
 	}
+	version := ""
+	if properties.Version != nil {
+		version = *properties.Version
+	}
 	resp, err := c.genClient.UpdateCertificate(
 		ctx,
 		c.vaultURL,
 		certificateName,
-		options.Version,
+		version,
 		generated.CertificateUpdateParameters{
 			CertificateAttributes: properties.toGenerated(),
 			Tags:                  properties.Tags,

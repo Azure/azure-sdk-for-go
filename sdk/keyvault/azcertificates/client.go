@@ -70,7 +70,7 @@ type BeginCreateCertificateOptions struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// ResumeToken is a token for resuming long running operations from a previous poller
 	ResumeToken string
@@ -89,11 +89,6 @@ type CreateCertificateResponse struct {
 func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName string, policy Policy, options *BeginCreateCertificateOptions) (*runtime.Poller[CreateCertificateResponse], error) {
 	if options == nil {
 		options = &BeginCreateCertificateOptions{}
-	}
-
-	var tags map[string]*string
-	if options.Tags != nil {
-		tags = convertToGeneratedMap(options.Tags)
 	}
 
 	handler := beginCreateCertificateOperation{
@@ -127,7 +122,7 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName str
 		certificateName,
 		generated.CertificateCreateParameters{
 			CertificatePolicy:     policy.toGeneratedCertificateCreateParameters(),
-			Tags:                  tags,
+			Tags:                  options.Tags,
 			CertificateAttributes: &generated.CertificateAttributes{Enabled: options.Enabled},
 		},
 		options.toGenerated(),
@@ -170,7 +165,7 @@ func (c *Client) GetCertificate(ctx context.Context, certificateName string, opt
 
 	return GetCertificateResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:  propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:         resp.Cer,
 			ContentType: resp.ContentType,
 			ID:          resp.ID,
@@ -240,7 +235,7 @@ func deleteCertificateResponseFromGenerated(g generated.KeyVaultClientDeleteCert
 			RecoveryID:         g.RecoveryID,
 			DeletedOn:          g.DeletedDate,
 			ScheduledPurgeDate: g.ScheduledPurgeDate,
-			Properties:         propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint),
+			Properties:         propertiesFromGenerated(g.Attributes, g.Tags, g.ID, g.X509Thumbprint),
 			CER:                g.Cer,
 			ContentType:        g.ContentType,
 			ID:                 g.ID,
@@ -340,7 +335,7 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certificateName stri
 			RecoveryID:         resp.RecoveryID,
 			DeletedOn:          resp.DeletedDate,
 			ScheduledPurgeDate: resp.ScheduledPurgeDate,
-			Properties:         propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:         propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:                resp.Cer,
 			ContentType:        resp.ContentType,
 			ID:                 resp.ID,
@@ -392,7 +387,7 @@ type ImportCertificateOptions struct {
 	Password *string `json:"pwd,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // ImportCertificateResponse contains response fields for Client.ImportCertificate
@@ -407,10 +402,6 @@ func (c *Client) ImportCertificate(ctx context.Context, certificateName string, 
 	if options == nil {
 		options = &ImportCertificateOptions{}
 	}
-	var tags map[string]*string
-	if options.Tags != nil {
-		tags = convertToGeneratedMap(options.Tags)
-	}
 	resp, err := c.genClient.ImportCertificate(
 		ctx,
 		c.vaultURL,
@@ -422,7 +413,7 @@ func (c *Client) ImportCertificate(ctx context.Context, certificateName string, 
 			},
 			CertificatePolicy: options.CertificatePolicy.toGeneratedCertificateCreateParameters(),
 			Password:          options.Password,
-			Tags:              tags,
+			Tags:              options.Tags,
 		},
 		&generated.KeyVaultClientImportCertificateOptions{},
 	)
@@ -432,7 +423,7 @@ func (c *Client) ImportCertificate(ctx context.Context, certificateName string, 
 
 	return ImportCertificateResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:  propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:         resp.Cer,
 			ContentType: resp.ContentType,
 			ID:          resp.ID,
@@ -463,7 +454,7 @@ func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesRespons
 
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties: propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID, v.X509Thumbprint),
+			Properties: propertiesFromGenerated(v.Attributes, v.Tags, v.ID, v.X509Thumbprint),
 			ID:         v.ID,
 		})
 	}
@@ -513,7 +504,7 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 	var vals []*CertificateItem
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties: propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID, v.X509Thumbprint),
+			Properties: propertiesFromGenerated(v.Attributes, v.Tags, v.ID, v.X509Thumbprint),
 			ID:         v.ID,
 		})
 	}
@@ -1081,10 +1072,6 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certificateNam
 	if options == nil {
 		options = &UpdateCertificatePropertiesOptions{}
 	}
-	var tags map[string]*string
-	if properties.Tags != nil {
-		tags = convertToGeneratedMap(properties.Tags)
-	}
 	resp, err := c.genClient.UpdateCertificate(
 		ctx,
 		c.vaultURL,
@@ -1092,7 +1079,7 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certificateNam
 		options.Version,
 		generated.CertificateUpdateParameters{
 			CertificateAttributes: properties.toGenerated(),
-			Tags:                  tags,
+			Tags:                  properties.Tags,
 		},
 		options.toGenerated(),
 	)
@@ -1126,7 +1113,7 @@ func (c *Client) MergeCertificate(ctx context.Context, certificateName string, c
 	}
 	var tags map[string]*string
 	if options.Properties != nil && options.Properties.Tags != nil {
-		tags = convertToGeneratedMap(options.Properties.Tags)
+		tags = options.Properties.Tags
 	}
 	resp, err := c.genClient.MergeCertificate(
 		ctx, c.vaultURL,
@@ -1144,7 +1131,7 @@ func (c *Client) MergeCertificate(ctx context.Context, certificateName string, c
 
 	return MergeCertificateResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:  propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:         resp.Cer,
 			ContentType: resp.ContentType,
 			ID:          resp.ID,
@@ -1185,7 +1172,7 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 
 	return RestoreCertificateBackupResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:  propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:         resp.Cer,
 			ContentType: resp.ContentType,
 			ID:          resp.ID,
@@ -1270,7 +1257,7 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 		for i, c := range g.Value {
 			_, name, _ := shared.ParseID(c.ID)
 			certs[i] = &DeletedCertificateItem{
-				Properties:         propertiesFromGenerated(c.Attributes, convertGeneratedMap(c.Tags), c.ID, c.X509Thumbprint),
+				Properties:         propertiesFromGenerated(c.Attributes, c.Tags, c.ID, c.X509Thumbprint),
 				ID:                 c.ID,
 				Name:               name,
 				RecoveryID:         c.RecoveryID,

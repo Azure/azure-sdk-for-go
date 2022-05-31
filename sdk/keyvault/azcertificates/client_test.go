@@ -611,9 +611,9 @@ func TestCRUDOperations(t *testing.T) {
 	require.Equal(t, *policy.KeyCurveName, *updateResp.KeyCurveName)
 
 	if received.Properties.Tags == nil {
-		received.Properties.Tags = map[string]string{}
+		received.Properties.Tags = map[string]*string{}
 	}
-	received.Properties.Tags["tag1"] = "updated_values1"
+	received.Properties.Tags["tag1"] = to.Ptr("updated_values1")
 	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, *received.Properties, nil)
 	require.NoError(t, err)
 	require.Equal(t, "updated_values1", updatePropsResp.Properties.Tags["tag1"])

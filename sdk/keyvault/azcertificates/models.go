@@ -63,7 +63,7 @@ type Properties struct {
 	Name *string
 
 	// Application specific metadata in the form of key-value pairs
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; The vault URL for the certificate
 	VaultURL *string
@@ -91,7 +91,7 @@ func (c *Properties) toGenerated() *generated.CertificateAttributes {
 	}
 }
 
-func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string]string, id *string, thumbprint []byte) *Properties {
+func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string]*string, id *string, thumbprint []byte) *Properties {
 	if g == nil {
 		return nil
 	}
@@ -167,7 +167,7 @@ func (c *CertificateWithPolicy) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
-	c.Properties = propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint)
+	c.Properties = propertiesFromGenerated(g.Attributes, g.Tags, g.ID, g.X509Thumbprint)
 	c.CER = g.Cer
 	c.ContentType = g.ContentType
 	c.ID = g.ID
@@ -184,7 +184,7 @@ func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 
 	_, name, _ := shared.ParseID(g.ID)
 	return Certificate{
-		Properties: propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint),
+		Properties: propertiesFromGenerated(g.Attributes, g.Tags, g.ID, g.X509Thumbprint),
 		CER:        g.Cer,
 		ID:         g.ID,
 		Name:       name,
@@ -727,28 +727,4 @@ func x509CertificatePropertiesFromGenerated(g *generated.X509CertificateProperti
 		SubjectAlternativeNames: subjectAlternativeNamesFromGenerated(g.SubjectAlternativeNames),
 		ValidityInMonths:        g.ValidityInMonths,
 	}
-}
-
-func convertToGeneratedMap(m map[string]string) map[string]*string {
-	if m == nil {
-		return nil
-	}
-
-	ret := make(map[string]*string)
-	for k, v := range m {
-		ret[k] = &v
-	}
-	return ret
-}
-
-func convertGeneratedMap(m map[string]*string) map[string]string {
-	if m == nil {
-		return nil
-	}
-
-	ret := make(map[string]string)
-	for k, v := range m {
-		ret[k] = *v
-	}
-	return ret
 }

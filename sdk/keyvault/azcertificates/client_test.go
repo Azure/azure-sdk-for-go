@@ -616,7 +616,7 @@ func TestCRUDOperations(t *testing.T) {
 	received.Properties.Tags["tag1"] = to.Ptr("updated_values1")
 	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, *received.Properties, nil)
 	require.NoError(t, err)
-	require.Equal(t, "updated_values1", updatePropsResp.Properties.Tags["tag1"])
+	require.Equal(t, "updated_values1", *updatePropsResp.Properties.Tags["tag1"])
 	require.Equal(t, *received.ID, *updatePropsResp.ID)
 }
 

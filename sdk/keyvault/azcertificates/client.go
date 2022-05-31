@@ -697,8 +697,8 @@ type ListPropertiesOfIssuersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListIssuersPropertiesOfIssuersResponse contains response fields for ListPropertiesOfIssuersPager.NextPage
-type ListIssuersPropertiesOfIssuersResponse struct {
+// ListPropertiesOfIssuersResponse contains response fields for ListPropertiesOfIssuersPager.NextPage
+type ListPropertiesOfIssuersResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Issuers []*IssuerItem `json:"value,omitempty" azure:"ro"`
 
@@ -707,28 +707,28 @@ type ListIssuersPropertiesOfIssuersResponse struct {
 }
 
 // convert internal Response to ListPropertiesOfIssuersPage
-func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListIssuersPropertiesOfIssuersResponse {
+func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListPropertiesOfIssuersResponse {
 	var vals []*IssuerItem
 
 	for _, v := range i.Value {
 		vals = append(vals, certificateIssuerItemFromGenerated(v))
 	}
 
-	return ListIssuersPropertiesOfIssuersResponse{Issuers: vals, NextLink: i.NextLink}
+	return ListPropertiesOfIssuersResponse{Issuers: vals, NextLink: i.NextLink}
 }
 
 // NewListPropertiesOfIssuersPager returns a pager that can be used to get the set of certificate issuer resources in the specified key vault. This operation
 // requires the certificates/manageissuers/getissuers permission.
-func (c *Client) NewListPropertiesOfIssuersPager(options *ListPropertiesOfIssuersOptions) *runtime.Pager[ListIssuersPropertiesOfIssuersResponse] {
+func (c *Client) NewListPropertiesOfIssuersPager(options *ListPropertiesOfIssuersOptions) *runtime.Pager[ListPropertiesOfIssuersResponse] {
 	pager := c.genClient.NewGetCertificateIssuersPager(c.vaultURL, nil)
-	return runtime.NewPager(runtime.PagingHandler[ListIssuersPropertiesOfIssuersResponse]{
-		More: func(page ListIssuersPropertiesOfIssuersResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfIssuersResponse]{
+		More: func(page ListPropertiesOfIssuersResponse) bool {
 			return pager.More()
 		},
-		Fetcher: func(ctx context.Context, cur *ListIssuersPropertiesOfIssuersResponse) (ListIssuersPropertiesOfIssuersResponse, error) {
+		Fetcher: func(ctx context.Context, cur *ListPropertiesOfIssuersResponse) (ListPropertiesOfIssuersResponse, error) {
 			page, err := pager.NextPage(ctx)
 			if err != nil {
-				return ListIssuersPropertiesOfIssuersResponse{}, err
+				return ListPropertiesOfIssuersResponse{}, err
 			}
 			return listIssuersPageFromGenerated(page), nil
 		},

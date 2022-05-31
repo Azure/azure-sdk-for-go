@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -464,33 +464,13 @@ func TestUpdateKeyProperties(t *testing.T) {
 func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			if testType == HSMTEST {
-				t.Skip("HSM does not recognize immutable yet.")
-			}
 			stop := startTest(t)
 			defer stop()
-			err := recording.SetBodilessMatcher(t, nil)
-			require.NoError(t, err)
 
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "immuta")
-			require.NoError(t, err)
-
-			marshalledPolicy, err := json.Marshal(map[string]interface{}{
-				"anyOf": []map[string]interface{}{
-					{
-						"anyOf": []map[string]interface{}{
-							{
-								"claim":  "sdk-test",
-								"equals": "true",
-							}},
-						"authority": os.Getenv("AZURE_KEYVAULT_ATTESTATION_URL"),
-					},
-				},
-				"version": "1.0.0",
-			})
 			require.NoError(t, err)
 
 			// retry creating the release policy because Key Vault sometimes can't reach
@@ -504,7 +484,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 					},
 					ReleasePolicy: &ReleasePolicy{
 						Immutable:     to.Ptr(true),
-						EncodedPolicy: marshalledPolicy,
+						EncodedPolicy: getMarshalledReleasePolicy(testAttestationURL),
 					},
 					Operations: []*Operation{to.Ptr(OperationEncrypt), to.Ptr(OperationDecrypt)},
 				})
@@ -518,28 +498,18 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			newMarshalledPolicy, err := json.Marshal(map[string]interface{}{
-				"anyOf": []map[string]interface{}{
-					{
-						"anyOf": []map[string]interface{}{
-							{
-								"claim":  "sdk-test",
-								"equals": "false",
-							}},
-						"authority": os.Getenv("AZURE_KEYVAULT_ATTESTATION_URL"),
-					},
-				},
-				"version": "1.0.0",
-			})
-			require.NoError(t, err)
-
 			createResp.Key.ReleasePolicy = &ReleasePolicy{
 				Immutable:     to.Ptr(true),
-				EncodedPolicy: newMarshalledPolicy,
+				EncodedPolicy: getMarshalledReleasePolicy(fakeAttestationUrl),
+			}
+			createResp.Key.Properties.Enabled = to.Ptr(false)
+			if testType == HSMTEST {
+				// MHSM disallows updating the release policy for a specific version
+				createResp.Key.Properties.Version = nil
 			}
 
 			_, err = client.UpdateKeyProperties(ctx, createResp.Key, nil)
-			require.Error(t, err)
+			require.Contains(t, strings.ToLower(err.Error()), "release policy cannot be modified")
 		})
 	}
 }
@@ -779,45 +749,72 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 
 func TestReleaseKey(t *testing.T) {
 	for _, testType := range testTypes {
-		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
-			stop := startTest(t)
-			defer stop()
-
-			client, err := createClient(t, testType)
-			require.NoError(t, err)
-
-			key, err := createRandomName(t, "key")
-			require.NoError(t, err)
-			_, err = client.CreateRSAKey(ctx, key, nil)
-			require.NoError(t, err)
-			defer cleanUpKey(t, client, key)
-
-			// Get attestation token from service
-			attestationURL := recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", "https://fakewebsite.net/")
-			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
-			require.NoError(t, err)
-
-			if recording.GetRecordMode() == recording.PlaybackMode {
-				t.Skip("Skipping test in playback")
+		for _, version := range []bool{true, false} {
+			tn := fmt.Sprintf("%s_%s", t.Name(), testType)
+			if version {
+				tn += "_specificVersion"
+			} else {
+				tn += "_latest"
 			}
+			t.Run(tn, func(t *testing.T) {
+				skipHSM(t, testType)
+				stop := startTest(t)
+				defer stop()
 
-			resp, err := http.DefaultClient.Do(req)
-			require.NoError(t, err)
-			require.Equal(t, resp.StatusCode, http.StatusOK)
-			defer resp.Body.Close()
+				client, err := createClient(t, testType)
+				require.NoError(t, err)
 
-			type targetResponse struct {
-				Token string `json:"token"`
-			}
+				name, err := createRandomName(t, "testreleasekey")
+				require.NoError(t, err)
 
-			var tR targetResponse
-			err = json.NewDecoder(resp.Body).Decode(&tR)
-			require.NoError(t, err)
+				// retry creating the key because Key Vault sometimes can't reach the fake
+				// attestation service we use in CI for several minutes after deployment
+				var createResp CreateECKeyResponse
+				for i := 0; i < 5; i++ {
+					createResp, err = client.CreateECKey(ctx, name, &CreateECKeyOptions{
+						Curve:             to.Ptr(CurveNameP256K),
+						HardwareProtected: to.Ptr(true),
+						Properties:        &Properties{Exportable: to.Ptr(true)},
+						ReleasePolicy: &ReleasePolicy{
+							EncodedPolicy: getMarshalledReleasePolicy(testAttestationURL),
+						},
+					})
+					if err == nil {
+						break
+					}
+					recording.Sleep(time.Minute)
+				}
+				require.NoError(t, err)
+				defer cleanUpKey(t, client, name)
 
-			_, err = client.ReleaseKey(ctx, key, "target", nil)
-			require.Error(t, err)
-		})
+				attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
+				require.NoError(t, err)
+				req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", testAttestationURL), nil)
+				require.NoError(t, err)
+				resp, err := attestationClient.Do(req)
+				require.NoError(t, err)
+				require.Equal(t, resp.StatusCode, http.StatusOK)
+				defer resp.Body.Close()
+
+				var tR struct {
+					Token string `json:"token"`
+				}
+				err = json.NewDecoder(resp.Body).Decode(&tR)
+				require.NoError(t, err)
+
+				o := &ReleaseKeyOptions{}
+				if version {
+					o.Version = createResp.Properties.Version
+				}
+				response, err := client.ReleaseKey(ctx, *createResp.Name, tR.Token, o)
+				if err != nil && strings.Contains(err.Error(), "Target environment attestation statement cannot be verified.") {
+					t.Skip("test encountered a transient service fault; see https://github.com/Azure/azure-sdk-for-net/issues/27957")
+				}
+				require.NoError(t, err)
+				require.NotNil(t, response.Value)
+				require.NotEmpty(t, *response.Value)
+			})
+		}
 	}
 }
 

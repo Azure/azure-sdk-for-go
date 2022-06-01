@@ -19,25 +19,25 @@ func TestParseID(t *testing.T) {
 		"https://myvaultname.vault.azure.net/":                                                    {to.Ptr("https://myvaultname.vault.azure.net/"), nil, nil},
 	}
 
-	for url, result := range examples {
+	for url, expected := range examples {
 		url, name, version := ParseID(&url)
-		if result.url == nil {
+		if expected.url == nil {
 			require.Nil(t, url)
 		} else {
 			require.NotNil(t, url)
-			require.Equal(t, *url, *result.url)
+			require.Equal(t, *expected.url, *url)
 		}
-		if result.name == nil {
+		if expected.name == nil {
 			require.Nil(t, name)
 		} else {
-			require.NotNilf(t, name, "expected %s", *result.name)
-			require.Equal(t, *name, *result.name)
+			require.NotNilf(t, name, "expected %s", *expected.name)
+			require.Equal(t, *expected.name, *name)
 		}
-		if result.version == nil {
+		if expected.version == nil {
 			require.Nil(t, version)
 		} else {
 			require.NotNil(t, version)
-			require.Equal(t, *version, *result.version)
+			require.Equal(t, *expected.version, *version)
 		}
 	}
 }

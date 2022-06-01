@@ -36,6 +36,23 @@ func PossibleDataStringComparisonBehaviorValues() []DataStringComparisonBehavior
 	return []DataStringComparisonBehavior{Ordinal, OrdinalIgnoreCase}
 }
 
+// IngressStartAtType enumerates the values for ingress start at type.
+type IngressStartAtType string
+
+const (
+	// CustomEnqueuedTime ...
+	CustomEnqueuedTime IngressStartAtType = "CustomEnqueuedTime"
+	// EarliestAvailable ...
+	EarliestAvailable IngressStartAtType = "EarliestAvailable"
+	// EventSourceCreationTime ...
+	EventSourceCreationTime IngressStartAtType = "EventSourceCreationTime"
+)
+
+// PossibleIngressStartAtTypeValues returns an array of possible values for the IngressStartAtType const type.
+func PossibleIngressStartAtTypeValues() []IngressStartAtType {
+	return []IngressStartAtType{CustomEnqueuedTime, EarliestAvailable, EventSourceCreationTime}
+}
+
 // IngressState enumerates the values for ingress state.
 type IngressState string
 
@@ -91,6 +108,23 @@ func PossibleKindBasicEnvironmentResourceValues() []KindBasicEnvironmentResource
 	return []KindBasicEnvironmentResource{KindBasicEnvironmentResourceKindEnvironmentResource, KindBasicEnvironmentResourceKindGen1, KindBasicEnvironmentResourceKindGen2}
 }
 
+// KindBasicEnvironmentUpdateParameters enumerates the values for kind basic environment update parameters.
+type KindBasicEnvironmentUpdateParameters string
+
+const (
+	// KindBasicEnvironmentUpdateParametersKindEnvironmentUpdateParameters ...
+	KindBasicEnvironmentUpdateParametersKindEnvironmentUpdateParameters KindBasicEnvironmentUpdateParameters = "EnvironmentUpdateParameters"
+	// KindBasicEnvironmentUpdateParametersKindGen1 ...
+	KindBasicEnvironmentUpdateParametersKindGen1 KindBasicEnvironmentUpdateParameters = "Gen1"
+	// KindBasicEnvironmentUpdateParametersKindGen2 ...
+	KindBasicEnvironmentUpdateParametersKindGen2 KindBasicEnvironmentUpdateParameters = "Gen2"
+)
+
+// PossibleKindBasicEnvironmentUpdateParametersValues returns an array of possible values for the KindBasicEnvironmentUpdateParameters const type.
+func PossibleKindBasicEnvironmentUpdateParametersValues() []KindBasicEnvironmentUpdateParameters {
+	return []KindBasicEnvironmentUpdateParameters{KindBasicEnvironmentUpdateParametersKindEnvironmentUpdateParameters, KindBasicEnvironmentUpdateParametersKindGen1, KindBasicEnvironmentUpdateParametersKindGen2}
+}
+
 // KindBasicEventSourceCreateOrUpdateParameters enumerates the values for kind basic event source create or
 // update parameters.
 type KindBasicEventSourceCreateOrUpdateParameters string
@@ -124,6 +158,23 @@ const (
 // PossibleKindBasicEventSourceResourceValues returns an array of possible values for the KindBasicEventSourceResource const type.
 func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource {
 	return []KindBasicEventSourceResource{KindBasicEventSourceResourceKindEventSourceResource, KindBasicEventSourceResourceKindMicrosoftEventHub, KindBasicEventSourceResourceKindMicrosoftIoTHub}
+}
+
+// KindBasicEventSourceUpdateParameters enumerates the values for kind basic event source update parameters.
+type KindBasicEventSourceUpdateParameters string
+
+const (
+	// KindBasicEventSourceUpdateParametersKindEventSourceUpdateParameters ...
+	KindBasicEventSourceUpdateParametersKindEventSourceUpdateParameters KindBasicEventSourceUpdateParameters = "EventSourceUpdateParameters"
+	// KindBasicEventSourceUpdateParametersKindMicrosoftEventHub ...
+	KindBasicEventSourceUpdateParametersKindMicrosoftEventHub KindBasicEventSourceUpdateParameters = "Microsoft.EventHub"
+	// KindBasicEventSourceUpdateParametersKindMicrosoftIoTHub ...
+	KindBasicEventSourceUpdateParametersKindMicrosoftIoTHub KindBasicEventSourceUpdateParameters = "Microsoft.IoTHub"
+)
+
+// PossibleKindBasicEventSourceUpdateParametersValues returns an array of possible values for the KindBasicEventSourceUpdateParameters const type.
+func PossibleKindBasicEventSourceUpdateParametersValues() []KindBasicEventSourceUpdateParameters {
+	return []KindBasicEventSourceUpdateParameters{KindBasicEventSourceUpdateParametersKindEventSourceUpdateParameters, KindBasicEventSourceUpdateParametersKindMicrosoftEventHub, KindBasicEventSourceUpdateParametersKindMicrosoftIoTHub}
 }
 
 // LocalTimestampFormat enumerates the values for local timestamp format.

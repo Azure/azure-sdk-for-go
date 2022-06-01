@@ -27,7 +27,7 @@ type EnvironmentsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, environmentName string, expand string) (result timeseriesinsights.EnvironmentResourceModel, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result timeseriesinsights.EnvironmentListResponse, err error)
 	ListBySubscription(ctx context.Context) (result timeseriesinsights.EnvironmentListResponse, err error)
-	Update(ctx context.Context, resourceGroupName string, environmentName string, environmentUpdateParameters timeseriesinsights.EnvironmentUpdateParameters) (result timeseriesinsights.EnvironmentsUpdateFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, environmentName string, environmentUpdateParameters timeseriesinsights.BasicEnvironmentUpdateParameters) (result timeseriesinsights.EnvironmentsUpdateFuture, err error)
 }
 
 var _ EnvironmentsClientAPI = (*timeseriesinsights.EnvironmentsClient)(nil)
@@ -38,7 +38,7 @@ type EventSourcesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, environmentName string, eventSourceName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, environmentName string, eventSourceName string) (result timeseriesinsights.EventSourceResourceModel, err error)
 	ListByEnvironment(ctx context.Context, resourceGroupName string, environmentName string) (result timeseriesinsights.EventSourceListResponse, err error)
-	Update(ctx context.Context, resourceGroupName string, environmentName string, eventSourceName string, eventSourceUpdateParameters timeseriesinsights.EventSourceUpdateParameters) (result timeseriesinsights.EventSourceResourceModel, err error)
+	Update(ctx context.Context, resourceGroupName string, environmentName string, eventSourceName string, eventSourceUpdateParameters timeseriesinsights.BasicEventSourceUpdateParameters) (result timeseriesinsights.EventSourceResourceModel, err error)
 }
 
 var _ EventSourcesClientAPI = (*timeseriesinsights.EventSourcesClient)(nil)

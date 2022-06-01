@@ -14,30 +14,33 @@ import (
 
 func TestParseID(t *testing.T) {
 	examples := map[string]struct{ url, name, version *string }{
-		"https://myvaultname.vault.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60": {to.Ptr("https://myvaultname.vault.azure.net/"), to.Ptr("key1053998307"), to.Ptr("b86c2e6ad9054f4abf69cc185b99aa60")},
-		"https://myvaultname.vault.azure.net/keys/key1053998307":                                  {to.Ptr("https://myvaultname.vault.azure.net/"), to.Ptr("key1053998307"), nil},
-		"https://myvaultname.vault.azure.net/":                                                    {to.Ptr("https://myvaultname.vault.azure.net/"), nil, nil},
+		"https://myvaultname.vault.azure.net/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60":      {to.Ptr("https://myvaultname.vault.azure.net"), to.Ptr("key1053998307"), to.Ptr("b86c2e6ad9054f4abf69cc185b99aa60")},
+		"https://myvaultname.vault.azure.net:8080/keys/key1053998307/b86c2e6ad9054f4abf69cc185b99aa60": {to.Ptr("https://myvaultname.vault.azure.net:8080"), to.Ptr("key1053998307"), to.Ptr("b86c2e6ad9054f4abf69cc185b99aa60")},
+		"https://myvaultname.vault.azure.net/keys/key1053998307":                                       {to.Ptr("https://myvaultname.vault.azure.net"), to.Ptr("key1053998307"), nil},
+		"https://myvaultname.vault.azure.net:8080/keys/key1053998307":                                  {to.Ptr("https://myvaultname.vault.azure.net:8080"), to.Ptr("key1053998307"), nil},
+		"https://myvaultname.vault.azure.net/":                                                         {to.Ptr("https://myvaultname.vault.azure.net"), nil, nil},
+		"https://myvaultname.vault.azure.net:8080":                                                     {to.Ptr("https://myvaultname.vault.azure.net:8080"), nil, nil},
 	}
 
-	for url, result := range examples {
+	for url, expected := range examples {
 		url, name, version := ParseID(&url)
-		if result.url == nil {
+		if expected.url == nil {
 			require.Nil(t, url)
 		} else {
 			require.NotNil(t, url)
-			require.Equal(t, *url, *result.url)
+			require.Equal(t, *expected.url, *url)
 		}
-		if result.name == nil {
+		if expected.name == nil {
 			require.Nil(t, name)
 		} else {
-			require.NotNilf(t, name, "expected %s", *result.name)
-			require.Equal(t, *name, *result.name)
+			require.NotNilf(t, name, "expected %s", *expected.name)
+			require.Equal(t, *expected.name, *name)
 		}
-		if result.version == nil {
+		if expected.version == nil {
 			require.Nil(t, version)
 		} else {
 			require.NotNil(t, version)
-			require.Equal(t, *version, *result.version)
+			require.Equal(t, *expected.version, *version)
 		}
 	}
 }

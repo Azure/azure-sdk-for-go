@@ -1,10 +1,11 @@
 # Release History
 
-## 0.5.1 (Unreleased)
+## 0.6.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* `ParseID()` no longer appends a trailing slash to vault URLs
 
 ### Bugs Fixed
 

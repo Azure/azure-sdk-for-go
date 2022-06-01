@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.1 (2022-06-07)
 
 ### Bugs Fixed
 
-### Other Changes
+- Handle a missing CountDetails node in the returned responses for Get<Entity>RuntimeProperties which could cause a panic. (#18213)
 
 ## 1.0.0 (2022-05-16)
 

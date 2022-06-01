@@ -274,7 +274,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtScope() {
 	// delete deployment
 	delPoller, err := deploymentsClient.BeginDeleteAtScope(testsuite.ctx, scopeResource, deploymentName, nil)
 	testsuite.Require().NoError(err)
-	_, err = delPoller.PollUntilDone(testsuite.ctx, 10*time.Second)
+	_, err = delPoller.PollUntilDone(testsuite.ctx, nil)
 	testsuite.Require().NoError(err)
 }
 

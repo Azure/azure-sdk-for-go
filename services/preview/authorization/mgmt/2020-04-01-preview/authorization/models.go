@@ -754,18 +754,16 @@ func NewPermissionGetResultPage(cur PermissionGetResult, getNextPage func(contex
 	}
 }
 
-// Principal deny assignment principal.
+// Principal the name of the entity last modified it
 type Principal struct {
-	// ID - READ-ONLY; Object ID of the Azure AD principal (user, group, or service principal) to which the deny assignment applies. An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
+	// ID - The id of the principal made changes
 	ID *string `json:"id,omitempty"`
-	// Type - READ-ONLY; Type of object represented by principal id (user, group, or service principal). An empty guid '00000000-0000-0000-0000-000000000000' as principal id and principal type as 'Everyone' represents all users, groups and service principals.
+	// DisplayName - The name of the principal made changes
+	DisplayName *string `json:"displayName,omitempty"`
+	// Type - Type of principal such as user , group etc
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Principal.
-func (p Principal) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
+	// Email - Email of principal
+	Email *string `json:"email,omitempty"`
 }
 
 // ProviderOperation operation
@@ -1275,7 +1273,7 @@ type RoleAssignmentProperties struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 	// PrincipalID - The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security group.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// PrincipalType - The principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'
+	// PrincipalType - The principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'ForeignGroup'
 	PrincipalType PrincipalType `json:"principalType,omitempty"`
 	// CanDelegate - The delegation flag used for creating a role assignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`
@@ -1297,7 +1295,7 @@ type RoleAssignmentPropertiesWithScope struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 	// PrincipalID - The principal ID.
 	PrincipalID *string `json:"principalId,omitempty"`
-	// PrincipalType - The principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'
+	// PrincipalType - The principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'ForeignGroup'
 	PrincipalType PrincipalType `json:"principalType,omitempty"`
 	// CanDelegate - The Delegation flag for the role assignment
 	CanDelegate *bool `json:"canDelegate,omitempty"`

@@ -38,7 +38,8 @@ func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
 // for a resource.
-// roleAssignmentName - the name of the role assignment to create. It can be any valid GUID.
+// roleAssignmentName - a GUID for the role assignment to create. The name must be unique and different for
+// each role assignment.
 // parameters - parameters for the role assignment.
 func (client RoleAssignmentsClient) Create(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters) (result RoleAssignment, err error) {
 	if tracing.IsEnabled() {
@@ -674,8 +675,7 @@ func (client RoleAssignmentsClient) ListForResource(ctx context.Context, resourc
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("authorization.RoleAssignmentsClient", "ListForResource", err.Error())
@@ -714,7 +714,7 @@ func (client RoleAssignmentsClient) ListForResourcePreparer(ctx context.Context,
 		"parentResourcePath":        parentResourcePath,
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
 		"resourceName":              autorest.Encode("path", resourceName),
-		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
+		"resourceProviderNamespace": resourceProviderNamespace,
 		"resourceType":              resourceType,
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
@@ -814,8 +814,7 @@ func (client RoleAssignmentsClient) ListForResourceGroup(ctx context.Context, re
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("authorization.RoleAssignmentsClient", "ListForResourceGroup", err.Error())

@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/base"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -26,10 +27,7 @@ import (
 // is able to get that material from Key Vault. When the required key material is unavailable,
 // cryptographic operations are performed by the Key Vault service.
 type Client struct {
-	kvClient   *generated.KeyVaultClient
-	vaultURL   string
-	keyID      string
-	keyVersion string
+	base.CryptoClient
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -110,12 +108,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 		return nil, err
 	}
 
-	return &Client{
-		kvClient:   generated.NewKeyVaultClient(pl),
-		vaultURL:   vaultURL,
-		keyID:      keyID,
-		keyVersion: keyVersion,
-	}, nil
+	return &Client{base.NewCryptoClient(vaultURL, keyID, keyVersion, pl)}, nil
 }
 
 // EncryptOptions contains optional parameters for Client.EncryptOptions
@@ -172,6 +165,22 @@ func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse, alg
 	}
 }
 
+func (c *Client) client() *generated.KeyVaultClient {
+	return base.Client(c.CryptoClient)
+}
+
+func (c *Client) vaultURL() string {
+	return base.VaultURL(c.CryptoClient)
+}
+
+func (c *Client) keyID() string {
+	return base.KeyName(c.CryptoClient)
+}
+
+func (c *Client) keyVersion() string {
+	return base.KeyVersion(c.CryptoClient)
+}
+
 // Encrypt encrypts plaintext using the client's key. This method encrypts only a single block of data, whose
 // size dependens on the key and algorithm.
 func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlg, plaintext []byte, options *EncryptOptions) (EncryptResponse, error) {
@@ -179,11 +188,11 @@ func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlg, plaintext []byt
 		options = &EncryptOptions{}
 	}
 
-	resp, err := c.kvClient.Encrypt(
+	resp, err := c.client().Encrypt(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		options.toGeneratedKeyOperationsParameters(alg, plaintext),
 		&generated.KeyVaultClientEncryptOptions{},
 	)
@@ -243,11 +252,11 @@ func (c *Client) Decrypt(ctx context.Context, alg EncryptionAlg, ciphertext []by
 		options = &DecryptOptions{}
 	}
 
-	resp, err := c.kvClient.Decrypt(
+	resp, err := c.client().Decrypt(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		options.toGeneratedKeyOperationsParameters(alg, ciphertext),
 		&generated.KeyVaultClientDecryptOptions{},
 	)
@@ -297,11 +306,11 @@ func (c *Client) WrapKey(ctx context.Context, alg WrapAlg, key []byte, options *
 		options = &WrapKeyOptions{}
 	}
 
-	resp, err := c.kvClient.WrapKey(
+	resp, err := c.client().WrapKey(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		options.toGeneratedKeyOperationsParameters(alg, key),
 		&generated.KeyVaultClientWrapKeyOptions{},
 	)
@@ -351,11 +360,11 @@ func (c *Client) UnwrapKey(ctx context.Context, alg WrapAlg, encryptedKey []byte
 		options = &UnwrapKeyOptions{}
 	}
 
-	resp, err := c.kvClient.UnwrapKey(
+	resp, err := c.client().UnwrapKey(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		options.toGeneratedKeyOperationsParameters(alg, encryptedKey),
 		&generated.KeyVaultClientUnwrapKeyOptions{},
 	)
@@ -401,11 +410,11 @@ func (c *Client) Sign(ctx context.Context, algorithm SignatureAlg, digest []byte
 		options = &SignOptions{}
 	}
 
-	resp, err := c.kvClient.Sign(
+	resp, err := c.client().Sign(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		generated.KeySignParameters{
 			Algorithm: (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
 			Value:     digest,
@@ -440,10 +449,10 @@ type VerifyResponse struct {
 	KeyID *string
 }
 
-func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse, id *string, alg SignatureAlg) VerifyResponse {
+func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse, id string, alg SignatureAlg) VerifyResponse {
 	return VerifyResponse{
 		IsValid:   i.Value,
-		KeyID:     id,
+		KeyID:     &id,
 		Algorithm: to.Ptr(alg),
 	}
 }
@@ -455,11 +464,11 @@ func (c *Client) Verify(ctx context.Context, algorithm SignatureAlg, digest []by
 		options = &VerifyOptions{}
 	}
 
-	resp, err := c.kvClient.Verify(
+	resp, err := c.client().Verify(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		generated.KeyVerifyParameters{
 			Algorithm: (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
 			Digest:    digest,
@@ -472,5 +481,5 @@ func (c *Client) Verify(ctx context.Context, algorithm SignatureAlg, digest []by
 		return VerifyResponse{}, err
 	}
 
-	return verifyResponseFromGenerated(resp, &c.keyID, algorithm), nil
+	return verifyResponseFromGenerated(resp, c.keyID(), algorithm), nil
 }

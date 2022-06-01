@@ -8,6 +8,7 @@ package azkeys
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -17,6 +18,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto"
 	"github.com/stretchr/testify/require"
 )
 
@@ -853,4 +855,81 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 			require.NoError(t, err)
 		})
 	}
+}
+
+func TestClient_EncryptDecrypt(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	keyName, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	keyClient, err := createClient(t, REGULARTEST)
+	require.NoError(t, err)
+	_, err = keyClient.CreateRSAKey(ctx, keyName, nil)
+	require.NoError(t, err)
+
+	cryptoClient := keyClient.NewCryptoClient(keyName, nil)
+
+	encryptResponse, err := cryptoClient.Encrypt(ctx, crypto.EncryptionAlgRSAOAEP, []byte("plaintext"), nil)
+	require.NoError(t, err)
+	require.NotNil(t, encryptResponse)
+
+	decryptResponse, err := cryptoClient.Decrypt(ctx, crypto.EncryptionAlgRSAOAEP, encryptResponse.Ciphertext, nil)
+	require.NoError(t, err)
+	require.Equal(t, decryptResponse.Plaintext, []byte("plaintext"))
+}
+
+func TestClient_WrapUnwrap(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	keyName, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	keyClient, err := createClient(t, REGULARTEST)
+	require.NoError(t, err)
+	_, err = keyClient.CreateRSAKey(ctx, keyName, nil)
+	require.NoError(t, err)
+
+	cryptoClient := keyClient.NewCryptoClient(keyName, nil)
+
+	keyBytes := []byte("5063e6aaa845f150200547944fd199679c98ed6f99da0a0b2dafeaf1f4684496fd532c1c229968cb9dee44957fcef7ccef59ceda0b362e56bcd78fd3faee5781c623c0bb22b35beabde0664fd30e0e824aba3dd1b0afffc4a3d955ede20cf6a854d52cfd")
+
+	// Wrap
+	wrapResp, err := cryptoClient.WrapKey(ctx, crypto.WrapAlgRSAOAEP, keyBytes, nil)
+	require.NoError(t, err)
+
+	// Unwrap
+	unwrapResp, err := cryptoClient.UnwrapKey(ctx, crypto.WrapAlgRSAOAEP, wrapResp.EncryptedKey, nil)
+	require.NoError(t, err)
+	require.Equal(t, keyBytes, unwrapResp.Key)
+
+}
+
+func TestClient_SignVerify(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	keyName, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	keyClient, err := createClient(t, REGULARTEST)
+	require.NoError(t, err)
+	_, err = keyClient.CreateRSAKey(ctx, keyName, nil)
+	require.NoError(t, err)
+
+	cryptoClient := keyClient.NewCryptoClient(keyName, nil)
+
+	hasher := sha256.New()
+	_, err = hasher.Write([]byte("plaintext"))
+	require.NoError(t, err)
+	digest := hasher.Sum(nil)
+
+	signResponse, err := cryptoClient.Sign(ctx, crypto.SignatureAlgRS256, digest, nil)
+	require.NoError(t, err)
+
+	verifyResponse, err := cryptoClient.Verify(ctx, crypto.SignatureAlgRS256, digest, signResponse.Signature, nil)
+	require.NoError(t, err)
+	require.True(t, *verifyResponse.IsValid)
 }

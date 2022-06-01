@@ -13,7 +13,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
@@ -68,6 +70,16 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 // VaultURL returns the URL for the client's Key Vault.
 func (c *Client) VaultURL() string {
 	return c.vaultURL
+}
+
+// NewCryptoClient creates a new *crypto.Client for the specified key and optional version.
+// The created client uses the same vault URL and options as this Client.
+func (c *Client) NewCryptoClient(keyName string, keyVersion *string) *crypto.Client {
+	keyVer := ""
+	if keyVersion != nil {
+		keyVer = *keyVersion
+	}
+	return &crypto.Client{CryptoClient: base.NewCryptoClient(c.vaultURL, keyName, keyVer, c.kvClient.Pipeline())}
 }
 
 // CreateKeyOptions contains optional parameters for CreateKey.

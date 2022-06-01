@@ -10,9 +10,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"testing"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -20,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
+	"testing"
 )
 
 type DeploymentsClientTestSuite struct {
@@ -357,7 +355,7 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	validateResp, err := validatePoller.PollUntilDone(testsuite.ctx, 10*time.Second)
+	validateResp, err := validatePoller.PollUntilDone(testsuite.ctx, nil)
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(validateResp.Properties)
 

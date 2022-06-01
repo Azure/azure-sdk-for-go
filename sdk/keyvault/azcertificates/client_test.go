@@ -586,15 +586,6 @@ func TestCRUDOperations(t *testing.T) {
 	// Make sure certificates are the same
 	require.Equal(t, *finalResp.ID, *received.ID)
 
-	// // Make sure we can interface with x509 library
-	// mid := base64.StdEncoding.EncodeToString(received.Cer)
-	// cer := fmt.Sprintf("-----BEGIN CERTIFICATE-----\n%s\n-----END CERTIFICATE-----", mid)
-	// block, _ := pem.Decode([]byte(cer))
-	// require.NotNil(t, block)
-	// parsedCert, err := x509.ParseCertificate(block.Bytes)
-	// require.NoError(t, err)
-	// require.NotNil(t, parsedCert)
-
 	// Update the policy
 	policy.KeyType = to.Ptr(KeyTypeEC)
 	policy.KeySize = to.Ptr(int32(256))
@@ -611,13 +602,18 @@ func TestCRUDOperations(t *testing.T) {
 	require.Equal(t, *policy.KeyCurveName, *updateResp.KeyCurveName)
 
 	if received.Properties.Tags == nil {
-		received.Properties.Tags = map[string]string{}
+		received.Properties.Tags = map[string]*string{}
 	}
-	received.Properties.Tags["tag1"] = "updated_values1"
+	received.Properties.Tags["tag1"] = to.Ptr("updated_values1")
 	updatePropsResp, err := client.UpdateCertificateProperties(ctx, certName, *received.Properties, nil)
 	require.NoError(t, err)
-	require.Equal(t, "updated_values1", updatePropsResp.Properties.Tags["tag1"])
+	require.Equal(t, "updated_values1", *updatePropsResp.Properties.Tags["tag1"])
 	require.Equal(t, *received.ID, *updatePropsResp.ID)
+	require.True(t, *updatePropsResp.Properties.Enabled)
+
+	resp, err := client.UpdateCertificateProperties(ctx, *updatePropsResp.Name, Properties{Enabled: to.Ptr(false)}, nil)
+	require.NoError(t, err)
+	require.False(t, *resp.Properties.Enabled)
 }
 
 // https://stackoverflow.com/questions/42643048/signing-certificate-request-with-certificate-authority
@@ -889,7 +885,7 @@ func TestClient_ListDeletedCertificates(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		require.NoError(t, err)
-		for _, cert := range page.Certificates {
+		for _, cert := range page.DeletedCertificates {
 			purgeCert(t, client, *cert.Name)
 			deletedCount += 1
 		}

@@ -70,7 +70,7 @@ type BeginCreateCertificateOptions struct {
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// ResumeToken is a token for resuming long running operations from a previous poller
 	ResumeToken string
@@ -89,11 +89,6 @@ type CreateCertificateResponse struct {
 func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName string, policy Policy, options *BeginCreateCertificateOptions) (*runtime.Poller[CreateCertificateResponse], error) {
 	if options == nil {
 		options = &BeginCreateCertificateOptions{}
-	}
-
-	var tags map[string]*string
-	if options.Tags != nil {
-		tags = convertToGeneratedMap(options.Tags)
 	}
 
 	handler := beginCreateCertificateOperation{
@@ -127,7 +122,7 @@ func (c *Client) BeginCreateCertificate(ctx context.Context, certificateName str
 		certificateName,
 		generated.CertificateCreateParameters{
 			CertificatePolicy:     policy.toGeneratedCertificateCreateParameters(),
-			Tags:                  tags,
+			Tags:                  options.Tags,
 			CertificateAttributes: &generated.CertificateAttributes{Enabled: options.Enabled},
 		},
 		options.toGenerated(),
@@ -170,7 +165,7 @@ func (c *Client) GetCertificate(ctx context.Context, certificateName string, opt
 
 	return GetCertificateResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:  propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:         resp.Cer,
 			ContentType: resp.ContentType,
 			ID:          resp.ID,
@@ -240,7 +235,7 @@ func deleteCertificateResponseFromGenerated(g generated.KeyVaultClientDeleteCert
 			RecoveryID:         g.RecoveryID,
 			DeletedOn:          g.DeletedDate,
 			ScheduledPurgeDate: g.ScheduledPurgeDate,
-			Properties:         propertiesFromGenerated(g.Attributes, convertGeneratedMap(g.Tags), g.ID, g.X509Thumbprint),
+			Properties:         propertiesFromGenerated(g.Attributes, g.Tags, g.ID, g.X509Thumbprint),
 			CER:                g.Cer,
 			ContentType:        g.ContentType,
 			ID:                 g.ID,
@@ -340,7 +335,7 @@ func (c *Client) GetDeletedCertificate(ctx context.Context, certificateName stri
 			RecoveryID:         resp.RecoveryID,
 			DeletedOn:          resp.DeletedDate,
 			ScheduledPurgeDate: resp.ScheduledPurgeDate,
-			Properties:         propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:         propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:                resp.Cer,
 			ContentType:        resp.ContentType,
 			ID:                 resp.ID,
@@ -392,7 +387,7 @@ type ImportCertificateOptions struct {
 	Password *string `json:"pwd,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // ImportCertificateResponse contains response fields for Client.ImportCertificate
@@ -407,10 +402,6 @@ func (c *Client) ImportCertificate(ctx context.Context, certificateName string, 
 	if options == nil {
 		options = &ImportCertificateOptions{}
 	}
-	var tags map[string]*string
-	if options.Tags != nil {
-		tags = convertToGeneratedMap(options.Tags)
-	}
 	resp, err := c.genClient.ImportCertificate(
 		ctx,
 		c.vaultURL,
@@ -422,7 +413,7 @@ func (c *Client) ImportCertificate(ctx context.Context, certificateName string, 
 			},
 			CertificatePolicy: options.CertificatePolicy.toGeneratedCertificateCreateParameters(),
 			Password:          options.Password,
-			Tags:              tags,
+			Tags:              options.Tags,
 		},
 		&generated.KeyVaultClientImportCertificateOptions{},
 	)
@@ -432,7 +423,7 @@ func (c *Client) ImportCertificate(ctx context.Context, certificateName string, 
 
 	return ImportCertificateResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:  propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:         resp.Cer,
 			ContentType: resp.ContentType,
 			ID:          resp.ID,
@@ -443,8 +434,8 @@ func (c *Client) ImportCertificate(ctx context.Context, certificateName string, 
 	}, nil
 }
 
-// ListCertificatesOptions contains optional parameters for Client.ListCertificates
-type ListCertificatesOptions struct {
+// ListPropertiesOfCertificatesOptions contains optional parameters for Client.ListCertificates
+type ListPropertiesOfCertificatesOptions struct {
 	// placeholder for future optional parameters.
 }
 
@@ -463,7 +454,7 @@ func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesRespons
 
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties: propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID, v.X509Thumbprint),
+			Properties: propertiesFromGenerated(v.Attributes, v.Tags, v.ID, v.X509Thumbprint),
 			ID:         v.ID,
 		})
 	}
@@ -478,7 +469,7 @@ func listCertsPageFromGenerated(i generated.KeyVaultClientGetCertificatesRespons
 // public part of a stored certificate. The LIST operation is applicable to all certificate types, however only the
 // base certificate identifier, attributes, and tags are provided in the response. Individual versions of a
 // certificate are not listed in the response. This operation requires the certificates/list permission.
-func (c *Client) NewListPropertiesOfCertificatesPager(options *ListCertificatesOptions) *runtime.Pager[ListPropertiesOfCertificatesResponse] {
+func (c *Client) NewListPropertiesOfCertificatesPager(options *ListPropertiesOfCertificatesOptions) *runtime.Pager[ListPropertiesOfCertificatesResponse] {
 	pager := c.genClient.NewGetCertificatesPager(c.vaultURL, nil)
 	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfCertificatesResponse]{
 		More: func(page ListPropertiesOfCertificatesResponse) bool {
@@ -494,8 +485,8 @@ func (c *Client) NewListPropertiesOfCertificatesPager(options *ListCertificatesO
 	})
 }
 
-// ListCertificateVersionsOptions contains optional parameters for Client.ListCertificateVersions
-type ListCertificateVersionsOptions struct {
+// ListPropertiesOfCertificateVersionsOptions contains optional parameters for Client.ListCertificateVersions
+type ListPropertiesOfCertificateVersionsOptions struct {
 	// placeholder for future optional parameters.
 }
 
@@ -513,7 +504,7 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 	var vals []*CertificateItem
 	for _, v := range i.Value {
 		vals = append(vals, &CertificateItem{
-			Properties: propertiesFromGenerated(v.Attributes, convertGeneratedMap(v.Tags), v.ID, v.X509Thumbprint),
+			Properties: propertiesFromGenerated(v.Attributes, v.Tags, v.ID, v.X509Thumbprint),
 			ID:         v.ID,
 		})
 	}
@@ -527,7 +518,7 @@ func listCertificateVersionsPageFromGenerated(i generated.KeyVaultClientGetCerti
 // NewListPropertiesOfCertificateVersionsPager lists all versions of the specified certificate. The full certificate identifer and
 // attributes are provided in the response. No values are returned for the certificates. This operation
 // requires the certificates/list permission.
-func (c *Client) NewListPropertiesOfCertificateVersionsPager(certificateName string, options *ListCertificateVersionsOptions) *runtime.Pager[ListPropertiesOfCertificateVersionsResponse] {
+func (c *Client) NewListPropertiesOfCertificateVersionsPager(certificateName string, options *ListPropertiesOfCertificateVersionsOptions) *runtime.Pager[ListPropertiesOfCertificateVersionsResponse] {
 	pager := c.genClient.NewGetCertificateVersionsPager(c.vaultURL, certificateName, nil)
 	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfCertificateVersionsResponse]{
 		More: func(page ListPropertiesOfCertificateVersionsResponse) bool {
@@ -706,8 +697,8 @@ type ListPropertiesOfIssuersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListIssuersPropertiesOfIssuersResponse contains response fields for ListPropertiesOfIssuersPager.NextPage
-type ListIssuersPropertiesOfIssuersResponse struct {
+// ListPropertiesOfIssuersResponse contains response fields for ListPropertiesOfIssuersPager.NextPage
+type ListPropertiesOfIssuersResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
 	Issuers []*IssuerItem `json:"value,omitempty" azure:"ro"`
 
@@ -716,28 +707,28 @@ type ListIssuersPropertiesOfIssuersResponse struct {
 }
 
 // convert internal Response to ListPropertiesOfIssuersPage
-func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListIssuersPropertiesOfIssuersResponse {
+func listIssuersPageFromGenerated(i generated.KeyVaultClientGetCertificateIssuersResponse) ListPropertiesOfIssuersResponse {
 	var vals []*IssuerItem
 
 	for _, v := range i.Value {
 		vals = append(vals, certificateIssuerItemFromGenerated(v))
 	}
 
-	return ListIssuersPropertiesOfIssuersResponse{Issuers: vals, NextLink: i.NextLink}
+	return ListPropertiesOfIssuersResponse{Issuers: vals, NextLink: i.NextLink}
 }
 
 // NewListPropertiesOfIssuersPager returns a pager that can be used to get the set of certificate issuer resources in the specified key vault. This operation
 // requires the certificates/manageissuers/getissuers permission.
-func (c *Client) NewListPropertiesOfIssuersPager(options *ListPropertiesOfIssuersOptions) *runtime.Pager[ListIssuersPropertiesOfIssuersResponse] {
+func (c *Client) NewListPropertiesOfIssuersPager(options *ListPropertiesOfIssuersOptions) *runtime.Pager[ListPropertiesOfIssuersResponse] {
 	pager := c.genClient.NewGetCertificateIssuersPager(c.vaultURL, nil)
-	return runtime.NewPager(runtime.PagingHandler[ListIssuersPropertiesOfIssuersResponse]{
-		More: func(page ListIssuersPropertiesOfIssuersResponse) bool {
+	return runtime.NewPager(runtime.PagingHandler[ListPropertiesOfIssuersResponse]{
+		More: func(page ListPropertiesOfIssuersResponse) bool {
 			return pager.More()
 		},
-		Fetcher: func(ctx context.Context, cur *ListIssuersPropertiesOfIssuersResponse) (ListIssuersPropertiesOfIssuersResponse, error) {
+		Fetcher: func(ctx context.Context, cur *ListPropertiesOfIssuersResponse) (ListPropertiesOfIssuersResponse, error) {
 			page, err := pager.NextPage(ctx)
 			if err != nil {
-				return ListIssuersPropertiesOfIssuersResponse{}, err
+				return ListPropertiesOfIssuersResponse{}, err
 			}
 			return listIssuersPageFromGenerated(page), nil
 		},
@@ -1056,14 +1047,8 @@ func (c *Client) GetCertificatePolicy(ctx context.Context, certificateName strin
 
 // UpdateCertificatePropertiesOptions contains optional parameters for Client.UpdateCertificateProperties
 type UpdateCertificatePropertiesOptions struct {
-	// The version of the certificate to update
-	Version string
+	// placeholder for future optional parameters
 
-	// The attributes of the certificate (optional).
-	Properties *Properties `json:"attributes,omitempty"`
-
-	// The management policy for the certificate.
-	CertificatePolicy *Policy `json:"policy,omitempty"`
 }
 
 func (u *UpdateCertificatePropertiesOptions) toGenerated() *generated.KeyVaultClientUpdateCertificateOptions {
@@ -1081,18 +1066,18 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, certificateNam
 	if options == nil {
 		options = &UpdateCertificatePropertiesOptions{}
 	}
-	var tags map[string]*string
-	if properties.Tags != nil {
-		tags = convertToGeneratedMap(properties.Tags)
+	version := ""
+	if properties.Version != nil {
+		version = *properties.Version
 	}
 	resp, err := c.genClient.UpdateCertificate(
 		ctx,
 		c.vaultURL,
 		certificateName,
-		options.Version,
+		version,
 		generated.CertificateUpdateParameters{
 			CertificateAttributes: properties.toGenerated(),
-			Tags:                  tags,
+			Tags:                  properties.Tags,
 		},
 		options.toGenerated(),
 	)
@@ -1126,7 +1111,7 @@ func (c *Client) MergeCertificate(ctx context.Context, certificateName string, c
 	}
 	var tags map[string]*string
 	if options.Properties != nil && options.Properties.Tags != nil {
-		tags = convertToGeneratedMap(options.Properties.Tags)
+		tags = options.Properties.Tags
 	}
 	resp, err := c.genClient.MergeCertificate(
 		ctx, c.vaultURL,
@@ -1144,7 +1129,7 @@ func (c *Client) MergeCertificate(ctx context.Context, certificateName string, c
 
 	return MergeCertificateResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:  propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:         resp.Cer,
 			ContentType: resp.ContentType,
 			ID:          resp.ID,
@@ -1185,7 +1170,7 @@ func (c *Client) RestoreCertificateBackup(ctx context.Context, certificateBackup
 
 	return RestoreCertificateBackupResponse{
 		CertificateWithPolicy: CertificateWithPolicy{
-			Properties:  propertiesFromGenerated(resp.Attributes, convertGeneratedMap(resp.Tags), resp.ID, resp.X509Thumbprint),
+			Properties:  propertiesFromGenerated(resp.Attributes, resp.Tags, resp.ID, resp.X509Thumbprint),
 			CER:         resp.Cer,
 			ContentType: resp.ContentType,
 			ID:          resp.ID,
@@ -1255,7 +1240,7 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certificate
 // ListDeletedCertificatesResponse contains response field for ListDeletedCertificatesPager.NextPage
 type ListDeletedCertificatesResponse struct {
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page of deleted certificates
-	Certificates []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
+	DeletedCertificates []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
 
 	// NextLink gives the next page of items to fetch
 	NextLink *string
@@ -1270,7 +1255,7 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 		for i, c := range g.Value {
 			_, name, _ := shared.ParseID(c.ID)
 			certs[i] = &DeletedCertificateItem{
-				Properties:         propertiesFromGenerated(c.Attributes, convertGeneratedMap(c.Tags), c.ID, c.X509Thumbprint),
+				Properties:         propertiesFromGenerated(c.Attributes, c.Tags, c.ID, c.X509Thumbprint),
 				ID:                 c.ID,
 				Name:               name,
 				RecoveryID:         c.RecoveryID,
@@ -1281,8 +1266,8 @@ func listDeletedCertsPageFromGenerated(g generated.KeyVaultClientGetDeletedCerti
 	}
 
 	return ListDeletedCertificatesResponse{
-		Certificates: certs,
-		NextLink:     g.NextLink,
+		DeletedCertificates: certs,
+		NextLink:            g.NextLink,
 	}
 }
 

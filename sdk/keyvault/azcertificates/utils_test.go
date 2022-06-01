@@ -58,12 +58,6 @@ func TestMain(m *testing.M) {
 		if err != nil {
 			panic(err)
 		}
-
-		tenantID := os.Getenv("AZCERTIFICATES_TENANT_ID")
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "00000000-0000-0000-0000-000000000000", tenantID, nil)
-		if err != nil {
-			panic(err)
-		}
 	}
 
 	// Run tests

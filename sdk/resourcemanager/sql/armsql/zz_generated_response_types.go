@@ -73,6 +73,21 @@ type DataWarehouseUserActivitiesClientListByDatabaseResponse struct {
 	DataWarehouseUserActivitiesListResult
 }
 
+// DatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse contains the response from method DatabaseAdvancedThreatProtectionSettingsClient.CreateOrUpdate.
+type DatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse struct {
+	DatabaseAdvancedThreatProtection
+}
+
+// DatabaseAdvancedThreatProtectionSettingsClientGetResponse contains the response from method DatabaseAdvancedThreatProtectionSettingsClient.Get.
+type DatabaseAdvancedThreatProtectionSettingsClientGetResponse struct {
+	DatabaseAdvancedThreatProtection
+}
+
+// DatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse contains the response from method DatabaseAdvancedThreatProtectionSettingsClient.ListByDatabase.
+type DatabaseAdvancedThreatProtectionSettingsClientListByDatabaseResponse struct {
+	DatabaseAdvancedThreatProtectionListResult
+}
+
 // DatabaseAdvisorsClientGetResponse contains the response from method DatabaseAdvisorsClient.Get.
 type DatabaseAdvisorsClientGetResponse struct {
 	Advisor
@@ -1691,6 +1706,21 @@ type SensitivityLabelsClientListRecommendedByDatabaseResponse struct {
 // SensitivityLabelsClientUpdateResponse contains the response from method SensitivityLabelsClient.Update.
 type SensitivityLabelsClientUpdateResponse struct {
 	// placeholder for future response values
+}
+
+// ServerAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse contains the response from method ServerAdvancedThreatProtectionSettingsClient.CreateOrUpdate.
+type ServerAdvancedThreatProtectionSettingsClientCreateOrUpdateResponse struct {
+	ServerAdvancedThreatProtection
+}
+
+// ServerAdvancedThreatProtectionSettingsClientGetResponse contains the response from method ServerAdvancedThreatProtectionSettingsClient.Get.
+type ServerAdvancedThreatProtectionSettingsClientGetResponse struct {
+	ServerAdvancedThreatProtection
+}
+
+// ServerAdvancedThreatProtectionSettingsClientListByServerResponse contains the response from method ServerAdvancedThreatProtectionSettingsClient.ListByServer.
+type ServerAdvancedThreatProtectionSettingsClientListByServerResponse struct {
+	LogicalServerAdvancedThreatProtectionListResult
 }
 
 // ServerAdvisorsClientGetResponse contains the response from method ServerAdvisorsClient.Get.

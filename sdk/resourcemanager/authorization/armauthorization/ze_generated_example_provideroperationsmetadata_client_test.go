@@ -16,19 +16,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/GetAccessReviewDefaultSettings.json
-func ExampleAccessReviewDefaultSettingsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/GetProviderOperationsRP.json
+func ExampleProviderOperationsMetadataClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewDefaultSettingsClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
+	client, err := armauthorization.NewProviderOperationsMetadataClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		nil)
+		"resourceProviderNamespace",
+		&armauthorization.ProviderOperationsMetadataClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -36,23 +37,26 @@ func ExampleAccessReviewDefaultSettingsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/PutAccessReviewDefaultSettings.json
-func ExampleAccessReviewDefaultSettingsClient_Put() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/GetAllProviderOperations.json
+func ExampleProviderOperationsMetadataClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewAccessReviewDefaultSettingsClient("fa73e90b-5bf1-45fd-a182-35ce5fc0674d", cred, nil)
+	client, err := armauthorization.NewProviderOperationsMetadataClient(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Put(ctx,
-		armauthorization.AccessReviewScheduleSettings{},
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := client.NewListPager(&armauthorization.ProviderOperationsMetadataClientListOptions{Expand: nil})
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
-	// TODO: use response item
-	_ = res
 }

@@ -10,291 +10,350 @@ package armauthorization
 
 const (
 	moduleName    = "armauthorization"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
-// ApprovalMode - The type of rule
-type ApprovalMode string
+// AccessRecommendationType - The feature- generated recommendation shown to the reviewer.
+type AccessRecommendationType string
 
 const (
-	ApprovalModeNoApproval  ApprovalMode = "NoApproval"
-	ApprovalModeParallel    ApprovalMode = "Parallel"
-	ApprovalModeSerial      ApprovalMode = "Serial"
-	ApprovalModeSingleStage ApprovalMode = "SingleStage"
+	AccessRecommendationTypeApprove         AccessRecommendationType = "Approve"
+	AccessRecommendationTypeDeny            AccessRecommendationType = "Deny"
+	AccessRecommendationTypeNoInfoAvailable AccessRecommendationType = "NoInfoAvailable"
 )
 
-// PossibleApprovalModeValues returns the possible values for the ApprovalMode const type.
-func PossibleApprovalModeValues() []ApprovalMode {
-	return []ApprovalMode{
-		ApprovalModeNoApproval,
-		ApprovalModeParallel,
-		ApprovalModeSerial,
-		ApprovalModeSingleStage,
+// PossibleAccessRecommendationTypeValues returns the possible values for the AccessRecommendationType const type.
+func PossibleAccessRecommendationTypeValues() []AccessRecommendationType {
+	return []AccessRecommendationType{
+		AccessRecommendationTypeApprove,
+		AccessRecommendationTypeDeny,
+		AccessRecommendationTypeNoInfoAvailable,
 	}
 }
 
-// AssignmentType - Assignment type of the role assignment schedule
-type AssignmentType string
+// AccessReviewActorIdentityType - The identity type : user/servicePrincipal
+type AccessReviewActorIdentityType string
 
 const (
-	AssignmentTypeActivated AssignmentType = "Activated"
-	AssignmentTypeAssigned  AssignmentType = "Assigned"
+	AccessReviewActorIdentityTypeServicePrincipal AccessReviewActorIdentityType = "servicePrincipal"
+	AccessReviewActorIdentityTypeUser             AccessReviewActorIdentityType = "user"
 )
 
-// PossibleAssignmentTypeValues returns the possible values for the AssignmentType const type.
-func PossibleAssignmentTypeValues() []AssignmentType {
-	return []AssignmentType{
-		AssignmentTypeActivated,
-		AssignmentTypeAssigned,
+// PossibleAccessReviewActorIdentityTypeValues returns the possible values for the AccessReviewActorIdentityType const type.
+func PossibleAccessReviewActorIdentityTypeValues() []AccessReviewActorIdentityType {
+	return []AccessReviewActorIdentityType{
+		AccessReviewActorIdentityTypeServicePrincipal,
+		AccessReviewActorIdentityTypeUser,
 	}
 }
 
-// EnablementRules - The type of enablement rule
-type EnablementRules string
+// AccessReviewApplyResult - The outcome of applying the decision.
+type AccessReviewApplyResult string
 
 const (
-	EnablementRulesJustification             EnablementRules = "Justification"
-	EnablementRulesMultiFactorAuthentication EnablementRules = "MultiFactorAuthentication"
-	EnablementRulesTicketing                 EnablementRules = "Ticketing"
+	AccessReviewApplyResultAppliedSuccessfully                  AccessReviewApplyResult = "AppliedSuccessfully"
+	AccessReviewApplyResultAppliedSuccessfullyButObjectNotFound AccessReviewApplyResult = "AppliedSuccessfullyButObjectNotFound"
+	AccessReviewApplyResultAppliedWithUnknownFailure            AccessReviewApplyResult = "AppliedWithUnknownFailure"
+	AccessReviewApplyResultApplyNotSupported                    AccessReviewApplyResult = "ApplyNotSupported"
+	AccessReviewApplyResultApplying                             AccessReviewApplyResult = "Applying"
+	AccessReviewApplyResultNew                                  AccessReviewApplyResult = "New"
 )
 
-// PossibleEnablementRulesValues returns the possible values for the EnablementRules const type.
-func PossibleEnablementRulesValues() []EnablementRules {
-	return []EnablementRules{
-		EnablementRulesJustification,
-		EnablementRulesMultiFactorAuthentication,
-		EnablementRulesTicketing,
+// PossibleAccessReviewApplyResultValues returns the possible values for the AccessReviewApplyResult const type.
+func PossibleAccessReviewApplyResultValues() []AccessReviewApplyResult {
+	return []AccessReviewApplyResult{
+		AccessReviewApplyResultAppliedSuccessfully,
+		AccessReviewApplyResultAppliedSuccessfullyButObjectNotFound,
+		AccessReviewApplyResultAppliedWithUnknownFailure,
+		AccessReviewApplyResultApplyNotSupported,
+		AccessReviewApplyResultApplying,
+		AccessReviewApplyResultNew,
 	}
 }
 
-// MemberType - Membership type of the role assignment schedule
-type MemberType string
+// AccessReviewHistoryDefinitionStatus - This read-only field specifies the of the requested review history data. This is
+// either requested, in-progress, done or error.
+type AccessReviewHistoryDefinitionStatus string
 
 const (
-	MemberTypeDirect    MemberType = "Direct"
-	MemberTypeGroup     MemberType = "Group"
-	MemberTypeInherited MemberType = "Inherited"
+	AccessReviewHistoryDefinitionStatusDone       AccessReviewHistoryDefinitionStatus = "Done"
+	AccessReviewHistoryDefinitionStatusError      AccessReviewHistoryDefinitionStatus = "Error"
+	AccessReviewHistoryDefinitionStatusInProgress AccessReviewHistoryDefinitionStatus = "InProgress"
+	AccessReviewHistoryDefinitionStatusRequested  AccessReviewHistoryDefinitionStatus = "Requested"
 )
 
-// PossibleMemberTypeValues returns the possible values for the MemberType const type.
-func PossibleMemberTypeValues() []MemberType {
-	return []MemberType{
-		MemberTypeDirect,
-		MemberTypeGroup,
-		MemberTypeInherited,
+// PossibleAccessReviewHistoryDefinitionStatusValues returns the possible values for the AccessReviewHistoryDefinitionStatus const type.
+func PossibleAccessReviewHistoryDefinitionStatusValues() []AccessReviewHistoryDefinitionStatus {
+	return []AccessReviewHistoryDefinitionStatus{
+		AccessReviewHistoryDefinitionStatusDone,
+		AccessReviewHistoryDefinitionStatusError,
+		AccessReviewHistoryDefinitionStatusInProgress,
+		AccessReviewHistoryDefinitionStatusRequested,
 	}
 }
 
-// NotificationDeliveryMechanism - The type of notification.
-type NotificationDeliveryMechanism string
+// AccessReviewInstanceReviewersType - This field specifies the type of reviewers for a review. Usually for a review, reviewers
+// are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen
+// dynamically. For example managers review or self review.
+type AccessReviewInstanceReviewersType string
 
 const (
-	NotificationDeliveryMechanismEmail NotificationDeliveryMechanism = "Email"
+	AccessReviewInstanceReviewersTypeAssigned AccessReviewInstanceReviewersType = "Assigned"
+	AccessReviewInstanceReviewersTypeManagers AccessReviewInstanceReviewersType = "Managers"
+	AccessReviewInstanceReviewersTypeSelf     AccessReviewInstanceReviewersType = "Self"
 )
 
-// PossibleNotificationDeliveryMechanismValues returns the possible values for the NotificationDeliveryMechanism const type.
-func PossibleNotificationDeliveryMechanismValues() []NotificationDeliveryMechanism {
-	return []NotificationDeliveryMechanism{
-		NotificationDeliveryMechanismEmail,
+// PossibleAccessReviewInstanceReviewersTypeValues returns the possible values for the AccessReviewInstanceReviewersType const type.
+func PossibleAccessReviewInstanceReviewersTypeValues() []AccessReviewInstanceReviewersType {
+	return []AccessReviewInstanceReviewersType{
+		AccessReviewInstanceReviewersTypeAssigned,
+		AccessReviewInstanceReviewersTypeManagers,
+		AccessReviewInstanceReviewersTypeSelf,
 	}
 }
 
-// NotificationLevel - The notification level.
-type NotificationLevel string
+// AccessReviewInstanceStatus - This read-only field specifies the status of an access review instance.
+type AccessReviewInstanceStatus string
 
 const (
-	NotificationLevelAll      NotificationLevel = "All"
-	NotificationLevelCritical NotificationLevel = "Critical"
-	NotificationLevelNone     NotificationLevel = "None"
+	AccessReviewInstanceStatusApplied       AccessReviewInstanceStatus = "Applied"
+	AccessReviewInstanceStatusApplying      AccessReviewInstanceStatus = "Applying"
+	AccessReviewInstanceStatusAutoReviewed  AccessReviewInstanceStatus = "AutoReviewed"
+	AccessReviewInstanceStatusAutoReviewing AccessReviewInstanceStatus = "AutoReviewing"
+	AccessReviewInstanceStatusCompleted     AccessReviewInstanceStatus = "Completed"
+	AccessReviewInstanceStatusCompleting    AccessReviewInstanceStatus = "Completing"
+	AccessReviewInstanceStatusInProgress    AccessReviewInstanceStatus = "InProgress"
+	AccessReviewInstanceStatusInitializing  AccessReviewInstanceStatus = "Initializing"
+	AccessReviewInstanceStatusNotStarted    AccessReviewInstanceStatus = "NotStarted"
+	AccessReviewInstanceStatusScheduled     AccessReviewInstanceStatus = "Scheduled"
+	AccessReviewInstanceStatusStarting      AccessReviewInstanceStatus = "Starting"
 )
 
-// PossibleNotificationLevelValues returns the possible values for the NotificationLevel const type.
-func PossibleNotificationLevelValues() []NotificationLevel {
-	return []NotificationLevel{
-		NotificationLevelAll,
-		NotificationLevelCritical,
-		NotificationLevelNone,
+// PossibleAccessReviewInstanceStatusValues returns the possible values for the AccessReviewInstanceStatus const type.
+func PossibleAccessReviewInstanceStatusValues() []AccessReviewInstanceStatus {
+	return []AccessReviewInstanceStatus{
+		AccessReviewInstanceStatusApplied,
+		AccessReviewInstanceStatusApplying,
+		AccessReviewInstanceStatusAutoReviewed,
+		AccessReviewInstanceStatusAutoReviewing,
+		AccessReviewInstanceStatusCompleted,
+		AccessReviewInstanceStatusCompleting,
+		AccessReviewInstanceStatusInProgress,
+		AccessReviewInstanceStatusInitializing,
+		AccessReviewInstanceStatusNotStarted,
+		AccessReviewInstanceStatusScheduled,
+		AccessReviewInstanceStatusStarting,
 	}
 }
 
-// PrincipalType - The principal type of the assigned principal ID.
-type PrincipalType string
+// AccessReviewRecurrencePatternType - The recurrence type : weekly, monthly, etc.
+type AccessReviewRecurrencePatternType string
 
 const (
-	PrincipalTypeDevice           PrincipalType = "Device"
-	PrincipalTypeForeignGroup     PrincipalType = "ForeignGroup"
-	PrincipalTypeGroup            PrincipalType = "Group"
-	PrincipalTypeServicePrincipal PrincipalType = "ServicePrincipal"
-	PrincipalTypeUser             PrincipalType = "User"
+	AccessReviewRecurrencePatternTypeAbsoluteMonthly AccessReviewRecurrencePatternType = "absoluteMonthly"
+	AccessReviewRecurrencePatternTypeWeekly          AccessReviewRecurrencePatternType = "weekly"
 )
 
-// PossiblePrincipalTypeValues returns the possible values for the PrincipalType const type.
-func PossiblePrincipalTypeValues() []PrincipalType {
-	return []PrincipalType{
-		PrincipalTypeDevice,
-		PrincipalTypeForeignGroup,
-		PrincipalTypeGroup,
-		PrincipalTypeServicePrincipal,
-		PrincipalTypeUser,
+// PossibleAccessReviewRecurrencePatternTypeValues returns the possible values for the AccessReviewRecurrencePatternType const type.
+func PossibleAccessReviewRecurrencePatternTypeValues() []AccessReviewRecurrencePatternType {
+	return []AccessReviewRecurrencePatternType{
+		AccessReviewRecurrencePatternTypeAbsoluteMonthly,
+		AccessReviewRecurrencePatternTypeWeekly,
 	}
 }
 
-// RecipientType - The recipient type.
-type RecipientType string
+// AccessReviewRecurrenceRangeType - The recurrence range type. The possible values are: endDate, noEnd, numbered.
+type AccessReviewRecurrenceRangeType string
 
 const (
-	RecipientTypeAdmin     RecipientType = "Admin"
-	RecipientTypeApprover  RecipientType = "Approver"
-	RecipientTypeRequestor RecipientType = "Requestor"
+	AccessReviewRecurrenceRangeTypeEndDate  AccessReviewRecurrenceRangeType = "endDate"
+	AccessReviewRecurrenceRangeTypeNoEnd    AccessReviewRecurrenceRangeType = "noEnd"
+	AccessReviewRecurrenceRangeTypeNumbered AccessReviewRecurrenceRangeType = "numbered"
 )
 
-// PossibleRecipientTypeValues returns the possible values for the RecipientType const type.
-func PossibleRecipientTypeValues() []RecipientType {
-	return []RecipientType{
-		RecipientTypeAdmin,
-		RecipientTypeApprover,
-		RecipientTypeRequestor,
+// PossibleAccessReviewRecurrenceRangeTypeValues returns the possible values for the AccessReviewRecurrenceRangeType const type.
+func PossibleAccessReviewRecurrenceRangeTypeValues() []AccessReviewRecurrenceRangeType {
+	return []AccessReviewRecurrenceRangeType{
+		AccessReviewRecurrenceRangeTypeEndDate,
+		AccessReviewRecurrenceRangeTypeNoEnd,
+		AccessReviewRecurrenceRangeTypeNumbered,
 	}
 }
 
-// RequestType - The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc
-type RequestType string
+// AccessReviewResult - Represents a reviewer's decision for a given review
+type AccessReviewResult string
 
 const (
-	RequestTypeAdminAssign    RequestType = "AdminAssign"
-	RequestTypeAdminExtend    RequestType = "AdminExtend"
-	RequestTypeAdminRemove    RequestType = "AdminRemove"
-	RequestTypeAdminRenew     RequestType = "AdminRenew"
-	RequestTypeAdminUpdate    RequestType = "AdminUpdate"
-	RequestTypeSelfActivate   RequestType = "SelfActivate"
-	RequestTypeSelfDeactivate RequestType = "SelfDeactivate"
-	RequestTypeSelfExtend     RequestType = "SelfExtend"
-	RequestTypeSelfRenew      RequestType = "SelfRenew"
+	AccessReviewResultApprove     AccessReviewResult = "Approve"
+	AccessReviewResultDeny        AccessReviewResult = "Deny"
+	AccessReviewResultDontKnow    AccessReviewResult = "DontKnow"
+	AccessReviewResultNotNotified AccessReviewResult = "NotNotified"
+	AccessReviewResultNotReviewed AccessReviewResult = "NotReviewed"
 )
 
-// PossibleRequestTypeValues returns the possible values for the RequestType const type.
-func PossibleRequestTypeValues() []RequestType {
-	return []RequestType{
-		RequestTypeAdminAssign,
-		RequestTypeAdminExtend,
-		RequestTypeAdminRemove,
-		RequestTypeAdminRenew,
-		RequestTypeAdminUpdate,
-		RequestTypeSelfActivate,
-		RequestTypeSelfDeactivate,
-		RequestTypeSelfExtend,
-		RequestTypeSelfRenew,
+// PossibleAccessReviewResultValues returns the possible values for the AccessReviewResult const type.
+func PossibleAccessReviewResultValues() []AccessReviewResult {
+	return []AccessReviewResult{
+		AccessReviewResultApprove,
+		AccessReviewResultDeny,
+		AccessReviewResultDontKnow,
+		AccessReviewResultNotNotified,
+		AccessReviewResultNotReviewed,
 	}
 }
 
-// RoleManagementPolicyRuleType - The type of rule
-type RoleManagementPolicyRuleType string
+// AccessReviewReviewerType - The identity type : user/servicePrincipal
+type AccessReviewReviewerType string
 
 const (
-	RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule              RoleManagementPolicyRuleType = "RoleManagementPolicyApprovalRule"
-	RoleManagementPolicyRuleTypeRoleManagementPolicyAuthenticationContextRule RoleManagementPolicyRuleType = "RoleManagementPolicyAuthenticationContextRule"
-	RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule            RoleManagementPolicyRuleType = "RoleManagementPolicyEnablementRule"
-	RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule            RoleManagementPolicyRuleType = "RoleManagementPolicyExpirationRule"
-	RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule          RoleManagementPolicyRuleType = "RoleManagementPolicyNotificationRule"
+	AccessReviewReviewerTypeServicePrincipal AccessReviewReviewerType = "servicePrincipal"
+	AccessReviewReviewerTypeUser             AccessReviewReviewerType = "user"
 )
 
-// PossibleRoleManagementPolicyRuleTypeValues returns the possible values for the RoleManagementPolicyRuleType const type.
-func PossibleRoleManagementPolicyRuleTypeValues() []RoleManagementPolicyRuleType {
-	return []RoleManagementPolicyRuleType{
-		RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule,
-		RoleManagementPolicyRuleTypeRoleManagementPolicyAuthenticationContextRule,
-		RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule,
-		RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule,
-		RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule,
+// PossibleAccessReviewReviewerTypeValues returns the possible values for the AccessReviewReviewerType const type.
+func PossibleAccessReviewReviewerTypeValues() []AccessReviewReviewerType {
+	return []AccessReviewReviewerType{
+		AccessReviewReviewerTypeServicePrincipal,
+		AccessReviewReviewerTypeUser,
 	}
 }
 
-// Status - The status of the role assignment schedule.
-type Status string
+// AccessReviewScheduleDefinitionReviewersType - This field specifies the type of reviewers for a review. Usually for a review,
+// reviewers are explicitly assigned. However, in some cases, the reviewers may not be assigned and instead be chosen
+// dynamically. For example managers review or self review.
+type AccessReviewScheduleDefinitionReviewersType string
 
 const (
-	StatusAccepted                    Status = "Accepted"
-	StatusAdminApproved               Status = "AdminApproved"
-	StatusAdminDenied                 Status = "AdminDenied"
-	StatusCanceled                    Status = "Canceled"
-	StatusDenied                      Status = "Denied"
-	StatusFailed                      Status = "Failed"
-	StatusFailedAsResourceIsLocked    Status = "FailedAsResourceIsLocked"
-	StatusGranted                     Status = "Granted"
-	StatusInvalid                     Status = "Invalid"
-	StatusPendingAdminDecision        Status = "PendingAdminDecision"
-	StatusPendingApproval             Status = "PendingApproval"
-	StatusPendingApprovalProvisioning Status = "PendingApprovalProvisioning"
-	StatusPendingEvaluation           Status = "PendingEvaluation"
-	StatusPendingExternalProvisioning Status = "PendingExternalProvisioning"
-	StatusPendingProvisioning         Status = "PendingProvisioning"
-	StatusPendingRevocation           Status = "PendingRevocation"
-	StatusPendingScheduleCreation     Status = "PendingScheduleCreation"
-	StatusProvisioned                 Status = "Provisioned"
-	StatusProvisioningStarted         Status = "ProvisioningStarted"
-	StatusRevoked                     Status = "Revoked"
-	StatusScheduleCreated             Status = "ScheduleCreated"
-	StatusTimedOut                    Status = "TimedOut"
+	AccessReviewScheduleDefinitionReviewersTypeAssigned AccessReviewScheduleDefinitionReviewersType = "Assigned"
+	AccessReviewScheduleDefinitionReviewersTypeManagers AccessReviewScheduleDefinitionReviewersType = "Managers"
+	AccessReviewScheduleDefinitionReviewersTypeSelf     AccessReviewScheduleDefinitionReviewersType = "Self"
 )
 
-// PossibleStatusValues returns the possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{
-		StatusAccepted,
-		StatusAdminApproved,
-		StatusAdminDenied,
-		StatusCanceled,
-		StatusDenied,
-		StatusFailed,
-		StatusFailedAsResourceIsLocked,
-		StatusGranted,
-		StatusInvalid,
-		StatusPendingAdminDecision,
-		StatusPendingApproval,
-		StatusPendingApprovalProvisioning,
-		StatusPendingEvaluation,
-		StatusPendingExternalProvisioning,
-		StatusPendingProvisioning,
-		StatusPendingRevocation,
-		StatusPendingScheduleCreation,
-		StatusProvisioned,
-		StatusProvisioningStarted,
-		StatusRevoked,
-		StatusScheduleCreated,
-		StatusTimedOut,
+// PossibleAccessReviewScheduleDefinitionReviewersTypeValues returns the possible values for the AccessReviewScheduleDefinitionReviewersType const type.
+func PossibleAccessReviewScheduleDefinitionReviewersTypeValues() []AccessReviewScheduleDefinitionReviewersType {
+	return []AccessReviewScheduleDefinitionReviewersType{
+		AccessReviewScheduleDefinitionReviewersTypeAssigned,
+		AccessReviewScheduleDefinitionReviewersTypeManagers,
+		AccessReviewScheduleDefinitionReviewersTypeSelf,
 	}
 }
 
-// Type - Type of the role assignment schedule expiration
-type Type string
+// AccessReviewScheduleDefinitionStatus - This read-only field specifies the status of an accessReview.
+type AccessReviewScheduleDefinitionStatus string
 
 const (
-	TypeAfterDateTime Type = "AfterDateTime"
-	TypeAfterDuration Type = "AfterDuration"
-	TypeNoExpiration  Type = "NoExpiration"
+	AccessReviewScheduleDefinitionStatusApplied       AccessReviewScheduleDefinitionStatus = "Applied"
+	AccessReviewScheduleDefinitionStatusApplying      AccessReviewScheduleDefinitionStatus = "Applying"
+	AccessReviewScheduleDefinitionStatusAutoReviewed  AccessReviewScheduleDefinitionStatus = "AutoReviewed"
+	AccessReviewScheduleDefinitionStatusAutoReviewing AccessReviewScheduleDefinitionStatus = "AutoReviewing"
+	AccessReviewScheduleDefinitionStatusCompleted     AccessReviewScheduleDefinitionStatus = "Completed"
+	AccessReviewScheduleDefinitionStatusCompleting    AccessReviewScheduleDefinitionStatus = "Completing"
+	AccessReviewScheduleDefinitionStatusInProgress    AccessReviewScheduleDefinitionStatus = "InProgress"
+	AccessReviewScheduleDefinitionStatusInitializing  AccessReviewScheduleDefinitionStatus = "Initializing"
+	AccessReviewScheduleDefinitionStatusNotStarted    AccessReviewScheduleDefinitionStatus = "NotStarted"
+	AccessReviewScheduleDefinitionStatusScheduled     AccessReviewScheduleDefinitionStatus = "Scheduled"
+	AccessReviewScheduleDefinitionStatusStarting      AccessReviewScheduleDefinitionStatus = "Starting"
 )
 
-// PossibleTypeValues returns the possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{
-		TypeAfterDateTime,
-		TypeAfterDuration,
-		TypeNoExpiration,
+// PossibleAccessReviewScheduleDefinitionStatusValues returns the possible values for the AccessReviewScheduleDefinitionStatus const type.
+func PossibleAccessReviewScheduleDefinitionStatusValues() []AccessReviewScheduleDefinitionStatus {
+	return []AccessReviewScheduleDefinitionStatus{
+		AccessReviewScheduleDefinitionStatusApplied,
+		AccessReviewScheduleDefinitionStatusApplying,
+		AccessReviewScheduleDefinitionStatusAutoReviewed,
+		AccessReviewScheduleDefinitionStatusAutoReviewing,
+		AccessReviewScheduleDefinitionStatusCompleted,
+		AccessReviewScheduleDefinitionStatusCompleting,
+		AccessReviewScheduleDefinitionStatusInProgress,
+		AccessReviewScheduleDefinitionStatusInitializing,
+		AccessReviewScheduleDefinitionStatusNotStarted,
+		AccessReviewScheduleDefinitionStatusScheduled,
+		AccessReviewScheduleDefinitionStatusStarting,
 	}
 }
 
-// UserType - The type of user.
-type UserType string
+// AccessReviewScopeAssignmentState - The role assignment state eligible/active to review
+type AccessReviewScopeAssignmentState string
 
 const (
-	UserTypeGroup UserType = "Group"
-	UserTypeUser  UserType = "User"
+	AccessReviewScopeAssignmentStateActive   AccessReviewScopeAssignmentState = "active"
+	AccessReviewScopeAssignmentStateEligible AccessReviewScopeAssignmentState = "eligible"
 )
 
-// PossibleUserTypeValues returns the possible values for the UserType const type.
-func PossibleUserTypeValues() []UserType {
-	return []UserType{
-		UserTypeGroup,
-		UserTypeUser,
+// PossibleAccessReviewScopeAssignmentStateValues returns the possible values for the AccessReviewScopeAssignmentState const type.
+func PossibleAccessReviewScopeAssignmentStateValues() []AccessReviewScopeAssignmentState {
+	return []AccessReviewScopeAssignmentState{
+		AccessReviewScopeAssignmentStateActive,
+		AccessReviewScopeAssignmentStateEligible,
+	}
+}
+
+// AccessReviewScopePrincipalType - The identity type user/servicePrincipal to review
+type AccessReviewScopePrincipalType string
+
+const (
+	AccessReviewScopePrincipalTypeGuestUser         AccessReviewScopePrincipalType = "guestUser"
+	AccessReviewScopePrincipalTypeRedeemedGuestUser AccessReviewScopePrincipalType = "redeemedGuestUser"
+	AccessReviewScopePrincipalTypeServicePrincipal  AccessReviewScopePrincipalType = "servicePrincipal"
+	AccessReviewScopePrincipalTypeUser              AccessReviewScopePrincipalType = "user"
+	AccessReviewScopePrincipalTypeUserGroup         AccessReviewScopePrincipalType = "user,group"
+)
+
+// PossibleAccessReviewScopePrincipalTypeValues returns the possible values for the AccessReviewScopePrincipalType const type.
+func PossibleAccessReviewScopePrincipalTypeValues() []AccessReviewScopePrincipalType {
+	return []AccessReviewScopePrincipalType{
+		AccessReviewScopePrincipalTypeGuestUser,
+		AccessReviewScopePrincipalTypeRedeemedGuestUser,
+		AccessReviewScopePrincipalTypeServicePrincipal,
+		AccessReviewScopePrincipalTypeUser,
+		AccessReviewScopePrincipalTypeUserGroup,
+	}
+}
+
+// DecisionResourceType - The type of resource: azureRole
+type DecisionResourceType string
+
+const (
+	DecisionResourceTypeAzureRole DecisionResourceType = "azureRole"
+)
+
+// PossibleDecisionResourceTypeValues returns the possible values for the DecisionResourceType const type.
+func PossibleDecisionResourceTypeValues() []DecisionResourceType {
+	return []DecisionResourceType{
+		DecisionResourceTypeAzureRole,
+	}
+}
+
+// DecisionTargetType - The type of decision target : User/ServicePrincipal
+type DecisionTargetType string
+
+const (
+	DecisionTargetTypeServicePrincipal DecisionTargetType = "servicePrincipal"
+	DecisionTargetTypeUser             DecisionTargetType = "user"
+)
+
+// PossibleDecisionTargetTypeValues returns the possible values for the DecisionTargetType const type.
+func PossibleDecisionTargetTypeValues() []DecisionTargetType {
+	return []DecisionTargetType{
+		DecisionTargetTypeServicePrincipal,
+		DecisionTargetTypeUser,
+	}
+}
+
+// DefaultDecisionType - This specifies the behavior for the autoReview feature when an access review completes.
+type DefaultDecisionType string
+
+const (
+	DefaultDecisionTypeApprove        DefaultDecisionType = "Approve"
+	DefaultDecisionTypeDeny           DefaultDecisionType = "Deny"
+	DefaultDecisionTypeRecommendation DefaultDecisionType = "Recommendation"
+)
+
+// PossibleDefaultDecisionTypeValues returns the possible values for the DefaultDecisionType const type.
+func PossibleDefaultDecisionTypeValues() []DefaultDecisionType {
+	return []DefaultDecisionType{
+		DefaultDecisionTypeApprove,
+		DefaultDecisionTypeDeny,
+		DefaultDecisionTypeRecommendation,
 	}
 }

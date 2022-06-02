@@ -12,24 +12,22 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/GetEligibleChildResourcesByScope.json
-func ExampleEligibleChildResourcesClient_NewGetPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/authorization/resource-manager/Microsoft.Authorization/preview/2021-11-16-preview/examples/GetAccessReviewHistoryDefinitions.json
+func ExampleAccessReviewHistoryDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armauthorization.NewEligibleChildResourcesClient(cred, nil)
+	client, err := armauthorization.NewAccessReviewHistoryDefinitionsClient("129a304b-4aea-4b86-a9f7-ba7e2b23737a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetPager("providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f",
-		&armauthorization.EligibleChildResourcesClientGetOptions{Filter: to.Ptr("resourceType+eq+'resourcegroup'")})
+	pager := client.NewListPager(&armauthorization.AccessReviewHistoryDefinitionsClientListOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

@@ -38,6 +38,7 @@ type AMQPReceiverCloser interface {
 type AMQPSender interface {
 	Send(ctx context.Context, msg *amqp.Message) error
 	MaxMessageSize() uint64
+	LinkName() string
 }
 
 // AMQPSenderCloser is implemented by *amqp.Sender

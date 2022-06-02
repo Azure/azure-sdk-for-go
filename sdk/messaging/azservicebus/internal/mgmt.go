@@ -30,7 +30,7 @@ const (
 	DeferredDisposition  DispositionStatus = "defered"
 )
 
-func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode exported.ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
+func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, linkName string, mode exported.ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
 	const messagesField, messageField = "messages", "message"
 
 	backwardsMode := uint32(0)
@@ -49,6 +49,8 @@ func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode exported.Receive
 		},
 		Value: values,
 	}
+
+	addAssociatedLinkName(linkName, msg)
 
 	rsp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
@@ -108,7 +110,7 @@ func ReceiveDeferred(ctx context.Context, rpcLink RPCLink, mode exported.Receive
 	return transformedMessages, nil
 }
 
-func PeekMessages(ctx context.Context, rpcLink RPCLink, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
+func PeekMessages(ctx context.Context, rpcLink RPCLink, linkName string, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
 	const messagesField, messageField = "messages", "message"
 
 	msg := &amqp.Message{
@@ -120,6 +122,8 @@ func PeekMessages(ctx context.Context, rpcLink RPCLink, fromSequenceNumber int64
 			"message-count":        messageCount,
 		},
 	}
+
+	addAssociatedLinkName(linkName, msg)
 
 	if deadline, ok := ctx.Deadline(); ok {
 		msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
@@ -218,9 +222,7 @@ func RenewLocks(ctx context.Context, rpcLink RPCLink, linkName string, lockToken
 		},
 	}
 
-	if linkName != "" {
-		renewRequestMsg.ApplicationProperties["associated-link-name"] = linkName
-	}
+	addAssociatedLinkName(linkName, renewRequestMsg)
 
 	response, err := rpcLink.RPC(ctx, renewRequestMsg)
 
@@ -257,7 +259,7 @@ func RenewLocks(ctx context.Context, rpcLink RPCLink, linkName string, lockToken
 }
 
 // RenewSessionLocks renews a session lock.
-func RenewSessionLock(ctx context.Context, rpcLink RPCLink, sessionID string) (time.Time, error) {
+func RenewSessionLock(ctx context.Context, rpcLink RPCLink, linkName string, sessionID string) (time.Time, error) {
 	body := map[string]interface{}{
 		"session-id": sessionID,
 	}
@@ -268,6 +270,8 @@ func RenewSessionLock(ctx context.Context, rpcLink RPCLink, sessionID string) (t
 			"operation": "com.microsoft:renew-session-lock",
 		},
 	}
+
+	addAssociatedLinkName(linkName, msg)
 
 	resp, err := rpcLink.RPC(ctx, msg)
 
@@ -291,7 +295,7 @@ func RenewSessionLock(ctx context.Context, rpcLink RPCLink, sessionID string) (t
 }
 
 // GetSessionState retrieves state associated with the session.
-func GetSessionState(ctx context.Context, rpcLink RPCLink, sessionID string) ([]byte, error) {
+func GetSessionState(ctx context.Context, rpcLink RPCLink, linkName string, sessionID string) ([]byte, error) {
 	amqpMsg := &amqp.Message{
 		Value: map[string]interface{}{
 			"session-id": sessionID,
@@ -300,6 +304,8 @@ func GetSessionState(ctx context.Context, rpcLink RPCLink, sessionID string) ([]
 			"operation": "com.microsoft:get-session-state",
 		},
 	}
+
+	addAssociatedLinkName(linkName, amqpMsg)
 
 	resp, err := rpcLink.RPC(ctx, amqpMsg)
 
@@ -334,7 +340,7 @@ func GetSessionState(ctx context.Context, rpcLink RPCLink, sessionID string) ([]
 }
 
 // SetSessionState sets the state associated with the session.
-func SetSessionState(ctx context.Context, rpcLink RPCLink, sessionID string, state []byte) error {
+func SetSessionState(ctx context.Context, rpcLink RPCLink, linkName string, sessionID string, state []byte) error {
 	uuid, err := uuid.New()
 
 	if err != nil {
@@ -352,6 +358,8 @@ func SetSessionState(ctx context.Context, rpcLink RPCLink, sessionID string, sta
 		},
 	}
 
+	addAssociatedLinkName(linkName, amqpMsg)
+
 	resp, err := rpcLink.RPC(ctx, amqpMsg)
 
 	if err != nil {
@@ -368,7 +376,7 @@ func SetSessionState(ctx context.Context, rpcLink RPCLink, sessionID string, sta
 // SendDisposition allows you settle a message using the management link, rather than via your
 // *amqp.Receiver. Use this if the receiver has been closed/lost or if the message isn't associated
 // with a link (ex: deferred messages).
-func SendDisposition(ctx context.Context, rpcLink RPCLink, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error {
+func SendDisposition(ctx context.Context, rpcLink RPCLink, linkName string, lockToken *amqp.UUID, state Disposition, propertiesToModify map[string]interface{}) error {
 	if lockToken == nil {
 		err := errors.New("lock token on the message is not set, thus cannot send disposition")
 		return err
@@ -398,6 +406,8 @@ func SendDisposition(ctx context.Context, rpcLink RPCLink, lockToken *amqp.UUID,
 		Value: value,
 	}
 
+	addAssociatedLinkName(linkName, msg)
+
 	// no error, then it was successful
 	_, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
@@ -409,7 +419,7 @@ func SendDisposition(ctx context.Context, rpcLink RPCLink, lockToken *amqp.UUID,
 
 // ScheduleMessages will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers
 // that can be used to cancel each message.
-func ScheduleMessages(ctx context.Context, rpcLink RPCLink, enqueueTime time.Time, messages []*amqp.Message) ([]int64, error) {
+func ScheduleMessages(ctx context.Context, rpcLink RPCLink, linkName string, enqueueTime time.Time, messages []*amqp.Message) ([]int64, error) {
 	if len(messages) <= 0 {
 		return nil, errors.New("expected one or more messages")
 	}
@@ -470,6 +480,8 @@ func ScheduleMessages(ctx context.Context, rpcLink RPCLink, enqueueTime time.Tim
 		},
 	}
 
+	addAssociatedLinkName(linkName, msg)
+
 	if deadline, ok := ctx.Deadline(); ok {
 		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
@@ -502,7 +514,7 @@ func ScheduleMessages(ctx context.Context, rpcLink RPCLink, enqueueTime time.Tim
 
 // CancelScheduledMessages allows for removal of messages that have been handed to the Service Bus broker for later delivery,
 // but have not yet ben enqueued.
-func CancelScheduledMessages(ctx context.Context, rpcLink RPCLink, seq []int64) error {
+func CancelScheduledMessages(ctx context.Context, rpcLink RPCLink, linkName string, seq []int64) error {
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			"operation": "com.microsoft:cancel-scheduled-message",
@@ -511,6 +523,8 @@ func CancelScheduledMessages(ctx context.Context, rpcLink RPCLink, seq []int64) 
 			"sequence-numbers": seq,
 		},
 	}
+
+	addAssociatedLinkName(linkName, msg)
 
 	if deadline, ok := ctx.Deadline(); ok {
 		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
@@ -526,4 +540,14 @@ func CancelScheduledMessages(ctx context.Context, rpcLink RPCLink, seq []int64) 
 	}
 
 	return nil
+}
+
+// addAssociatedLinkName adds the 'associated-link-name' application
+// property to the AMQP message. Setting this property associates
+// management link activity with a sender or receiver link, which can
+// prevent it from idling out.
+func addAssociatedLinkName(linkName string, msg *amqp.Message) {
+	if linkName != "" {
+		msg.ApplicationProperties["associated-link-name"] = linkName
+	}
 }

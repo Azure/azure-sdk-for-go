@@ -207,6 +207,10 @@ func (tester *rpcTester) Close(ctx context.Context) error {
 	return nil
 }
 
+func (tester *rpcTester) LinkName() string {
+	return "hello"
+}
+
 // receiver functions
 
 func (tester *rpcTester) AcceptMessage(ctx context.Context, msg *amqp.Message) error {

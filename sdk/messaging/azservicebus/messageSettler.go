@@ -64,7 +64,7 @@ type CompleteMessageOptions struct {
 func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedMessage, options *CompleteMessageOptions) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error {
 		if s.useManagementLink(message, receiver) {
-			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition}, nil)
+			return internal.SendDisposition(ctx, rpcLink, receiver.LinkName(), bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition}, nil)
 		} else {
 			return receiver.AcceptMessage(ctx, message.rawAMQPMessage)
 		}
@@ -93,7 +93,7 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 				propertiesToModify = options.PropertiesToModify
 			}
 
-			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
+			return internal.SendDisposition(ctx, rpcLink, receiver.LinkName(), bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
 		}
 
 		var annotations amqp.Annotations
@@ -127,7 +127,7 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 				propertiesToModify = options.PropertiesToModify
 			}
 
-			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
+			return internal.SendDisposition(ctx, rpcLink, receiver.LinkName(), bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
 		}
 
 		var annotations amqp.Annotations
@@ -184,7 +184,7 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 				propertiesToModify = options.PropertiesToModify
 			}
 
-			return internal.SendDisposition(ctx, rpcLink, bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
+			return internal.SendDisposition(ctx, rpcLink, receiver.LinkName(), bytesToAMQPUUID(message.LockToken), d, propertiesToModify)
 		}
 
 		info := map[string]interface{}{

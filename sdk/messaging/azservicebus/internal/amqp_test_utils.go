@@ -95,6 +95,10 @@ func (r *FakeRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse,
 	return r.Resp, r.Error
 }
 
+func (r *FakeAMQPReceiver) LinkName() string {
+	return "fakelink"
+}
+
 func (r *FakeAMQPReceiver) IssueCredit(credit uint32) error {
 	r.RequestedCredits += credit
 

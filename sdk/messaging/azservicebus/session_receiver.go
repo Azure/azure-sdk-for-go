@@ -199,7 +199,7 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSess
 	var sessionState []byte
 
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "GetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		s, err := internal.GetSessionState(ctx, lwv.RPC, sr.SessionID())
+		s, err := internal.GetSessionState(ctx, lwv.RPC, lwv.Receiver.LinkName(), sr.SessionID())
 
 		if err != nil {
 			return err
@@ -221,7 +221,7 @@ type SetSessionStateOptions struct {
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		return internal.SetSessionState(ctx, lwv.RPC, sr.SessionID(), state)
+		return internal.SetSessionState(ctx, lwv.RPC, lwv.Receiver.LinkName(), sr.SessionID(), state)
 	}, sr.inner.retryOptions)
 
 	return internal.TransformError(err)
@@ -237,7 +237,7 @@ type RenewSessionLockOptions struct {
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewSessionLockOptions) error {
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, *sr.sessionID)
+		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, lwv.Receiver.LinkName(), *sr.sessionID)
 
 		if err != nil {
 			return err

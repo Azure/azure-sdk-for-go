@@ -41,7 +41,7 @@ func assertFailedLinks(t *testing.T, lwid *LinksWithID, expectedErr error, expec
 	})
 	require.ErrorIs(t, err, expectedErr)
 
-	_, err = PeekMessages(context.TODO(), lwid.RPC, 0, 1)
+	_, err = PeekMessages(context.TODO(), lwid.RPC, lwid.Receiver.LinkName(), 0, 1)
 	require.ErrorIs(t, err, expectedRPCError)
 
 	msg, err := lwid.Receiver.Receive(context.TODO())
@@ -58,7 +58,7 @@ func assertLinks(t *testing.T, lwid *LinksWithID) {
 	})
 	require.NoError(t, err)
 
-	_, err = PeekMessages(context.TODO(), lwid.RPC, 0, 1)
+	_, err = PeekMessages(context.TODO(), lwid.RPC, lwid.Receiver.LinkName(), 0, 1)
 	require.NoError(t, err)
 
 	require.NoError(t, lwid.Receiver.IssueCredit(1))

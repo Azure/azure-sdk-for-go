@@ -209,7 +209,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 	var receivedMessages []*ReceivedMessage
 
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveDeferredMessages", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		amqpMessages, err := internal.ReceiveDeferred(ctx, lwid.RPC, r.receiveMode, sequenceNumbers)
+		amqpMessages, err := internal.ReceiveDeferred(ctx, lwid.RPC, lwid.Receiver.LinkName(), r.receiveMode, sequenceNumbers)
 
 		if err != nil {
 			return err
@@ -257,7 +257,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 			updateInternalSequenceNumber = false
 		}
 
-		messages, err := internal.PeekMessages(ctx, links.RPC, sequenceNumber, int32(maxMessageCount))
+		messages, err := internal.PeekMessages(ctx, links.RPC, links.Receiver.LinkName(), sequenceNumber, int32(maxMessageCount))
 
 		if err != nil {
 			return err

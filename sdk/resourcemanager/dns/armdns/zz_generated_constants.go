@@ -10,7 +10,7 @@ package armdns
 
 const (
 	moduleName    = "armdns"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.0.1"
 )
 
 type RecordType string

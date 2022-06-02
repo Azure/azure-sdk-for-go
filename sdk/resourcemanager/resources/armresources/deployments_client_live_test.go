@@ -377,20 +377,6 @@ func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtManagementGroupSco
 	testsuite.Require().NoError(err)
 }
 
-func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtTenantScope() {
-	// check deployment existence
-	deploymentsClient, err := armresources.NewDeploymentsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	deploymentName := "go-test-deployment-at-tenant"
-	resp, err := deploymentsClient.CheckExistenceAtTenantScope(testsuite.ctx, deploymentName, nil)
-	testsuite.Require().NoError(err)
-	testsuite.Require().False(resp.Success)
-
-	// list deployment
-	listResp := deploymentsClient.NewListAtTenantScopePager(nil)
-	testsuite.Require().True(listResp.More())
-}
-
 func (testsuite *DeploymentsClientTestSuite) TestDeploymentsAtSubscriptionScope() {
 	// check deployment existence
 	deploymentsClient, err := armresources.NewDeploymentsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)

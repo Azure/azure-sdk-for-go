@@ -5,6 +5,8 @@
 ### Bugs Fixed
 
 - Handle a missing CountDetails node in the returned responses for Get<Entity>RuntimeProperties which could cause a panic. (#18213)
+- Adding the `associated-link-name` property to management operations (RenewLock, settlement and others), which 
+  can help extend link lifetime (#18291)
 
 ## 1.0.0 (2022-05-16)
 

@@ -10,7 +10,7 @@ package armiothub
 
 const (
 	moduleName    = "armiothub"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.0.1"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.

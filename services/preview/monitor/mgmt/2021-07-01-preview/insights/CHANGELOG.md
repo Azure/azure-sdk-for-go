@@ -1,2 +1,7 @@
-# Change History
+# Unreleased
 
+## Breaking Changes
+
+### Removed Constants
+
+1. Operator.OperatorNotEquals

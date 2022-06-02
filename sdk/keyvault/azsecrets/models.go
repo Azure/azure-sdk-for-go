@@ -49,22 +49,6 @@ type Secret struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (s Secret) toGeneratedProperties() generated.SecretUpdateParameters {
-	var contentType *string
-	if s.Properties != nil && s.Properties.ContentType != nil {
-		contentType = s.Properties.ContentType
-	}
-	var tags map[string]*string
-	if s.Properties != nil && s.Properties.Tags != nil {
-		tags = s.Properties.Tags
-	}
-	return generated.SecretUpdateParameters{
-		ContentType:      contentType,
-		SecretAttributes: s.Properties.toGenerated(),
-		Tags:             tags,
-	}
-}
-
 // Properties - The secret management properties.
 type Properties struct {
 	// The content type of the secret.

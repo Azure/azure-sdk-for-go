@@ -48,6 +48,9 @@ type Properties struct {
 	// can purge the key, at the end of the retention interval.
 	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+
 	// Tags contain application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
 
@@ -79,7 +82,7 @@ func (k *Properties) toGenerated() *generated.KeyAttributes {
 }
 
 // converts *generated.KeyAttributes to *KeyAttributes
-func keyPropertiesFromGenerated(i *generated.KeyAttributes, id *string, name *string, version *string, managed *bool, vaultURL *string, tags map[string]*string) *Properties {
+func keyPropertiesFromGenerated(i *generated.KeyAttributes, id, name, version *string, managed *bool, vaultURL *string, tags map[string]*string, releasePolicy *generated.KeyReleasePolicy) *Properties {
 	if i == nil {
 		return &Properties{}
 	}
@@ -95,6 +98,7 @@ func keyPropertiesFromGenerated(i *generated.KeyAttributes, id *string, name *st
 		NotBefore:       i.NotBefore,
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   to.Ptr(string(*i.RecoveryLevel)),
+		ReleasePolicy:   keyReleasePolicyFromGenerated(releasePolicy),
 		Tags:            tags,
 		UpdatedOn:       i.Updated,
 		VaultURL:        vaultURL,
@@ -110,33 +114,11 @@ type Key struct {
 	// The Json web key.
 	JSONWebKey *JSONWebKey `json:"key,omitempty"`
 
-	// The policy rules under which the key can be exported.
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
-
 	// ID identifies the key
 	ID *string
 
 	// READ-ONLY; The name of the key
 	Name *string
-}
-
-// convert the options to generated.KeyUpdateParameters struct
-func (k Key) toKeyUpdateParameters() generated.KeyUpdateParameters {
-	var attribs *generated.KeyAttributes
-	if k.Properties != nil {
-		attribs = k.Properties.toGenerated()
-	}
-
-	var tags map[string]*string
-	if k.Properties != nil && k.Properties.Tags != nil {
-		tags = k.Properties.Tags
-	}
-
-	return generated.KeyUpdateParameters{
-		KeyAttributes: attribs,
-		ReleasePolicy: k.ReleasePolicy.toGenerated(),
-		Tags:          tags,
-	}
 }
 
 // JSONWebKey - As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18
@@ -265,7 +247,7 @@ func keyItemFromGenerated(i *generated.KeyItem) *KeyItem {
 
 	_, name, _ := shared.ParseID(i.Kid)
 	return &KeyItem{
-		Properties: keyPropertiesFromGenerated(i.Attributes, nil, nil, nil, i.Managed, nil, i.Tags),
+		Properties: keyPropertiesFromGenerated(i.Attributes, nil, nil, nil, i.Managed, nil, i.Tags, nil),
 		ID:         i.Kid,
 		Name:       name,
 	}
@@ -324,7 +306,7 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		RecoveryID:         i.RecoveryID,
 		DeletedOn:          i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Properties:         keyPropertiesFromGenerated(i.Attributes, i.Kid, name, version, i.Managed, vaultURL, i.Tags),
+		Properties:         keyPropertiesFromGenerated(i.Attributes, i.Kid, name, version, i.Managed, vaultURL, i.Tags, nil),
 		ID:                 i.Kid,
 		Name:               name,
 	}

@@ -20,6 +20,8 @@
 * Changed type of key `Tags` to `map[string]*string`
 * Changed type of `ListPropertiesOfKeyVersionsResponse.Keys` to `[]*KeyItem`
 * Changed type of `JSONWebKey.KeyOps` to `[]*Operation`
+* Moved `Key.ReleasePolicy` to `Key.Properties.ReleasePolicy`
+* `UpdateKeyProperties()` has a `Properties` parameter instead of a `Key` parameter
 
 ### Bugs Fixed
 * `ReleaseKey()` returns an error when no key version is specified

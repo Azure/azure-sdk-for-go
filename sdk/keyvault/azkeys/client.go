@@ -148,7 +148,7 @@ func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse)
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -222,7 +222,7 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateECKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -300,7 +300,7 @@ func createOctKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespon
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateOctKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -380,7 +380,7 @@ func createRSAKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespon
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateRSAKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -487,7 +487,7 @@ func getKeyResponseFromGenerated(g generated.KeyVaultClientGetKeyResponse) GetKe
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return GetKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -531,7 +531,7 @@ func getDeletedKeyResponseFromGenerated(g generated.KeyVaultClientGetDeletedKeyR
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return GetDeletedKeyResponse{
 		DeletedKey: DeletedKey{
-			Properties:         keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties:         keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			Key:                jsonWebKeyFromGenerated(g.Key),
 			RecoveryID:         g.RecoveryID,
 			DeletedOn:          g.DeletedDate,
@@ -694,7 +694,7 @@ func recoverDeletedKeyResponseFromGenerated(g generated.KeyVaultClientRecoverDel
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return RecoverDeletedKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -750,7 +750,7 @@ func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyRespons
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return UpdateKeyPropertiesResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -760,21 +760,22 @@ func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyRespons
 
 // UpdateKeyProperties updates the management properties of a key, but not its cryptographic material.
 // Pass nil for options to accept default values.
-func (c *Client) UpdateKeyProperties(ctx context.Context, key Key, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
-	name, version := "", ""
-	if key.Properties != nil && key.Properties.Name != nil {
-		name = *key.Properties.Name
-	}
-	if key.Properties != nil && key.Properties.Version != nil {
-		version = *key.Properties.Version
+func (c *Client) UpdateKeyProperties(ctx context.Context, properties Properties, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
+	version := ""
+	if properties.Version != nil {
+		version = *properties.Version
 	}
 	resp, err := c.kvClient.UpdateKey(
 		ctx,
 		c.vaultURL,
-		name,
+		*properties.Name,
 		version,
-		key.toKeyUpdateParameters(),
-		&generated.KeyVaultClientUpdateKeyOptions{},
+		generated.KeyUpdateParameters{
+			KeyAttributes: properties.toGenerated(),
+			ReleasePolicy: properties.ReleasePolicy.toGenerated(),
+			Tags:          properties.Tags,
+		},
+		nil,
 	)
 	if err != nil {
 		return UpdateKeyPropertiesResponse{}, err
@@ -932,7 +933,7 @@ func restoreKeyBackupResponseFromGenerated(g generated.KeyVaultClientRestoreKeyR
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return RestoreKeyBackupResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -986,7 +987,7 @@ func importKeyResponseFromGenerated(g generated.KeyVaultClientImportKeyResponse)
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return ImportKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -1078,11 +1079,10 @@ func (c *Client) RotateKey(ctx context.Context, keyName string, options *RotateK
 	vaultURL, name, version := shared.ParseID(resp.Key.Kid)
 	return RotateKeyResponse{
 		Key: Key{
-			Properties:    keyPropertiesFromGenerated(resp.Attributes, resp.Key.Kid, name, version, resp.Managed, vaultURL, resp.Tags),
-			JSONWebKey:    jsonWebKeyFromGenerated(resp.Key),
-			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
-			ID:            resp.Key.Kid,
-			Name:          name,
+			Properties: keyPropertiesFromGenerated(resp.Attributes, resp.Key.Kid, name, version, resp.Managed, vaultURL, resp.Tags, resp.ReleasePolicy),
+			JSONWebKey: jsonWebKeyFromGenerated(resp.Key),
+			ID:         resp.Key.Kid,
+			Name:       name,
 		},
 	}, nil
 }

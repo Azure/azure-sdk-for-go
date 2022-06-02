@@ -89,7 +89,7 @@ func TestCreateKeyRSATags(t *testing.T) {
 
 	resp.Key.Properties.Tags = map[string]*string{}
 	// Remove the tag
-	resp2, err := client.UpdateKeyProperties(ctx, resp.Key, nil)
+	resp2, err := client.UpdateKeyProperties(ctx, *resp.Key.Properties, nil)
 	require.NoError(t, err)
 	require.Equal(t, 0, len(resp2.Properties.Tags))
 	validateKey(t, &resp2.Key)
@@ -449,14 +449,14 @@ func TestUpdateKeyProperties(t *testing.T) {
 			}
 			createResp.Key.Properties.ExpiresOn = to.Ptr(time.Now().AddDate(1, 0, 0))
 
-			resp, err := client.UpdateKeyProperties(ctx, createResp.Key, nil)
+			resp, err := client.UpdateKeyProperties(ctx, *createResp.Key.Properties, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Properties)
 			require.Equal(t, *resp.Properties.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Properties.ExpiresOn)
 
 			createResp.Key.Properties.Name = to.Ptr("doesnotexist")
-			invalid, err := client.UpdateKeyProperties(ctx, createResp.Key, nil)
+			invalid, err := client.UpdateKeyProperties(ctx, *createResp.Key.Properties, nil)
 			require.Error(t, err)
 			require.Nil(t, invalid.Properties)
 		})
@@ -500,7 +500,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			createResp.Key.ReleasePolicy = &ReleasePolicy{
+			createResp.Key.Properties.ReleasePolicy = &ReleasePolicy{
 				Immutable:     to.Ptr(true),
 				EncodedPolicy: getMarshalledReleasePolicy(fakeAttestationUrl),
 			}
@@ -510,7 +510,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 				createResp.Key.Properties.Version = nil
 			}
 
-			_, err = client.UpdateKeyProperties(ctx, createResp.Key, nil)
+			_, err = client.UpdateKeyProperties(ctx, *createResp.Key.Properties, nil)
 			require.Contains(t, strings.ToLower(err.Error()), "release policy cannot be modified")
 		})
 	}

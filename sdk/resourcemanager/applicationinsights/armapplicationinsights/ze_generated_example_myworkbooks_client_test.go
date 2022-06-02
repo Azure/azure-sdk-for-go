@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/MyWorkbooksList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList.json
 func ExampleMyWorkbooksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,6 +31,7 @@ func ExampleMyWorkbooksClient_NewListByResourceGroupPager() {
 	pager := client.NewListByResourceGroupPager("my-resource-group",
 		armapplicationinsights.CategoryTypeWorkbook,
 		&armapplicationinsights.MyWorkbooksClientListByResourceGroupOptions{Tags: []string{},
+			SourceID:        nil,
 			CanFetchContent: nil,
 		})
 	for pager.More() {
@@ -45,7 +46,7 @@ func ExampleMyWorkbooksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/MyWorkbooksList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbooksList.json
 func ExampleMyWorkbooksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +73,7 @@ func ExampleMyWorkbooksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/MyWorkbookGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookGet.json
 func ExampleMyWorkbooksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +95,7 @@ func ExampleMyWorkbooksClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/MyWorkbookDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookDelete.json
 func ExampleMyWorkbooksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +115,7 @@ func ExampleMyWorkbooksClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/MyWorkbookAdd.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookAdd.json
 func ExampleMyWorkbooksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +137,7 @@ func ExampleMyWorkbooksClient_CreateOrUpdate() {
 				"0": to.Ptr("TagSample01"),
 				"1": to.Ptr("TagSample02"),
 			},
-			Kind: to.Ptr(armapplicationinsights.SharedTypeKindUser),
+			Kind: to.Ptr(armapplicationinsights.KindUser),
 			Properties: &armapplicationinsights.MyWorkbookProperties{
 				Category:       to.Ptr("workbook"),
 				DisplayName:    to.Ptr("Blah Blah Blah"),
@@ -144,7 +145,7 @@ func ExampleMyWorkbooksClient_CreateOrUpdate() {
 				SourceID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/MyGroup/providers/Microsoft.Web/sites/MyTestApp-CodeLens"),
 			},
 		},
-		nil)
+		&armapplicationinsights.MyWorkbooksClientCreateOrUpdateOptions{SourceID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -152,7 +153,7 @@ func ExampleMyWorkbooksClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/MyWorkbookUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-03-08/examples/MyWorkbookUpdate.json
 func ExampleMyWorkbooksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +164,7 @@ func ExampleMyWorkbooksClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx,
+	_, err = client.Update(ctx,
 		"my-resource-group",
 		"deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
 		armapplicationinsights.MyWorkbook{
@@ -173,7 +174,7 @@ func ExampleMyWorkbooksClient_Update() {
 				"0": to.Ptr("TagSample01"),
 				"1": to.Ptr("TagSample02"),
 			},
-			Kind: to.Ptr(armapplicationinsights.SharedTypeKindUser),
+			Kind: to.Ptr(armapplicationinsights.KindUser),
 			Properties: &armapplicationinsights.MyWorkbookProperties{
 				Category:       to.Ptr("workbook"),
 				DisplayName:    to.Ptr("Blah Blah Blah"),
@@ -182,10 +183,8 @@ func ExampleMyWorkbooksClient_Update() {
 				Version:        to.Ptr("ME"),
 			},
 		},
-		nil)
+		&armapplicationinsights.MyWorkbooksClientUpdateOptions{SourceID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// TODO: use response item
-	_ = res
 }

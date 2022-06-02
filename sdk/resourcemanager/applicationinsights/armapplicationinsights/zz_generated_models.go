@@ -528,6 +528,51 @@ type ComponentFeatureCapability struct {
 	Value *string `json:"Value,omitempty" azure:"ro"`
 }
 
+// ComponentLinkedStorageAccounts - An Application Insights component linked storage accounts
+type ComponentLinkedStorageAccounts struct {
+	// The properties of the linked storage accounts.
+	Properties *LinkedStorageAccountsProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ComponentLinkedStorageAccountsClientCreateAndUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.CreateAndUpdate
+// method.
+type ComponentLinkedStorageAccountsClientCreateAndUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsClientDeleteOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Delete
+// method.
+type ComponentLinkedStorageAccountsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsClientGetOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Get
+// method.
+type ComponentLinkedStorageAccountsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsClientUpdateOptions contains the optional parameters for the ComponentLinkedStorageAccountsClient.Update
+// method.
+type ComponentLinkedStorageAccountsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ComponentLinkedStorageAccountsPatch - An Application Insights component linked storage accounts patch
+type ComponentLinkedStorageAccountsPatch struct {
+	// The properties of the linked storage accounts.
+	Properties *LinkedStorageAccountsProperties `json:"properties,omitempty"`
+}
+
 // ComponentListResult - Describes the list of Application Insights Resources.
 type ComponentListResult struct {
 	// REQUIRED; List of Application Insights component definitions.
@@ -796,16 +841,16 @@ type ComponentsResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// ErrorFieldContract - Error Field contract.
-type ErrorFieldContract struct {
-	// Property level error code.
-	Code *string `json:"code,omitempty"`
+// ErrorDefinition - Error definition.
+type ErrorDefinition struct {
+	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
 
-	// Human-readable representation of property-level error.
-	Message *string `json:"message,omitempty"`
+	// READ-ONLY; Internal error details.
+	Innererror interface{} `json:"innererror,omitempty" azure:"ro"`
 
-	// Property name.
-	Target *string `json:"target,omitempty"`
+	// READ-ONLY; Description of the error.
+	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
 // ErrorResponse - Error response indicates Insights service is not able to process the incoming request. The reason is provided
@@ -827,6 +872,22 @@ type ErrorResponseComponents struct {
 // ErrorResponseComponentsError - Error response indicates Insights service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponseComponentsError struct {
+	// READ-ONLY; Error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
+
+	// READ-ONLY; Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty" azure:"ro"`
+}
+
+type ErrorResponseLinkedStorage struct {
+	// Error response indicates Insights service is not able to process the incoming request. The reason is provided in the error
+	// message.
+	Error *ErrorResponseLinkedStorageError `json:"error,omitempty"`
+}
+
+// ErrorResponseLinkedStorageError - Error response indicates Insights service is not able to process the incoming request.
+// The reason is provided in the error message.
+type ErrorResponseLinkedStorageError struct {
 	// READ-ONLY; Error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
@@ -901,25 +962,62 @@ type InnerError struct {
 	Time *time.Time `json:"time,omitempty"`
 }
 
-// LinkProperties - Contains a sourceId and workbook resource id to link two resources.
-type LinkProperties struct {
-	// The category of workbook
-	Category *string `json:"category,omitempty"`
+// InnerErrorTrace - Error details
+type InnerErrorTrace struct {
+	// READ-ONLY; detailed error trace
+	Trace []*string `json:"trace,omitempty" azure:"ro"`
+}
 
-	// The source Azure resource id
-	SourceID *string `json:"sourceId,omitempty"`
+// LinkedStorageAccountsProperties - An Application Insights component linked storage account
+type LinkedStorageAccountsProperties struct {
+	// Linked storage account resource ID
+	LinkedStorageAccount *string `json:"linkedStorageAccount,omitempty"`
+}
 
-	// The workbook Azure resource id
-	TargetID *string `json:"targetId,omitempty"`
+// LiveTokenClientGetOptions contains the optional parameters for the LiveTokenClient.Get method.
+type LiveTokenClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LiveTokenResponse - The response to a live token query.
+type LiveTokenResponse struct {
+	// READ-ONLY; JWT token for accessing live metrics stream data.
+	LiveToken *string `json:"liveToken,omitempty" azure:"ro"`
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
 // MyWorkbook - An Application Insights private workbook definition.
 type MyWorkbook struct {
+	// Resource etag
+	Etag map[string]*string `json:"etag,omitempty"`
+
 	// Azure resource Id
 	ID *string `json:"id,omitempty"`
 
+	// Identity used for BYOS
+	Identity *MyWorkbookManagedIdentity `json:"identity,omitempty"`
+
 	// The kind of workbook. Choices are user and shared.
-	Kind *SharedTypeKind `json:"kind,omitempty"`
+	Kind *Kind `json:"kind,omitempty"`
 
 	// Resource location
 	Location *string `json:"location,omitempty"`
@@ -935,18 +1033,24 @@ type MyWorkbook struct {
 
 	// Azure resource type
 	Type *string `json:"type,omitempty"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 }
 
-// MyWorkbookError - Error message body that will indicate why the operation failed.
+// MyWorkbookError - Error response.
 type MyWorkbookError struct {
-	// Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
-	Code *string `json:"code,omitempty"`
+	// The error details.
+	Error *ErrorDefinition `json:"error,omitempty"`
+}
 
-	// The list of invalid fields send in request, in case of validation error.
-	Details []*ErrorFieldContract `json:"details,omitempty"`
+// MyWorkbookManagedIdentity - Customer Managed Identity
+type MyWorkbookManagedIdentity struct {
+	// The identity type.
+	Type *MyWorkbookManagedIdentityType `json:"type,omitempty"`
 
-	// Human-readable representation of the error.
-	Message *string `json:"message,omitempty"`
+	// Customer Managed Identity
+	UserAssignedIdentities *MyWorkbookUserAssignedIdentities `json:"userAssignedIdentities,omitempty"`
 }
 
 // MyWorkbookProperties - Properties that contain a private workbook.
@@ -963,6 +1067,9 @@ type MyWorkbookProperties struct {
 	// Optional resourceId for a source resource.
 	SourceID *string `json:"sourceId,omitempty"`
 
+	// BYOS Storage Account URI
+	StorageURI *string `json:"storageUri,omitempty"`
+
 	// A list of 0 or more tags that are associated with this private workbook definition
 	Tags []*string `json:"tags,omitempty"`
 
@@ -978,8 +1085,14 @@ type MyWorkbookProperties struct {
 
 // MyWorkbookResource - An azure resource object
 type MyWorkbookResource struct {
+	// Resource etag
+	Etag map[string]*string `json:"etag,omitempty"`
+
 	// Azure resource Id
 	ID *string `json:"id,omitempty"`
+
+	// Identity used for BYOS
+	Identity *MyWorkbookManagedIdentity `json:"identity,omitempty"`
 
 	// Resource location
 	Location *string `json:"location,omitempty"`
@@ -994,9 +1107,19 @@ type MyWorkbookResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MyWorkbookUserAssignedIdentities - Customer Managed Identity
+type MyWorkbookUserAssignedIdentities struct {
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
 // MyWorkbooksClientCreateOrUpdateOptions contains the optional parameters for the MyWorkbooksClient.CreateOrUpdate method.
 type MyWorkbooksClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
 }
 
 // MyWorkbooksClientDeleteOptions contains the optional parameters for the MyWorkbooksClient.Delete method.
@@ -1015,6 +1138,8 @@ type MyWorkbooksClientListByResourceGroupOptions struct {
 	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
 	// for workbooks.
 	CanFetchContent *bool
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
 	// Tags presents on each workbook returned.
 	Tags []string
 }
@@ -1031,11 +1156,14 @@ type MyWorkbooksClientListBySubscriptionOptions struct {
 
 // MyWorkbooksClientUpdateOptions contains the optional parameters for the MyWorkbooksClient.Update method.
 type MyWorkbooksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
 }
 
 // MyWorkbooksListResult - Workbook list result.
 type MyWorkbooksListResult struct {
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// READ-ONLY; An array of private workbooks.
 	Value []*MyWorkbook `json:"value,omitempty" azure:"ro"`
 }
@@ -1061,6 +1189,21 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
+// OperationInfo - Information about an operation
+type OperationInfo struct {
+	// Description of the operation
+	Description *string `json:"description,omitempty"`
+
+	// Name of the operation
+	Operation *string `json:"operation,omitempty"`
+
+	// Name of the provider
+	Provider *string `json:"provider,omitempty"`
+
+	// Name of the resource type
+	Resource *string `json:"resource,omitempty"`
+}
+
 // OperationListResult - Result of the request to list CDN operations. It contains a list of operations and a URL link to
 // get the next set of results.
 type OperationListResult struct {
@@ -1069,6 +1212,33 @@ type OperationListResult struct {
 
 	// List of CDN operations supported by the CDN resource provider.
 	Value []*Operation `json:"value,omitempty"`
+}
+
+// OperationLive - Represents an operation returned by the GetOperations request
+type OperationLive struct {
+	// Display name of the operation
+	Display *OperationInfo `json:"display,omitempty"`
+
+	// Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
+	// Name of the operation
+	Name *string `json:"name,omitempty"`
+
+	// Origin of the operation
+	Origin *string `json:"origin,omitempty"`
+
+	// Properties of the operation
+	Properties interface{} `json:"properties,omitempty"`
+}
+
+// OperationsListResult - Result of the List Operations operation
+type OperationsListResult struct {
+	// URL to get the next set of operation list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// A collection of operations
+	Value []*OperationLive `json:"value,omitempty"`
 }
 
 // PrivateLinkScopedResource - The private link scope resource reference.
@@ -1098,10 +1268,84 @@ type ProactiveDetectionConfigurationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
+type ProxyResource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
 // TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a WebTest instance.
 type TagsResource struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
+type TrackedResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
 // WebTest - An Application Insights web test definition.
@@ -1339,40 +1583,61 @@ type WorkItemCreateConfiguration struct {
 	WorkItemProperties map[string]*string `json:"WorkItemProperties,omitempty"`
 }
 
-// Workbook - An Application Insights workbook definition.
+// Workbook - A workbook definition.
 type Workbook struct {
-	// The kind of workbook. Choices are user and shared.
-	Kind *SharedTypeKind `json:"kind,omitempty"`
-
-	// Resource location
+	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
-	// Metadata describing a web test for an Azure resource.
+	// Resource etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Identity used for BYOS
+	Identity *WorkbookResourceIdentity `json:"identity,omitempty"`
+
+	// The kind of workbook. Only valid value is shared.
+	Kind *WorkbookSharedTypeKind `json:"kind,omitempty"`
+
+	// Metadata describing a workbook for an Azure resource.
 	Properties *WorkbookProperties `json:"properties,omitempty"`
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string `json:"tags,omitempty"`
 
-	// READ-ONLY; Azure resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource name
+	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource type
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// WorkbookError - Error message body that will indicate why the operation failed.
+// WorkbookError - Error response.
 type WorkbookError struct {
-	// Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
-	Code *string `json:"code,omitempty"`
+	// The error details.
+	Error *WorkbookErrorDefinition `json:"error,omitempty"`
+}
 
-	// The list of invalid fields send in request, in case of validation error.
-	Details []*ErrorFieldContract `json:"details,omitempty"`
+// WorkbookErrorDefinition - Error definition.
+type WorkbookErrorDefinition struct {
+	// READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
+	Code *string `json:"code,omitempty" azure:"ro"`
 
-	// Human-readable representation of the error.
-	Message *string `json:"message,omitempty"`
+	// READ-ONLY; Internal error details.
+	InnerError interface{} `json:"innerError,omitempty" azure:"ro"`
+
+	// READ-ONLY; Description of the error.
+	Message *string `json:"message,omitempty" azure:"ro"`
+}
+
+// WorkbookInnerErrorTrace - Error details
+type WorkbookInnerErrorTrace struct {
+	// READ-ONLY; detailed error trace
+	Trace []*string `json:"trace,omitempty" azure:"ro"`
 }
 
 // WorkbookProperties - Properties that contain a workbook.
@@ -1380,38 +1645,204 @@ type WorkbookProperties struct {
 	// REQUIRED; Workbook category, as defined by the user at creation time.
 	Category *string `json:"category,omitempty"`
 
-	// REQUIRED; The user-defined name of the workbook.
-	Name *string `json:"name,omitempty"`
+	// REQUIRED; The user-defined name (display name) of the workbook.
+	DisplayName *string `json:"displayName,omitempty"`
 
 	// REQUIRED; Configuration of this particular workbook. Configuration data is a string containing valid JSON
 	SerializedData *string `json:"serializedData,omitempty"`
 
-	// REQUIRED; Enum indicating if this workbook definition is owned by a specific user or is shared between all users with access
-	// to the Application Insights component.
-	SharedTypeKind *SharedTypeKind `json:"kind,omitempty"`
+	// The description of the workbook.
+	Description *string `json:"description,omitempty"`
 
-	// REQUIRED; Unique user id of the specific user that owns this workbook.
-	UserID *string `json:"userId,omitempty"`
+	// ResourceId for a source resource.
+	SourceID *string `json:"sourceId,omitempty"`
 
-	// REQUIRED; Internally assigned unique id of the workbook definition.
-	WorkbookID *string `json:"workbookId,omitempty"`
+	// The resourceId to the storage account when bring your own storage is used
+	StorageURI *string `json:"storageUri,omitempty"`
 
-	// Optional resourceId for a source resource.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	// Being deprecated, please use the other tags field
+	Tags []*string `json:"tags,omitempty"`
+
+	// Workbook schema version format, like 'Notebook/1.0', which should match the workbook in serializedData
+	Version *string `json:"version,omitempty"`
+
+	// READ-ONLY; The unique revision id for this workbook definition
+	Revision *string `json:"revision,omitempty" azure:"ro"`
+
+	// READ-ONLY; Date and time in UTC of the last modification that was made to this workbook definition.
+	TimeModified *time.Time `json:"timeModified,omitempty" azure:"ro"`
+
+	// READ-ONLY; Unique user id of the specific user that owns this workbook.
+	UserID *string `json:"userId,omitempty" azure:"ro"`
+}
+
+// WorkbookPropertiesUpdateParameters - Properties that contain a workbook for PATCH operation.
+type WorkbookPropertiesUpdateParameters struct {
+	// Workbook category, as defined by the user at creation time.
+	Category *string `json:"category,omitempty"`
+
+	// The description of the workbook.
+	Description *string `json:"description,omitempty"`
+
+	// The user-defined name (display name) of the workbook.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The unique revision id for this workbook definition
+	Revision *string `json:"revision,omitempty"`
+
+	// Configuration of this particular workbook. Configuration data is a string containing valid JSON
+	SerializedData *string `json:"serializedData,omitempty"`
 
 	// A list of 0 or more tags that are associated with this workbook definition
 	Tags []*string `json:"tags,omitempty"`
-
-	// This instance's version of the data model. This can change as new features are added that can be marked workbook.
-	Version *string `json:"version,omitempty"`
-
-	// READ-ONLY; Date and time in UTC of the last modification that was made to this workbook definition.
-	TimeModified *string `json:"timeModified,omitempty" azure:"ro"`
 }
 
 // WorkbookResource - An azure resource object
 type WorkbookResource struct {
-	// Resource location
+	// REQUIRED; The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+
+	// Resource etag
+	Etag *string `json:"etag,omitempty"`
+
+	// Identity used for BYOS
+	Identity *WorkbookResourceIdentity `json:"identity,omitempty"`
+
+	// The kind of workbook. Only valid value is shared.
+	Kind *WorkbookSharedTypeKind `json:"kind,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// WorkbookResourceIdentity - Identity used for BYOS
+type WorkbookResourceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+// WorkbookTemplate - An Application Insights workbook template definition.
+type WorkbookTemplate struct {
+	// REQUIRED; Resource location
+	Location *string `json:"location,omitempty"`
+
+	// Metadata describing a workbook template for an Azure resource.
+	Properties *WorkbookTemplateProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// WorkbookTemplateError - Error message that will indicate why the operation failed.
+type WorkbookTemplateError struct {
+	// Error message object that will indicate why the operation failed.
+	Error *WorkbookTemplateErrorBody `json:"error,omitempty"`
+}
+
+// WorkbookTemplateErrorBody - Error message body that will indicate why the operation failed.
+type WorkbookTemplateErrorBody struct {
+	// Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
+	Code *string `json:"code,omitempty"`
+
+	// The list of invalid fields send in request, in case of validation error.
+	Details []*WorkbookTemplateErrorFieldContract `json:"details,omitempty"`
+
+	// Human-readable representation of the error.
+	Message *string `json:"message,omitempty"`
+}
+
+// WorkbookTemplateErrorFieldContract - Error Field contract.
+type WorkbookTemplateErrorFieldContract struct {
+	// Property level error code.
+	Code *string `json:"code,omitempty"`
+
+	// Human-readable representation of property-level error.
+	Message *string `json:"message,omitempty"`
+
+	// Property name.
+	Target *string `json:"target,omitempty"`
+}
+
+// WorkbookTemplateGallery - Gallery information for a workbook template.
+type WorkbookTemplateGallery struct {
+	// Category for the gallery.
+	Category *string `json:"category,omitempty"`
+
+	// Name of the workbook template in the gallery.
+	Name *string `json:"name,omitempty"`
+
+	// Order of the template within the gallery.
+	Order *int32 `json:"order,omitempty"`
+
+	// Azure resource type supported by the gallery.
+	ResourceType *string `json:"resourceType,omitempty"`
+
+	// Type of workbook supported by the workbook template.
+	Type *string `json:"type,omitempty"`
+}
+
+// WorkbookTemplateLocalizedGallery - Localized template data and gallery information.
+type WorkbookTemplateLocalizedGallery struct {
+	// Workbook galleries supported by the template.
+	Galleries []*WorkbookTemplateGallery `json:"galleries,omitempty"`
+
+	// Valid JSON object containing workbook template payload.
+	TemplateData interface{} `json:"templateData,omitempty"`
+}
+
+// WorkbookTemplateProperties - Properties that contain a workbook template.
+type WorkbookTemplateProperties struct {
+	// REQUIRED; Workbook galleries supported by the template.
+	Galleries []*WorkbookTemplateGallery `json:"galleries,omitempty"`
+
+	// REQUIRED; Valid JSON object containing workbook template payload.
+	TemplateData interface{} `json:"templateData,omitempty"`
+
+	// Information about the author of the workbook template.
+	Author *string `json:"author,omitempty"`
+
+	// Key value pair of localized gallery. Each key is the locale code of languages supported by the Azure portal.
+	Localized map[string][]*WorkbookTemplateLocalizedGallery `json:"localized,omitempty"`
+
+	// Priority of the template. Determines which template to open when a workbook gallery is opened in viewer mode.
+	Priority *int32 `json:"priority,omitempty"`
+}
+
+// WorkbookTemplateResource - An azure resource object
+type WorkbookTemplateResource struct {
+	// REQUIRED; Resource location
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags
@@ -1420,16 +1851,72 @@ type WorkbookResource struct {
 	// READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// READ-ONLY; Azure resource name
+	// READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// WorkbookTemplateUpdateParameters - The parameters that can be provided when updating workbook template.
+type WorkbookTemplateUpdateParameters struct {
+	// Metadata describing a workbook for an Azure resource.
+	Properties *WorkbookTemplateProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// WorkbookTemplatesClientCreateOrUpdateOptions contains the optional parameters for the WorkbookTemplatesClient.CreateOrUpdate
+// method.
+type WorkbookTemplatesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbookTemplatesClientDeleteOptions contains the optional parameters for the WorkbookTemplatesClient.Delete method.
+type WorkbookTemplatesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbookTemplatesClientGetOptions contains the optional parameters for the WorkbookTemplatesClient.Get method.
+type WorkbookTemplatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbookTemplatesClientListByResourceGroupOptions contains the optional parameters for the WorkbookTemplatesClient.ListByResourceGroup
+// method.
+type WorkbookTemplatesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbookTemplatesClientUpdateOptions contains the optional parameters for the WorkbookTemplatesClient.Update method.
+type WorkbookTemplatesClientUpdateOptions struct {
+	// Properties that need to be specified to patch a workbook template.
+	WorkbookTemplateUpdateParameters *WorkbookTemplateUpdateParameters
+}
+
+// WorkbookTemplatesListResult - WorkbookTemplate list result.
+type WorkbookTemplatesListResult struct {
+	// An array of workbook templates.
+	Value []*WorkbookTemplate `json:"value,omitempty"`
+}
+
+// WorkbookUpdateParameters - The parameters that can be provided when updating workbook properties properties.
+type WorkbookUpdateParameters struct {
+	// The kind of workbook. Only valid value is shared.
+	Kind *WorkbookUpdateSharedTypeKind `json:"kind,omitempty"`
+
+	// Metadata describing a workbook for an Azure resource.
+	Properties *WorkbookPropertiesUpdateParameters `json:"properties,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
 // WorkbooksClientCreateOrUpdateOptions contains the optional parameters for the WorkbooksClient.CreateOrUpdate method.
 type WorkbooksClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
 }
 
 // WorkbooksClientDeleteOptions contains the optional parameters for the WorkbooksClient.Delete method.
@@ -1439,7 +1926,9 @@ type WorkbooksClientDeleteOptions struct {
 
 // WorkbooksClientGetOptions contains the optional parameters for the WorkbooksClient.Get method.
 type WorkbooksClientGetOptions struct {
-	// placeholder for future optional parameters
+	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
+	// for workbooks.
+	CanFetchContent *bool
 }
 
 // WorkbooksClientListByResourceGroupOptions contains the optional parameters for the WorkbooksClient.ListByResourceGroup
@@ -1448,17 +1937,43 @@ type WorkbooksClientListByResourceGroupOptions struct {
 	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
 	// for workbooks.
 	CanFetchContent *bool
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
 	// Tags presents on each workbook returned.
 	Tags []string
 }
 
+// WorkbooksClientListBySubscriptionOptions contains the optional parameters for the WorkbooksClient.ListBySubscription method.
+type WorkbooksClientListBySubscriptionOptions struct {
+	// Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content
+	// for workbooks.
+	CanFetchContent *bool
+	// Tags presents on each workbook returned.
+	Tags []string
+}
+
+// WorkbooksClientRevisionGetOptions contains the optional parameters for the WorkbooksClient.RevisionGet method.
+type WorkbooksClientRevisionGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkbooksClientRevisionsListOptions contains the optional parameters for the WorkbooksClient.RevisionsList method.
+type WorkbooksClientRevisionsListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // WorkbooksClientUpdateOptions contains the optional parameters for the WorkbooksClient.Update method.
 type WorkbooksClientUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Azure Resource Id that will fetch all linked workbooks.
+	SourceID *string
+	// Properties that need to be specified to create a new workbook.
+	WorkbookUpdateParameters *WorkbookUpdateParameters
 }
 
 // WorkbooksListResult - Workbook list result.
 type WorkbooksListResult struct {
+	NextLink *string `json:"nextLink,omitempty"`
+
 	// READ-ONLY; An array of workbooks.
 	Value []*Workbook `json:"value,omitempty" azure:"ro"`
 }

@@ -38,7 +38,7 @@ func NewSQLPoolTablesClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSQLPoolTablesClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Get Sql pool table
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -111,7 +112,7 @@ func (client *SQLPoolTablesClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -126,6 +127,7 @@ func (client *SQLPoolTablesClient) getHandleResponse(resp *http.Response) (SQLPo
 
 // NewListBySchemaPager - Gets tables of a given schema in a SQL pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // sqlPoolName - SQL pool name
@@ -133,7 +135,7 @@ func (client *SQLPoolTablesClient) getHandleResponse(resp *http.Response) (SQLPo
 // options - SQLPoolTablesClientListBySchemaOptions contains the optional parameters for the SQLPoolTablesClient.ListBySchema
 // method.
 func (client *SQLPoolTablesClient) NewListBySchemaPager(resourceGroupName string, workspaceName string, sqlPoolName string, schemaName string, options *SQLPoolTablesClientListBySchemaOptions) *runtime.Pager[SQLPoolTablesClientListBySchemaResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLPoolTablesClientListBySchemaResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLPoolTablesClientListBySchemaResponse]{
 		More: func(page SQLPoolTablesClientListBySchemaResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -193,7 +195,7 @@ func (client *SQLPoolTablesClient) listBySchemaCreateRequest(ctx context.Context
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

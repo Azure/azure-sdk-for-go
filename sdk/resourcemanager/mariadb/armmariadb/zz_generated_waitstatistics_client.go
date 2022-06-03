@@ -38,7 +38,7 @@ func NewWaitStatisticsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWaitStatisticsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Retrieve wait statistics for specified identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // waitStatisticsID - The Wait Statistic identifier.
@@ -101,7 +102,7 @@ func (client *WaitStatisticsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,13 +117,14 @@ func (client *WaitStatisticsClient) getHandleResponse(resp *http.Response) (Wait
 
 // NewListByServerPager - Retrieve wait statistics for specified aggregation window.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // parameters - The required parameters for retrieving wait statistics.
 // options - WaitStatisticsClientListByServerOptions contains the optional parameters for the WaitStatisticsClient.ListByServer
 // method.
 func (client *WaitStatisticsClient) NewListByServerPager(resourceGroupName string, serverName string, parameters WaitStatisticsInput, options *WaitStatisticsClientListByServerOptions) *runtime.Pager[WaitStatisticsClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WaitStatisticsClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WaitStatisticsClientListByServerResponse]{
 		More: func(page WaitStatisticsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -171,7 +173,7 @@ func (client *WaitStatisticsClient) listByServerCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

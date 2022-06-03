@@ -38,7 +38,7 @@ func NewDeletedAccountsClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDeletedAccountsClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Get properties of specified deleted account resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // deletedAccountName - Name of the deleted storage account.
 // location - The location of the deleted storage account.
 // options - DeletedAccountsClientGetOptions contains the optional parameters for the DeletedAccountsClient.Get method.
@@ -96,7 +97,7 @@ func (client *DeletedAccountsClient) getCreateRequest(ctx context.Context, delet
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -111,9 +112,10 @@ func (client *DeletedAccountsClient) getHandleResponse(resp *http.Response) (Del
 
 // NewListPager - Lists deleted accounts under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // options - DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.List method.
 func (client *DeletedAccountsClient) NewListPager(options *DeletedAccountsClientListOptions) *runtime.Pager[DeletedAccountsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DeletedAccountsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DeletedAccountsClientListResponse]{
 		More: func(page DeletedAccountsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -154,7 +156,7 @@ func (client *DeletedAccountsClient) listCreateRequest(ctx context.Context, opti
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

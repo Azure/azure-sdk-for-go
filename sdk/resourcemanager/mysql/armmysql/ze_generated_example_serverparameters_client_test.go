@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 )
@@ -25,19 +23,19 @@ func ExampleServerParametersClient_BeginListUpdateConfigurations() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysql.NewServerParametersClient("<subscription-id>", cred, nil)
+	client, err := armmysql.NewServerParametersClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginListUpdateConfigurations(ctx,
-		"<resource-group-name>",
-		"<server-name>",
+		"testrg",
+		"mysqltestsvc1",
 		armmysql.ConfigurationListResult{},
-		&armmysql.ServerParametersClientBeginListUpdateConfigurationsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

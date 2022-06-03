@@ -38,7 +38,7 @@ func NewTransformsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewTransformsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CreateOrUpdate - Creates or updates a new Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
@@ -103,7 +104,7 @@ func (client *TransformsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -118,6 +119,7 @@ func (client *TransformsClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes a Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
@@ -163,12 +165,13 @@ func (client *TransformsClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
@@ -214,7 +217,7 @@ func (client *TransformsClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -229,11 +232,12 @@ func (client *TransformsClient) getHandleResponse(resp *http.Response) (Transfor
 
 // NewListPager - Lists the Transforms in the account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - TransformsClientListOptions contains the optional parameters for the TransformsClient.List method.
 func (client *TransformsClient) NewListPager(resourceGroupName string, accountName string, options *TransformsClientListOptions) *runtime.Pager[TransformsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TransformsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TransformsClientListResponse]{
 		More: func(page TransformsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -288,7 +292,7 @@ func (client *TransformsClient) listCreateRequest(ctx context.Context, resourceG
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -303,6 +307,7 @@ func (client *TransformsClient) listHandleResponse(resp *http.Response) (Transfo
 
 // Update - Updates a Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
@@ -349,7 +354,7 @@ func (client *TransformsClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

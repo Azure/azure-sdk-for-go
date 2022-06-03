@@ -39,7 +39,7 @@ func NewServiceTagsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewServiceTagsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // List - Gets a list of service tag information resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // location - The location that will be used as a reference for version (not as a filter based on location, you will get the
 // list of service tags with prefix details across all regions but limited to the cloud that
 // your subscription belongs to).
@@ -92,9 +93,9 @@ func (client *ServiceTagsClient) listCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

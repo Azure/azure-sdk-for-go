@@ -39,7 +39,7 @@ func NewDNSForwardingRulesetsClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,25 +57,27 @@ func NewDNSForwardingRulesetsClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Creates or updates a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 // parameters - Parameters supplied to the CreateOrUpdate operation.
 // options - DNSForwardingRulesetsClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSForwardingRulesetsClient.BeginCreateOrUpdate
 // method.
-func (client *DNSForwardingRulesetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRuleset, options *DNSForwardingRulesetsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[DNSForwardingRulesetsClientCreateOrUpdateResponse], error) {
+func (client *DNSForwardingRulesetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRuleset, options *DNSForwardingRulesetsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DNSForwardingRulesetsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsForwardingRulesetName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DNSForwardingRulesetsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DNSForwardingRulesetsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DNSForwardingRulesetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DNSForwardingRulesetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 func (client *DNSForwardingRulesetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRuleset, options *DNSForwardingRulesetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, dnsForwardingRulesetName, parameters, options)
 	if err != nil {
@@ -114,37 +116,39 @@ func (client *DNSForwardingRulesetsClient) createOrUpdateCreateRequest(ctx conte
 	reqQP.Set("api-version", "2020-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
 // ruleset will be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 // options - DNSForwardingRulesetsClientBeginDeleteOptions contains the optional parameters for the DNSForwardingRulesetsClient.BeginDelete
 // method.
-func (client *DNSForwardingRulesetsClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, options *DNSForwardingRulesetsClientBeginDeleteOptions) (*armruntime.Poller[DNSForwardingRulesetsClientDeleteResponse], error) {
+func (client *DNSForwardingRulesetsClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, options *DNSForwardingRulesetsClientBeginDeleteOptions) (*runtime.Poller[DNSForwardingRulesetsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, dnsForwardingRulesetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DNSForwardingRulesetsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DNSForwardingRulesetsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DNSForwardingRulesetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DNSForwardingRulesetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the ruleset
 // will be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 func (client *DNSForwardingRulesetsClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, options *DNSForwardingRulesetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, dnsForwardingRulesetName, options)
 	if err != nil {
@@ -183,14 +187,15 @@ func (client *DNSForwardingRulesetsClient) deleteCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2020-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a DNS forwarding ruleset properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 // options - DNSForwardingRulesetsClientGetOptions contains the optional parameters for the DNSForwardingRulesetsClient.Get
@@ -232,7 +237,7 @@ func (client *DNSForwardingRulesetsClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -247,10 +252,11 @@ func (client *DNSForwardingRulesetsClient) getHandleResponse(resp *http.Response
 
 // NewListPager - Lists DNS forwarding rulesets in all resource groups of a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // options - DNSForwardingRulesetsClientListOptions contains the optional parameters for the DNSForwardingRulesetsClient.List
 // method.
 func (client *DNSForwardingRulesetsClient) NewListPager(options *DNSForwardingRulesetsClientListOptions) *runtime.Pager[DNSForwardingRulesetsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DNSForwardingRulesetsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DNSForwardingRulesetsClientListResponse]{
 		More: func(page DNSForwardingRulesetsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -294,7 +300,7 @@ func (client *DNSForwardingRulesetsClient) listCreateRequest(ctx context.Context
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -309,11 +315,12 @@ func (client *DNSForwardingRulesetsClient) listHandleResponse(resp *http.Respons
 
 // NewListByResourceGroupPager - Lists DNS forwarding rulesets within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DNSForwardingRulesetsClientListByResourceGroupOptions contains the optional parameters for the DNSForwardingRulesetsClient.ListByResourceGroup
 // method.
 func (client *DNSForwardingRulesetsClient) NewListByResourceGroupPager(resourceGroupName string, options *DNSForwardingRulesetsClientListByResourceGroupOptions) *runtime.Pager[DNSForwardingRulesetsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DNSForwardingRulesetsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DNSForwardingRulesetsClientListByResourceGroupResponse]{
 		More: func(page DNSForwardingRulesetsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -361,7 +368,7 @@ func (client *DNSForwardingRulesetsClient) listByResourceGroupCreateRequest(ctx 
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -376,12 +383,13 @@ func (client *DNSForwardingRulesetsClient) listByResourceGroupHandleResponse(res
 
 // NewListByVirtualNetworkPager - Lists DNS forwarding ruleset resource IDs attached to a virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // virtualNetworkName - The name of the virtual network.
 // options - DNSForwardingRulesetsClientListByVirtualNetworkOptions contains the optional parameters for the DNSForwardingRulesetsClient.ListByVirtualNetwork
 // method.
 func (client *DNSForwardingRulesetsClient) NewListByVirtualNetworkPager(resourceGroupName string, virtualNetworkName string, options *DNSForwardingRulesetsClientListByVirtualNetworkOptions) *runtime.Pager[DNSForwardingRulesetsClientListByVirtualNetworkResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DNSForwardingRulesetsClientListByVirtualNetworkResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DNSForwardingRulesetsClientListByVirtualNetworkResponse]{
 		More: func(page DNSForwardingRulesetsClientListByVirtualNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -433,7 +441,7 @@ func (client *DNSForwardingRulesetsClient) listByVirtualNetworkCreateRequest(ctx
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -448,25 +456,27 @@ func (client *DNSForwardingRulesetsClient) listByVirtualNetworkHandleResponse(re
 
 // BeginUpdate - Updates a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dnsForwardingRulesetName - The name of the DNS forwarding ruleset.
 // parameters - Parameters supplied to the Update operation.
 // options - DNSForwardingRulesetsClientBeginUpdateOptions contains the optional parameters for the DNSForwardingRulesetsClient.BeginUpdate
 // method.
-func (client *DNSForwardingRulesetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRulesetPatch, options *DNSForwardingRulesetsClientBeginUpdateOptions) (*armruntime.Poller[DNSForwardingRulesetsClientUpdateResponse], error) {
+func (client *DNSForwardingRulesetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRulesetPatch, options *DNSForwardingRulesetsClientBeginUpdateOptions) (*runtime.Poller[DNSForwardingRulesetsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, dnsForwardingRulesetName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[DNSForwardingRulesetsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DNSForwardingRulesetsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[DNSForwardingRulesetsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DNSForwardingRulesetsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a DNS forwarding ruleset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-04-01-preview
 func (client *DNSForwardingRulesetsClient) update(ctx context.Context, resourceGroupName string, dnsForwardingRulesetName string, parameters DNSForwardingRulesetPatch, options *DNSForwardingRulesetsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, dnsForwardingRulesetName, parameters, options)
 	if err != nil {
@@ -505,8 +515,8 @@ func (client *DNSForwardingRulesetsClient) updateCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2020-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

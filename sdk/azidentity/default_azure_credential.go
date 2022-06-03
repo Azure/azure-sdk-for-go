@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -90,7 +93,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
-func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return c.chain.GetToken(ctx, opts)
 }
 
@@ -119,11 +122,11 @@ type defaultCredentialErrorReporter struct {
 	err      error
 }
 
-func (d *defaultCredentialErrorReporter) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+func (d *defaultCredentialErrorReporter) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	if _, ok := d.err.(*credentialUnavailableError); ok {
-		return nil, d.err
+		return azcore.AccessToken{}, d.err
 	}
-	return nil, newCredentialUnavailableError(d.credType, d.err.Error())
+	return azcore.AccessToken{}, newCredentialUnavailableError(d.credType, d.err.Error())
 }
 
 var _ azcore.TokenCredential = (*defaultCredentialErrorReporter)(nil)

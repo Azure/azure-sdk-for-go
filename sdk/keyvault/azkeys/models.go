@@ -49,7 +49,7 @@ type Properties struct {
 	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// Tags contain application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Last updated time in UTC.
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
@@ -86,19 +86,19 @@ func keyPropertiesFromGenerated(i *generated.KeyAttributes, id *string, name *st
 
 	return &Properties{
 		CreatedOn:       i.Created,
-		RecoverableDays: i.RecoverableDays,
-		RecoveryLevel:   to.Ptr(string(*i.RecoveryLevel)),
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
-		NotBefore:       i.NotBefore,
-		UpdatedOn:       i.Updated,
 		Exportable:      i.Exportable,
 		ID:              id,
-		Name:            name,
-		Version:         version,
 		Managed:         managed,
-		Tags:            convertGeneratedMap(tags),
+		Name:            name,
+		NotBefore:       i.NotBefore,
+		RecoverableDays: i.RecoverableDays,
+		RecoveryLevel:   to.Ptr(string(*i.RecoveryLevel)),
+		Tags:            tags,
+		UpdatedOn:       i.Updated,
 		VaultURL:        vaultURL,
+		Version:         version,
 	}
 }
 
@@ -129,7 +129,7 @@ func (k Key) toKeyUpdateParameters() generated.KeyUpdateParameters {
 
 	var tags map[string]*string
 	if k.Properties != nil && k.Properties.Tags != nil {
-		tags = convertToGeneratedMap(k.Properties.Tags)
+		tags = k.Properties.Tags
 	}
 
 	return generated.KeyUpdateParameters{
@@ -157,8 +157,8 @@ type JSONWebKey struct {
 	E []byte `json:"e,omitempty"`
 
 	// Symmetric key.
-	K      []byte    `json:"k,omitempty"`
-	KeyOps []*string `json:"key_ops,omitempty"`
+	K      []byte       `json:"k,omitempty"`
+	KeyOps []*Operation `json:"key_ops,omitempty"`
 
 	// ID identifies the key
 	ID *string `json:"kid,omitempty"`
@@ -194,6 +194,11 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 		return &JSONWebKey{}
 	}
 
+	ops := make([]*Operation, len(i.KeyOps))
+	for j, op := range i.KeyOps {
+		ops[j] = (*Operation)(op)
+	}
+
 	return &JSONWebKey{
 		Crv:     (*CurveName)(i.Crv),
 		D:       i.D,
@@ -201,7 +206,7 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 		DQ:      i.DQ,
 		E:       i.E,
 		K:       i.K,
-		KeyOps:  i.KeyOps,
+		KeyOps:  ops,
 		ID:      i.Kid,
 		KeyType: (*KeyType)(i.Kty),
 		N:       i.N,
@@ -216,6 +221,10 @@ func jsonWebKeyFromGenerated(i *generated.JSONWebKey) *JSONWebKey {
 
 // converts JSONWebKey to *generated.JSONWebKey
 func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
+	ops := make([]*string, len(j.KeyOps))
+	for i, op := range j.KeyOps {
+		ops[i] = (*string)(op)
+	}
 	return &generated.JSONWebKey{
 		Crv:    (*generated.JSONWebKeyCurveName)(j.Crv),
 		D:      j.D,
@@ -223,7 +232,7 @@ func (j JSONWebKey) toGenerated() *generated.JSONWebKey {
 		DQ:     j.DQ,
 		E:      j.E,
 		K:      j.K,
-		KeyOps: j.KeyOps,
+		KeyOps: ops,
 		Kid:    j.ID,
 		Kty:    (*generated.JSONWebKeyType)(j.KeyType),
 		N:      j.N,
@@ -297,15 +306,8 @@ type DeletedKeyItem struct {
 	// The url of the recovery object, used to identify and recover the deleted key.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Tags contain application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
 	// READ-ONLY; The time when the key was deleted, in UTC
 	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
-	// be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
@@ -317,24 +319,14 @@ func deletedKeyItemFromGenerated(i *generated.DeletedKeyItem) *DeletedKeyItem {
 		return nil
 	}
 
-	_, name, _ := shared.ParseID(i.Kid)
+	vaultURL, name, version := shared.ParseID(i.Kid)
 	return &DeletedKeyItem{
 		RecoveryID:         i.RecoveryID,
 		DeletedOn:          i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Properties: &Properties{
-			Enabled:         i.Attributes.Enabled,
-			ExpiresOn:       i.Attributes.Expires,
-			NotBefore:       i.Attributes.NotBefore,
-			CreatedOn:       i.Attributes.Created,
-			UpdatedOn:       i.Attributes.Updated,
-			RecoverableDays: i.Attributes.RecoverableDays,
-			RecoveryLevel:   (*string)(i.Attributes.RecoveryLevel),
-		},
-		ID:      i.Kid,
-		Name:    name,
-		Tags:    convertGeneratedMap(i.Tags),
-		Managed: i.Managed,
+		Properties:         keyPropertiesFromGenerated(i.Attributes, i.Kid, name, version, i.Managed, vaultURL, i.Tags),
+		ID:                 i.Kid,
+		Name:               name,
 	}
 }
 
@@ -482,28 +474,4 @@ type LifetimeActionsTrigger struct {
 
 	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
 	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
-}
-
-func convertToGeneratedMap(m map[string]string) map[string]*string {
-	if m == nil {
-		return nil
-	}
-
-	ret := make(map[string]*string)
-	for k, v := range m {
-		ret[k] = &v
-	}
-	return ret
-}
-
-func convertGeneratedMap(m map[string]*string) map[string]string {
-	if m == nil {
-		return nil
-	}
-
-	ret := make(map[string]string)
-	for k, v := range m {
-		ret[k] = *v
-	}
-	return ret
 }

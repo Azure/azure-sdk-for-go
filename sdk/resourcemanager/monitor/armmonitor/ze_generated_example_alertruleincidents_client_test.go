@@ -23,14 +23,14 @@ func ExampleAlertRuleIncidentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewAlertRuleIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRuleIncidentsClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<rule-name>",
-		"<incident-name>",
+		"Rac46PostSwapRG",
+		"myRuleName",
+		"Website_started",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,18 +46,17 @@ func ExampleAlertRuleIncidentsClient_NewListByAlertRulePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmonitor.NewAlertRuleIncidentsClient("<subscription-id>", cred, nil)
+	client, err := armmonitor.NewAlertRuleIncidentsClient("b67f7fec-69fc-4974-9099-a26bd6ffeda3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAlertRulePager("<resource-group-name>",
-		"<rule-name>",
+	pager := client.NewListByAlertRulePager("Rac46PostSwapRG",
+		"myRuleName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

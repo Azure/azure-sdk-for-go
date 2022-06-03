@@ -23,22 +23,21 @@ func ExampleUpdatesClient_NewListParentPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewUpdatesClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewUpdatesClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListParentPager("<resource-group-name>",
-		"<provider-name>",
-		"<resource-parent-type>",
-		"<resource-parent-name>",
-		"<resource-type>",
-		"<resource-name>",
+	pager := client.NewListParentPager("examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
+		"virtualMachines",
+		"1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,20 +53,19 @@ func ExampleUpdatesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewUpdatesClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewUpdatesClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<provider-name>",
-		"<resource-type>",
-		"<resource-name>",
+	pager := client.NewListPager("examplerg",
+		"Microsoft.Compute",
+		"virtualMachineScaleSets",
+		"smdtest1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -38,7 +38,7 @@ func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Returns private cloud by its name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // pcName - The private cloud name
 // regionID - The region Id (westus, eastus)
 // options - PrivateCloudsClientGetOptions contains the optional parameters for the PrivateCloudsClient.Get method.
@@ -96,7 +97,7 @@ func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, pcName 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -111,10 +112,11 @@ func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (Priva
 
 // NewListPager - Returns list of private clouds in particular region
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-04-01
 // regionID - The region Id (westus, eastus)
 // options - PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.List method.
 func (client *PrivateCloudsClient) NewListPager(regionID string, options *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateCloudsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateCloudsClientListResponse]{
 		More: func(page PrivateCloudsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -159,7 +161,7 @@ func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, region
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

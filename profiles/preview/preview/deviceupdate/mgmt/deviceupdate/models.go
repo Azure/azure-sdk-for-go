@@ -12,7 +12,7 @@ package deviceupdate
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2022-04-01-preview/deviceupdate"
 )
 
 const (
@@ -22,40 +22,40 @@ const (
 type ActionType = original.ActionType
 
 const (
-	Internal ActionType = original.Internal
+	ActionTypeInternal ActionType = original.ActionTypeInternal
 )
 
 type CheckNameAvailabilityReason = original.CheckNameAvailabilityReason
 
 const (
-	AlreadyExists CheckNameAvailabilityReason = original.AlreadyExists
-	Invalid       CheckNameAvailabilityReason = original.Invalid
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = original.CheckNameAvailabilityReasonAlreadyExists
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = original.CheckNameAvailabilityReasonInvalid
 )
 
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type GroupIDProvisioningState = original.GroupIDProvisioningState
 
 const (
-	Canceled  GroupIDProvisioningState = original.Canceled
-	Failed    GroupIDProvisioningState = original.Failed
-	Succeeded GroupIDProvisioningState = original.Succeeded
+	GroupIDProvisioningStateCanceled  GroupIDProvisioningState = original.GroupIDProvisioningStateCanceled
+	GroupIDProvisioningStateFailed    GroupIDProvisioningState = original.GroupIDProvisioningStateFailed
+	GroupIDProvisioningStateSucceeded GroupIDProvisioningState = original.GroupIDProvisioningStateSucceeded
 )
 
 type ManagedServiceIdentityType = original.ManagedServiceIdentityType
 
 const (
-	None                       ManagedServiceIdentityType = original.None
-	SystemAssigned             ManagedServiceIdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned ManagedServiceIdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               ManagedServiceIdentityType = original.UserAssigned
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = original.ManagedServiceIdentityTypeNone
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssigned
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = original.ManagedServiceIdentityTypeSystemAssignedUserAssigned
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = original.ManagedServiceIdentityTypeUserAssigned
 )
 
 type Origin = original.Origin
@@ -75,12 +75,21 @@ const (
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
 )
 
+type PrivateEndpointConnectionProxyProvisioningState = original.PrivateEndpointConnectionProxyProvisioningState
+
+const (
+	PrivateEndpointConnectionProxyProvisioningStateCreating  PrivateEndpointConnectionProxyProvisioningState = original.PrivateEndpointConnectionProxyProvisioningStateCreating
+	PrivateEndpointConnectionProxyProvisioningStateDeleting  PrivateEndpointConnectionProxyProvisioningState = original.PrivateEndpointConnectionProxyProvisioningStateDeleting
+	PrivateEndpointConnectionProxyProvisioningStateFailed    PrivateEndpointConnectionProxyProvisioningState = original.PrivateEndpointConnectionProxyProvisioningStateFailed
+	PrivateEndpointConnectionProxyProvisioningStateSucceeded PrivateEndpointConnectionProxyProvisioningState = original.PrivateEndpointConnectionProxyProvisioningStateSucceeded
+)
+
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved PrivateEndpointServiceConnectionStatus = original.Approved
-	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -97,8 +106,37 @@ const (
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
-	Disabled PublicNetworkAccess = original.Disabled
-	Enabled  PublicNetworkAccess = original.Enabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+)
+
+type Role = original.Role
+
+const (
+	RoleFailover Role = original.RoleFailover
+	RolePrimary  Role = original.RolePrimary
+)
+
+type SKU = original.SKU
+
+const (
+	SKUFree     SKU = original.SKUFree
+	SKUStandard SKU = original.SKUStandard
+)
+
+type SkuTier = original.SkuTier
+
+const (
+	SkuTierBasic    SkuTier = original.SkuTierBasic
+	SkuTierFree     SkuTier = original.SkuTierFree
+	SkuTierPremium  SkuTier = original.SkuTierPremium
+	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
 type Account = original.Account
@@ -115,12 +153,15 @@ type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
 type CheckNameAvailabilityResponse = original.CheckNameAvailabilityResponse
+type ConnectionDetails = original.ConnectionDetails
 type DiagnosticStorageProperties = original.DiagnosticStorageProperties
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
+type GroupConnectivityInformation = original.GroupConnectivityInformation
 type GroupInformation = original.GroupInformation
 type GroupInformationProperties = original.GroupInformationProperties
+type Identity = original.Identity
 type Instance = original.Instance
 type InstanceList = original.InstanceList
 type InstanceListIterator = original.InstanceListIterator
@@ -130,6 +171,7 @@ type InstancesClient = original.InstancesClient
 type InstancesCreateFuture = original.InstancesCreateFuture
 type InstancesDeleteFuture = original.InstancesDeleteFuture
 type IotHubSettings = original.IotHubSettings
+type Location = original.Location
 type ManagedServiceIdentity = original.ManagedServiceIdentity
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -137,19 +179,38 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type Plan = original.Plan
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionProxiesClient = original.PrivateEndpointConnectionProxiesClient
+type PrivateEndpointConnectionProxiesCreateOrUpdateFuture = original.PrivateEndpointConnectionProxiesCreateOrUpdateFuture
+type PrivateEndpointConnectionProxiesDeleteFuture = original.PrivateEndpointConnectionProxiesDeleteFuture
+type PrivateEndpointConnectionProxy = original.PrivateEndpointConnectionProxy
+type PrivateEndpointConnectionProxyListResult = original.PrivateEndpointConnectionProxyListResult
+type PrivateEndpointConnectionProxyProperties = original.PrivateEndpointConnectionProxyProperties
+type PrivateEndpointConnectionProxyPropertiesModel = original.PrivateEndpointConnectionProxyPropertiesModel
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
 type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointUpdate = original.PrivateEndpointUpdate
 type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnection = original.PrivateLinkServiceConnection
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type PrivateLinkServiceProxy = original.PrivateLinkServiceProxy
+type PrivateLinkServiceProxyRemotePrivateEndpointConnection = original.PrivateLinkServiceProxyRemotePrivateEndpointConnection
 type ProxyResource = original.ProxyResource
+type RemotePrivateEndpoint = original.RemotePrivateEndpoint
+type RemotePrivateEndpointConnection = original.RemotePrivateEndpointConnection
 type Resource = original.Resource
+type ResourceModelWithAllowedPropertySet = original.ResourceModelWithAllowedPropertySet
+type ResourceModelWithAllowedPropertySetIdentity = original.ResourceModelWithAllowedPropertySetIdentity
+type ResourceModelWithAllowedPropertySetPlan = original.ResourceModelWithAllowedPropertySetPlan
+type ResourceModelWithAllowedPropertySetSku = original.ResourceModelWithAllowedPropertySetSku
+type Sku = original.Sku
 type SystemData = original.SystemData
 type TagUpdate = original.TagUpdate
 type TrackedResource = original.TrackedResource
@@ -194,6 +255,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionProxiesClient(subscriptionID string) PrivateEndpointConnectionProxiesClient {
+	return original.NewPrivateEndpointConnectionProxiesClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionProxiesClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionProxiesClient {
+	return original.NewPrivateEndpointConnectionProxiesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
 }
@@ -230,6 +297,9 @@ func PossibleOriginValues() []Origin {
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
 }
+func PossiblePrivateEndpointConnectionProxyProvisioningStateValues() []PrivateEndpointConnectionProxyProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProxyProvisioningStateValues()
+}
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
 	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
 }
@@ -238,6 +308,18 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleRoleValues() []Role {
+	return original.PossibleRoleValues()
+}
+func PossibleSKUValues() []SKU {
+	return original.PossibleSKUValues()
+}
+func PossibleSkuTierValues() []SkuTier {
+	return original.PossibleSkuTierValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

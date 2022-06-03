@@ -17,37 +17,37 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/guestconfiguration/armguestconfiguration"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/createOrUpdateGuestConfigurationAssignment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/createOrUpdateGuestConfigurationAssignment.json
 func ExampleAssignmentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<guest-configuration-assignment-name>",
-		"<resource-group-name>",
-		"<vm-name>",
+		"NotInstalledApplicationForWindows",
+		"myResourceGroupName",
+		"myVMName",
 		armguestconfiguration.Assignment{
-			Name:     to.Ptr("<name>"),
-			Location: to.Ptr("<location>"),
+			Name:     to.Ptr("NotInstalledApplicationForWindows"),
+			Location: to.Ptr("westcentralus"),
 			Properties: &armguestconfiguration.AssignmentProperties{
-				Context: to.Ptr("<context>"),
+				Context: to.Ptr("Azure policy"),
 				GuestConfiguration: &armguestconfiguration.Navigation{
-					Name:           to.Ptr("<name>"),
+					Name:           to.Ptr("NotInstalledApplicationForWindows"),
 					AssignmentType: to.Ptr(armguestconfiguration.AssignmentTypeApplyAndAutoCorrect),
 					ConfigurationParameter: []*armguestconfiguration.ConfigurationParameter{
 						{
-							Name:  to.Ptr("<name>"),
-							Value: to.Ptr("<value>"),
+							Name:  to.Ptr("[InstalledApplication]NotInstalledApplicationResource1;Name"),
+							Value: to.Ptr("NotePad,sql"),
 						}},
-					ContentHash: to.Ptr("<content-hash>"),
-					ContentURI:  to.Ptr("<content-uri>"),
-					Version:     to.Ptr("<version>"),
+					ContentHash: to.Ptr("123contenthash"),
+					ContentURI:  to.Ptr("https://thisisfake/pacakge"),
+					Version:     to.Ptr("1.*"),
 				},
 			},
 		},
@@ -59,21 +59,21 @@ func ExampleAssignmentsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/getGuestConfigurationAssignment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/getGuestConfigurationAssignment.json
 func ExampleAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<guest-configuration-assignment-name>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"SecureProtocol",
+		"myVMName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -82,35 +82,35 @@ func ExampleAssignmentsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/deleteGuestConfigurationAssignment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/deleteGuestConfigurationAssignment.json
 func ExampleAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<guest-configuration-assignment-name>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"SecureProtocol",
+		"myVMName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listSubGuestConfigurationAssignments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listSubGuestConfigurationAssignments.json
 func ExampleAssignmentsClient_NewSubscriptionListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -119,7 +119,6 @@ func ExampleAssignmentsClient_NewSubscriptionListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -128,24 +127,23 @@ func ExampleAssignmentsClient_NewSubscriptionListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listRGGuestConfigurationAssignments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listRGGuestConfigurationAssignments.json
 func ExampleAssignmentsClient_NewRGListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewRGListPager("<resource-group-name>",
+	pager := client.NewRGListPager("myResourceGroupName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -154,25 +152,24 @@ func ExampleAssignmentsClient_NewRGListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2020-06-25/examples/listGuestConfigurationAssignments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/guestconfiguration/resource-manager/Microsoft.GuestConfiguration/stable/2022-01-25/examples/listGuestConfigurationAssignments.json
 func ExampleAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armguestconfiguration.NewAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armguestconfiguration.NewAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<vm-name>",
+	pager := client.NewListPager("myResourceGroupName",
+		"myVMName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -24,14 +24,14 @@ func ExampleDataSourcesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewDataSourcesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewDataSourcesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-source-name>",
+		"OIAutoRest5123",
+		"AzTest9724",
+		"AzTestDS774",
 		armoperationalinsights.DataSource{
 			Kind: to.Ptr(armoperationalinsights.DataSourceKindAzureActivityLog),
 			Properties: map[string]interface{}{
@@ -53,14 +53,14 @@ func ExampleDataSourcesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewDataSourcesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewDataSourcesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-source-name>",
+		"OIAutoRest5123",
+		"AzTest9724",
+		"AzTestDS774",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,14 +74,14 @@ func ExampleDataSourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewDataSourcesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewDataSourcesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-source-name>",
+		"OIAutoRest5123",
+		"AzTest9724",
+		"AzTestDS774",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,19 +97,18 @@ func ExampleDataSourcesClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewDataSourcesClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewDataSourcesClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("<resource-group-name>",
-		"<workspace-name>",
-		"<filter>",
+	pager := client.NewListByWorkspacePager("OIAutoRest5123",
+		"AzTest9724",
+		"kind='WindowsEvent'",
 		&armoperationalinsights.DataSourcesClientListByWorkspaceOptions{Skiptoken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

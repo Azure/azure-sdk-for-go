@@ -35,7 +35,7 @@ func NewUsageDetailsClient(credential azcore.TokenCredential, options *arm.Clien
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewUsageDetailsClient(credential azcore.TokenCredential, options *arm.Clien
 // NewListPager - Lists the usage details for the defined scope. Usage details are available via this API only for May 1,
 // 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for
 // Billing Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
@@ -70,7 +71,7 @@ func NewUsageDetailsClient(credential azcore.TokenCredential, options *arm.Clien
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for partners.
 // options - UsageDetailsClientListOptions contains the optional parameters for the UsageDetailsClient.List method.
 func (client *UsageDetailsClient) NewListPager(scope string, options *UsageDetailsClientListOptions) *runtime.Pager[UsageDetailsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[UsageDetailsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[UsageDetailsClientListResponse]{
 		More: func(page UsageDetailsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -123,7 +124,7 @@ func (client *UsageDetailsClient) listCreateRequest(ctx context.Context, scope s
 		reqQP.Set("metric", string(*options.Metric))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

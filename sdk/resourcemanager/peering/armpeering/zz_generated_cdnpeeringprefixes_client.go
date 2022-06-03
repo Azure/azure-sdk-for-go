@@ -38,7 +38,7 @@ func NewCdnPeeringPrefixesClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,10 +56,11 @@ func NewCdnPeeringPrefixesClient(subscriptionID string, credential azcore.TokenC
 
 // NewListPager - Lists all of the advertised prefixes for the specified peering location
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01
 // peeringLocation - The peering location.
 // options - CdnPeeringPrefixesClientListOptions contains the optional parameters for the CdnPeeringPrefixesClient.List method.
 func (client *CdnPeeringPrefixesClient) NewListPager(peeringLocation string, options *CdnPeeringPrefixesClientListOptions) *runtime.Pager[CdnPeeringPrefixesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CdnPeeringPrefixesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CdnPeeringPrefixesClientListResponse]{
 		More: func(page CdnPeeringPrefixesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -101,7 +102,7 @@ func (client *CdnPeeringPrefixesClient) listCreateRequest(ctx context.Context, p
 	reqQP.Set("peeringLocation", peeringLocation)
 	reqQP.Set("api-version", "2022-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

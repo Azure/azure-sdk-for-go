@@ -38,7 +38,7 @@ func NewManagedInstanceAzureADOnlyAuthenticationsClient(subscriptionID string, c
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewManagedInstanceAzureADOnlyAuthenticationsClient(subscriptionID string, c
 // BeginCreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
 // only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -64,21 +65,22 @@ func NewManagedInstanceAzureADOnlyAuthenticationsClient(subscriptionID string, c
 // parameters - The required parameters for creating or updating an Active Directory only authentication property.
 // options - ManagedInstanceAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions contains the optional parameters for
 // the ManagedInstanceAzureADOnlyAuthenticationsClient.BeginCreateOrUpdate method.
-func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, parameters ManagedInstanceAzureADOnlyAuthentication, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse], error) {
+func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, parameters ManagedInstanceAzureADOnlyAuthentication, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, authenticationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagedInstanceAzureADOnlyAuthenticationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory
 // only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, parameters ManagedInstanceAzureADOnlyAuthentication, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, authenticationName, parameters, options)
 	if err != nil {
@@ -120,32 +122,34 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) createOrUpdateCre
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes an existing server Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // authenticationName - The name of server azure active directory only authentication.
 // options - ManagedInstanceAzureADOnlyAuthenticationsClientBeginDeleteOptions contains the optional parameters for the ManagedInstanceAzureADOnlyAuthenticationsClient.BeginDelete
 // method.
-func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*armruntime.Poller[ManagedInstanceAzureADOnlyAuthenticationsClientDeleteResponse], error) {
+func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*runtime.Poller[ManagedInstanceAzureADOnlyAuthenticationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, managedInstanceName, authenticationName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagedInstanceAzureADOnlyAuthenticationsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagedInstanceAzureADOnlyAuthenticationsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagedInstanceAzureADOnlyAuthenticationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagedInstanceAzureADOnlyAuthenticationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing server Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, authenticationName AuthenticationName, options *ManagedInstanceAzureADOnlyAuthenticationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, authenticationName, options)
 	if err != nil {
@@ -192,6 +196,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) deleteCreateReque
 
 // Get - Gets a specific Azure Active Directory only authentication property.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -239,7 +244,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) getCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -254,13 +259,14 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) getHandleResponse
 
 // NewListByInstancePager - Gets a list of server Azure Active Directory only authentications.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions contains the optional parameters for the
 // ManagedInstanceAzureADOnlyAuthenticationsClient.ListByInstance method.
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceOptions) *runtime.Pager[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse]{
 		More: func(page ManagedInstanceAzureADOnlyAuthenticationsClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -309,7 +315,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) listByInstanceCre
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

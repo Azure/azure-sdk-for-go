@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
@@ -26,18 +24,17 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumeGroupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByNetAppAccountPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListByNetAppAccountPager("myRG",
+		"account1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleVolumeGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumeGroupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<volume-group-name>",
+		"myRG",
+		"account1",
+		"group1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,70 +73,70 @@ func ExampleVolumeGroupsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumeGroupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<volume-group-name>",
+		"myRG",
+		"account1",
+		"group1",
 		armnetapp.VolumeGroupDetails{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armnetapp.VolumeGroupProperties{
 				GroupMetaData: &armnetapp.VolumeGroupMetaData{
-					ApplicationIdentifier: to.Ptr("<application-identifier>"),
+					ApplicationIdentifier: to.Ptr("DEV"),
 					ApplicationType:       to.Ptr(armnetapp.ApplicationTypeSAPHANA),
-					DeploymentSpecID:      to.Ptr("<deployment-spec-id>"),
-					GroupDescription:      to.Ptr("<group-description>"),
+					DeploymentSpecID:      to.Ptr("fb04dbeb-005d-2703-197e-6208dfadb5d9"),
+					GroupDescription:      to.Ptr("Volume group"),
 				},
 				Volumes: []*armnetapp.VolumeGroupVolumeProperties{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("testVol1"),
 						Properties: &armnetapp.VolumeProperties{
-							CapacityPoolResourceID:  to.Ptr("<capacity-pool-resource-id>"),
-							CreationToken:           to.Ptr("<creation-token>"),
-							ProximityPlacementGroup: to.Ptr("<proximity-placement-group>"),
+							CapacityPoolResourceID:  to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+							CreationToken:           to.Ptr("testVol1"),
+							ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 							ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
-							SubnetID:                to.Ptr("<subnet-id>"),
+							SubnetID:                to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 							ThroughputMibps:         to.Ptr[float32](10),
 							UsageThreshold:          to.Ptr[int64](107374182400),
-							VolumeSpecName:          to.Ptr("<volume-spec-name>"),
+							VolumeSpecName:          to.Ptr("data"),
 						},
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("testVol2"),
 						Properties: &armnetapp.VolumeProperties{
-							CapacityPoolResourceID:  to.Ptr("<capacity-pool-resource-id>"),
-							CreationToken:           to.Ptr("<creation-token>"),
-							ProximityPlacementGroup: to.Ptr("<proximity-placement-group>"),
+							CapacityPoolResourceID:  to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+							CreationToken:           to.Ptr("testVol2"),
+							ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 							ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
-							SubnetID:                to.Ptr("<subnet-id>"),
+							SubnetID:                to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 							ThroughputMibps:         to.Ptr[float32](10),
 							UsageThreshold:          to.Ptr[int64](107374182400),
-							VolumeSpecName:          to.Ptr("<volume-spec-name>"),
+							VolumeSpecName:          to.Ptr("log"),
 						},
 					},
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("testVol3"),
 						Properties: &armnetapp.VolumeProperties{
-							CapacityPoolResourceID:  to.Ptr("<capacity-pool-resource-id>"),
-							CreationToken:           to.Ptr("<creation-token>"),
-							ProximityPlacementGroup: to.Ptr("<proximity-placement-group>"),
+							CapacityPoolResourceID:  to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
+							CreationToken:           to.Ptr("testVol3"),
+							ProximityPlacementGroup: to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/cys_sjain_fcp_rg/providers/Microsoft.Compute/proximityPlacementGroups/svlqa_sjain_multivolume_ppg"),
 							ServiceLevel:            to.Ptr(armnetapp.ServiceLevelPremium),
-							SubnetID:                to.Ptr("<subnet-id>"),
+							SubnetID:                to.Ptr("/subscriptions/d633cc2e-722b-4ae1-b636-bbd9e4c60ed9/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 							ThroughputMibps:         to.Ptr[float32](10),
 							UsageThreshold:          to.Ptr[int64](107374182400),
-							VolumeSpecName:          to.Ptr("<volume-spec-name>"),
+							VolumeSpecName:          to.Ptr("shared"),
 						},
 					}},
 			},
 		},
-		&armnetapp.VolumeGroupsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -152,19 +149,19 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewVolumeGroupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewVolumeGroupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<volume-group-name>",
-		&armnetapp.VolumeGroupsClientBeginDeleteOptions{ResumeToken: ""})
+		"myRG",
+		"account1",
+		"group1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

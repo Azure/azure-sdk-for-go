@@ -8,17 +8,17 @@ package azkeys
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
-	"os"
+	"strings"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/crypto"
 	"github.com/stretchr/testify/require"
 )
 
@@ -66,6 +66,7 @@ func TestCreateKeyRSA(t *testing.T) {
 		})
 	}
 }
+
 func TestCreateKeyRSATags(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
@@ -77,8 +78,8 @@ func TestCreateKeyRSATags(t *testing.T) {
 	require.NoError(t, err)
 
 	resp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
-		Tags: map[string]string{
-			"Tag1": "Val1",
+		Tags: map[string]*string{
+			"Tag1": to.Ptr("Val1"),
 		},
 	})
 	defer cleanUpKey(t, client, key)
@@ -86,7 +87,7 @@ func TestCreateKeyRSATags(t *testing.T) {
 	validateKey(t, to.Ptr(resp.Key))
 	require.Equal(t, 1, len(resp.Key.Properties.Tags))
 
-	resp.Key.Properties.Tags = map[string]string{}
+	resp.Key.Properties.Tags = map[string]*string{}
 	// Remove the tag
 	resp2, err := client.UpdateKeyProperties(ctx, resp.Key, nil)
 	require.NoError(t, err)
@@ -168,7 +169,7 @@ func TestListKeys(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			pager := client.ListPropertiesOfKeys(nil)
+			pager := client.NewListPropertiesOfKeysPager(nil)
 			count := 0
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
@@ -235,9 +236,9 @@ func TestDeleteKey(t *testing.T) {
 			require.NoError(t, err)
 			validateKey(t, to.Ptr(r.Key))
 
-			resp, err := client.BeginDeleteKey(ctx, key, nil)
+			poller, err := client.BeginDeleteKey(ctx, key, nil)
 			require.NoError(t, err)
-			deleteResp, err := resp.PollUntilDone(ctx, delay())
+			deleteResp, err := poller.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
 			require.NotNil(t, deleteResp.Key)
 			require.NotNil(t, deleteResp.Key.ID)
@@ -260,7 +261,7 @@ func TestDeleteKey(t *testing.T) {
 			_, err = client.GetDeletedKey(ctx, key, nil)
 			require.Error(t, err)
 
-			_, err = resp.FinalResponse(ctx)
+			_, err = poller.Result(ctx)
 			require.NoError(t, err)
 
 			_, err = client.BeginDeleteKey(ctx, "nonexistent", nil)
@@ -290,7 +291,7 @@ func TestBeginDeleteKeyRehydrate(t *testing.T) {
 	rt, err := deletePoller.ResumeToken()
 	require.NoError(t, err)
 
-	rehydrated, err := client.BeginDeleteKey(ctx, key, &BeginDeleteKeyOptions{ResumeToken: &rt})
+	rehydrated, err := client.BeginDeleteKey(ctx, key, &BeginDeleteKeyOptions{ResumeToken: rt})
 	require.NoError(t, err)
 
 	_, err = rehydrated.PollUntilDone(ctx, delay())
@@ -307,7 +308,7 @@ func TestBeginDeleteKeyRehydrate(t *testing.T) {
 	rt, err = recover.ResumeToken()
 	require.NoError(t, err)
 
-	rehydratedRecover, err := client.BeginRecoverDeletedKey(ctx, key, &BeginRecoverDeletedKeyOptions{ResumeToken: &rt})
+	rehydratedRecover, err := client.BeginRecoverDeletedKey(ctx, key, &BeginRecoverDeletedKeyOptions{ResumeToken: rt})
 	require.NoError(t, err)
 
 	_, err = rehydratedRecover.PollUntilDone(ctx, delay())
@@ -347,28 +348,23 @@ func TestBackupKey(t *testing.T) {
 			_, err = client.PurgeDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
 
-			_, err = client.GetKey(ctx, key, nil)
-			var httpErr *azcore.ResponseError
-			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
-
-			_, err = client.GetDeletedKey(ctx, key, nil)
-			require.True(t, errors.As(err, &httpErr))
-			require.Equal(t, httpErr.RawResponse.StatusCode, http.StatusNotFound)
-
-			time.Sleep(30 * delay())
-			// Poll this operation manually
-			var restoreResp RestoreKeyBackupResponse
-			var i int
-			for i = 0; i < 10; i++ {
-				restoreResp, err = client.RestoreKeyBackup(ctx, backupResp.Value, nil)
-				if err == nil {
-					break
+			const retries = 5
+			for i := 0; i < retries; i++ {
+				// unfortunately purging a deleted key is non-deterministic so we
+				// need to retry until we either succeed or hit the retry cap.
+				restoreResp, err := client.RestoreKeyBackup(ctx, backupResp.Value, nil)
+				if err != nil && i+1 == retries {
+					t.Fatal("retry limit reached")
+				} else if err != nil {
+					if recording.GetRecordMode() != recording.PlaybackMode {
+						time.Sleep(time.Minute)
+					}
+					continue
 				}
-				time.Sleep(delay())
+				require.NoError(t, err)
+				require.NotNil(t, restoreResp.Key)
+				break
 			}
-			require.NoError(t, err)
-			require.NotNil(t, restoreResp.Key)
 
 			// Now the Key should be Get-able
 			_, err = client.GetKey(ctx, key, nil)
@@ -448,15 +444,15 @@ func TestUpdateKeyProperties(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			createResp.Key.Properties.Tags = map[string]string{
-				"Tag1": "Val1",
+			createResp.Key.Properties.Tags = map[string]*string{
+				"Tag1": to.Ptr("Val1"),
 			}
 			createResp.Key.Properties.ExpiresOn = to.Ptr(time.Now().AddDate(1, 0, 0))
 
 			resp, err := client.UpdateKeyProperties(ctx, createResp.Key, nil)
 			require.NoError(t, err)
 			require.NotNil(t, resp.Properties)
-			require.Equal(t, resp.Properties.Tags["Tag1"], "Val1")
+			require.Equal(t, *resp.Properties.Tags["Tag1"], "Val1")
 			require.NotNil(t, resp.Properties.ExpiresOn)
 
 			createResp.Key.Properties.Name = to.Ptr("doesnotexist")
@@ -470,13 +466,8 @@ func TestUpdateKeyProperties(t *testing.T) {
 func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			if testType == HSMTEST {
-				t.Skip("HSM does not recognize immutable yet.")
-			}
 			stop := startTest(t)
 			defer stop()
-			err := recording.SetBodilessMatcher(t, nil)
-			require.NoError(t, err)
 
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
@@ -484,63 +475,43 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 			key, err := createRandomName(t, "immuta")
 			require.NoError(t, err)
 
-			marshalledPolicy, err := json.Marshal(map[string]interface{}{
-				"anyOf": []map[string]interface{}{
-					{
-						"anyOf": []map[string]interface{}{
-							{
-								"claim":  "sdk-test",
-								"equals": "true",
-							}},
-						"authority": os.Getenv("AZURE_KEYVAULT_ATTESTATION_URL"),
+			// retry creating the release policy because Key Vault sometimes can't reach
+			// the fake attestation service we use in CI for several minutes after deployment
+			var createResp CreateRSAKeyResponse
+			for i := 0; i < 5; i++ {
+				createResp, err = client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
+					HardwareProtected: to.Ptr(true),
+					Properties: &Properties{
+						Exportable: to.Ptr(true),
 					},
-				},
-				"version": "1.0.0",
-			})
-			require.NoError(t, err)
-
-			createResp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
-				HardwareProtected: to.Ptr(true),
-				Properties: &Properties{
-					Exportable: to.Ptr(true),
-				},
-				ReleasePolicy: &ReleasePolicy{
-					Immutable:     to.Ptr(true),
-					EncodedPolicy: marshalledPolicy,
-				},
-				Operations: []*Operation{to.Ptr(OperationEncrypt), to.Ptr(OperationDecrypt)},
-			})
-			_ = err
-			// require.NoError(t, err) // Recently failing with "AKV.SKR.1012: The specified attestation service  cannot be reached."
-			// defer cleanUpKey(t, client, key)
-
-			newMarshalledPolicy, err := json.Marshal(map[string]interface{}{
-				"anyOf": []map[string]interface{}{
-					{
-						"anyOf": []map[string]interface{}{
-							{
-								"claim":  "sdk-test",
-								"equals": "false",
-							}},
-						"authority": os.Getenv("AZURE_KEYVAULT_ATTESTATION_URL"),
+					ReleasePolicy: &ReleasePolicy{
+						Immutable:     to.Ptr(true),
+						EncodedPolicy: getMarshalledReleasePolicy(testAttestationURL),
 					},
-				},
-				"version": "1.0.0",
-			})
-			require.NoError(t, err)
-			// require.Nil(t, createResp.Key.Properties)
-			_ = createResp
-			_ = newMarshalledPolicy
-
-			/*
-				createResp.Key.ReleasePolicy = &ReleasePolicy{
-					Immutable:     to.Ptr(true),
-					EncodedPolicy: newMarshalledPolicy,
+					Operations: []*Operation{to.Ptr(OperationEncrypt), to.Ptr(OperationDecrypt)},
+				})
+				if err == nil {
+					break
 				}
-				_, err = client.UpdateKeyProperties(ctx, *createResp.Key, nil)
-				_ = err
-				require.Error(t, err)
-			*/
+				if recording.GetRecordMode() != recording.PlaybackMode {
+					time.Sleep(time.Minute)
+				}
+			}
+			require.NoError(t, err)
+			defer cleanUpKey(t, client, key)
+
+			createResp.Key.ReleasePolicy = &ReleasePolicy{
+				Immutable:     to.Ptr(true),
+				EncodedPolicy: getMarshalledReleasePolicy(fakeAttestationUrl),
+			}
+			createResp.Key.Properties.Enabled = to.Ptr(false)
+			if testType == HSMTEST {
+				// MHSM disallows updating the release policy for a specific version
+				createResp.Key.Properties.Version = nil
+			}
+
+			_, err = client.UpdateKeyProperties(ctx, createResp.Key, nil)
+			require.Contains(t, strings.ToLower(err.Error()), "release policy cannot be modified")
 		})
 	}
 }
@@ -588,7 +559,7 @@ func TestListDeletedKeys(t *testing.T) {
 			_, err = pollerResp.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
 
-			pager := client.ListDeletedKeys(nil)
+			pager := client.NewListDeletedKeysPager(nil)
 			count := 0
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
@@ -622,7 +593,7 @@ func TestListKeyVersions(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			pager := client.ListPropertiesOfKeyVersions(key, nil)
+			pager := client.NewListPropertiesOfKeyVersionsPager(key, nil)
 			count := 0
 			for pager.More() {
 				resp, err := pager.NextPage(ctx)
@@ -646,7 +617,7 @@ func TestImportKey(t *testing.T) {
 
 			jwk := JSONWebKey{
 				KeyType: to.Ptr(KeyTypeRSA),
-				KeyOps:  to.SliceOfPtrs("encrypt", "decrypt", "sign", "verify", "wrapKey", "unwrapKey"),
+				KeyOps:  to.SliceOfPtrs(OperationEncrypt, OperationDecrypt, OperationSign, OperationVerify, OperationWrapKey, OperationUnwrapKey),
 				N:       toBytes("00a0914d00234ac683b21b4c15d5bed887bdc959c2e57af54ae734e8f00720d775d275e455207e3784ceeb60a50a4655dd72a7a94d271e8ee8f7959a669ca6e775bf0e23badae991b4529d978528b4bd90521d32dd2656796ba82b6bbfc7668c8f5eeb5053747fd199319d29a8440d08f4412d527ff9311eda71825920b47b1c46b11ab3e91d7316407e89c7f340f7b85a34042ce51743b27d4718403d34c7b438af6181be05e4d11eb985d38253d7fe9bf53fc2f1b002d22d2d793fa79a504b6ab42d0492804d7071d727a06cf3a8893aa542b1503f832b296371b6707d4dc6e372f8fe67d8ded1c908fde45ce03bc086a71487fa75e43aa0e0679aa0d20efe35", t),
 				E:       toBytes("10001", t),
 				D:       toBytes("627c7d24668148fe2252c7fa649ea8a5a9ed44d75c766cda42b29b660e99404f0e862d4561a6c95af6a83d213e0a2244b03cd28576473215073785fb067f015da19084ade9f475e08b040a9a2c7ba00253bb8125508c9df140b75161d266be347a5e0f6900fe1d8bbf78ccc25eeb37e0c9d188d6e1fc15169ba4fe12276193d77790d2326928bd60d0d01d6ead8d6ac4861abadceec95358fd6689c50a1671a4a936d2376440a41445501da4e74bfb98f823bd19c45b94eb01d98fc0d2f284507f018ebd929b8180dbe6381fdd434bffb7800aaabdd973d55f9eaf9bb88a6ea7b28c2a80231e72de1ad244826d665582c2362761019de2e9f10cb8bcc2625649", t),
@@ -694,9 +665,7 @@ func TestGetRandomBytes(t *testing.T) {
 func TestGetDeletedKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			if testType == HSMTEST {
-				t.Skip()
-			}
+			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -714,8 +683,6 @@ func TestGetDeletedKey(t *testing.T) {
 			_, err = poller.PollUntilDone(ctx, delay())
 			require.NoError(t, err)
 
-			time.Sleep(10 * delay())
-
 			resp, err := client.GetDeletedKey(ctx, key, nil)
 			require.NoError(t, err)
 			require.Contains(t, *resp.Key.ID, key)
@@ -727,10 +694,9 @@ func TestGetDeletedKey(t *testing.T) {
 }
 
 func TestRotateKey(t *testing.T) {
-	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			alwaysSkipHSM(t, testType)
+			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -743,6 +709,11 @@ func TestRotateKey(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
+			if testType == HSMTEST {
+				// MHSM keys don't have a default rotation policy
+				_, err = client.UpdateKeyRotationPolicy(ctx, key, RotationPolicy{Attributes: &RotationPolicyAttributes{ExpiresIn: to.Ptr("P30D")}}, nil)
+				require.NoError(t, err)
+			}
 			resp, err := client.RotateKey(ctx, key, nil)
 			require.NoError(t, err)
 
@@ -751,16 +722,15 @@ func TestRotateKey(t *testing.T) {
 
 			invalid, err := client.RotateKey(ctx, "keynonexistent", nil)
 			require.Error(t, err)
-			require.Nil(t, invalid.Key)
+			require.Zero(t, invalid.Key)
 		})
 	}
 }
 
 func TestGetKeyRotationPolicy(t *testing.T) {
-	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			alwaysSkipHSM(t, testType)
+			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -780,59 +750,80 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 }
 
 func TestReleaseKey(t *testing.T) {
-	t.Skip("key release isn't supported yet")
 	for _, testType := range testTypes {
-		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			alwaysSkipHSM(t, testType)
-			// t.Skip("Release is not currently not enabled in API Version 7.3-preview")
-			stop := startTest(t)
-			defer stop()
-
-			client, err := createClient(t, testType)
-			require.NoError(t, err)
-
-			key, err := createRandomName(t, "key")
-			require.NoError(t, err)
-			_, err = client.CreateRSAKey(ctx, key, nil)
-			require.NoError(t, err)
-			defer cleanUpKey(t, client, key)
-
-			// Get attestation token from service
-			attestationURL := recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", "https://fakewebsite.net/")
-			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
-			require.NoError(t, err)
-
-			if recording.GetRecordMode() == recording.PlaybackMode {
-				t.Skip("Skipping test in playback")
+		for _, version := range []bool{true, false} {
+			tn := fmt.Sprintf("%s_%s", t.Name(), testType)
+			if version {
+				tn += "_specificVersion"
+			} else {
+				tn += "_latest"
 			}
+			t.Run(tn, func(t *testing.T) {
+				skipHSM(t, testType)
+				stop := startTest(t)
+				defer stop()
 
-			// Issue when deploying HSM as well
-			if _, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL"); !ok {
-				_, err = http.DefaultClient.Do(req)
-				require.Error(t, err) // This URL doesn't exist so this should fail, will pass after 7.4-preview release
-				// require.Equal(t, resp.StatusCode, http.StatusOK)
-				// defer resp.Body.Close()
+				client, err := createClient(t, testType)
+				require.NoError(t, err)
 
-				// type targetResponse struct {
-				// 	Token string `json:"token"`
-				// }
+				name, err := createRandomName(t, "testreleasekey")
+				require.NoError(t, err)
 
-				// var tR targetResponse
-				// err = json.NewDecoder(resp.Body).Decode(&tR)
-				// require.NoError(t, err)
+				// retry creating the key because Key Vault sometimes can't reach the fake
+				// attestation service we use in CI for several minutes after deployment
+				var createResp CreateECKeyResponse
+				for i := 0; i < 5; i++ {
+					createResp, err = client.CreateECKey(ctx, name, &CreateECKeyOptions{
+						Curve:             to.Ptr(CurveNameP256K),
+						HardwareProtected: to.Ptr(true),
+						Properties:        &Properties{Exportable: to.Ptr(true)},
+						ReleasePolicy: &ReleasePolicy{
+							EncodedPolicy: getMarshalledReleasePolicy(testAttestationURL),
+						},
+					})
+					if err == nil {
+						break
+					}
+					recording.Sleep(time.Minute)
+				}
+				require.NoError(t, err)
+				defer cleanUpKey(t, client, name)
 
-				_, err = client.ReleaseKey(ctx, key, "target", nil)
-				require.Error(t, err)
-			}
-		})
+				attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
+				require.NoError(t, err)
+				req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", testAttestationURL), nil)
+				require.NoError(t, err)
+				resp, err := attestationClient.Do(req)
+				require.NoError(t, err)
+				require.Equal(t, resp.StatusCode, http.StatusOK)
+				defer resp.Body.Close()
+
+				var tR struct {
+					Token string `json:"token"`
+				}
+				err = json.NewDecoder(resp.Body).Decode(&tR)
+				require.NoError(t, err)
+
+				o := &ReleaseKeyOptions{}
+				if version {
+					o.Version = createResp.Properties.Version
+				}
+				response, err := client.ReleaseKey(ctx, *createResp.Name, tR.Token, o)
+				if err != nil && strings.Contains(err.Error(), "Target environment attestation statement cannot be verified.") {
+					t.Skip("test encountered a transient service fault; see https://github.com/Azure/azure-sdk-for-net/issues/27957")
+				}
+				require.NoError(t, err)
+				require.NotNil(t, response.Value)
+				require.NotEmpty(t, *response.Value)
+			})
+		}
 	}
 }
 
 func TestUpdateKeyRotationPolicy(t *testing.T) {
-	t.Skipf("Skipping while service disabled feature")
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			alwaysSkipHSM(t, testType)
+			skipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -848,11 +839,11 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 
 			get, err := client.GetKeyRotationPolicy(ctx, key, nil)
 			require.NoError(t, err)
-			get.Attributes.ExpiresIn = to.Ptr("P90D")
+			get.Attributes = &RotationPolicyAttributes{ExpiresIn: to.Ptr("P90D")}
 			get.LifetimeActions = []*LifetimeActions{
 				{
 					Action: &LifetimeActionsType{
-						Type: to.Ptr(RotationActionNotify),
+						Type: to.Ptr(RotationActionRotate),
 					},
 					Trigger: &LifetimeActionsTrigger{
 						TimeBeforeExpiry: to.Ptr("P30D"),
@@ -864,4 +855,81 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 			require.NoError(t, err)
 		})
 	}
+}
+
+func TestClient_EncryptDecrypt(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	keyName, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	keyClient, err := createClient(t, REGULARTEST)
+	require.NoError(t, err)
+	_, err = keyClient.CreateRSAKey(ctx, keyName, nil)
+	require.NoError(t, err)
+
+	cryptoClient := keyClient.NewCryptoClient(keyName, nil)
+
+	encryptResponse, err := cryptoClient.Encrypt(ctx, crypto.EncryptionAlgRSAOAEP, []byte("plaintext"), nil)
+	require.NoError(t, err)
+	require.NotNil(t, encryptResponse)
+
+	decryptResponse, err := cryptoClient.Decrypt(ctx, crypto.EncryptionAlgRSAOAEP, encryptResponse.Ciphertext, nil)
+	require.NoError(t, err)
+	require.Equal(t, decryptResponse.Plaintext, []byte("plaintext"))
+}
+
+func TestClient_WrapUnwrap(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	keyName, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	keyClient, err := createClient(t, REGULARTEST)
+	require.NoError(t, err)
+	_, err = keyClient.CreateRSAKey(ctx, keyName, nil)
+	require.NoError(t, err)
+
+	cryptoClient := keyClient.NewCryptoClient(keyName, nil)
+
+	keyBytes := []byte("5063e6aaa845f150200547944fd199679c98ed6f99da0a0b2dafeaf1f4684496fd532c1c229968cb9dee44957fcef7ccef59ceda0b362e56bcd78fd3faee5781c623c0bb22b35beabde0664fd30e0e824aba3dd1b0afffc4a3d955ede20cf6a854d52cfd")
+
+	// Wrap
+	wrapResp, err := cryptoClient.WrapKey(ctx, crypto.WrapAlgRSAOAEP, keyBytes, nil)
+	require.NoError(t, err)
+
+	// Unwrap
+	unwrapResp, err := cryptoClient.UnwrapKey(ctx, crypto.WrapAlgRSAOAEP, wrapResp.EncryptedKey, nil)
+	require.NoError(t, err)
+	require.Equal(t, keyBytes, unwrapResp.Key)
+
+}
+
+func TestClient_SignVerify(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	keyName, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	keyClient, err := createClient(t, REGULARTEST)
+	require.NoError(t, err)
+	_, err = keyClient.CreateRSAKey(ctx, keyName, nil)
+	require.NoError(t, err)
+
+	cryptoClient := keyClient.NewCryptoClient(keyName, nil)
+
+	hasher := sha256.New()
+	_, err = hasher.Write([]byte("plaintext"))
+	require.NoError(t, err)
+	digest := hasher.Sum(nil)
+
+	signResponse, err := cryptoClient.Sign(ctx, crypto.SignatureAlgRS256, digest, nil)
+	require.NoError(t, err)
+
+	verifyResponse, err := cryptoClient.Verify(ctx, crypto.SignatureAlgRS256, digest, signResponse.Signature, nil)
+	require.NoError(t, err)
+	require.True(t, *verifyResponse.IsValid)
 }

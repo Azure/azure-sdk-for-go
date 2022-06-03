@@ -38,7 +38,7 @@ func NewManagedInstancePrivateEndpointConnectionsClient(subscriptionID string, c
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewManagedInstancePrivateEndpointConnectionsClient(subscriptionID string, c
 
 // BeginCreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstancePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for
 // the ManagedInstancePrivateEndpointConnectionsClient.BeginCreateOrUpdate method.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, parameters ManagedInstancePrivateEndpointConnection, options *ManagedInstancePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse], error) {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, parameters ManagedInstancePrivateEndpointConnection, options *ManagedInstancePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagedInstancePrivateEndpointConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, parameters ManagedInstancePrivateEndpointConnection, options *ManagedInstancePrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, privateEndpointConnectionName, parameters, options)
 	if err != nil {
@@ -116,31 +118,33 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) createOrUpdateCre
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstancePrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the ManagedInstancePrivateEndpointConnectionsClient.BeginDelete
 // method.
-func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsClientBeginDeleteOptions) (*armruntime.Poller[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse], error) {
+func (client *ManagedInstancePrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, managedInstanceName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagedInstancePrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, privateEndpointConnectionName string, options *ManagedInstancePrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -187,6 +191,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) deleteCreateReque
 
 // Get - Gets a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -234,7 +239,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) getCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,13 +254,14 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) getHandleResponse
 
 // NewListByManagedInstancePager - Gets all private endpoint connections on a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions contains the optional parameters
 // for the ManagedInstancePrivateEndpointConnectionsClient.ListByManagedInstance method.
 func (client *ManagedInstancePrivateEndpointConnectionsClient) NewListByManagedInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceOptions) *runtime.Pager[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse]{
 		More: func(page ManagedInstancePrivateEndpointConnectionsClientListByManagedInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -304,7 +310,7 @@ func (client *ManagedInstancePrivateEndpointConnectionsClient) listByManagedInst
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -38,7 +38,7 @@ func NewAnnotationsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAnnotationsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Create - Create an Annotation of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // annotationProperties - Properties that need to be specified to create an annotation of a Application Insights component.
@@ -97,7 +98,7 @@ func (client *AnnotationsClient) createCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, annotationProperties)
 }
 
@@ -112,6 +113,7 @@ func (client *AnnotationsClient) createHandleResponse(resp *http.Response) (Anno
 
 // Delete - Delete an Annotation of an Application Insights component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // annotationID - The unique annotation ID. This is unique within a Application Insights component.
@@ -162,6 +164,7 @@ func (client *AnnotationsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Get the annotation for given id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // annotationID - The unique annotation ID. This is unique within a Application Insights component.
@@ -207,7 +210,7 @@ func (client *AnnotationsClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -222,13 +225,14 @@ func (client *AnnotationsClient) getHandleResponse(resp *http.Response) (Annotat
 
 // NewListPager - Gets the list of annotations for a component for given time range
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // start - The start time to query from for annotations, cannot be older than 90 days from current date.
 // end - The end time to query for annotations.
 // options - AnnotationsClientListOptions contains the optional parameters for the AnnotationsClient.List method.
 func (client *AnnotationsClient) NewListPager(resourceGroupName string, resourceName string, start string, end string, options *AnnotationsClientListOptions) *runtime.Pager[AnnotationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AnnotationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AnnotationsClientListResponse]{
 		More: func(page AnnotationsClientListResponse) bool {
 			return false
 		},
@@ -273,7 +277,7 @@ func (client *AnnotationsClient) listCreateRequest(ctx context.Context, resource
 	reqQP.Set("start", start)
 	reqQP.Set("end", end)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

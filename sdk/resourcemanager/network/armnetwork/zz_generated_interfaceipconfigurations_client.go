@@ -39,7 +39,7 @@ func NewInterfaceIPConfigurationsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewInterfaceIPConfigurationsClient(subscriptionID string, credential azcore
 
 // Get - Gets the specified network interface ip configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // networkInterfaceName - The name of the network interface.
 // ipConfigurationName - The name of the ip configuration name.
@@ -101,9 +102,9 @@ func (client *InterfaceIPConfigurationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,12 +119,13 @@ func (client *InterfaceIPConfigurationsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Get all ip configurations in a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // networkInterfaceName - The name of the network interface.
 // options - InterfaceIPConfigurationsClientListOptions contains the optional parameters for the InterfaceIPConfigurationsClient.List
 // method.
 func (client *InterfaceIPConfigurationsClient) NewListPager(resourceGroupName string, networkInterfaceName string, options *InterfaceIPConfigurationsClientListOptions) *runtime.Pager[InterfaceIPConfigurationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InterfaceIPConfigurationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InterfaceIPConfigurationsClientListResponse]{
 		More: func(page InterfaceIPConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -170,9 +172,9 @@ func (client *InterfaceIPConfigurationsClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

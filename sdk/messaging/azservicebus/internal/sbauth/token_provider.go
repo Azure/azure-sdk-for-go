@@ -10,9 +10,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sas"
 )
 
 // TokenProvider handles access tokens and expiration calculation for SAS

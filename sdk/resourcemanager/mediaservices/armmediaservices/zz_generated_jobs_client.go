@@ -38,7 +38,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // CancelJob - Cancel a Job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
@@ -106,12 +107,13 @@ func (client *JobsClient) cancelJobCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Create - Creates a Job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
@@ -163,7 +165,7 @@ func (client *JobsClient) createCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -178,6 +180,7 @@ func (client *JobsClient) createHandleResponse(resp *http.Response) (JobsClientC
 
 // Delete - Deletes a Job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
@@ -228,12 +231,13 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a Job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
@@ -284,7 +288,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -299,12 +303,13 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 
 // NewListPager - Lists all of the Jobs for the Transform.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
 // options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
 func (client *JobsClient) NewListPager(resourceGroupName string, accountName string, transformName string, options *JobsClientListOptions) *runtime.Pager[JobsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[JobsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[JobsClientListResponse]{
 		More: func(page JobsClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -363,7 +368,7 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -379,6 +384,7 @@ func (client *JobsClient) listHandleResponse(resp *http.Response) (JobsClientLis
 // Update - Update is only supported for description and priority. Updating Priority will take effect when the Job state is
 // Queued or Scheduled and depending on the timing the priority update may be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // transformName - The Transform name.
@@ -430,7 +436,7 @@ func (client *JobsClient) updateCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

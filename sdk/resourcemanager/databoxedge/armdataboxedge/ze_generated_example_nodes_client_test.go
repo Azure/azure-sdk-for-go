@@ -23,18 +23,17 @@ func ExampleNodesClient_NewListByDataBoxEdgeDevicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataboxedge.NewNodesClient("<subscription-id>", cred, nil)
+	client, err := armdataboxedge.NewNodesClient("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDataBoxEdgeDevicePager("<device-name>",
-		"<resource-group-name>",
+	pager := client.NewListByDataBoxEdgeDevicePager("testedgedevice",
+		"GroupForEdgeAutomation",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

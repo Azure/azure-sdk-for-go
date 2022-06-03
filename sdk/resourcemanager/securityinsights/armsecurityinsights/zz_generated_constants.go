@@ -10,7 +10,7 @@ package armsecurityinsights
 
 const (
 	moduleName    = "armsecurityinsights"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v1.0.0"
 )
 
 // ActionType - The type of the automation rule action
@@ -54,22 +54,16 @@ type AlertRuleKind string
 
 const (
 	AlertRuleKindFusion                            AlertRuleKind = "Fusion"
-	AlertRuleKindMLBehaviorAnalytics               AlertRuleKind = "MLBehaviorAnalytics"
 	AlertRuleKindMicrosoftSecurityIncidentCreation AlertRuleKind = "MicrosoftSecurityIncidentCreation"
-	AlertRuleKindNRT                               AlertRuleKind = "NRT"
 	AlertRuleKindScheduled                         AlertRuleKind = "Scheduled"
-	AlertRuleKindThreatIntelligence                AlertRuleKind = "ThreatIntelligence"
 )
 
 // PossibleAlertRuleKindValues returns the possible values for the AlertRuleKind const type.
 func PossibleAlertRuleKindValues() []AlertRuleKind {
 	return []AlertRuleKind{
 		AlertRuleKindFusion,
-		AlertRuleKindMLBehaviorAnalytics,
 		AlertRuleKindMicrosoftSecurityIncidentCreation,
-		AlertRuleKindNRT,
 		AlertRuleKindScheduled,
-		AlertRuleKindThreatIntelligence,
 	}
 }
 
@@ -152,23 +146,19 @@ func PossibleAntispamMailDirectionValues() []AntispamMailDirection {
 type AttackTactic string
 
 const (
-	AttackTacticCollection              AttackTactic = "Collection"
-	AttackTacticCommandAndControl       AttackTactic = "CommandAndControl"
-	AttackTacticCredentialAccess        AttackTactic = "CredentialAccess"
-	AttackTacticDefenseEvasion          AttackTactic = "DefenseEvasion"
-	AttackTacticDiscovery               AttackTactic = "Discovery"
-	AttackTacticExecution               AttackTactic = "Execution"
-	AttackTacticExfiltration            AttackTactic = "Exfiltration"
-	AttackTacticImpact                  AttackTactic = "Impact"
-	AttackTacticImpairProcessControl    AttackTactic = "ImpairProcessControl"
-	AttackTacticInhibitResponseFunction AttackTactic = "InhibitResponseFunction"
-	AttackTacticInitialAccess           AttackTactic = "InitialAccess"
-	AttackTacticLateralMovement         AttackTactic = "LateralMovement"
-	AttackTacticPersistence             AttackTactic = "Persistence"
-	AttackTacticPreAttack               AttackTactic = "PreAttack"
-	AttackTacticPrivilegeEscalation     AttackTactic = "PrivilegeEscalation"
-	AttackTacticReconnaissance          AttackTactic = "Reconnaissance"
-	AttackTacticResourceDevelopment     AttackTactic = "ResourceDevelopment"
+	AttackTacticCollection          AttackTactic = "Collection"
+	AttackTacticCommandAndControl   AttackTactic = "CommandAndControl"
+	AttackTacticCredentialAccess    AttackTactic = "CredentialAccess"
+	AttackTacticDefenseEvasion      AttackTactic = "DefenseEvasion"
+	AttackTacticDiscovery           AttackTactic = "Discovery"
+	AttackTacticExecution           AttackTactic = "Execution"
+	AttackTacticExfiltration        AttackTactic = "Exfiltration"
+	AttackTacticImpact              AttackTactic = "Impact"
+	AttackTacticInitialAccess       AttackTactic = "InitialAccess"
+	AttackTacticLateralMovement     AttackTactic = "LateralMovement"
+	AttackTacticPersistence         AttackTactic = "Persistence"
+	AttackTacticPreAttack           AttackTactic = "PreAttack"
+	AttackTacticPrivilegeEscalation AttackTactic = "PrivilegeEscalation"
 )
 
 // PossibleAttackTacticValues returns the possible values for the AttackTactic const type.
@@ -182,15 +172,11 @@ func PossibleAttackTacticValues() []AttackTactic {
 		AttackTacticExecution,
 		AttackTacticExfiltration,
 		AttackTacticImpact,
-		AttackTacticImpairProcessControl,
-		AttackTacticInhibitResponseFunction,
 		AttackTacticInitialAccess,
 		AttackTacticLateralMovement,
 		AttackTacticPersistence,
 		AttackTacticPreAttack,
 		AttackTacticPrivilegeEscalation,
-		AttackTacticReconnaissance,
-		AttackTacticResourceDevelopment,
 	}
 }
 
@@ -471,54 +457,6 @@ func PossibleConfidenceScoreStatusValues() []ConfidenceScoreStatus {
 	}
 }
 
-// ConnectAuthKind - The authentication kind used to poll the data
-type ConnectAuthKind string
-
-const (
-	ConnectAuthKindAPIKey ConnectAuthKind = "APIKey"
-	ConnectAuthKindBasic  ConnectAuthKind = "Basic"
-	ConnectAuthKindOAuth2 ConnectAuthKind = "OAuth2"
-)
-
-// PossibleConnectAuthKindValues returns the possible values for the ConnectAuthKind const type.
-func PossibleConnectAuthKindValues() []ConnectAuthKind {
-	return []ConnectAuthKind{
-		ConnectAuthKindAPIKey,
-		ConnectAuthKindBasic,
-		ConnectAuthKindOAuth2,
-	}
-}
-
-// ConnectivityType - type of connectivity
-type ConnectivityType string
-
-const (
-	ConnectivityTypeIsConnectedQuery ConnectivityType = "IsConnectedQuery"
-)
-
-// PossibleConnectivityTypeValues returns the possible values for the ConnectivityType const type.
-func PossibleConnectivityTypeValues() []ConnectivityType {
-	return []ConnectivityType{
-		ConnectivityTypeIsConnectedQuery,
-	}
-}
-
-// ContentType - The content type of a source control path.
-type ContentType string
-
-const (
-	ContentTypeAnalyticRule ContentType = "AnalyticRule"
-	ContentTypeWorkbook     ContentType = "Workbook"
-)
-
-// PossibleContentTypeValues returns the possible values for the ContentType const type.
-func PossibleContentTypeValues() []ContentType {
-	return []ContentType{
-		ContentTypeAnalyticRule,
-		ContentTypeWorkbook,
-	}
-}
-
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -539,103 +477,31 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// CustomEntityQueryKind - The kind of the entity query that supports put request.
-type CustomEntityQueryKind string
-
-const (
-	CustomEntityQueryKindActivity CustomEntityQueryKind = "Activity"
-)
-
-// PossibleCustomEntityQueryKindValues returns the possible values for the CustomEntityQueryKind const type.
-func PossibleCustomEntityQueryKindValues() []CustomEntityQueryKind {
-	return []CustomEntityQueryKind{
-		CustomEntityQueryKindActivity,
-	}
-}
-
-// DataConnectorAuthorizationState - Describes the state of user's authorization for a connector kind.
-type DataConnectorAuthorizationState string
-
-const (
-	DataConnectorAuthorizationStateInvalid DataConnectorAuthorizationState = "Invalid"
-	DataConnectorAuthorizationStateValid   DataConnectorAuthorizationState = "Valid"
-)
-
-// PossibleDataConnectorAuthorizationStateValues returns the possible values for the DataConnectorAuthorizationState const type.
-func PossibleDataConnectorAuthorizationStateValues() []DataConnectorAuthorizationState {
-	return []DataConnectorAuthorizationState{
-		DataConnectorAuthorizationStateInvalid,
-		DataConnectorAuthorizationStateValid,
-	}
-}
-
 // DataConnectorKind - The kind of the data connector
 type DataConnectorKind string
 
 const (
-	DataConnectorKindAPIPolling                                DataConnectorKind = "APIPolling"
 	DataConnectorKindAmazonWebServicesCloudTrail               DataConnectorKind = "AmazonWebServicesCloudTrail"
-	DataConnectorKindAmazonWebServicesS3                       DataConnectorKind = "AmazonWebServicesS3"
 	DataConnectorKindAzureActiveDirectory                      DataConnectorKind = "AzureActiveDirectory"
 	DataConnectorKindAzureAdvancedThreatProtection             DataConnectorKind = "AzureAdvancedThreatProtection"
 	DataConnectorKindAzureSecurityCenter                       DataConnectorKind = "AzureSecurityCenter"
-	DataConnectorKindDynamics365                               DataConnectorKind = "Dynamics365"
-	DataConnectorKindGenericUI                                 DataConnectorKind = "GenericUI"
-	DataConnectorKindIOT                                       DataConnectorKind = "IOT"
 	DataConnectorKindMicrosoftCloudAppSecurity                 DataConnectorKind = "MicrosoftCloudAppSecurity"
 	DataConnectorKindMicrosoftDefenderAdvancedThreatProtection DataConnectorKind = "MicrosoftDefenderAdvancedThreatProtection"
-	DataConnectorKindMicrosoftThreatIntelligence               DataConnectorKind = "MicrosoftThreatIntelligence"
-	DataConnectorKindMicrosoftThreatProtection                 DataConnectorKind = "MicrosoftThreatProtection"
 	DataConnectorKindOffice365                                 DataConnectorKind = "Office365"
-	DataConnectorKindOffice365Project                          DataConnectorKind = "Office365Project"
-	DataConnectorKindOfficeATP                                 DataConnectorKind = "OfficeATP"
-	DataConnectorKindOfficeIRM                                 DataConnectorKind = "OfficeIRM"
-	DataConnectorKindOfficePowerBI                             DataConnectorKind = "OfficePowerBI"
 	DataConnectorKindThreatIntelligence                        DataConnectorKind = "ThreatIntelligence"
-	DataConnectorKindThreatIntelligenceTaxii                   DataConnectorKind = "ThreatIntelligenceTaxii"
 )
 
 // PossibleDataConnectorKindValues returns the possible values for the DataConnectorKind const type.
 func PossibleDataConnectorKindValues() []DataConnectorKind {
 	return []DataConnectorKind{
-		DataConnectorKindAPIPolling,
 		DataConnectorKindAmazonWebServicesCloudTrail,
-		DataConnectorKindAmazonWebServicesS3,
 		DataConnectorKindAzureActiveDirectory,
 		DataConnectorKindAzureAdvancedThreatProtection,
 		DataConnectorKindAzureSecurityCenter,
-		DataConnectorKindDynamics365,
-		DataConnectorKindGenericUI,
-		DataConnectorKindIOT,
 		DataConnectorKindMicrosoftCloudAppSecurity,
 		DataConnectorKindMicrosoftDefenderAdvancedThreatProtection,
-		DataConnectorKindMicrosoftThreatIntelligence,
-		DataConnectorKindMicrosoftThreatProtection,
 		DataConnectorKindOffice365,
-		DataConnectorKindOffice365Project,
-		DataConnectorKindOfficeATP,
-		DataConnectorKindOfficeIRM,
-		DataConnectorKindOfficePowerBI,
 		DataConnectorKindThreatIntelligence,
-		DataConnectorKindThreatIntelligenceTaxii,
-	}
-}
-
-// DataConnectorLicenseState - Describes the state of user's license for a connector kind.
-type DataConnectorLicenseState string
-
-const (
-	DataConnectorLicenseStateInvalid DataConnectorLicenseState = "Invalid"
-	DataConnectorLicenseStateUnknown DataConnectorLicenseState = "Unknown"
-	DataConnectorLicenseStateValid   DataConnectorLicenseState = "Valid"
-)
-
-// PossibleDataConnectorLicenseStateValues returns the possible values for the DataConnectorLicenseState const type.
-func PossibleDataConnectorLicenseStateValues() []DataConnectorLicenseState {
-	return []DataConnectorLicenseState{
-		DataConnectorLicenseStateInvalid,
-		DataConnectorLicenseStateUnknown,
-		DataConnectorLicenseStateValid,
 	}
 }
 
@@ -721,62 +587,6 @@ func PossibleDeliveryLocationValues() []DeliveryLocation {
 	}
 }
 
-// DeploymentFetchStatus - Status while trying to fetch the deployment information.
-type DeploymentFetchStatus string
-
-const (
-	DeploymentFetchStatusNotFound     DeploymentFetchStatus = "NotFound"
-	DeploymentFetchStatusSuccess      DeploymentFetchStatus = "Success"
-	DeploymentFetchStatusUnauthorized DeploymentFetchStatus = "Unauthorized"
-)
-
-// PossibleDeploymentFetchStatusValues returns the possible values for the DeploymentFetchStatus const type.
-func PossibleDeploymentFetchStatusValues() []DeploymentFetchStatus {
-	return []DeploymentFetchStatus{
-		DeploymentFetchStatusNotFound,
-		DeploymentFetchStatusSuccess,
-		DeploymentFetchStatusUnauthorized,
-	}
-}
-
-// DeploymentResult - Status while trying to fetch the deployment information.
-type DeploymentResult string
-
-const (
-	DeploymentResultCanceled DeploymentResult = "Canceled"
-	DeploymentResultFailed   DeploymentResult = "Failed"
-	DeploymentResultSuccess  DeploymentResult = "Success"
-)
-
-// PossibleDeploymentResultValues returns the possible values for the DeploymentResult const type.
-func PossibleDeploymentResultValues() []DeploymentResult {
-	return []DeploymentResult{
-		DeploymentResultCanceled,
-		DeploymentResultFailed,
-		DeploymentResultSuccess,
-	}
-}
-
-// DeploymentState - The current state of the deployment.
-type DeploymentState string
-
-const (
-	DeploymentStateCanceling  DeploymentState = "Canceling"
-	DeploymentStateCompleted  DeploymentState = "Completed"
-	DeploymentStateInProgress DeploymentState = "In_Progress"
-	DeploymentStateQueued     DeploymentState = "Queued"
-)
-
-// PossibleDeploymentStateValues returns the possible values for the DeploymentState const type.
-func PossibleDeploymentStateValues() []DeploymentState {
-	return []DeploymentState{
-		DeploymentStateCanceling,
-		DeploymentStateCompleted,
-		DeploymentStateInProgress,
-		DeploymentStateQueued,
-	}
-}
-
 // ElevationToken - The elevation token associated with the process.
 type ElevationToken string
 
@@ -798,92 +608,78 @@ func PossibleElevationTokenValues() []ElevationToken {
 	}
 }
 
-type EntityItemQueryKind string
+// EntityKindEnum - The kind of the entity
+type EntityKindEnum string
 
 const (
-	// EntityItemQueryKindInsight - insight
-	EntityItemQueryKindInsight EntityItemQueryKind = "Insight"
+	// EntityKindEnumAccount - Entity represents account in the system.
+	EntityKindEnumAccount EntityKindEnum = "Account"
+	// EntityKindEnumAzureResource - Entity represents azure resource in the system.
+	EntityKindEnumAzureResource EntityKindEnum = "AzureResource"
+	// EntityKindEnumBookmark - Entity represents bookmark in the system.
+	EntityKindEnumBookmark EntityKindEnum = "Bookmark"
+	// EntityKindEnumCloudApplication - Entity represents cloud application in the system.
+	EntityKindEnumCloudApplication EntityKindEnum = "CloudApplication"
+	// EntityKindEnumDNSResolution - Entity represents dns resolution in the system.
+	EntityKindEnumDNSResolution EntityKindEnum = "DnsResolution"
+	// EntityKindEnumFile - Entity represents file in the system.
+	EntityKindEnumFile EntityKindEnum = "File"
+	// EntityKindEnumFileHash - Entity represents file hash in the system.
+	EntityKindEnumFileHash EntityKindEnum = "FileHash"
+	// EntityKindEnumHost - Entity represents host in the system.
+	EntityKindEnumHost EntityKindEnum = "Host"
+	// EntityKindEnumIP - Entity represents ip in the system.
+	EntityKindEnumIP EntityKindEnum = "Ip"
+	// EntityKindEnumIoTDevice - Entity represents IoT device in the system.
+	EntityKindEnumIoTDevice EntityKindEnum = "IoTDevice"
+	// EntityKindEnumMailCluster - Entity represents mail cluster in the system.
+	EntityKindEnumMailCluster EntityKindEnum = "MailCluster"
+	// EntityKindEnumMailMessage - Entity represents mail message in the system.
+	EntityKindEnumMailMessage EntityKindEnum = "MailMessage"
+	// EntityKindEnumMailbox - Entity represents mailbox in the system.
+	EntityKindEnumMailbox EntityKindEnum = "Mailbox"
+	// EntityKindEnumMalware - Entity represents malware in the system.
+	EntityKindEnumMalware EntityKindEnum = "Malware"
+	// EntityKindEnumProcess - Entity represents process in the system.
+	EntityKindEnumProcess EntityKindEnum = "Process"
+	// EntityKindEnumRegistryKey - Entity represents registry key in the system.
+	EntityKindEnumRegistryKey EntityKindEnum = "RegistryKey"
+	// EntityKindEnumRegistryValue - Entity represents registry value in the system.
+	EntityKindEnumRegistryValue EntityKindEnum = "RegistryValue"
+	// EntityKindEnumSecurityAlert - Entity represents security alert in the system.
+	EntityKindEnumSecurityAlert EntityKindEnum = "SecurityAlert"
+	// EntityKindEnumSecurityGroup - Entity represents security group in the system.
+	EntityKindEnumSecurityGroup EntityKindEnum = "SecurityGroup"
+	// EntityKindEnumSubmissionMail - Entity represents submission mail in the system.
+	EntityKindEnumSubmissionMail EntityKindEnum = "SubmissionMail"
+	// EntityKindEnumURL - Entity represents url in the system.
+	EntityKindEnumURL EntityKindEnum = "Url"
 )
 
-// PossibleEntityItemQueryKindValues returns the possible values for the EntityItemQueryKind const type.
-func PossibleEntityItemQueryKindValues() []EntityItemQueryKind {
-	return []EntityItemQueryKind{
-		EntityItemQueryKindInsight,
-	}
-}
-
-// EntityKind - The kind of the entity
-type EntityKind string
-
-const (
-	// EntityKindAccount - Entity represents account in the system.
-	EntityKindAccount EntityKind = "Account"
-	// EntityKindAzureResource - Entity represents azure resource in the system.
-	EntityKindAzureResource EntityKind = "AzureResource"
-	// EntityKindBookmark - Entity represents bookmark in the system.
-	EntityKindBookmark EntityKind = "Bookmark"
-	// EntityKindCloudApplication - Entity represents cloud application in the system.
-	EntityKindCloudApplication EntityKind = "CloudApplication"
-	// EntityKindDNSResolution - Entity represents dns resolution in the system.
-	EntityKindDNSResolution EntityKind = "DnsResolution"
-	// EntityKindFile - Entity represents file in the system.
-	EntityKindFile EntityKind = "File"
-	// EntityKindFileHash - Entity represents file hash in the system.
-	EntityKindFileHash EntityKind = "FileHash"
-	// EntityKindHost - Entity represents host in the system.
-	EntityKindHost EntityKind = "Host"
-	// EntityKindIP - Entity represents ip in the system.
-	EntityKindIP EntityKind = "Ip"
-	// EntityKindIoTDevice - Entity represents IoT device in the system.
-	EntityKindIoTDevice EntityKind = "IoTDevice"
-	// EntityKindMailCluster - Entity represents mail cluster in the system.
-	EntityKindMailCluster EntityKind = "MailCluster"
-	// EntityKindMailMessage - Entity represents mail message in the system.
-	EntityKindMailMessage EntityKind = "MailMessage"
-	// EntityKindMailbox - Entity represents mailbox in the system.
-	EntityKindMailbox EntityKind = "Mailbox"
-	// EntityKindMalware - Entity represents malware in the system.
-	EntityKindMalware EntityKind = "Malware"
-	// EntityKindProcess - Entity represents process in the system.
-	EntityKindProcess EntityKind = "Process"
-	// EntityKindRegistryKey - Entity represents registry key in the system.
-	EntityKindRegistryKey EntityKind = "RegistryKey"
-	// EntityKindRegistryValue - Entity represents registry value in the system.
-	EntityKindRegistryValue EntityKind = "RegistryValue"
-	// EntityKindSecurityAlert - Entity represents security alert in the system.
-	EntityKindSecurityAlert EntityKind = "SecurityAlert"
-	// EntityKindSecurityGroup - Entity represents security group in the system.
-	EntityKindSecurityGroup EntityKind = "SecurityGroup"
-	// EntityKindSubmissionMail - Entity represents submission mail in the system.
-	EntityKindSubmissionMail EntityKind = "SubmissionMail"
-	// EntityKindURL - Entity represents url in the system.
-	EntityKindURL EntityKind = "Url"
-)
-
-// PossibleEntityKindValues returns the possible values for the EntityKind const type.
-func PossibleEntityKindValues() []EntityKind {
-	return []EntityKind{
-		EntityKindAccount,
-		EntityKindAzureResource,
-		EntityKindBookmark,
-		EntityKindCloudApplication,
-		EntityKindDNSResolution,
-		EntityKindFile,
-		EntityKindFileHash,
-		EntityKindHost,
-		EntityKindIP,
-		EntityKindIoTDevice,
-		EntityKindMailCluster,
-		EntityKindMailMessage,
-		EntityKindMailbox,
-		EntityKindMalware,
-		EntityKindProcess,
-		EntityKindRegistryKey,
-		EntityKindRegistryValue,
-		EntityKindSecurityAlert,
-		EntityKindSecurityGroup,
-		EntityKindSubmissionMail,
-		EntityKindURL,
+// PossibleEntityKindEnumValues returns the possible values for the EntityKindEnum const type.
+func PossibleEntityKindEnumValues() []EntityKindEnum {
+	return []EntityKindEnum{
+		EntityKindEnumAccount,
+		EntityKindEnumAzureResource,
+		EntityKindEnumBookmark,
+		EntityKindEnumCloudApplication,
+		EntityKindEnumDNSResolution,
+		EntityKindEnumFile,
+		EntityKindEnumFileHash,
+		EntityKindEnumHost,
+		EntityKindEnumIP,
+		EntityKindEnumIoTDevice,
+		EntityKindEnumMailCluster,
+		EntityKindEnumMailMessage,
+		EntityKindEnumMailbox,
+		EntityKindEnumMalware,
+		EntityKindEnumProcess,
+		EntityKindEnumRegistryKey,
+		EntityKindEnumRegistryValue,
+		EntityKindEnumSecurityAlert,
+		EntityKindEnumSecurityGroup,
+		EntityKindEnumSubmissionMail,
+		EntityKindEnumURL,
 	}
 }
 
@@ -953,178 +749,6 @@ func PossibleEntityMappingTypeValues() []EntityMappingType {
 	}
 }
 
-// EntityProviders - The entity provider that is synced.
-type EntityProviders string
-
-const (
-	EntityProvidersActiveDirectory      EntityProviders = "ActiveDirectory"
-	EntityProvidersAzureActiveDirectory EntityProviders = "AzureActiveDirectory"
-)
-
-// PossibleEntityProvidersValues returns the possible values for the EntityProviders const type.
-func PossibleEntityProvidersValues() []EntityProviders {
-	return []EntityProviders{
-		EntityProvidersActiveDirectory,
-		EntityProvidersAzureActiveDirectory,
-	}
-}
-
-// EntityQueryKind - The kind of the entity query
-type EntityQueryKind string
-
-const (
-	EntityQueryKindActivity  EntityQueryKind = "Activity"
-	EntityQueryKindExpansion EntityQueryKind = "Expansion"
-	EntityQueryKindInsight   EntityQueryKind = "Insight"
-)
-
-// PossibleEntityQueryKindValues returns the possible values for the EntityQueryKind const type.
-func PossibleEntityQueryKindValues() []EntityQueryKind {
-	return []EntityQueryKind{
-		EntityQueryKindActivity,
-		EntityQueryKindExpansion,
-		EntityQueryKindInsight,
-	}
-}
-
-// EntityQueryTemplateKind - The kind of the entity query template.
-type EntityQueryTemplateKind string
-
-const (
-	EntityQueryTemplateKindActivity EntityQueryTemplateKind = "Activity"
-)
-
-// PossibleEntityQueryTemplateKindValues returns the possible values for the EntityQueryTemplateKind const type.
-func PossibleEntityQueryTemplateKindValues() []EntityQueryTemplateKind {
-	return []EntityQueryTemplateKind{
-		EntityQueryTemplateKindActivity,
-	}
-}
-
-// EntityTimelineKind - The entity query kind
-type EntityTimelineKind string
-
-const (
-	// EntityTimelineKindActivity - activity
-	EntityTimelineKindActivity EntityTimelineKind = "Activity"
-	// EntityTimelineKindBookmark - bookmarks
-	EntityTimelineKindBookmark EntityTimelineKind = "Bookmark"
-	// EntityTimelineKindSecurityAlert - security alerts
-	EntityTimelineKindSecurityAlert EntityTimelineKind = "SecurityAlert"
-)
-
-// PossibleEntityTimelineKindValues returns the possible values for the EntityTimelineKind const type.
-func PossibleEntityTimelineKindValues() []EntityTimelineKind {
-	return []EntityTimelineKind{
-		EntityTimelineKindActivity,
-		EntityTimelineKindBookmark,
-		EntityTimelineKindSecurityAlert,
-	}
-}
-
-// EntityType - The type of the entity
-type EntityType string
-
-const (
-	// EntityTypeAccount - Entity represents account in the system.
-	EntityTypeAccount EntityType = "Account"
-	// EntityTypeAzureResource - Entity represents azure resource in the system.
-	EntityTypeAzureResource EntityType = "AzureResource"
-	// EntityTypeCloudApplication - Entity represents cloud application in the system.
-	EntityTypeCloudApplication EntityType = "CloudApplication"
-	// EntityTypeDNS - Entity represents dns in the system.
-	EntityTypeDNS EntityType = "DNS"
-	// EntityTypeFile - Entity represents file in the system.
-	EntityTypeFile EntityType = "File"
-	// EntityTypeFileHash - Entity represents file hash in the system.
-	EntityTypeFileHash EntityType = "FileHash"
-	// EntityTypeHost - Entity represents host in the system.
-	EntityTypeHost EntityType = "Host"
-	// EntityTypeHuntingBookmark - Entity represents HuntingBookmark in the system.
-	EntityTypeHuntingBookmark EntityType = "HuntingBookmark"
-	// EntityTypeIP - Entity represents ip in the system.
-	EntityTypeIP EntityType = "IP"
-	// EntityTypeIoTDevice - Entity represents IoT device in the system.
-	EntityTypeIoTDevice EntityType = "IoTDevice"
-	// EntityTypeMailCluster - Entity represents mail cluster in the system.
-	EntityTypeMailCluster EntityType = "MailCluster"
-	// EntityTypeMailMessage - Entity represents mail message in the system.
-	EntityTypeMailMessage EntityType = "MailMessage"
-	// EntityTypeMailbox - Entity represents mailbox in the system.
-	EntityTypeMailbox EntityType = "Mailbox"
-	// EntityTypeMalware - Entity represents malware in the system.
-	EntityTypeMalware EntityType = "Malware"
-	// EntityTypeProcess - Entity represents process in the system.
-	EntityTypeProcess EntityType = "Process"
-	// EntityTypeRegistryKey - Entity represents registry key in the system.
-	EntityTypeRegistryKey EntityType = "RegistryKey"
-	// EntityTypeRegistryValue - Entity represents registry value in the system.
-	EntityTypeRegistryValue EntityType = "RegistryValue"
-	// EntityTypeSecurityAlert - Entity represents security alert in the system.
-	EntityTypeSecurityAlert EntityType = "SecurityAlert"
-	// EntityTypeSecurityGroup - Entity represents security group in the system.
-	EntityTypeSecurityGroup EntityType = "SecurityGroup"
-	// EntityTypeSubmissionMail - Entity represents submission mail in the system.
-	EntityTypeSubmissionMail EntityType = "SubmissionMail"
-	// EntityTypeURL - Entity represents url in the system.
-	EntityTypeURL EntityType = "URL"
-)
-
-// PossibleEntityTypeValues returns the possible values for the EntityType const type.
-func PossibleEntityTypeValues() []EntityType {
-	return []EntityType{
-		EntityTypeAccount,
-		EntityTypeAzureResource,
-		EntityTypeCloudApplication,
-		EntityTypeDNS,
-		EntityTypeFile,
-		EntityTypeFileHash,
-		EntityTypeHost,
-		EntityTypeHuntingBookmark,
-		EntityTypeIP,
-		EntityTypeIoTDevice,
-		EntityTypeMailCluster,
-		EntityTypeMailMessage,
-		EntityTypeMailbox,
-		EntityTypeMalware,
-		EntityTypeProcess,
-		EntityTypeRegistryKey,
-		EntityTypeRegistryValue,
-		EntityTypeSecurityAlert,
-		EntityTypeSecurityGroup,
-		EntityTypeSubmissionMail,
-		EntityTypeURL,
-	}
-}
-
-type Enum13 string
-
-const (
-	Enum13Activity  Enum13 = "Activity"
-	Enum13Expansion Enum13 = "Expansion"
-)
-
-// PossibleEnum13Values returns the possible values for the Enum13 const type.
-func PossibleEnum13Values() []Enum13 {
-	return []Enum13{
-		Enum13Activity,
-		Enum13Expansion,
-	}
-}
-
-type Enum15 string
-
-const (
-	Enum15Activity Enum15 = "Activity"
-)
-
-// PossibleEnum15Values returns the possible values for the Enum15 const type.
-func PossibleEnum15Values() []Enum15 {
-	return []Enum15{
-		Enum15Activity,
-	}
-}
-
 // EventGroupingAggregationKind - The event grouping aggregation kinds
 type EventGroupingAggregationKind string
 
@@ -1165,20 +789,6 @@ func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 		FileHashAlgorithmSHA256,
 		FileHashAlgorithmSHA256AC,
 		FileHashAlgorithmUnknown,
-	}
-}
-
-// GetInsightsErrorKind - the query kind
-type GetInsightsErrorKind string
-
-const (
-	GetInsightsErrorKindInsight GetInsightsErrorKind = "Insight"
-)
-
-// PossibleGetInsightsErrorKindValues returns the possible values for the GetInsightsErrorKind const type.
-func PossibleGetInsightsErrorKindValues() []GetInsightsErrorKind {
-	return []GetInsightsErrorKind{
-		GetInsightsErrorKindInsight,
 	}
 }
 
@@ -1381,52 +991,6 @@ func PossibleKillChainIntentValues() []KillChainIntent {
 	}
 }
 
-// Kind - The kind of content the metadata is for.
-type Kind string
-
-const (
-	KindAnalyticsRule            Kind = "AnalyticsRule"
-	KindAnalyticsRuleTemplate    Kind = "AnalyticsRuleTemplate"
-	KindAutomationRule           Kind = "AutomationRule"
-	KindAzureFunction            Kind = "AzureFunction"
-	KindDataConnector            Kind = "DataConnector"
-	KindDataType                 Kind = "DataType"
-	KindHuntingQuery             Kind = "HuntingQuery"
-	KindInvestigationQuery       Kind = "InvestigationQuery"
-	KindLogicAppsCustomConnector Kind = "LogicAppsCustomConnector"
-	KindParser                   Kind = "Parser"
-	KindPlaybook                 Kind = "Playbook"
-	KindPlaybookTemplate         Kind = "PlaybookTemplate"
-	KindSolution                 Kind = "Solution"
-	KindWatchlist                Kind = "Watchlist"
-	KindWatchlistTemplate        Kind = "WatchlistTemplate"
-	KindWorkbook                 Kind = "Workbook"
-	KindWorkbookTemplate         Kind = "WorkbookTemplate"
-)
-
-// PossibleKindValues returns the possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{
-		KindAnalyticsRule,
-		KindAnalyticsRuleTemplate,
-		KindAutomationRule,
-		KindAzureFunction,
-		KindDataConnector,
-		KindDataType,
-		KindHuntingQuery,
-		KindInvestigationQuery,
-		KindLogicAppsCustomConnector,
-		KindParser,
-		KindPlaybook,
-		KindPlaybookTemplate,
-		KindSolution,
-		KindWatchlist,
-		KindWatchlistTemplate,
-		KindWorkbook,
-		KindWorkbookTemplate,
-	}
-}
-
 // MatchingMethod - Grouping matching method. When method is Selected at least one of groupByEntities, groupByAlertDetails,
 // groupByCustomDetails must be provided and not empty.
 type MatchingMethod string
@@ -1454,13 +1018,11 @@ func PossibleMatchingMethodValues() []MatchingMethod {
 type MicrosoftSecurityProductName string
 
 const (
-	MicrosoftSecurityProductNameAzureActiveDirectoryIdentityProtection    MicrosoftSecurityProductName = "Azure Active Directory Identity Protection"
-	MicrosoftSecurityProductNameAzureAdvancedThreatProtection             MicrosoftSecurityProductName = "Azure Advanced Threat Protection"
-	MicrosoftSecurityProductNameAzureSecurityCenter                       MicrosoftSecurityProductName = "Azure Security Center"
-	MicrosoftSecurityProductNameAzureSecurityCenterForIoT                 MicrosoftSecurityProductName = "Azure Security Center for IoT"
-	MicrosoftSecurityProductNameMicrosoftCloudAppSecurity                 MicrosoftSecurityProductName = "Microsoft Cloud App Security"
-	MicrosoftSecurityProductNameMicrosoftDefenderAdvancedThreatProtection MicrosoftSecurityProductName = "Microsoft Defender Advanced Threat Protection"
-	MicrosoftSecurityProductNameOffice365AdvancedThreatProtection         MicrosoftSecurityProductName = "Office 365 Advanced Threat Protection"
+	MicrosoftSecurityProductNameAzureActiveDirectoryIdentityProtection MicrosoftSecurityProductName = "Azure Active Directory Identity Protection"
+	MicrosoftSecurityProductNameAzureAdvancedThreatProtection          MicrosoftSecurityProductName = "Azure Advanced Threat Protection"
+	MicrosoftSecurityProductNameAzureSecurityCenter                    MicrosoftSecurityProductName = "Azure Security Center"
+	MicrosoftSecurityProductNameAzureSecurityCenterForIoT              MicrosoftSecurityProductName = "Azure Security Center for IoT"
+	MicrosoftSecurityProductNameMicrosoftCloudAppSecurity              MicrosoftSecurityProductName = "Microsoft Cloud App Security"
 )
 
 // PossibleMicrosoftSecurityProductNameValues returns the possible values for the MicrosoftSecurityProductName const type.
@@ -1471,8 +1033,6 @@ func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName
 		MicrosoftSecurityProductNameAzureSecurityCenter,
 		MicrosoftSecurityProductNameAzureSecurityCenterForIoT,
 		MicrosoftSecurityProductNameMicrosoftCloudAppSecurity,
-		MicrosoftSecurityProductNameMicrosoftDefenderAdvancedThreatProtection,
-		MicrosoftSecurityProductNameOffice365AdvancedThreatProtection,
 	}
 }
 
@@ -1503,42 +1063,6 @@ func PossibleOSFamilyValues() []OSFamily {
 	}
 }
 
-// Operator - Operator used for list of dependencies in criteria array.
-type Operator string
-
-const (
-	OperatorAND Operator = "AND"
-	OperatorOR  Operator = "OR"
-)
-
-// PossibleOperatorValues returns the possible values for the Operator const type.
-func PossibleOperatorValues() []Operator {
-	return []Operator{
-		OperatorAND,
-		OperatorOR,
-	}
-}
-
-// OutputType - Insights Column type.
-type OutputType string
-
-const (
-	OutputTypeDate   OutputType = "Date"
-	OutputTypeEntity OutputType = "Entity"
-	OutputTypeNumber OutputType = "Number"
-	OutputTypeString OutputType = "String"
-)
-
-// PossibleOutputTypeValues returns the possible values for the OutputType const type.
-func PossibleOutputTypeValues() []OutputType {
-	return []OutputType{
-		OutputTypeDate,
-		OutputTypeEntity,
-		OutputTypeNumber,
-		OutputTypeString,
-	}
-}
-
 // OwnerType - The type of the owner the incident is assigned to.
 type OwnerType string
 
@@ -1557,69 +1081,6 @@ func PossibleOwnerTypeValues() []OwnerType {
 		OwnerTypeGroup,
 		OwnerTypeUnknown,
 		OwnerTypeUser,
-	}
-}
-
-// PermissionProviderScope - Permission provider scope
-type PermissionProviderScope string
-
-const (
-	PermissionProviderScopeResourceGroup PermissionProviderScope = "ResourceGroup"
-	PermissionProviderScopeSubscription  PermissionProviderScope = "Subscription"
-	PermissionProviderScopeWorkspace     PermissionProviderScope = "Workspace"
-)
-
-// PossiblePermissionProviderScopeValues returns the possible values for the PermissionProviderScope const type.
-func PossiblePermissionProviderScopeValues() []PermissionProviderScope {
-	return []PermissionProviderScope{
-		PermissionProviderScopeResourceGroup,
-		PermissionProviderScopeSubscription,
-		PermissionProviderScopeWorkspace,
-	}
-}
-
-// PollingFrequency - The polling frequency for the TAXII server.
-type PollingFrequency string
-
-const (
-	// PollingFrequencyOnceADay - Once a day
-	PollingFrequencyOnceADay PollingFrequency = "OnceADay"
-	// PollingFrequencyOnceAMinute - Once a minute
-	PollingFrequencyOnceAMinute PollingFrequency = "OnceAMinute"
-	// PollingFrequencyOnceAnHour - Once an hour
-	PollingFrequencyOnceAnHour PollingFrequency = "OnceAnHour"
-)
-
-// PossiblePollingFrequencyValues returns the possible values for the PollingFrequency const type.
-func PossiblePollingFrequencyValues() []PollingFrequency {
-	return []PollingFrequency{
-		PollingFrequencyOnceADay,
-		PollingFrequencyOnceAMinute,
-		PollingFrequencyOnceAnHour,
-	}
-}
-
-// ProviderName - Provider name
-type ProviderName string
-
-const (
-	ProviderNameMicrosoftAadiamDiagnosticSettings                 ProviderName = "microsoft.aadiam/diagnosticSettings"
-	ProviderNameMicrosoftAuthorizationPolicyAssignments           ProviderName = "Microsoft.Authorization/policyAssignments"
-	ProviderNameMicrosoftOperationalInsightsSolutions             ProviderName = "Microsoft.OperationalInsights/solutions"
-	ProviderNameMicrosoftOperationalInsightsWorkspaces            ProviderName = "Microsoft.OperationalInsights/workspaces"
-	ProviderNameMicrosoftOperationalInsightsWorkspacesDatasources ProviderName = "Microsoft.OperationalInsights/workspaces/datasources"
-	ProviderNameMicrosoftOperationalInsightsWorkspacesSharedKeys  ProviderName = "Microsoft.OperationalInsights/workspaces/sharedKeys"
-)
-
-// PossibleProviderNameValues returns the possible values for the ProviderName const type.
-func PossibleProviderNameValues() []ProviderName {
-	return []ProviderName{
-		ProviderNameMicrosoftAadiamDiagnosticSettings,
-		ProviderNameMicrosoftAuthorizationPolicyAssignments,
-		ProviderNameMicrosoftOperationalInsightsSolutions,
-		ProviderNameMicrosoftOperationalInsightsWorkspaces,
-		ProviderNameMicrosoftOperationalInsightsWorkspacesDatasources,
-		ProviderNameMicrosoftOperationalInsightsWorkspacesSharedKeys,
 	}
 }
 
@@ -1702,127 +1163,19 @@ func PossibleRegistryValueKindValues() []RegistryValueKind {
 	}
 }
 
-// RepoType - The type of repository.
-type RepoType string
+// Source - The source of the watchlist
+type Source string
 
 const (
-	RepoTypeDevOps RepoType = "DevOps"
-	RepoTypeGithub RepoType = "Github"
+	SourceLocalFile     Source = "Local file"
+	SourceRemoteStorage Source = "Remote storage"
 )
 
-// PossibleRepoTypeValues returns the possible values for the RepoType const type.
-func PossibleRepoTypeValues() []RepoType {
-	return []RepoType{
-		RepoTypeDevOps,
-		RepoTypeGithub,
-	}
-}
-
-// SKUKind - The kind of the tier
-type SKUKind string
-
-const (
-	SKUKindCapacityReservation SKUKind = "CapacityReservation"
-	SKUKindPerGB               SKUKind = "PerGB"
-)
-
-// PossibleSKUKindValues returns the possible values for the SKUKind const type.
-func PossibleSKUKindValues() []SKUKind {
-	return []SKUKind{
-		SKUKindCapacityReservation,
-		SKUKindPerGB,
-	}
-}
-
-// SettingKind - The kind of the setting
-type SettingKind string
-
-const (
-	SettingKindAnomalies       SettingKind = "Anomalies"
-	SettingKindEntityAnalytics SettingKind = "EntityAnalytics"
-	SettingKindEyesOn          SettingKind = "EyesOn"
-	SettingKindUeba            SettingKind = "Ueba"
-)
-
-// PossibleSettingKindValues returns the possible values for the SettingKind const type.
-func PossibleSettingKindValues() []SettingKind {
-	return []SettingKind{
-		SettingKindAnomalies,
-		SettingKindEntityAnalytics,
-		SettingKindEyesOn,
-		SettingKindUeba,
-	}
-}
-
-// SettingType - The kind of the setting
-type SettingType string
-
-const (
-	SettingTypeCopyableLabel         SettingType = "CopyableLabel"
-	SettingTypeInfoMessage           SettingType = "InfoMessage"
-	SettingTypeInstructionStepsGroup SettingType = "InstructionStepsGroup"
-)
-
-// PossibleSettingTypeValues returns the possible values for the SettingType const type.
-func PossibleSettingTypeValues() []SettingType {
-	return []SettingType{
-		SettingTypeCopyableLabel,
-		SettingTypeInfoMessage,
-		SettingTypeInstructionStepsGroup,
-	}
-}
-
-// SourceKind - Source type of the content
-type SourceKind string
-
-const (
-	SourceKindCommunity        SourceKind = "Community"
-	SourceKindLocalWorkspace   SourceKind = "LocalWorkspace"
-	SourceKindSolution         SourceKind = "Solution"
-	SourceKindSourceRepository SourceKind = "SourceRepository"
-)
-
-// PossibleSourceKindValues returns the possible values for the SourceKind const type.
-func PossibleSourceKindValues() []SourceKind {
-	return []SourceKind{
-		SourceKindCommunity,
-		SourceKindLocalWorkspace,
-		SourceKindSolution,
-		SourceKindSourceRepository,
-	}
-}
-
-// SourceType - The sourceType of the watchlist
-type SourceType string
-
-const (
-	SourceTypeLocalFile     SourceType = "Local file"
-	SourceTypeRemoteStorage SourceType = "Remote storage"
-)
-
-// PossibleSourceTypeValues returns the possible values for the SourceType const type.
-func PossibleSourceTypeValues() []SourceType {
-	return []SourceType{
-		SourceTypeLocalFile,
-		SourceTypeRemoteStorage,
-	}
-}
-
-// SupportTier - Type of support for content item
-type SupportTier string
-
-const (
-	SupportTierCommunity SupportTier = "Community"
-	SupportTierMicrosoft SupportTier = "Microsoft"
-	SupportTierPartner   SupportTier = "Partner"
-)
-
-// PossibleSupportTierValues returns the possible values for the SupportTier const type.
-func PossibleSupportTierValues() []SupportTier {
-	return []SupportTier{
-		SupportTierCommunity,
-		SupportTierMicrosoft,
-		SupportTierPartner,
+// PossibleSourceValues returns the possible values for the Source const type.
+func PossibleSourceValues() []Source {
+	return []Source{
+		SourceLocalFile,
+		SourceRemoteStorage,
 	}
 }
 
@@ -1847,36 +1200,36 @@ func PossibleTemplateStatusValues() []TemplateStatus {
 	}
 }
 
-// ThreatIntelligenceResourceKindEnum - The kind of the threat intelligence entity
-type ThreatIntelligenceResourceKindEnum string
+// ThreatIntelligenceResourceInnerKind - The kind of the threat intelligence entity
+type ThreatIntelligenceResourceInnerKind string
 
 const (
-	// ThreatIntelligenceResourceKindEnumIndicator - Entity represents threat intelligence indicator in the system.
-	ThreatIntelligenceResourceKindEnumIndicator ThreatIntelligenceResourceKindEnum = "indicator"
+	// ThreatIntelligenceResourceInnerKindIndicator - Entity represents threat intelligence indicator in the system.
+	ThreatIntelligenceResourceInnerKindIndicator ThreatIntelligenceResourceInnerKind = "indicator"
 )
 
-// PossibleThreatIntelligenceResourceKindEnumValues returns the possible values for the ThreatIntelligenceResourceKindEnum const type.
-func PossibleThreatIntelligenceResourceKindEnumValues() []ThreatIntelligenceResourceKindEnum {
-	return []ThreatIntelligenceResourceKindEnum{
-		ThreatIntelligenceResourceKindEnumIndicator,
+// PossibleThreatIntelligenceResourceInnerKindValues returns the possible values for the ThreatIntelligenceResourceInnerKind const type.
+func PossibleThreatIntelligenceResourceInnerKindValues() []ThreatIntelligenceResourceInnerKind {
+	return []ThreatIntelligenceResourceInnerKind{
+		ThreatIntelligenceResourceInnerKindIndicator,
 	}
 }
 
-// ThreatIntelligenceSortingCriteriaEnum - Sorting order (ascending/descending/unsorted).
-type ThreatIntelligenceSortingCriteriaEnum string
+// ThreatIntelligenceSortingOrder - Sorting order (ascending/descending/unsorted).
+type ThreatIntelligenceSortingOrder string
 
 const (
-	ThreatIntelligenceSortingCriteriaEnumAscending  ThreatIntelligenceSortingCriteriaEnum = "ascending"
-	ThreatIntelligenceSortingCriteriaEnumDescending ThreatIntelligenceSortingCriteriaEnum = "descending"
-	ThreatIntelligenceSortingCriteriaEnumUnsorted   ThreatIntelligenceSortingCriteriaEnum = "unsorted"
+	ThreatIntelligenceSortingOrderAscending  ThreatIntelligenceSortingOrder = "ascending"
+	ThreatIntelligenceSortingOrderDescending ThreatIntelligenceSortingOrder = "descending"
+	ThreatIntelligenceSortingOrderUnsorted   ThreatIntelligenceSortingOrder = "unsorted"
 )
 
-// PossibleThreatIntelligenceSortingCriteriaEnumValues returns the possible values for the ThreatIntelligenceSortingCriteriaEnum const type.
-func PossibleThreatIntelligenceSortingCriteriaEnumValues() []ThreatIntelligenceSortingCriteriaEnum {
-	return []ThreatIntelligenceSortingCriteriaEnum{
-		ThreatIntelligenceSortingCriteriaEnumAscending,
-		ThreatIntelligenceSortingCriteriaEnumDescending,
-		ThreatIntelligenceSortingCriteriaEnumUnsorted,
+// PossibleThreatIntelligenceSortingOrderValues returns the possible values for the ThreatIntelligenceSortingOrder const type.
+func PossibleThreatIntelligenceSortingOrderValues() []ThreatIntelligenceSortingOrder {
+	return []ThreatIntelligenceSortingOrder{
+		ThreatIntelligenceSortingOrderAscending,
+		ThreatIntelligenceSortingOrderDescending,
+		ThreatIntelligenceSortingOrderUnsorted,
 	}
 }
 
@@ -1925,41 +1278,5 @@ const (
 func PossibleTriggersWhenValues() []TriggersWhen {
 	return []TriggersWhen{
 		TriggersWhenCreated,
-	}
-}
-
-// UebaDataSources - The data source that enriched by ueba.
-type UebaDataSources string
-
-const (
-	UebaDataSourcesAuditLogs     UebaDataSources = "AuditLogs"
-	UebaDataSourcesAzureActivity UebaDataSources = "AzureActivity"
-	UebaDataSourcesSecurityEvent UebaDataSources = "SecurityEvent"
-	UebaDataSourcesSigninLogs    UebaDataSources = "SigninLogs"
-)
-
-// PossibleUebaDataSourcesValues returns the possible values for the UebaDataSources const type.
-func PossibleUebaDataSourcesValues() []UebaDataSources {
-	return []UebaDataSources{
-		UebaDataSourcesAuditLogs,
-		UebaDataSourcesAzureActivity,
-		UebaDataSourcesSecurityEvent,
-		UebaDataSourcesSigninLogs,
-	}
-}
-
-// Version - The version of the source control.
-type Version string
-
-const (
-	VersionV1 Version = "V1"
-	VersionV2 Version = "V2"
-)
-
-// PossibleVersionValues returns the possible values for the Version const type.
-func PossibleVersionValues() []Version {
-	return []Version{
-		VersionV1,
-		VersionV2,
 	}
 }

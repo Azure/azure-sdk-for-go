@@ -42,7 +42,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, resourceGroupName stri
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, resourceGroupName stri
 
 // Get - Get properties of a private link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-01
 // privateLinkResourceName - The name of private link resource.
 // options - PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get
 // method.
@@ -106,7 +107,7 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -121,10 +122,11 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 
 // NewListByResourcePager - List private link resources under a specific Power BI resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-01
 // options - PrivateLinkResourcesClientListByResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByResource
 // method.
 func (client *PrivateLinkResourcesClient) NewListByResourcePager(options *PrivateLinkResourcesClientListByResourceOptions) *runtime.Pager[PrivateLinkResourcesClientListByResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourcesClientListByResourceResponse]{
 		More: func(page PrivateLinkResourcesClientListByResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -173,7 +175,7 @@ func (client *PrivateLinkResourcesClient) listByResourceCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

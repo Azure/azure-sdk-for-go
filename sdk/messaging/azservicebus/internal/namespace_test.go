@@ -11,10 +11,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
-	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,8 +23,8 @@ type fakeTokenCredential struct {
 	expires time.Time
 }
 
-func (ftc *fakeTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return &azcore.AccessToken{
+func (ftc *fakeTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{
 		ExpiresOn: ftc.expires,
 	}, nil
 }

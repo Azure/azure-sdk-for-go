@@ -1,6 +1,6 @@
 # Release History
 
-## 0.8.1 (Unreleased)
+## 1.0.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2022-05-16)
+
+### Breaking Changes
+* For type `EDMEntity` renamed field `Id` to `ID`, `Etag` to `ETag`
+
+## 0.8.1 (2022-05-12)
+
+### Other Changes
+* Update to latest `azcore` and `internal` modules
 
 ## 0.8.0 (2022-04-20)
 

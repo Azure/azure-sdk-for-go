@@ -39,7 +39,7 @@ func NewScriptExecutionHistoryClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,12 +57,13 @@ func NewScriptExecutionHistoryClient(subscriptionID string, credential azcore.To
 
 // NewListByClusterPager - Lists all scripts' execution history for the specified cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // options - ScriptExecutionHistoryClientListByClusterOptions contains the optional parameters for the ScriptExecutionHistoryClient.ListByCluster
 // method.
 func (client *ScriptExecutionHistoryClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *ScriptExecutionHistoryClientListByClusterOptions) *runtime.Pager[ScriptExecutionHistoryClientListByClusterResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ScriptExecutionHistoryClientListByClusterResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ScriptExecutionHistoryClientListByClusterResponse]{
 		More: func(page ScriptExecutionHistoryClientListByClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -111,7 +112,7 @@ func (client *ScriptExecutionHistoryClient) listByClusterCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -126,6 +127,7 @@ func (client *ScriptExecutionHistoryClient) listByClusterHandleResponse(resp *ht
 
 // Promote - Promotes the specified ad-hoc script execution to a persisted script.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group.
 // clusterName - The name of the cluster.
 // scriptExecutionID - The script execution Id
@@ -172,6 +174,6 @@ func (client *ScriptExecutionHistoryClient) promoteCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

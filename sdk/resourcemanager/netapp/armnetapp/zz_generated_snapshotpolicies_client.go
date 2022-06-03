@@ -39,7 +39,7 @@ func NewSnapshotPoliciesClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSnapshotPoliciesClient(subscriptionID string, credential azcore.TokenCre
 
 // Create - Create a snapshot policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // snapshotPolicyName - The name of the snapshot policy
@@ -103,7 +104,7 @@ func (client *SnapshotPoliciesClient) createCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -118,27 +119,29 @@ func (client *SnapshotPoliciesClient) createHandleResponse(resp *http.Response) 
 
 // BeginDelete - Delete snapshot policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // snapshotPolicyName - The name of the snapshot policy
 // options - SnapshotPoliciesClientBeginDeleteOptions contains the optional parameters for the SnapshotPoliciesClient.BeginDelete
 // method.
-func (client *SnapshotPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, options *SnapshotPoliciesClientBeginDeleteOptions) (*armruntime.Poller[SnapshotPoliciesClientDeleteResponse], error) {
+func (client *SnapshotPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, options *SnapshotPoliciesClientBeginDeleteOptions) (*runtime.Poller[SnapshotPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, snapshotPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SnapshotPoliciesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SnapshotPoliciesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SnapshotPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SnapshotPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete snapshot policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *SnapshotPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, options *SnapshotPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, snapshotPolicyName, options)
 	if err != nil {
@@ -185,6 +188,7 @@ func (client *SnapshotPoliciesClient) deleteCreateRequest(ctx context.Context, r
 
 // Get - Get a snapshot Policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // snapshotPolicyName - The name of the snapshot policy
@@ -230,7 +234,7 @@ func (client *SnapshotPoliciesClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -245,11 +249,12 @@ func (client *SnapshotPoliciesClient) getHandleResponse(resp *http.Response) (Sn
 
 // NewListPager - List snapshot policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - SnapshotPoliciesClientListOptions contains the optional parameters for the SnapshotPoliciesClient.List method.
 func (client *SnapshotPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *SnapshotPoliciesClientListOptions) *runtime.Pager[SnapshotPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SnapshotPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SnapshotPoliciesClientListResponse]{
 		More: func(page SnapshotPoliciesClientListResponse) bool {
 			return false
 		},
@@ -292,7 +297,7 @@ func (client *SnapshotPoliciesClient) listCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -307,6 +312,7 @@ func (client *SnapshotPoliciesClient) listHandleResponse(resp *http.Response) (S
 
 // ListVolumes - Get volumes associated with snapshot policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // snapshotPolicyName - The name of the snapshot policy
@@ -353,7 +359,7 @@ func (client *SnapshotPoliciesClient) listVolumesCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -368,28 +374,30 @@ func (client *SnapshotPoliciesClient) listVolumesHandleResponse(resp *http.Respo
 
 // BeginUpdate - Patch a snapshot policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // snapshotPolicyName - The name of the snapshot policy
 // body - Snapshot policy object supplied in the body of the operation.
 // options - SnapshotPoliciesClientBeginUpdateOptions contains the optional parameters for the SnapshotPoliciesClient.BeginUpdate
 // method.
-func (client *SnapshotPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body SnapshotPolicyPatch, options *SnapshotPoliciesClientBeginUpdateOptions) (*armruntime.Poller[SnapshotPoliciesClientUpdateResponse], error) {
+func (client *SnapshotPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body SnapshotPolicyPatch, options *SnapshotPoliciesClientBeginUpdateOptions) (*runtime.Poller[SnapshotPoliciesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, snapshotPolicyName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SnapshotPoliciesClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SnapshotPoliciesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SnapshotPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SnapshotPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch a snapshot policy
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *SnapshotPoliciesClient) update(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body SnapshotPolicyPatch, options *SnapshotPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, snapshotPolicyName, body, options)
 	if err != nil {
@@ -431,6 +439,6 @@ func (client *SnapshotPoliciesClient) updateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

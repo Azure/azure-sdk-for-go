@@ -24,14 +24,14 @@ func ExampleCredentialClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewCredentialClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewCredentialClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<credential-name>",
+		"rg",
+		"myAutomationAccount20",
+		"myCredential",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExampleCredentialClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewCredentialClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewCredentialClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<credential-name>",
+		"rg",
+		"myAutomationAccount18",
+		"myCredential",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,20 +68,20 @@ func ExampleCredentialClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewCredentialClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewCredentialClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<credential-name>",
+		"rg",
+		"myAutomationAccount18",
+		"myCredential",
 		armautomation.CredentialCreateOrUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("myCredential"),
 			Properties: &armautomation.CredentialCreateOrUpdateProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my description goes here"),
 				Password:    to.Ptr("<password>"),
-				UserName:    to.Ptr("<user-name>"),
+				UserName:    to.Ptr("mylingaiah"),
 			},
 		},
 		nil)
@@ -99,20 +99,20 @@ func ExampleCredentialClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewCredentialClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewCredentialClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<credential-name>",
+		"rg",
+		"myAutomationAccount18",
+		"myCredential",
 		armautomation.CredentialUpdateParameters{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("myCredential"),
 			Properties: &armautomation.CredentialUpdateProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my description goes here"),
 				Password:    to.Ptr("<password>"),
-				UserName:    to.Ptr("<user-name>"),
+				UserName:    to.Ptr("mylingaiah"),
 			},
 		},
 		nil)
@@ -130,18 +130,17 @@ func ExampleCredentialClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewCredentialClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewCredentialClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"myAutomationAccount20",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

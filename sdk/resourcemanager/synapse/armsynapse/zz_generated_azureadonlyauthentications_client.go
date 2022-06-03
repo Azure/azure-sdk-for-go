@@ -38,7 +38,7 @@ func NewAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,28 +56,30 @@ func NewAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcor
 
 // BeginCreate - Create or Update a Azure Active Directory only authentication property for the workspaces
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // azureADOnlyAuthenticationName - name of the property
 // azureADOnlyAuthenticationInfo - Azure Active Directory Property
 // options - AzureADOnlyAuthenticationsClientBeginCreateOptions contains the optional parameters for the AzureADOnlyAuthenticationsClient.BeginCreate
 // method.
-func (client *AzureADOnlyAuthenticationsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsClientBeginCreateOptions) (*armruntime.Poller[AzureADOnlyAuthenticationsClientCreateResponse], error) {
+func (client *AzureADOnlyAuthenticationsClient) BeginCreate(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsClientBeginCreateOptions) (*runtime.Poller[AzureADOnlyAuthenticationsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AzureADOnlyAuthenticationsClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AzureADOnlyAuthenticationsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AzureADOnlyAuthenticationsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AzureADOnlyAuthenticationsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create or Update a Azure Active Directory only authentication property for the workspaces
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *AzureADOnlyAuthenticationsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, azureADOnlyAuthenticationName AzureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo AzureADOnlyAuthentication, options *AzureADOnlyAuthenticationsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, options)
 	if err != nil {
@@ -119,12 +121,13 @@ func (client *AzureADOnlyAuthenticationsClient) createCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, azureADOnlyAuthenticationInfo)
 }
 
 // Get - Gets a Azure Active Directory only authentication property
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // azureADOnlyAuthenticationName - name of the property
@@ -171,7 +174,7 @@ func (client *AzureADOnlyAuthenticationsClient) getCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -186,12 +189,13 @@ func (client *AzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - Gets a list of Azure Active Directory only authentication property for a workspace
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - AzureADOnlyAuthenticationsClientListOptions contains the optional parameters for the AzureADOnlyAuthenticationsClient.List
 // method.
 func (client *AzureADOnlyAuthenticationsClient) NewListPager(resourceGroupName string, workspaceName string, options *AzureADOnlyAuthenticationsClientListOptions) *runtime.Pager[AzureADOnlyAuthenticationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AzureADOnlyAuthenticationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AzureADOnlyAuthenticationsClientListResponse]{
 		More: func(page AzureADOnlyAuthenticationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -240,7 +244,7 @@ func (client *AzureADOnlyAuthenticationsClient) listCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

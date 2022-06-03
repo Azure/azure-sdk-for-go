@@ -38,7 +38,7 @@ func NewElasticPoolOperationsClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewElasticPoolOperationsClient(subscriptionID string, credential azcore.Tok
 
 // Cancel - Cancels the asynchronous operation on the elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -109,13 +110,14 @@ func (client *ElasticPoolOperationsClient) cancelCreateRequest(ctx context.Conte
 
 // NewListByElasticPoolPager - Gets a list of operations performed on the elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ElasticPoolOperationsClientListByElasticPoolOptions contains the optional parameters for the ElasticPoolOperationsClient.ListByElasticPool
 // method.
 func (client *ElasticPoolOperationsClient) NewListByElasticPoolPager(resourceGroupName string, serverName string, elasticPoolName string, options *ElasticPoolOperationsClientListByElasticPoolOptions) *runtime.Pager[ElasticPoolOperationsClientListByElasticPoolResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ElasticPoolOperationsClientListByElasticPoolResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ElasticPoolOperationsClientListByElasticPoolResponse]{
 		More: func(page ElasticPoolOperationsClientListByElasticPoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -168,7 +170,7 @@ func (client *ElasticPoolOperationsClient) listByElasticPoolCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

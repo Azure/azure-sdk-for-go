@@ -24,7 +24,7 @@ func ExampleBotConnectionClient_ListServiceProviders() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -44,14 +44,14 @@ func ExampleBotConnectionClient_ListWithSecrets() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListWithSecrets(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<connection-name>",
+		"OneResourceGroupName",
+		"samplebotname",
+		"sampleConnection",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,31 +67,31 @@ func ExampleBotConnectionClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<connection-name>",
+		"OneResourceGroupName",
+		"samplebotname",
+		"sampleConnection",
 		armbotservice.ConnectionSetting{
-			Etag:     to.Ptr("<etag>"),
-			Location: to.Ptr("<location>"),
+			Etag:     to.Ptr("etag1"),
+			Location: to.Ptr("West US"),
 			Properties: &armbotservice.ConnectionSettingProperties{
-				ClientID:     to.Ptr("<client-id>"),
-				ClientSecret: to.Ptr("<client-secret>"),
+				ClientID:     to.Ptr("sampleclientid"),
+				ClientSecret: to.Ptr("samplesecret"),
 				Parameters: []*armbotservice.ConnectionSettingParameter{
 					{
-						Key:   to.Ptr("<key>"),
-						Value: to.Ptr("<value>"),
+						Key:   to.Ptr("key1"),
+						Value: to.Ptr("value1"),
 					},
 					{
-						Key:   to.Ptr("<key>"),
-						Value: to.Ptr("<value>"),
+						Key:   to.Ptr("key2"),
+						Value: to.Ptr("value2"),
 					}},
-				Scopes:            to.Ptr("<scopes>"),
-				ServiceProviderID: to.Ptr("<service-provider-id>"),
+				Scopes:            to.Ptr("samplescope"),
+				ServiceProviderID: to.Ptr("serviceproviderid"),
 			},
 		},
 		nil)
@@ -109,32 +109,32 @@ func ExampleBotConnectionClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<connection-name>",
+		"OneResourceGroupName",
+		"samplebotname",
+		"sampleConnection",
 		armbotservice.ConnectionSetting{
-			Etag:     to.Ptr("<etag>"),
-			Location: to.Ptr("<location>"),
+			Etag:     to.Ptr("etag1"),
+			Location: to.Ptr("global"),
 			Properties: &armbotservice.ConnectionSettingProperties{
-				ClientID:     to.Ptr("<client-id>"),
-				ClientSecret: to.Ptr("<client-secret>"),
+				ClientID:     to.Ptr("sampleclientid"),
+				ClientSecret: to.Ptr("samplesecret"),
 				Parameters: []*armbotservice.ConnectionSettingParameter{
 					{
-						Key:   to.Ptr("<key>"),
-						Value: to.Ptr("<value>"),
+						Key:   to.Ptr("key1"),
+						Value: to.Ptr("value1"),
 					},
 					{
-						Key:   to.Ptr("<key>"),
-						Value: to.Ptr("<value>"),
+						Key:   to.Ptr("key2"),
+						Value: to.Ptr("value2"),
 					}},
-				Scopes:                     to.Ptr("<scopes>"),
-				ServiceProviderDisplayName: to.Ptr("<service-provider-display-name>"),
-				ServiceProviderID:          to.Ptr("<service-provider-id>"),
+				Scopes:                     to.Ptr("samplescope"),
+				ServiceProviderDisplayName: to.Ptr("serviceProviderDisplayName"),
+				ServiceProviderID:          to.Ptr("serviceproviderid"),
 			},
 		},
 		nil)
@@ -152,14 +152,14 @@ func ExampleBotConnectionClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<connection-name>",
+		"OneResourceGroupName",
+		"samplebotname",
+		"sampleConnection",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -175,14 +175,14 @@ func ExampleBotConnectionClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<connection-name>",
+		"OneResourceGroupName",
+		"samplebotname",
+		"sampleConnection",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -196,18 +196,17 @@ func ExampleBotConnectionClient_NewListByBotServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotConnectionClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotConnectionClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByBotServicePager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListByBotServicePager("OneResourceGroupName",
+		"samplebotname",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

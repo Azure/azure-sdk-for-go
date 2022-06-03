@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
@@ -26,14 +24,14 @@ func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContai
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReplicationProtectionContainersPager("<fabric-name>",
-		"<protection-container-name>",
+	pager := client.NewListByReplicationProtectionContainersPager("vmwarefabric1",
+		"vmwareContainer1",
 		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions{SkipToken: nil,
 			TakeToken: nil,
 			Filter:    nil,
@@ -42,7 +40,6 @@ func ExampleReplicationMigrationItemsClient_NewListByReplicationProtectionContai
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,16 +55,16 @@ func ExampleReplicationMigrationItemsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
+		"vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -83,41 +80,41 @@ func ExampleReplicationMigrationItemsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
+		"vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
 		armrecoveryservicessiterecovery.EnableMigrationInput{
 			Properties: &armrecoveryservicessiterecovery.EnableMigrationInputProperties{
-				PolicyID: to.Ptr("<policy-id>"),
+				PolicyID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationPolicies/vmwarepolicy1"),
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtEnableMigrationInput{
-					InstanceType:            to.Ptr("<instance-type>"),
-					DataMoverRunAsAccountID: to.Ptr("<data-mover-run-as-account-id>"),
+					InstanceType:            to.Ptr("VMwareCbt"),
+					DataMoverRunAsAccountID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.OffAzure/VMwareSites/vmwaresite1/runasaccounts/dataMoverRunAsAccount1"),
 					DisksToInclude: []*armrecoveryservicessiterecovery.VMwareCbtDiskInput{
 						{
-							DiskID:                         to.Ptr("<disk-id>"),
-							IsOSDisk:                       to.Ptr("<is-osdisk>"),
-							LogStorageAccountID:            to.Ptr("<log-storage-account-id>"),
-							LogStorageAccountSasSecretName: to.Ptr("<log-storage-account-sas-secret-name>"),
+							DiskID:                         to.Ptr("disk1"),
+							IsOSDisk:                       to.Ptr("true"),
+							LogStorageAccountID:            to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Storage/storageAccounts/logStorageAccount1"),
+							LogStorageAccountSasSecretName: to.Ptr("logStorageSas"),
 						}},
-					SnapshotRunAsAccountID: to.Ptr("<snapshot-run-as-account-id>"),
-					TargetNetworkID:        to.Ptr("<target-network-id>"),
-					TargetResourceGroupID:  to.Ptr("<target-resource-group-id>"),
-					VmwareMachineID:        to.Ptr("<vmware-machine-id>"),
+					SnapshotRunAsAccountID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.OffAzure/VMwareSites/vmwaresite1/runasaccounts/snapshotRunAsAccount1"),
+					TargetNetworkID:        to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Network/virtualNetworks/virtualNetwork1"),
+					TargetResourceGroupID:  to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1"),
+					VmwareMachineID:        to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.OffAzure/VMwareSites/vmwaresite1/machines/virtualmachine1"),
 				},
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -132,23 +129,21 @@ func ExampleReplicationMigrationItemsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
-		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginDeleteOptions{DeleteOption: nil,
-			ResumeToken: "",
-		})
+		"vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
+		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginDeleteOptions{DeleteOption: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -161,28 +156,28 @@ func ExampleReplicationMigrationItemsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
+		"vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
 		armrecoveryservicessiterecovery.UpdateMigrationItemInput{
 			Properties: &armrecoveryservicessiterecovery.UpdateMigrationItemInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtUpdateMigrationItemInput{
-					InstanceType: to.Ptr("<instance-type>"),
+					InstanceType: to.Ptr("VMwareCbt"),
 				},
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -197,29 +192,29 @@ func ExampleReplicationMigrationItemsClient_BeginMigrate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginMigrate(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
+		"vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
 		armrecoveryservicessiterecovery.MigrateInput{
 			Properties: &armrecoveryservicessiterecovery.MigrateInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtMigrateInput{
-					InstanceType:    to.Ptr("<instance-type>"),
-					PerformShutdown: to.Ptr("<perform-shutdown>"),
+					InstanceType:    to.Ptr("VMwareCbt"),
+					PerformShutdown: to.Ptr("true"),
 				},
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginMigrateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -234,29 +229,29 @@ func ExampleReplicationMigrationItemsClient_BeginResync() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResync(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
+		"vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
 		armrecoveryservicessiterecovery.ResyncInput{
 			Properties: &armrecoveryservicessiterecovery.ResyncInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtResyncInput{
-					InstanceType: to.Ptr("<instance-type>"),
-					SkipCbtReset: to.Ptr("<skip-cbt-reset>"),
+					InstanceType: to.Ptr("VMwareCbt"),
+					SkipCbtReset: to.Ptr("true"),
 				},
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginResyncOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -271,30 +266,30 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTestMigrate(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
+		"vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
 		armrecoveryservicessiterecovery.TestMigrateInput{
 			Properties: &armrecoveryservicessiterecovery.TestMigrateInputProperties{
 				ProviderSpecificDetails: &armrecoveryservicessiterecovery.VMwareCbtTestMigrateInput{
-					InstanceType:    to.Ptr("<instance-type>"),
-					NetworkID:       to.Ptr("<network-id>"),
-					RecoveryPointID: to.Ptr("<recovery-point-id>"),
+					InstanceType:    to.Ptr("VMwareCbt"),
+					NetworkID:       to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Network/virtualNetworks/virtualNetwork1"),
+					RecoveryPointID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/9e737191-317e-43d0-8c83-e32ac3b34686"),
 				},
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginTestMigrateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -309,26 +304,26 @@ func ExampleReplicationMigrationItemsClient_BeginTestMigrateCleanup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTestMigrateCleanup(ctx,
-		"<fabric-name>",
-		"<protection-container-name>",
-		"<migration-item-name>",
+		"vmwarefabric1",
+		"vmwareContainer1",
+		"virtualmachine1",
 		armrecoveryservicessiterecovery.TestMigrateCleanupInput{
 			Properties: &armrecoveryservicessiterecovery.TestMigrateCleanupInputProperties{
-				Comments: to.Ptr("<comments>"),
+				Comments: to.Ptr("Test Failover Cleanup"),
 			},
 		},
-		&armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -343,9 +338,9 @@ func ExampleReplicationMigrationItemsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("<resource-name>",
-		"<resource-group-name>",
-		"<subscription-id>", cred, nil)
+	client, err := armrecoveryservicessiterecovery.NewReplicationMigrationItemsClient("migrationvault",
+		"resourcegroup1",
+		"cb53d0c3-bd59-4721-89bc-06916a9147ef", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -357,7 +352,6 @@ func ExampleReplicationMigrationItemsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

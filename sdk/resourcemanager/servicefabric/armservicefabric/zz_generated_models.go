@@ -1043,6 +1043,13 @@ type NamedPartitionSchemeDescription struct {
 	PartitionScheme *PartitionScheme `json:"partitionScheme,omitempty"`
 }
 
+// GetPartitionSchemeDescription implements the PartitionSchemeDescriptionClassification interface for type NamedPartitionSchemeDescription.
+func (n *NamedPartitionSchemeDescription) GetPartitionSchemeDescription() *PartitionSchemeDescription {
+	return &PartitionSchemeDescription{
+		PartitionScheme: n.PartitionScheme,
+	}
+}
+
 // NodeTypeDescription - Describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
 type NodeTypeDescription struct {
 	// REQUIRED; The TCP cluster management endpoint port.
@@ -1167,6 +1174,11 @@ type PartitionSchemeDescription struct {
 	PartitionScheme *PartitionScheme `json:"partitionScheme,omitempty"`
 }
 
+// GetPartitionSchemeDescription implements the PartitionSchemeDescriptionClassification interface for type PartitionSchemeDescription.
+func (p *PartitionSchemeDescription) GetPartitionSchemeDescription() *PartitionSchemeDescription {
+	return p
+}
+
 // ProxyResource - The resource model definition for proxy-only resource.
 type ProxyResource struct {
 	// It will be deprecated in New API, resource location depends on the parent resource.
@@ -1280,6 +1292,12 @@ type ServicePlacementPolicyDescription struct {
 	Type *ServicePlacementPolicyType `json:"type,omitempty"`
 }
 
+// GetServicePlacementPolicyDescription implements the ServicePlacementPolicyDescriptionClassification interface for type
+// ServicePlacementPolicyDescription.
+func (s *ServicePlacementPolicyDescription) GetServicePlacementPolicyDescription() *ServicePlacementPolicyDescription {
+	return s
+}
+
 // ServiceResource - The service resource.
 type ServiceResource struct {
 	// It will be deprecated in New API, resource location depends on the parent resource.
@@ -1363,6 +1381,11 @@ type ServiceResourceProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetServiceResourceProperties implements the ServiceResourcePropertiesClassification interface for type ServiceResourceProperties.
+func (s *ServiceResourceProperties) GetServiceResourceProperties() *ServiceResourceProperties {
+	return s
+}
+
 // ServiceResourcePropertiesBase - The common service resource properties.
 type ServiceResourcePropertiesBase struct {
 	// A list that describes the correlation of the service with other services.
@@ -1442,6 +1465,11 @@ type ServiceResourceUpdateProperties struct {
 	ServicePlacementPolicies []ServicePlacementPolicyDescriptionClassification `json:"servicePlacementPolicies,omitempty"`
 }
 
+// GetServiceResourceUpdateProperties implements the ServiceResourceUpdatePropertiesClassification interface for type ServiceResourceUpdateProperties.
+func (s *ServiceResourceUpdateProperties) GetServiceResourceUpdateProperties() *ServiceResourceUpdateProperties {
+	return s
+}
+
 // ServiceTypeDeltaHealthPolicy - Represents the delta health policy used to evaluate the health of services belonging to
 // a service type when upgrading the cluster.
 type ServiceTypeDeltaHealthPolicy struct {
@@ -1510,6 +1538,13 @@ type SingletonPartitionSchemeDescription struct {
 	PartitionScheme *PartitionScheme `json:"partitionScheme,omitempty"`
 }
 
+// GetPartitionSchemeDescription implements the PartitionSchemeDescriptionClassification interface for type SingletonPartitionSchemeDescription.
+func (s *SingletonPartitionSchemeDescription) GetPartitionSchemeDescription() *PartitionSchemeDescription {
+	return &PartitionSchemeDescription{
+		PartitionScheme: s.PartitionScheme,
+	}
+}
+
 // StatefulServiceProperties - The properties of a stateful service resource.
 type StatefulServiceProperties struct {
 	// REQUIRED; The kind of service (Stateless or Stateful).
@@ -1568,6 +1603,23 @@ type StatefulServiceProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetServiceResourceProperties implements the ServiceResourcePropertiesClassification interface for type StatefulServiceProperties.
+func (s *StatefulServiceProperties) GetServiceResourceProperties() *ServiceResourceProperties {
+	return &ServiceResourceProperties{
+		ProvisioningState:            s.ProvisioningState,
+		ServiceKind:                  s.ServiceKind,
+		ServiceTypeName:              s.ServiceTypeName,
+		PartitionDescription:         s.PartitionDescription,
+		ServicePackageActivationMode: s.ServicePackageActivationMode,
+		ServiceDNSName:               s.ServiceDNSName,
+		PlacementConstraints:         s.PlacementConstraints,
+		CorrelationScheme:            s.CorrelationScheme,
+		ServiceLoadMetrics:           s.ServiceLoadMetrics,
+		ServicePlacementPolicies:     s.ServicePlacementPolicies,
+		DefaultMoveCost:              s.DefaultMoveCost,
+	}
+}
+
 // StatefulServiceUpdateProperties - The properties of a stateful service resource for patch operations.
 type StatefulServiceUpdateProperties struct {
 	// REQUIRED; The kind of service (Stateless or Stateful).
@@ -1604,6 +1656,18 @@ type StatefulServiceUpdateProperties struct {
 
 	// The target replica set size as a number.
 	TargetReplicaSetSize *int32 `json:"targetReplicaSetSize,omitempty"`
+}
+
+// GetServiceResourceUpdateProperties implements the ServiceResourceUpdatePropertiesClassification interface for type StatefulServiceUpdateProperties.
+func (s *StatefulServiceUpdateProperties) GetServiceResourceUpdateProperties() *ServiceResourceUpdateProperties {
+	return &ServiceResourceUpdateProperties{
+		ServiceKind:              s.ServiceKind,
+		PlacementConstraints:     s.PlacementConstraints,
+		CorrelationScheme:        s.CorrelationScheme,
+		ServiceLoadMetrics:       s.ServiceLoadMetrics,
+		ServicePlacementPolicies: s.ServicePlacementPolicies,
+		DefaultMoveCost:          s.DefaultMoveCost,
+	}
 }
 
 // StatelessServiceProperties - The properties of a stateless service resource.
@@ -1656,6 +1720,23 @@ type StatelessServiceProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
+// GetServiceResourceProperties implements the ServiceResourcePropertiesClassification interface for type StatelessServiceProperties.
+func (s *StatelessServiceProperties) GetServiceResourceProperties() *ServiceResourceProperties {
+	return &ServiceResourceProperties{
+		ProvisioningState:            s.ProvisioningState,
+		ServiceKind:                  s.ServiceKind,
+		ServiceTypeName:              s.ServiceTypeName,
+		PartitionDescription:         s.PartitionDescription,
+		ServicePackageActivationMode: s.ServicePackageActivationMode,
+		ServiceDNSName:               s.ServiceDNSName,
+		PlacementConstraints:         s.PlacementConstraints,
+		CorrelationScheme:            s.CorrelationScheme,
+		ServiceLoadMetrics:           s.ServiceLoadMetrics,
+		ServicePlacementPolicies:     s.ServicePlacementPolicies,
+		DefaultMoveCost:              s.DefaultMoveCost,
+	}
+}
+
 // StatelessServiceUpdateProperties - The properties of a stateless service resource for patch operations.
 type StatelessServiceUpdateProperties struct {
 	// REQUIRED; The kind of service (Stateless or Stateful).
@@ -1688,6 +1769,18 @@ type StatelessServiceUpdateProperties struct {
 
 	// A list that describes the correlation of the service with other services.
 	ServicePlacementPolicies []ServicePlacementPolicyDescriptionClassification `json:"servicePlacementPolicies,omitempty"`
+}
+
+// GetServiceResourceUpdateProperties implements the ServiceResourceUpdatePropertiesClassification interface for type StatelessServiceUpdateProperties.
+func (s *StatelessServiceUpdateProperties) GetServiceResourceUpdateProperties() *ServiceResourceUpdateProperties {
+	return &ServiceResourceUpdateProperties{
+		ServiceKind:              s.ServiceKind,
+		PlacementConstraints:     s.PlacementConstraints,
+		CorrelationScheme:        s.CorrelationScheme,
+		ServiceLoadMetrics:       s.ServiceLoadMetrics,
+		ServicePlacementPolicies: s.ServicePlacementPolicies,
+		DefaultMoveCost:          s.DefaultMoveCost,
+	}
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -1725,6 +1818,13 @@ type UniformInt64RangePartitionSchemeDescription struct {
 
 	// REQUIRED; Specifies how the service is partitioned.
 	PartitionScheme *PartitionScheme `json:"partitionScheme,omitempty"`
+}
+
+// GetPartitionSchemeDescription implements the PartitionSchemeDescriptionClassification interface for type UniformInt64RangePartitionSchemeDescription.
+func (u *UniformInt64RangePartitionSchemeDescription) GetPartitionSchemeDescription() *PartitionSchemeDescription {
+	return &PartitionSchemeDescription{
+		PartitionScheme: u.PartitionScheme,
+	}
 }
 
 // UpgradableVersionPathResult - The list of intermediate cluster code versions for an upgrade or downgrade. Or minimum and

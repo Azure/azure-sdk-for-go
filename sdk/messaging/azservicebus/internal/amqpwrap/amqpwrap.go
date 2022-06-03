@@ -8,7 +8,7 @@ package amqpwrap
 import (
 	"context"
 
-	"github.com/Azure/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
 // AMQPReceiver is implemented by *amqp.Receiver
@@ -38,6 +38,7 @@ type AMQPReceiverCloser interface {
 type AMQPSender interface {
 	Send(ctx context.Context, msg *amqp.Message) error
 	MaxMessageSize() uint64
+	LinkName() string
 }
 
 // AMQPSenderCloser is implemented by *amqp.Sender

@@ -38,7 +38,7 @@ func NewWorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient(subscripti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient(subscripti
 
 // Get - Get workspace managed sql server's minimal tls settings.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dedicatedSQLminimalTLSSettingsName - The name of the dedicated sql minimal tls settings.
@@ -102,7 +103,7 @@ func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) get
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) get
 
 // NewListPager - List workspace managed sql server's minimal tls settings.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListOptions contains the optional parameters for
 // the WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient.List method.
 func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) NewListPager(resourceGroupName string, workspaceName string, options *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListOptions) *runtime.Pager[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListResponse]{
 		More: func(page WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -171,7 +173,7 @@ func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) lis
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -186,26 +188,28 @@ func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) lis
 
 // BeginUpdate - Update workspace managed sql server's minimal tls settings.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // dedicatedSQLminimalTLSSettingsName - The name of the dedicated sql minimal tls settings.
 // parameters - minimal tls settings
 // options - WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientBeginUpdateOptions contains the optional parameters
 // for the WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient.BeginUpdate method.
-func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dedicatedSQLminimalTLSSettingsName DedicatedSQLMinimalTLSSettingsName, parameters DedicatedSQLminimalTLSSettings, options *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientBeginUpdateOptions) (*armruntime.Poller[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientUpdateResponse], error) {
+func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dedicatedSQLminimalTLSSettingsName DedicatedSQLMinimalTLSSettingsName, parameters DedicatedSQLminimalTLSSettings, options *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientBeginUpdateOptions) (*runtime.Poller[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, workspaceName, dedicatedSQLminimalTLSSettingsName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update workspace managed sql server's minimal tls settings.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, dedicatedSQLminimalTLSSettingsName DedicatedSQLMinimalTLSSettingsName, parameters DedicatedSQLminimalTLSSettings, options *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, dedicatedSQLminimalTLSSettingsName, parameters, options)
 	if err != nil {
@@ -247,6 +251,6 @@ func (client *WorkspaceManagedSQLServerDedicatedSQLMinimalTLSSettingsClient) upd
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }

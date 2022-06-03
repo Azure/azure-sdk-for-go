@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication"
@@ -26,14 +24,14 @@ func ExampleServiceClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		&armcommunication.ServiceClientCheckNameAvailabilityOptions{NameAvailabilityParameters: &armcommunication.NameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("MyCommunicationService"),
+			Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
 		},
 		})
 	if err != nil {
@@ -50,16 +48,16 @@ func ExampleServiceClient_LinkNotificationHub() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.LinkNotificationHub(ctx,
-		"<resource-group-name>",
-		"<communication-service-name>",
+		"MyResourceGroup",
+		"MyCommunicationResource",
 		&armcommunication.ServiceClientLinkNotificationHubOptions{LinkNotificationHubParameters: &armcommunication.LinkNotificationHubParameters{
-			ConnectionString: to.Ptr("<connection-string>"),
-			ResourceID:       to.Ptr("<resource-id>"),
+			ConnectionString: to.Ptr("Endpoint=sb://MyNamespace.servicebus.windows.net/;SharedAccessKey=abcd1234"),
+			ResourceID:       to.Ptr("/subscriptions/12345/resourceGroups/MyOtherResourceGroup/providers/Microsoft.NotificationHubs/namespaces/MyNamespace/notificationHubs/MyHub"),
 		},
 		})
 	if err != nil {
@@ -76,7 +74,7 @@ func ExampleServiceClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -85,7 +83,6 @@ func ExampleServiceClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -101,17 +98,16 @@ func ExampleServiceClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("MyResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -127,13 +123,13 @@ func ExampleServiceClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<communication-service-name>",
+		"MyResourceGroup",
+		"MyCommunicationResource",
 		&armcommunication.ServiceClientUpdateOptions{Parameters: &armcommunication.ServiceResource{
 			Tags: map[string]*string{
 				"newTag": to.Ptr("newVal"),
@@ -154,13 +150,13 @@ func ExampleServiceClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<communication-service-name>",
+		"MyResourceGroup",
+		"MyCommunicationResource",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -176,25 +172,24 @@ func ExampleServiceClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<communication-service-name>",
+		"MyResourceGroup",
+		"MyCommunicationResource",
 		&armcommunication.ServiceClientBeginCreateOrUpdateOptions{Parameters: &armcommunication.ServiceResource{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Global"),
 			Properties: &armcommunication.ServiceProperties{
-				DataLocation: to.Ptr("<data-location>"),
+				DataLocation: to.Ptr("United States"),
 			},
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -209,18 +204,18 @@ func ExampleServiceClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<communication-service-name>",
-		&armcommunication.ServiceClientBeginDeleteOptions{ResumeToken: ""})
+		"MyResourceGroup",
+		"MyCommunicationResource",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -233,13 +228,13 @@ func ExampleServiceClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<communication-service-name>",
+		"MyResourceGroup",
+		"MyCommunicationResource",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -255,13 +250,13 @@ func ExampleServiceClient_RegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcommunication.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcommunication.NewServiceClient("12345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKey(ctx,
-		"<resource-group-name>",
-		"<communication-service-name>",
+		"MyResourceGroup",
+		"MyCommunicationResource",
 		armcommunication.RegenerateKeyParameters{
 			KeyType: to.Ptr(armcommunication.KeyTypePrimary),
 		},

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datacatalog/armdatacatalog"
@@ -26,12 +24,12 @@ func ExampleADCCatalogsClient_ListtByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatacatalog.NewADCCatalogsClient("<subscription-id>", cred, nil)
+	client, err := armdatacatalog.NewADCCatalogsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListtByResourceGroup(ctx,
-		"<resource-group-name>",
+		"exampleResourceGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,15 +45,15 @@ func ExampleADCCatalogsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatacatalog.NewADCCatalogsClient("<subscription-id>", cred, nil)
+	client, err := armdatacatalog.NewADCCatalogsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<catalog-name>",
+		"exampleResourceGroup",
+		"exampleCatalog",
 		armdatacatalog.ADCCatalog{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("North US"),
 			Tags: map[string]*string{
 				"mykey":  to.Ptr("myvalue"),
 				"mykey2": to.Ptr("myvalue2"),
@@ -63,16 +61,16 @@ func ExampleADCCatalogsClient_CreateOrUpdate() {
 			Properties: &armdatacatalog.ADCCatalogProperties{
 				Admins: []*armdatacatalog.Principals{
 					{
-						ObjectID: to.Ptr("<object-id>"),
-						Upn:      to.Ptr("<upn>"),
+						ObjectID: to.Ptr("99999999-9999-9999-999999999999"),
+						Upn:      to.Ptr("myupn@microsoft.com"),
 					}},
 				EnableAutomaticUnitAdjustment: to.Ptr(false),
 				SKU:                           to.Ptr(armdatacatalog.SKUTypeStandard),
 				Units:                         to.Ptr[int32](1),
 				Users: []*armdatacatalog.Principals{
 					{
-						ObjectID: to.Ptr("<object-id>"),
-						Upn:      to.Ptr("<upn>"),
+						ObjectID: to.Ptr("99999999-9999-9999-999999999999"),
+						Upn:      to.Ptr("myupn@microsoft.com"),
 					}},
 			},
 		},
@@ -91,13 +89,13 @@ func ExampleADCCatalogsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatacatalog.NewADCCatalogsClient("<subscription-id>", cred, nil)
+	client, err := armdatacatalog.NewADCCatalogsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<catalog-name>",
+		"exampleResourceGroup",
+		"exampleCatalog",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -113,18 +111,18 @@ func ExampleADCCatalogsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatacatalog.NewADCCatalogsClient("<subscription-id>", cred, nil)
+	client, err := armdatacatalog.NewADCCatalogsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<catalog-name>",
-		&armdatacatalog.ADCCatalogsClientBeginDeleteOptions{ResumeToken: ""})
+		"exampleResourceGroup",
+		"exampleCatalog",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -137,15 +135,15 @@ func ExampleADCCatalogsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatacatalog.NewADCCatalogsClient("<subscription-id>", cred, nil)
+	client, err := armdatacatalog.NewADCCatalogsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<catalog-name>",
+		"exampleResourceGroup",
+		"exampleCatalog",
 		armdatacatalog.ADCCatalog{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("North US"),
 			Tags: map[string]*string{
 				"mykey":  to.Ptr("myvalue"),
 				"mykey2": to.Ptr("myvalue2"),
@@ -153,16 +151,16 @@ func ExampleADCCatalogsClient_Update() {
 			Properties: &armdatacatalog.ADCCatalogProperties{
 				Admins: []*armdatacatalog.Principals{
 					{
-						ObjectID: to.Ptr("<object-id>"),
-						Upn:      to.Ptr("<upn>"),
+						ObjectID: to.Ptr("99999999-9999-9999-999999999999"),
+						Upn:      to.Ptr("myupn@microsoft.com"),
 					}},
 				EnableAutomaticUnitAdjustment: to.Ptr(false),
 				SKU:                           to.Ptr(armdatacatalog.SKUTypeStandard),
 				Units:                         to.Ptr[int32](1),
 				Users: []*armdatacatalog.Principals{
 					{
-						ObjectID: to.Ptr("<object-id>"),
-						Upn:      to.Ptr("<upn>"),
+						ObjectID: to.Ptr("99999999-9999-9999-999999999999"),
+						Upn:      to.Ptr("myupn@microsoft.com"),
 					}},
 			},
 		},

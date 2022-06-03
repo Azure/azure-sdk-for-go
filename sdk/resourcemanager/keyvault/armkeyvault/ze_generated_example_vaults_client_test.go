@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
@@ -26,19 +24,19 @@ func ExampleVaultsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
+		"sample-resource-group",
+		"sample-vault",
 		armkeyvault.VaultCreateOrUpdateParameters{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armkeyvault.VaultProperties{
 				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
 					{
-						ObjectID: to.Ptr("<object-id>"),
+						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 						Permissions: &armkeyvault.Permissions{
 							Certificates: []*armkeyvault.CertificatePermissions{
 								to.Ptr(armkeyvault.CertificatePermissionsGet),
@@ -82,24 +80,24 @@ func ExampleVaultsClient_BeginCreateOrUpdate() {
 								to.Ptr(armkeyvault.SecretPermissionsRecover),
 								to.Ptr(armkeyvault.SecretPermissionsPurge)},
 						},
-						TenantID: to.Ptr("<tenant-id>"),
+						TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 					}},
 				EnabledForDeployment:         to.Ptr(true),
 				EnabledForDiskEncryption:     to.Ptr(true),
 				EnabledForTemplateDeployment: to.Ptr(true),
-				PublicNetworkAccess:          to.Ptr("<public-network-access>"),
+				PublicNetworkAccess:          to.Ptr("Enabled"),
 				SKU: &armkeyvault.SKU{
 					Name:   to.Ptr(armkeyvault.SKUNameStandard),
 					Family: to.Ptr(armkeyvault.SKUFamilyA),
 				},
-				TenantID: to.Ptr("<tenant-id>"),
+				TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 			},
 		},
-		&armkeyvault.VaultsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -114,18 +112,18 @@ func ExampleVaultsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
+		"sample-resource-group",
+		"sample-vault",
 		armkeyvault.VaultPatchParameters{
 			Properties: &armkeyvault.VaultPatchProperties{
 				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
 					{
-						ObjectID: to.Ptr("<object-id>"),
+						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 						Permissions: &armkeyvault.Permissions{
 							Certificates: []*armkeyvault.CertificatePermissions{
 								to.Ptr(armkeyvault.CertificatePermissionsGet),
@@ -169,17 +167,17 @@ func ExampleVaultsClient_Update() {
 								to.Ptr(armkeyvault.SecretPermissionsRecover),
 								to.Ptr(armkeyvault.SecretPermissionsPurge)},
 						},
-						TenantID: to.Ptr("<tenant-id>"),
+						TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 					}},
 				EnabledForDeployment:         to.Ptr(true),
 				EnabledForDiskEncryption:     to.Ptr(true),
 				EnabledForTemplateDeployment: to.Ptr(true),
-				PublicNetworkAccess:          to.Ptr("<public-network-access>"),
+				PublicNetworkAccess:          to.Ptr("Enabled"),
 				SKU: &armkeyvault.SKU{
 					Name:   to.Ptr(armkeyvault.SKUNameStandard),
 					Family: to.Ptr(armkeyvault.SKUFamilyA),
 				},
-				TenantID: to.Ptr("<tenant-id>"),
+				TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 			},
 		},
 		nil)
@@ -197,13 +195,13 @@ func ExampleVaultsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
+		"sample-resource-group",
+		"sample-vault",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -217,13 +215,13 @@ func ExampleVaultsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
+		"sample-resource-group",
+		"sample-vault",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -239,19 +237,19 @@ func ExampleVaultsClient_UpdateAccessPolicy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateAccessPolicy(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
+		"sample-group",
+		"sample-vault",
 		armkeyvault.AccessPolicyUpdateKindAdd,
 		armkeyvault.VaultAccessPolicyParameters{
 			Properties: &armkeyvault.VaultAccessPolicyProperties{
 				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
 					{
-						ObjectID: to.Ptr("<object-id>"),
+						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 						Permissions: &armkeyvault.Permissions{
 							Certificates: []*armkeyvault.CertificatePermissions{
 								to.Ptr(armkeyvault.CertificatePermissionsGet)},
@@ -260,7 +258,7 @@ func ExampleVaultsClient_UpdateAccessPolicy() {
 							Secrets: []*armkeyvault.SecretPermissions{
 								to.Ptr(armkeyvault.SecretPermissionsGet)},
 						},
-						TenantID: to.Ptr("<tenant-id>"),
+						TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 					}},
 			},
 		},
@@ -279,17 +277,16 @@ func ExampleVaultsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("sample-group",
 		&armkeyvault.VaultsClientListByResourceGroupOptions{Top: to.Ptr[int32](1)})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -305,7 +302,7 @@ func ExampleVaultsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -314,7 +311,6 @@ func ExampleVaultsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -330,7 +326,7 @@ func ExampleVaultsClient_NewListDeletedPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -339,7 +335,6 @@ func ExampleVaultsClient_NewListDeletedPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -355,13 +350,13 @@ func ExampleVaultsClient_GetDeleted() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDeleted(ctx,
-		"<vault-name>",
-		"<location>",
+		"sample-vault",
+		"westus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -377,18 +372,18 @@ func ExampleVaultsClient_BeginPurgeDeleted() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPurgeDeleted(ctx,
-		"<vault-name>",
-		"<location>",
-		&armkeyvault.VaultsClientBeginPurgeDeletedOptions{ResumeToken: ""})
+		"sample-vault",
+		"westus",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -401,7 +396,7 @@ func ExampleVaultsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -410,7 +405,6 @@ func ExampleVaultsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -426,14 +420,14 @@ func ExampleVaultsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewVaultsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewVaultsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armkeyvault.VaultCheckNameAvailabilityParameters{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("sample-vault"),
+			Type: to.Ptr("Microsoft.KeyVault/vaults"),
 		},
 		nil)
 	if err != nil {

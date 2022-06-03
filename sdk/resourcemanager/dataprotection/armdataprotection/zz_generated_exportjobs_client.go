@@ -38,7 +38,7 @@ func NewExportJobsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewExportJobsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginTrigger - Triggers export of jobs and returns an OperationID to track.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 // resourceGroupName - The name of the resource group where the backup vault is present.
 // vaultName - The name of the backup vault.
 // options - ExportJobsClientBeginTriggerOptions contains the optional parameters for the ExportJobsClient.BeginTrigger method.
-func (client *ExportJobsClient) BeginTrigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsClientBeginTriggerOptions) (*armruntime.Poller[ExportJobsClientTriggerResponse], error) {
+func (client *ExportJobsClient) BeginTrigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsClientBeginTriggerOptions) (*runtime.Poller[ExportJobsClientTriggerResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.trigger(ctx, resourceGroupName, vaultName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ExportJobsClientTriggerResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ExportJobsClientTriggerResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ExportJobsClientTriggerResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ExportJobsClientTriggerResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Trigger - Triggers export of jobs and returns an OperationID to track.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01
 func (client *ExportJobsClient) trigger(ctx context.Context, resourceGroupName string, vaultName string, options *ExportJobsClientBeginTriggerOptions) (*http.Response, error) {
 	req, err := client.triggerCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
@@ -110,8 +112,8 @@ func (client *ExportJobsClient) triggerCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-04-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

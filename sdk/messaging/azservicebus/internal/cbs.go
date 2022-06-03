@@ -8,9 +8,9 @@ import (
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
-	"github.com/Azure/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
 const (
@@ -25,8 +25,9 @@ const (
 // NegotiateClaim attempts to put a token to the $cbs management endpoint to negotiate auth for the given audience
 func NegotiateClaim(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
 	link, err := NewRPCLink(RPCLinkArgs{
-		Client:  &amqpwrap.AMQPClientWrapper{Inner: conn},
-		Address: cbsAddress,
+		Client:   &amqpwrap.AMQPClientWrapper{Inner: conn},
+		Address:  cbsAddress,
+		LogEvent: exported.EventAuth,
 	})
 
 	if err != nil {

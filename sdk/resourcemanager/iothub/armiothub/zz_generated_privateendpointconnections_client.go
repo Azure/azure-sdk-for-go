@@ -38,7 +38,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 
 // BeginDelete - Delete private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // privateEndpointConnectionName - The name of the private endpoint connection
 // options - PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
-func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*armruntime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateEndpointConnectionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateEndpointConnectionsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -116,12 +118,13 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get private endpoint connection properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // privateEndpointConnectionName - The name of the private endpoint connection
@@ -168,7 +171,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -183,6 +186,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // List - List private endpoint connection properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
@@ -224,7 +228,7 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -239,26 +243,28 @@ func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Re
 
 // BeginUpdate - Update the status of a private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 // resourceGroupName - The name of the resource group that contains the IoT hub.
 // resourceName - The name of the IoT hub.
 // privateEndpointConnectionName - The name of the private endpoint connection
 // privateEndpointConnection - The private endpoint connection with updated properties
 // options - PrivateEndpointConnectionsClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginUpdate
 // method.
-func (client *PrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginUpdateOptions) (*armruntime.Poller[PrivateEndpointConnectionsClientUpdateResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateEndpointConnectionsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateEndpointConnectionsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateEndpointConnectionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update the status of a private endpoint connection with the specified name
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-02
 func (client *PrivateEndpointConnectionsClient) update(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, options)
 	if err != nil {
@@ -300,6 +306,6 @@ func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-02")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateEndpointConnection)
 }

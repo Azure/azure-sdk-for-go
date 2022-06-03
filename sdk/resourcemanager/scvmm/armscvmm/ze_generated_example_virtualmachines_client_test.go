@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
@@ -26,13 +24,13 @@ func ExampleVirtualMachinesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"testrg",
+		"DemoVM",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,34 +46,34 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"testrg",
+		"DemoVM",
 		armscvmm.VirtualMachine{
 			ExtendedLocation: &armscvmm.ExtendedLocation{
-				Name: to.Ptr("<name>"),
-				Type: to.Ptr("<type>"),
+				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
+				Type: to.Ptr("customLocation"),
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Properties: &armscvmm.VirtualMachineProperties{
-				CloudID: to.Ptr("<cloud-id>"),
+				CloudID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/Clouds/HRCloud"),
 				HardwareProfile: &armscvmm.HardwareProfile{
 					CPUCount: to.Ptr[int32](4),
 					MemoryMB: to.Ptr[int32](4096),
 				},
-				TemplateID:  to.Ptr("<template-id>"),
-				VmmServerID: to.Ptr("<vmm-server-id>"),
+				TemplateID:  to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VirtualMachineTemplates/HRVirtualMachineTemplate"),
+				VmmServerID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.SCVMM/VMMServers/ContosoVMMServer"),
 			},
 		},
-		&armscvmm.VirtualMachinesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -90,21 +88,20 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"testrg",
+		"DemoVM",
 		&armscvmm.VirtualMachinesClientBeginDeleteOptions{Retain: nil,
-			Force:       nil,
-			ResumeToken: "",
+			Force: nil,
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -117,13 +114,13 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"testrg",
+		"DemoVM",
 		armscvmm.VirtualMachineUpdate{
 			Properties: &armscvmm.VirtualMachineUpdateProperties{
 				HardwareProfile: &armscvmm.HardwareProfileUpdate{
@@ -133,7 +130,7 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 				NetworkProfile: &armscvmm.NetworkProfileUpdate{
 					NetworkInterfaces: []*armscvmm.NetworkInterfacesUpdate{
 						{
-							Name:            to.Ptr("<name>"),
+							Name:            to.Ptr("test"),
 							IPv4AddressType: to.Ptr(armscvmm.AllocationMethodDynamic),
 							IPv6AddressType: to.Ptr(armscvmm.AllocationMethodDynamic),
 							MacAddressType:  to.Ptr(armscvmm.AllocationMethodStatic),
@@ -142,7 +139,7 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 				StorageProfile: &armscvmm.StorageProfileUpdate{
 					Disks: []*armscvmm.VirtualDiskUpdate{
 						{
-							Name:       to.Ptr("<name>"),
+							Name:       to.Ptr("test"),
 							DiskSizeGB: to.Ptr[int32](10),
 						}},
 				},
@@ -152,11 +149,11 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armscvmm.VirtualMachinesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -171,22 +168,21 @@ func ExampleVirtualMachinesClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"testrg",
+		"DemoVM",
 		&armscvmm.VirtualMachinesClientBeginStopOptions{Body: &armscvmm.StopVirtualMachineOptions{
 			SkipShutdown: to.Ptr(true),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -199,18 +195,18 @@ func ExampleVirtualMachinesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
-		&armscvmm.VirtualMachinesClientBeginStartOptions{ResumeToken: ""})
+		"testrg",
+		"DemoVM",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -223,18 +219,18 @@ func ExampleVirtualMachinesClient_BeginRestart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
-		&armscvmm.VirtualMachinesClientBeginRestartOptions{ResumeToken: ""})
+		"testrg",
+		"DemoVM",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -247,23 +243,22 @@ func ExampleVirtualMachinesClient_BeginCreateCheckpoint() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateCheckpoint(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"testrg",
+		"DemoVM",
 		&armscvmm.VirtualMachinesClientBeginCreateCheckpointOptions{Body: &armscvmm.VirtualMachineCreateCheckpoint{
-			Name:        to.Ptr("<name>"),
-			Description: to.Ptr("<description>"),
+			Name:        to.Ptr("Demo Checkpoint name"),
+			Description: to.Ptr("Demo Checkpoint description"),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -276,22 +271,21 @@ func ExampleVirtualMachinesClient_BeginDeleteCheckpoint() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeleteCheckpoint(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"testrg",
+		"DemoVM",
 		&armscvmm.VirtualMachinesClientBeginDeleteCheckpointOptions{Body: &armscvmm.VirtualMachineDeleteCheckpoint{
-			ID: to.Ptr("<id>"),
+			ID: to.Ptr("Demo CheckpointID"),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -304,22 +298,21 @@ func ExampleVirtualMachinesClient_BeginRestoreCheckpoint() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestoreCheckpoint(ctx,
-		"<resource-group-name>",
-		"<virtual-machine-name>",
+		"testrg",
+		"DemoVM",
 		&armscvmm.VirtualMachinesClientBeginRestoreCheckpointOptions{Body: &armscvmm.VirtualMachineRestoreCheckpoint{
-			ID: to.Ptr("<id>"),
+			ID: to.Ptr("Demo CheckpointID"),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -332,11 +325,11 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testrg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -357,7 +350,7 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewVirtualMachinesClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

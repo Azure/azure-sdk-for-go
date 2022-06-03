@@ -58,7 +58,7 @@ func (testsuite *VaultsClientTestSuite) TestVaultsCRUD() {
 	// create vault
 	vaultsClient, err := armkeyvault.NewVaultsClient(testsuite.subscriptionID, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	vaultName := "go-test-vault1"
+	vaultName := "go-test-vault-1"
 	vPollerResp, err := vaultsClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,

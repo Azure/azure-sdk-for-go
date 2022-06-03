@@ -38,7 +38,7 @@ func NewSpatialAnchorsAccountsClient(subscriptionID string, credential azcore.To
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSpatialAnchorsAccountsClient(subscriptionID string, credential azcore.To
 
 // Create - Creating or Updating a Spatial Anchors Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // spatialAnchorsAccount - Spatial Anchors Account parameter.
@@ -98,7 +99,7 @@ func (client *SpatialAnchorsAccountsClient) createCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, spatialAnchorsAccount)
 }
 
@@ -113,6 +114,7 @@ func (client *SpatialAnchorsAccountsClient) createHandleResponse(resp *http.Resp
 
 // Delete - Delete a Spatial Anchors Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // options - SpatialAnchorsAccountsClientDeleteOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Delete
@@ -154,12 +156,13 @@ func (client *SpatialAnchorsAccountsClient) deleteCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieve a Spatial Anchors Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // options - SpatialAnchorsAccountsClientGetOptions contains the optional parameters for the SpatialAnchorsAccountsClient.Get
@@ -201,7 +204,7 @@ func (client *SpatialAnchorsAccountsClient) getCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -216,11 +219,12 @@ func (client *SpatialAnchorsAccountsClient) getHandleResponse(resp *http.Respons
 
 // NewListByResourceGroupPager - List Resources by Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // options - SpatialAnchorsAccountsClientListByResourceGroupOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListByResourceGroup
 // method.
 func (client *SpatialAnchorsAccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *SpatialAnchorsAccountsClientListByResourceGroupOptions) *runtime.Pager[SpatialAnchorsAccountsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SpatialAnchorsAccountsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SpatialAnchorsAccountsClientListByResourceGroupResponse]{
 		More: func(page SpatialAnchorsAccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -265,7 +269,7 @@ func (client *SpatialAnchorsAccountsClient) listByResourceGroupCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -280,10 +284,11 @@ func (client *SpatialAnchorsAccountsClient) listByResourceGroupHandleResponse(re
 
 // NewListBySubscriptionPager - List Spatial Anchors Accounts by Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // options - SpatialAnchorsAccountsClientListBySubscriptionOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListBySubscription
 // method.
 func (client *SpatialAnchorsAccountsClient) NewListBySubscriptionPager(options *SpatialAnchorsAccountsClientListBySubscriptionOptions) *runtime.Pager[SpatialAnchorsAccountsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SpatialAnchorsAccountsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SpatialAnchorsAccountsClientListBySubscriptionResponse]{
 		More: func(page SpatialAnchorsAccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -324,7 +329,7 @@ func (client *SpatialAnchorsAccountsClient) listBySubscriptionCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -339,6 +344,7 @@ func (client *SpatialAnchorsAccountsClient) listBySubscriptionHandleResponse(res
 
 // ListKeys - List Both of the 2 Keys of a Spatial Anchors Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // options - SpatialAnchorsAccountsClientListKeysOptions contains the optional parameters for the SpatialAnchorsAccountsClient.ListKeys
@@ -380,7 +386,7 @@ func (client *SpatialAnchorsAccountsClient) listKeysCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -395,6 +401,7 @@ func (client *SpatialAnchorsAccountsClient) listKeysHandleResponse(resp *http.Re
 
 // RegenerateKeys - Regenerate specified Key of a Spatial Anchors Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // regenerate - Required information for key regeneration.
@@ -437,7 +444,7 @@ func (client *SpatialAnchorsAccountsClient) regenerateKeysCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regenerate)
 }
 
@@ -452,6 +459,7 @@ func (client *SpatialAnchorsAccountsClient) regenerateKeysHandleResponse(resp *h
 
 // Update - Updating a Spatial Anchors Account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01-preview
 // resourceGroupName - Name of an Azure resource group.
 // accountName - Name of an Mixed Reality Account.
 // spatialAnchorsAccount - Spatial Anchors Account parameter.
@@ -494,7 +502,7 @@ func (client *SpatialAnchorsAccountsClient) updateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, spatialAnchorsAccount)
 }
 

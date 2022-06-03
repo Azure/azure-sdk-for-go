@@ -24,23 +24,23 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDataMaskingRulesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<data-masking-rule-name>",
+		"sqlcrudtest-6852",
+		"sqlcrudtest-2080",
+		"sqlcrudtest-331",
+		"rule1",
 		armsql.DataMaskingRule{
 			Properties: &armsql.DataMaskingRuleProperties{
-				AliasName:       to.Ptr("<alias-name>"),
-				ColumnName:      to.Ptr("<column-name>"),
+				AliasName:       to.Ptr("nickname"),
+				ColumnName:      to.Ptr("test1"),
 				MaskingFunction: to.Ptr(armsql.DataMaskingFunctionDefault),
 				RuleState:       to.Ptr(armsql.DataMaskingRuleStateEnabled),
-				SchemaName:      to.Ptr("<schema-name>"),
-				TableName:       to.Ptr("<table-name>"),
+				SchemaName:      to.Ptr("dbo"),
+				TableName:       to.Ptr("Table_1"),
 			},
 		},
 		nil)
@@ -58,19 +58,18 @@ func ExampleDataMaskingRulesClient_NewListByDatabasePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDataMaskingRulesClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabasePager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+	pager := client.NewListByDatabasePager("sqlcrudtest-6852",
+		"sqlcrudtest-2080",
+		"sqlcrudtest-331",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

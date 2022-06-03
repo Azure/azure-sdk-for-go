@@ -23,13 +23,13 @@ func ExampleAvailableServiceTiersClient_ListByWorkspace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewAvailableServiceTiersClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewAvailableServiceTiersClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByWorkspace(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"rg1",
+		"workspace1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
@@ -26,14 +24,14 @@ func ExampleCommunicationsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewCommunicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<support-ticket-name>",
+		"testticket",
 		armsupport.CheckNameAvailabilityInput{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("sampleName"),
 			Type: to.Ptr(armsupport.TypeMicrosoftSupportCommunications),
 		},
 		nil)
@@ -51,11 +49,11 @@ func ExampleCommunicationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewCommunicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<support-ticket-name>",
+	pager := client.NewListPager("testticket",
 		&armsupport.CommunicationsClientListOptions{Top: nil,
 			Filter: nil,
 		})
@@ -63,7 +61,6 @@ func ExampleCommunicationsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -79,13 +76,13 @@ func ExampleCommunicationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewCommunicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<support-ticket-name>",
-		"<communication-name>",
+		"testticket",
+		"testmessage",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,25 +98,25 @@ func ExampleCommunicationsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsupport.NewCommunicationsClient("<subscription-id>", cred, nil)
+	client, err := armsupport.NewCommunicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<support-ticket-name>",
-		"<communication-name>",
+		"testticket",
+		"testcommunication",
 		armsupport.CommunicationDetails{
 			Properties: &armsupport.CommunicationDetailsProperties{
-				Body:    to.Ptr("<body>"),
-				Sender:  to.Ptr("<sender>"),
-				Subject: to.Ptr("<subject>"),
+				Body:    to.Ptr("This is a test message from a customer!"),
+				Sender:  to.Ptr("user@contoso.com"),
+				Subject: to.Ptr("This is a test message from a customer!"),
 			},
 		},
-		&armsupport.CommunicationsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

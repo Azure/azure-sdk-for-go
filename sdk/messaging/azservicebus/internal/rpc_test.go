@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
-	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -205,6 +205,10 @@ func (tester *rpcTester) NewSender(opts ...amqp.LinkOption) (AMQPSenderCloser, e
 
 func (tester *rpcTester) Close(ctx context.Context) error {
 	return nil
+}
+
+func (tester *rpcTester) LinkName() string {
+	return "hello"
 }
 
 // receiver functions

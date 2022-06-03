@@ -17,21 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/onboardingStates/GetSentinelOnboardingState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/onboardingStates/GetSentinelOnboardingState.json
 func ExampleSentinelOnboardingStatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewSentinelOnboardingStatesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewSentinelOnboardingStatesClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sentinel-onboarding-state-name>",
+		"myRg",
+		"myWorkspace",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -40,21 +40,21 @@ func ExampleSentinelOnboardingStatesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/onboardingStates/CreateSentinelOnboardingState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/onboardingStates/CreateSentinelOnboardingState.json
 func ExampleSentinelOnboardingStatesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewSentinelOnboardingStatesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewSentinelOnboardingStatesClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sentinel-onboarding-state-name>",
+		"myRg",
+		"myWorkspace",
+		"default",
 		&armsecurityinsights.SentinelOnboardingStatesClientCreateOptions{SentinelOnboardingStateParameter: &armsecurityinsights.SentinelOnboardingState{
 			Properties: &armsecurityinsights.SentinelOnboardingStateProperties{
 				CustomerManagedKey: to.Ptr(false),
@@ -68,41 +68,41 @@ func ExampleSentinelOnboardingStatesClient_Create() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/onboardingStates/DeleteSentinelOnboardingState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/onboardingStates/DeleteSentinelOnboardingState.json
 func ExampleSentinelOnboardingStatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewSentinelOnboardingStatesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewSentinelOnboardingStatesClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sentinel-onboarding-state-name>",
+		"myRg",
+		"myWorkspace",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/onboardingStates/GetAllSentinelOnboardingStates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/onboardingStates/GetAllSentinelOnboardingStates.json
 func ExampleSentinelOnboardingStatesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewSentinelOnboardingStatesClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewSentinelOnboardingStatesClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
+		"myRg",
+		"myWorkspace",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

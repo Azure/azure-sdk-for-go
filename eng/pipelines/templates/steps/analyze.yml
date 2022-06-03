@@ -10,7 +10,6 @@ steps:
 
   - task: Powershell@2
     displayName: 'Dependency Check'
-    continueOnError: true
     env:
       GO111MODULE: 'on'
     inputs:
@@ -24,6 +23,7 @@ steps:
       golangci-lint --version
     displayName: 'Install GoLintCLI and dependencies.'
     workingDirectory: $(System.DefaultWorkingDirectory)
+    retryCountOnTaskFailure: 3
 
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'

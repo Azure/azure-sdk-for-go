@@ -38,7 +38,7 @@ func NewOnPremiseSensorsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewOnPremiseSensorsClient(subscriptionID string, credential azcore.TokenCre
 
 // CreateOrUpdate - Create or update on-premise IoT sensor
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // onPremiseSensorName - Name of the on-premise IoT sensor
 // options - OnPremiseSensorsClientCreateOrUpdateOptions contains the optional parameters for the OnPremiseSensorsClient.CreateOrUpdate
 // method.
@@ -92,7 +93,7 @@ func (client *OnPremiseSensorsClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -107,6 +108,7 @@ func (client *OnPremiseSensorsClient) createOrUpdateHandleResponse(resp *http.Re
 
 // Delete - Delete on-premise IoT sensor
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // onPremiseSensorName - Name of the on-premise IoT sensor
 // options - OnPremiseSensorsClientDeleteOptions contains the optional parameters for the OnPremiseSensorsClient.Delete method.
 func (client *OnPremiseSensorsClient) Delete(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientDeleteOptions) (OnPremiseSensorsClientDeleteResponse, error) {
@@ -142,12 +144,13 @@ func (client *OnPremiseSensorsClient) deleteCreateRequest(ctx context.Context, o
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DownloadActivation - Download sensor activation file
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // onPremiseSensorName - Name of the on-premise IoT sensor
 // options - OnPremiseSensorsClientDownloadActivationOptions contains the optional parameters for the OnPremiseSensorsClient.DownloadActivation
 // method.
@@ -185,12 +188,13 @@ func (client *OnPremiseSensorsClient) downloadActivationCreateRequest(ctx contex
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
-	req.Raw().Header.Set("Accept", "application/zip")
+	req.Raw().Header["Accept"] = []string{"application/zip"}
 	return req, nil
 }
 
 // DownloadResetPassword - Download file for reset password of the sensor
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // onPremiseSensorName - Name of the on-premise IoT sensor
 // body - Input for reset password.
 // options - OnPremiseSensorsClientDownloadResetPasswordOptions contains the optional parameters for the OnPremiseSensorsClient.DownloadResetPassword
@@ -229,12 +233,13 @@ func (client *OnPremiseSensorsClient) downloadResetPasswordCreateRequest(ctx con
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	runtime.SkipBodyDownload(req)
-	req.Raw().Header.Set("Accept", "application/zip")
+	req.Raw().Header["Accept"] = []string{"application/zip"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // Get - Get on-premise IoT sensor
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // onPremiseSensorName - Name of the on-premise IoT sensor
 // options - OnPremiseSensorsClientGetOptions contains the optional parameters for the OnPremiseSensorsClient.Get method.
 func (client *OnPremiseSensorsClient) Get(ctx context.Context, onPremiseSensorName string, options *OnPremiseSensorsClientGetOptions) (OnPremiseSensorsClientGetResponse, error) {
@@ -270,7 +275,7 @@ func (client *OnPremiseSensorsClient) getCreateRequest(ctx context.Context, onPr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -285,6 +290,7 @@ func (client *OnPremiseSensorsClient) getHandleResponse(resp *http.Response) (On
 
 // List - List on-premise IoT sensors
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // options - OnPremiseSensorsClientListOptions contains the optional parameters for the OnPremiseSensorsClient.List method.
 func (client *OnPremiseSensorsClient) List(ctx context.Context, options *OnPremiseSensorsClientListOptions) (OnPremiseSensorsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
@@ -315,7 +321,7 @@ func (client *OnPremiseSensorsClient) listCreateRequest(ctx context.Context, opt
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

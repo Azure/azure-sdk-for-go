@@ -38,7 +38,7 @@ func NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreate - Creates a pipeline run for a container registry with the specified parameters
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // pipelineRunName - The name of the pipeline run.
 // pipelineRunCreateParameters - The parameters for creating a pipeline run.
 // options - PipelineRunsClientBeginCreateOptions contains the optional parameters for the PipelineRunsClient.BeginCreate
 // method.
-func (client *PipelineRunsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, pipelineRunCreateParameters PipelineRun, options *PipelineRunsClientBeginCreateOptions) (*armruntime.Poller[PipelineRunsClientCreateResponse], error) {
+func (client *PipelineRunsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, pipelineRunCreateParameters PipelineRun, options *PipelineRunsClientBeginCreateOptions) (*runtime.Poller[PipelineRunsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, registryName, pipelineRunName, pipelineRunCreateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PipelineRunsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PipelineRunsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PipelineRunsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PipelineRunsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a pipeline run for a container registry with the specified parameters
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *PipelineRunsClient) create(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, pipelineRunCreateParameters PipelineRun, options *PipelineRunsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, pipelineRunName, pipelineRunCreateParameters, options)
 	if err != nil {
@@ -115,33 +117,35 @@ func (client *PipelineRunsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, pipelineRunCreateParameters)
 }
 
 // BeginDelete - Deletes a pipeline run from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // pipelineRunName - The name of the pipeline run.
 // options - PipelineRunsClientBeginDeleteOptions contains the optional parameters for the PipelineRunsClient.BeginDelete
 // method.
-func (client *PipelineRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, options *PipelineRunsClientBeginDeleteOptions) (*armruntime.Poller[PipelineRunsClientDeleteResponse], error) {
+func (client *PipelineRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, options *PipelineRunsClientBeginDeleteOptions) (*runtime.Poller[PipelineRunsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, pipelineRunName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PipelineRunsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PipelineRunsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PipelineRunsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PipelineRunsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a pipeline run from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *PipelineRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, options *PipelineRunsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, pipelineRunName, options)
 	if err != nil {
@@ -181,14 +185,15 @@ func (client *PipelineRunsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the detailed information for a given pipeline run.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // pipelineRunName - The name of the pipeline run.
@@ -232,9 +237,9 @@ func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,11 +254,12 @@ func (client *PipelineRunsClient) getHandleResponse(resp *http.Response) (Pipeli
 
 // NewListPager - Lists all the pipeline runs for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - PipelineRunsClientListOptions contains the optional parameters for the PipelineRunsClient.List method.
 func (client *PipelineRunsClient) NewListPager(resourceGroupName string, registryName string, options *PipelineRunsClientListOptions) *runtime.Pager[PipelineRunsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PipelineRunsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PipelineRunsClientListResponse]{
 		More: func(page PipelineRunsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -300,9 +306,9 @@ func (client *PipelineRunsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

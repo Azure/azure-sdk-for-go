@@ -1,6 +1,16 @@
 # Release History
 
-## 0.10.0 (Unreleased)
+## 1.0.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2022-05-12)
 
 ### Features Added
 * Added `temporal` package for handling of temporal resources.
@@ -8,8 +18,6 @@
 ### Breaking Changes
 * Removed logging constants from the `log` package.
 * Removed `atomic` package as it wasn't being used.
-
-### Bugs Fixed
 
 ### Other Changes
 * Updated build constraints and Go version to 1.18.

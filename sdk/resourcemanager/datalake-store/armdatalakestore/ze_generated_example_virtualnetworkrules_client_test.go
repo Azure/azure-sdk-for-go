@@ -24,18 +24,17 @@ func ExampleVirtualNetworkRulesClient_NewListByAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewVirtualNetworkRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewVirtualNetworkRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAccountPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListByAccountPager("contosorg",
+		"contosoadla",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +50,17 @@ func ExampleVirtualNetworkRulesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewVirtualNetworkRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewVirtualNetworkRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<virtual-network-rule-name>",
+		"contosorg",
+		"contosoadla",
+		"test_virtual_network_rules_name",
 		armdatalakestore.CreateOrUpdateVirtualNetworkRuleParameters{
 			Properties: &armdatalakestore.CreateOrUpdateVirtualNetworkRuleProperties{
-				SubnetID: to.Ptr("<subnet-id>"),
+				SubnetID: to.Ptr("test_subnetId"),
 			},
 		},
 		nil)
@@ -79,14 +78,14 @@ func ExampleVirtualNetworkRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewVirtualNetworkRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewVirtualNetworkRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<virtual-network-rule-name>",
+		"contosorg",
+		"contosoadla",
+		"test_virtual_network_rules_name",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,17 +101,17 @@ func ExampleVirtualNetworkRulesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewVirtualNetworkRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewVirtualNetworkRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<virtual-network-rule-name>",
+		"contosorg",
+		"contosoadla",
+		"test_virtual_network_rules_name",
 		&armdatalakestore.VirtualNetworkRulesClientUpdateOptions{Parameters: &armdatalakestore.UpdateVirtualNetworkRuleParameters{
 			Properties: &armdatalakestore.UpdateVirtualNetworkRuleProperties{
-				SubnetID: to.Ptr("<subnet-id>"),
+				SubnetID: to.Ptr("test_subnetId"),
 			},
 		},
 		})
@@ -130,14 +129,14 @@ func ExampleVirtualNetworkRulesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatalakestore.NewVirtualNetworkRulesClient("<subscription-id>", cred, nil)
+	client, err := armdatalakestore.NewVirtualNetworkRulesClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<virtual-network-rule-name>",
+		"contosorg",
+		"contosoadla",
+		"test_virtual_network_rules_name",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -38,7 +38,7 @@ func NewServerParametersClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewServerParametersClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginListUpdateConfigurations - Update a list of configurations in a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // value - The parameters for updating a list of server configuration.
 // options - ServerParametersClientBeginListUpdateConfigurationsOptions contains the optional parameters for the ServerParametersClient.BeginListUpdateConfigurations
 // method.
-func (client *ServerParametersClient) BeginListUpdateConfigurations(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult, options *ServerParametersClientBeginListUpdateConfigurationsOptions) (*armruntime.Poller[ServerParametersClientListUpdateConfigurationsResponse], error) {
+func (client *ServerParametersClient) BeginListUpdateConfigurations(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult, options *ServerParametersClientBeginListUpdateConfigurationsOptions) (*runtime.Poller[ServerParametersClientListUpdateConfigurationsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.listUpdateConfigurations(ctx, resourceGroupName, serverName, value, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ServerParametersClientListUpdateConfigurationsResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ServerParametersClientListUpdateConfigurationsResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServerParametersClientListUpdateConfigurationsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServerParametersClientListUpdateConfigurationsResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ListUpdateConfigurations - Update a list of configurations in a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 func (client *ServerParametersClient) listUpdateConfigurations(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult, options *ServerParametersClientBeginListUpdateConfigurationsOptions) (*http.Response, error) {
 	req, err := client.listUpdateConfigurationsCreateRequest(ctx, resourceGroupName, serverName, value, options)
 	if err != nil {
@@ -114,6 +116,6 @@ func (client *ServerParametersClient) listUpdateConfigurationsCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, value)
 }

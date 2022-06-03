@@ -38,7 +38,7 @@ func NewWorkloadClassifiersClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkloadClassifiersClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Creates or updates a workload classifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -65,20 +66,21 @@ func NewWorkloadClassifiersClient(subscriptionID string, credential azcore.Token
 // parameters - The properties of the workload classifier.
 // options - WorkloadClassifiersClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkloadClassifiersClient.BeginCreateOrUpdate
 // method.
-func (client *WorkloadClassifiersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *WorkloadClassifiersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkloadClassifiersClientCreateOrUpdateResponse], error) {
+func (client *WorkloadClassifiersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *WorkloadClassifiersClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkloadClassifiersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkloadClassifiersClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadClassifiersClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkloadClassifiersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadClassifiersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a workload classifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *WorkloadClassifiersClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *WorkloadClassifiersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters, options)
 	if err != nil {
@@ -128,12 +130,13 @@ func (client *WorkloadClassifiersClient) createOrUpdateCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a workload classifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -142,20 +145,21 @@ func (client *WorkloadClassifiersClient) createOrUpdateCreateRequest(ctx context
 // workloadClassifierName - The name of the workload classifier to delete.
 // options - WorkloadClassifiersClientBeginDeleteOptions contains the optional parameters for the WorkloadClassifiersClient.BeginDelete
 // method.
-func (client *WorkloadClassifiersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersClientBeginDeleteOptions) (*armruntime.Poller[WorkloadClassifiersClientDeleteResponse], error) {
+func (client *WorkloadClassifiersClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersClientBeginDeleteOptions) (*runtime.Poller[WorkloadClassifiersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkloadClassifiersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadClassifiersClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkloadClassifiersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadClassifiersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a workload classifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *WorkloadClassifiersClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, options)
 	if err != nil {
@@ -210,6 +214,7 @@ func (client *WorkloadClassifiersClient) deleteCreateRequest(ctx context.Context
 
 // Get - Gets a workload classifier
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -266,7 +271,7 @@ func (client *WorkloadClassifiersClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -281,6 +286,7 @@ func (client *WorkloadClassifiersClient) getHandleResponse(resp *http.Response) 
 
 // NewListByWorkloadGroupPager - Gets the list of workload classifiers for a workload group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -289,7 +295,7 @@ func (client *WorkloadClassifiersClient) getHandleResponse(resp *http.Response) 
 // options - WorkloadClassifiersClientListByWorkloadGroupOptions contains the optional parameters for the WorkloadClassifiersClient.ListByWorkloadGroup
 // method.
 func (client *WorkloadClassifiersClient) NewListByWorkloadGroupPager(resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadClassifiersClientListByWorkloadGroupOptions) *runtime.Pager[WorkloadClassifiersClientListByWorkloadGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkloadClassifiersClientListByWorkloadGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkloadClassifiersClientListByWorkloadGroupResponse]{
 		More: func(page WorkloadClassifiersClientListByWorkloadGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -346,7 +352,7 @@ func (client *WorkloadClassifiersClient) listByWorkloadGroupCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

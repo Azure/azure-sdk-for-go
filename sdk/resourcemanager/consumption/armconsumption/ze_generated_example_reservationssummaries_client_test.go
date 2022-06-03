@@ -28,14 +28,13 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReservationOrderPager("<reservation-order-id>",
+	pager := client.NewListByReservationOrderPager("00000000-0000-0000-0000-000000000000",
 		armconsumption.DatagrainDailyGrain,
-		&armconsumption.ReservationsSummariesClientListByReservationOrderOptions{Filter: to.Ptr("<filter>")})
+		&armconsumption.ReservationsSummariesClientListByReservationOrderOptions{Filter: to.Ptr("properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,15 +54,14 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationP
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByReservationOrderAndReservationPager("<reservation-order-id>",
-		"<reservation-id>",
+	pager := client.NewListByReservationOrderAndReservationPager("00000000-0000-0000-0000-000000000000",
+		"00000000-0000-0000-0000-000000000000",
 		armconsumption.DatagrainDailyGrain,
-		&armconsumption.ReservationsSummariesClientListByReservationOrderAndReservationOptions{Filter: to.Ptr("<filter>")})
+		&armconsumption.ReservationsSummariesClientListByReservationOrderAndReservationOptions{Filter: to.Ptr("properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -83,11 +81,11 @@ func ExampleReservationsSummariesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
+	pager := client.NewListPager("providers/Microsoft.Billing/billingAccounts/12345",
 		armconsumption.DatagrainDailyGrain,
 		&armconsumption.ReservationsSummariesClientListOptions{StartDate: nil,
 			EndDate:            nil,
-			Filter:             to.Ptr("<filter>"),
+			Filter:             to.Ptr("properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-11-20"),
 			ReservationID:      nil,
 			ReservationOrderID: nil,
 		})
@@ -95,7 +93,6 @@ func ExampleReservationsSummariesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

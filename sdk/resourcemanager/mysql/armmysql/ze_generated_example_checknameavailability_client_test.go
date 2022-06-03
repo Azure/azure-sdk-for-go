@@ -24,14 +24,14 @@ func ExampleCheckNameAvailabilityClient_Execute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmysql.NewCheckNameAvailabilityClient("<subscription-id>", cred, nil)
+	client, err := armmysql.NewCheckNameAvailabilityClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Execute(ctx,
 		armmysql.NameAvailabilityRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("name1"),
+			Type: to.Ptr("Microsoft.DBforMySQL"),
 		},
 		nil)
 	if err != nil {

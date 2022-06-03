@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc"
@@ -26,7 +24,7 @@ func ExampleServerGroupsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleServerGroupsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,17 +48,16 @@ func ExampleServerGroupsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("TestGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -77,32 +73,32 @@ func ExampleServerGroupsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
+		"TestGroup",
+		"hsctestsg",
 		armpostgresqlhsc.ServerGroup{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Tags: map[string]*string{
 				"ElasticServer": to.Ptr("1"),
 			},
 			Properties: &armpostgresqlhsc.ServerGroupProperties{
-				AdministratorLogin:         to.Ptr("<administrator-login>"),
-				AdministratorLoginPassword: to.Ptr("<administrator-login-password>"),
-				AvailabilityZone:           to.Ptr("<availability-zone>"),
+				AdministratorLogin:         to.Ptr("citus"),
+				AdministratorLoginPassword: to.Ptr("password"),
+				AvailabilityZone:           to.Ptr("1"),
 				BackupRetentionDays:        to.Ptr[int32](35),
 				CitusVersion:               to.Ptr(armpostgresqlhsc.CitusVersionNine5),
 				DelegatedSubnetArguments: &armpostgresqlhsc.ServerGroupPropertiesDelegatedSubnetArguments{
-					SubnetArmResourceID: to.Ptr("<subnet-arm-resource-id>"),
+					SubnetArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/test-vnet-subnet"),
 				},
 				EnableMx:          to.Ptr(true),
 				EnableZfs:         to.Ptr(false),
 				PostgresqlVersion: to.Ptr(armpostgresqlhsc.PostgreSQLVersionTwelve),
 				PrivateDNSZoneArguments: &armpostgresqlhsc.ServerGroupPropertiesPrivateDNSZoneArguments{
-					PrivateDNSZoneArmResourceID: to.Ptr("<private-dnszone-arm-resource-id>"),
+					PrivateDNSZoneArmResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/privateDnsZones/test-private-dns-zone"),
 				},
 				ServerRoleGroups: []*armpostgresqlhsc.ServerRoleGroup{
 					{
@@ -110,7 +106,7 @@ func ExampleServerGroupsClient_BeginCreateOrUpdate() {
 						ServerEdition:    to.Ptr(armpostgresqlhsc.ServerEditionGeneralPurpose),
 						StorageQuotaInMb: to.Ptr[int64](524288),
 						VCores:           to.Ptr[int64](4),
-						Name:             to.Ptr("<name>"),
+						Name:             to.Ptr(""),
 						Role:             to.Ptr(armpostgresqlhsc.ServerRoleCoordinator),
 						ServerCount:      to.Ptr[int32](1),
 					},
@@ -119,18 +115,18 @@ func ExampleServerGroupsClient_BeginCreateOrUpdate() {
 						ServerEdition:    to.Ptr(armpostgresqlhsc.ServerEditionMemoryOptimized),
 						StorageQuotaInMb: to.Ptr[int64](524288),
 						VCores:           to.Ptr[int64](4),
-						Name:             to.Ptr("<name>"),
+						Name:             to.Ptr(""),
 						Role:             to.Ptr(armpostgresqlhsc.ServerRoleWorker),
 						ServerCount:      to.Ptr[int32](3),
 					}},
-				StandbyAvailabilityZone: to.Ptr("<standby-availability-zone>"),
+				StandbyAvailabilityZone: to.Ptr("2"),
 			},
 		},
-		&armpostgresqlhsc.ServerGroupsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -145,13 +141,13 @@ func ExampleServerGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
+		"TestGroup",
+		"hsctestsg1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -167,18 +163,18 @@ func ExampleServerGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
-		&armpostgresqlhsc.ServerGroupsClientBeginDeleteOptions{ResumeToken: ""})
+		"TestGroup",
+		"testservergroup",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -191,29 +187,29 @@ func ExampleServerGroupsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
+		"TestGroup",
+		"hsctestsg",
 		armpostgresqlhsc.ServerGroupForUpdate{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armpostgresqlhsc.ServerGroupPropertiesForUpdate{
 				ServerRoleGroups: []*armpostgresqlhsc.ServerRoleGroup{
 					{
-						Name:        to.Ptr("<name>"),
+						Name:        to.Ptr(""),
 						Role:        to.Ptr(armpostgresqlhsc.ServerRoleWorker),
 						ServerCount: to.Ptr[int32](10),
 					}},
 			},
 		},
-		&armpostgresqlhsc.ServerGroupsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -228,18 +224,18 @@ func ExampleServerGroupsClient_BeginRestart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
-		&armpostgresqlhsc.ServerGroupsClientBeginRestartOptions{ResumeToken: ""})
+		"TestGroup",
+		"hsctestsg1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -252,18 +248,18 @@ func ExampleServerGroupsClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
-		&armpostgresqlhsc.ServerGroupsClientBeginStartOptions{ResumeToken: ""})
+		"TestGroup",
+		"hsctestsg1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -276,18 +272,18 @@ func ExampleServerGroupsClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStop(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
-		&armpostgresqlhsc.ServerGroupsClientBeginStopOptions{ResumeToken: ""})
+		"TestGroup",
+		"hsctestsg1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -300,14 +296,14 @@ func ExampleServerGroupsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewServerGroupsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewServerGroupsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armpostgresqlhsc.NameAvailabilityRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("name1"),
+			Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 		},
 		nil)
 	if err != nil {

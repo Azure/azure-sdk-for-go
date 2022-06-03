@@ -39,7 +39,7 @@ func NewPipelineJobsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,25 +57,27 @@ func NewPipelineJobsClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCancel - Cancels a pipeline job with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // pipelineJobName - The pipeline job name.
 // options - PipelineJobsClientBeginCancelOptions contains the optional parameters for the PipelineJobsClient.BeginCancel
 // method.
-func (client *PipelineJobsClient) BeginCancel(ctx context.Context, resourceGroupName string, accountName string, pipelineJobName string, options *PipelineJobsClientBeginCancelOptions) (*armruntime.Poller[PipelineJobsClientCancelResponse], error) {
+func (client *PipelineJobsClient) BeginCancel(ctx context.Context, resourceGroupName string, accountName string, pipelineJobName string, options *PipelineJobsClientBeginCancelOptions) (*runtime.Poller[PipelineJobsClientCancelResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.cancel(ctx, resourceGroupName, accountName, pipelineJobName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PipelineJobsClientCancelResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PipelineJobsClientCancelResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PipelineJobsClientCancelResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PipelineJobsClientCancelResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Cancel - Cancels a pipeline job with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *PipelineJobsClient) cancel(ctx context.Context, resourceGroupName string, accountName string, pipelineJobName string, options *PipelineJobsClientBeginCancelOptions) (*http.Response, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, accountName, pipelineJobName, options)
 	if err != nil {
@@ -117,12 +119,13 @@ func (client *PipelineJobsClient) cancelCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // CreateOrUpdate - Creates a new pipeline job or updates an existing one, with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // pipelineJobName - The pipeline job name.
@@ -170,7 +173,7 @@ func (client *PipelineJobsClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -185,6 +188,7 @@ func (client *PipelineJobsClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Deletes a pipeline job with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // pipelineJobName - The pipeline job name.
@@ -230,13 +234,14 @@ func (client *PipelineJobsClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves a specific pipeline job by name. If a pipeline job with that name has been previously created, the call
 // will return the JSON representation of that instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // pipelineJobName - The pipeline job name.
@@ -282,7 +287,7 @@ func (client *PipelineJobsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -297,11 +302,12 @@ func (client *PipelineJobsClient) getHandleResponse(resp *http.Response) (Pipeli
 
 // NewListPager - Retrieves a list of all live pipelines that have been created, along with their JSON representations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - PipelineJobsClientListOptions contains the optional parameters for the PipelineJobsClient.List method.
 func (client *PipelineJobsClient) NewListPager(resourceGroupName string, accountName string, options *PipelineJobsClientListOptions) *runtime.Pager[PipelineJobsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PipelineJobsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PipelineJobsClientListResponse]{
 		More: func(page PipelineJobsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -356,7 +362,7 @@ func (client *PipelineJobsClient) listCreateRequest(ctx context.Context, resourc
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -371,6 +377,7 @@ func (client *PipelineJobsClient) listHandleResponse(resp *http.Response) (Pipel
 
 // Update - Updates an existing pipeline job with the given name. Properties that can be updated include: description.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // pipelineJobName - The pipeline job name.
@@ -417,7 +424,7 @@ func (client *PipelineJobsClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -26,19 +26,18 @@ func ExampleJobsClient_NewListByAgentPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAgentPager("<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
+	pager := client.NewListByAgentPager("group1",
+		"server1",
+		"agent1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +53,15 @@ func ExampleJobsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,23 +77,23 @@ func ExampleJobsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
 		armsql.Job{
 			Properties: &armsql.JobProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my favourite job"),
 				Schedule: &armsql.JobSchedule{
 					Type:      to.Ptr(armsql.JobScheduleTypeRecurring),
 					Enabled:   to.Ptr(true),
 					EndTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T23:59:59Z"); return t }()),
-					Interval:  to.Ptr("<interval>"),
+					Interval:  to.Ptr("PT5M"),
 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-09-24T18:30:01Z"); return t }()),
 				},
 			},
@@ -114,15 +113,15 @@ func ExampleJobsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewJobsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewJobsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<job-agent-name>",
-		"<job-name>",
+		"group1",
+		"server1",
+		"agent1",
+		"job1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

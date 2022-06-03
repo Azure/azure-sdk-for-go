@@ -38,7 +38,7 @@ func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, o
 // BeginCreate - Creates a new route with the specified route name under the specified subscription, resource group, profile,
 // and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -64,23 +65,24 @@ func NewRoutesClient(subscriptionID string, credential azcore.TokenCredential, o
 // routeName - Name of the routing rule.
 // route - Route properties
 // options - RoutesClientBeginCreateOptions contains the optional parameters for the RoutesClient.BeginCreate method.
-func (client *RoutesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, options *RoutesClientBeginCreateOptions) (*armruntime.Poller[RoutesClientCreateResponse], error) {
+func (client *RoutesClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, options *RoutesClientBeginCreateOptions) (*runtime.Poller[RoutesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, routeName, route, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoutesClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RoutesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RoutesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RoutesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new route with the specified route name under the specified subscription, resource group, profile, and
 // AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *RoutesClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, options *RoutesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, routeName, route, options)
 	if err != nil {
@@ -126,36 +128,38 @@ func (client *RoutesClient) createCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, route)
 }
 
 // BeginDelete - Deletes an existing route with the specified route name under the specified subscription, resource group,
 // profile, and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // routeName - Name of the routing rule.
 // options - RoutesClientBeginDeleteOptions contains the optional parameters for the RoutesClient.BeginDelete method.
-func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *RoutesClientBeginDeleteOptions) (*armruntime.Poller[RoutesClientDeleteResponse], error) {
+func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *RoutesClientBeginDeleteOptions) (*runtime.Poller[RoutesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, routeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoutesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RoutesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RoutesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RoutesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing route with the specified route name under the specified subscription, resource group, profile,
 // and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *RoutesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, routeName, options)
 	if err != nil {
@@ -201,13 +205,14 @@ func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing route with the specified route name under the specified subscription, resource group, profile, and
 // AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -259,7 +264,7 @@ func (client *RoutesClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -274,13 +279,14 @@ func (client *RoutesClient) getHandleResponse(resp *http.Response) (RoutesClient
 
 // NewListByEndpointPager - Lists all of the existing origins within a profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - RoutesClientListByEndpointOptions contains the optional parameters for the RoutesClient.ListByEndpoint method.
 func (client *RoutesClient) NewListByEndpointPager(resourceGroupName string, profileName string, endpointName string, options *RoutesClientListByEndpointOptions) *runtime.Pager[RoutesClientListByEndpointResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RoutesClientListByEndpointResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RoutesClientListByEndpointResponse]{
 		More: func(page RoutesClientListByEndpointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -333,7 +339,7 @@ func (client *RoutesClient) listByEndpointCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -349,6 +355,7 @@ func (client *RoutesClient) listByEndpointHandleResponse(resp *http.Response) (R
 // BeginUpdate - Updates an existing route with the specified route name under the specified subscription, resource group,
 // profile, and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -356,23 +363,24 @@ func (client *RoutesClient) listByEndpointHandleResponse(resp *http.Response) (R
 // routeName - Name of the routing rule.
 // routeUpdateProperties - Route update properties
 // options - RoutesClientBeginUpdateOptions contains the optional parameters for the RoutesClient.BeginUpdate method.
-func (client *RoutesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*armruntime.Poller[RoutesClientUpdateResponse], error) {
+func (client *RoutesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*runtime.Poller[RoutesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoutesClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RoutesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RoutesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RoutesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an existing route with the specified route name under the specified subscription, resource group, profile,
 // and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *RoutesClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, options)
 	if err != nil {
@@ -418,6 +426,6 @@ func (client *RoutesClient) updateCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, routeUpdateProperties)
 }

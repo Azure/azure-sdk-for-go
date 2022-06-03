@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
@@ -26,18 +24,17 @@ func ExampleServiceClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("rg1",
+		"ddb1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleServiceClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<service-name>",
+		"rg1",
+		"ddb1",
+		"DataTransfer",
 		armcosmos.ServiceResourceCreateUpdateParameters{
 			Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
 				InstanceCount: to.Ptr[int32](1),
@@ -68,11 +65,11 @@ func ExampleServiceClient_BeginCreate() {
 				ServiceType:   to.Ptr(armcosmos.ServiceTypeDataTransfer),
 			},
 		},
-		&armcosmos.ServiceClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -87,14 +84,14 @@ func ExampleServiceClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<service-name>",
+		"rg1",
+		"ddb1",
+		"DataTransfer",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -110,19 +107,19 @@ func ExampleServiceClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewServiceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<service-name>",
-		&armcosmos.ServiceClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"ddb1",
+		"DataTransfer",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

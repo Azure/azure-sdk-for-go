@@ -24,20 +24,23 @@ func ExamplePrivateEndpointConnectionClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPrivateEndpointConnectionClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewPrivateEndpointConnectionClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<private-endpoint-connection-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"connection",
 		armdatafactory.PrivateLinkConnectionApprovalRequestResource{
 			Properties: &armdatafactory.PrivateLinkConnectionApprovalRequest{
+				PrivateEndpoint: &armdatafactory.PrivateEndpoint{
+					ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName/privateEndpoints/myPrivateEndpoint"),
+				},
 				PrivateLinkServiceConnectionState: &armdatafactory.PrivateLinkConnectionState{
-					Description:     to.Ptr("<description>"),
-					ActionsRequired: to.Ptr("<actions-required>"),
-					Status:          to.Ptr("<status>"),
+					Description:     to.Ptr("Approved by admin."),
+					ActionsRequired: to.Ptr(""),
+					Status:          to.Ptr("Approved"),
 				},
 			},
 		},
@@ -56,14 +59,14 @@ func ExamplePrivateEndpointConnectionClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPrivateEndpointConnectionClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewPrivateEndpointConnectionClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<private-endpoint-connection-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"connection",
 		&armdatafactory.PrivateEndpointConnectionClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,14 +82,14 @@ func ExamplePrivateEndpointConnectionClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewPrivateEndpointConnectionClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewPrivateEndpointConnectionClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<private-endpoint-connection-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"connection",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -39,7 +39,7 @@ func NewArtifactSourcesClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewArtifactSourcesClient(subscriptionID string, credential azcore.TokenCred
 
 // CreateOrUpdate - Create or replace an existing artifact source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the artifact source.
@@ -104,7 +105,7 @@ func (client *ArtifactSourcesClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, artifactSource)
 }
 
@@ -119,6 +120,7 @@ func (client *ArtifactSourcesClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete artifact source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the artifact source.
@@ -164,12 +166,13 @@ func (client *ArtifactSourcesClient) deleteCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get artifact source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the artifact source.
@@ -218,7 +221,7 @@ func (client *ArtifactSourcesClient) getCreateRequest(ctx context.Context, resou
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -233,11 +236,12 @@ func (client *ArtifactSourcesClient) getHandleResponse(resp *http.Response) (Art
 
 // NewListPager - List artifact sources in a given lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // options - ArtifactSourcesClientListOptions contains the optional parameters for the ArtifactSourcesClient.List method.
 func (client *ArtifactSourcesClient) NewListPager(resourceGroupName string, labName string, options *ArtifactSourcesClientListOptions) *runtime.Pager[ArtifactSourcesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ArtifactSourcesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ArtifactSourcesClientListResponse]{
 		More: func(page ArtifactSourcesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -298,7 +302,7 @@ func (client *ArtifactSourcesClient) listCreateRequest(ctx context.Context, reso
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -313,6 +317,7 @@ func (client *ArtifactSourcesClient) listHandleResponse(resp *http.Response) (Ar
 
 // Update - Allows modifying tags of artifact sources. All other properties will be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // labName - The name of the lab.
 // name - The name of the artifact source.
@@ -359,7 +364,7 @@ func (client *ArtifactSourcesClient) updateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, artifactSource)
 }
 

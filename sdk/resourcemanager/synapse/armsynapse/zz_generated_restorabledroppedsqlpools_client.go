@@ -38,7 +38,7 @@ func NewRestorableDroppedSQLPoolsClient(subscriptionID string, credential azcore
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewRestorableDroppedSQLPoolsClient(subscriptionID string, credential azcore
 
 // Get - Gets a deleted sql pool that can be restored
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // restorableDroppedSQLPoolID - The id of the deleted Sql Pool in the form of sqlPoolName,deletionTimeInFileTimeFormat
@@ -102,7 +103,7 @@ func (client *RestorableDroppedSQLPoolsClient) getCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *RestorableDroppedSQLPoolsClient) getHandleResponse(resp *http.Resp
 
 // NewListByWorkspacePager - Gets a list of deleted Sql pools that can be restored
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - RestorableDroppedSQLPoolsClientListByWorkspaceOptions contains the optional parameters for the RestorableDroppedSQLPoolsClient.ListByWorkspace
 // method.
 func (client *RestorableDroppedSQLPoolsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *RestorableDroppedSQLPoolsClientListByWorkspaceOptions) *runtime.Pager[RestorableDroppedSQLPoolsClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RestorableDroppedSQLPoolsClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RestorableDroppedSQLPoolsClientListByWorkspaceResponse]{
 		More: func(page RestorableDroppedSQLPoolsClientListByWorkspaceResponse) bool {
 			return false
 		},
@@ -165,7 +167,7 @@ func (client *RestorableDroppedSQLPoolsClient) listByWorkspaceCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

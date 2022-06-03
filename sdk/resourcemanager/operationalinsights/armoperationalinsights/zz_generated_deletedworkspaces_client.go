@@ -38,7 +38,7 @@ func NewDeletedWorkspacesClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,9 +56,10 @@ func NewDeletedWorkspacesClient(subscriptionID string, credential azcore.TokenCr
 
 // NewListPager - Gets recently deleted workspaces in a subscription, available for recovery.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // options - DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.List method.
 func (client *DeletedWorkspacesClient) NewListPager(options *DeletedWorkspacesClientListOptions) *runtime.Pager[DeletedWorkspacesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DeletedWorkspacesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DeletedWorkspacesClientListResponse]{
 		More: func(page DeletedWorkspacesClientListResponse) bool {
 			return false
 		},
@@ -91,9 +92,9 @@ func (client *DeletedWorkspacesClient) listCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,11 +109,12 @@ func (client *DeletedWorkspacesClient) listHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Gets recently deleted workspaces in a resource group, available for recovery.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.ListByResourceGroup
 // method.
 func (client *DeletedWorkspacesClient) NewListByResourceGroupPager(resourceGroupName string, options *DeletedWorkspacesClientListByResourceGroupOptions) *runtime.Pager[DeletedWorkspacesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DeletedWorkspacesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DeletedWorkspacesClientListByResourceGroupResponse]{
 		More: func(page DeletedWorkspacesClientListByResourceGroupResponse) bool {
 			return false
 		},
@@ -149,9 +151,9 @@ func (client *DeletedWorkspacesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

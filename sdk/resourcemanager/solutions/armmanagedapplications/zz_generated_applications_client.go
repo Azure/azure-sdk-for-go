@@ -38,7 +38,7 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdate - Creates a new managed application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationName - The name of the managed application.
 // parameters - Parameters supplied to the create or update a managed application.
 // options - ApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdate
 // method.
-func (client *ApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ApplicationsClientCreateOrUpdateResponse], error) {
+func (client *ApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ApplicationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, applicationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ApplicationsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ApplicationsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ApplicationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates a new managed application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 func (client *ApplicationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, applicationName string, parameters Application, options *ApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, applicationName, parameters, options)
 	if err != nil {
@@ -114,32 +116,34 @@ func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the managed application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationName - The name of the managed application.
 // options - ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete
 // method.
-func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*armruntime.Poller[ApplicationsClientDeleteResponse], error) {
+func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*runtime.Poller[ApplicationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, applicationName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ApplicationsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ApplicationsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ApplicationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the managed application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
@@ -177,12 +181,13 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the managed application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationName - The name of the managed application.
 // options - ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
@@ -223,7 +228,7 @@ func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -238,6 +243,7 @@ func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (Applic
 
 // ListAllowedUpgradePlans - List allowed upgrade plans for application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationName - The name of the managed application.
 // options - ApplicationsClientListAllowedUpgradePlansOptions contains the optional parameters for the ApplicationsClient.ListAllowedUpgradePlans
@@ -279,17 +285,18 @@ func (client *ApplicationsClient) listAllowedUpgradePlansCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListByResourceGroupPager - Gets all the applications within a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ApplicationsClientListByResourceGroupOptions contains the optional parameters for the ApplicationsClient.ListByResourceGroup
 // method.
 func (client *ApplicationsClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationsClientListByResourceGroupOptions) *runtime.Pager[ApplicationsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ApplicationsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ApplicationsClientListByResourceGroupResponse]{
 		More: func(page ApplicationsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -334,7 +341,7 @@ func (client *ApplicationsClient) listByResourceGroupCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -349,10 +356,11 @@ func (client *ApplicationsClient) listByResourceGroupHandleResponse(resp *http.R
 
 // NewListBySubscriptionPager - Gets all the applications within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // options - ApplicationsClientListBySubscriptionOptions contains the optional parameters for the ApplicationsClient.ListBySubscription
 // method.
 func (client *ApplicationsClient) NewListBySubscriptionPager(options *ApplicationsClientListBySubscriptionOptions) *runtime.Pager[ApplicationsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ApplicationsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ApplicationsClientListBySubscriptionResponse]{
 		More: func(page ApplicationsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -393,7 +401,7 @@ func (client *ApplicationsClient) listBySubscriptionCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -408,24 +416,26 @@ func (client *ApplicationsClient) listBySubscriptionHandleResponse(resp *http.Re
 
 // BeginRefreshPermissions - Refresh Permissions for application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationName - The name of the managed application.
 // options - ApplicationsClientBeginRefreshPermissionsOptions contains the optional parameters for the ApplicationsClient.BeginRefreshPermissions
 // method.
-func (client *ApplicationsClient) BeginRefreshPermissions(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginRefreshPermissionsOptions) (*armruntime.Poller[ApplicationsClientRefreshPermissionsResponse], error) {
+func (client *ApplicationsClient) BeginRefreshPermissions(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginRefreshPermissionsOptions) (*runtime.Poller[ApplicationsClientRefreshPermissionsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.refreshPermissions(ctx, resourceGroupName, applicationName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ApplicationsClientRefreshPermissionsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ApplicationsClientRefreshPermissionsResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ApplicationsClientRefreshPermissionsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationsClientRefreshPermissionsResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // RefreshPermissions - Refresh Permissions for application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 func (client *ApplicationsClient) refreshPermissions(ctx context.Context, resourceGroupName string, applicationName string, options *ApplicationsClientBeginRefreshPermissionsOptions) (*http.Response, error) {
 	req, err := client.refreshPermissionsCreateRequest(ctx, resourceGroupName, applicationName, options)
 	if err != nil {
@@ -463,12 +473,13 @@ func (client *ApplicationsClient) refreshPermissionsCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Update - Updates an existing managed application. The only value that can be updated via PATCH currently is the tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationName - The name of the managed application.
 // options - ApplicationsClientUpdateOptions contains the optional parameters for the ApplicationsClient.Update method.
@@ -509,7 +520,7 @@ func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}

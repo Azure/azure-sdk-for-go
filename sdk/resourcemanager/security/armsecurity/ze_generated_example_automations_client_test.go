@@ -24,7 +24,7 @@ func ExampleAutomationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleAutomationsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,17 +48,16 @@ func ExampleAutomationsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("exampleResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,13 +73,13 @@ func ExampleAutomationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-name>",
+		"exampleResourceGroup",
+		"exampleAutomation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,30 +95,30 @@ func ExampleAutomationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-name>",
+		"exampleResourceGroup",
+		"exampleAutomation",
 		armsecurity.Automation{
-			Location: to.Ptr("<location>"),
-			Etag:     to.Ptr("<etag>"),
+			Location: to.Ptr("Central US"),
+			Etag:     to.Ptr("etag value (must be supplied for update)"),
 			Tags:     map[string]*string{},
 			Properties: &armsecurity.AutomationProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("An example of a security automation that triggers one LogicApp resource (myTest1) on any security assessment"),
 				Actions: []armsecurity.AutomationActionClassification{
 					&armsecurity.AutomationActionLogicApp{
 						ActionType:         to.Ptr(armsecurity.ActionTypeLogicApp),
-						LogicAppResourceID: to.Ptr("<logic-app-resource-id>"),
-						URI:                to.Ptr("<uri>"),
+						LogicAppResourceID: to.Ptr("/subscriptions/e54a4a18-5b94-4f90-9471-bd3decad8a2e/resourceGroups/sample/providers/Microsoft.Logic/workflows/MyTest1"),
+						URI:                to.Ptr("https://exampleTriggerUri1.com"),
 					}},
 				IsEnabled: to.Ptr(true),
 				Scopes: []*armsecurity.AutomationScope{
 					{
-						Description: to.Ptr("<description>"),
-						ScopePath:   to.Ptr("<scope-path>"),
+						Description: to.Ptr("A description that helps to identify this scope - for example: security assessments that relate to the resource group myResourceGroup within the subscription a5caac9c-5c04-49af-b3d0-e204f40345d5"),
+						ScopePath:   to.Ptr("/subscriptions/a5caac9c-5c04-49af-b3d0-e204f40345d5/resourceGroups/myResourceGroup"),
 					}},
 				Sources: []*armsecurity.AutomationSource{
 					{
@@ -143,13 +141,13 @@ func ExampleAutomationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-name>",
+		"myRg",
+		"myAutomationName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -163,29 +161,29 @@ func ExampleAutomationsClient_Validate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurity.NewAutomationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurity.NewAutomationsClient("a5caac9c-5c04-49af-b3d0-e204f40345d5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Validate(ctx,
-		"<resource-group-name>",
-		"<automation-name>",
+		"exampleResourceGroup",
+		"exampleAutomation",
 		armsecurity.Automation{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("Central US"),
 			Tags:     map[string]*string{},
 			Properties: &armsecurity.AutomationProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("An example of a security automation that triggers one LogicApp resource (myTest1) on any security assessment of type customAssessment"),
 				Actions: []armsecurity.AutomationActionClassification{
 					&armsecurity.AutomationActionLogicApp{
 						ActionType:         to.Ptr(armsecurity.ActionTypeLogicApp),
-						LogicAppResourceID: to.Ptr("<logic-app-resource-id>"),
-						URI:                to.Ptr("<uri>"),
+						LogicAppResourceID: to.Ptr("/subscriptions/e54a4a18-5b94-4f90-9471-bd3decad8a2e/resourceGroups/sample/providers/Microsoft.Logic/workflows/MyTest1"),
+						URI:                to.Ptr("https://exampleTriggerUri1.com"),
 					}},
 				IsEnabled: to.Ptr(true),
 				Scopes: []*armsecurity.AutomationScope{
 					{
-						Description: to.Ptr("<description>"),
-						ScopePath:   to.Ptr("<scope-path>"),
+						Description: to.Ptr("A description that helps to identify this scope - for example: security assessments that relate to the resource group myResourceGroup within the subscription a5caac9c-5c04-49af-b3d0-e204f40345d5"),
+						ScopePath:   to.Ptr("/subscriptions/a5caac9c-5c04-49af-b3d0-e204f40345d5/resourceGroups/myResourceGroup"),
 					}},
 				Sources: []*armsecurity.AutomationSource{
 					{
@@ -194,9 +192,9 @@ func ExampleAutomationsClient_Validate() {
 							{
 								Rules: []*armsecurity.AutomationTriggeringRule{
 									{
-										ExpectedValue: to.Ptr("<expected-value>"),
+										ExpectedValue: to.Ptr("customAssessment"),
 										Operator:      to.Ptr(armsecurity.OperatorEquals),
-										PropertyJPath: to.Ptr("<property-jpath>"),
+										PropertyJPath: to.Ptr("$.Entity.AssessmentType"),
 										PropertyType:  to.Ptr(armsecurity.PropertyTypeString),
 									}},
 							}},

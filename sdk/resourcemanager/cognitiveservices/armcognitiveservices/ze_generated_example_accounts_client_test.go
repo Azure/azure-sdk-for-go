@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
@@ -26,42 +24,42 @@ func ExampleAccountsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"testCreate1",
 		armcognitiveservices.Account{
 			Identity: &armcognitiveservices.Identity{
 				Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeSystemAssigned),
 			},
-			Kind:     to.Ptr("<kind>"),
-			Location: to.Ptr("<location>"),
+			Kind:     to.Ptr("Emotion"),
+			Location: to.Ptr("West US"),
 			Properties: &armcognitiveservices.AccountProperties{
 				Encryption: &armcognitiveservices.Encryption{
 					KeySource: to.Ptr(armcognitiveservices.KeySourceMicrosoftKeyVault),
 					KeyVaultProperties: &armcognitiveservices.KeyVaultProperties{
-						KeyName:     to.Ptr("<key-name>"),
-						KeyVaultURI: to.Ptr("<key-vault-uri>"),
-						KeyVersion:  to.Ptr("<key-version>"),
+						KeyName:     to.Ptr("KeyName"),
+						KeyVaultURI: to.Ptr("https://pltfrmscrts-use-pc-dev.vault.azure.net/"),
+						KeyVersion:  to.Ptr("891CF236-D241-4738-9462-D506AF493DFA"),
 					},
 				},
 				UserOwnedStorage: []*armcognitiveservices.UserOwnedStorage{
 					{
-						ResourceID: to.Ptr("<resource-id>"),
+						ResourceID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
 					}},
 			},
 			SKU: &armcognitiveservices.SKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("S0"),
 			},
 		},
-		&armcognitiveservices.AccountsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -76,24 +74,24 @@ func ExampleAccountsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"bvttest",
+		"bingSearch",
 		armcognitiveservices.Account{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("global"),
 			SKU: &armcognitiveservices.SKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("S2"),
 			},
 		},
-		&armcognitiveservices.AccountsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -108,18 +106,18 @@ func ExampleAccountsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		&armcognitiveservices.AccountsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"PropTest01",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -132,13 +130,13 @@ func ExampleAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -154,17 +152,16 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -180,7 +177,7 @@ func ExampleAccountsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -189,7 +186,6 @@ func ExampleAccountsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -205,13 +201,13 @@ func ExampleAccountsClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -227,13 +223,13 @@ func ExampleAccountsClient_RegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKey(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"myAccount",
 		armcognitiveservices.RegenerateKeyParameters{
 			KeyName: to.Ptr(armcognitiveservices.KeyNameKey2),
 		},
@@ -252,13 +248,13 @@ func ExampleAccountsClient_ListUsages() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("5a4f5c2e-6983-4ccb-bd34-2196d5b5bbd3", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListUsages(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"myResourceGroup",
+		"TestUsage02",
 		&armcognitiveservices.AccountsClientListUsagesOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -274,18 +270,17 @@ func ExampleAccountsClient_NewListModelsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcognitiveservices.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armcognitiveservices.NewAccountsClient("subscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListModelsPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListModelsPager("resourceGroupName",
+		"accountName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -13,10 +13,12 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
+
+// see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md
 
 // Applicable returns true if the LRO is using Azure-AsyncOperation.
 func Applicable(resp *http.Response) bool {
@@ -77,23 +79,8 @@ func New[T any](pl exported.Pipeline, resp *http.Response, finalState pollers.Fi
 		OrigURL:    resp.Request.URL.String(),
 		Method:     resp.Request.Method,
 		FinalState: finalState,
+		CurState:   pollers.StatusInProgress,
 	}
-	// check for provisioning state
-	state, err := pollers.GetProvisioningState(resp)
-	if errors.Is(err, pollers.ErrNoBody) || state == "" {
-		// NOTE: the ARM RPC spec explicitly states that for async PUT the initial response MUST
-		// contain a provisioning state.  to maintain compat with track 1 and other implementations
-		// we are explicitly relaxing this requirement.
-		/*if resp.Request.Method == http.MethodPut {
-			// initial response for a PUT requires a provisioning state
-			return nil, err
-		}*/
-		// for DELETE/PATCH/POST, provisioning state is optional
-		state = pollers.StatusInProgress
-	} else if err != nil {
-		return nil, err
-	}
-	p.CurState = state
 	return p, nil
 }
 
@@ -121,11 +108,11 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	return p.resp, nil
 }
 
-func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
+func (p *Poller[T]) Result(ctx context.Context, out *T) error {
 	if p.resp.StatusCode == http.StatusNoContent {
-		return *new(T), nil
+		return nil
 	} else if pollers.Failed(p.CurState) {
-		return *new(T), exported.NewResponseError(p.resp)
+		return exported.NewResponseError(p.resp)
 	}
 	var req *exported.Request
 	var err error
@@ -144,14 +131,14 @@ func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
 		}
 	}
 	if err != nil {
-		return *new(T), err
+		return err
 	}
 
 	// if a final GET request has been created, execute it
 	if req != nil {
 		resp, err := p.pl.Do(req)
 		if err != nil {
-			return *new(T), err
+			return err
 		}
 		p.resp = resp
 	}

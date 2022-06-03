@@ -16,15 +16,20 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
 
 // policy that tracks the number of times it was invoked
 type countingPolicy struct {
-	count int
+	count    int
+	callback func()
 }
 
 func (p *countingPolicy) Do(req *policy.Request) (*http.Response, error) {
 	p.count++
+	if p.callback != nil {
+		p.callback()
+	}
 	return req.Next()
 }
 
@@ -87,26 +92,38 @@ func TestNewPipelineCustomPolicies(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	opts := policy.ClientOptions{Transport: srv, Retry: policy.RetryOptions{RetryDelay: time.Microsecond, MaxRetries: 1}}
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
+	require.NoError(t, err)
+
+	// NewPipeline should place policies from ClientOptions (i.e. application-specified policies)
+	// after policies from PipelineOptions (i.e. client default policies)
+	defaultPerCallPolicy := &countingPolicy{}
+	defaultPerRetryPolicy := &countingPolicy{}
+	customPerCallPolicy := &countingPolicy{}
+	customPerCallPolicy.callback = func() {
+		require.Equal(t, 1, defaultPerCallPolicy.count)
 	}
-	perCallPolicy := &countingPolicy{}
-	perRetryPolicy := &countingPolicy{}
+	customPerRetryPolicy := &countingPolicy{}
+	customPerRetryPolicy.callback = func() {
+		require.Equal(t, 1, defaultPerCallPolicy.count)
+		require.Equal(t, 1, customPerCallPolicy.count)
+		require.GreaterOrEqual(t, defaultPerRetryPolicy.count, 1)
+	}
+
 	pl := NewPipeline("",
 		"",
-		PipelineOptions{PerCall: []policy.Policy{perCallPolicy}, PerRetry: []policy.Policy{perRetryPolicy}},
-		&opts,
+		PipelineOptions{PerCall: []policy.Policy{defaultPerCallPolicy}, PerRetry: []policy.Policy{defaultPerRetryPolicy}},
+		&policy.ClientOptions{
+			Transport:        srv,
+			Retry:            policy.RetryOptions{RetryDelay: time.Microsecond, MaxRetries: 1},
+			PerCallPolicies:  []policy.Policy{customPerCallPolicy},
+			PerRetryPolicies: []policy.Policy{customPerRetryPolicy},
+		},
 	)
 	_, err = pl.Do(req)
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
-	}
-	if perCallPolicy.count != 1 {
-		t.Fatalf("Per call policy received %d requests instead of the expected 1", perCallPolicy.count)
-	}
-	if perRetryPolicy.count != 2 {
-		t.Fatalf("Per call policy received %d requests instead of the expected 2", perRetryPolicy.count)
-	}
+	require.NoError(t, err)
+	require.Equal(t, 1, defaultPerCallPolicy.count)
+	require.Equal(t, 1, customPerCallPolicy.count)
+	require.Equal(t, 2, defaultPerRetryPolicy.count)
+	require.Equal(t, 2, customPerRetryPolicy.count)
 }

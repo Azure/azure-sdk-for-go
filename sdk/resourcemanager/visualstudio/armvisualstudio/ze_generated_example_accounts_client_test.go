@@ -24,14 +24,14 @@ func ExampleAccountsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewAccountsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
 		armvisualstudio.CheckNameAvailabilityParameter{
-			ResourceName: to.Ptr("<resource-name>"),
-			ResourceType: to.Ptr("<resource-type>"),
+			ResourceName: to.Ptr("ExampleName"),
+			ResourceType: to.Ptr("Account"),
 		},
 		nil)
 	if err != nil {
@@ -48,12 +48,12 @@ func ExampleAccountsClient_ListByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewAccountsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
+		"VS-Example-Group",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -69,16 +69,16 @@ func ExampleAccountsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewAccountsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"VS-Example-Group",
+		"Example",
 		armvisualstudio.AccountResourceRequest{
-			AccountName:   to.Ptr("<account-name>"),
-			Location:      to.Ptr("<location>"),
+			AccountName:   to.Ptr("Example"),
+			Location:      to.Ptr("Central US"),
 			OperationType: to.Ptr(armvisualstudio.AccountResourceRequestOperationTypeCreate),
 			Properties:    map[string]*string{},
 			Tags:          map[string]*string{},
@@ -98,13 +98,13 @@ func ExampleAccountsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewAccountsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"VS-Example-Group",
+		"Example",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -118,13 +118,13 @@ func ExampleAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewAccountsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"VS-Example-Group",
+		"Example",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -140,13 +140,13 @@ func ExampleAccountsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvisualstudio.NewAccountsClient("<subscription-id>", cred, nil)
+	client, err := armvisualstudio.NewAccountsClient("0de7f055-dbea-498d-8e9e-da287eedca90", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"VS-Example-Group",
+		"Example",
 		armvisualstudio.AccountTagRequest{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),

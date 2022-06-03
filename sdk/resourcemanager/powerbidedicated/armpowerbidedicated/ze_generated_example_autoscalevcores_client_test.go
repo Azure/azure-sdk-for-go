@@ -24,13 +24,13 @@ func ExampleAutoScaleVCoresClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vcore-name>",
+		"TestRG",
+		"testvcore",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,24 +46,24 @@ func ExampleAutoScaleVCoresClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<vcore-name>",
+		"TestRG",
+		"testvcore",
 		armpowerbidedicated.AutoScaleVCore{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags: map[string]*string{
 				"testKey": to.Ptr("testValue"),
 			},
 			Properties: &armpowerbidedicated.AutoScaleVCoreProperties{
 				CapacityLimit:    to.Ptr[int32](10),
-				CapacityObjectID: to.Ptr("<capacity-object-id>"),
+				CapacityObjectID: to.Ptr("a28f00bd-5330-4572-88f1-fa883e074785"),
 			},
 			SKU: &armpowerbidedicated.AutoScaleVCoreSKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("AutoScale"),
 				Capacity: to.Ptr[int32](0),
 				Tier:     to.Ptr(armpowerbidedicated.VCoreSKUTierAutoScale),
 			},
@@ -83,13 +83,13 @@ func ExampleAutoScaleVCoresClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<vcore-name>",
+		"TestRG",
+		"testvcore",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -103,19 +103,19 @@ func ExampleAutoScaleVCoresClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<vcore-name>",
+		"TestRG",
+		"testvcore",
 		armpowerbidedicated.AutoScaleVCoreUpdateParameters{
 			Properties: &armpowerbidedicated.AutoScaleVCoreMutableProperties{
 				CapacityLimit: to.Ptr[int32](20),
 			},
 			SKU: &armpowerbidedicated.AutoScaleVCoreSKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("AutoScale"),
 				Capacity: to.Ptr[int32](0),
 				Tier:     to.Ptr(armpowerbidedicated.VCoreSKUTierAutoScale),
 			},
@@ -138,17 +138,16 @@ func ExampleAutoScaleVCoresClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("TestRG",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -164,7 +163,7 @@ func ExampleAutoScaleVCoresClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("<subscription-id>", cred, nil)
+	client, err := armpowerbidedicated.NewAutoScaleVCoresClient("613192d7-503f-477a-9cfe-4efc3ee2bd60", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -173,7 +172,6 @@ func ExampleAutoScaleVCoresClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

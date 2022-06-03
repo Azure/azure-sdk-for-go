@@ -10,7 +10,7 @@ package armdatalakeanalytics
 
 const (
 	moduleName    = "armdatalakeanalytics"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.6.0"
 )
 
 // AADObjectType - The type of AAD object the object identifier refers to.

@@ -29,9 +29,9 @@ func ExampleSuppressionsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-uri>",
-		"<recommendation-id>",
-		"<name>",
+		"resourceUri",
+		"recommendationId",
+		"suppressionName1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -52,12 +52,12 @@ func ExampleSuppressionsClient_Create() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-uri>",
-		"<recommendation-id>",
-		"<name>",
+		"resourceUri",
+		"recommendationId",
+		"suppressionName1",
 		armadvisor.SuppressionContract{
 			Properties: &armadvisor.SuppressionProperties{
-				TTL: to.Ptr("<ttl>"),
+				TTL: to.Ptr("07:00:00:00"),
 			},
 		},
 		nil)
@@ -80,9 +80,9 @@ func ExampleSuppressionsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-uri>",
-		"<recommendation-id>",
-		"<name>",
+		"resourceUri",
+		"recommendationId",
+		"suppressionName1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -96,7 +96,7 @@ func ExampleSuppressionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armadvisor.NewSuppressionsClient("<subscription-id>", cred, nil)
+	client, err := armadvisor.NewSuppressionsClient("subscriptionId1", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -107,7 +107,6 @@ func ExampleSuppressionsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

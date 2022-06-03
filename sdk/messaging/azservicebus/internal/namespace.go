@@ -15,12 +15,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
-	"github.com/Azure/go-amqp"
 )
 
 const (
@@ -214,8 +214,9 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (RPC
 	}
 
 	return NewRPCLink(RPCLinkArgs{
-		Client:  &amqpwrap.AMQPClientWrapper{Inner: client},
-		Address: managementPath,
+		Client:   &amqpwrap.AMQPClientWrapper{Inner: client},
+		Address:  managementPath,
+		LogEvent: exported.EventReceiver,
 	})
 }
 

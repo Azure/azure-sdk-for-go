@@ -466,6 +466,13 @@ type CmdkeySetup struct {
 	TypeProperties *CmdkeySetupTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetCustomSetupBase implements the CustomSetupBaseClassification interface for type CmdkeySetup.
+func (c *CmdkeySetup) GetCustomSetupBase() *CustomSetupBase {
+	return &CustomSetupBase{
+		Type: c.Type,
+	}
+}
+
 // CmdkeySetupTypeProperties - Cmdkey command custom setup type properties.
 type CmdkeySetupTypeProperties struct {
 	// REQUIRED; The password of data source access.
@@ -485,6 +492,13 @@ type ComponentSetup struct {
 
 	// REQUIRED; Install 3rd party component type properties.
 	TypeProperties *LicensedComponentSetupTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetCustomSetupBase implements the CustomSetupBaseClassification interface for type ComponentSetup.
+func (c *ComponentSetup) GetCustomSetupBase() *CustomSetupBase {
+	return &CustomSetupBase{
+		Type: c.Type,
+	}
 }
 
 // CreateSQLPoolRestorePointDefinition - Contains the information necessary to perform a create Sql pool restore point operation.
@@ -513,6 +527,9 @@ type CustomSetupBase struct {
 	// REQUIRED; The type of custom setup.
 	Type *string `json:"type,omitempty"`
 }
+
+// GetCustomSetupBase implements the CustomSetupBaseClassification interface for type CustomSetupBase.
+func (c *CustomSetupBase) GetCustomSetupBase() *CustomSetupBase { return c }
 
 // CustomerManagedKeyDetails - Details of the customer managed key associated with the workspace
 type CustomerManagedKeyDetails struct {
@@ -555,6 +572,9 @@ type DataConnection struct {
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
+
+// GetDataConnection implements the DataConnectionClassification interface for type DataConnection.
+func (d *DataConnection) GetDataConnection() *DataConnection { return d }
 
 // DataConnectionCheckNameRequest - A data connection check name availability request.
 type DataConnectionCheckNameRequest struct {
@@ -800,6 +820,9 @@ type Database struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDatabase implements the DatabaseClassification interface for type Database.
+func (d *Database) GetDatabase() *Database { return d }
+
 // DatabaseCheckNameRequest - The result returned from a database check name availability request.
 type DatabaseCheckNameRequest struct {
 	// REQUIRED; Resource name.
@@ -1005,6 +1028,13 @@ type EnvironmentVariableSetup struct {
 	TypeProperties *EnvironmentVariableSetupTypeProperties `json:"typeProperties,omitempty"`
 }
 
+// GetCustomSetupBase implements the CustomSetupBaseClassification interface for type EnvironmentVariableSetup.
+func (e *EnvironmentVariableSetup) GetCustomSetupBase() *CustomSetupBase {
+	return &CustomSetupBase{
+		Type: e.Type,
+	}
+}
+
 // EnvironmentVariableSetupTypeProperties - Environment variable custom setup type properties.
 type EnvironmentVariableSetupTypeProperties struct {
 	// REQUIRED; The name of the environment variable.
@@ -1102,6 +1132,18 @@ type EventGridDataConnection struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDataConnection implements the DataConnectionClassification interface for type EventGridDataConnection.
+func (e *EventGridDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		Location:   e.Location,
+		Kind:       e.Kind,
+		SystemData: e.SystemData,
+		ID:         e.ID,
+		Name:       e.Name,
+		Type:       e.Type,
+	}
+}
+
 // EventHubConnectionProperties - Class representing the Kusto event hub connection properties.
 type EventHubConnectionProperties struct {
 	// REQUIRED; The event hub consumer group.
@@ -1154,6 +1196,18 @@ type EventHubDataConnection struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnection implements the DataConnectionClassification interface for type EventHubDataConnection.
+func (e *EventHubDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		Location:   e.Location,
+		Kind:       e.Kind,
+		SystemData: e.SystemData,
+		ID:         e.ID,
+		Name:       e.Name,
+		Type:       e.Type,
+	}
 }
 
 // ExtendedSQLPoolBlobAuditingPoliciesClientCreateOrUpdateOptions contains the optional parameters for the ExtendedSQLPoolBlobAuditingPoliciesClient.CreateOrUpdate
@@ -1531,6 +1585,9 @@ type IntegrationRuntime struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// GetIntegrationRuntime implements the IntegrationRuntimeClassification interface for type IntegrationRuntime.
+func (i *IntegrationRuntime) GetIntegrationRuntime() *IntegrationRuntime { return i }
+
 // IntegrationRuntimeAuthKeys - The integration runtime authentication keys.
 type IntegrationRuntimeAuthKeys struct {
 	// The primary integration runtime authentication key.
@@ -1873,6 +1930,9 @@ type IntegrationRuntimeStatus struct {
 	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
 }
 
+// GetIntegrationRuntimeStatus implements the IntegrationRuntimeStatusClassification interface for type IntegrationRuntimeStatus.
+func (i *IntegrationRuntimeStatus) GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus { return i }
+
 // IntegrationRuntimeStatusClientGetOptions contains the optional parameters for the IntegrationRuntimeStatusClient.Get method.
 type IntegrationRuntimeStatusClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -2028,6 +2088,18 @@ type IotHubDataConnection struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDataConnection implements the DataConnectionClassification interface for type IotHubDataConnection.
+func (i *IotHubDataConnection) GetDataConnection() *DataConnection {
+	return &DataConnection{
+		Location:   i.Location,
+		Kind:       i.Kind,
+		SystemData: i.SystemData,
+		ID:         i.ID,
+		Name:       i.Name,
+		Type:       i.Type,
+	}
 }
 
 // KekIdentityProperties - Key encryption key properties
@@ -2590,6 +2662,13 @@ type LinkedIntegrationRuntimeKeyAuthorization struct {
 	Key *SecureString `json:"key,omitempty"`
 }
 
+// GetLinkedIntegrationRuntimeType implements the LinkedIntegrationRuntimeTypeClassification interface for type LinkedIntegrationRuntimeKeyAuthorization.
+func (l *LinkedIntegrationRuntimeKeyAuthorization) GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType {
+	return &LinkedIntegrationRuntimeType{
+		AuthorizationType: l.AuthorizationType,
+	}
+}
+
 // LinkedIntegrationRuntimeRbacAuthorization - The role based access control (RBAC) authorization type integration runtime.
 type LinkedIntegrationRuntimeRbacAuthorization struct {
 	// REQUIRED; The authorization type for integration runtime sharing.
@@ -2597,6 +2676,13 @@ type LinkedIntegrationRuntimeRbacAuthorization struct {
 
 	// REQUIRED; The resource identifier of the integration runtime to be shared.
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// GetLinkedIntegrationRuntimeType implements the LinkedIntegrationRuntimeTypeClassification interface for type LinkedIntegrationRuntimeRbacAuthorization.
+func (l *LinkedIntegrationRuntimeRbacAuthorization) GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType {
+	return &LinkedIntegrationRuntimeType{
+		AuthorizationType: l.AuthorizationType,
+	}
 }
 
 // LinkedIntegrationRuntimeTypeClassification provides polymorphic access to related types.
@@ -2612,6 +2698,11 @@ type LinkedIntegrationRuntimeTypeClassification interface {
 type LinkedIntegrationRuntimeType struct {
 	// REQUIRED; The authorization type for integration runtime sharing.
 	AuthorizationType *string `json:"authorizationType,omitempty"`
+}
+
+// GetLinkedIntegrationRuntimeType implements the LinkedIntegrationRuntimeTypeClassification interface for type LinkedIntegrationRuntimeType.
+func (l *LinkedIntegrationRuntimeType) GetLinkedIntegrationRuntimeType() *LinkedIntegrationRuntimeType {
+	return l
 }
 
 // ListResourceSKUsResult - List of available SKUs for a Kusto Pool.
@@ -2766,6 +2857,15 @@ type ManagedIntegrationRuntime struct {
 	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
 }
 
+// GetIntegrationRuntime implements the IntegrationRuntimeClassification interface for type ManagedIntegrationRuntime.
+func (m *ManagedIntegrationRuntime) GetIntegrationRuntime() *IntegrationRuntime {
+	return &IntegrationRuntime{
+		Type:                 m.Type,
+		Description:          m.Description,
+		AdditionalProperties: m.AdditionalProperties,
+	}
+}
+
 // ManagedIntegrationRuntimeError - Error definition for managed integration runtime.
 type ManagedIntegrationRuntimeError struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
@@ -2851,6 +2951,16 @@ type ManagedIntegrationRuntimeStatus struct {
 
 	// READ-ONLY; The state of integration runtime.
 	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
+}
+
+// GetIntegrationRuntimeStatus implements the IntegrationRuntimeStatusClassification interface for type ManagedIntegrationRuntimeStatus.
+func (m *ManagedIntegrationRuntimeStatus) GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus {
+	return &IntegrationRuntimeStatus{
+		Type:                 m.Type,
+		DataFactoryName:      m.DataFactoryName,
+		State:                m.State,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // ManagedIntegrationRuntimeStatusTypeProperties - Managed integration runtime status type properties.
@@ -3430,6 +3540,18 @@ type ReadOnlyFollowingDatabase struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// GetDatabase implements the DatabaseClassification interface for type ReadOnlyFollowingDatabase.
+func (r *ReadOnlyFollowingDatabase) GetDatabase() *Database {
+	return &Database{
+		Location:   r.Location,
+		Kind:       r.Kind,
+		SystemData: r.SystemData,
+		ID:         r.ID,
+		Name:       r.Name,
+		Type:       r.Type,
+	}
+}
+
 // ReadOnlyFollowingDatabaseProperties - Class representing the Kusto database properties.
 type ReadOnlyFollowingDatabaseProperties struct {
 	// The time the data should be kept in cache for fast queries in TimeSpan.
@@ -3476,6 +3598,18 @@ type ReadWriteDatabase struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// GetDatabase implements the DatabaseClassification interface for type ReadWriteDatabase.
+func (r *ReadWriteDatabase) GetDatabase() *Database {
+	return &Database{
+		Location:   r.Location,
+		Kind:       r.Kind,
+		SystemData: r.SystemData,
+		ID:         r.ID,
+		Name:       r.Name,
+		Type:       r.Type,
+	}
 }
 
 // ReadWriteDatabaseProperties - Class representing the Kusto database properties.
@@ -4756,6 +4890,9 @@ type SecretBase struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// GetSecretBase implements the SecretBaseClassification interface for type SecretBase.
+func (s *SecretBase) GetSecretBase() *SecretBase { return s }
+
 // SecureString - Azure Synapse secure string definition. The string value will be masked with asterisks '*' during Get or
 // List API calls.
 type SecureString struct {
@@ -4764,6 +4901,13 @@ type SecureString struct {
 
 	// REQUIRED; Value of secure string.
 	Value *string `json:"value,omitempty"`
+}
+
+// GetSecretBase implements the SecretBaseClassification interface for type SecureString.
+func (s *SecureString) GetSecretBase() *SecretBase {
+	return &SecretBase{
+		Type: s.Type,
+	}
 }
 
 // SecurityAlertPolicyProperties - Properties of a security alert policy.
@@ -4810,6 +4954,15 @@ type SelfHostedIntegrationRuntime struct {
 	// When this property is not null, means this is a linked integration runtime. The property is used to access original integration
 	// runtime.
 	TypeProperties *SelfHostedIntegrationRuntimeTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// GetIntegrationRuntime implements the IntegrationRuntimeClassification interface for type SelfHostedIntegrationRuntime.
+func (s *SelfHostedIntegrationRuntime) GetIntegrationRuntime() *IntegrationRuntime {
+	return &IntegrationRuntime{
+		Type:                 s.Type,
+		Description:          s.Description,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SelfHostedIntegrationRuntimeNode - Properties of Self-hosted integration runtime node.
@@ -4888,6 +5041,16 @@ type SelfHostedIntegrationRuntimeStatus struct {
 
 	// READ-ONLY; The state of integration runtime.
 	State *IntegrationRuntimeState `json:"state,omitempty" azure:"ro"`
+}
+
+// GetIntegrationRuntimeStatus implements the IntegrationRuntimeStatusClassification interface for type SelfHostedIntegrationRuntimeStatus.
+func (s *SelfHostedIntegrationRuntimeStatus) GetIntegrationRuntimeStatus() *IntegrationRuntimeStatus {
+	return &IntegrationRuntimeStatus{
+		Type:                 s.Type,
+		DataFactoryName:      s.DataFactoryName,
+		State:                s.State,
+		AdditionalProperties: s.AdditionalProperties,
+	}
 }
 
 // SelfHostedIntegrationRuntimeStatusTypeProperties - Self-hosted integration runtime status type properties.
@@ -5382,6 +5545,16 @@ type SsisEnvironment struct {
 	Variables []*SsisVariable `json:"variables,omitempty"`
 }
 
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisEnvironment.
+func (s *SsisEnvironment) GetSsisObjectMetadata() *SsisObjectMetadata {
+	return &SsisObjectMetadata{
+		Type:        s.Type,
+		ID:          s.ID,
+		Name:        s.Name,
+		Description: s.Description,
+	}
+}
+
 // SsisEnvironmentReference - Ssis environment reference.
 type SsisEnvironmentReference struct {
 	// Environment folder name.
@@ -5412,6 +5585,16 @@ type SsisFolder struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisFolder.
+func (s *SsisFolder) GetSsisObjectMetadata() *SsisObjectMetadata {
+	return &SsisObjectMetadata{
+		Type:        s.Type,
+		ID:          s.ID,
+		Name:        s.Name,
+		Description: s.Description,
+	}
+}
+
 // SsisObjectMetadataClassification provides polymorphic access to related types.
 // Call the interface's GetSsisObjectMetadata() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -5435,6 +5618,9 @@ type SsisObjectMetadata struct {
 	// Metadata name.
 	Name *string `json:"name,omitempty"`
 }
+
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisObjectMetadata.
+func (s *SsisObjectMetadata) GetSsisObjectMetadata() *SsisObjectMetadata { return s }
 
 // SsisObjectMetadataListResponse - A list of SSIS object metadata.
 type SsisObjectMetadataListResponse struct {
@@ -5485,6 +5671,16 @@ type SsisPackage struct {
 
 	// Project version which contains package.
 	ProjectVersion *int64 `json:"projectVersion,omitempty"`
+}
+
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisPackage.
+func (s *SsisPackage) GetSsisObjectMetadata() *SsisObjectMetadata {
+	return &SsisObjectMetadata{
+		Type:        s.Type,
+		ID:          s.ID,
+		Name:        s.Name,
+		Description: s.Description,
+	}
 }
 
 // SsisParameter - Ssis parameter.
@@ -5551,6 +5747,16 @@ type SsisProject struct {
 
 	// Project version.
 	Version *int64 `json:"version,omitempty"`
+}
+
+// GetSsisObjectMetadata implements the SsisObjectMetadataClassification interface for type SsisProject.
+func (s *SsisProject) GetSsisObjectMetadata() *SsisObjectMetadata {
+	return &SsisObjectMetadata{
+		Type:        s.Type,
+		ID:          s.ID,
+		Name:        s.Name,
+		Description: s.Description,
+	}
 }
 
 // SsisVariable - Ssis variable.

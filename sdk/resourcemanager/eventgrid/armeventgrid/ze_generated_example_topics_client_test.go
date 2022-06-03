@@ -12,27 +12,25 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_Get.json
 func ExampleTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewTopicsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<topic-name>",
+		"examplerg",
+		"exampletopic2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -41,22 +39,22 @@ func ExampleTopicsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_CreateOrUpdate.json
 func ExampleTopicsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewTopicsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<topic-name>",
+		"examplerg",
+		"exampletopic1",
 		armeventgrid.Topic{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus2"),
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
@@ -65,73 +63,73 @@ func ExampleTopicsClient_BeginCreateOrUpdate() {
 				InboundIPRules: []*armeventgrid.InboundIPRule{
 					{
 						Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-						IPMask: to.Ptr("<ipmask>"),
+						IPMask: to.Ptr("12.18.30.15"),
 					},
 					{
 						Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-						IPMask: to.Ptr("<ipmask>"),
+						IPMask: to.Ptr("12.18.176.1"),
 					}},
 				PublicNetworkAccess: to.Ptr(armeventgrid.PublicNetworkAccessEnabled),
 			},
 		},
-		&armeventgrid.TopicsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_Delete.json
 func ExampleTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewTopicsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<topic-name>",
-		&armeventgrid.TopicsClientBeginDeleteOptions{ResumeToken: ""})
+		"examplerg",
+		"exampletopic1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_Update.json
 func ExampleTopicsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewTopicsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<topic-name>",
+		"examplerg",
+		"exampletopic1",
 		armeventgrid.TopicUpdateParameters{
 			Properties: &armeventgrid.TopicUpdateParameterProperties{
 				InboundIPRules: []*armeventgrid.InboundIPRule{
 					{
 						Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-						IPMask: to.Ptr("<ipmask>"),
+						IPMask: to.Ptr("12.18.30.15"),
 					},
 					{
 						Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-						IPMask: to.Ptr("<ipmask>"),
+						IPMask: to.Ptr("12.18.176.1"),
 					}},
 				PublicNetworkAccess: to.Ptr(armeventgrid.PublicNetworkAccessEnabled),
 			},
@@ -140,24 +138,24 @@ func ExampleTopicsClient_BeginUpdate() {
 				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armeventgrid.TopicsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_ListBySubscription.json
 func ExampleTopicsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewTopicsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -168,7 +166,6 @@ func ExampleTopicsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -177,18 +174,18 @@ func ExampleTopicsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_ListByResourceGroup.json
 func ExampleTopicsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewTopicsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("examplerg",
 		&armeventgrid.TopicsClientListByResourceGroupOptions{Filter: nil,
 			Top: nil,
 		})
@@ -196,7 +193,6 @@ func ExampleTopicsClient_NewListByResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -205,20 +201,20 @@ func ExampleTopicsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListSharedAccessKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_ListSharedAccessKeys.json
 func ExampleTopicsClient_ListSharedAccessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewTopicsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListSharedAccessKeys(ctx,
-		"<resource-group-name>",
-		"<topic-name>",
+		"examplerg",
+		"exampletopic2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -227,28 +223,28 @@ func ExampleTopicsClient_ListSharedAccessKeys() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_RegenerateKey.json
 func ExampleTopicsClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewTopicsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRegenerateKey(ctx,
-		"<resource-group-name>",
-		"<topic-name>",
+		"examplerg",
+		"exampletopic2",
 		armeventgrid.TopicRegenerateKeyRequest{
-			KeyName: to.Ptr("<key-name>"),
+			KeyName: to.Ptr("key1"),
 		},
-		&armeventgrid.TopicsClientBeginRegenerateKeyOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -256,27 +252,26 @@ func ExampleTopicsClient_BeginRegenerateKey() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-10-15-preview/examples/Topics_ListEventTypes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_ListEventTypes.json
 func ExampleTopicsClient_NewListEventTypesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armeventgrid.NewTopicsClient("<subscription-id>", cred, nil)
+	client, err := armeventgrid.NewTopicsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListEventTypesPager("<resource-group-name>",
-		"<provider-namespace>",
-		"<resource-type-name>",
-		"<resource-name>",
+	pager := client.NewListEventTypesPager("examplerg",
+		"Microsoft.Storage",
+		"storageAccounts",
+		"ExampleStorageAccount",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

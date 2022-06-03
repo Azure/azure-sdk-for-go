@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
@@ -26,18 +24,17 @@ func ExampleApplicationsClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("<resource-group-name>",
-		"<cluster-name>",
+	pager := client.NewListByClusterPager("rg1",
+		"cluster1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleApplicationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-name>",
+		"rg1",
+		"cluster1",
+		"app",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,23 +73,23 @@ func ExampleApplicationsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-name>",
+		"rg1",
+		"cluster1",
+		"hue",
 		armhdinsight.Application{
 			Properties: &armhdinsight.ApplicationProperties{
-				ApplicationType: to.Ptr("<application-type>"),
+				ApplicationType: to.Ptr("CustomApplication"),
 				ComputeProfile: &armhdinsight.ComputeProfile{
 					Roles: []*armhdinsight.Role{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("edgenode"),
 							HardwareProfile: &armhdinsight.HardwareProfile{
-								VMSize: to.Ptr("<vmsize>"),
+								VMSize: to.Ptr("Standard_D12_v2"),
 							},
 							TargetInstanceCount: to.Ptr[int32](1),
 						}},
@@ -103,24 +100,24 @@ func ExampleApplicationsClient_BeginCreate() {
 						AccessModes: []*string{
 							to.Ptr("WebPage")},
 						DestinationPort: to.Ptr[int32](20000),
-						SubDomainSuffix: to.Ptr("<sub-domain-suffix>"),
+						SubDomainSuffix: to.Ptr("dss"),
 					}},
 				InstallScriptActions: []*armhdinsight.RuntimeScriptAction{
 					{
-						Name:       to.Ptr("<name>"),
-						Parameters: to.Ptr("<parameters>"),
+						Name:       to.Ptr("app-install-app1"),
+						Parameters: to.Ptr("-version latest -port 20000"),
 						Roles: []*string{
 							to.Ptr("edgenode")},
-						URI: to.Ptr("<uri>"),
+						URI: to.Ptr("https://.../install.sh"),
 					}},
 				UninstallScriptActions: []*armhdinsight.RuntimeScriptAction{},
 			},
 		},
-		&armhdinsight.ApplicationsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -135,19 +132,19 @@ func ExampleApplicationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-name>",
-		&armhdinsight.ApplicationsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"cluster1",
+		"hue",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -160,15 +157,15 @@ func ExampleApplicationsClient_GetAzureAsyncOperationStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewApplicationsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewApplicationsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAzureAsyncOperationStatus(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<application-name>",
-		"<operation-id>",
+		"rg1",
+		"cluster1",
+		"app",
+		"CF938302-6B4D-44A0-A6D2-C0D67E847AEC",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

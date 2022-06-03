@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
@@ -26,14 +24,14 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<private-endpoint-connection-name>",
+		"sample-group",
+		"sample-vault",
+		"sample-pec",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,19 +47,19 @@ func ExamplePrivateEndpointConnectionsClient_Put() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Put(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<private-endpoint-connection-name>",
+		"sample-group",
+		"sample-vault",
+		"sample-pec",
 		armkeyvault.PrivateEndpointConnection{
-			Etag: to.Ptr("<etag>"),
+			Etag: to.Ptr(""),
 			Properties: &armkeyvault.PrivateEndpointConnectionProperties{
 				PrivateLinkServiceConnectionState: &armkeyvault.PrivateLinkServiceConnectionState{
-					Description: to.Ptr("<description>"),
+					Description: to.Ptr("My name is Joe and I'm approving this."),
 					Status:      to.Ptr(armkeyvault.PrivateEndpointServiceConnectionStatusApproved),
 				},
 			},
@@ -81,19 +79,19 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<private-endpoint-connection-name>",
-		&armkeyvault.PrivateEndpointConnectionsClientBeginDeleteOptions{ResumeToken: ""})
+		"sample-group",
+		"sample-vault",
+		"sample-pec",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -108,18 +106,17 @@ func ExamplePrivateEndpointConnectionsClient_NewListByResourcePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewPrivateEndpointConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewPrivateEndpointConnectionsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourcePager("<resource-group-name>",
-		"<vault-name>",
+	pager := client.NewListByResourcePager("sample-group",
+		"sample-vault",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

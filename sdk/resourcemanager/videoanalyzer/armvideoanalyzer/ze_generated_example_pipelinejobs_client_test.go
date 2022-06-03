@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/videoanalyzer/armvideoanalyzer"
@@ -26,12 +24,12 @@ func ExamplePipelineJobsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineJobsClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineJobsClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("testrg",
+		"testaccount2",
 		&armvideoanalyzer.PipelineJobsClientListOptions{Filter: nil,
 			Top: to.Ptr[int32](2),
 		})
@@ -39,7 +37,6 @@ func ExamplePipelineJobsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,14 +52,14 @@ func ExamplePipelineJobsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineJobsClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineJobsClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-job-name>",
+		"testrg",
+		"testaccount2",
+		"pipelineJob1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,27 +75,27 @@ func ExamplePipelineJobsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineJobsClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineJobsClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-job-name>",
+		"testrg",
+		"testaccount2",
+		"pipelineJob1",
 		armvideoanalyzer.PipelineJob{
 			Properties: &armvideoanalyzer.PipelineJobProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Pipeline Job 1 Dsecription"),
 				Parameters: []*armvideoanalyzer.ParameterDefinition{
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("timesequences"),
+						Value: to.Ptr("[[\"2020-10-05T03:30:00Z\", \"2020-10-05T04:30:00Z\"]]"),
 					},
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("videoSourceName"),
+						Value: to.Ptr("camera001"),
 					}},
-				TopologyName: to.Ptr("<topology-name>"),
+				TopologyName: to.Ptr("pipelinetopology1"),
 			},
 		},
 		nil)
@@ -116,14 +113,14 @@ func ExamplePipelineJobsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineJobsClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineJobsClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-job-name>",
+		"testrg",
+		"testaccount2",
+		"pipelineJob1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -137,17 +134,17 @@ func ExamplePipelineJobsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineJobsClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineJobsClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-job-name>",
+		"testrg",
+		"testaccount2",
+		"pipelineJob1",
 		armvideoanalyzer.PipelineJobUpdate{
 			Properties: &armvideoanalyzer.PipelineJobPropertiesUpdate{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Pipeline Job 1 description"),
 			},
 		},
 		nil)
@@ -165,19 +162,19 @@ func ExamplePipelineJobsClient_BeginCancel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineJobsClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineJobsClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCancel(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-job-name>",
-		&armvideoanalyzer.PipelineJobsClientBeginCancelOptions{ResumeToken: ""})
+		"testrg",
+		"testaccount2",
+		"pipelineJob1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

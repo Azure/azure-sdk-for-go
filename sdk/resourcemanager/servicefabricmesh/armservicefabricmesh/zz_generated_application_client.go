@@ -38,7 +38,7 @@ func NewApplicationClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewApplicationClient(subscriptionID string, credential azcore.TokenCredenti
 // with the same name exists, then it is updated with the specified description and
 // properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // applicationResourceDescription - Description for creating a Application resource.
@@ -96,7 +97,7 @@ func (client *ApplicationClient) createCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, applicationResourceDescription)
 }
 
@@ -111,6 +112,7 @@ func (client *ApplicationClient) createHandleResponse(resp *http.Response) (Appl
 
 // Delete - Deletes the application resource identified by the name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // options - ApplicationClientDeleteOptions contains the optional parameters for the ApplicationClient.Delete method.
@@ -148,13 +150,14 @@ func (client *ApplicationClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the information about the application resource with the given name. The information include the description
 // and other properties of the application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // applicationResourceName - The identity of the application.
 // options - ApplicationClientGetOptions contains the optional parameters for the ApplicationClient.Get method.
@@ -192,7 +195,7 @@ func (client *ApplicationClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -208,11 +211,12 @@ func (client *ApplicationClient) getHandleResponse(resp *http.Response) (Applica
 // NewListByResourceGroupPager - Gets the information about all application resources in a given resource group. The information
 // include the description and other properties of the Application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // options - ApplicationClientListByResourceGroupOptions contains the optional parameters for the ApplicationClient.ListByResourceGroup
 // method.
 func (client *ApplicationClient) NewListByResourceGroupPager(resourceGroupName string, options *ApplicationClientListByResourceGroupOptions) *runtime.Pager[ApplicationClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ApplicationClientListByResourceGroupResponse]{
 		More: func(page ApplicationClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -257,7 +261,7 @@ func (client *ApplicationClient) listByResourceGroupCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -273,10 +277,11 @@ func (client *ApplicationClient) listByResourceGroupHandleResponse(resp *http.Re
 // NewListBySubscriptionPager - Gets the information about all application resources in a given resource group. The information
 // include the description and other properties of the application.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // options - ApplicationClientListBySubscriptionOptions contains the optional parameters for the ApplicationClient.ListBySubscription
 // method.
 func (client *ApplicationClient) NewListBySubscriptionPager(options *ApplicationClientListBySubscriptionOptions) *runtime.Pager[ApplicationClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ApplicationClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ApplicationClientListBySubscriptionResponse]{
 		More: func(page ApplicationClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -317,7 +322,7 @@ func (client *ApplicationClient) listBySubscriptionCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

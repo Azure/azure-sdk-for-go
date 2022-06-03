@@ -12,28 +12,26 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/ApiPortals_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/ApiPortals_Get.json
 func ExampleAPIPortalsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAPIPortalsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAPIPortalsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-portal-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -42,21 +40,21 @@ func ExampleAPIPortalsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/ApiPortals_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/ApiPortals_CreateOrUpdate.json
 func ExampleAPIPortalsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAPIPortalsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAPIPortalsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-portal-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
 		armappplatform.APIPortalResource{
 			Properties: &armappplatform.APIPortalProperties{
 				GatewayIDs: []*string{
@@ -64,16 +62,16 @@ func ExampleAPIPortalsClient_BeginCreateOrUpdate() {
 				Public: to.Ptr(true),
 			},
 			SKU: &armappplatform.SKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("E0"),
 				Capacity: to.Ptr[int32](2),
-				Tier:     to.Ptr("<tier>"),
+				Tier:     to.Ptr("Enterprise"),
 			},
 		},
-		&armappplatform.APIPortalsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -81,50 +79,49 @@ func ExampleAPIPortalsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/ApiPortals_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/ApiPortals_Delete.json
 func ExampleAPIPortalsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAPIPortalsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAPIPortalsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-portal-name>",
-		&armappplatform.APIPortalsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myservice",
+		"default",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/ApiPortals_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/ApiPortals_List.json
 func ExampleAPIPortalsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAPIPortalsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAPIPortalsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListPager("myResourceGroup",
+		"myservice",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -133,23 +130,23 @@ func ExampleAPIPortalsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-03-01-preview/examples/ApiPortals_ValidateDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2022-05-01-preview/examples/ApiPortals_ValidateDomain.json
 func ExampleAPIPortalsClient_ValidateDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappplatform.NewAPIPortalsClient("<subscription-id>", cred, nil)
+	client, err := armappplatform.NewAPIPortalsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ValidateDomain(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-portal-name>",
+		"myResourceGroup",
+		"myservice",
+		"default",
 		armappplatform.CustomDomainValidatePayload{
-			Name: to.Ptr("<name>"),
+			Name: to.Ptr("mydomain.io"),
 		},
 		nil)
 	if err != nil {

@@ -38,7 +38,7 @@ func NewSQLManagedInstancesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewSQLManagedInstancesClient(subscriptionID string, credential azcore.Token
 
 // BeginCreate - Creates or replaces a SQL Managed Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // sqlManagedInstanceName - Name of SQL Managed Instance
 // sqlManagedInstance - The SQL Managed Instance to be created or updated.
 // options - SQLManagedInstancesClientBeginCreateOptions contains the optional parameters for the SQLManagedInstancesClient.BeginCreate
 // method.
-func (client *SQLManagedInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, sqlManagedInstanceName string, sqlManagedInstance SQLManagedInstance, options *SQLManagedInstancesClientBeginCreateOptions) (*armruntime.Poller[SQLManagedInstancesClientCreateResponse], error) {
+func (client *SQLManagedInstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, sqlManagedInstanceName string, sqlManagedInstance SQLManagedInstance, options *SQLManagedInstancesClientBeginCreateOptions) (*runtime.Poller[SQLManagedInstancesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, sqlManagedInstanceName, sqlManagedInstance, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[SQLManagedInstancesClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SQLManagedInstancesClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[SQLManagedInstancesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLManagedInstancesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates or replaces a SQL Managed Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 func (client *SQLManagedInstancesClient) create(ctx context.Context, resourceGroupName string, sqlManagedInstanceName string, sqlManagedInstance SQLManagedInstance, options *SQLManagedInstancesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, sqlManagedInstanceName, sqlManagedInstance, options)
 	if err != nil {
@@ -114,30 +116,32 @@ func (client *SQLManagedInstancesClient) createCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, sqlManagedInstance)
 }
 
 // BeginDelete - Deletes a SQL Managed Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // sqlManagedInstanceName - Name of SQL Managed Instance
 // options - SQLManagedInstancesClientBeginDeleteOptions contains the optional parameters for the SQLManagedInstancesClient.BeginDelete
 // method.
-func (client *SQLManagedInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, sqlManagedInstanceName string, options *SQLManagedInstancesClientBeginDeleteOptions) (*armruntime.Poller[SQLManagedInstancesClientDeleteResponse], error) {
+func (client *SQLManagedInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, sqlManagedInstanceName string, options *SQLManagedInstancesClientBeginDeleteOptions) (*runtime.Poller[SQLManagedInstancesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, sqlManagedInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SQLManagedInstancesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SQLManagedInstancesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SQLManagedInstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLManagedInstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a SQL Managed Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 func (client *SQLManagedInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlManagedInstanceName string, options *SQLManagedInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sqlManagedInstanceName, options)
 	if err != nil {
@@ -175,12 +179,13 @@ func (client *SQLManagedInstancesClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves a SQL Managed Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // sqlManagedInstanceName - Name of SQL Managed Instance
 // options - SQLManagedInstancesClientGetOptions contains the optional parameters for the SQLManagedInstancesClient.Get method.
@@ -221,7 +226,7 @@ func (client *SQLManagedInstancesClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -236,10 +241,11 @@ func (client *SQLManagedInstancesClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - List sqlManagedInstance resources in the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // options - SQLManagedInstancesClientListOptions contains the optional parameters for the SQLManagedInstancesClient.List
 // method.
 func (client *SQLManagedInstancesClient) NewListPager(options *SQLManagedInstancesClientListOptions) *runtime.Pager[SQLManagedInstancesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLManagedInstancesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLManagedInstancesClientListResponse]{
 		More: func(page SQLManagedInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -280,7 +286,7 @@ func (client *SQLManagedInstancesClient) listCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -295,11 +301,12 @@ func (client *SQLManagedInstancesClient) listHandleResponse(resp *http.Response)
 
 // NewListByResourceGroupPager - Gets all sqlManagedInstances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // options - SQLManagedInstancesClientListByResourceGroupOptions contains the optional parameters for the SQLManagedInstancesClient.ListByResourceGroup
 // method.
 func (client *SQLManagedInstancesClient) NewListByResourceGroupPager(resourceGroupName string, options *SQLManagedInstancesClientListByResourceGroupOptions) *runtime.Pager[SQLManagedInstancesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SQLManagedInstancesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SQLManagedInstancesClientListByResourceGroupResponse]{
 		More: func(page SQLManagedInstancesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -344,7 +351,7 @@ func (client *SQLManagedInstancesClient) listByResourceGroupCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -359,6 +366,7 @@ func (client *SQLManagedInstancesClient) listByResourceGroupHandleResponse(resp 
 
 // Update - Updates a SQL Managed Instance resource
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01-preview
 // resourceGroupName - The name of the Azure resource group
 // sqlManagedInstanceName - Name of SQL Managed Instance
 // parameters - The SQL Managed Instance.
@@ -401,7 +409,7 @@ func (client *SQLManagedInstancesClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

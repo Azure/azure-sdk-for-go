@@ -24,12 +24,12 @@ func ExamplePipelineTopologiesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineTopologiesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineTopologiesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("testrg",
+		"testaccount2",
 		&armvideoanalyzer.PipelineTopologiesClientListOptions{Filter: nil,
 			Top: to.Ptr[int32](2),
 		})
@@ -37,7 +37,6 @@ func ExamplePipelineTopologiesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +52,14 @@ func ExamplePipelineTopologiesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineTopologiesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineTopologiesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-topology-name>",
+		"testrg",
+		"testaccount2",
+		"pipelineTopology1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,62 +75,62 @@ func ExamplePipelineTopologiesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineTopologiesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineTopologiesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-topology-name>",
+		"testrg",
+		"testaccount2",
+		"pipelineTopology1",
 		armvideoanalyzer.PipelineTopology{
 			Kind: to.Ptr(armvideoanalyzer.KindLive),
 			Properties: &armvideoanalyzer.PipelineTopologyProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Pipeline Topology 1 Description"),
 				Parameters: []*armvideoanalyzer.ParameterDeclaration{
 					{
-						Name:        to.Ptr("<name>"),
+						Name:        to.Ptr("rtspUrlParameter"),
 						Type:        to.Ptr(armvideoanalyzer.ParameterTypeString),
-						Description: to.Ptr("<description>"),
-						Default:     to.Ptr("<default>"),
+						Description: to.Ptr("rtsp source url parameter"),
+						Default:     to.Ptr("rtsp://microsoft.com/video.mp4"),
 					},
 					{
-						Name:        to.Ptr("<name>"),
+						Name:        to.Ptr("rtspPasswordParameter"),
 						Type:        to.Ptr(armvideoanalyzer.ParameterTypeSecretString),
-						Description: to.Ptr("<description>"),
-						Default:     to.Ptr("<default>"),
+						Description: to.Ptr("rtsp source password parameter"),
+						Default:     to.Ptr("password"),
 					}},
 				Sinks: []armvideoanalyzer.SinkNodeBaseClassification{
 					&armvideoanalyzer.VideoSink{
-						Name: to.Ptr("<name>"),
-						Type: to.Ptr("<type>"),
+						Name: to.Ptr("videoSink"),
+						Type: to.Ptr("#Microsoft.VideoAnalyzer.VideoSink"),
 						Inputs: []*armvideoanalyzer.NodeInput{
 							{
-								NodeName: to.Ptr("<node-name>"),
+								NodeName: to.Ptr("rtspSource"),
 							}},
 						VideoCreationProperties: &armvideoanalyzer.VideoCreationProperties{
-							Description:   to.Ptr("<description>"),
-							SegmentLength: to.Ptr("<segment-length>"),
-							Title:         to.Ptr("<title>"),
+							Description:   to.Ptr("Parking lot south entrance"),
+							SegmentLength: to.Ptr("PT30S"),
+							Title:         to.Ptr("Parking Lot (Camera 1)"),
 						},
-						VideoName: to.Ptr("<video-name>"),
+						VideoName: to.Ptr("camera001"),
 						VideoPublishingOptions: &armvideoanalyzer.VideoPublishingOptions{
-							DisableArchive:        to.Ptr("<disable-archive>"),
-							DisableRtspPublishing: to.Ptr("<disable-rtsp-publishing>"),
+							DisableArchive:        to.Ptr("false"),
+							DisableRtspPublishing: to.Ptr("true"),
 						},
 					}},
 				Sources: []armvideoanalyzer.SourceNodeBaseClassification{
 					&armvideoanalyzer.RtspSource{
-						Name: to.Ptr("<name>"),
-						Type: to.Ptr("<type>"),
+						Name: to.Ptr("rtspSource"),
+						Type: to.Ptr("#Microsoft.VideoAnalyzer.RtspSource"),
 						Endpoint: &armvideoanalyzer.UnsecuredEndpoint{
-							Type: to.Ptr("<type>"),
+							Type: to.Ptr("#Microsoft.VideoAnalyzer.UnsecuredEndpoint"),
 							Credentials: &armvideoanalyzer.UsernamePasswordCredentials{
-								Type:     to.Ptr("<type>"),
-								Password: to.Ptr("<password>"),
-								Username: to.Ptr("<username>"),
+								Type:     to.Ptr("#Microsoft.VideoAnalyzer.UsernamePasswordCredentials"),
+								Password: to.Ptr("${rtspPasswordParameter}"),
+								Username: to.Ptr("username"),
 							},
-							URL: to.Ptr("<url>"),
+							URL: to.Ptr("${rtspUrlParameter}"),
 						},
 						Transport: to.Ptr(armvideoanalyzer.RtspTransportHTTP),
 					}},
@@ -155,14 +154,14 @@ func ExamplePipelineTopologiesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineTopologiesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineTopologiesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-topology-name>",
+		"testrg",
+		"testaccount2",
+		"pipelineTopology1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -176,17 +175,17 @@ func ExamplePipelineTopologiesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvideoanalyzer.NewPipelineTopologiesClient("<subscription-id>", cred, nil)
+	client, err := armvideoanalyzer.NewPipelineTopologiesClient("591e76c3-3e97-44db-879c-3e2b12961b62", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pipeline-topology-name>",
+		"testrg",
+		"testaccount2",
+		"pipelineTopology1",
 		armvideoanalyzer.PipelineTopologyUpdate{
 			Properties: &armvideoanalyzer.PipelineTopologyPropertiesUpdate{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("Pipeline Topology 1 Description"),
 			},
 		},
 		nil)

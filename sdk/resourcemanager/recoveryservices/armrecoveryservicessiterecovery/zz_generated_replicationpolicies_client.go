@@ -42,7 +42,7 @@ func NewReplicationPoliciesClient(resourceName string, resourceGroupName string,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,24 +62,26 @@ func NewReplicationPoliciesClient(resourceName string, resourceGroupName string,
 
 // BeginCreate - The operation to create a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // policyName - Replication policy name.
 // input - Create policy input.
 // options - ReplicationPoliciesClientBeginCreateOptions contains the optional parameters for the ReplicationPoliciesClient.BeginCreate
 // method.
-func (client *ReplicationPoliciesClient) BeginCreate(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesClientBeginCreateOptions) (*armruntime.Poller[ReplicationPoliciesClientCreateResponse], error) {
+func (client *ReplicationPoliciesClient) BeginCreate(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesClientBeginCreateOptions) (*runtime.Poller[ReplicationPoliciesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, policyName, input, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationPoliciesClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationPoliciesClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationPoliciesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationPoliciesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - The operation to create a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationPoliciesClient) create(ctx context.Context, policyName string, input CreatePolicyInput, options *ReplicationPoliciesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, policyName, input, options)
 	if err != nil {
@@ -121,29 +123,31 @@ func (client *ReplicationPoliciesClient) createCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)
 }
 
 // BeginDelete - The operation to delete a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // policyName - Replication policy name.
 // options - ReplicationPoliciesClientBeginDeleteOptions contains the optional parameters for the ReplicationPoliciesClient.BeginDelete
 // method.
-func (client *ReplicationPoliciesClient) BeginDelete(ctx context.Context, policyName string, options *ReplicationPoliciesClientBeginDeleteOptions) (*armruntime.Poller[ReplicationPoliciesClientDeleteResponse], error) {
+func (client *ReplicationPoliciesClient) BeginDelete(ctx context.Context, policyName string, options *ReplicationPoliciesClientBeginDeleteOptions) (*runtime.Poller[ReplicationPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, policyName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationPoliciesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationPoliciesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationPoliciesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - The operation to delete a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationPoliciesClient) deleteOperation(ctx context.Context, policyName string, options *ReplicationPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, policyName, options)
 	if err != nil {
@@ -190,6 +194,7 @@ func (client *ReplicationPoliciesClient) deleteCreateRequest(ctx context.Context
 
 // Get - Gets the details of a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // policyName - Replication policy name.
 // options - ReplicationPoliciesClientGetOptions contains the optional parameters for the ReplicationPoliciesClient.Get method.
 func (client *ReplicationPoliciesClient) Get(ctx context.Context, policyName string, options *ReplicationPoliciesClientGetOptions) (ReplicationPoliciesClientGetResponse, error) {
@@ -233,7 +238,7 @@ func (client *ReplicationPoliciesClient) getCreateRequest(ctx context.Context, p
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -248,10 +253,11 @@ func (client *ReplicationPoliciesClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Lists the replication policies for a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // options - ReplicationPoliciesClientListOptions contains the optional parameters for the ReplicationPoliciesClient.List
 // method.
 func (client *ReplicationPoliciesClient) NewListPager(options *ReplicationPoliciesClientListOptions) *runtime.Pager[ReplicationPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReplicationPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReplicationPoliciesClientListResponse]{
 		More: func(page ReplicationPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -300,7 +306,7 @@ func (client *ReplicationPoliciesClient) listCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -315,24 +321,26 @@ func (client *ReplicationPoliciesClient) listHandleResponse(resp *http.Response)
 
 // BeginUpdate - The operation to update a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 // policyName - Policy Id.
 // input - Update Policy Input.
 // options - ReplicationPoliciesClientBeginUpdateOptions contains the optional parameters for the ReplicationPoliciesClient.BeginUpdate
 // method.
-func (client *ReplicationPoliciesClient) BeginUpdate(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesClientBeginUpdateOptions) (*armruntime.Poller[ReplicationPoliciesClientUpdateResponse], error) {
+func (client *ReplicationPoliciesClient) BeginUpdate(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesClientBeginUpdateOptions) (*runtime.Poller[ReplicationPoliciesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, policyName, input, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ReplicationPoliciesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationPoliciesClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ReplicationPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationPoliciesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - The operation to update a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01
 func (client *ReplicationPoliciesClient) update(ctx context.Context, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, policyName, input, options)
 	if err != nil {
@@ -374,6 +382,6 @@ func (client *ReplicationPoliciesClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, input)
 }

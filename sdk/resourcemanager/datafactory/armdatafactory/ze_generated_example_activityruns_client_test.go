@@ -26,14 +26,14 @@ func ExampleActivityRunsClient_QueryByPipelineRun() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewActivityRunsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewActivityRunsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.QueryByPipelineRun(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<run-id>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
 		armdatafactory.RunFilterParameters{
 			LastUpdatedAfter:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:36:44.3345758Z"); return t }()),
 			LastUpdatedBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-16T00:49:48.3686473Z"); return t }()),

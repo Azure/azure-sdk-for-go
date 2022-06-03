@@ -39,7 +39,7 @@ func NewLivePipelinesClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,25 +57,27 @@ func NewLivePipelinesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginActivate - Activates a live pipeline with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // livePipelineName - Live pipeline unique identifier.
 // options - LivePipelinesClientBeginActivateOptions contains the optional parameters for the LivePipelinesClient.BeginActivate
 // method.
-func (client *LivePipelinesClient) BeginActivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginActivateOptions) (*armruntime.Poller[LivePipelinesClientActivateResponse], error) {
+func (client *LivePipelinesClient) BeginActivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginActivateOptions) (*runtime.Poller[LivePipelinesClientActivateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.activate(ctx, resourceGroupName, accountName, livePipelineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LivePipelinesClientActivateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LivePipelinesClientActivateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LivePipelinesClientActivateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LivePipelinesClientActivateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Activate - Activates a live pipeline with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *LivePipelinesClient) activate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginActivateOptions) (*http.Response, error) {
 	req, err := client.activateCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, options)
 	if err != nil {
@@ -117,12 +119,13 @@ func (client *LivePipelinesClient) activateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // CreateOrUpdate - Creates a new live pipeline or updates an existing one, with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // livePipelineName - Live pipeline unique identifier.
@@ -170,7 +173,7 @@ func (client *LivePipelinesClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -185,25 +188,27 @@ func (client *LivePipelinesClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // BeginDeactivate - Deactivates a live pipeline with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // livePipelineName - Live pipeline unique identifier.
 // options - LivePipelinesClientBeginDeactivateOptions contains the optional parameters for the LivePipelinesClient.BeginDeactivate
 // method.
-func (client *LivePipelinesClient) BeginDeactivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginDeactivateOptions) (*armruntime.Poller[LivePipelinesClientDeactivateResponse], error) {
+func (client *LivePipelinesClient) BeginDeactivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginDeactivateOptions) (*runtime.Poller[LivePipelinesClientDeactivateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deactivate(ctx, resourceGroupName, accountName, livePipelineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LivePipelinesClientDeactivateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LivePipelinesClientDeactivateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LivePipelinesClientDeactivateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LivePipelinesClientDeactivateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Deactivate - Deactivates a live pipeline with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 func (client *LivePipelinesClient) deactivate(ctx context.Context, resourceGroupName string, accountName string, livePipelineName string, options *LivePipelinesClientBeginDeactivateOptions) (*http.Response, error) {
 	req, err := client.deactivateCreateRequest(ctx, resourceGroupName, accountName, livePipelineName, options)
 	if err != nil {
@@ -245,12 +250,13 @@ func (client *LivePipelinesClient) deactivateCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Delete - Deletes a live pipeline with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // livePipelineName - Live pipeline unique identifier.
@@ -296,13 +302,14 @@ func (client *LivePipelinesClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves a specific live pipeline by name. If a live pipeline with that name has been previously created, the call
 // will return the JSON representation of that instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // livePipelineName - Live pipeline unique identifier.
@@ -348,7 +355,7 @@ func (client *LivePipelinesClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -363,11 +370,12 @@ func (client *LivePipelinesClient) getHandleResponse(resp *http.Response) (LiveP
 
 // NewListPager - Retrieves a list of live pipelines that have been created, along with their JSON representations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - LivePipelinesClientListOptions contains the optional parameters for the LivePipelinesClient.List method.
 func (client *LivePipelinesClient) NewListPager(resourceGroupName string, accountName string, options *LivePipelinesClientListOptions) *runtime.Pager[LivePipelinesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LivePipelinesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LivePipelinesClientListResponse]{
 		More: func(page LivePipelinesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -422,7 +430,7 @@ func (client *LivePipelinesClient) listCreateRequest(ctx context.Context, resour
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -439,6 +447,7 @@ func (client *LivePipelinesClient) listHandleResponse(resp *http.Response) (Live
 // and parameter definitions. Only the description can be updated while the live
 // pipeline is active.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // livePipelineName - Live pipeline unique identifier.
@@ -485,7 +494,7 @@ func (client *LivePipelinesClient) updateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

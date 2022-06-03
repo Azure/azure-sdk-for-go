@@ -46,7 +46,7 @@ func NewTagRulesClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -64,6 +64,7 @@ func NewTagRulesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Create or update a tag rule set for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 // monitorName - Monitor resource name
 // ruleSetName - Tag Rule Set resource name
@@ -109,7 +110,7 @@ func (client *TagRulesClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -127,24 +128,26 @@ func (client *TagRulesClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // BeginDelete - Delete a tag rule set for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 // monitorName - Monitor resource name
 // ruleSetName - Tag Rule Set resource name
 // options - TagRulesClientBeginDeleteOptions contains the optional parameters for the TagRulesClient.BeginDelete method.
-func (client *TagRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientBeginDeleteOptions) (*armruntime.Poller[TagRulesClientDeleteResponse], error) {
+func (client *TagRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientBeginDeleteOptions) (*runtime.Poller[TagRulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, monitorName, ruleSetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TagRulesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TagRulesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TagRulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TagRulesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a tag rule set for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 func (client *TagRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, ruleSetName, options)
 	if err != nil {
@@ -186,12 +189,13 @@ func (client *TagRulesClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a tag rule set for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 // monitorName - Monitor resource name
 // ruleSetName - Tag Rule Set resource name
@@ -237,7 +241,7 @@ func (client *TagRulesClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,11 +256,12 @@ func (client *TagRulesClient) getHandleResponse(resp *http.Response) (TagRulesCl
 
 // NewListPager - List the tag rules for a given monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 // monitorName - Monitor resource name
 // options - TagRulesClientListOptions contains the optional parameters for the TagRulesClient.List method.
 func (client *TagRulesClient) NewListPager(resourceGroupName string, monitorName string, options *TagRulesClientListOptions) *runtime.Pager[TagRulesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TagRulesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TagRulesClientListResponse]{
 		More: func(page TagRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -305,7 +310,7 @@ func (client *TagRulesClient) listCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

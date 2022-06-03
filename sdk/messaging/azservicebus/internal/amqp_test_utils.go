@@ -10,8 +10,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/Azure/go-amqp"
 )
 
 type FakeNS struct {
@@ -93,6 +93,10 @@ func (r *FakeRPCLink) Close(ctx context.Context) error {
 
 func (r *FakeRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*RPCResponse, error) {
 	return r.Resp, r.Error
+}
+
+func (r *FakeAMQPReceiver) LinkName() string {
+	return "fakelink"
 }
 
 func (r *FakeAMQPReceiver) IssueCredit(credit uint32) error {

@@ -42,7 +42,7 @@ func NewPowerBIResourcesClient(subscriptionID string, resourceGroupName string, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewPowerBIResourcesClient(subscriptionID string, resourceGroupName string, 
 
 // Create - Creates or updates a Private Link Service Resource for Power BI.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-01
 // body - Tenant resource to be created or updated.
 // options - PowerBIResourcesClientCreateOptions contains the optional parameters for the PowerBIResourcesClient.Create method.
 func (client *PowerBIResourcesClient) Create(ctx context.Context, body TenantResource, options *PowerBIResourcesClientCreateOptions) (PowerBIResourcesClientCreateResponse, error) {
@@ -102,9 +103,9 @@ func (client *PowerBIResourcesClient) createCreateRequest(ctx context.Context, b
 	reqQP.Set("api-version", "2020-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientTenantID != nil {
-		req.Raw().Header.Set("x-ms-client-tenant-id", *options.ClientTenantID)
+		req.Raw().Header["x-ms-client-tenant-id"] = []string{*options.ClientTenantID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
@@ -119,6 +120,7 @@ func (client *PowerBIResourcesClient) createHandleResponse(resp *http.Response) 
 
 // Delete - Deletes a Private Link Service Resource for Power BI.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-01
 // options - PowerBIResourcesClientDeleteOptions contains the optional parameters for the PowerBIResourcesClient.Delete method.
 func (client *PowerBIResourcesClient) Delete(ctx context.Context, options *PowerBIResourcesClientDeleteOptions) (PowerBIResourcesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
@@ -157,12 +159,13 @@ func (client *PowerBIResourcesClient) deleteCreateRequest(ctx context.Context, o
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // ListByResourceName - Gets all the private link resources for the given Azure resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-01
 // options - PowerBIResourcesClientListByResourceNameOptions contains the optional parameters for the PowerBIResourcesClient.ListByResourceName
 // method.
 func (client *PowerBIResourcesClient) ListByResourceName(ctx context.Context, options *PowerBIResourcesClientListByResourceNameOptions) (PowerBIResourcesClientListByResourceNameResponse, error) {
@@ -202,7 +205,7 @@ func (client *PowerBIResourcesClient) listByResourceNameCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -217,6 +220,7 @@ func (client *PowerBIResourcesClient) listByResourceNameHandleResponse(resp *htt
 
 // Update - Creates or updates a Private Link Service Resource for Power BI.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-01
 // body - Tenant resource to be created or updated.
 // options - PowerBIResourcesClientUpdateOptions contains the optional parameters for the PowerBIResourcesClient.Update method.
 func (client *PowerBIResourcesClient) Update(ctx context.Context, body TenantResource, options *PowerBIResourcesClientUpdateOptions) (PowerBIResourcesClientUpdateResponse, error) {
@@ -257,9 +261,9 @@ func (client *PowerBIResourcesClient) updateCreateRequest(ctx context.Context, b
 	reqQP.Set("api-version", "2020-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientTenantID != nil {
-		req.Raw().Header.Set("x-ms-client-tenant-id", *options.ClientTenantID)
+		req.Raw().Header["x-ms-client-tenant-id"] = []string{*options.ClientTenantID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 

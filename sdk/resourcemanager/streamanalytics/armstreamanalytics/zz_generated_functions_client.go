@@ -38,7 +38,7 @@ func NewFunctionsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewFunctionsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrReplace - Creates a function or replaces an already existing function under an existing streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // functionName - The name of the function.
@@ -105,12 +106,12 @@ func (client *FunctionsClient) createOrReplaceCreateRequest(ctx context.Context,
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, function)
 }
 
@@ -128,6 +129,7 @@ func (client *FunctionsClient) createOrReplaceHandleResponse(resp *http.Response
 
 // Delete - Deletes a function from the streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // functionName - The name of the function.
@@ -173,12 +175,13 @@ func (client *FunctionsClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets details about the specified function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // functionName - The name of the function.
@@ -224,7 +227,7 @@ func (client *FunctionsClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -242,12 +245,13 @@ func (client *FunctionsClient) getHandleResponse(resp *http.Response) (Functions
 
 // NewListByStreamingJobPager - Lists all of the functions under the specified streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // options - FunctionsClientListByStreamingJobOptions contains the optional parameters for the FunctionsClient.ListByStreamingJob
 // method.
 func (client *FunctionsClient) NewListByStreamingJobPager(resourceGroupName string, jobName string, options *FunctionsClientListByStreamingJobOptions) *runtime.Pager[FunctionsClientListByStreamingJobResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FunctionsClientListByStreamingJobResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FunctionsClientListByStreamingJobResponse]{
 		More: func(page FunctionsClientListByStreamingJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -299,7 +303,7 @@ func (client *FunctionsClient) listByStreamingJobCreateRequest(ctx context.Conte
 	}
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -314,6 +318,7 @@ func (client *FunctionsClient) listByStreamingJobHandleResponse(resp *http.Respo
 
 // RetrieveDefaultDefinition - Retrieves the default definition of a function based on the parameters specified.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // functionName - The name of the function.
@@ -360,7 +365,7 @@ func (client *FunctionsClient) retrieveDefaultDefinitionCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.FunctionRetrieveDefaultDefinitionParameters != nil {
 		return req, runtime.MarshalAsJSON(req, options.FunctionRetrieveDefaultDefinitionParameters)
 	}
@@ -380,19 +385,20 @@ func (client *FunctionsClient) retrieveDefaultDefinitionHandleResponse(resp *htt
 // underlying web service behind the function or making sure the function code provided is
 // syntactically correct.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // functionName - The name of the function.
 // options - FunctionsClientBeginTestOptions contains the optional parameters for the FunctionsClient.BeginTest method.
-func (client *FunctionsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientBeginTestOptions) (*armruntime.Poller[FunctionsClientTestResponse], error) {
+func (client *FunctionsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientBeginTestOptions) (*runtime.Poller[FunctionsClientTestResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.test(ctx, resourceGroupName, jobName, functionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[FunctionsClientTestResponse](resp, client.pl, nil)
+		return runtime.NewPoller[FunctionsClientTestResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[FunctionsClientTestResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FunctionsClientTestResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -400,6 +406,7 @@ func (client *FunctionsClient) BeginTest(ctx context.Context, resourceGroupName 
 // web service behind the function or making sure the function code provided is
 // syntactically correct.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 func (client *FunctionsClient) test(ctx context.Context, resourceGroupName string, jobName string, functionName string, options *FunctionsClientBeginTestOptions) (*http.Response, error) {
 	req, err := client.testCreateRequest(ctx, resourceGroupName, jobName, functionName, options)
 	if err != nil {
@@ -441,7 +448,7 @@ func (client *FunctionsClient) testCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Function != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Function)
 	}
@@ -452,6 +459,7 @@ func (client *FunctionsClient) testCreateRequest(ctx context.Context, resourceGr
 // one or two properties) a function without affecting the rest the job or function
 // definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // functionName - The name of the function.
@@ -502,9 +510,9 @@ func (client *FunctionsClient) updateCreateRequest(ctx context.Context, resource
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, function)
 }
 

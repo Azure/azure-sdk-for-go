@@ -19,38 +19,38 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateOrUpdateACapacityReservation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
 func ExampleCapacityReservationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCapacityReservationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCapacityReservationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<capacity-reservation-group-name>",
-		"<capacity-reservation-name>",
+		"myResourceGroup",
+		"myCapacityReservationGroup",
+		"myCapacityReservation",
 		armcompute.CapacityReservation{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Tags: map[string]*string{
 				"department": to.Ptr("HR"),
 			},
 			SKU: &armcompute.SKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("Standard_DS1_v2"),
 				Capacity: to.Ptr[int64](4),
 			},
 			Zones: []*string{
 				to.Ptr("1")},
 		},
-		&armcompute.CapacityReservationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -58,21 +58,21 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CapacityReservations_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservation_Update_MaximumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCapacityReservationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCapacityReservationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<capacity-reservation-group-name>",
-		"<capacity-reservation-name>",
+		"rgcompute",
+		"aaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaa",
 		armcompute.CapacityReservationUpdate{
 			Tags: map[string]*string{
 				"key4974": to.Ptr("aaaaaaaaaaaaaaaa"),
@@ -81,26 +81,26 @@ func ExampleCapacityReservationsClient_BeginUpdate() {
 				InstanceView: &armcompute.CapacityReservationInstanceView{
 					Statuses: []*armcompute.InstanceViewStatus{
 						{
-							Code:          to.Ptr("<code>"),
-							DisplayStatus: to.Ptr("<display-status>"),
+							Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+							DisplayStatus: to.Ptr("aaaaaa"),
 							Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-							Message:       to.Ptr("<message>"),
+							Message:       to.Ptr("a"),
 							Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 						}},
 					UtilizationInfo: &armcompute.CapacityReservationUtilization{},
 				},
 			},
 			SKU: &armcompute.SKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("DSv3-Type1"),
 				Capacity: to.Ptr[int64](7),
-				Tier:     to.Ptr("<tier>"),
+				Tier:     to.Ptr("aaa"),
 			},
 		},
-		&armcompute.CapacityReservationsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -108,46 +108,46 @@ func ExampleCapacityReservationsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CapacityReservations_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCapacityReservationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCapacityReservationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<capacity-reservation-group-name>",
-		"<capacity-reservation-name>",
-		&armcompute.CapacityReservationsClientBeginDeleteOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetACapacityReservation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservation_Get.json
 func ExampleCapacityReservationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCapacityReservationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCapacityReservationsClient("{subscriptionId}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<capacity-reservation-group-name>",
-		"<capacity-reservation-name>",
+		"myResourceGroup",
+		"myCapacityReservationGroup",
+		"myCapacityReservation",
 		&armcompute.CapacityReservationsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -156,25 +156,24 @@ func ExampleCapacityReservationsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ListCapacityReservationsInReservationGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
 func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewCapacityReservationsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewCapacityReservationsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByCapacityReservationGroupPager("<resource-group-name>",
-		"<capacity-reservation-group-name>",
+	pager := client.NewListByCapacityReservationGroupPager("myResourceGroup",
+		"myCapacityReservationGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

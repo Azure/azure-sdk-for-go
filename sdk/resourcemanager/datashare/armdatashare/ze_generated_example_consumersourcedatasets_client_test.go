@@ -23,19 +23,18 @@ func ExampleConsumerSourceDataSetsClient_NewListByShareSubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewConsumerSourceDataSetsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewConsumerSourceDataSetsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByShareSubscriptionPager("<resource-group-name>",
-		"<account-name>",
-		"<share-subscription-name>",
+	pager := client.NewListByShareSubscriptionPager("SampleResourceGroup",
+		"Account1",
+		"Share1",
 		&armdatashare.ConsumerSourceDataSetsClientListByShareSubscriptionOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

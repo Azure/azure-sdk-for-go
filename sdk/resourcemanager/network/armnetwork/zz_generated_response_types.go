@@ -258,6 +258,26 @@ type BgpServiceCommunitiesClientListResponse struct {
 	BgpServiceCommunityListResult
 }
 
+// ConfigurationPolicyGroupsClientCreateOrUpdateResponse contains the response from method ConfigurationPolicyGroupsClient.CreateOrUpdate.
+type ConfigurationPolicyGroupsClientCreateOrUpdateResponse struct {
+	VPNServerConfigurationPolicyGroup
+}
+
+// ConfigurationPolicyGroupsClientDeleteResponse contains the response from method ConfigurationPolicyGroupsClient.Delete.
+type ConfigurationPolicyGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ConfigurationPolicyGroupsClientGetResponse contains the response from method ConfigurationPolicyGroupsClient.Get.
+type ConfigurationPolicyGroupsClientGetResponse struct {
+	VPNServerConfigurationPolicyGroup
+}
+
+// ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse contains the response from method ConfigurationPolicyGroupsClient.ListByVPNServerConfiguration.
+type ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse struct {
+	ListVPNServerConfigurationPolicyGroupsResult
+}
+
 // ConnectionMonitorsClientCreateOrUpdateResponse contains the response from method ConnectionMonitorsClient.CreateOrUpdate.
 type ConnectionMonitorsClientCreateOrUpdateResponse struct {
 	ConnectionMonitorResult
@@ -648,6 +668,26 @@ type ExpressRouteLinksClientListResponse struct {
 	ExpressRouteLinkListResult
 }
 
+// ExpressRoutePortAuthorizationsClientCreateOrUpdateResponse contains the response from method ExpressRoutePortAuthorizationsClient.CreateOrUpdate.
+type ExpressRoutePortAuthorizationsClientCreateOrUpdateResponse struct {
+	ExpressRoutePortAuthorization
+}
+
+// ExpressRoutePortAuthorizationsClientDeleteResponse contains the response from method ExpressRoutePortAuthorizationsClient.Delete.
+type ExpressRoutePortAuthorizationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExpressRoutePortAuthorizationsClientGetResponse contains the response from method ExpressRoutePortAuthorizationsClient.Get.
+type ExpressRoutePortAuthorizationsClientGetResponse struct {
+	ExpressRoutePortAuthorization
+}
+
+// ExpressRoutePortAuthorizationsClientListResponse contains the response from method ExpressRoutePortAuthorizationsClient.List.
+type ExpressRoutePortAuthorizationsClientListResponse struct {
+	ExpressRoutePortAuthorizationListResult
+}
+
 // ExpressRoutePortsClientCreateOrUpdateResponse contains the response from method ExpressRoutePortsClient.CreateOrUpdate.
 type ExpressRoutePortsClientCreateOrUpdateResponse struct {
 	ExpressRoutePort
@@ -721,6 +761,11 @@ type FirewallPoliciesClientListAllResponse struct {
 // FirewallPoliciesClientListResponse contains the response from method FirewallPoliciesClient.List.
 type FirewallPoliciesClientListResponse struct {
 	FirewallPolicyListResult
+}
+
+// FirewallPoliciesClientUpdateTagsResponse contains the response from method FirewallPoliciesClient.UpdateTags.
+type FirewallPoliciesClientUpdateTagsResponse struct {
+	FirewallPolicy
 }
 
 // FirewallPolicyIdpsSignaturesClientListResponse contains the response from method FirewallPolicyIdpsSignaturesClient.List.

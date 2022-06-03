@@ -23,14 +23,14 @@ func ExampleScriptActionsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewScriptActionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewScriptActionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<script-name>",
+		"rg1",
+		"cluster1",
+		"scriptName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,18 +44,17 @@ func ExampleScriptActionsClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewScriptActionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewScriptActionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("<resource-group-name>",
-		"<cluster-name>",
+	pager := client.NewListByClusterPager("rg1",
+		"cluster1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -71,14 +70,14 @@ func ExampleScriptActionsClient_GetExecutionDetail() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewScriptActionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewScriptActionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetExecutionDetail(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<script-execution-id>",
+		"rg1",
+		"cluster1",
+		"391145124054712",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -94,14 +93,14 @@ func ExampleScriptActionsClient_GetExecutionAsyncOperationStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhdinsight.NewScriptActionsClient("<subscription-id>", cred, nil)
+	client, err := armhdinsight.NewScriptActionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetExecutionAsyncOperationStatus(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<operation-id>",
+		"rg1",
+		"cluster1",
+		"CF938302-6B4D-44A0-A6D2-C0D67E847AEC",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

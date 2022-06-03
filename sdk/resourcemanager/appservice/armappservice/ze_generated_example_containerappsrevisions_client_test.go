@@ -23,18 +23,17 @@ func ExampleContainerAppsRevisionsClient_NewListRevisionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsRevisionsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsRevisionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListRevisionsPager("<resource-group-name>",
-		"<container-app-name>",
+	pager := client.NewListRevisionsPager("rg",
+		"testcontainerApp0",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleContainerAppsRevisionsClient_GetRevision() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsRevisionsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsRevisionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetRevision(ctx,
-		"<resource-group-name>",
-		"<container-app-name>",
-		"<name>",
+		"rg",
+		"testcontainerApp0",
+		"testcontainerApp0-pjxhsye",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,14 +72,14 @@ func ExampleContainerAppsRevisionsClient_ActivateRevision() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsRevisionsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsRevisionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.ActivateRevision(ctx,
-		"<resource-group-name>",
-		"<container-app-name>",
-		"<name>",
+		"rg",
+		"testcontainerApp0",
+		"testcontainerApp0-pjxhsye",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -94,14 +93,14 @@ func ExampleContainerAppsRevisionsClient_DeactivateRevision() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsRevisionsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsRevisionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeactivateRevision(ctx,
-		"<resource-group-name>",
-		"<container-app-name>",
-		"<name>",
+		"rg",
+		"testcontainerApp0",
+		"testcontainerApp0-pjxhsye",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -115,14 +114,14 @@ func ExampleContainerAppsRevisionsClient_RestartRevision() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armappservice.NewContainerAppsRevisionsClient("<subscription-id>", cred, nil)
+	client, err := armappservice.NewContainerAppsRevisionsClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RestartRevision(ctx,
-		"<resource-group-name>",
-		"<container-app-name>",
-		"<name>",
+		"rg",
+		"testStaticSite0",
+		"testcontainerApp0-pjxhsye",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

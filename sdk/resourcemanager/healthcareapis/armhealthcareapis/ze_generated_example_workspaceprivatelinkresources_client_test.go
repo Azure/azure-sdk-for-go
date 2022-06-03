@@ -16,25 +16,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthcareapis/armhealthcareapis"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/privatelink/PrivateLinkResourcesListByWorkspace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/privatelink/PrivateLinkResourcesListByWorkspace.json
 func ExampleWorkspacePrivateLinkResourcesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewWorkspacePrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacePrivateLinkResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListByWorkspacePager("testRG",
+		"workspace1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -43,21 +42,21 @@ func ExampleWorkspacePrivateLinkResourcesClient_NewListByWorkspacePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/privatelink/WorkspacePrivateLinkResourceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2022-01-31-preview/examples/privatelink/WorkspacePrivateLinkResourceGet.json
 func ExampleWorkspacePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armhealthcareapis.NewWorkspacePrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armhealthcareapis.NewWorkspacePrivateLinkResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<group-name>",
+		"testRG",
+		"workspace1",
+		"healthcareworkspace",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

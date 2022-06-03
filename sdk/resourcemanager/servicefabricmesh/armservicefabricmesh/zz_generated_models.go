@@ -26,6 +26,13 @@ type AddRemoveReplicaScalingMechanism struct {
 	ScaleIncrement *int32 `json:"scaleIncrement,omitempty"`
 }
 
+// GetAutoScalingMechanism implements the AutoScalingMechanismClassification interface for type AddRemoveReplicaScalingMechanism.
+func (a *AddRemoveReplicaScalingMechanism) GetAutoScalingMechanism() *AutoScalingMechanism {
+	return &AutoScalingMechanism{
+		Kind: a.Kind,
+	}
+}
+
 // ApplicationClientCreateOptions contains the optional parameters for the ApplicationClient.Create method.
 type ApplicationClientCreateOptions struct {
 	// placeholder for future optional parameters
@@ -185,6 +192,12 @@ type ApplicationScopedVolumeCreationParameters struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// GetApplicationScopedVolumeCreationParameters implements the ApplicationScopedVolumeCreationParametersClassification interface
+// for type ApplicationScopedVolumeCreationParameters.
+func (a *ApplicationScopedVolumeCreationParameters) GetApplicationScopedVolumeCreationParameters() *ApplicationScopedVolumeCreationParameters {
+	return a
+}
+
 // ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk - Describes parameters for creating application-scoped
 // volumes provided by Service Fabric Volume Disks
 type ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk struct {
@@ -196,6 +209,15 @@ type ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk struct {
 
 	// User readable description of the volume.
 	Description *string `json:"description,omitempty"`
+}
+
+// GetApplicationScopedVolumeCreationParameters implements the ApplicationScopedVolumeCreationParametersClassification interface
+// for type ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk.
+func (a *ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk) GetApplicationScopedVolumeCreationParameters() *ApplicationScopedVolumeCreationParameters {
+	return &ApplicationScopedVolumeCreationParameters{
+		Kind:        a.Kind,
+		Description: a.Description,
+	}
 }
 
 // AutoScalingMechanismClassification provides polymorphic access to related types.
@@ -214,6 +236,9 @@ type AutoScalingMechanism struct {
 	Kind *AutoScalingMechanismKind `json:"kind,omitempty"`
 }
 
+// GetAutoScalingMechanism implements the AutoScalingMechanismClassification interface for type AutoScalingMechanism.
+func (a *AutoScalingMechanism) GetAutoScalingMechanism() *AutoScalingMechanism { return a }
+
 // AutoScalingMetricClassification provides polymorphic access to related types.
 // Call the interface's GetAutoScalingMetric() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -229,6 +254,9 @@ type AutoScalingMetric struct {
 	// REQUIRED; The type of auto scaling metric
 	Kind *AutoScalingMetricKind `json:"kind,omitempty"`
 }
+
+// GetAutoScalingMetric implements the AutoScalingMetricClassification interface for type AutoScalingMetric.
+func (a *AutoScalingMetric) GetAutoScalingMetric() *AutoScalingMetric { return a }
 
 // AutoScalingPolicy - Describes the auto scaling policy
 type AutoScalingPolicy struct {
@@ -251,6 +279,13 @@ type AutoScalingResourceMetric struct {
 	Name *AutoScalingResourceMetricName `json:"name,omitempty"`
 }
 
+// GetAutoScalingMetric implements the AutoScalingMetricClassification interface for type AutoScalingResourceMetric.
+func (a *AutoScalingResourceMetric) GetAutoScalingMetric() *AutoScalingMetric {
+	return &AutoScalingMetric{
+		Kind: a.Kind,
+	}
+}
+
 // AutoScalingTriggerClassification provides polymorphic access to related types.
 // Call the interface's GetAutoScalingTrigger() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -265,6 +300,9 @@ type AutoScalingTrigger struct {
 	// REQUIRED; The type of auto scaling trigger
 	Kind *AutoScalingTriggerKind `json:"kind,omitempty"`
 }
+
+// GetAutoScalingTrigger implements the AutoScalingTriggerClassification interface for type AutoScalingTrigger.
+func (a *AutoScalingTrigger) GetAutoScalingTrigger() *AutoScalingTrigger { return a }
 
 // AvailableOperationDisplay - An operation available at the listed Azure resource provider.
 type AvailableOperationDisplay struct {
@@ -299,6 +337,13 @@ type AverageLoadScalingTrigger struct {
 	UpperLoadThreshold *float64 `json:"upperLoadThreshold,omitempty"`
 }
 
+// GetAutoScalingTrigger implements the AutoScalingTriggerClassification interface for type AverageLoadScalingTrigger.
+func (a *AverageLoadScalingTrigger) GetAutoScalingTrigger() *AutoScalingTrigger {
+	return &AutoScalingTrigger{
+		Kind: a.Kind,
+	}
+}
+
 // AzureInternalMonitoringPipelineSinkDescription - Diagnostics settings for Geneva.
 type AzureInternalMonitoringPipelineSinkDescription struct {
 	// REQUIRED; The kind of DiagnosticsSink.
@@ -324,6 +369,15 @@ type AzureInternalMonitoringPipelineSinkDescription struct {
 
 	// Azure Internal monitoring pipeline account namespace.
 	Namespace *string `json:"namespace,omitempty"`
+}
+
+// GetDiagnosticsSinkProperties implements the DiagnosticsSinkPropertiesClassification interface for type AzureInternalMonitoringPipelineSinkDescription.
+func (a *AzureInternalMonitoringPipelineSinkDescription) GetDiagnosticsSinkProperties() *DiagnosticsSinkProperties {
+	return &DiagnosticsSinkProperties{
+		Kind:        a.Kind,
+		Name:        a.Name,
+		Description: a.Description,
+	}
 }
 
 // CodePackageClientGetContainerLogsOptions contains the optional parameters for the CodePackageClient.GetContainerLogs method.
@@ -492,6 +546,11 @@ type DiagnosticsSinkProperties struct {
 
 	// Name of the sink. This value is referenced by DiagnosticsReferenceDescription
 	Name *string `json:"name,omitempty"`
+}
+
+// GetDiagnosticsSinkProperties implements the DiagnosticsSinkPropertiesClassification interface for type DiagnosticsSinkProperties.
+func (d *DiagnosticsSinkProperties) GetDiagnosticsSinkProperties() *DiagnosticsSinkProperties {
+	return d
 }
 
 // EndpointProperties - Describes a container endpoint.
@@ -774,6 +833,26 @@ type InlinedValueSecretResourceProperties struct {
 	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
 }
 
+// GetSecretResourceProperties implements the SecretResourcePropertiesClassification interface for type InlinedValueSecretResourceProperties.
+func (i *InlinedValueSecretResourceProperties) GetSecretResourceProperties() *SecretResourceProperties {
+	return &SecretResourceProperties{
+		Description:       i.Description,
+		Status:            i.Status,
+		StatusDetails:     i.StatusDetails,
+		ContentType:       i.ContentType,
+		Kind:              i.Kind,
+		ProvisioningState: i.ProvisioningState,
+	}
+}
+
+// GetSecretResourcePropertiesBase implements the SecretResourcePropertiesBaseClassification interface for type InlinedValueSecretResourceProperties.
+func (i *InlinedValueSecretResourceProperties) GetSecretResourcePropertiesBase() *SecretResourcePropertiesBase {
+	return &SecretResourcePropertiesBase{
+		Kind:              i.Kind,
+		ProvisioningState: i.ProvisioningState,
+	}
+}
+
 // LocalNetworkResourceProperties - Information about a Service Fabric container network local to a single Service Fabric
 // cluster.
 type LocalNetworkResourceProperties struct {
@@ -794,6 +873,25 @@ type LocalNetworkResourceProperties struct {
 
 	// READ-ONLY; Gives additional information about the current status of the network.
 	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+}
+
+// GetNetworkResourceProperties implements the NetworkResourcePropertiesClassification interface for type LocalNetworkResourceProperties.
+func (l *LocalNetworkResourceProperties) GetNetworkResourceProperties() *NetworkResourceProperties {
+	return &NetworkResourceProperties{
+		Description:       l.Description,
+		Status:            l.Status,
+		StatusDetails:     l.StatusDetails,
+		Kind:              l.Kind,
+		ProvisioningState: l.ProvisioningState,
+	}
+}
+
+// GetNetworkResourcePropertiesBase implements the NetworkResourcePropertiesBaseClassification interface for type LocalNetworkResourceProperties.
+func (l *LocalNetworkResourceProperties) GetNetworkResourcePropertiesBase() *NetworkResourcePropertiesBase {
+	return &NetworkResourcePropertiesBase{
+		Kind:              l.Kind,
+		ProvisioningState: l.ProvisioningState,
+	}
 }
 
 // ManagedProxyResource - The resource model definition for Azure Resource Manager proxy resource. It will have everything
@@ -902,6 +1000,19 @@ type NetworkResourceProperties struct {
 	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
 }
 
+// GetNetworkResourceProperties implements the NetworkResourcePropertiesClassification interface for type NetworkResourceProperties.
+func (n *NetworkResourceProperties) GetNetworkResourceProperties() *NetworkResourceProperties {
+	return n
+}
+
+// GetNetworkResourcePropertiesBase implements the NetworkResourcePropertiesBaseClassification interface for type NetworkResourceProperties.
+func (n *NetworkResourceProperties) GetNetworkResourcePropertiesBase() *NetworkResourcePropertiesBase {
+	return &NetworkResourcePropertiesBase{
+		Kind:              n.Kind,
+		ProvisioningState: n.ProvisioningState,
+	}
+}
+
 // NetworkResourcePropertiesBaseClassification provides polymorphic access to related types.
 // Call the interface's GetNetworkResourcePropertiesBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -918,6 +1029,11 @@ type NetworkResourcePropertiesBase struct {
 
 	// READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetNetworkResourcePropertiesBase implements the NetworkResourcePropertiesBaseClassification interface for type NetworkResourcePropertiesBase.
+func (n *NetworkResourcePropertiesBase) GetNetworkResourcePropertiesBase() *NetworkResourcePropertiesBase {
+	return n
 }
 
 // OperationListResult - Describes the result of the request to list Service Fabric operations.
@@ -1108,6 +1224,17 @@ type SecretResourceProperties struct {
 	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
 }
 
+// GetSecretResourceProperties implements the SecretResourcePropertiesClassification interface for type SecretResourceProperties.
+func (s *SecretResourceProperties) GetSecretResourceProperties() *SecretResourceProperties { return s }
+
+// GetSecretResourcePropertiesBase implements the SecretResourcePropertiesBaseClassification interface for type SecretResourceProperties.
+func (s *SecretResourceProperties) GetSecretResourcePropertiesBase() *SecretResourcePropertiesBase {
+	return &SecretResourcePropertiesBase{
+		Kind:              s.Kind,
+		ProvisioningState: s.ProvisioningState,
+	}
+}
+
 // SecretResourcePropertiesBaseClassification provides polymorphic access to related types.
 // Call the interface's GetSecretResourcePropertiesBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -1124,6 +1251,11 @@ type SecretResourcePropertiesBase struct {
 
 	// READ-ONLY; State of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// GetSecretResourcePropertiesBase implements the SecretResourcePropertiesBaseClassification interface for type SecretResourcePropertiesBase.
+func (s *SecretResourcePropertiesBase) GetSecretResourcePropertiesBase() *SecretResourcePropertiesBase {
+	return s
 }
 
 // SecretValue - This type represents the unencrypted value of the secret.

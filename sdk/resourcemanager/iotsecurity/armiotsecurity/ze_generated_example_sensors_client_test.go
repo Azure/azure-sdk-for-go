@@ -29,7 +29,7 @@ func ExampleSensorsClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<scope>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,8 +50,8 @@ func ExampleSensorsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<sensor-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
+		"mySensor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,13 +72,13 @@ func ExampleSensorsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<scope>",
-		"<sensor-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
+		"mySensor",
 		armiotsecurity.SensorModel{
 			Properties: &armiotsecurity.SensorProperties{
 				SensorType:         to.Ptr(armiotsecurity.SensorTypeOt),
 				TiAutomaticUpdates: to.Ptr(true),
-				Zone:               to.Ptr("<zone>"),
+				Zone:               to.Ptr("Zone Name"),
 			},
 		},
 		nil)
@@ -101,8 +101,8 @@ func ExampleSensorsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<scope>",
-		"<sensor-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
+		"mySensor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -121,8 +121,8 @@ func ExampleSensorsClient_DownloadActivation() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DownloadActivation(ctx,
-		"<scope>",
-		"<sensor-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
+		"mySensor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -141,10 +141,10 @@ func ExampleSensorsClient_DownloadResetPassword() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DownloadResetPassword(ctx,
-		"<scope>",
-		"<sensor-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
+		"mySensor",
 		armiotsecurity.ResetPasswordInput{
-			ApplianceID: to.Ptr("<appliance-id>"),
+			ApplianceID: to.Ptr("3214-528AV23-D121-D3-E1"),
 		},
 		nil)
 	if err != nil {
@@ -164,8 +164,8 @@ func ExampleSensorsClient_TriggerTiPackageUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.TriggerTiPackageUpdate(ctx,
-		"<scope>",
-		"<sensor-name>",
+		"subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg/providers/Microsoft.Devices/IotHubs/myHub",
+		"mySensor",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

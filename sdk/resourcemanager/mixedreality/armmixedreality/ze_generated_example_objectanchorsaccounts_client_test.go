@@ -24,7 +24,7 @@ func ExampleObjectAnchorsAccountsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmixedreality.NewObjectAnchorsAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleObjectAnchorsAccountsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,17 +48,16 @@ func ExampleObjectAnchorsAccountsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmixedreality.NewObjectAnchorsAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("MyResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,13 +73,13 @@ func ExampleObjectAnchorsAccountsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmixedreality.NewObjectAnchorsAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"MyResourceGroup",
+		"MyAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -95,13 +93,13 @@ func ExampleObjectAnchorsAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmixedreality.NewObjectAnchorsAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"MyResourceGroup",
+		"MyAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -117,21 +115,21 @@ func ExampleObjectAnchorsAccountsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmixedreality.NewObjectAnchorsAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"MyResourceGroup",
+		"MyAccount",
 		armmixedreality.ObjectAnchorsAccount{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus2euap"),
 			Tags: map[string]*string{
 				"hero":    to.Ptr("romeo"),
 				"heroine": to.Ptr("juliet"),
 			},
 			Identity: &armmixedreality.ObjectAnchorsAccountIdentity{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("SystemAssigned"),
 			},
 		},
 		nil)
@@ -149,17 +147,17 @@ func ExampleObjectAnchorsAccountsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmixedreality.NewObjectAnchorsAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"MyResourceGroup",
+		"MyAccount",
 		armmixedreality.ObjectAnchorsAccount{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus2euap"),
 			Identity: &armmixedreality.ObjectAnchorsAccountIdentity{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("SystemAssigned"),
 			},
 		},
 		nil)
@@ -177,13 +175,13 @@ func ExampleObjectAnchorsAccountsClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmixedreality.NewObjectAnchorsAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"MyResourceGroup",
+		"MyAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -199,13 +197,13 @@ func ExampleObjectAnchorsAccountsClient_RegenerateKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmixedreality.NewObjectAnchorsAccountsClient("<subscription-id>", cred, nil)
+	client, err := armmixedreality.NewObjectAnchorsAccountsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"MyResourceGroup",
+		"MyAccount",
 		armmixedreality.AccountKeyRegenerateRequest{
 			Serial: to.Ptr(armmixedreality.SerialPrimary),
 		},

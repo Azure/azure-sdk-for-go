@@ -17,9 +17,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/conn"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/conn"
 )
 
 const (
@@ -172,7 +172,7 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 	}
 
 	q := req.Raw().URL.Query()
-	q.Add("api-version", "2017-04")
+	q.Add("api-version", "2021-05")
 	req.Raw().URL.RawQuery = q.Encode()
 
 	if body != nil && body != http.NoBody {

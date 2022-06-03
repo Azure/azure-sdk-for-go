@@ -38,7 +38,7 @@ func NewOriginsClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewOriginsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginCreate - Creates a new origin within the specified endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // originName - Name of the origin that is unique within the endpoint.
 // origin - Origin properties
 // options - OriginsClientBeginCreateOptions contains the optional parameters for the OriginsClient.BeginCreate method.
-func (client *OriginsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, origin Origin, options *OriginsClientBeginCreateOptions) (*armruntime.Poller[OriginsClientCreateResponse], error) {
+func (client *OriginsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, origin Origin, options *OriginsClientBeginCreateOptions) (*runtime.Poller[OriginsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, originName, origin, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OriginsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OriginsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OriginsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OriginsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new origin within the specified endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *OriginsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, origin Origin, options *OriginsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, originName, origin, options)
 	if err != nil {
@@ -121,31 +123,33 @@ func (client *OriginsClient) createCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, origin)
 }
 
 // BeginDelete - Deletes an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // originName - Name of the origin which is unique within the endpoint.
 // options - OriginsClientBeginDeleteOptions contains the optional parameters for the OriginsClient.BeginDelete method.
-func (client *OriginsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, options *OriginsClientBeginDeleteOptions) (*armruntime.Poller[OriginsClientDeleteResponse], error) {
+func (client *OriginsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, options *OriginsClientBeginDeleteOptions) (*runtime.Poller[OriginsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, originName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OriginsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OriginsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OriginsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OriginsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *OriginsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, options *OriginsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, originName, options)
 	if err != nil {
@@ -191,12 +195,13 @@ func (client *OriginsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
@@ -247,7 +252,7 @@ func (client *OriginsClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -262,12 +267,13 @@ func (client *OriginsClient) getHandleResponse(resp *http.Response) (OriginsClie
 
 // NewListByEndpointPager - Lists all of the existing origins within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - OriginsClientListByEndpointOptions contains the optional parameters for the OriginsClient.ListByEndpoint method.
 func (client *OriginsClient) NewListByEndpointPager(resourceGroupName string, profileName string, endpointName string, options *OriginsClientListByEndpointOptions) *runtime.Pager[OriginsClientListByEndpointResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OriginsClientListByEndpointResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OriginsClientListByEndpointResponse]{
 		More: func(page OriginsClientListByEndpointResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -320,7 +326,7 @@ func (client *OriginsClient) listByEndpointCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -335,26 +341,28 @@ func (client *OriginsClient) listByEndpointHandleResponse(resp *http.Response) (
 
 // BeginUpdate - Updates an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the CDN profile which is unique within the resource group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // originName - Name of the origin which is unique within the endpoint.
 // originUpdateProperties - Origin properties
 // options - OriginsClientBeginUpdateOptions contains the optional parameters for the OriginsClient.BeginUpdate method.
-func (client *OriginsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties OriginUpdateParameters, options *OriginsClientBeginUpdateOptions) (*armruntime.Poller[OriginsClientUpdateResponse], error) {
+func (client *OriginsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties OriginUpdateParameters, options *OriginsClientBeginUpdateOptions) (*runtime.Poller[OriginsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, originName, originUpdateProperties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OriginsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OriginsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OriginsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OriginsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates an existing origin within an endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *OriginsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties OriginUpdateParameters, options *OriginsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, originName, originUpdateProperties, options)
 	if err != nil {
@@ -400,6 +408,6 @@ func (client *OriginsClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, originUpdateProperties)
 }

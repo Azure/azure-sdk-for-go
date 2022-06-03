@@ -40,7 +40,7 @@ func NewServiceTagInformationClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,13 +58,14 @@ func NewServiceTagInformationClient(subscriptionID string, credential azcore.Tok
 
 // NewListPager - Gets a list of service tag information resources with pagination.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // location - The location that will be used as a reference for cloud (not as a filter based on location, you will get the
 // list of service tags with prefix details across all regions but limited to the cloud that
 // your subscription belongs to).
 // options - ServiceTagInformationClientListOptions contains the optional parameters for the ServiceTagInformationClient.List
 // method.
 func (client *ServiceTagInformationClient) NewListPager(location string, options *ServiceTagInformationClientListOptions) *runtime.Pager[ServiceTagInformationClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServiceTagInformationClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServiceTagInformationClientListResponse]{
 		More: func(page ServiceTagInformationClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -107,7 +108,7 @@ func (client *ServiceTagInformationClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	if options != nil && options.NoAddressPrefixes != nil {
 		reqQP.Set("noAddressPrefixes", strconv.FormatBool(*options.NoAddressPrefixes))
 	}
@@ -115,7 +116,7 @@ func (client *ServiceTagInformationClient) listCreateRequest(ctx context.Context
 		reqQP.Set("tagName", *options.TagName)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

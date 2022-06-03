@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -10,6 +13,7 @@ import (
 	"errors"
 	"log"
 	"os"
+	"reflect"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -229,8 +233,8 @@ func TestClientCertificateCredential_InvalidCertLive(t *testing.T) {
 	}
 
 	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
-	if tk != nil {
-		t.Fatal("GetToken returned a token")
+	if !reflect.ValueOf(tk).IsZero() {
+		t.Fatal("expected a zero value AccessToken")
 	}
 	var e *AuthenticationFailedError
 	if !errors.As(err, &e) {

@@ -35,7 +35,7 @@ func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.Clien
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.Clien
 // NewListPager - Lists the marketplaces for a scope at the defined scope. Marketplaces are available via this API only for
 // May 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // scope - The scope associated with marketplace operations. This includes '/subscriptions/{subscriptionId}/' for subscription
 // scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing
 // Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope, '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}'
@@ -64,7 +65,7 @@ func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.Clien
 // '/providers/Microsoft.Billing/departments/{departmentId}/providers/Microsoft.Billing/billingPeriods/{billingPeriodName}'
 // options - MarketplacesClientListOptions contains the optional parameters for the MarketplacesClient.List method.
 func (client *MarketplacesClient) NewListPager(scope string, options *MarketplacesClientListOptions) *runtime.Pager[MarketplacesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MarketplacesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MarketplacesClientListResponse]{
 		More: func(page MarketplacesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -111,7 +112,7 @@ func (client *MarketplacesClient) listCreateRequest(ctx context.Context, scope s
 	}
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

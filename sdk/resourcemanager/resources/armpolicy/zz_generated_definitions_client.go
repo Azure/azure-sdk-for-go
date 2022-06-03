@@ -39,7 +39,7 @@ func NewDefinitionsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewDefinitionsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - This operation creates or updates a policy definition in the given subscription with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyDefinitionName - The name of the policy definition to create.
 // parameters - The policy definition properties.
 // options - DefinitionsClientCreateOrUpdateOptions contains the optional parameters for the DefinitionsClient.CreateOrUpdate
@@ -94,7 +95,7 @@ func (client *DefinitionsClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -110,6 +111,7 @@ func (client *DefinitionsClient) createOrUpdateHandleResponse(resp *http.Respons
 // CreateOrUpdateAtManagementGroup - This operation creates or updates a policy definition in the given management group with
 // the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyDefinitionName - The name of the policy definition to create.
 // managementGroupID - The ID of the management group.
 // parameters - The policy definition properties.
@@ -148,7 +150,7 @@ func (client *DefinitionsClient) createOrUpdateAtManagementGroupCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -163,6 +165,7 @@ func (client *DefinitionsClient) createOrUpdateAtManagementGroupHandleResponse(r
 
 // Delete - This operation deletes the policy definition in the given subscription with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyDefinitionName - The name of the policy definition to delete.
 // options - DefinitionsClientDeleteOptions contains the optional parameters for the DefinitionsClient.Delete method.
 func (client *DefinitionsClient) Delete(ctx context.Context, policyDefinitionName string, options *DefinitionsClientDeleteOptions) (DefinitionsClientDeleteResponse, error) {
@@ -198,12 +201,13 @@ func (client *DefinitionsClient) deleteCreateRequest(ctx context.Context, policy
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DeleteAtManagementGroup - This operation deletes the policy definition in the given management group with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyDefinitionName - The name of the policy definition to delete.
 // managementGroupID - The ID of the management group.
 // options - DefinitionsClientDeleteAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.DeleteAtManagementGroup
@@ -241,12 +245,13 @@ func (client *DefinitionsClient) deleteAtManagementGroupCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - This operation retrieves the policy definition in the given subscription with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyDefinitionName - The name of the policy definition to get.
 // options - DefinitionsClientGetOptions contains the optional parameters for the DefinitionsClient.Get method.
 func (client *DefinitionsClient) Get(ctx context.Context, policyDefinitionName string, options *DefinitionsClientGetOptions) (DefinitionsClientGetResponse, error) {
@@ -282,7 +287,7 @@ func (client *DefinitionsClient) getCreateRequest(ctx context.Context, policyDef
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -297,6 +302,7 @@ func (client *DefinitionsClient) getHandleResponse(resp *http.Response) (Definit
 
 // GetAtManagementGroup - This operation retrieves the policy definition in the given management group with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyDefinitionName - The name of the policy definition to get.
 // managementGroupID - The ID of the management group.
 // options - DefinitionsClientGetAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.GetAtManagementGroup
@@ -334,7 +340,7 @@ func (client *DefinitionsClient) getAtManagementGroupCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -349,6 +355,7 @@ func (client *DefinitionsClient) getAtManagementGroupHandleResponse(resp *http.R
 
 // GetBuiltIn - This operation retrieves the built-in policy definition with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // policyDefinitionName - The name of the built-in policy definition to get.
 // options - DefinitionsClientGetBuiltInOptions contains the optional parameters for the DefinitionsClient.GetBuiltIn method.
 func (client *DefinitionsClient) GetBuiltIn(ctx context.Context, policyDefinitionName string, options *DefinitionsClientGetBuiltInOptions) (DefinitionsClientGetBuiltInResponse, error) {
@@ -380,7 +387,7 @@ func (client *DefinitionsClient) getBuiltInCreateRequest(ctx context.Context, po
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -403,9 +410,10 @@ func (client *DefinitionsClient) getBuiltInHandleResponse(resp *http.Response) (
 // are NotSpecified, BuiltIn, Custom, and Static. If $filter='category -eq
 // {value}' is provided, the returned list only includes all policy definitions whose category match the {value}.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // options - DefinitionsClientListOptions contains the optional parameters for the DefinitionsClient.List method.
 func (client *DefinitionsClient) NewListPager(options *DefinitionsClientListOptions) *runtime.Pager[DefinitionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DefinitionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DefinitionsClientListResponse]{
 		More: func(page DefinitionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -454,7 +462,7 @@ func (client *DefinitionsClient) listCreateRequest(ctx context.Context, options 
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -473,9 +481,10 @@ func (client *DefinitionsClient) listHandleResponse(resp *http.Response) (Defini
 // and Static. If $filter='category -eq {value}' is provided, the returned list
 // only includes all built-in policy definitions whose category match the {value}.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // options - DefinitionsClientListBuiltInOptions contains the optional parameters for the DefinitionsClient.ListBuiltIn method.
 func (client *DefinitionsClient) NewListBuiltInPager(options *DefinitionsClientListBuiltInOptions) *runtime.Pager[DefinitionsClientListBuiltInResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DefinitionsClientListBuiltInResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DefinitionsClientListBuiltInResponse]{
 		More: func(page DefinitionsClientListBuiltInResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -520,7 +529,7 @@ func (client *DefinitionsClient) listBuiltInCreateRequest(ctx context.Context, o
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -544,11 +553,12 @@ func (client *DefinitionsClient) listBuiltInHandleResponse(resp *http.Response) 
 // Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
 // match the {value}.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // managementGroupID - The ID of the management group.
 // options - DefinitionsClientListByManagementGroupOptions contains the optional parameters for the DefinitionsClient.ListByManagementGroup
 // method.
 func (client *DefinitionsClient) NewListByManagementGroupPager(managementGroupID string, options *DefinitionsClientListByManagementGroupOptions) *runtime.Pager[DefinitionsClientListByManagementGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DefinitionsClientListByManagementGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DefinitionsClientListByManagementGroupResponse]{
 		More: func(page DefinitionsClientListByManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -597,7 +607,7 @@ func (client *DefinitionsClient) listByManagementGroupCreateRequest(ctx context.
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

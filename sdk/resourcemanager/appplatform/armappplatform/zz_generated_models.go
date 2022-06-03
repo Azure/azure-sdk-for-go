@@ -242,11 +242,23 @@ type AppResourceProperties struct {
 	// Temporary disk settings
 	TemporaryDisk *TemporaryDisk `json:"temporaryDisk,omitempty"`
 
+	// Additional App settings in vnet injection instance
+	VnetAddons *AppVNetAddons `json:"vnetAddons,omitempty"`
+
 	// READ-ONLY; Provisioning state of the App
 	ProvisioningState *AppResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; URL of the App
 	URL *string `json:"url,omitempty" azure:"ro"`
+}
+
+// AppVNetAddons - Additional App settings in vnet injection instance
+type AppVNetAddons struct {
+	// Indicates whether the App in vnet injection instance exposes endpoint which could be accessed from internet.
+	PublicEndpoint *bool `json:"publicEndpoint,omitempty"`
+
+	// READ-ONLY; URL of the App in vnet injection instance which could be accessed from internet
+	PublicEndpointURL *string `json:"publicEndpointUrl,omitempty" azure:"ro"`
 }
 
 // ApplicationInsightsAgentVersions - Application Insights agent versions properties payload
@@ -331,6 +343,16 @@ type AzureFileVolume struct {
 
 	// Indicates whether the persistent disk is a readOnly one.
 	ReadOnly *bool `json:"readOnly,omitempty"`
+}
+
+// GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type AzureFileVolume.
+func (a *AzureFileVolume) GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties {
+	return &CustomPersistentDiskProperties{
+		Type:         a.Type,
+		MountPath:    a.MountPath,
+		ReadOnly:     a.ReadOnly,
+		MountOptions: a.MountOptions,
+	}
 }
 
 // BindingResource - Binding resource payload
@@ -456,11 +478,25 @@ type BuildProperties struct {
 	// The relative path of source code
 	RelativePath *string `json:"relativePath,omitempty"`
 
+	// The customized build resource for this build
+	ResourceRequests *BuildResourceRequests `json:"resourceRequests,omitempty"`
+
 	// READ-ONLY; Provisioning state of the KPack build result
 	ProvisioningState *BuildProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The build result triggered by this build
 	TriggeredBuildResult *TriggeredBuildResult `json:"triggeredBuildResult,omitempty" azure:"ro"`
+}
+
+// BuildResourceRequests - Resource request payload of Build Resource.
+type BuildResourceRequests struct {
+	// Optional Cpu allocated to the build resource. 1 core can be represented by 1 or 1000m. The default value is 1, this should
+	// not exceed build service agent pool cpu size.
+	CPU *string `json:"cpu,omitempty"`
+
+	// Optional Memory allocated to the build resource. 1 GB can be represented by 1Gi or 1024Mi. The default value is 2Gi, this
+	// should not exceed build service agent pool memory size.
+	Memory *string `json:"memory,omitempty"`
 }
 
 // BuildResult - Build result resource payload
@@ -521,6 +557,14 @@ type BuildResultUserSourceInfo struct {
 
 	// Version of the source
 	Version *string `json:"version,omitempty"`
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type BuildResultUserSourceInfo.
+func (b *BuildResultUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    b.Type,
+		Version: b.Version,
+	}
 }
 
 // BuildService - Build service resource payload
@@ -899,12 +943,18 @@ type CertificateProperties struct {
 	// READ-ONLY; The issuer of certificate.
 	Issuer *string `json:"issuer,omitempty" azure:"ro"`
 
+	// READ-ONLY; Provisioning state of the Certificate
+	ProvisioningState *CertificateResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
 	// READ-ONLY; The subject name of certificate.
 	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
 
 	// READ-ONLY; The thumbprint of certificate.
 	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
 }
+
+// GetCertificateProperties implements the CertificatePropertiesClassification interface for type CertificateProperties.
+func (c *CertificateProperties) GetCertificateProperties() *CertificateProperties { return c }
 
 // CertificateResource - Certificate resource payload.
 type CertificateResource struct {
@@ -979,9 +1029,15 @@ type CloudErrorBody struct {
 
 // ClusterResourceProperties - Service properties payload
 type ClusterResourceProperties struct {
+	// Purchasing 3rd party product of the Service resource.
+	MarketplaceResource *MarketplaceResource `json:"marketplaceResource,omitempty"`
+
 	// Network profile of the Service
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
-	ZoneRedundant  *bool           `json:"zoneRedundant,omitempty"`
+
+	// Additional Service settings in vnet injection instance
+	VnetAddons    *ServiceVNetAddons `json:"vnetAddons,omitempty"`
+	ZoneRedundant *bool              `json:"zoneRedundant,omitempty"`
 
 	// READ-ONLY; Fully qualified dns name of the service instance
 	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
@@ -1300,11 +1356,29 @@ type ContentCertificateProperties struct {
 	// READ-ONLY; The issuer of certificate.
 	Issuer *string `json:"issuer,omitempty" azure:"ro"`
 
+	// READ-ONLY; Provisioning state of the Certificate
+	ProvisioningState *CertificateResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
 	// READ-ONLY; The subject name of certificate.
 	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
 
 	// READ-ONLY; The thumbprint of certificate.
 	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+}
+
+// GetCertificateProperties implements the CertificatePropertiesClassification interface for type ContentCertificateProperties.
+func (c *ContentCertificateProperties) GetCertificateProperties() *CertificateProperties {
+	return &CertificateProperties{
+		Type:              c.Type,
+		Thumbprint:        c.Thumbprint,
+		Issuer:            c.Issuer,
+		IssuedDate:        c.IssuedDate,
+		ExpirationDate:    c.ExpirationDate,
+		ActivateDate:      c.ActivateDate,
+		SubjectName:       c.SubjectName,
+		DNSNames:          c.DNSNames,
+		ProvisioningState: c.ProvisioningState,
+	}
 }
 
 // CustomContainer - Custom container payload
@@ -1340,6 +1414,14 @@ type CustomContainerUserSourceInfo struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type CustomContainerUserSourceInfo.
+func (c *CustomContainerUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    c.Type,
+		Version: c.Version,
+	}
+}
+
 // CustomDomainProperties - Custom domain of app resource payload.
 type CustomDomainProperties struct {
 	// The bound certificate name of domain.
@@ -1350,6 +1432,9 @@ type CustomDomainProperties struct {
 
 	// READ-ONLY; The app name of domain.
 	AppName *string `json:"appName,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the Domain
+	ProvisioningState *CustomDomainResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // CustomDomainResource - Custom domain resource payload.
@@ -1447,9 +1532,14 @@ type CustomPersistentDiskProperties struct {
 	ReadOnly *bool `json:"readOnly,omitempty"`
 }
 
+// GetCustomPersistentDiskProperties implements the CustomPersistentDiskPropertiesClassification interface for type CustomPersistentDiskProperties.
+func (c *CustomPersistentDiskProperties) GetCustomPersistentDiskProperties() *CustomPersistentDiskProperties {
+	return c
+}
+
 // CustomPersistentDiskResource - Custom persistent disk resource payload.
 type CustomPersistentDiskResource struct {
-	// REQUIRED; The resource id of Azure Spring Cloud Storage resource.
+	// REQUIRED; The resource id of Azure Spring Apps Storage resource.
 	StorageID *string `json:"storageId,omitempty"`
 
 	// Properties of the custom persistent disk resource payload.
@@ -1539,10 +1629,34 @@ type DeploymentSettings struct {
 	// Collection of environment variables
 	EnvironmentVariables map[string]*string `json:"environmentVariables,omitempty"`
 
+	// Periodic probe of App Instance liveness. App Instance will be restarted if the probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	LivenessProbe *Probe `json:"livenessProbe,omitempty"`
+
+	// Periodic probe of App Instance service readiness. App Instance will be removed from service endpoints if the probe fails.
+	// More info:
+	// https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	ReadinessProbe *Probe `json:"readinessProbe,omitempty"`
+
 	// The requested resource quantity for required CPU and Memory. It is recommended that using this field to represent the required
 	// CPU and Memory, the old field cpu and memoryInGB will be deprecated
 	// later.
 	ResourceRequests *ResourceRequests `json:"resourceRequests,omitempty"`
+
+	// StartupProbe indicates that the App Instance has successfully initialized. If specified, no other probes are executed until
+	// this completes successfully. If this probe fails, the Pod will be restarted,
+	// just as if the livenessProbe failed. This can be used to provide different probe parameters at the beginning of a App Instance's
+	// lifecycle, when it might take a long time to load data or warm a cache,
+	// than during steady-state operation. This cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	StartupProbe *Probe `json:"startupProbe,omitempty"`
+
+	// Optional duration in seconds the App Instance needs to terminate gracefully. May be decreased in delete request. Value
+	// must be non-negative integer. The value zero indicates stop immediately via the
+	// kill signal (no opportunity to shut down). If this value is nil, the default grace period will be used instead. The grace
+	// period is the duration in seconds after the processes running in the App
+	// Instance are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+	// value longer than the expected cleanup time for your process. Defaults to 90
+	// seconds.
+	TerminationGracePeriodSeconds *int32 `json:"terminationGracePeriodSeconds,omitempty"`
 }
 
 // DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
@@ -1643,6 +1757,25 @@ type Error struct {
 
 	// The message of error.
 	Message *string `json:"message,omitempty"`
+}
+
+// ExecAction describes a "run in container" action.
+type ExecAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType `json:"type,omitempty"`
+
+	// Command is the command line to execute inside the container, the working directory for the command is root ('/') in the
+	// container's filesystem. The command is not run inside a shell, so traditional
+	// shell instructions ('|', etc) won't work. To use a shell, you need to explicitly call out to that shell. Exit status of
+	// 0 is treated as live/healthy and non-zero is unhealthy.
+	Command []*string `json:"command,omitempty"`
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type ExecAction.
+func (e *ExecAction) GetProbeAction() *ProbeAction {
+	return &ProbeAction{
+		Type: e.Type,
+	}
 }
 
 // GatewayAPIMetadataProperties - API metadata property for Spring Cloud Gateway
@@ -1878,10 +2011,19 @@ type GatewayResourceRequests struct {
 	Memory *string `json:"memory,omitempty"`
 }
 
+// GatewayRouteConfigOpenAPIProperties - OpenAPI properties of Spring Cloud Gateway route config.
+type GatewayRouteConfigOpenAPIProperties struct {
+	// The URI of OpenAPI specification.
+	URI *string `json:"uri,omitempty"`
+}
+
 // GatewayRouteConfigProperties - API route config of the Spring Cloud Gateway
 type GatewayRouteConfigProperties struct {
-	// The resource Id of the Azure Spring Cloud app, required unless route defines uri.
+	// The resource Id of the Azure Spring Apps app, required unless route defines uri.
 	AppResourceID *string `json:"appResourceId,omitempty"`
+
+	// OpenAPI properties of Spring Cloud Gateway route config.
+	OpenAPI *GatewayRouteConfigOpenAPIProperties `json:"openApi,omitempty"`
 
 	// Array of API routes, each route contains properties such as title, uri, ssoEnabled, predicates, filters.
 	Routes []*GatewayAPIRoute `json:"routes,omitempty"`
@@ -2005,6 +2147,28 @@ type GitPatternRepository struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// HTTPGetAction describes an action based on HTTP Get requests.
+type HTTPGetAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType `json:"type,omitempty"`
+
+	// Path to access on the HTTP server.
+	Path *string `json:"path,omitempty"`
+
+	// Scheme to use for connecting to the host. Defaults to HTTP.
+	// Possible enum values:
+	// * "HTTP" means that the scheme used will be http://
+	// * "HTTPS" means that the scheme used will be https://
+	Scheme *HTTPSchemeType `json:"scheme,omitempty"`
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type HTTPGetAction.
+func (h *HTTPGetAction) GetProbeAction() *ProbeAction {
+	return &ProbeAction{
+		Type: h.Type,
+	}
+}
+
 // ImageRegistryCredential - Credential of the image registry
 type ImageRegistryCredential struct {
 	// The password of the image registry credential
@@ -2012,6 +2176,12 @@ type ImageRegistryCredential struct {
 
 	// The username of the image registry credential
 	Username *string `json:"username,omitempty"`
+}
+
+// IngressConfig - Ingress configuration payload for Azure Spring Apps resource.
+type IngressConfig struct {
+	// Ingress read time out in seconds.
+	ReadTimeoutInSeconds *int32 `json:"readTimeoutInSeconds,omitempty"`
 }
 
 // JarUploadedUserSourceInfo - Uploaded Jar binary for a deployment
@@ -2030,6 +2200,23 @@ type JarUploadedUserSourceInfo struct {
 
 	// Version of the source
 	Version *string `json:"version,omitempty"`
+}
+
+// GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type JarUploadedUserSourceInfo.
+func (j *JarUploadedUserSourceInfo) GetUploadedUserSourceInfo() *UploadedUserSourceInfo {
+	return &UploadedUserSourceInfo{
+		RelativePath: j.RelativePath,
+		Type:         j.Type,
+		Version:      j.Version,
+	}
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type JarUploadedUserSourceInfo.
+func (j *JarUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    j.Type,
+		Version: j.Version,
+	}
 }
 
 // KeyVaultCertificateProperties - Properties of certificate imported from key vault.
@@ -2064,11 +2251,29 @@ type KeyVaultCertificateProperties struct {
 	// READ-ONLY; The issuer of certificate.
 	Issuer *string `json:"issuer,omitempty" azure:"ro"`
 
+	// READ-ONLY; Provisioning state of the Certificate
+	ProvisioningState *CertificateResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
 	// READ-ONLY; The subject name of certificate.
 	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
 
 	// READ-ONLY; The thumbprint of certificate.
 	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+}
+
+// GetCertificateProperties implements the CertificatePropertiesClassification interface for type KeyVaultCertificateProperties.
+func (k *KeyVaultCertificateProperties) GetCertificateProperties() *CertificateProperties {
+	return &CertificateProperties{
+		Type:              k.Type,
+		Thumbprint:        k.Thumbprint,
+		Issuer:            k.Issuer,
+		IssuedDate:        k.IssuedDate,
+		ExpirationDate:    k.ExpirationDate,
+		ActivateDate:      k.ActivateDate,
+		SubjectName:       k.SubjectName,
+		DNSNames:          k.DNSNames,
+		ProvisioningState: k.ProvisioningState,
+	}
 }
 
 // LoadedCertificate - Loaded certificate payload
@@ -2111,6 +2316,18 @@ type ManagedIdentityProperties struct {
 
 	// Properties of user-assigned managed identities
 	UserAssignedIdentities map[string]*UserAssignedManagedIdentity `json:"userAssignedIdentities,omitempty"`
+}
+
+// MarketplaceResource - Purchasing 3rd Party product for one Azure Spring Apps instance
+type MarketplaceResource struct {
+	// The plan id of the 3rd Party Artifact that is being procured.
+	Plan *string `json:"plan,omitempty"`
+
+	// The 3rd Party artifact that is being procured.
+	Product *string `json:"product,omitempty"`
+
+	// The publisher id of the 3rd Party Artifact that is being bought.
+	Publisher *string `json:"publisher,omitempty"`
 }
 
 // MetricDimension - Specifications of the Dimension of metrics
@@ -2260,31 +2477,51 @@ type NetCoreZipUploadedUserSourceInfo struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type NetCoreZipUploadedUserSourceInfo.
+func (n *NetCoreZipUploadedUserSourceInfo) GetUploadedUserSourceInfo() *UploadedUserSourceInfo {
+	return &UploadedUserSourceInfo{
+		RelativePath: n.RelativePath,
+		Type:         n.Type,
+		Version:      n.Version,
+	}
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type NetCoreZipUploadedUserSourceInfo.
+func (n *NetCoreZipUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    n.Type,
+		Version: n.Version,
+	}
+}
+
 // NetworkProfile - Service network profile payload
 type NetworkProfile struct {
-	// Name of the resource group containing network resources of Azure Spring Cloud Apps
+	// Name of the resource group containing network resources for customer apps in Azure Spring Apps
 	AppNetworkResourceGroup *string `json:"appNetworkResourceGroup,omitempty"`
 
-	// Fully qualified resource Id of the subnet to host Azure Spring Cloud Apps
+	// Fully qualified resource Id of the subnet to host customer apps in Azure Spring Apps
 	AppSubnetID *string `json:"appSubnetId,omitempty"`
 
-	// Azure Spring Cloud service reserved CIDR
+	// Ingress configuration payload for Azure Spring Apps resource.
+	IngressConfig *IngressConfig `json:"ingressConfig,omitempty"`
+
+	// Azure Spring Apps service reserved CIDR
 	ServiceCidr *string `json:"serviceCidr,omitempty"`
 
-	// Name of the resource group containing network resources of Azure Spring Cloud Service Runtime
+	// Name of the resource group containing network resources of Azure Spring Apps Service Runtime
 	ServiceRuntimeNetworkResourceGroup *string `json:"serviceRuntimeNetworkResourceGroup,omitempty"`
 
-	// Fully qualified resource Id of the subnet to host Azure Spring Cloud Service Runtime
+	// Fully qualified resource Id of the subnet to host Azure Spring Apps Service Runtime
 	ServiceRuntimeSubnetID *string `json:"serviceRuntimeSubnetId,omitempty"`
 
-	// READ-ONLY; Desired outbound IP resources for Azure Spring Cloud instance.
+	// READ-ONLY; Desired outbound IP resources for Azure Spring Apps resource.
 	OutboundIPs *NetworkProfileOutboundIPs `json:"outboundIPs,omitempty" azure:"ro"`
 
-	// READ-ONLY; Required inbound or outbound traffics for Azure Spring Cloud instance.
+	// READ-ONLY; Required inbound or outbound traffics for Azure Spring Apps resource.
 	RequiredTraffics []*RequiredTraffic `json:"requiredTraffics,omitempty" azure:"ro"`
 }
 
-// NetworkProfileOutboundIPs - Desired outbound IP resources for Azure Spring Cloud instance.
+// NetworkProfileOutboundIPs - Desired outbound IP resources for Azure Spring Apps resource.
 type NetworkProfileOutboundIPs struct {
 	// READ-ONLY; A list of public IP addresses.
 	PublicIPs []*string `json:"publicIPs,omitempty" azure:"ro"`
@@ -2349,6 +2586,50 @@ type PersistentDisk struct {
 	UsedInGB *int32 `json:"usedInGB,omitempty" azure:"ro"`
 }
 
+// Probe describes a health check to be performed against an App Instance to determine whether it is alive or ready to receive
+// traffic.
+type Probe struct {
+	// REQUIRED; Indicate whether the probe is disabled.
+	DisableProbe *bool `json:"disableProbe,omitempty"`
+
+	// Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
+	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
+
+	// Number of seconds after the App Instance has started before probes are initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
+
+	// How often (in seconds) to perform the probe. Minimum value is 1.
+	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
+
+	// The action of the probe.
+	ProbeAction ProbeActionClassification `json:"probeAction,omitempty"`
+
+	// Minimum consecutive successes for the probe to be considered successful after having failed. Must be 1 for liveness and
+	// startup. Minimum value is 1.
+	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
+
+	// Number of seconds after which the probe times out. Minimum value is 1.
+	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
+}
+
+// ProbeActionClassification provides polymorphic access to related types.
+// Call the interface's GetProbeAction() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ExecAction, *HTTPGetAction, *ProbeAction, *TCPSocketAction
+type ProbeActionClassification interface {
+	// GetProbeAction returns the ProbeAction content of the underlying type.
+	GetProbeAction() *ProbeAction
+}
+
+// ProbeAction - The action of the probe.
+type ProbeAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType `json:"type,omitempty"`
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type ProbeAction.
+func (p *ProbeAction) GetProbeAction() *ProbeAction { return p }
+
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
 // and tags.
 type ProxyResource struct {
@@ -2371,7 +2652,7 @@ type RegenerateTestKeyRequestPayload struct {
 	KeyType *TestKeyType `json:"keyType,omitempty"`
 }
 
-// RequiredTraffic - Required inbound or outbound traffic for Azure Spring Cloud instance.
+// RequiredTraffic - Required inbound or outbound traffic for Azure Spring Apps resource.
 type RequiredTraffic struct {
 	// READ-ONLY; The direction of required traffic
 	Direction *TrafficDirection `json:"direction,omitempty" azure:"ro"`
@@ -2415,7 +2696,7 @@ type ResourceRequests struct {
 	Memory *string `json:"memory,omitempty"`
 }
 
-// ResourceSKU - Describes an available Azure Spring Cloud SKU.
+// ResourceSKU - Describes an available Azure Spring Apps SKU.
 type ResourceSKU struct {
 	// Gets the capacity of SKU.
 	Capacity *SKUCapacity `json:"capacity,omitempty"`
@@ -2447,7 +2728,7 @@ type ResourceSKUCapabilities struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// ResourceSKUCollection - Object that includes an array of Azure Spring Cloud SKU and a possible link for next set
+// ResourceSKUCollection - Object that includes an array of Azure Spring Apps SKU and a possible link for next set
 type ResourceSKUCollection struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2517,7 +2798,7 @@ type RuntimeVersionsClientListRuntimeVersionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SKU - Sku of Azure Spring Cloud
+// SKU - Sku of Azure Spring Apps
 type SKU struct {
 	// Current capacity of the target resource
 	Capacity *int32 `json:"capacity,omitempty"`
@@ -2679,6 +2960,12 @@ type ServiceSpecification struct {
 	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
+// ServiceVNetAddons - Additional Service settings in vnet injection instance
+type ServiceVNetAddons struct {
+	// Indicates whether the log stream in vnet injection instance could be accessed from internet.
+	LogStreamPublicEndpoint *bool `json:"logStreamPublicEndpoint,omitempty"`
+}
+
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
 type ServicesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the LRO from the provided token.
@@ -2769,6 +3056,23 @@ type SourceUploadedUserSourceInfo struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type SourceUploadedUserSourceInfo.
+func (s *SourceUploadedUserSourceInfo) GetUploadedUserSourceInfo() *UploadedUserSourceInfo {
+	return &UploadedUserSourceInfo{
+		RelativePath: s.RelativePath,
+		Type:         s.Type,
+		Version:      s.Version,
+	}
+}
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type SourceUploadedUserSourceInfo.
+func (s *SourceUploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    s.Type,
+		Version: s.Version,
+	}
+}
+
 // SsoProperties - Single sign-on related configuration
 type SsoProperties struct {
 	// The public identifier for the application
@@ -2805,6 +3109,13 @@ type StorageAccount struct {
 	StorageType *StorageType `json:"storageType,omitempty"`
 }
 
+// GetStorageProperties implements the StoragePropertiesClassification interface for type StorageAccount.
+func (s *StorageAccount) GetStorageProperties() *StorageProperties {
+	return &StorageProperties{
+		StorageType: s.StorageType,
+	}
+}
+
 // StoragePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetStorageProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -2819,6 +3130,9 @@ type StorageProperties struct {
 	// REQUIRED; The type of the storage.
 	StorageType *StorageType `json:"storageType,omitempty"`
 }
+
+// GetStorageProperties implements the StoragePropertiesClassification interface for type StorageProperties.
+func (s *StorageProperties) GetStorageProperties() *StorageProperties { return s }
 
 // StorageResource - Storage resource payload.
 type StorageResource struct {
@@ -2972,6 +3286,19 @@ type SystemData struct {
 	LastModifiedByType *LastModifiedByType `json:"lastModifiedByType,omitempty"`
 }
 
+// TCPSocketAction describes an action based on opening a socket
+type TCPSocketAction struct {
+	// REQUIRED; The type of the action to take to perform the health check.
+	Type *ProbeActionType `json:"type,omitempty"`
+}
+
+// GetProbeAction implements the ProbeActionClassification interface for type TCPSocketAction.
+func (t *TCPSocketAction) GetProbeAction() *ProbeAction {
+	return &ProbeAction{
+		Type: t.Type,
+	}
+}
+
 // TemporaryDisk - Temporary disk payload
 type TemporaryDisk struct {
 	// Mount path of the temporary disk
@@ -3048,6 +3375,17 @@ type UploadedUserSourceInfo struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// GetUploadedUserSourceInfo implements the UploadedUserSourceInfoClassification interface for type UploadedUserSourceInfo.
+func (u *UploadedUserSourceInfo) GetUploadedUserSourceInfo() *UploadedUserSourceInfo { return u }
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type UploadedUserSourceInfo.
+func (u *UploadedUserSourceInfo) GetUserSourceInfo() *UserSourceInfo {
+	return &UserSourceInfo{
+		Type:    u.Type,
+		Version: u.Version,
+	}
+}
+
 // UserAssignedManagedIdentity - The details of the user-assigned managed identity assigned to an App.
 type UserAssignedManagedIdentity struct {
 	// READ-ONLY; Client Id of user-assigned managed identity.
@@ -3075,6 +3413,9 @@ type UserSourceInfo struct {
 	// Version of the source
 	Version *string `json:"version,omitempty"`
 }
+
+// GetUserSourceInfo implements the UserSourceInfoClassification interface for type UserSourceInfo.
+func (u *UserSourceInfo) GetUserSourceInfo() *UserSourceInfo { return u }
 
 // ValidationMessages - Validate messages of the configuration service git repositories
 type ValidationMessages struct {

@@ -38,7 +38,7 @@ func NewScopeMapsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewScopeMapsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreate - Creates a scope map for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // scopeMapName - The name of the scope map.
 // scopeMapCreateParameters - The parameters for creating a scope map.
 // options - ScopeMapsClientBeginCreateOptions contains the optional parameters for the ScopeMapsClient.BeginCreate method.
-func (client *ScopeMapsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, options *ScopeMapsClientBeginCreateOptions) (*armruntime.Poller[ScopeMapsClientCreateResponse], error) {
+func (client *ScopeMapsClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, options *ScopeMapsClientBeginCreateOptions) (*runtime.Poller[ScopeMapsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, registryName, scopeMapName, scopeMapCreateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ScopeMapsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ScopeMapsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ScopeMapsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ScopeMapsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a scope map for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *ScopeMapsClient) create(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, options *ScopeMapsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, scopeMapCreateParameters, options)
 	if err != nil {
@@ -114,32 +116,34 @@ func (client *ScopeMapsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, scopeMapCreateParameters)
 }
 
 // BeginDelete - Deletes a scope map from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // scopeMapName - The name of the scope map.
 // options - ScopeMapsClientBeginDeleteOptions contains the optional parameters for the ScopeMapsClient.BeginDelete method.
-func (client *ScopeMapsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientBeginDeleteOptions) (*armruntime.Poller[ScopeMapsClientDeleteResponse], error) {
+func (client *ScopeMapsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientBeginDeleteOptions) (*runtime.Poller[ScopeMapsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, scopeMapName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ScopeMapsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ScopeMapsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ScopeMapsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ScopeMapsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a scope map from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *ScopeMapsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, options)
 	if err != nil {
@@ -179,14 +183,15 @@ func (client *ScopeMapsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the properties of the specified scope map.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // scopeMapName - The name of the scope map.
@@ -230,9 +235,9 @@ func (client *ScopeMapsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -247,11 +252,12 @@ func (client *ScopeMapsClient) getHandleResponse(resp *http.Response) (ScopeMaps
 
 // NewListPager - Lists all the scope maps for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - ScopeMapsClientListOptions contains the optional parameters for the ScopeMapsClient.List method.
 func (client *ScopeMapsClient) NewListPager(resourceGroupName string, registryName string, options *ScopeMapsClientListOptions) *runtime.Pager[ScopeMapsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ScopeMapsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ScopeMapsClientListResponse]{
 		More: func(page ScopeMapsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -298,9 +304,9 @@ func (client *ScopeMapsClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -315,25 +321,27 @@ func (client *ScopeMapsClient) listHandleResponse(resp *http.Response) (ScopeMap
 
 // BeginUpdate - Updates a scope map with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // scopeMapName - The name of the scope map.
 // scopeMapUpdateParameters - The parameters for updating a scope map.
 // options - ScopeMapsClientBeginUpdateOptions contains the optional parameters for the ScopeMapsClient.BeginUpdate method.
-func (client *ScopeMapsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*armruntime.Poller[ScopeMapsClientUpdateResponse], error) {
+func (client *ScopeMapsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*runtime.Poller[ScopeMapsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ScopeMapsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ScopeMapsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ScopeMapsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ScopeMapsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a scope map with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *ScopeMapsClient) update(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, options)
 	if err != nil {
@@ -373,8 +381,8 @@ func (client *ScopeMapsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, scopeMapUpdateParameters)
 }

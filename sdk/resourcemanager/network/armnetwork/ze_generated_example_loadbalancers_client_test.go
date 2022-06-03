@@ -12,51 +12,49 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerDelete.json
 func ExampleLoadBalancersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<load-balancer-name>",
-		&armnetwork.LoadBalancersClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"lb",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerGet.json
 func ExampleLoadBalancersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<load-balancer-name>",
+		"rg1",
+		"lb",
 		&armnetwork.LoadBalancersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -65,47 +63,47 @@ func ExampleLoadBalancersClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerCreate.json
 func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<load-balancer-name>",
+		"rg1",
+		"lb",
 		armnetwork.LoadBalancer{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armnetwork.LoadBalancerPropertiesFormat{
 				BackendAddressPools: []*armnetwork.BackendAddressPool{
 					{
-						Name:       to.Ptr("<name>"),
+						Name:       to.Ptr("be-lb"),
 						Properties: &armnetwork.BackendAddressPoolPropertiesFormat{},
 					}},
 				FrontendIPConfigurations: []*armnetwork.FrontendIPConfiguration{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("fe-lb"),
 						Properties: &armnetwork.FrontendIPConfigurationPropertiesFormat{
 							Subnet: &armnetwork.Subnet{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnetlb/subnets/subnetlb"),
 							},
 						},
 					}},
 				InboundNatPools: []*armnetwork.InboundNatPool{},
 				InboundNatRules: []*armnetwork.InboundNatRule{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("in-nat-rule"),
 						Properties: &armnetwork.InboundNatRulePropertiesFormat{
 							BackendPort:      to.Ptr[int32](3389),
 							EnableFloatingIP: to.Ptr(true),
 							EnableTCPReset:   to.Ptr(false),
 							FrontendIPConfiguration: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb"),
 							},
 							FrontendPort:         to.Ptr[int32](3389),
 							IdleTimeoutInMinutes: to.Ptr[int32](15),
@@ -114,44 +112,44 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 					}},
 				LoadBalancingRules: []*armnetwork.LoadBalancingRule{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("rulelb"),
 						Properties: &armnetwork.LoadBalancingRulePropertiesFormat{
 							BackendAddressPool: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/backendAddressPools/be-lb"),
 							},
 							BackendPort:      to.Ptr[int32](80),
 							EnableFloatingIP: to.Ptr(true),
 							EnableTCPReset:   to.Ptr(false),
 							FrontendIPConfiguration: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/frontendIPConfigurations/fe-lb"),
 							},
 							FrontendPort:         to.Ptr[int32](80),
 							IdleTimeoutInMinutes: to.Ptr[int32](15),
 							LoadDistribution:     to.Ptr(armnetwork.LoadDistributionDefault),
 							Probe: &armnetwork.SubResource{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb/probes/probe-lb"),
 							},
 							Protocol: to.Ptr(armnetwork.TransportProtocolTCP),
 						},
 					}},
 				Probes: []*armnetwork.Probe{
 					{
-						Name: to.Ptr("<name>"),
+						Name: to.Ptr("probe-lb"),
 						Properties: &armnetwork.ProbePropertiesFormat{
 							IntervalInSeconds: to.Ptr[int32](15),
 							NumberOfProbes:    to.Ptr[int32](2),
 							Port:              to.Ptr[int32](80),
-							RequestPath:       to.Ptr("<request-path>"),
+							RequestPath:       to.Ptr("healthcheck.aspx"),
 							Protocol:          to.Ptr(armnetwork.ProbeProtocolHTTP),
 						},
 					}},
 			},
 		},
-		&armnetwork.LoadBalancersClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -159,20 +157,20 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerUpdateTags.json
 func ExampleLoadBalancersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<load-balancer-name>",
+		"rg1",
+		"lb",
 		armnetwork.TagsObject{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
@@ -187,14 +185,14 @@ func ExampleLoadBalancersClient_UpdateTags() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerListAll.json
 func ExampleLoadBalancersClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -203,7 +201,6 @@ func ExampleLoadBalancersClient_NewListAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -212,24 +209,23 @@ func ExampleLoadBalancersClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/LoadBalancerList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/LoadBalancerList.json
 func ExampleLoadBalancersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
+	pager := client.NewListPager("rg1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -238,29 +234,29 @@ func ExampleLoadBalancersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-05-01/examples/QueryInboundNatRulePortMapping.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/QueryInboundNatRulePortMapping.json
 func ExampleLoadBalancersClient_BeginListInboundNatRulePortMappings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("<subscription-id>", cred, nil)
+	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginListInboundNatRulePortMappings(ctx,
-		"<group-name>",
-		"<load-balancer-name>",
-		"<backend-pool-name>",
+		"rg1",
+		"lb1",
+		"bp1",
 		armnetwork.QueryInboundNatRulePortMappingRequest{
-			IPAddress: to.Ptr("<ipaddress>"),
+			IPAddress: to.Ptr("10.0.0.4"),
 		},
-		&armnetwork.LoadBalancersClientBeginListInboundNatRulePortMappingsOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

@@ -39,7 +39,7 @@ func NewLinkedWorkspaceClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewLinkedWorkspaceClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Retrieve the linked workspace for the account id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - LinkedWorkspaceClientGetOptions contains the optional parameters for the LinkedWorkspaceClient.Get method.
@@ -97,7 +98,7 @@ func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

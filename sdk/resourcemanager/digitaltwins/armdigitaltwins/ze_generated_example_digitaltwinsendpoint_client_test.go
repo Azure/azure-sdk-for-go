@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins"
@@ -26,18 +24,17 @@ func ExampleEndpointClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
+	client, err := armdigitaltwins.NewEndpointClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<resource-name>",
+	pager := client.NewListPager("resRg",
+		"myDigitalTwinsService",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleEndpointClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
+	client, err := armdigitaltwins.NewEndpointClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<endpoint-name>",
+		"resRg",
+		"myDigitalTwinsService",
+		"myServiceBus",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,27 +73,27 @@ func ExampleEndpointClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
+	client, err := armdigitaltwins.NewEndpointClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<endpoint-name>",
+		"resRg",
+		"myDigitalTwinsService",
+		"myServiceBus",
 		armdigitaltwins.EndpointResource{
 			Properties: &armdigitaltwins.ServiceBus{
 				AuthenticationType:        to.Ptr(armdigitaltwins.AuthenticationTypeKeyBased),
 				EndpointType:              to.Ptr(armdigitaltwins.EndpointTypeServiceBus),
-				PrimaryConnectionString:   to.Ptr("<primary-connection-string>"),
-				SecondaryConnectionString: to.Ptr("<secondary-connection-string>"),
+				PrimaryConnectionString:   to.Ptr("Endpoint=sb://mysb.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=xyzxyzoX4=;EntityPath=abcabc"),
+				SecondaryConnectionString: to.Ptr("Endpoint=sb://mysb.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=xyzxyzoX4=;EntityPath=abcabc"),
 			},
 		},
-		&armdigitaltwins.EndpointClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -111,19 +108,19 @@ func ExampleEndpointClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdigitaltwins.NewEndpointClient("<subscription-id>", cred, nil)
+	client, err := armdigitaltwins.NewEndpointClient("50016170-c839-41ba-a724-51e9df440b9e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<endpoint-name>",
-		&armdigitaltwins.EndpointClientBeginDeleteOptions{ResumeToken: ""})
+		"resRg",
+		"myDigitalTwinsService",
+		"myendpoint",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

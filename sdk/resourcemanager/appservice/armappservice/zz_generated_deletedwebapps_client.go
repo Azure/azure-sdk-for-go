@@ -38,7 +38,7 @@ func NewDeletedWebAppsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,8 +54,9 @@ func NewDeletedWebAppsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// GetDeletedWebAppByLocation - Description for Get deleted app for a subscription at location.
+// GetDeletedWebAppByLocation - Get deleted app for a subscription at location.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // deletedSiteID - The numeric ID of the deleted app, e.g. 12345
 // options - DeletedWebAppsClientGetDeletedWebAppByLocationOptions contains the optional parameters for the DeletedWebAppsClient.GetDeletedWebAppByLocation
 // method.
@@ -96,7 +97,7 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationCreateRequest(ctx 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -109,11 +110,12 @@ func (client *DeletedWebAppsClient) getDeletedWebAppByLocationHandleResponse(res
 	return result, nil
 }
 
-// NewListPager - Description for Get all deleted apps for a subscription.
+// NewListPager - Get all deleted apps for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // options - DeletedWebAppsClientListOptions contains the optional parameters for the DeletedWebAppsClient.List method.
 func (client *DeletedWebAppsClient) NewListPager(options *DeletedWebAppsClientListOptions) *runtime.Pager[DeletedWebAppsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DeletedWebAppsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DeletedWebAppsClientListResponse]{
 		More: func(page DeletedWebAppsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -154,7 +156,7 @@ func (client *DeletedWebAppsClient) listCreateRequest(ctx context.Context, optio
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -167,12 +169,13 @@ func (client *DeletedWebAppsClient) listHandleResponse(resp *http.Response) (Del
 	return result, nil
 }
 
-// NewListByLocationPager - Description for Get all deleted apps for a subscription at location
+// NewListByLocationPager - Get all deleted apps for a subscription at location
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // options - DeletedWebAppsClientListByLocationOptions contains the optional parameters for the DeletedWebAppsClient.ListByLocation
 // method.
 func (client *DeletedWebAppsClient) NewListByLocationPager(location string, options *DeletedWebAppsClientListByLocationOptions) *runtime.Pager[DeletedWebAppsClientListByLocationResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DeletedWebAppsClientListByLocationResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DeletedWebAppsClientListByLocationResponse]{
 		More: func(page DeletedWebAppsClientListByLocationResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -217,7 +220,7 @@ func (client *DeletedWebAppsClient) listByLocationCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

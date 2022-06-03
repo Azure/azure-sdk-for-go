@@ -38,7 +38,7 @@ func NewDatabaseAccountRegionClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDatabaseAccountRegionClient(subscriptionID string, credential azcore.Tok
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and region.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // region - Cosmos DB region, with spaces between words and each word capitalized.
@@ -65,7 +66,7 @@ func NewDatabaseAccountRegionClient(subscriptionID string, credential azcore.Tok
 // options - DatabaseAccountRegionClientListMetricsOptions contains the optional parameters for the DatabaseAccountRegionClient.ListMetrics
 // method.
 func (client *DatabaseAccountRegionClient) NewListMetricsPager(resourceGroupName string, accountName string, region string, filter string, options *DatabaseAccountRegionClientListMetricsOptions) *runtime.Pager[DatabaseAccountRegionClientListMetricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DatabaseAccountRegionClientListMetricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DatabaseAccountRegionClientListMetricsResponse]{
 		More: func(page DatabaseAccountRegionClientListMetricsResponse) bool {
 			return false
 		},
@@ -113,7 +114,7 @@ func (client *DatabaseAccountRegionClient) listMetricsCreateRequest(ctx context.
 	reqQP.Set("api-version", "2022-02-15-preview")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

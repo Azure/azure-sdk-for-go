@@ -24,25 +24,25 @@ func ExampleDataTransferJobsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDataTransferJobsClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<job-name>",
+	res, err := client.Create(ctx,
+		"rg1",
+		"ddb1",
+		"j1",
 		armcosmos.CreateJobRequest{
 			Properties: &armcosmos.DataTransferJobProperties{
 				Destination: &armcosmos.AzureBlobDataTransferDataSourceSink{
 					Component:     to.Ptr(armcosmos.DataTransferComponentAzureBlobStorage),
-					ContainerName: to.Ptr("<container-name>"),
-					EndpointURL:   to.Ptr("<endpoint-url>"),
+					ContainerName: to.Ptr("blob_container"),
+					EndpointURL:   to.Ptr("https://blob.windows.net"),
 				},
 				Source: &armcosmos.CassandraDataTransferDataSourceSink{
 					Component:    to.Ptr(armcosmos.DataTransferComponentCosmosDBCassandra),
-					KeyspaceName: to.Ptr("<keyspace-name>"),
-					TableName:    to.Ptr("<table-name>"),
+					KeyspaceName: to.Ptr("keyspace"),
+					TableName:    to.Ptr("table"),
 				},
 			},
 		},
@@ -50,6 +50,8 @@ func ExampleDataTransferJobsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// TODO: use response item
+	_ = res
 }
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobGet.json
@@ -59,14 +61,83 @@ func ExampleDataTransferJobsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDataTransferJobsClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<job-name>",
+		"rg1",
+		"ddb1",
+		"j1",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobPause.json
+func ExampleDataTransferJobsClient_Pause() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Pause(ctx,
+		"rg1",
+		"ddb1",
+		"j1",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobResume.json
+func ExampleDataTransferJobsClient_Resume() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Resume(ctx,
+		"rg1",
+		"ddb1",
+		"j1",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2022-02-15-preview/examples/data-transfer-service/CosmosDBDataTransferJobCancel.json
+func ExampleDataTransferJobsClient_Cancel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Cancel(ctx,
+		"rg1",
+		"ddb1",
+		"j1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -82,18 +153,17 @@ func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDataTransferJobsClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewDataTransferJobsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabaseAccountPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListByDatabaseAccountPager("rg1",
+		"ddb1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

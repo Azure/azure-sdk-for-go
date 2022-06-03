@@ -26,21 +26,20 @@ func ExampleFileSharesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewFileSharesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewFileSharesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("res9290",
+		"sto1590",
 		&armstorage.FileSharesClientListOptions{Maxpagesize: nil,
 			Filter: nil,
-			Expand: to.Ptr("<expand>"),
+			Expand: to.Ptr("deleted"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,14 +55,14 @@ func ExampleFileSharesClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewFileSharesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewFileSharesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+		"res346",
+		"sto666",
+		"share1235",
 		armstorage.FileShare{
 			FileShareProperties: &armstorage.FileShareProperties{
 				EnabledProtocols: to.Ptr(armstorage.EnabledProtocolsNFS),
@@ -84,24 +83,24 @@ func ExampleFileSharesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewFileSharesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewFileSharesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+		"res3376",
+		"sto328",
+		"share6185",
 		armstorage.FileShare{
 			FileShareProperties: &armstorage.FileShareProperties{
 				SignedIdentifiers: []*armstorage.SignedIdentifier{
 					{
 						AccessPolicy: &armstorage.AccessPolicy{
 							ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T08:49:37.0000000Z"); return t }()),
-							Permission: to.Ptr("<permission>"),
+							Permission: to.Ptr("rwd"),
 							StartTime:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T08:49:37.0000000Z"); return t }()),
 						},
-						ID: to.Ptr("<id>"),
+						ID: to.Ptr("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI"),
 					}},
 			},
 		},
@@ -120,15 +119,15 @@ func ExampleFileSharesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewFileSharesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewFileSharesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		&armstorage.FileSharesClientGetOptions{Expand: to.Ptr("<expand>"),
+		"res9871",
+		"sto6217",
+		"share1634",
+		&armstorage.FileSharesClientGetOptions{Expand: to.Ptr("stats"),
 			XMSSnapshot: nil,
 		})
 	if err != nil {
@@ -145,14 +144,14 @@ func ExampleFileSharesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewFileSharesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewFileSharesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+		"res4079",
+		"sto4506",
+		"share9689",
 		&armstorage.FileSharesClientDeleteOptions{XMSSnapshot: nil,
 			Include: nil,
 		})
@@ -168,17 +167,17 @@ func ExampleFileSharesClient_Restore() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewFileSharesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewFileSharesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Restore(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+		"res3376",
+		"sto328",
+		"share1249",
 		armstorage.DeletedShare{
-			DeletedShareName:    to.Ptr("<deleted-share-name>"),
-			DeletedShareVersion: to.Ptr("<deleted-share-version>"),
+			DeletedShareName:    to.Ptr("share1249"),
+			DeletedShareVersion: to.Ptr("1234567890"),
 		},
 		nil)
 	if err != nil {
@@ -193,14 +192,14 @@ func ExampleFileSharesClient_Lease() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewFileSharesClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewFileSharesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Lease(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+		"res3376",
+		"sto328",
+		"share124",
 		&armstorage.FileSharesClientLeaseOptions{XMSSnapshot: nil,
 			Parameters: &armstorage.LeaseShareRequest{
 				Action:        to.Ptr(armstorage.LeaseShareActionAcquire),

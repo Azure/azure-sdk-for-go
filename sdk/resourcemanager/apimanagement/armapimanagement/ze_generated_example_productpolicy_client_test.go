@@ -24,14 +24,14 @@ func ExampleProductPolicyClient_ListByProduct() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewProductPolicyClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewProductPolicyClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByProduct(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
+		"rg1",
+		"apimService1",
+		"armTemplateProduct4",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,14 +47,14 @@ func ExampleProductPolicyClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewProductPolicyClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewProductPolicyClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
+		"rg1",
+		"apimService1",
+		"unlimited",
 		armapimanagement.PolicyIDNamePolicy,
 		nil)
 	if err != nil {
@@ -69,14 +69,14 @@ func ExampleProductPolicyClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewProductPolicyClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewProductPolicyClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
+		"rg1",
+		"apimService1",
+		"kjoshiarmTemplateProduct4",
 		armapimanagement.PolicyIDNamePolicy,
 		&armapimanagement.ProductPolicyClientGetOptions{Format: nil})
 	if err != nil {
@@ -93,19 +93,19 @@ func ExampleProductPolicyClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewProductPolicyClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewProductPolicyClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
+		"rg1",
+		"apimService1",
+		"5702e97e5157a50f48dce801",
 		armapimanagement.PolicyIDNamePolicy,
 		armapimanagement.PolicyContract{
 			Properties: &armapimanagement.PolicyContractProperties{
 				Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
-				Value:  to.Ptr("<value>"),
+				Value:  to.Ptr("<policies>\r\n  <inbound>\r\n    <rate-limit calls=\"{{call-count}}\" renewal-period=\"15\"></rate-limit>\r\n    <log-to-eventhub logger-id=\"16\">\r\n                      @( string.Join(\",\", DateTime.UtcNow, context.Deployment.ServiceName, context.RequestId, context.Request.IpAddress, context.Operation.Name) ) \r\n                  </log-to-eventhub>\r\n    <quota-by-key calls=\"40\" counter-key=\"cc\" renewal-period=\"3600\" increment-count=\"@(context.Request.Method == &quot;POST&quot; ? 1:2)\" />\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n</policies>"),
 			},
 		},
 		&armapimanagement.ProductPolicyClientCreateOrUpdateOptions{IfMatch: nil})
@@ -123,16 +123,16 @@ func ExampleProductPolicyClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewProductPolicyClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewProductPolicyClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
+		"rg1",
+		"apimService1",
+		"testproduct",
 		armapimanagement.PolicyIDNamePolicy,
-		"<if-match>",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

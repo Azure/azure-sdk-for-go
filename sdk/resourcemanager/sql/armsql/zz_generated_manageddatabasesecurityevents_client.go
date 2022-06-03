@@ -39,7 +39,7 @@ func NewManagedDatabaseSecurityEventsClient(subscriptionID string, credential az
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewManagedDatabaseSecurityEventsClient(subscriptionID string, credential az
 
 // NewListByDatabasePager - Gets a list of security events.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -64,7 +65,7 @@ func NewManagedDatabaseSecurityEventsClient(subscriptionID string, credential az
 // options - ManagedDatabaseSecurityEventsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSecurityEventsClient.ListByDatabase
 // method.
 func (client *ManagedDatabaseSecurityEventsClient) NewListByDatabasePager(resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSecurityEventsClientListByDatabaseOptions) *runtime.Pager[ManagedDatabaseSecurityEventsClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedDatabaseSecurityEventsClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedDatabaseSecurityEventsClientListByDatabaseResponse]{
 		More: func(page ManagedDatabaseSecurityEventsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -129,7 +130,7 @@ func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseCreateRequest(c
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

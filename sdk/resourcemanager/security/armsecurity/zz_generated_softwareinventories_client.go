@@ -38,7 +38,7 @@ func NewSoftwareInventoriesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewSoftwareInventoriesClient(subscriptionID string, credential azcore.Token
 
 // Get - Gets a single software data of the virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // resourceNamespace - The namespace of the resource.
 // resourceType - The type of the resource.
@@ -111,7 +112,7 @@ func (client *SoftwareInventoriesClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -126,6 +127,7 @@ func (client *SoftwareInventoriesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByExtendedResourcePager - Gets the software inventory of the virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // resourceNamespace - The namespace of the resource.
 // resourceType - The type of the resource.
@@ -133,7 +135,7 @@ func (client *SoftwareInventoriesClient) getHandleResponse(resp *http.Response) 
 // options - SoftwareInventoriesClientListByExtendedResourceOptions contains the optional parameters for the SoftwareInventoriesClient.ListByExtendedResource
 // method.
 func (client *SoftwareInventoriesClient) NewListByExtendedResourcePager(resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, options *SoftwareInventoriesClientListByExtendedResourceOptions) *runtime.Pager[SoftwareInventoriesClientListByExtendedResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SoftwareInventoriesClientListByExtendedResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SoftwareInventoriesClientListByExtendedResourceResponse]{
 		More: func(page SoftwareInventoriesClientListByExtendedResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -190,7 +192,7 @@ func (client *SoftwareInventoriesClient) listByExtendedResourceCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -205,10 +207,11 @@ func (client *SoftwareInventoriesClient) listByExtendedResourceHandleResponse(re
 
 // NewListBySubscriptionPager - Gets the software inventory of all virtual machines in the subscriptions.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01-preview
 // options - SoftwareInventoriesClientListBySubscriptionOptions contains the optional parameters for the SoftwareInventoriesClient.ListBySubscription
 // method.
 func (client *SoftwareInventoriesClient) NewListBySubscriptionPager(options *SoftwareInventoriesClientListBySubscriptionOptions) *runtime.Pager[SoftwareInventoriesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SoftwareInventoriesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SoftwareInventoriesClientListBySubscriptionResponse]{
 		More: func(page SoftwareInventoriesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -249,7 +252,7 @@ func (client *SoftwareInventoriesClient) listBySubscriptionCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

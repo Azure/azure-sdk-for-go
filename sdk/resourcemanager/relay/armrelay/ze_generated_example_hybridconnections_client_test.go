@@ -17,125 +17,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionListAll.json
-func ExampleHybridConnectionsClient_NewListByNamespacePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := client.NewListByNamespacePager("<resource-group-name>",
-		"<namespace-name>",
-		nil)
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-			return
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionCreate.json
-func ExampleHybridConnectionsClient_CreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<hybrid-connection-name>",
-		armrelay.HybridConnection{
-			Properties: &armrelay.HybridConnectionProperties{
-				RequiresClientAuthorization: to.Ptr(true),
-			},
-		},
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridconnectionDelete.json
-func ExampleHybridConnectionsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<hybrid-connection-name>",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionGet.json
-func ExampleHybridConnectionsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<hybrid-connection-name>",
-		nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// TODO: use response item
-	_ = res
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionAutorizationRuleListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridConnectionAuthorizationRuleListAll.json
 func ExampleHybridConnectionsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
-		"<namespace-name>",
-		"<hybrid-connection-name>",
+	pager := client.NewListAuthorizationRulesPager("resourcegroup",
+		"example-RelayNamespace-01",
+		"example-Relay-Hybrid-01",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -144,22 +44,22 @@ func ExampleHybridConnectionsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionAuthorizationRuleCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridConnectionAuthorizationRuleCreate.json
 func ExampleHybridConnectionsClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<hybrid-connection-name>",
-		"<authorization-rule-name>",
+		"resourcegroup",
+		"example-RelayNamespace-01",
+		"example-Relay-Hybrid-01",
+		"example-RelayAuthRules-01",
 		armrelay.AuthorizationRule{
 			Properties: &armrelay.AuthorizationRuleProperties{
 				Rights: []*armrelay.AccessRights{
@@ -175,44 +75,44 @@ func ExampleHybridConnectionsClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionAutorizationRuleDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridConnectionAuthorizationRuleDelete.json
 func ExampleHybridConnectionsClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<hybrid-connection-name>",
-		"<authorization-rule-name>",
+		"resourcegroup",
+		"example-RelayNamespace-01",
+		"example-Relay-Hybrid-01",
+		"example-RelayAuthRules-01",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionAutorizationRuleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridConnectionAuthorizationRuleGet.json
 func ExampleHybridConnectionsClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<hybrid-connection-name>",
-		"<authorization-rule-name>",
+		"resourcegroup",
+		"example-RelayNamespace-01",
+		"example-Relay-Hybrid-01",
+		"example-RelayAuthRules-01",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -221,22 +121,22 @@ func ExampleHybridConnectionsClient_GetAuthorizationRule() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
 func ExampleHybridConnectionsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<hybrid-connection-name>",
-		"<authorization-rule-name>",
+		"resourcegroup",
+		"example-RelayNamespace-01",
+		"example-Relay-Hybrid-01",
+		"example-RelayAuthRules-01",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -245,25 +145,123 @@ func ExampleHybridConnectionsClient_ListKeys() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenrateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
 func ExampleHybridConnectionsClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrelay.NewHybridConnectionsClient("<subscription-id>", cred, nil)
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKeys(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<hybrid-connection-name>",
-		"<authorization-rule-name>",
+		"resourcegroup",
+		"example-RelayNamespace-01",
+		"example-Relay-Hybrid-01",
+		"example-RelayAuthRules-01",
 		armrelay.RegenerateAccessKeyParameters{
 			KeyType: to.Ptr(armrelay.KeyTypePrimaryKey),
 		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridConnectionListAll.json
+func ExampleHybridConnectionsClient_NewListByNamespacePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByNamespacePager("resourcegroup",
+		"example-RelayNamespace-01",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridConnectionCreate.json
+func ExampleHybridConnectionsClient_CreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.CreateOrUpdate(ctx,
+		"resourcegroup",
+		"example-RelayNamespace-01",
+		"example-Relay-Hybrid-01",
+		armrelay.HybridConnection{
+			Properties: &armrelay.HybridConnectionProperties{
+				RequiresClientAuthorization: to.Ptr(true),
+			},
+		},
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// TODO: use response item
+	_ = res
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridconnectionDelete.json
+func ExampleHybridConnectionsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = client.Delete(ctx,
+		"resourcegroup",
+		"example-RelayNamespace-01",
+		"example-Relay-Hybrid-01",
+		nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/relay/resource-manager/Microsoft.Relay/stable/2021-11-01/examples/HybridConnection/RelayHybridConnectionGet.json
+func ExampleHybridConnectionsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armrelay.NewHybridConnectionsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := client.Get(ctx,
+		"resourcegroup",
+		"example-RelayNamespace-01",
+		"example-Relay-Hybrid-01",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

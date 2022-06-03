@@ -12,32 +12,29 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dataprotection/armdataprotection"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ListBackupInstances.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/ListBackupInstances.json
 func ExampleBackupInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<vault-name>",
+	pager := client.NewListPager("000pikumar",
+		"PratikPrivatePreviewVault1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -46,21 +43,21 @@ func ExampleBackupInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/GetBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/GetBackupInstance.json
 func ExampleBackupInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
+		"000pikumar",
+		"PratikPrivatePreviewVault1",
+		"testInstance1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -69,69 +66,69 @@ func ExampleBackupInstancesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/PutBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/PutBackupInstance.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
+		"000pikumar",
+		"PratikPrivatePreviewVault1",
+		"testInstance1",
 		armdataprotection.BackupInstanceResource{
 			Properties: &armdataprotection.BackupInstance{
 				DataSourceInfo: &armdataprotection.Datasource{
-					DatasourceType:   to.Ptr("<datasource-type>"),
-					ObjectType:       to.Ptr("<object-type>"),
-					ResourceID:       to.Ptr("<resource-id>"),
-					ResourceLocation: to.Ptr("<resource-location>"),
-					ResourceName:     to.Ptr("<resource-name>"),
-					ResourceType:     to.Ptr("<resource-type>"),
-					ResourceURI:      to.Ptr("<resource-uri>"),
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("Datasource"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("testdb"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ResourceURI:      to.Ptr(""),
 				},
 				DataSourceSetInfo: &armdataprotection.DatasourceSet{
-					DatasourceType:   to.Ptr("<datasource-type>"),
-					ObjectType:       to.Ptr("<object-type>"),
-					ResourceID:       to.Ptr("<resource-id>"),
-					ResourceLocation: to.Ptr("<resource-location>"),
-					ResourceName:     to.Ptr("<resource-name>"),
-					ResourceType:     to.Ptr("<resource-type>"),
-					ResourceURI:      to.Ptr("<resource-uri>"),
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("DatasourceSet"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("viveksipgtest"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+					ResourceURI:      to.Ptr(""),
 				},
 				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-					ObjectType: to.Ptr("<object-type>"),
+					ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
 					SecretStoreResource: &armdataprotection.SecretStoreResource{
 						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-						URI:             to.Ptr("<uri>"),
+						URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
 					},
 				},
-				FriendlyName: to.Ptr("<friendly-name>"),
-				ObjectType:   to.Ptr("<object-type>"),
+				FriendlyName: to.Ptr("harshitbi2"),
+				ObjectType:   to.Ptr("BackupInstance"),
 				PolicyInfo: &armdataprotection.PolicyInfo{
-					PolicyID: to.Ptr("<policy-id>"),
+					PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
 					PolicyParameters: &armdataprotection.PolicyParameters{
 						DataStoreParametersList: []armdataprotection.DataStoreParametersClassification{
 							&armdataprotection.AzureOperationalStoreParameters{
 								DataStoreType:   to.Ptr(armdataprotection.DataStoreTypesOperationalStore),
-								ObjectType:      to.Ptr("<object-type>"),
-								ResourceGroupID: to.Ptr("<resource-group-id>"),
+								ObjectType:      to.Ptr("AzureOperationalStoreParameters"),
+								ResourceGroupID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest"),
 							}},
 					},
 				},
 				ValidationType: to.Ptr(armdataprotection.ValidationTypeShallowValidation),
 			},
 		},
-		&armdataprotection.BackupInstancesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -139,59 +136,59 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/DeleteBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/DeleteBackupInstance.json
 func ExampleBackupInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
-		&armdataprotection.BackupInstancesClientBeginDeleteOptions{ResumeToken: ""})
+		"000pikumar",
+		"PratikPrivatePreviewVault1",
+		"testInstance1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/TriggerBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/TriggerBackup.json
 func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginAdhocBackup(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
+		"000pikumar",
+		"PratikPrivatePreviewVault1",
+		"testInstance1",
 		armdataprotection.TriggerBackupRequest{
 			BackupRuleOptions: &armdataprotection.AdHocBackupRuleOptions{
-				RuleName: to.Ptr("<rule-name>"),
+				RuleName: to.Ptr("BackupWeekly"),
 				TriggerOption: &armdataprotection.AdhocBackupTriggerOption{
-					RetentionTagOverride: to.Ptr("<retention-tag-override>"),
+					RetentionTagOverride: to.Ptr("yearly"),
 				},
 			},
 		},
-		&armdataprotection.BackupInstancesClientBeginAdhocBackupOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -199,59 +196,59 @@ func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ValidateForBackup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/ValidateForBackup.json
 func ExampleBackupInstancesClient_BeginValidateForBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginValidateForBackup(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
+		"000pikumar",
+		"PratikPrivatePreviewVault1",
 		armdataprotection.ValidateForBackupRequest{
 			BackupInstance: &armdataprotection.BackupInstance{
 				DataSourceInfo: &armdataprotection.Datasource{
-					DatasourceType:   to.Ptr("<datasource-type>"),
-					ObjectType:       to.Ptr("<object-type>"),
-					ResourceID:       to.Ptr("<resource-id>"),
-					ResourceLocation: to.Ptr("<resource-location>"),
-					ResourceName:     to.Ptr("<resource-name>"),
-					ResourceType:     to.Ptr("<resource-type>"),
-					ResourceURI:      to.Ptr("<resource-uri>"),
+					DatasourceType:   to.Ptr("OssDB"),
+					ObjectType:       to.Ptr("Datasource"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("testdb"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ResourceURI:      to.Ptr(""),
 				},
 				DataSourceSetInfo: &armdataprotection.DatasourceSet{
-					DatasourceType:   to.Ptr("<datasource-type>"),
-					ObjectType:       to.Ptr("<object-type>"),
-					ResourceID:       to.Ptr("<resource-id>"),
-					ResourceLocation: to.Ptr("<resource-location>"),
-					ResourceName:     to.Ptr("<resource-name>"),
-					ResourceType:     to.Ptr("<resource-type>"),
-					ResourceURI:      to.Ptr("<resource-uri>"),
+					DatasourceType:   to.Ptr("OssDB"),
+					ObjectType:       to.Ptr("DatasourceSet"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("viveksipgtest"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+					ResourceURI:      to.Ptr(""),
 				},
 				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-					ObjectType: to.Ptr("<object-type>"),
+					ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
 					SecretStoreResource: &armdataprotection.SecretStoreResource{
 						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-						URI:             to.Ptr("<uri>"),
+						URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
 					},
 				},
-				FriendlyName: to.Ptr("<friendly-name>"),
-				ObjectType:   to.Ptr("<object-type>"),
+				FriendlyName: to.Ptr("harshitbi2"),
+				ObjectType:   to.Ptr("BackupInstance"),
 				PolicyInfo: &armdataprotection.PolicyInfo{
-					PolicyID: to.Ptr("<policy-id>"),
+					PolicyID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/Backupvaults/PratikPrivatePreviewVault1/backupPolicies/PratikPolicy1"),
 				},
 			},
 		},
-		&armdataprotection.BackupInstancesClientBeginValidateForBackupOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -259,22 +256,22 @@ func ExampleBackupInstancesClient_BeginValidateForBackup() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/GetBackupInstanceOperationResult.json
 func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetBackupInstanceOperationResult(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
-		"<operation-id>",
+		"SampleResourceGroup",
+		"swaggerExample",
+		"testInstance1",
+		"YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -283,92 +280,92 @@ func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/TriggerRehydrate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/TriggerRehydrate.json
 func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTriggerRehydrate(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
+		"000pikumar",
+		"PratikPrivatePreviewVault1",
+		"testInstance1",
 		armdataprotection.AzureBackupRehydrationRequest{
-			RecoveryPointID:              to.Ptr("<recovery-point-id>"),
+			RecoveryPointID:              to.Ptr("hardcodedRP"),
 			RehydrationPriority:          to.Ptr(armdataprotection.RehydrationPriorityHigh),
-			RehydrationRetentionDuration: to.Ptr("<rehydration-retention-duration>"),
+			RehydrationRetentionDuration: to.Ptr("7D"),
 		},
-		&armdataprotection.BackupInstancesClientBeginTriggerRehydrateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/TriggerRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/TriggerRestore.json
 func ExampleBackupInstancesClient_BeginTriggerRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginTriggerRestore(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
+		"000pikumar",
+		"PratikPrivatePreviewVault1",
+		"testInstance1",
 		&armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-			ObjectType: to.Ptr("<object-type>"),
+			ObjectType: to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
 			RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
-				ObjectType:      to.Ptr("<object-type>"),
+				ObjectType:      to.Ptr("RestoreTargetInfo"),
 				RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
-				RestoreLocation: to.Ptr("<restore-location>"),
+				RestoreLocation: to.Ptr("southeastasia"),
 				DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-					ObjectType: to.Ptr("<object-type>"),
+					ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
 					SecretStoreResource: &armdataprotection.SecretStoreResource{
 						SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-						URI:             to.Ptr("<uri>"),
+						URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
 					},
 				},
 				DatasourceInfo: &armdataprotection.Datasource{
-					DatasourceType:   to.Ptr("<datasource-type>"),
-					ObjectType:       to.Ptr("<object-type>"),
-					ResourceID:       to.Ptr("<resource-id>"),
-					ResourceLocation: to.Ptr("<resource-location>"),
-					ResourceName:     to.Ptr("<resource-name>"),
-					ResourceType:     to.Ptr("<resource-type>"),
-					ResourceURI:      to.Ptr("<resource-uri>"),
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("Datasource"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("targetdb"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ResourceURI:      to.Ptr(""),
 				},
 				DatasourceSetInfo: &armdataprotection.DatasourceSet{
-					DatasourceType:   to.Ptr("<datasource-type>"),
-					ObjectType:       to.Ptr("<object-type>"),
-					ResourceID:       to.Ptr("<resource-id>"),
-					ResourceLocation: to.Ptr("<resource-location>"),
-					ResourceName:     to.Ptr("<resource-name>"),
-					ResourceType:     to.Ptr("<resource-type>"),
-					ResourceURI:      to.Ptr("<resource-uri>"),
+					DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+					ObjectType:       to.Ptr("DatasourceSet"),
+					ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+					ResourceLocation: to.Ptr(""),
+					ResourceName:     to.Ptr("viveksipgtest"),
+					ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+					ResourceURI:      to.Ptr(""),
 				},
 			},
 			SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
-			SourceResourceID:    to.Ptr("<source-resource-id>"),
-			RecoveryPointID:     to.Ptr("<recovery-point-id>"),
+			SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+			RecoveryPointID:     to.Ptr("hardcodedRP"),
 		},
-		&armdataprotection.BackupInstancesClientBeginTriggerRestoreOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -376,192 +373,192 @@ func ExampleBackupInstancesClient_BeginTriggerRestore() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ResumeBackups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/ResumeBackups.json
 func ExampleBackupInstancesClient_BeginResumeBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResumeBackups(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
-		&armdataprotection.BackupInstancesClientBeginResumeBackupsOptions{ResumeToken: ""})
+		"testrg",
+		"testvault",
+		"testbi",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ResumeProtection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/ResumeProtection.json
 func ExampleBackupInstancesClient_BeginResumeProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginResumeProtection(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
-		&armdataprotection.BackupInstancesClientBeginResumeProtectionOptions{ResumeToken: ""})
+		"testrg",
+		"testvault",
+		"testbi",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/StopProtection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/StopProtection.json
 func ExampleBackupInstancesClient_BeginStopProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStopProtection(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
-		&armdataprotection.BackupInstancesClientBeginStopProtectionOptions{ResumeToken: ""})
+		"testrg",
+		"testvault",
+		"testbi",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/SuspendBackups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/SuspendBackups.json
 func ExampleBackupInstancesClient_BeginSuspendBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSuspendBackups(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
-		&armdataprotection.BackupInstancesClientBeginSuspendBackupsOptions{ResumeToken: ""})
+		"testrg",
+		"testvault",
+		"testbi",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/SyncBackupInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/SyncBackupInstance.json
 func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSyncBackupInstance(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
+		"testrg",
+		"testvault",
+		"testbi",
 		armdataprotection.SyncBackupInstanceRequest{
 			SyncType: to.Ptr(armdataprotection.SyncTypeDefault),
 		},
-		&armdataprotection.BackupInstancesClientBeginSyncBackupInstanceOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-02-01-preview/examples/BackupInstanceOperations/ValidateRestore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2022-04-01/examples/BackupInstanceOperations/ValidateRestore.json
 func ExampleBackupInstancesClient_BeginValidateForRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdataprotection.NewBackupInstancesClient("<subscription-id>", cred, nil)
+	client, err := armdataprotection.NewBackupInstancesClient("04cf684a-d41f-4550-9f70-7708a3a2283b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginValidateForRestore(ctx,
-		"<resource-group-name>",
-		"<vault-name>",
-		"<backup-instance-name>",
+		"000pikumar",
+		"PratikPrivatePreviewVault1",
+		"testInstance1",
 		armdataprotection.ValidateRestoreRequestObject{
 			RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
-				ObjectType: to.Ptr("<object-type>"),
+				ObjectType: to.Ptr("AzureBackupRecoveryPointBasedRestoreRequest"),
 				RestoreTargetInfo: &armdataprotection.RestoreTargetInfo{
-					ObjectType:      to.Ptr("<object-type>"),
+					ObjectType:      to.Ptr("RestoreTargetInfo"),
 					RecoveryOption:  to.Ptr(armdataprotection.RecoveryOptionFailIfExists),
-					RestoreLocation: to.Ptr("<restore-location>"),
+					RestoreLocation: to.Ptr("southeastasia"),
 					DatasourceAuthCredentials: &armdataprotection.SecretStoreBasedAuthCredentials{
-						ObjectType: to.Ptr("<object-type>"),
+						ObjectType: to.Ptr("SecretStoreBasedAuthCredentials"),
 						SecretStoreResource: &armdataprotection.SecretStoreResource{
 							SecretStoreType: to.Ptr(armdataprotection.SecretStoreTypeAzureKeyVault),
-							URI:             to.Ptr("<uri>"),
+							URI:             to.Ptr("https://samplevault.vault.azure.net/secrets/credentials"),
 						},
 					},
 					DatasourceInfo: &armdataprotection.Datasource{
-						DatasourceType:   to.Ptr("<datasource-type>"),
-						ObjectType:       to.Ptr("<object-type>"),
-						ResourceID:       to.Ptr("<resource-id>"),
-						ResourceLocation: to.Ptr("<resource-location>"),
-						ResourceName:     to.Ptr("<resource-name>"),
-						ResourceType:     to.Ptr("<resource-type>"),
-						ResourceURI:      to.Ptr("<resource-uri>"),
+						DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+						ObjectType:       to.Ptr("Datasource"),
+						ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/targetdb"),
+						ResourceLocation: to.Ptr(""),
+						ResourceName:     to.Ptr("targetdb"),
+						ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+						ResourceURI:      to.Ptr(""),
 					},
 					DatasourceSetInfo: &armdataprotection.DatasourceSet{
-						DatasourceType:   to.Ptr("<datasource-type>"),
-						ObjectType:       to.Ptr("<object-type>"),
-						ResourceID:       to.Ptr("<resource-id>"),
-						ResourceLocation: to.Ptr("<resource-location>"),
-						ResourceName:     to.Ptr("<resource-name>"),
-						ResourceType:     to.Ptr("<resource-type>"),
-						ResourceURI:      to.Ptr("<resource-uri>"),
+						DatasourceType:   to.Ptr("Microsoft.DBforPostgreSQL/servers/databases"),
+						ObjectType:       to.Ptr("DatasourceSet"),
+						ResourceID:       to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest"),
+						ResourceLocation: to.Ptr(""),
+						ResourceName:     to.Ptr("viveksipgtest"),
+						ResourceType:     to.Ptr("Microsoft.DBforPostgreSQL/servers"),
+						ResourceURI:      to.Ptr(""),
 					},
 				},
 				SourceDataStoreType: to.Ptr(armdataprotection.SourceDataStoreTypeVaultStore),
-				SourceResourceID:    to.Ptr("<source-resource-id>"),
-				RecoveryPointID:     to.Ptr("<recovery-point-id>"),
+				SourceResourceID:    to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest/providers/Microsoft.DBforPostgreSQL/servers/viveksipgtest/databases/testdb"),
+				RecoveryPointID:     to.Ptr("hardcodedRP"),
 			},
 		},
-		&armdataprotection.BackupInstancesClientBeginValidateForRestoreOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

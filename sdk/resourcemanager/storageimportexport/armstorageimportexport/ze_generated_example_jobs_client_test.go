@@ -24,7 +24,7 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		nil, cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
@@ -36,7 +36,6 @@ func ExampleJobsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -52,12 +51,12 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		nil, cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		&armstorageimportexport.JobsClientListByResourceGroupOptions{Top: nil,
 			Filter: nil,
 		})
@@ -65,7 +64,6 @@ func ExampleJobsClient_NewListByResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -81,14 +79,14 @@ func ExampleJobsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		nil, cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<job-name>",
-		"<resource-group-name>",
+		"myJob",
+		"myResourceGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -104,19 +102,19 @@ func ExampleJobsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		nil, cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<job-name>",
-		"<resource-group-name>",
+		"myExportJob",
+		"myResourceGroup",
 		armstorageimportexport.UpdateJobParameters{
 			Properties: &armstorageimportexport.UpdateJobParametersProperties{
 				BackupDriveManifest: to.Ptr(true),
-				LogLevel:            to.Ptr("<log-level>"),
-				State:               to.Ptr("<state>"),
+				LogLevel:            to.Ptr("Verbose"),
+				State:               to.Ptr(""),
 			},
 		},
 		nil)
@@ -134,43 +132,43 @@ func ExampleJobsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		nil, cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<job-name>",
-		"<resource-group-name>",
+		"myExportJob",
+		"myResourceGroup",
 		armstorageimportexport.PutJobParameters{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Properties: &armstorageimportexport.JobDetails{
 				BackupDriveManifest: to.Ptr(true),
-				DiagnosticsPath:     to.Ptr("<diagnostics-path>"),
+				DiagnosticsPath:     to.Ptr("waimportexport"),
 				Export: &armstorageimportexport.Export{
 					BlobList: &armstorageimportexport.ExportBlobList{
 						BlobPathPrefix: []*string{
 							to.Ptr("/")},
 					},
 				},
-				JobType:  to.Ptr("<job-type>"),
-				LogLevel: to.Ptr("<log-level>"),
+				JobType:  to.Ptr("Export"),
+				LogLevel: to.Ptr("Verbose"),
 				ReturnAddress: &armstorageimportexport.ReturnAddress{
-					City:            to.Ptr("<city>"),
-					CountryOrRegion: to.Ptr("<country-or-region>"),
-					Email:           to.Ptr("<email>"),
-					Phone:           to.Ptr("<phone>"),
-					PostalCode:      to.Ptr("<postal-code>"),
-					RecipientName:   to.Ptr("<recipient-name>"),
-					StateOrProvince: to.Ptr("<state-or-province>"),
-					StreetAddress1:  to.Ptr("<street-address1>"),
-					StreetAddress2:  to.Ptr("<street-address2>"),
+					City:            to.Ptr("Redmond"),
+					CountryOrRegion: to.Ptr("USA"),
+					Email:           to.Ptr("Test@contoso.com"),
+					Phone:           to.Ptr("4250000000"),
+					PostalCode:      to.Ptr("98007"),
+					RecipientName:   to.Ptr("Test"),
+					StateOrProvince: to.Ptr("wa"),
+					StreetAddress1:  to.Ptr("Street1"),
+					StreetAddress2:  to.Ptr("street2"),
 				},
 				ReturnShipping: &armstorageimportexport.ReturnShipping{
-					CarrierAccountNumber: to.Ptr("<carrier-account-number>"),
-					CarrierName:          to.Ptr("<carrier-name>"),
+					CarrierAccountNumber: to.Ptr("989ffff"),
+					CarrierName:          to.Ptr("FedEx"),
 				},
-				StorageAccountID: to.Ptr("<storage-account-id>"),
+				StorageAccountID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.ClassicStorage/storageAccounts/test"),
 			},
 		},
 		&armstorageimportexport.JobsClientCreateOptions{ClientTenantID: nil})
@@ -188,14 +186,14 @@ func ExampleJobsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorageimportexport.NewJobsClient("<subscription-id>",
+	client, err := armstorageimportexport.NewJobsClient("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		nil, cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<job-name>",
-		"<resource-group-name>",
+		"myJob",
+		"myResourceGroup",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

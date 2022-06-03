@@ -23,13 +23,13 @@ func ExampleOperationResultsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armm365securityandcompliance.NewOperationResultsClient("<subscription-id>", cred, nil)
+	client, err := armm365securityandcompliance.NewOperationResultsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<location-name>",
-		"<operation-result-id>",
+		"westus",
+		"exampleid",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

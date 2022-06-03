@@ -149,15 +149,12 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		currentAPIVersion, err := GetCurrentAPIVersion(packagePath)
+		isCurrentPreview, err = ContainsPreviewAPIVersion(packagePath)
 		if err != nil {
 			return nil, err
 		}
-		if strings.Contains(currentAPIVersion, "preview") {
-			isCurrentPreview = true
-		}
 
-		previousVersionTag := GetPreviousVersionTag(currentAPIVersion, tags)
+		previousVersionTag := GetPreviousVersionTag(isCurrentPreview, tags)
 
 		oriExports, err = GetExportsFromTag(*ctx.SDKRepo, packagePath, previousVersionTag)
 		if err != nil {
@@ -177,13 +174,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	if err != nil {
 		return nil, err
 	}
-
-	if !generateParam.SkipGenerateExample {
-		log.Printf("Generate examples...")
-		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
-			return nil, err
-		}
-	}
+	FilterChangelog(changelog)
 
 	if onBoard {
 		log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
@@ -196,6 +187,14 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
 			version = generateParam.SpecficVersion
 		}
+
+		if !generateParam.SkipGenerateExample {
+			log.Printf("Generate examples...")
+			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+				return nil, err
+			}
+		}
+
 		return &GenerateResult{
 			Version:        version,
 			RPName:         generateParam.RPName,
@@ -226,9 +225,23 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
+		log.Printf("Update module definition if v2+...")
+		err = UpdateModuleDefinition(packagePath, generateParam.RPName, generateParam.NamespaceName, version)
+		if err != nil {
+			return nil, err
+		}
+
 		log.Printf("Replace version in autorest.md and constants...")
 		if err = ReplaceVersion(packagePath, version.String()); err != nil {
 			return nil, err
+		}
+
+		// Example generation should be the last step because the package import relay on the new calculated version
+		if !generateParam.SkipGenerateExample {
+			log.Printf("Generate examples...")
+			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+				return nil, err
+			}
 		}
 
 		return &GenerateResult{

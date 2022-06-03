@@ -10,17 +10,10 @@ package armportal
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// MarshalJSON implements the json.Marshaller interface for type ConfigurationList.
-func (c ConfigurationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
 
 // MarshalJSON implements the json.Marshaller interface for type Dashboard.
 func (d Dashboard) MarshalJSON() ([]byte, error) {
@@ -43,17 +36,6 @@ func (d DashboardLens) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DashboardListResult.
-func (d DashboardListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", d.NextLink)
-	populate(objectMap, "value", d.Value)
-	return json.Marshal(objectMap)
-}
-
-// GetDashboardPartMetadata implements the DashboardPartMetadataClassification interface for type DashboardPartMetadata.
-func (d *DashboardPartMetadata) GetDashboardPartMetadata() *DashboardPartMetadata { return d }
-
 // MarshalJSON implements the json.Marshaller interface for type DashboardPartMetadata.
 func (d DashboardPartMetadata) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -70,13 +52,13 @@ func (d DashboardPartMetadata) MarshalJSON() ([]byte, error) {
 func (d *DashboardPartMetadata) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "type":
-			err = unpopulate(val, &d.Type)
+			err = unpopulate(val, "Type", &d.Type)
 			delete(rawMsg, key)
 		default:
 			if d.AdditionalProperties == nil {
@@ -90,7 +72,7 @@ func (d *DashboardPartMetadata) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
 		}
 	}
 	return nil
@@ -108,7 +90,7 @@ func (d DashboardParts) MarshalJSON() ([]byte, error) {
 func (d *DashboardParts) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -117,11 +99,11 @@ func (d *DashboardParts) UnmarshalJSON(data []byte) error {
 			d.Metadata, err = unmarshalDashboardPartMetadataClassification(val)
 			delete(rawMsg, key)
 		case "position":
-			err = unpopulate(val, &d.Position)
+			err = unpopulate(val, "Position", &d.Position)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
 		}
 	}
 	return nil
@@ -146,23 +128,6 @@ func (d DashboardProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ErrorDefinition.
-func (e ErrorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "code", e.Code)
-	populate(objectMap, "details", e.Details)
-	populate(objectMap, "message", e.Message)
-	return json.Marshal(objectMap)
-}
-
-// GetDashboardPartMetadata implements the DashboardPartMetadataClassification interface for type MarkdownPartMetadata.
-func (m *MarkdownPartMetadata) GetDashboardPartMetadata() *DashboardPartMetadata {
-	return &DashboardPartMetadata{
-		Type:                 m.Type,
-		AdditionalProperties: m.AdditionalProperties,
-	}
-}
-
 // MarshalJSON implements the json.Marshaller interface for type MarkdownPartMetadata.
 func (m MarkdownPartMetadata) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -181,19 +146,19 @@ func (m MarkdownPartMetadata) MarshalJSON() ([]byte, error) {
 func (m *MarkdownPartMetadata) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "inputs":
-			err = unpopulate(val, &m.Inputs)
+			err = unpopulate(val, "Inputs", &m.Inputs)
 			delete(rawMsg, key)
 		case "settings":
-			err = unpopulate(val, &m.Settings)
+			err = unpopulate(val, "Settings", &m.Settings)
 			delete(rawMsg, key)
 		case "type":
-			err = unpopulate(val, &m.Type)
+			err = unpopulate(val, "Type", &m.Type)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -207,7 +172,7 @@ func (m *MarkdownPartMetadata) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
 		}
 	}
 	return nil
@@ -221,22 +186,6 @@ func (p PatchableDashboard) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationList.
-func (r ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ViolationsList.
-func (v ViolationsList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", v.NextLink)
-	populate(objectMap, "value", v.Value)
-	return json.Marshal(objectMap)
-}
-
 func populate(m map[string]interface{}, k string, v interface{}) {
 	if v == nil {
 		return
@@ -247,9 +196,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

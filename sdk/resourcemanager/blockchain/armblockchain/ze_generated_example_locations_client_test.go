@@ -24,15 +24,15 @@ func ExampleLocationsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armblockchain.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewLocationsClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<location-name>",
+		"southeastasia",
 		&armblockchain.LocationsClientCheckNameAvailabilityOptions{NameAvailabilityRequest: &armblockchain.NameAvailabilityRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("contosemember1"),
+			Type: to.Ptr("Microsoft.Blockchain/blockchainMembers"),
 		},
 		})
 	if err != nil {
@@ -49,12 +49,12 @@ func ExampleLocationsClient_ListConsortiums() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armblockchain.NewLocationsClient("<subscription-id>", cred, nil)
+	client, err := armblockchain.NewLocationsClient("51766542-3ed7-4a72-a187-0c8ab644ddab", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListConsortiums(ctx,
-		"<location-name>",
+		"southeastasia",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

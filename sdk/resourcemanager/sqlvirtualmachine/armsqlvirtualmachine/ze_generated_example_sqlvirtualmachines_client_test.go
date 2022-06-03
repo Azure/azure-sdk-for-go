@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine"
@@ -26,7 +24,7 @@ func ExampleSQLVirtualMachinesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -35,7 +33,6 @@ func ExampleSQLVirtualMachinesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,18 +48,18 @@ func ExampleSQLVirtualMachinesClient_BeginRedeploy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRedeploy(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-name>",
-		&armsqlvirtualmachine.SQLVirtualMachinesClientBeginRedeployOptions{ResumeToken: ""})
+		"testrg",
+		"testvm",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -75,13 +72,13 @@ func ExampleSQLVirtualMachinesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-name>",
+		"testrg",
+		"testvm",
 		&armsqlvirtualmachine.SQLVirtualMachinesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,30 +94,30 @@ func ExampleSQLVirtualMachinesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-name>",
+		"testrg",
+		"testvm",
 		armsqlvirtualmachine.SQLVirtualMachine{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("northeurope"),
 			Properties: &armsqlvirtualmachine.Properties{
-				SQLVirtualMachineGroupResourceID: to.Ptr("<sqlvirtual-machine-group-resource-id>"),
-				VirtualMachineResourceID:         to.Ptr("<virtual-machine-resource-id>"),
+				SQLVirtualMachineGroupResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/testvmgroup"),
+				VirtualMachineResourceID:         to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm2"),
 				WsfcDomainCredentials: &armsqlvirtualmachine.WsfcDomainCredentials{
-					ClusterBootstrapAccountPassword: to.Ptr("<cluster-bootstrap-account-password>"),
-					ClusterOperatorAccountPassword:  to.Ptr("<cluster-operator-account-password>"),
-					SQLServiceAccountPassword:       to.Ptr("<sqlservice-account-password>"),
+					ClusterBootstrapAccountPassword: to.Ptr("<Password>"),
+					ClusterOperatorAccountPassword:  to.Ptr("<Password>"),
+					SQLServiceAccountPassword:       to.Ptr("<Password>"),
 				},
 			},
 		},
-		&armsqlvirtualmachine.SQLVirtualMachinesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -135,18 +132,18 @@ func ExampleSQLVirtualMachinesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-name>",
-		&armsqlvirtualmachine.SQLVirtualMachinesClientBeginDeleteOptions{ResumeToken: ""})
+		"testrg",
+		"testvm1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -159,23 +156,23 @@ func ExampleSQLVirtualMachinesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-name>",
+		"testrg",
+		"testvm",
 		armsqlvirtualmachine.Update{
 			Tags: map[string]*string{
 				"mytag": to.Ptr("myval"),
 			},
 		},
-		&armsqlvirtualmachine.SQLVirtualMachinesClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -190,17 +187,16 @@ func ExampleSQLVirtualMachinesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testrg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -216,18 +212,18 @@ func ExampleSQLVirtualMachinesClient_BeginStartAssessment() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("<subscription-id>", cred, nil)
+	client, err := armsqlvirtualmachine.NewSQLVirtualMachinesClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStartAssessment(ctx,
-		"<resource-group-name>",
-		"<sql-virtual-machine-name>",
-		&armsqlvirtualmachine.SQLVirtualMachinesClientBeginStartAssessmentOptions{ResumeToken: ""})
+		"testrg",
+		"testvm",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

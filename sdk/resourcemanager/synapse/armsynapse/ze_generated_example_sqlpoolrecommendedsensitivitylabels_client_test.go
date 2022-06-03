@@ -24,38 +24,38 @@ func ExampleSQLPoolRecommendedSensitivityLabelsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolRecommendedSensitivityLabelsClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolRecommendedSensitivityLabelsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Update(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+		"myRG",
+		"myWorkspace",
+		"mySqlPool",
 		armsynapse.RecommendedSensitivityLabelUpdateList{
 			Operations: []*armsynapse.RecommendedSensitivityLabelUpdate{
 				{
 					Properties: &armsynapse.RecommendedSensitivityLabelUpdateProperties{
-						Schema: to.Ptr("<schema>"),
-						Column: to.Ptr("<column>"),
+						Schema: to.Ptr("dbo"),
+						Column: to.Ptr("column1"),
 						Op:     to.Ptr(armsynapse.RecommendedSensitivityLabelUpdateKindEnable),
-						Table:  to.Ptr("<table>"),
+						Table:  to.Ptr("table1"),
 					},
 				},
 				{
 					Properties: &armsynapse.RecommendedSensitivityLabelUpdateProperties{
-						Schema: to.Ptr("<schema>"),
-						Column: to.Ptr("<column>"),
+						Schema: to.Ptr("dbo"),
+						Column: to.Ptr("column2"),
 						Op:     to.Ptr(armsynapse.RecommendedSensitivityLabelUpdateKindEnable),
-						Table:  to.Ptr("<table>"),
+						Table:  to.Ptr("table2"),
 					},
 				},
 				{
 					Properties: &armsynapse.RecommendedSensitivityLabelUpdateProperties{
-						Schema: to.Ptr("<schema>"),
-						Column: to.Ptr("<column>"),
+						Schema: to.Ptr("dbo"),
+						Column: to.Ptr("column3"),
 						Op:     to.Ptr(armsynapse.RecommendedSensitivityLabelUpdateKindDisable),
-						Table:  to.Ptr("<table>"),
+						Table:  to.Ptr("table1"),
 					},
 				}},
 		},

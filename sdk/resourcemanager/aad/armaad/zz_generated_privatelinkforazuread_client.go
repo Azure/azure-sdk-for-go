@@ -38,7 +38,7 @@ func NewPrivateLinkForAzureAdClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewPrivateLinkForAzureAdClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreate - Creates a private link policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - Name of an Azure resource group.
 // policyName - The name of the private link policy in Azure AD.
 // privateLinkPolicy - private link Policy supplied to the operation.
 // options - PrivateLinkForAzureAdClientBeginCreateOptions contains the optional parameters for the PrivateLinkForAzureAdClient.BeginCreate
 // method.
-func (client *PrivateLinkForAzureAdClient) BeginCreate(ctx context.Context, resourceGroupName string, policyName string, privateLinkPolicy PrivateLinkPolicy, options *PrivateLinkForAzureAdClientBeginCreateOptions) (*armruntime.Poller[PrivateLinkForAzureAdClientCreateResponse], error) {
+func (client *PrivateLinkForAzureAdClient) BeginCreate(ctx context.Context, resourceGroupName string, policyName string, privateLinkPolicy PrivateLinkPolicy, options *PrivateLinkForAzureAdClientBeginCreateOptions) (*runtime.Poller[PrivateLinkForAzureAdClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, policyName, privateLinkPolicy, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateLinkForAzureAdClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateLinkForAzureAdClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkForAzureAdClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkForAzureAdClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a private link policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 func (client *PrivateLinkForAzureAdClient) create(ctx context.Context, resourceGroupName string, policyName string, privateLinkPolicy PrivateLinkPolicy, options *PrivateLinkForAzureAdClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, policyName, privateLinkPolicy, options)
 	if err != nil {
@@ -112,12 +114,13 @@ func (client *PrivateLinkForAzureAdClient) createCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateLinkPolicy)
 }
 
 // Delete - Deletes a private link policy. When operation completes, status code 200 returned without content.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - Name of an Azure resource group.
 // policyName - The name of the private link policy in Azure AD.
 // options - PrivateLinkForAzureAdClientDeleteOptions contains the optional parameters for the PrivateLinkForAzureAdClient.Delete
@@ -159,12 +162,13 @@ func (client *PrivateLinkForAzureAdClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a private link policy with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - Name of an Azure resource group.
 // policyName - The name of the private link policy in Azure AD.
 // options - PrivateLinkForAzureAdClientGetOptions contains the optional parameters for the PrivateLinkForAzureAdClient.Get
@@ -206,7 +210,7 @@ func (client *PrivateLinkForAzureAdClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -221,11 +225,12 @@ func (client *PrivateLinkForAzureAdClient) getHandleResponse(resp *http.Response
 
 // NewListPager - Operation to return the list of Private Link Policies For AzureAD scoped to the resourceGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - Name of an Azure resource group.
 // options - PrivateLinkForAzureAdClientListOptions contains the optional parameters for the PrivateLinkForAzureAdClient.List
 // method.
 func (client *PrivateLinkForAzureAdClient) NewListPager(resourceGroupName string, options *PrivateLinkForAzureAdClientListOptions) *runtime.Pager[PrivateLinkForAzureAdClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkForAzureAdClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkForAzureAdClientListResponse]{
 		More: func(page PrivateLinkForAzureAdClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -270,7 +275,7 @@ func (client *PrivateLinkForAzureAdClient) listCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -285,10 +290,11 @@ func (client *PrivateLinkForAzureAdClient) listHandleResponse(resp *http.Respons
 
 // NewListBySubscriptionPager - Lists all Private Link Policies For AzureAD in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // options - PrivateLinkForAzureAdClientListBySubscriptionOptions contains the optional parameters for the PrivateLinkForAzureAdClient.ListBySubscription
 // method.
 func (client *PrivateLinkForAzureAdClient) NewListBySubscriptionPager(options *PrivateLinkForAzureAdClientListBySubscriptionOptions) *runtime.Pager[PrivateLinkForAzureAdClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkForAzureAdClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkForAzureAdClientListBySubscriptionResponse]{
 		More: func(page PrivateLinkForAzureAdClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -329,7 +335,7 @@ func (client *PrivateLinkForAzureAdClient) listBySubscriptionCreateRequest(ctx c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -344,6 +350,7 @@ func (client *PrivateLinkForAzureAdClient) listBySubscriptionHandleResponse(resp
 
 // Update - Updates private link policy tags with specified values.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - Name of an Azure resource group.
 // policyName - The name of the private link policy in Azure AD.
 // options - PrivateLinkForAzureAdClientUpdateOptions contains the optional parameters for the PrivateLinkForAzureAdClient.Update
@@ -385,7 +392,7 @@ func (client *PrivateLinkForAzureAdClient) updateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.PrivateLinkPolicy != nil {
 		return req, runtime.MarshalAsJSON(req, *options.PrivateLinkPolicy)
 	}

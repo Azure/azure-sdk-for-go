@@ -38,7 +38,7 @@ func NewDatabaseUsagesClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDatabaseUsagesClient(subscriptionID string, credential azcore.TokenCrede
 
 // NewListByDatabasePager - Gets database usages.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-02-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -63,7 +64,7 @@ func NewDatabaseUsagesClient(subscriptionID string, credential azcore.TokenCrede
 // options - DatabaseUsagesClientListByDatabaseOptions contains the optional parameters for the DatabaseUsagesClient.ListByDatabase
 // method.
 func (client *DatabaseUsagesClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *DatabaseUsagesClientListByDatabaseOptions) *runtime.Pager[DatabaseUsagesClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DatabaseUsagesClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DatabaseUsagesClientListByDatabaseResponse]{
 		More: func(page DatabaseUsagesClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -116,7 +117,7 @@ func (client *DatabaseUsagesClient) listByDatabaseCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -19,21 +19,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
 func ExampleProtectionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<vault-name>",
-		"<resource-group-name>",
-		"<policy-name>",
+		"NetSDKTestRsVault",
+		"SwaggerTestRg",
+		"v2-daily-sample",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -42,26 +42,26 @@ func ExampleProtectionPoliciesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
 func ExampleProtectionPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<vault-name>",
-		"<resource-group-name>",
-		"<policy-name>",
+		"swaggertestvault",
+		"SwaggerTestRg",
+		"dailyPolicy2",
 		armrecoveryservicesbackup.ProtectionPolicyResource{
 			Properties: &armrecoveryservicesbackup.AzureFileShareProtectionPolicy{
-				BackupManagementType: to.Ptr("<backup-management-type>"),
+				BackupManagementType: to.Ptr("AzureStorage"),
 				RetentionPolicy: &armrecoveryservicesbackup.LongTermRetentionPolicy{
-					RetentionPolicyType: to.Ptr("<retention-policy-type>"),
+					RetentionPolicyType: to.Ptr("LongTermRetentionPolicy"),
 					DailySchedule: &armrecoveryservicesbackup.DailyRetentionSchedule{
 						RetentionDuration: &armrecoveryservicesbackup.RetentionDuration{
 							Count:        to.Ptr[int32](5),
@@ -114,12 +114,12 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate() {
 					},
 				},
 				SchedulePolicy: &armrecoveryservicesbackup.SimpleSchedulePolicy{
-					SchedulePolicyType:   to.Ptr("<schedule-policy-type>"),
+					SchedulePolicyType:   to.Ptr("SimpleSchedulePolicy"),
 					ScheduleRunFrequency: to.Ptr(armrecoveryservicesbackup.ScheduleRunTypeDaily),
 					ScheduleRunTimes: []*time.Time{
 						to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-29T08:00:00.000Z"); return t }())},
 				},
-				TimeZone:     to.Ptr("<time-zone>"),
+				TimeZone:     to.Ptr("UTC"),
 				WorkLoadType: to.Ptr(armrecoveryservicesbackup.WorkloadTypeAzureFileShare),
 			},
 		},
@@ -131,26 +131,26 @@ func ExampleProtectionPoliciesClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/AzureIaasVm/ProtectionPolicies_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/ProtectionPolicies_Delete.json
 func ExampleProtectionPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewProtectionPoliciesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<vault-name>",
-		"<resource-group-name>",
-		"<policy-name>",
-		&armrecoveryservicesbackup.ProtectionPoliciesClientBeginDeleteOptions{ResumeToken: ""})
+		"NetSDKTestRsVault",
+		"SwaggerTestRg",
+		"testPolicy1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

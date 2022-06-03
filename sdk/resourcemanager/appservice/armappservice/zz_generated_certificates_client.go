@@ -38,7 +38,7 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,8 +54,9 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// CreateOrUpdate - Description for Create or update a certificate.
+// CreateOrUpdate - Create or update a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate.
 // certificateEnvelope - Details of certificate, if it exists already.
@@ -98,7 +99,7 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificateEnvelope)
 }
 
@@ -111,8 +112,9 @@ func (client *CertificatesClient) createOrUpdateHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// Delete - Description for Delete a certificate.
+// Delete - Delete a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate.
 // options - CertificatesClientDeleteOptions contains the optional parameters for the CertificatesClient.Delete method.
@@ -153,12 +155,13 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Description for Get a certificate.
+// Get - Get a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate.
 // options - CertificatesClientGetOptions contains the optional parameters for the CertificatesClient.Get method.
@@ -199,7 +202,7 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -212,11 +215,12 @@ func (client *CertificatesClient) getHandleResponse(resp *http.Response) (Certif
 	return result, nil
 }
 
-// NewListPager - Description for Get all certificates for a subscription.
+// NewListPager - Get all certificates for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // options - CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
 func (client *CertificatesClient) NewListPager(options *CertificatesClientListOptions) *runtime.Pager[CertificatesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CertificatesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CertificatesClientListResponse]{
 		More: func(page CertificatesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -262,7 +266,7 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, options
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -275,13 +279,14 @@ func (client *CertificatesClient) listHandleResponse(resp *http.Response) (Certi
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Description for Get all certificates in a resource group.
+// NewListByResourceGroupPager - Get all certificates in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // options - CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.ListByResourceGroup
 // method.
 func (client *CertificatesClient) NewListByResourceGroupPager(resourceGroupName string, options *CertificatesClientListByResourceGroupOptions) *runtime.Pager[CertificatesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CertificatesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CertificatesClientListByResourceGroupResponse]{
 		More: func(page CertificatesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -326,7 +331,7 @@ func (client *CertificatesClient) listByResourceGroupCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -339,8 +344,9 @@ func (client *CertificatesClient) listByResourceGroupHandleResponse(resp *http.R
 	return result, nil
 }
 
-// Update - Description for Create or update a certificate.
+// Update - Create or update a certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-01
 // resourceGroupName - Name of the resource group to which the resource belongs.
 // name - Name of the certificate.
 // certificateEnvelope - Details of certificate, if it exists already.
@@ -382,7 +388,7 @@ func (client *CertificatesClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, certificateEnvelope)
 }
 

@@ -38,7 +38,7 @@ func NewAFDEndpointsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewAFDEndpointsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -64,23 +65,24 @@ func NewAFDEndpointsClient(subscriptionID string, credential azcore.TokenCredent
 // endpoint - Endpoint properties
 // options - AFDEndpointsClientBeginCreateOptions contains the optional parameters for the AFDEndpointsClient.BeginCreate
 // method.
-func (client *AFDEndpointsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsClientBeginCreateOptions) (*armruntime.Poller[AFDEndpointsClientCreateResponse], error) {
+func (client *AFDEndpointsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsClientBeginCreateOptions) (*runtime.Poller[AFDEndpointsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, profileName, endpointName, endpoint, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AFDEndpointsClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AFDEndpointsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AFDEndpointsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AFDEndpointsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *AFDEndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpoint, options)
 	if err != nil {
@@ -122,36 +124,38 @@ func (client *AFDEndpointsClient) createCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, endpoint)
 }
 
 // BeginDelete - Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // endpointName - Name of the endpoint under the profile which is unique globally.
 // options - AFDEndpointsClientBeginDeleteOptions contains the optional parameters for the AFDEndpointsClient.BeginDelete
 // method.
-func (client *AFDEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientBeginDeleteOptions) (*armruntime.Poller[AFDEndpointsClientDeleteResponse], error) {
+func (client *AFDEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientBeginDeleteOptions) (*runtime.Poller[AFDEndpointsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, profileName, endpointName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AFDEndpointsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AFDEndpointsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AFDEndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AFDEndpointsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
 // resource group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *AFDEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
@@ -193,13 +197,14 @@ func (client *AFDEndpointsClient) deleteCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource
 // group and profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -246,7 +251,7 @@ func (client *AFDEndpointsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -261,13 +266,14 @@ func (client *AFDEndpointsClient) getHandleResponse(resp *http.Response) (AFDEnd
 
 // NewListByProfilePager - Lists existing AzureFrontDoor endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
 // options - AFDEndpointsClientListByProfileOptions contains the optional parameters for the AFDEndpointsClient.ListByProfile
 // method.
 func (client *AFDEndpointsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *AFDEndpointsClientListByProfileOptions) *runtime.Pager[AFDEndpointsClientListByProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AFDEndpointsClientListByProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AFDEndpointsClientListByProfileResponse]{
 		More: func(page AFDEndpointsClientListByProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -316,7 +322,7 @@ func (client *AFDEndpointsClient) listByProfileCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -329,8 +335,10 @@ func (client *AFDEndpointsClient) listByProfileHandleResponse(resp *http.Respons
 	return result, nil
 }
 
-// NewListResourceUsagePager - Checks the quota and actual usage of endpoints under the given CDN profile.
+// NewListResourceUsagePager - Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN
+// profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -338,7 +346,7 @@ func (client *AFDEndpointsClient) listByProfileHandleResponse(resp *http.Respons
 // options - AFDEndpointsClientListResourceUsageOptions contains the optional parameters for the AFDEndpointsClient.ListResourceUsage
 // method.
 func (client *AFDEndpointsClient) NewListResourceUsagePager(resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsClientListResourceUsageOptions) *runtime.Pager[AFDEndpointsClientListResourceUsageResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AFDEndpointsClientListResourceUsageResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AFDEndpointsClientListResourceUsageResponse]{
 		More: func(page AFDEndpointsClientListResourceUsageResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -391,7 +399,7 @@ func (client *AFDEndpointsClient) listResourceUsageCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -406,6 +414,7 @@ func (client *AFDEndpointsClient) listResourceUsageHandleResponse(resp *http.Res
 
 // BeginPurgeContent - Removes a content from AzureFrontDoor.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -415,22 +424,23 @@ func (client *AFDEndpointsClient) listResourceUsageHandleResponse(resp *http.Res
 // '/pictures/*' which removes all folders and files in the directory.
 // options - AFDEndpointsClientBeginPurgeContentOptions contains the optional parameters for the AFDEndpointsClient.BeginPurgeContent
 // method.
-func (client *AFDEndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsClientBeginPurgeContentOptions) (*armruntime.Poller[AFDEndpointsClientPurgeContentResponse], error) {
+func (client *AFDEndpointsClient) BeginPurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsClientBeginPurgeContentOptions) (*runtime.Poller[AFDEndpointsClientPurgeContentResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.purgeContent(ctx, resourceGroupName, profileName, endpointName, contents, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AFDEndpointsClientPurgeContentResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AFDEndpointsClientPurgeContentResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AFDEndpointsClientPurgeContentResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AFDEndpointsClientPurgeContentResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // PurgeContent - Removes a content from AzureFrontDoor.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *AFDEndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contents, options)
 	if err != nil {
@@ -472,7 +482,7 @@ func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, contents)
 }
 
@@ -481,6 +491,7 @@ func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context,
 // update origins, use the Update Origin operation. To update origin groups, use the Update Origin group operation. To update
 // domains, use the Update Custom Domain operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -488,17 +499,17 @@ func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context,
 // endpointUpdateProperties - Endpoint update properties
 // options - AFDEndpointsClientBeginUpdateOptions contains the optional parameters for the AFDEndpointsClient.BeginUpdate
 // method.
-func (client *AFDEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsClientBeginUpdateOptions) (*armruntime.Poller[AFDEndpointsClientUpdateResponse], error) {
+func (client *AFDEndpointsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsClientBeginUpdateOptions) (*runtime.Poller[AFDEndpointsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AFDEndpointsClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AFDEndpointsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AFDEndpointsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AFDEndpointsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -507,6 +518,7 @@ func (client *AFDEndpointsClient) BeginUpdate(ctx context.Context, resourceGroup
 // update origins, use the Update Origin operation. To update origin groups, use the Update Origin group operation. To update
 // domains, use the Update Custom Domain operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 func (client *AFDEndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
 	if err != nil {
@@ -548,12 +560,14 @@ func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, endpointUpdateProperties)
 }
 
-// ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+// ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api
+// isn't work for apex domain.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-06-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // profileName - Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique within the resource
 // group.
@@ -602,7 +616,7 @@ func (client *AFDEndpointsClient) validateCustomDomainCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, customDomainProperties)
 }
 

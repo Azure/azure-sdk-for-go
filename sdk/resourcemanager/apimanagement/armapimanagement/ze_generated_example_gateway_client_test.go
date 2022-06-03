@@ -26,12 +26,12 @@ func ExampleGatewayClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.GatewayClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -40,7 +40,6 @@ func ExampleGatewayClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,14 +55,14 @@ func ExampleGatewayClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
+		"rg1",
+		"apimService1",
+		"mygateway",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,14 +76,14 @@ func ExampleGatewayClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -100,19 +99,19 @@ func ExampleGatewayClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
 		armapimanagement.GatewayContract{
 			Properties: &armapimanagement.GatewayContractProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my gateway 1"),
 				LocationData: &armapimanagement.ResourceLocationDataContract{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("my location"),
 				},
 			},
 		},
@@ -131,20 +130,20 @@ func ExampleGatewayClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"*",
 		armapimanagement.GatewayContract{
 			Properties: &armapimanagement.GatewayContractProperties{
-				Description: to.Ptr("<description>"),
+				Description: to.Ptr("my gateway 1"),
 				LocationData: &armapimanagement.ResourceLocationDataContract{
-					Name: to.Ptr("<name>"),
+					Name: to.Ptr("my location"),
 				},
 			},
 		},
@@ -163,15 +162,15 @@ func ExampleGatewayClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -185,14 +184,14 @@ func ExampleGatewayClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -208,14 +207,14 @@ func ExampleGatewayClient_RegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.RegenerateKey(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
+		"rg1",
+		"apimService1",
+		"gwId",
 		armapimanagement.GatewayKeyRegenerationRequestContract{
 			KeyType: to.Ptr(armapimanagement.KeyTypePrimary),
 		},
@@ -232,14 +231,14 @@ func ExampleGatewayClient_GenerateToken() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GenerateToken(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
 		armapimanagement.GatewayTokenRequestContract{
 			Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-21T00:44:24.2845269Z"); return t }()),
 			KeyType: to.Ptr(armapimanagement.KeyTypePrimary),

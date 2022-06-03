@@ -39,7 +39,7 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,11 +57,12 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // NewListPager - Retrieves all existing Power BI workspaces in the specified workspace collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // resourceGroupName - Azure resource group
 // workspaceCollectionName - Power BI Embedded Workspace Collection name
 // options - WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.List method.
 func (client *WorkspacesClient) NewListPager(resourceGroupName string, workspaceCollectionName string, options *WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkspacesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkspacesClientListResponse]{
 		More: func(page WorkspacesClientListResponse) bool {
 			return false
 		},
@@ -104,7 +105,7 @@ func (client *WorkspacesClient) listCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

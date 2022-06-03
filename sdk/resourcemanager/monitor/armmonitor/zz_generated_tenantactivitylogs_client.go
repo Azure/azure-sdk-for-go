@@ -33,7 +33,7 @@ func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,9 +53,10 @@ func NewTenantActivityLogsClient(credential azcore.TokenCredential, options *arm
 // point out here is that this API does not retrieve the logs at the individual subscription of the tenant but only surfaces
 // the logs that were generated at the tenant level.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-04-01
 // options - TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.List method.
 func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogsClientListOptions) *runtime.Pager[TenantActivityLogsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TenantActivityLogsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TenantActivityLogsClientListResponse]{
 		More: func(page TenantActivityLogsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -98,7 +99,7 @@ func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, o
 		reqQP.Set("$select", *options.Select)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

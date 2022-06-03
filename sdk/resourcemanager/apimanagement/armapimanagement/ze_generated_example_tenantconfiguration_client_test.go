@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
@@ -26,24 +24,24 @@ func ExampleTenantConfigurationClient_BeginDeploy() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeploy(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.ConfigurationIDNameConfiguration,
 		armapimanagement.DeployConfigurationParameters{
 			Properties: &armapimanagement.DeployConfigurationParameterProperties{
-				Branch: to.Ptr("<branch>"),
+				Branch: to.Ptr("master"),
 			},
 		},
-		&armapimanagement.TenantConfigurationClientBeginDeployOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -58,24 +56,24 @@ func ExampleTenantConfigurationClient_BeginSave() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSave(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.ConfigurationIDNameConfiguration,
 		armapimanagement.SaveConfigurationParameter{
 			Properties: &armapimanagement.SaveConfigurationParameterProperties{
-				Branch: to.Ptr("<branch>"),
+				Branch: to.Ptr("master"),
 			},
 		},
-		&armapimanagement.TenantConfigurationClientBeginSaveOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -90,24 +88,24 @@ func ExampleTenantConfigurationClient_BeginValidate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginValidate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.ConfigurationIDNameConfiguration,
 		armapimanagement.DeployConfigurationParameters{
 			Properties: &armapimanagement.DeployConfigurationParameterProperties{
-				Branch: to.Ptr("<branch>"),
+				Branch: to.Ptr("master"),
 			},
 		},
-		&armapimanagement.TenantConfigurationClientBeginValidateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -122,13 +120,13 @@ func ExampleTenantConfigurationClient_GetSyncState() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTenantConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTenantConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetSyncState(ctx,
-		"<resource-group-name>",
-		"<service-name>",
+		"rg1",
+		"apimService1",
 		armapimanagement.ConfigurationIDNameConfiguration,
 		nil)
 	if err != nil {

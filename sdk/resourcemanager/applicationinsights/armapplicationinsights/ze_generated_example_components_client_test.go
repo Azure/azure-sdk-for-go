@@ -24,7 +24,7 @@ func ExampleComponentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleComponentsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,17 +48,16 @@ func ExampleComponentsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("my-resource-group",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,13 +73,13 @@ func ExampleComponentsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -95,13 +93,13 @@ func ExampleComponentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -117,21 +115,21 @@ func ExampleComponentsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.Component{
-			Location: to.Ptr("<location>"),
-			Kind:     to.Ptr("<kind>"),
+			Location: to.Ptr("South Central US"),
+			Kind:     to.Ptr("web"),
 			Properties: &armapplicationinsights.ComponentProperties{
 				ApplicationType:     to.Ptr(armapplicationinsights.ApplicationTypeWeb),
 				FlowType:            to.Ptr(armapplicationinsights.FlowTypeBluefield),
 				RequestSource:       to.Ptr(armapplicationinsights.RequestSourceRest),
-				WorkspaceResourceID: to.Ptr("<workspace-resource-id>"),
+				WorkspaceResourceID: to.Ptr("/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace"),
 			},
 		},
 		nil)
@@ -149,13 +147,13 @@ func ExampleComponentsClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.UpdateTags(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.TagsResource{
 			Tags: map[string]*string{
 				"ApplicationGatewayType": to.Ptr("Internal-Only"),
@@ -180,21 +178,21 @@ func ExampleComponentsClient_Purge() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentsClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Purge(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"OIAutoRest5123",
+		"aztest5048",
 		armapplicationinsights.ComponentPurgeBody{
 			Filters: []*armapplicationinsights.ComponentPurgeBodyFilters{
 				{
-					Column:   to.Ptr("<column>"),
-					Operator: to.Ptr("<operator>"),
+					Column:   to.Ptr("TimeGenerated"),
+					Operator: to.Ptr(">"),
 					Value:    "2017-09-01T00:00:00",
 				}},
-			Table: to.Ptr("<table>"),
+			Table: to.Ptr("Heartbeat"),
 		},
 		nil)
 	if err != nil {
@@ -209,14 +207,14 @@ func ExampleComponentsClient_GetPurgeStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewComponentsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewComponentsClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPurgeStatus(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<purge-id>",
+		"OIAutoRest5123",
+		"aztest5048",
+		"purge-970318e7-b859-4edb-8903-83b1b54d0b74",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

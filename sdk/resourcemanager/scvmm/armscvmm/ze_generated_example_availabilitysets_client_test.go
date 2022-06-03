@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/scvmm/armscvmm"
@@ -26,13 +24,13 @@ func ExampleAvailabilitySetsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewAvailabilitySetsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<availability-set-name>",
+		"testrg",
+		"HRAvailabilitySet",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,29 +46,29 @@ func ExampleAvailabilitySetsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewAvailabilitySetsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<availability-set-name>",
+		"testrg",
+		"HRAvailabilitySet",
 		armscvmm.AvailabilitySet{
 			ExtendedLocation: &armscvmm.ExtendedLocation{
-				Name: to.Ptr("<name>"),
-				Type: to.Ptr("<type>"),
+				Name: to.Ptr("/subscriptions/a5015e1c-867f-4533-8541-85cd470d0cfb/resourceGroups/demoRG/providers/Microsoft.Arc/customLocations/contoso"),
+				Type: to.Ptr("customLocation"),
 			},
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Properties: &armscvmm.AvailabilitySetProperties{
-				AvailabilitySetName: to.Ptr("<availability-set-name>"),
-				VmmServerID:         to.Ptr("<vmm-server-id>"),
+				AvailabilitySetName: to.Ptr("hr-avset"),
+				VmmServerID:         to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.ScVmm/VMMServers/ContosoVMMServer"),
 			},
 		},
-		&armscvmm.AvailabilitySetsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -85,20 +83,18 @@ func ExampleAvailabilitySetsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewAvailabilitySetsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<availability-set-name>",
-		&armscvmm.AvailabilitySetsClientBeginDeleteOptions{Force: nil,
-			ResumeToken: "",
-		})
+		"testrg",
+		"HRAvailabilitySet",
+		&armscvmm.AvailabilitySetsClientBeginDeleteOptions{Force: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -111,24 +107,24 @@ func ExampleAvailabilitySetsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewAvailabilitySetsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<availability-set-name>",
+		"testrg",
+		"HRAvailabilitySet",
 		armscvmm.ResourcePatch{
 			Tags: map[string]*string{
 				"tag1": to.Ptr("value1"),
 				"tag2": to.Ptr("value2"),
 			},
 		},
-		&armscvmm.AvailabilitySetsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -143,11 +139,11 @@ func ExampleAvailabilitySetsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewAvailabilitySetsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testrg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -168,7 +164,7 @@ func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armscvmm.NewAvailabilitySetsClient("<subscription-id>", cred, nil)
+	client, err := armscvmm.NewAvailabilitySetsClient("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

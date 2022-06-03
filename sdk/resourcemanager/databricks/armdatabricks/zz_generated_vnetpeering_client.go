@@ -38,7 +38,7 @@ func NewVNetPeeringClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewVNetPeeringClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreateOrUpdate - Creates vNet Peering for workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // peeringName - The name of the workspace vNet peering.
 // virtualNetworkPeeringParameters - Parameters supplied to the create workspace vNet Peering.
 // options - VNetPeeringClientBeginCreateOrUpdateOptions contains the optional parameters for the VNetPeeringClient.BeginCreateOrUpdate
 // method.
-func (client *VNetPeeringClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VNetPeeringClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VNetPeeringClientCreateOrUpdateResponse], error) {
+func (client *VNetPeeringClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VNetPeeringClientBeginCreateOrUpdateOptions) (*runtime.Poller[VNetPeeringClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VNetPeeringClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VNetPeeringClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VNetPeeringClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VNetPeeringClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates vNet Peering for workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 func (client *VNetPeeringClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VNetPeeringClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, peeringName, virtualNetworkPeeringParameters, options)
 	if err != nil {
@@ -117,30 +119,32 @@ func (client *VNetPeeringClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, virtualNetworkPeeringParameters)
 }
 
 // BeginDelete - Deletes the workspace vNetPeering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // peeringName - The name of the workspace vNet peering.
 // options - VNetPeeringClientBeginDeleteOptions contains the optional parameters for the VNetPeeringClient.BeginDelete method.
-func (client *VNetPeeringClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, options *VNetPeeringClientBeginDeleteOptions) (*armruntime.Poller[VNetPeeringClientDeleteResponse], error) {
+func (client *VNetPeeringClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, options *VNetPeeringClientBeginDeleteOptions) (*runtime.Poller[VNetPeeringClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, peeringName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VNetPeeringClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VNetPeeringClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VNetPeeringClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VNetPeeringClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the workspace vNetPeering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 func (client *VNetPeeringClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, peeringName string, options *VNetPeeringClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, peeringName, options)
 	if err != nil {
@@ -182,12 +186,13 @@ func (client *VNetPeeringClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the workspace vNet Peering.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // peeringName - The name of the workspace vNet peering.
@@ -233,7 +238,7 @@ func (client *VNetPeeringClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -248,12 +253,13 @@ func (client *VNetPeeringClient) getHandleResponse(resp *http.Response) (VNetPee
 
 // NewListByWorkspacePager - Lists the workspace vNet Peerings.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - VNetPeeringClientListByWorkspaceOptions contains the optional parameters for the VNetPeeringClient.ListByWorkspace
 // method.
 func (client *VNetPeeringClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *VNetPeeringClientListByWorkspaceOptions) *runtime.Pager[VNetPeeringClientListByWorkspaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VNetPeeringClientListByWorkspaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VNetPeeringClientListByWorkspaceResponse]{
 		More: func(page VNetPeeringClientListByWorkspaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -302,7 +308,7 @@ func (client *VNetPeeringClient) listByWorkspaceCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -26,13 +24,13 @@ func ExampleGallerySharingProfileClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewGallerySharingProfileClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewGallerySharingProfileClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<gallery-name>",
+		"myResourceGroup",
+		"myGalleryName",
 		armcompute.SharingUpdate{
 			Groups: []*armcompute.SharingProfileGroup{
 				{
@@ -48,11 +46,11 @@ func ExampleGallerySharingProfileClient_BeginUpdate() {
 				}},
 			OperationType: to.Ptr(armcompute.SharingUpdateOperationTypesAdd),
 		},
-		&armcompute.GallerySharingProfileClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

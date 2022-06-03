@@ -38,7 +38,7 @@ func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreate - Create a monitor resource. This create operation can take upto 10 minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
-func (client *MonitorsClient) BeginCreate(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginCreateOptions) (*armruntime.Poller[MonitorsClientCreateResponse], error) {
+func (client *MonitorsClient) BeginCreate(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginCreateOptions) (*runtime.Poller[MonitorsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, monitorName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MonitorsClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MonitorsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[MonitorsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MonitorsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create a monitor resource. This create operation can take upto 10 minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 func (client *MonitorsClient) create(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
@@ -112,7 +114,7 @@ func (client *MonitorsClient) createCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -121,25 +123,27 @@ func (client *MonitorsClient) createCreateRequest(ctx context.Context, resourceG
 
 // BeginDelete - Delete a monitor resource. This delete operation can take upto 10 minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
-func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*armruntime.Poller[MonitorsClientDeleteResponse], error) {
+func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*runtime.Poller[MonitorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, monitorName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[MonitorsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MonitorsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[MonitorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MonitorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a monitor resource. This delete operation can take upto 10 minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
@@ -177,12 +181,13 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the properties of a specific monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
@@ -223,7 +228,7 @@ func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -238,11 +243,12 @@ func (client *MonitorsClient) getHandleResponse(resp *http.Response) (MonitorsCl
 
 // NewListByResourceGroupPager - List all monitors under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.ListByResourceGroup
 // method.
 func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName string, options *MonitorsClientListByResourceGroupOptions) *runtime.Pager[MonitorsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListByResourceGroupResponse]{
 		More: func(page MonitorsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -287,7 +293,7 @@ func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -302,10 +308,11 @@ func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - List all monitors under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // options - MonitorsClientListBySubscriptionOptions contains the optional parameters for the MonitorsClient.ListBySubscription
 // method.
 func (client *MonitorsClient) NewListBySubscriptionPager(options *MonitorsClientListBySubscriptionOptions) *runtime.Pager[MonitorsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListBySubscriptionResponse]{
 		More: func(page MonitorsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -346,7 +353,7 @@ func (client *MonitorsClient) listBySubscriptionCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -361,12 +368,13 @@ func (client *MonitorsClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // NewListMonitoredResourcesPager - List the resources currently being monitored by the Logz monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.ListMonitoredResources
 // method.
 func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName string, monitorName string, options *MonitorsClientListMonitoredResourcesOptions) *runtime.Pager[MonitorsClientListMonitoredResourcesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListMonitoredResourcesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListMonitoredResourcesResponse]{
 		More: func(page MonitorsClientListMonitoredResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -415,7 +423,7 @@ func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -430,11 +438,12 @@ func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Re
 
 // NewListUserRolesPager - List the user's roles configured on Logz.io side for the account corresponding to the monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorsClientListUserRolesOptions contains the optional parameters for the MonitorsClient.ListUserRoles method.
 func (client *MonitorsClient) NewListUserRolesPager(resourceGroupName string, monitorName string, options *MonitorsClientListUserRolesOptions) *runtime.Pager[MonitorsClientListUserRolesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MonitorsClientListUserRolesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListUserRolesResponse]{
 		More: func(page MonitorsClientListUserRolesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -483,7 +492,7 @@ func (client *MonitorsClient) listUserRolesCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -501,6 +510,7 @@ func (client *MonitorsClient) listUserRolesHandleResponse(resp *http.Response) (
 
 // Update - Update a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-10-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // monitorName - Monitor resource name
 // options - MonitorsClientUpdateOptions contains the optional parameters for the MonitorsClient.Update method.
@@ -541,7 +551,7 @@ func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}

@@ -12,7 +12,7 @@ package appplatform
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-03-01-preview/appplatform"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-05-01-preview/appplatform"
 )
 
 const (
@@ -106,6 +106,16 @@ const (
 	BuildpackBindingProvisioningStateUpdating  BuildpackBindingProvisioningState = original.BuildpackBindingProvisioningStateUpdating
 )
 
+type CertificateResourceProvisioningState = original.CertificateResourceProvisioningState
+
+const (
+	CertificateResourceProvisioningStateCreating  CertificateResourceProvisioningState = original.CertificateResourceProvisioningStateCreating
+	CertificateResourceProvisioningStateDeleting  CertificateResourceProvisioningState = original.CertificateResourceProvisioningStateDeleting
+	CertificateResourceProvisioningStateFailed    CertificateResourceProvisioningState = original.CertificateResourceProvisioningStateFailed
+	CertificateResourceProvisioningStateSucceeded CertificateResourceProvisioningState = original.CertificateResourceProvisioningStateSucceeded
+	CertificateResourceProvisioningStateUpdating  CertificateResourceProvisioningState = original.CertificateResourceProvisioningStateUpdating
+)
+
 type ConfigServerState = original.ConfigServerState
 
 const (
@@ -135,6 +145,16 @@ const (
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
+type CustomDomainResourceProvisioningState = original.CustomDomainResourceProvisioningState
+
+const (
+	CustomDomainResourceProvisioningStateCreating  CustomDomainResourceProvisioningState = original.CustomDomainResourceProvisioningStateCreating
+	CustomDomainResourceProvisioningStateDeleting  CustomDomainResourceProvisioningState = original.CustomDomainResourceProvisioningStateDeleting
+	CustomDomainResourceProvisioningStateFailed    CustomDomainResourceProvisioningState = original.CustomDomainResourceProvisioningStateFailed
+	CustomDomainResourceProvisioningStateSucceeded CustomDomainResourceProvisioningState = original.CustomDomainResourceProvisioningStateSucceeded
+	CustomDomainResourceProvisioningStateUpdating  CustomDomainResourceProvisioningState = original.CustomDomainResourceProvisioningStateUpdating
+)
+
 type DeploymentResourceProvisioningState = original.DeploymentResourceProvisioningState
 
 const (
@@ -159,6 +179,13 @@ const (
 	GatewayProvisioningStateFailed    GatewayProvisioningState = original.GatewayProvisioningStateFailed
 	GatewayProvisioningStateSucceeded GatewayProvisioningState = original.GatewayProvisioningStateSucceeded
 	GatewayProvisioningStateUpdating  GatewayProvisioningState = original.GatewayProvisioningStateUpdating
+)
+
+type HTTPSchemeType = original.HTTPSchemeType
+
+const (
+	HTTPSchemeTypeHTTP  HTTPSchemeType = original.HTTPSchemeTypeHTTP
+	HTTPSchemeTypeHTTPS HTTPSchemeType = original.HTTPSchemeTypeHTTPS
 )
 
 type KPackBuildStageProvisioningState = original.KPackBuildStageProvisioningState
@@ -304,6 +331,15 @@ const (
 	TypeBasicCertificatePropertiesTypeKeyVaultCertificate   TypeBasicCertificateProperties = original.TypeBasicCertificatePropertiesTypeKeyVaultCertificate
 )
 
+type TypeBasicProbeAction = original.TypeBasicProbeAction
+
+const (
+	TypeBasicProbeActionTypeExecAction      TypeBasicProbeAction = original.TypeBasicProbeActionTypeExecAction
+	TypeBasicProbeActionTypeHTTPGetAction   TypeBasicProbeAction = original.TypeBasicProbeActionTypeHTTPGetAction
+	TypeBasicProbeActionTypeProbeAction     TypeBasicProbeAction = original.TypeBasicProbeActionTypeProbeAction
+	TypeBasicProbeActionTypeTCPSocketAction TypeBasicProbeAction = original.TypeBasicProbeActionTypeTCPSocketAction
+)
+
 type TypeBasicUserSourceInfo = original.TypeBasicUserSourceInfo
 
 const (
@@ -340,6 +376,7 @@ type AppResourceCollection = original.AppResourceCollection
 type AppResourceCollectionIterator = original.AppResourceCollectionIterator
 type AppResourceCollectionPage = original.AppResourceCollectionPage
 type AppResourceProperties = original.AppResourceProperties
+type AppVNetAddons = original.AppVNetAddons
 type ApplicationInsightsAgentVersions = original.ApplicationInsightsAgentVersions
 type AppsClient = original.AppsClient
 type AppsCreateOrUpdateFuture = original.AppsCreateOrUpdateFuture
@@ -354,6 +391,7 @@ type AzureFileVolume = original.AzureFileVolume
 type BaseClient = original.BaseClient
 type BasicCertificateProperties = original.BasicCertificateProperties
 type BasicCustomPersistentDiskProperties = original.BasicCustomPersistentDiskProperties
+type BasicProbeAction = original.BasicProbeAction
 type BasicStorageProperties = original.BasicStorageProperties
 type BasicUploadedUserSourceInfo = original.BasicUploadedUserSourceInfo
 type BasicUserSourceInfo = original.BasicUserSourceInfo
@@ -371,6 +409,7 @@ type BuildCollection = original.BuildCollection
 type BuildCollectionIterator = original.BuildCollectionIterator
 type BuildCollectionPage = original.BuildCollectionPage
 type BuildProperties = original.BuildProperties
+type BuildResourceRequests = original.BuildResourceRequests
 type BuildResult = original.BuildResult
 type BuildResultCollection = original.BuildResultCollection
 type BuildResultCollectionIterator = original.BuildResultCollectionIterator
@@ -486,6 +525,7 @@ type DeploymentsStopFuture = original.DeploymentsStopFuture
 type DeploymentsUpdateFuture = original.DeploymentsUpdateFuture
 type DiagnosticParameters = original.DiagnosticParameters
 type Error = original.Error
+type ExecAction = original.ExecAction
 type GatewayAPIMetadataProperties = original.GatewayAPIMetadataProperties
 type GatewayAPIRoute = original.GatewayAPIRoute
 type GatewayCorsProperties = original.GatewayCorsProperties
@@ -506,6 +546,7 @@ type GatewayResourceCollection = original.GatewayResourceCollection
 type GatewayResourceCollectionIterator = original.GatewayResourceCollectionIterator
 type GatewayResourceCollectionPage = original.GatewayResourceCollectionPage
 type GatewayResourceRequests = original.GatewayResourceRequests
+type GatewayRouteConfigOpenAPIProperties = original.GatewayRouteConfigOpenAPIProperties
 type GatewayRouteConfigProperties = original.GatewayRouteConfigProperties
 type GatewayRouteConfigResource = original.GatewayRouteConfigResource
 type GatewayRouteConfigResourceCollection = original.GatewayRouteConfigResourceCollection
@@ -518,13 +559,16 @@ type GatewaysClient = original.GatewaysClient
 type GatewaysCreateOrUpdateFuture = original.GatewaysCreateOrUpdateFuture
 type GatewaysDeleteFuture = original.GatewaysDeleteFuture
 type GitPatternRepository = original.GitPatternRepository
+type HTTPGetAction = original.HTTPGetAction
 type ImageRegistryCredential = original.ImageRegistryCredential
+type IngressConfig = original.IngressConfig
 type JarUploadedUserSourceInfo = original.JarUploadedUserSourceInfo
 type KeyVaultCertificateProperties = original.KeyVaultCertificateProperties
 type LoadedCertificate = original.LoadedCertificate
 type LogFileURLResponse = original.LogFileURLResponse
 type LogSpecification = original.LogSpecification
 type ManagedIdentityProperties = original.ManagedIdentityProperties
+type MarketplaceResource = original.MarketplaceResource
 type MetricDimension = original.MetricDimension
 type MetricSpecification = original.MetricSpecification
 type MonitoringSettingProperties = original.MonitoringSettingProperties
@@ -542,6 +586,8 @@ type OperationDisplay = original.OperationDisplay
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
 type PersistentDisk = original.PersistentDisk
+type Probe = original.Probe
+type ProbeAction = original.ProbeAction
 type ProxyResource = original.ProxyResource
 type RegenerateTestKeyRequestPayload = original.RegenerateTestKeyRequestPayload
 type RequiredTraffic = original.RequiredTraffic
@@ -573,6 +619,7 @@ type ServiceResourceList = original.ServiceResourceList
 type ServiceResourceListIterator = original.ServiceResourceListIterator
 type ServiceResourceListPage = original.ServiceResourceListPage
 type ServiceSpecification = original.ServiceSpecification
+type ServiceVNetAddons = original.ServiceVNetAddons
 type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type ServicesDeleteFuture = original.ServicesDeleteFuture
@@ -602,6 +649,7 @@ type SupportedStackResource = original.SupportedStackResource
 type SupportedStackResourceProperties = original.SupportedStackResourceProperties
 type SupportedStacksCollection = original.SupportedStacksCollection
 type SystemData = original.SystemData
+type TCPSocketAction = original.TCPSocketAction
 type TemporaryDisk = original.TemporaryDisk
 type TestKeys = original.TestKeys
 type TrackedResource = original.TrackedResource
@@ -914,6 +962,9 @@ func PossibleBuilderProvisioningStateValues() []BuilderProvisioningState {
 func PossibleBuildpackBindingProvisioningStateValues() []BuildpackBindingProvisioningState {
 	return original.PossibleBuildpackBindingProvisioningStateValues()
 }
+func PossibleCertificateResourceProvisioningStateValues() []CertificateResourceProvisioningState {
+	return original.PossibleCertificateResourceProvisioningStateValues()
+}
 func PossibleConfigServerStateValues() []ConfigServerState {
 	return original.PossibleConfigServerStateValues()
 }
@@ -923,6 +974,9 @@ func PossibleConfigurationServiceProvisioningStateValues() []ConfigurationServic
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
 }
+func PossibleCustomDomainResourceProvisioningStateValues() []CustomDomainResourceProvisioningState {
+	return original.PossibleCustomDomainResourceProvisioningStateValues()
+}
 func PossibleDeploymentResourceProvisioningStateValues() []DeploymentResourceProvisioningState {
 	return original.PossibleDeploymentResourceProvisioningStateValues()
 }
@@ -931,6 +985,9 @@ func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 }
 func PossibleGatewayProvisioningStateValues() []GatewayProvisioningState {
 	return original.PossibleGatewayProvisioningStateValues()
+}
+func PossibleHTTPSchemeTypeValues() []HTTPSchemeType {
+	return original.PossibleHTTPSchemeTypeValues()
 }
 func PossibleKPackBuildStageProvisioningStateValues() []KPackBuildStageProvisioningState {
 	return original.PossibleKPackBuildStageProvisioningStateValues()
@@ -979,6 +1036,9 @@ func PossibleTrafficDirectionValues() []TrafficDirection {
 }
 func PossibleTypeBasicCertificatePropertiesValues() []TypeBasicCertificateProperties {
 	return original.PossibleTypeBasicCertificatePropertiesValues()
+}
+func PossibleTypeBasicProbeActionValues() []TypeBasicProbeAction {
+	return original.PossibleTypeBasicProbeActionValues()
 }
 func PossibleTypeBasicUserSourceInfoValues() []TypeBasicUserSourceInfo {
 	return original.PossibleTypeBasicUserSourceInfoValues()

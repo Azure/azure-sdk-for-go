@@ -40,7 +40,7 @@ func NewCertificateClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewCertificateClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Creates or updates the certificate being used for authentication with the backend.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
@@ -106,9 +107,9 @@ func (client *CertificateClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -126,6 +127,7 @@ func (client *CertificateClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Deletes specific certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
@@ -173,13 +175,14 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the details of the certificate specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
@@ -225,7 +228,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -242,6 +245,7 @@ func (client *CertificateClient) getHandleResponse(resp *http.Response) (Certifi
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the certificate specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
@@ -255,6 +259,9 @@ func (client *CertificateClient) GetEntityTag(ctx context.Context, resourceGroup
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return CertificateClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return CertificateClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -285,7 +292,7 @@ func (client *CertificateClient) getEntityTagCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -295,20 +302,19 @@ func (client *CertificateClient) getEntityTagHandleResponse(resp *http.Response)
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByServicePager - Lists a collection of all certificates in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - CertificateClientListByServiceOptions contains the optional parameters for the CertificateClient.ListByService
 // method.
 func (client *CertificateClient) NewListByServicePager(resourceGroupName string, serviceName string, options *CertificateClientListByServiceOptions) *runtime.Pager[CertificateClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CertificateClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CertificateClientListByServiceResponse]{
 		More: func(page CertificateClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -369,7 +375,7 @@ func (client *CertificateClient) listByServiceCreateRequest(ctx context.Context,
 	}
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -384,6 +390,7 @@ func (client *CertificateClient) listByServiceHandleResponse(resp *http.Response
 
 // RefreshSecret - From KeyVault, Refresh the certificate being used for authentication with the backend.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // certificateID - Identifier of the certificate entity. Must be unique in the current API Management service instance.
@@ -430,7 +437,7 @@ func (client *CertificateClient) refreshSecretCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

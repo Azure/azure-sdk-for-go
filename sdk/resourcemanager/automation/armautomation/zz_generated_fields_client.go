@@ -39,7 +39,7 @@ func NewFieldsClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,13 +57,14 @@ func NewFieldsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListByTypePager - Retrieve a list of fields of a given type identified by module name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // moduleName - The name of module.
 // typeName - The name of type.
 // options - FieldsClientListByTypeOptions contains the optional parameters for the FieldsClient.ListByType method.
 func (client *FieldsClient) NewListByTypePager(resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *FieldsClientListByTypeOptions) *runtime.Pager[FieldsClientListByTypeResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FieldsClientListByTypeResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FieldsClientListByTypeResponse]{
 		More: func(page FieldsClientListByTypeResponse) bool {
 			return false
 		},
@@ -114,7 +115,7 @@ func (client *FieldsClient) listByTypeCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

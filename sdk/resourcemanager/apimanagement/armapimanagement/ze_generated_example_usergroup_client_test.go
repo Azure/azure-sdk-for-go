@@ -23,13 +23,13 @@ func ExampleUserGroupClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewUserGroupClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewUserGroupClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<service-name>",
-		"<user-id>",
+	pager := client.NewListPager("rg1",
+		"apimService1",
+		"57681833a40f7eb6c49f6acf",
 		&armapimanagement.UserGroupClientListOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -38,7 +38,6 @@ func ExampleUserGroupClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

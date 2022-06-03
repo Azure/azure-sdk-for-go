@@ -33,7 +33,7 @@ func NewSubscriptionClient(credential azcore.TokenCredential, options *arm.Clien
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -51,6 +51,7 @@ func NewSubscriptionClient(credential azcore.TokenCredential, options *arm.Clien
 // CheckResourceName - A resource name is valid if it is not a reserved word, does not contains a reserved word and does not
 // start with a reserved word
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // options - SubscriptionClientCheckResourceNameOptions contains the optional parameters for the SubscriptionClient.CheckResourceName
 // method.
 func (client *SubscriptionClient) CheckResourceName(ctx context.Context, options *SubscriptionClientCheckResourceNameOptions) (SubscriptionClientCheckResourceNameResponse, error) {
@@ -78,7 +79,7 @@ func (client *SubscriptionClient) checkResourceNameCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ResourceNameDefinition != nil {
 		return req, runtime.MarshalAsJSON(req, *options.ResourceNameDefinition)
 	}

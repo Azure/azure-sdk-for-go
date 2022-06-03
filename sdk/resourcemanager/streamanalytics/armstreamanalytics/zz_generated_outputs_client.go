@@ -38,7 +38,7 @@ func NewOutputsClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewOutputsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // CreateOrReplace - Creates an output or replaces an already existing output under an existing streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // outputName - The name of the output.
@@ -104,12 +105,12 @@ func (client *OutputsClient) createOrReplaceCreateRequest(ctx context.Context, r
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, output)
 }
 
@@ -127,6 +128,7 @@ func (client *OutputsClient) createOrReplaceHandleResponse(resp *http.Response) 
 
 // Delete - Deletes an output from the streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // outputName - The name of the output.
@@ -172,12 +174,13 @@ func (client *OutputsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets details about the specified output.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // outputName - The name of the output.
@@ -223,7 +226,7 @@ func (client *OutputsClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -241,12 +244,13 @@ func (client *OutputsClient) getHandleResponse(resp *http.Response) (OutputsClie
 
 // NewListByStreamingJobPager - Lists all of the outputs under the specified streaming job.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // options - OutputsClientListByStreamingJobOptions contains the optional parameters for the OutputsClient.ListByStreamingJob
 // method.
 func (client *OutputsClient) NewListByStreamingJobPager(resourceGroupName string, jobName string, options *OutputsClientListByStreamingJobOptions) *runtime.Pager[OutputsClientListByStreamingJobResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OutputsClientListByStreamingJobResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OutputsClientListByStreamingJobResponse]{
 		More: func(page OutputsClientListByStreamingJobResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -298,7 +302,7 @@ func (client *OutputsClient) listByStreamingJobCreateRequest(ctx context.Context
 	}
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -313,24 +317,26 @@ func (client *OutputsClient) listByStreamingJobHandleResponse(resp *http.Respons
 
 // BeginTest - Tests whether an output’s datasource is reachable and usable by the Azure Stream Analytics service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // outputName - The name of the output.
 // options - OutputsClientBeginTestOptions contains the optional parameters for the OutputsClient.BeginTest method.
-func (client *OutputsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, outputName string, options *OutputsClientBeginTestOptions) (*armruntime.Poller[OutputsClientTestResponse], error) {
+func (client *OutputsClient) BeginTest(ctx context.Context, resourceGroupName string, jobName string, outputName string, options *OutputsClientBeginTestOptions) (*runtime.Poller[OutputsClientTestResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.test(ctx, resourceGroupName, jobName, outputName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OutputsClientTestResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OutputsClientTestResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OutputsClientTestResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OutputsClientTestResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Test - Tests whether an output’s datasource is reachable and usable by the Azure Stream Analytics service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 func (client *OutputsClient) test(ctx context.Context, resourceGroupName string, jobName string, outputName string, options *OutputsClientBeginTestOptions) (*http.Response, error) {
 	req, err := client.testCreateRequest(ctx, resourceGroupName, jobName, outputName, options)
 	if err != nil {
@@ -372,7 +378,7 @@ func (client *OutputsClient) testCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Output != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Output)
 	}
@@ -382,6 +388,7 @@ func (client *OutputsClient) testCreateRequest(ctx context.Context, resourceGrou
 // Update - Updates an existing output under an existing streaming job. This can be used to partially update (ie. update one
 // or two properties) an output without affecting the rest the job or output definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-03-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // jobName - The name of the streaming job.
 // outputName - The name of the output.
@@ -432,9 +439,9 @@ func (client *OutputsClient) updateCreateRequest(ctx context.Context, resourceGr
 	reqQP.Set("api-version", "2020-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, output)
 }
 

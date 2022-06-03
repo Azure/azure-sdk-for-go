@@ -24,17 +24,17 @@ func ExampleTransformationsClient_CreateOrReplace() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewTransformationsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewTransformationsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrReplace(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<transformation-name>",
+		"sjrg4423",
+		"sj8374",
+		"transformation952",
 		armstreamanalytics.Transformation{
 			Properties: &armstreamanalytics.TransformationProperties{
-				Query:          to.Ptr("<query>"),
+				Query:          to.Ptr("Select Id, Name from inputtest"),
 				StreamingUnits: to.Ptr[int32](6),
 			},
 		},
@@ -55,17 +55,17 @@ func ExampleTransformationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewTransformationsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewTransformationsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<transformation-name>",
+		"sjrg4423",
+		"sj8374",
+		"transformation952",
 		armstreamanalytics.Transformation{
 			Properties: &armstreamanalytics.TransformationProperties{
-				Query: to.Ptr("<query>"),
+				Query: to.Ptr("New query"),
 			},
 		},
 		&armstreamanalytics.TransformationsClientUpdateOptions{IfMatch: nil})
@@ -83,14 +83,14 @@ func ExampleTransformationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstreamanalytics.NewTransformationsClient("<subscription-id>", cred, nil)
+	client, err := armstreamanalytics.NewTransformationsClient("56b5e0a9-b645-407d-99b0-c64f86013e3d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<job-name>",
-		"<transformation-name>",
+		"sjrg4423",
+		"sj8374",
+		"transformation952",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

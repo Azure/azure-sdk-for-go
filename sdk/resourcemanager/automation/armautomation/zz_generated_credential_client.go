@@ -39,7 +39,7 @@ func NewCredentialClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewCredentialClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CreateOrUpdate - Create a credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // credentialName - The parameters supplied to the create or update credential operation.
@@ -104,7 +105,7 @@ func (client *CredentialClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *CredentialClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Delete the credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // credentialName - The name of credential.
@@ -164,12 +166,13 @@ func (client *CredentialClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieve the credential identified by credential name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // credentialName - The name of credential.
@@ -215,7 +218,7 @@ func (client *CredentialClient) getCreateRequest(ctx context.Context, resourceGr
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,12 +233,13 @@ func (client *CredentialClient) getHandleResponse(resp *http.Response) (Credenti
 
 // NewListByAutomationAccountPager - Retrieve a list of credentials.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // options - CredentialClientListByAutomationAccountOptions contains the optional parameters for the CredentialClient.ListByAutomationAccount
 // method.
 func (client *CredentialClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *CredentialClientListByAutomationAccountOptions) *runtime.Pager[CredentialClientListByAutomationAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[CredentialClientListByAutomationAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[CredentialClientListByAutomationAccountResponse]{
 		More: func(page CredentialClientListByAutomationAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,7 +288,7 @@ func (client *CredentialClient) listByAutomationAccountCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -299,6 +303,7 @@ func (client *CredentialClient) listByAutomationAccountHandleResponse(resp *http
 
 // Update - Update a credential.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // credentialName - The parameters supplied to the Update credential operation.
@@ -345,7 +350,7 @@ func (client *CredentialClient) updateCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

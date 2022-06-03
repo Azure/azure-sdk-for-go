@@ -24,13 +24,13 @@ func ExampleSQLServerRegistrationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServerRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServerRegistrationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
+		"testrg",
+		"testsqlregistration",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,15 +46,15 @@ func ExampleSQLServerRegistrationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServerRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServerRegistrationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
+		"testrg",
+		"testsqlregistration",
 		armazuredata.SQLServerRegistration{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("northeurope"),
 			Tags: map[string]*string{
 				"mytag": to.Ptr("myval"),
 			},
@@ -75,13 +75,13 @@ func ExampleSQLServerRegistrationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServerRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServerRegistrationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
+		"testrg",
+		"testsqlregistration",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -95,13 +95,13 @@ func ExampleSQLServerRegistrationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServerRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServerRegistrationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<sql-server-registration-name>",
+		"testrg",
+		"testsqlregistration",
 		armazuredata.SQLServerRegistrationUpdate{
 			Tags: map[string]*string{
 				"mytag": to.Ptr("myval"),
@@ -122,17 +122,16 @@ func ExampleSQLServerRegistrationsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServerRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServerRegistrationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("testrg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -148,7 +147,7 @@ func ExampleSQLServerRegistrationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armazuredata.NewSQLServerRegistrationsClient("<subscription-id>", cred, nil)
+	client, err := armazuredata.NewSQLServerRegistrationsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -157,7 +156,6 @@ func ExampleSQLServerRegistrationsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

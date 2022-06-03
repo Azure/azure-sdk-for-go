@@ -38,7 +38,7 @@ func NewServerOperationsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,13 +56,14 @@ func NewServerOperationsClient(subscriptionID string, credential azcore.TokenCre
 
 // NewListByServerPager - Gets a list of operations performed on the server.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
 // options - ServerOperationsClientListByServerOptions contains the optional parameters for the ServerOperationsClient.ListByServer
 // method.
 func (client *ServerOperationsClient) NewListByServerPager(resourceGroupName string, serverName string, options *ServerOperationsClientListByServerOptions) *runtime.Pager[ServerOperationsClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServerOperationsClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServerOperationsClientListByServerResponse]{
 		More: func(page ServerOperationsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -111,7 +112,7 @@ func (client *ServerOperationsClient) listByServerCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

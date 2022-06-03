@@ -1,5 +1,114 @@
 # CHANGELOG
 
+## `v65.0.0`
+
+### Removed Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2018-06-01-preview/apimanagement`
+- `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2019-12-01-preview/apimanagement`
+- `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2017-05-15-preview/automation`
+- `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2018-01-15-preview/automation`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2016-06-27-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2017-06-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2018-02-01/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2019-12-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-06-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-09-01/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2019-08-01-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2019-12-12-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-03-01-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-06-01-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-09-01-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2017-06-15-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2017-09-15-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2018-05-01-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2018-09-15-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2019-02-01-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-01-01-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-04-01-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-10-15-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2016-03-01-preview/monitorlegacy`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2017-05-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-09-01/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-11-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-03-01/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-04-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-05-01-preview/diagnostics`
+- `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2015-05-01-preview/sql`
+- `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql`
+- `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v3.0/sql`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-11-01-preview/monitoring`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-11-01-preview/spark`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-02-01-preview/accesscontrol`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2019-06-01-preview/synapse`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v1.0/synapse`
+
+## `v64.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2020-03-01/aad`
+- `github.com/Azure/azure-sdk-for-go/services/azurestackhci/mgmt/2022-05-01/azurestackhci`
+- `github.com/Azure/azure-sdk-for-go/services/preview/aad/mgmt/2020-07-01-preview/aad`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2022-05-01-preview/appplatform`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2022-02-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2022-04-01-preview/deviceupdate`
+- `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2022-03-01/backup`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-08-01/network` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/network/mgmt/2021-08-01/network/CHANGELOG.md) |
+
+## `v64.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2021-10-01/keyvault`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.1.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.1.0/services/preview/eventgrid/mgmt/2021-10-15-preview/eventgrid/CHANGELOG.md) |
+
+### Deprecated Packages
+- `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-05-01-preview/videoanalyzer`
+- `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer`
+
+## `v64.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2022-02-05/iothub`
+- `github.com/Azure/azure-sdk-for-go/services/redhatopenshift/mgmt/2022-04-01/redhatopenshift`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-10-15/documentdb` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.0.0/services/cosmos-db/mgmt/2021-10-15/documentdb/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v64.0.0/services/recoveryservices/mgmt/2021-12-01/backup/CHANGELOG.md) |
+
 ## `v63.4.0`
 
 ### New Packages
@@ -13,7 +122,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v63.4.0/services/preview/synapse/mgmt/v2.0/synapse/CHANGELOG.md) |
 
 ## `v63.3.0`
 

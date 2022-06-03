@@ -40,7 +40,7 @@ func NewSchemaRegistryClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewSchemaRegistryClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate -
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // schemaGroupName - The Schema Group name
@@ -103,9 +104,9 @@ func (client *SchemaRegistryClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -120,6 +121,7 @@ func (client *SchemaRegistryClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete -
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // schemaGroupName - The Schema Group name
@@ -163,14 +165,15 @@ func (client *SchemaRegistryClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get -
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // schemaGroupName - The Schema Group name
@@ -214,9 +217,9 @@ func (client *SchemaRegistryClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,12 +234,13 @@ func (client *SchemaRegistryClient) getHandleResponse(resp *http.Response) (Sche
 
 // NewListByNamespacePager - Gets all the Schema Groups in a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
 // resourceGroupName - Name of the resource group within the azure subscription.
 // namespaceName - The Namespace name
 // options - SchemaRegistryClientListByNamespaceOptions contains the optional parameters for the SchemaRegistryClient.ListByNamespace
 // method.
 func (client *SchemaRegistryClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *SchemaRegistryClientListByNamespaceOptions) *runtime.Pager[SchemaRegistryClientListByNamespaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SchemaRegistryClientListByNamespaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SchemaRegistryClientListByNamespaceResponse]{
 		More: func(page SchemaRegistryClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -283,7 +287,7 @@ func (client *SchemaRegistryClient) listByNamespaceCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-11-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
@@ -291,7 +295,7 @@ func (client *SchemaRegistryClient) listByNamespaceCreateRequest(ctx context.Con
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

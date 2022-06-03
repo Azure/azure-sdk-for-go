@@ -17,31 +17,31 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2021-12-01/examples/ValidateAddressPost.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/ValidateAddressPost.json
 func ExampleServiceClient_ValidateAddress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ValidateAddress(ctx,
-		"<location>",
+		"westus",
 		armdatabox.ValidateAddress{
 			ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateAddress),
 			DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 			ShippingAddress: &armdatabox.ShippingAddress{
 				AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-				City:            to.Ptr("<city>"),
-				CompanyName:     to.Ptr("<company-name>"),
-				Country:         to.Ptr("<country>"),
-				PostalCode:      to.Ptr("<postal-code>"),
-				StateOrProvince: to.Ptr("<state-or-province>"),
-				StreetAddress1:  to.Ptr("<street-address1>"),
-				StreetAddress2:  to.Ptr("<street-address2>"),
+				City:            to.Ptr("San Francisco"),
+				CompanyName:     to.Ptr("Microsoft"),
+				Country:         to.Ptr("US"),
+				PostalCode:      to.Ptr("94107"),
+				StateOrProvince: to.Ptr("CA"),
+				StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+				StreetAddress2:  to.Ptr("Unit 1"),
 			},
 		},
 		nil)
@@ -52,20 +52,20 @@ func ExampleServiceClient_ValidateAddress() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2021-12-01/examples/ValidateInputsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/ValidateInputsByResourceGroup.json
 func ExampleServiceClient_ValidateInputsByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ValidateInputsByResourceGroup(ctx,
-		"<resource-group-name>",
-		"<location>",
+		"SdkRg6861",
+		"westus",
 		&armdatabox.CreateJobValidations{
 			IndividualRequestDetails: []armdatabox.ValidationInputRequestClassification{
 				&armdatabox.DataTransferDetailsValidationRequest{
@@ -74,7 +74,7 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 						{
 							AccountDetails: &armdatabox.StorageAccountDetails{
 								DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-								StorageAccountID: to.Ptr("<storage-account-id>"),
+								StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
 							},
 						}},
 					DeviceType:   to.Ptr(armdatabox.SKUNameDataBox),
@@ -85,13 +85,13 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 					ShippingAddress: &armdatabox.ShippingAddress{
 						AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-						City:            to.Ptr("<city>"),
-						CompanyName:     to.Ptr("<company-name>"),
-						Country:         to.Ptr("<country>"),
-						PostalCode:      to.Ptr("<postal-code>"),
-						StateOrProvince: to.Ptr("<state-or-province>"),
-						StreetAddress1:  to.Ptr("<street-address1>"),
-						StreetAddress2:  to.Ptr("<street-address2>"),
+						City:            to.Ptr("San Francisco"),
+						CompanyName:     to.Ptr("Microsoft"),
+						Country:         to.Ptr("US"),
+						PostalCode:      to.Ptr("94107"),
+						StateOrProvince: to.Ptr("CA"),
+						StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+						StreetAddress2:  to.Ptr("Unit 1"),
 					},
 					TransportPreferences: &armdatabox.TransportPreferences{
 						PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
@@ -102,9 +102,9 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 				},
 				&armdatabox.SKUAvailabilityValidationRequest{
 					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateSKUAvailability),
-					Country:        to.Ptr("<country>"),
+					Country:        to.Ptr("US"),
 					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
-					Location:       to.Ptr("<location>"),
+					Location:       to.Ptr("westus"),
 					TransferType:   to.Ptr(armdatabox.TransferTypeImportToAzure),
 				},
 				&armdatabox.CreateOrderLimitForSubscriptionValidationRequest{
@@ -120,7 +120,7 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 						},
 					},
 				}},
-			ValidationCategory: to.Ptr("<validation-category>"),
+			ValidationCategory: to.Ptr("JobCreationValidation"),
 		},
 		nil)
 	if err != nil {
@@ -130,19 +130,19 @@ func ExampleServiceClient_ValidateInputsByResourceGroup() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2021-12-01/examples/ValidateInputs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/ValidateInputs.json
 func ExampleServiceClient_ValidateInputs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ValidateInputs(ctx,
-		"<location>",
+		"westus",
 		&armdatabox.CreateJobValidations{
 			IndividualRequestDetails: []armdatabox.ValidationInputRequestClassification{
 				&armdatabox.DataTransferDetailsValidationRequest{
@@ -151,7 +151,7 @@ func ExampleServiceClient_ValidateInputs() {
 						{
 							AccountDetails: &armdatabox.StorageAccountDetails{
 								DataAccountType:  to.Ptr(armdatabox.DataAccountTypeStorageAccount),
-								StorageAccountID: to.Ptr("<storage-account-id>"),
+								StorageAccountID: to.Ptr("/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourcegroups/databoxbvt/providers/Microsoft.Storage/storageAccounts/databoxbvttestaccount"),
 							},
 						}},
 					DeviceType:   to.Ptr(armdatabox.SKUNameDataBox),
@@ -162,13 +162,13 @@ func ExampleServiceClient_ValidateInputs() {
 					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
 					ShippingAddress: &armdatabox.ShippingAddress{
 						AddressType:     to.Ptr(armdatabox.AddressTypeCommercial),
-						City:            to.Ptr("<city>"),
-						CompanyName:     to.Ptr("<company-name>"),
-						Country:         to.Ptr("<country>"),
-						PostalCode:      to.Ptr("<postal-code>"),
-						StateOrProvince: to.Ptr("<state-or-province>"),
-						StreetAddress1:  to.Ptr("<street-address1>"),
-						StreetAddress2:  to.Ptr("<street-address2>"),
+						City:            to.Ptr("San Francisco"),
+						CompanyName:     to.Ptr("Microsoft"),
+						Country:         to.Ptr("US"),
+						PostalCode:      to.Ptr("94107"),
+						StateOrProvince: to.Ptr("CA"),
+						StreetAddress1:  to.Ptr("16 TOWNSEND ST"),
+						StreetAddress2:  to.Ptr("Unit 1"),
 					},
 					TransportPreferences: &armdatabox.TransportPreferences{
 						PreferredShipmentType: to.Ptr(armdatabox.TransportShipmentTypesMicrosoftManaged),
@@ -179,9 +179,9 @@ func ExampleServiceClient_ValidateInputs() {
 				},
 				&armdatabox.SKUAvailabilityValidationRequest{
 					ValidationType: to.Ptr(armdatabox.ValidationInputDiscriminatorValidateSKUAvailability),
-					Country:        to.Ptr("<country>"),
+					Country:        to.Ptr("US"),
 					DeviceType:     to.Ptr(armdatabox.SKUNameDataBox),
-					Location:       to.Ptr("<location>"),
+					Location:       to.Ptr("westus"),
 					TransferType:   to.Ptr(armdatabox.TransferTypeImportToAzure),
 				},
 				&armdatabox.CreateOrderLimitForSubscriptionValidationRequest{
@@ -197,7 +197,7 @@ func ExampleServiceClient_ValidateInputs() {
 						},
 					},
 				}},
-			ValidationCategory: to.Ptr("<validation-category>"),
+			ValidationCategory: to.Ptr("JobCreationValidation"),
 		},
 		nil)
 	if err != nil {
@@ -207,23 +207,23 @@ func ExampleServiceClient_ValidateInputs() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2021-12-01/examples/RegionConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/RegionConfiguration.json
 func ExampleServiceClient_RegionConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegionConfiguration(ctx,
-		"<location>",
+		"westus",
 		armdatabox.RegionConfigurationRequest{
 			ScheduleAvailabilityRequest: &armdatabox.ScheduleAvailabilityRequest{
 				SKUName:         to.Ptr(armdatabox.SKUNameDataBox),
-				StorageLocation: to.Ptr("<storage-location>"),
+				StorageLocation: to.Ptr("westus"),
 			},
 		},
 		nil)
@@ -234,24 +234,24 @@ func ExampleServiceClient_RegionConfiguration() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2021-12-01/examples/RegionConfigurationByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager/Microsoft.DataBox/stable/2022-02-01/examples/RegionConfigurationByResourceGroup.json
 func ExampleServiceClient_RegionConfigurationByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatabox.NewServiceClient("<subscription-id>", cred, nil)
+	client, err := armdatabox.NewServiceClient("fa68082f-8ff7-4a25-95c7-ce9da541242f", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegionConfigurationByResourceGroup(ctx,
-		"<resource-group-name>",
-		"<location>",
+		"SdkRg4981",
+		"westus",
 		armdatabox.RegionConfigurationRequest{
 			ScheduleAvailabilityRequest: &armdatabox.ScheduleAvailabilityRequest{
 				SKUName:         to.Ptr(armdatabox.SKUNameDataBox),
-				StorageLocation: to.Ptr("<storage-location>"),
+				StorageLocation: to.Ptr("westus"),
 			},
 		},
 		nil)

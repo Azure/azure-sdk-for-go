@@ -12,55 +12,53 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/CreateOrUpdateVirtualMachineScaleSetVMRunCommands.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_CreateOrUpdate.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		"<run-command-name>",
+		"myResourceGroup",
+		"myvmScaleSet",
+		"0",
+		"myRunCommand",
 		armcompute.VirtualMachineRunCommand{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Properties: &armcompute.VirtualMachineRunCommandProperties{
 				AsyncExecution: to.Ptr(false),
 				Parameters: []*armcompute.RunCommandInputParameter{
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("param1"),
+						Value: to.Ptr("value1"),
 					},
 					{
-						Name:  to.Ptr("<name>"),
-						Value: to.Ptr("<value>"),
+						Name:  to.Ptr("param2"),
+						Value: to.Ptr("value2"),
 					}},
-				RunAsPassword: to.Ptr("<run-as-password>"),
-				RunAsUser:     to.Ptr("<run-as-user>"),
+				RunAsPassword: to.Ptr("<runAsPassword>"),
+				RunAsUser:     to.Ptr("user1"),
 				Source: &armcompute.VirtualMachineRunCommandScriptSource{
-					Script: to.Ptr("<script>"),
+					Script: to.Ptr("Write-Host Hello World!"),
 				},
 				TimeoutInSeconds: to.Ptr[int32](3600),
 			},
 		},
-		&armcompute.VirtualMachineScaleSetVMRunCommandsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -68,34 +66,34 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/UpdateVirtualMachineScaleSetVMRunCommands.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Update.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		"<run-command-name>",
+		"myResourceGroup",
+		"myvmScaleSet",
+		"0",
+		"myRunCommand",
 		armcompute.VirtualMachineRunCommandUpdate{
 			Properties: &armcompute.VirtualMachineRunCommandProperties{
 				Source: &armcompute.VirtualMachineRunCommandScriptSource{
-					Script: to.Ptr("<script>"),
+					Script: to.Ptr("Write-Host Script Source Updated!"),
 				},
 			},
 		},
-		&armcompute.VirtualMachineScaleSetVMRunCommandsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -103,48 +101,48 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/DeleteVirtualMachineScaleSetVMRunCommands.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Delete.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		"<run-command-name>",
-		&armcompute.VirtualMachineScaleSetVMRunCommandsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"myvmScaleSet",
+		"0",
+		"myRunCommand",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/GetVirtualMachineScaleSetVMRunCommands.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_Get.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		"<run-command-name>",
+		"myResourceGroup",
+		"myvmScaleSet",
+		"0",
+		"myRunCommand",
 		&armcompute.VirtualMachineScaleSetVMRunCommandsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -153,26 +151,25 @@ func ExampleVirtualMachineScaleSetVMRunCommandsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/ListVirtualMachineScaleSetVMRunCommands.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_List.json
 func ExampleVirtualMachineScaleSetVMRunCommandsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMRunCommandsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
+	pager := client.NewListPager("myResourceGroup",
+		"myvmScaleSet",
+		"0",
 		&armcompute.VirtualMachineScaleSetVMRunCommandsClientListOptions{Expand: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

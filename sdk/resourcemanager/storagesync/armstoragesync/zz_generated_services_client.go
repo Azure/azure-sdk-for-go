@@ -38,7 +38,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewServicesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CheckNameAvailability - Check the give namespace name availability.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // locationName - The desired region for the name check.
 // parameters - Parameters to check availability of the given namespace name
 // options - ServicesClientCheckNameAvailabilityOptions contains the optional parameters for the ServicesClient.CheckNameAvailability
@@ -93,7 +94,7 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -108,24 +109,26 @@ func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Res
 
 // BeginCreate - Create a new StorageSyncService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // parameters - Storage Sync Service resource name.
 // options - ServicesClientBeginCreateOptions contains the optional parameters for the ServicesClient.BeginCreate method.
-func (client *ServicesClient) BeginCreate(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters ServiceCreateParameters, options *ServicesClientBeginCreateOptions) (*armruntime.Poller[ServicesClientCreateResponse], error) {
+func (client *ServicesClient) BeginCreate(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters ServiceCreateParameters, options *ServicesClientBeginCreateOptions) (*runtime.Poller[ServicesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, storageSyncServiceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServicesClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServicesClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServicesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServicesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create a new StorageSyncService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *ServicesClient) create(ctx context.Context, resourceGroupName string, storageSyncServiceName string, parameters ServiceCreateParameters, options *ServicesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, storageSyncServiceName, parameters, options)
 	if err != nil {
@@ -163,29 +166,31 @@ func (client *ServicesClient) createCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Delete a given StorageSyncService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // options - ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
-func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *ServicesClientBeginDeleteOptions) (*armruntime.Poller[ServicesClientDeleteResponse], error) {
+func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *ServicesClientBeginDeleteOptions) (*runtime.Poller[ServicesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, storageSyncServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServicesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServicesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServicesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a given StorageSyncService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *ServicesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
 	if err != nil {
@@ -223,12 +228,13 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a given StorageSyncService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // options - ServicesClientGetOptions contains the optional parameters for the ServicesClient.Get method.
@@ -269,7 +275,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -290,11 +296,12 @@ func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesCl
 
 // NewListByResourceGroupPager - Get a StorageSyncService list by Resource group name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ServicesClientListByResourceGroupOptions contains the optional parameters for the ServicesClient.ListByResourceGroup
 // method.
 func (client *ServicesClient) NewListByResourceGroupPager(resourceGroupName string, options *ServicesClientListByResourceGroupOptions) *runtime.Pager[ServicesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServicesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServicesClientListByResourceGroupResponse]{
 		More: func(page ServicesClientListByResourceGroupResponse) bool {
 			return false
 		},
@@ -333,7 +340,7 @@ func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -354,10 +361,11 @@ func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Get a StorageSyncService list by subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // options - ServicesClientListBySubscriptionOptions contains the optional parameters for the ServicesClient.ListBySubscription
 // method.
 func (client *ServicesClient) NewListBySubscriptionPager(options *ServicesClientListBySubscriptionOptions) *runtime.Pager[ServicesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ServicesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ServicesClientListBySubscriptionResponse]{
 		More: func(page ServicesClientListBySubscriptionResponse) bool {
 			return false
 		},
@@ -392,7 +400,7 @@ func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -413,23 +421,25 @@ func (client *ServicesClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // BeginUpdate - Patch a given StorageSyncService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // storageSyncServiceName - Name of Storage Sync Service resource.
 // options - ServicesClientBeginUpdateOptions contains the optional parameters for the ServicesClient.BeginUpdate method.
-func (client *ServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *ServicesClientBeginUpdateOptions) (*armruntime.Poller[ServicesClientUpdateResponse], error) {
+func (client *ServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *ServicesClientBeginUpdateOptions) (*runtime.Poller[ServicesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, storageSyncServiceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ServicesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServicesClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ServicesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServicesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Patch a given StorageSyncService.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *ServicesClient) update(ctx context.Context, resourceGroupName string, storageSyncServiceName string, options *ServicesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
 	if err != nil {
@@ -467,7 +477,7 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}

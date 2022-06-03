@@ -23,12 +23,12 @@ func ExampleUnresolvedDependenciesClient_NewGetPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armresourcemover.NewUnresolvedDependenciesClient("<subscription-id>", cred, nil)
+	client, err := armresourcemover.NewUnresolvedDependenciesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewGetPager("<resource-group-name>",
-		"<move-collection-name>",
+	pager := client.NewGetPager("rg1",
+		"movecollection1",
 		&armresourcemover.UnresolvedDependenciesClientGetOptions{DependencyLevel: nil,
 			Orderby: nil,
 			Filter:  nil,
@@ -37,7 +37,6 @@ func ExampleUnresolvedDependenciesClient_NewGetPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

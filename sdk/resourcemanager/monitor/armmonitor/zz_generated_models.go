@@ -25,6 +25,9 @@ type Action struct {
 	ODataType *string `json:"odata.type,omitempty"`
 }
 
+// GetAction implements the ActionClassification interface for type Action.
+func (a *Action) GetAction() *Action { return a }
+
 // ActionDetail - The action detail
 type ActionDetail struct {
 	// The detail of the friendly error message
@@ -150,6 +153,20 @@ type ActionGroupResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions contains the optional parameters for the ActionGroupsClient.BeginCreateNotificationsAtActionGroupResourceLevel
+// method.
+type ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions contains the optional parameters for the ActionGroupsClient.BeginCreateNotificationsAtResourceGroupLevel
+// method.
+type ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // ActionGroupsClientBeginPostTestNotificationsOptions contains the optional parameters for the ActionGroupsClient.BeginPostTestNotifications
 // method.
 type ActionGroupsClientBeginPostTestNotificationsOptions struct {
@@ -174,6 +191,18 @@ type ActionGroupsClientEnableReceiverOptions struct {
 
 // ActionGroupsClientGetOptions contains the optional parameters for the ActionGroupsClient.Get method.
 type ActionGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelOptions contains the optional parameters for the ActionGroupsClient.GetTestNotificationsAtActionGroupResourceLevel
+// method.
+type ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions contains the optional parameters for the ActionGroupsClient.GetTestNotificationsAtResourceGroupLevel
+// method.
+type ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -485,6 +514,13 @@ type AlertingAction struct {
 
 	// time (in minutes) for which Alerts should be throttled or suppressed.
 	ThrottlingInMin *int32 `json:"throttlingInMin,omitempty"`
+}
+
+// GetAction implements the ActionClassification interface for type AlertingAction.
+func (a *AlertingAction) GetAction() *Action {
+	return &Action{
+		ODataType: a.ODataType,
+	}
 }
 
 // ArmRoleReceiver - An arm role receiver.
@@ -1554,6 +1590,20 @@ type DynamicMetricCriteria struct {
 	SkipMetricValidation *bool `json:"skipMetricValidation,omitempty"`
 }
 
+// GetMultiMetricCriteria implements the MultiMetricCriteriaClassification interface for type DynamicMetricCriteria.
+func (d *DynamicMetricCriteria) GetMultiMetricCriteria() *MultiMetricCriteria {
+	return &MultiMetricCriteria{
+		CriterionType:        d.CriterionType,
+		Name:                 d.Name,
+		MetricName:           d.MetricName,
+		MetricNamespace:      d.MetricNamespace,
+		TimeAggregation:      d.TimeAggregation,
+		Dimensions:           d.Dimensions,
+		SkipMetricValidation: d.SkipMetricValidation,
+		AdditionalProperties: d.AdditionalProperties,
+	}
+}
+
 // DynamicThresholdFailingPeriods - The minimum number of violations required within the selected lookback time window required
 // to raise an alert.
 type DynamicThresholdFailingPeriods struct {
@@ -1929,6 +1979,14 @@ type LocationThresholdRuleCondition struct {
 	WindowSize *string `json:"windowSize,omitempty"`
 }
 
+// GetRuleCondition implements the RuleConditionClassification interface for type LocationThresholdRuleCondition.
+func (l *LocationThresholdRuleCondition) GetRuleCondition() *RuleCondition {
+	return &RuleCondition{
+		ODataType:  l.ODataType,
+		DataSource: l.DataSource,
+	}
+}
+
 // LogAnalyticsDestination - Log Analytics destination.
 type LogAnalyticsDestination struct {
 	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
@@ -2195,6 +2253,13 @@ type LogToMetricAction struct {
 	ODataType *string `json:"odata.type,omitempty"`
 }
 
+// GetAction implements the ActionClassification interface for type LogToMetricAction.
+func (l *LogToMetricAction) GetAction() *Action {
+	return &Action{
+		ODataType: l.ODataType,
+	}
+}
+
 // LogicAppReceiver - A logic app receiver.
 type LogicAppReceiver struct {
 	// REQUIRED; The callback url where http request sent to.
@@ -2243,6 +2308,14 @@ type ManagementEventRuleCondition struct {
 
 	// the resource from which the rule collects its data. For this type dataSource will always be of type RuleMetricDataSource.
 	DataSource RuleDataSourceClassification `json:"dataSource,omitempty"`
+}
+
+// GetRuleCondition implements the RuleConditionClassification interface for type ManagementEventRuleCondition.
+func (m *ManagementEventRuleCondition) GetRuleCondition() *RuleCondition {
+	return &RuleCondition{
+		ODataType:  m.ODataType,
+		DataSource: m.DataSource,
+	}
 }
 
 // Metadata about the resource
@@ -2315,6 +2388,9 @@ type MetricAlertCriteria struct {
 	AdditionalProperties map[string]interface{}
 }
 
+// GetMetricAlertCriteria implements the MetricAlertCriteriaClassification interface for type MetricAlertCriteria.
+func (m *MetricAlertCriteria) GetMetricAlertCriteria() *MetricAlertCriteria { return m }
+
 // MetricAlertMultipleResourceMultipleMetricCriteria - Specifies the metric alert criteria for multiple resource that has
 // multiple metric criteria.
 type MetricAlertMultipleResourceMultipleMetricCriteria struct {
@@ -2326,6 +2402,14 @@ type MetricAlertMultipleResourceMultipleMetricCriteria struct {
 
 	// the list of multiple metric criteria for this 'all of' operation.
 	AllOf []MultiMetricCriteriaClassification `json:"allOf,omitempty"`
+}
+
+// GetMetricAlertCriteria implements the MetricAlertCriteriaClassification interface for type MetricAlertMultipleResourceMultipleMetricCriteria.
+func (m *MetricAlertMultipleResourceMultipleMetricCriteria) GetMetricAlertCriteria() *MetricAlertCriteria {
+	return &MetricAlertCriteria{
+		ODataType:            m.ODataType,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MetricAlertProperties - An alert rule.
@@ -2461,6 +2545,14 @@ type MetricAlertSingleResourceMultipleMetricCriteria struct {
 
 	// The list of metric criteria for this 'all of' operation.
 	AllOf []*MetricCriteria `json:"allOf,omitempty"`
+}
+
+// GetMetricAlertCriteria implements the MetricAlertCriteriaClassification interface for type MetricAlertSingleResourceMultipleMetricCriteria.
+func (m *MetricAlertSingleResourceMultipleMetricCriteria) GetMetricAlertCriteria() *MetricAlertCriteria {
+	return &MetricAlertCriteria{
+		ODataType:            m.ODataType,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MetricAlertStatus - An alert status.
@@ -2605,6 +2697,20 @@ type MetricCriteria struct {
 
 	// Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped.
 	SkipMetricValidation *bool `json:"skipMetricValidation,omitempty"`
+}
+
+// GetMultiMetricCriteria implements the MultiMetricCriteriaClassification interface for type MetricCriteria.
+func (m *MetricCriteria) GetMultiMetricCriteria() *MultiMetricCriteria {
+	return &MultiMetricCriteria{
+		CriterionType:        m.CriterionType,
+		Name:                 m.Name,
+		MetricName:           m.MetricName,
+		MetricNamespace:      m.MetricNamespace,
+		TimeAggregation:      m.TimeAggregation,
+		Dimensions:           m.Dimensions,
+		SkipMetricValidation: m.SkipMetricValidation,
+		AdditionalProperties: m.AdditionalProperties,
+	}
 }
 
 // MetricDefinition - Metric definition class specifies the metadata for a metric.
@@ -2866,6 +2972,9 @@ type MultiMetricCriteria struct {
 	// Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped.
 	SkipMetricValidation *bool `json:"skipMetricValidation,omitempty"`
 }
+
+// GetMultiMetricCriteria implements the MultiMetricCriteriaClassification interface for type MultiMetricCriteria.
+func (m *MultiMetricCriteria) GetMultiMetricCriteria() *MultiMetricCriteria { return m }
 
 // NetworkRuleSet - Definition of the network rules.
 type NetworkRuleSet struct {
@@ -3354,6 +3463,9 @@ type RuleAction struct {
 	ODataType *string `json:"odata.type,omitempty"`
 }
 
+// GetRuleAction implements the RuleActionClassification interface for type RuleAction.
+func (r *RuleAction) GetRuleAction() *RuleAction { return r }
+
 // RuleConditionClassification provides polymorphic access to related types.
 // Call the interface's GetRuleCondition() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -3373,6 +3485,9 @@ type RuleCondition struct {
 	// the resource from which the rule collects its data. For this type dataSource will always be of type RuleMetricDataSource.
 	DataSource RuleDataSourceClassification `json:"dataSource,omitempty"`
 }
+
+// GetRuleCondition implements the RuleConditionClassification interface for type RuleCondition.
+func (r *RuleCondition) GetRuleCondition() *RuleCondition { return r }
 
 // RuleDataSourceClassification provides polymorphic access to related types.
 // Call the interface's GetRuleDataSource() method to access the common type.
@@ -3402,6 +3517,9 @@ type RuleDataSource struct {
 	ResourceURI *string `json:"resourceUri,omitempty"`
 }
 
+// GetRuleDataSource implements the RuleDataSourceClassification interface for type RuleDataSource.
+func (r *RuleDataSource) GetRuleDataSource() *RuleDataSource { return r }
+
 // RuleEmailAction - Specifies the action to send email when the rule condition is evaluated. The discriminator is always
 // RuleEmailAction in this case.
 type RuleEmailAction struct {
@@ -3413,6 +3531,13 @@ type RuleEmailAction struct {
 
 	// Whether the administrators (service and co-administrators) of the service should be notified when the alert is activated.
 	SendToServiceOwners *bool `json:"sendToServiceOwners,omitempty"`
+}
+
+// GetRuleAction implements the RuleActionClassification interface for type RuleEmailAction.
+func (r *RuleEmailAction) GetRuleAction() *RuleAction {
+	return &RuleAction{
+		ODataType: r.ODataType,
+	}
 }
 
 // RuleManagementEventClaimsDataSource - The claims for a rule management event data source.
@@ -3468,6 +3593,17 @@ type RuleManagementEventDataSource struct {
 	SubStatus *string `json:"subStatus,omitempty"`
 }
 
+// GetRuleDataSource implements the RuleDataSourceClassification interface for type RuleManagementEventDataSource.
+func (r *RuleManagementEventDataSource) GetRuleDataSource() *RuleDataSource {
+	return &RuleDataSource{
+		ODataType:        r.ODataType,
+		ResourceURI:      r.ResourceURI,
+		LegacyResourceID: r.LegacyResourceID,
+		ResourceLocation: r.ResourceLocation,
+		MetricNamespace:  r.MetricNamespace,
+	}
+}
+
 // RuleMetricDataSource - A rule metric data source. The discriminator value is always RuleMetricDataSource in this case.
 type RuleMetricDataSource struct {
 	// REQUIRED; specifies the type of data source. There are two types of rule data sources: RuleMetricDataSource and RuleManagementEventDataSource
@@ -3490,6 +3626,17 @@ type RuleMetricDataSource struct {
 	ResourceURI *string `json:"resourceUri,omitempty"`
 }
 
+// GetRuleDataSource implements the RuleDataSourceClassification interface for type RuleMetricDataSource.
+func (r *RuleMetricDataSource) GetRuleDataSource() *RuleDataSource {
+	return &RuleDataSource{
+		ODataType:        r.ODataType,
+		ResourceURI:      r.ResourceURI,
+		LegacyResourceID: r.LegacyResourceID,
+		ResourceLocation: r.ResourceLocation,
+		MetricNamespace:  r.MetricNamespace,
+	}
+}
+
 // RuleWebhookAction - Specifies the action to post to service when the rule condition is evaluated. The discriminator is
 // always RuleWebhookAction in this case.
 type RuleWebhookAction struct {
@@ -3501,6 +3648,13 @@ type RuleWebhookAction struct {
 
 	// the service uri to Post the notification when the alert activates or resolves.
 	ServiceURI *string `json:"serviceUri,omitempty"`
+}
+
+// GetRuleAction implements the RuleActionClassification interface for type RuleWebhookAction.
+func (r *RuleWebhookAction) GetRuleAction() *RuleAction {
+	return &RuleAction{
+		ODataType: r.ODataType,
+	}
 }
 
 // ScaleAction - The parameters for the scaling action.
@@ -3797,18 +3951,6 @@ type TestNotificationDetailsResponse struct {
 	CreatedTime *string `json:"CreatedTime,omitempty"`
 }
 
-// TestNotificationResponse - The response when test notification succeeded
-type TestNotificationResponse struct {
-	// REQUIRED; The correlation id
-	CorrelationID *string `json:"correlationId,omitempty"`
-
-	// REQUIRED; The created time
-	CreatedTime *string `json:"createdTime,omitempty"`
-
-	// REQUIRED; The notification id
-	NotificationID *string `json:"notificationId,omitempty"`
-}
-
 // ThresholdRuleCondition - A rule condition based on a metric crossing a threshold.
 type ThresholdRuleCondition struct {
 	// REQUIRED; specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of
@@ -3832,6 +3974,14 @@ type ThresholdRuleCondition struct {
 	// the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. If specified
 	// then it must be between 5 minutes and 1 day.
 	WindowSize *string `json:"windowSize,omitempty"`
+}
+
+// GetRuleCondition implements the RuleConditionClassification interface for type ThresholdRuleCondition.
+func (t *ThresholdRuleCondition) GetRuleCondition() *RuleCondition {
+	return &RuleCondition{
+		ODataType:  t.ODataType,
+		DataSource: t.DataSource,
+	}
 }
 
 // TimeSeriesBaseline - The baseline values for a single time series.
@@ -4040,6 +4190,14 @@ type WebtestLocationAvailabilityCriteria struct {
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]interface{}
+}
+
+// GetMetricAlertCriteria implements the MetricAlertCriteriaClassification interface for type WebtestLocationAvailabilityCriteria.
+func (w *WebtestLocationAvailabilityCriteria) GetMetricAlertCriteria() *MetricAlertCriteria {
+	return &MetricAlertCriteria{
+		ODataType:            w.ODataType,
+		AdditionalProperties: w.AdditionalProperties,
+	}
 }
 
 // WindowsEventLogDataSource - Definition of which Windows Event Log events will be collected and how they will be collected.

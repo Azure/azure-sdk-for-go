@@ -28,8 +28,8 @@ func ExampleRemediationsClient_NewListDeploymentsAtManagementGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListDeploymentsAtManagementGroupPager("<management-group-id>",
-		"<remediation-name>",
+	pager := client.NewListDeploymentsAtManagementGroupPager("financeMg",
+		"myRemediation",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -45,7 +45,6 @@ func ExampleRemediationsClient_NewListDeploymentsAtManagementGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -66,8 +65,8 @@ func ExampleRemediationsClient_CancelAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CancelAtManagementGroup(ctx,
-		"<management-group-id>",
-		"<remediation-name>",
+		"financeMg",
+		"myRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -87,7 +86,7 @@ func ExampleRemediationsClient_NewListForManagementGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForManagementGroupPager("<management-group-id>",
+	pager := client.NewListForManagementGroupPager("financeMg",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -103,7 +102,6 @@ func ExampleRemediationsClient_NewListForManagementGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -124,11 +122,11 @@ func ExampleRemediationsClient_CreateOrUpdateAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAtManagementGroup(ctx,
-		"<management-group-id>",
-		"<remediation-name>",
+		"financeMg",
+		"storageRemediation",
 		armpolicyinsights.Remediation{
 			Properties: &armpolicyinsights.RemediationProperties{
-				PolicyAssignmentID: to.Ptr("<policy-assignment-id>"),
+				PolicyAssignmentID: to.Ptr("/providers/microsoft.management/managementGroups/financeMg/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5"),
 			},
 		},
 		nil)
@@ -151,8 +149,8 @@ func ExampleRemediationsClient_GetAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtManagementGroup(ctx,
-		"<management-group-id>",
-		"<remediation-name>",
+		"financeMg",
+		"storageRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -173,8 +171,8 @@ func ExampleRemediationsClient_DeleteAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DeleteAtManagementGroup(ctx,
-		"<management-group-id>",
-		"<remediation-name>",
+		"financeMg",
+		"storageRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -190,11 +188,11 @@ func ExampleRemediationsClient_NewListDeploymentsAtSubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListDeploymentsAtSubscriptionPager("<remediation-name>",
+	pager := client.NewListDeploymentsAtSubscriptionPager("myRemediation",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -210,7 +208,6 @@ func ExampleRemediationsClient_NewListDeploymentsAtSubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -226,12 +223,12 @@ func ExampleRemediationsClient_CancelAtSubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CancelAtSubscription(ctx,
-		"<remediation-name>",
+		"myRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -247,7 +244,7 @@ func ExampleRemediationsClient_NewListForSubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -266,7 +263,6 @@ func ExampleRemediationsClient_NewListForSubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -282,15 +278,15 @@ func ExampleRemediationsClient_CreateOrUpdateAtSubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAtSubscription(ctx,
-		"<remediation-name>",
+		"storageRemediation",
 		armpolicyinsights.Remediation{
 			Properties: &armpolicyinsights.RemediationProperties{
-				PolicyAssignmentID: to.Ptr("<policy-assignment-id>"),
+				PolicyAssignmentID: to.Ptr("/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5"),
 			},
 		},
 		nil)
@@ -308,12 +304,12 @@ func ExampleRemediationsClient_GetAtSubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtSubscription(ctx,
-		"<remediation-name>",
+		"storageRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -329,12 +325,12 @@ func ExampleRemediationsClient_DeleteAtSubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DeleteAtSubscription(ctx,
-		"<remediation-name>",
+		"storageRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -350,12 +346,12 @@ func ExampleRemediationsClient_NewListDeploymentsAtResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListDeploymentsAtResourceGroupPager("<resource-group-name>",
-		"<remediation-name>",
+	pager := client.NewListDeploymentsAtResourceGroupPager("myResourceGroup",
+		"myRemediation",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -371,7 +367,6 @@ func ExampleRemediationsClient_NewListDeploymentsAtResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -387,13 +382,13 @@ func ExampleRemediationsClient_CancelAtResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CancelAtResourceGroup(ctx,
-		"<resource-group-name>",
-		"<remediation-name>",
+		"myResourceGroup",
+		"myRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -409,11 +404,11 @@ func ExampleRemediationsClient_NewListForResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForResourceGroupPager("<resource-group-name>",
+	pager := client.NewListForResourceGroupPager("myResourceGroup",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -429,7 +424,6 @@ func ExampleRemediationsClient_NewListForResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -445,16 +439,16 @@ func ExampleRemediationsClient_CreateOrUpdateAtResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAtResourceGroup(ctx,
-		"<resource-group-name>",
-		"<remediation-name>",
+		"myResourceGroup",
+		"storageRemediation",
 		armpolicyinsights.Remediation{
 			Properties: &armpolicyinsights.RemediationProperties{
-				PolicyAssignmentID: to.Ptr("<policy-assignment-id>"),
+				PolicyAssignmentID: to.Ptr("/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourceGroups/myResourceGroup/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5"),
 			},
 		},
 		nil)
@@ -472,13 +466,13 @@ func ExampleRemediationsClient_GetAtResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtResourceGroup(ctx,
-		"<resource-group-name>",
-		"<remediation-name>",
+		"myResourceGroup",
+		"storageRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -494,13 +488,13 @@ func ExampleRemediationsClient_DeleteAtResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicyinsights.NewRemediationsClient("<subscription-id>", cred, nil)
+	client, err := armpolicyinsights.NewRemediationsClient("35ee058e-5fa0-414c-8145-3ebb8d09b6e2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DeleteAtResourceGroup(ctx,
-		"<resource-group-name>",
-		"<remediation-name>",
+		"myResourceGroup",
+		"storageRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -520,8 +514,8 @@ func ExampleRemediationsClient_NewListDeploymentsAtResourcePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListDeploymentsAtResourcePager("<resource-id>",
-		"<remediation-name>",
+	pager := client.NewListDeploymentsAtResourcePager("subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myResourceGroup/providers/microsoft.storage/storageaccounts/storAc1",
+		"myRemediation",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -537,7 +531,6 @@ func ExampleRemediationsClient_NewListDeploymentsAtResourcePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -558,8 +551,8 @@ func ExampleRemediationsClient_CancelAtResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CancelAtResource(ctx,
-		"<resource-id>",
-		"<remediation-name>",
+		"subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myResourceGroup/providers/microsoft.storage/storageaccounts/storAc1",
+		"myRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -579,7 +572,7 @@ func ExampleRemediationsClient_NewListForResourcePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForResourcePager("<resource-id>",
+	pager := client.NewListForResourcePager("subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myResourceGroup/providers/microsoft.storage/storageaccounts/storAc1",
 		&armpolicyinsights.QueryOptions{Top: nil,
 			Filter:    nil,
 			OrderBy:   nil,
@@ -595,7 +588,6 @@ func ExampleRemediationsClient_NewListForResourcePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -616,11 +608,11 @@ func ExampleRemediationsClient_CreateOrUpdateAtResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAtResource(ctx,
-		"<resource-id>",
-		"<remediation-name>",
+		"subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myResourceGroup/providers/microsoft.storage/storageaccounts/storAc1",
+		"storageRemediation",
 		armpolicyinsights.Remediation{
 			Properties: &armpolicyinsights.RemediationProperties{
-				PolicyAssignmentID: to.Ptr("<policy-assignment-id>"),
+				PolicyAssignmentID: to.Ptr("/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourceGroups/myResourceGroup/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5"),
 			},
 		},
 		nil)
@@ -643,8 +635,8 @@ func ExampleRemediationsClient_GetAtResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAtResource(ctx,
-		"<resource-id>",
-		"<remediation-name>",
+		"subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myResourceGroup/providers/microsoft.storage/storageaccounts/storAc1",
+		"storageRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -665,8 +657,8 @@ func ExampleRemediationsClient_DeleteAtResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.DeleteAtResource(ctx,
-		"<resource-id>",
-		"<remediation-name>",
+		"subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourcegroups/myResourceGroup/providers/microsoft.storage/storageaccounts/storAc1",
+		"storageRemediation",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

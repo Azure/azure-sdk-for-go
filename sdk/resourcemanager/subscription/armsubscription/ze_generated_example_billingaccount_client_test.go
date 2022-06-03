@@ -28,7 +28,7 @@ func ExampleBillingAccountClient_GetPolicy() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPolicy(ctx,
-		"<billing-account-id>",
+		"testBillingAccountId",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

@@ -38,7 +38,7 @@ func NewManagedPrivateEndpointsClient(subscriptionID string, credential azcore.T
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewManagedPrivateEndpointsClient(subscriptionID string, credential azcore.T
 
 // CreateOrUpdate - Creates or updates a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // managedVirtualNetworkName - Managed virtual network name
@@ -109,9 +110,9 @@ func (client *ManagedPrivateEndpointsClient) createOrUpdateCreateRequest(ctx con
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, managedPrivateEndpoint)
 }
 
@@ -126,6 +127,7 @@ func (client *ManagedPrivateEndpointsClient) createOrUpdateHandleResponse(resp *
 
 // Delete - Deletes a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // managedVirtualNetworkName - Managed virtual network name
@@ -177,12 +179,13 @@ func (client *ManagedPrivateEndpointsClient) deleteCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a managed private endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // managedVirtualNetworkName - Managed virtual network name
@@ -235,9 +238,9 @@ func (client *ManagedPrivateEndpointsClient) getCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -252,13 +255,14 @@ func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Respon
 
 // NewListByFactoryPager - Lists managed private endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // managedVirtualNetworkName - Managed virtual network name
 // options - ManagedPrivateEndpointsClientListByFactoryOptions contains the optional parameters for the ManagedPrivateEndpointsClient.ListByFactory
 // method.
 func (client *ManagedPrivateEndpointsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, managedVirtualNetworkName string, options *ManagedPrivateEndpointsClientListByFactoryOptions) *runtime.Pager[ManagedPrivateEndpointsClientListByFactoryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedPrivateEndpointsClientListByFactoryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedPrivateEndpointsClientListByFactoryResponse]{
 		More: func(page ManagedPrivateEndpointsClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -311,7 +315,7 @@ func (client *ManagedPrivateEndpointsClient) listByFactoryCreateRequest(ctx cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

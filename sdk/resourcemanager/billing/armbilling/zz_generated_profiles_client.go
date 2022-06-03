@@ -36,7 +36,7 @@ func NewProfilesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,26 +54,28 @@ func NewProfilesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 // BeginCreateOrUpdate - Creates or updates a billing profile. The operation is supported for billing accounts with agreement
 // type Microsoft Customer Agreement or Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // parameters - The new or updated billing profile.
 // options - ProfilesClientBeginCreateOrUpdateOptions contains the optional parameters for the ProfilesClient.BeginCreateOrUpdate
 // method.
-func (client *ProfilesClient) BeginCreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, options *ProfilesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ProfilesClientCreateOrUpdateResponse], error) {
+func (client *ProfilesClient) BeginCreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, options *ProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ProfilesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, billingAccountName, billingProfileName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ProfilesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ProfilesClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ProfilesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ProfilesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a billing profile. The operation is supported for billing accounts with agreement type
 // Microsoft Customer Agreement or Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *ProfilesClient) createOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, parameters Profile, options *ProfilesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, billingAccountName, billingProfileName, parameters, options)
 	if err != nil {
@@ -107,13 +109,14 @@ func (client *ProfilesClient) createOrUpdateCreateRequest(ctx context.Context, b
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Get - Gets a billing profile by its ID. The operation is supported for billing accounts with agreement type Microsoft Customer
 // Agreement or Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - ProfilesClientGetOptions contains the optional parameters for the ProfilesClient.Get method.
@@ -153,7 +156,7 @@ func (client *ProfilesClient) getCreateRequest(ctx context.Context, billingAccou
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -169,11 +172,12 @@ func (client *ProfilesClient) getHandleResponse(resp *http.Response) (ProfilesCl
 // NewListByBillingAccountPager - Lists the billing profiles that a user has access to. The operation is supported for billing
 // accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - ProfilesClientListByBillingAccountOptions contains the optional parameters for the ProfilesClient.ListByBillingAccount
 // method.
 func (client *ProfilesClient) NewListByBillingAccountPager(billingAccountName string, options *ProfilesClientListByBillingAccountOptions) *runtime.Pager[ProfilesClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProfilesClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProfilesClientListByBillingAccountResponse]{
 		More: func(page ProfilesClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -217,7 +221,7 @@ func (client *ProfilesClient) listByBillingAccountCreateRequest(ctx context.Cont
 		reqQP.Set("$expand", *options.Expand)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

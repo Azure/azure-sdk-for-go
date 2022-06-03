@@ -12,6 +12,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
@@ -91,13 +92,13 @@ func ExampleClient_BeginDeleteSecret() {
 		panic(err)
 	}
 	// This is optional if you don't care when the secret is deleted
-	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
+	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		panic(err)
 	}
 }
 
-func ExampleClient_ListPropertiesOfSecrets() {
+func ExampleClient_NewListPropertiesOfSecretsPager() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,14 +110,14 @@ func ExampleClient_ListPropertiesOfSecrets() {
 		panic(err)
 	}
 
-	pager := client.ListPropertiesOfSecrets(nil)
+	pager := client.NewListPropertiesOfSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			panic(err)
 		}
 		for _, v := range page.Secrets {
-			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Tags)
+			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Properties.Tags)
 		}
 	}
 }
@@ -181,7 +182,7 @@ func ExampleClient_PurgeDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
-	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
+	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		panic(err)
 	}
@@ -208,7 +209,7 @@ func ExampleClient_BeginRecoverDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
-	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
+	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		panic(err)
 	}
@@ -239,7 +240,7 @@ func ExampleClient_UpdateSecretProperties() {
 		ExpiresOn:   to.Ptr(time.Now().Add(48 * time.Hour)),
 		NotBefore:   to.Ptr(time.Now().Add(-24 * time.Hour)),
 		ContentType: to.Ptr("password"),
-		Tags:        map[string]string{"Tag1": "Tag1Value"},
+		Tags:        map[string]*string{"Tag1": to.Ptr("Tag1Value")},
 		// Remember to preserve the name and version
 		Name:    getResp.Secret.Properties.Name,
 		Version: getResp.Secret.Properties.Version,

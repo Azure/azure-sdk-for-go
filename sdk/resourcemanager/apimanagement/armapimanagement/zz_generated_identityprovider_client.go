@@ -39,7 +39,7 @@ func NewIdentityProviderClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewIdentityProviderClient(subscriptionID string, credential azcore.TokenCre
 
 // CreateOrUpdate - Creates or Updates the IdentityProvider configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // identityProviderName - Identity Provider Type identifier.
@@ -105,9 +106,9 @@ func (client *IdentityProviderClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -125,6 +126,7 @@ func (client *IdentityProviderClient) createOrUpdateHandleResponse(resp *http.Re
 
 // Delete - Deletes the specified identity provider configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // identityProviderName - Identity Provider Type identifier.
@@ -172,13 +174,14 @@ func (client *IdentityProviderClient) deleteCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the configuration details of the identity Provider configured in specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // identityProviderName - Identity Provider Type identifier.
@@ -224,7 +227,7 @@ func (client *IdentityProviderClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -241,6 +244,7 @@ func (client *IdentityProviderClient) getHandleResponse(resp *http.Response) (Id
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the identityProvider specified by its identifier.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // identityProviderName - Identity Provider Type identifier.
@@ -254,6 +258,9 @@ func (client *IdentityProviderClient) GetEntityTag(ctx context.Context, resource
 	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IdentityProviderClientGetEntityTagResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return IdentityProviderClientGetEntityTagResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getEntityTagHandleResponse(resp)
 }
@@ -284,7 +291,7 @@ func (client *IdentityProviderClient) getEntityTagCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -294,20 +301,19 @@ func (client *IdentityProviderClient) getEntityTagHandleResponse(resp *http.Resp
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
-	}
+	result.Success = resp.StatusCode >= 200 && resp.StatusCode < 300
 	return result, nil
 }
 
 // NewListByServicePager - Lists a collection of Identity Provider configured in the specified service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // options - IdentityProviderClientListByServiceOptions contains the optional parameters for the IdentityProviderClient.ListByService
 // method.
 func (client *IdentityProviderClient) NewListByServicePager(resourceGroupName string, serviceName string, options *IdentityProviderClientListByServiceOptions) *runtime.Pager[IdentityProviderClientListByServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IdentityProviderClientListByServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IdentityProviderClientListByServiceResponse]{
 		More: func(page IdentityProviderClientListByServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -356,7 +362,7 @@ func (client *IdentityProviderClient) listByServiceCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -371,6 +377,7 @@ func (client *IdentityProviderClient) listByServiceHandleResponse(resp *http.Res
 
 // ListSecrets - Gets the client secret details of the Identity Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // identityProviderName - Identity Provider Type identifier.
@@ -417,7 +424,7 @@ func (client *IdentityProviderClient) listSecretsCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -435,6 +442,7 @@ func (client *IdentityProviderClient) listSecretsHandleResponse(resp *http.Respo
 
 // Update - Updates an existing IdentityProvider configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // serviceName - The name of the API Management service.
 // identityProviderName - Identity Provider Type identifier.
@@ -483,8 +491,8 @@ func (client *IdentityProviderClient) updateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("If-Match", ifMatch)
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["If-Match"] = []string{ifMatch}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

@@ -38,7 +38,7 @@ func NewMsixImagesClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,12 +56,13 @@ func NewMsixImagesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // NewExpandPager - Expands and Lists MSIX packages in an Image, given the Image Path.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-12
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // msixImageURI - Object containing URI to MSIX Image
 // options - MsixImagesClientExpandOptions contains the optional parameters for the MsixImagesClient.Expand method.
 func (client *MsixImagesClient) NewExpandPager(resourceGroupName string, hostPoolName string, msixImageURI MSIXImageURI, options *MsixImagesClientExpandOptions) *runtime.Pager[MsixImagesClientExpandResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MsixImagesClientExpandResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MsixImagesClientExpandResponse]{
 		More: func(page MsixImagesClientExpandResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -108,9 +109,9 @@ func (client *MsixImagesClient) expandCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-10-preview")
+	reqQP.Set("api-version", "2021-07-12")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, msixImageURI)
 }
 

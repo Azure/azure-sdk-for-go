@@ -24,18 +24,17 @@ func ExampleDataExportsClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewDataExportsClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewDataExportsClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("<resource-group-name>",
-		"<workspace-name>",
+	pager := client.NewListByWorkspacePager("RgTest1",
+		"DeWnTest1234",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,18 +50,18 @@ func ExampleDataExportsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewDataExportsClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewDataExportsClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-export-name>",
+		"RgTest1",
+		"DeWnTest1234",
+		"export1",
 		armoperationalinsights.DataExport{
 			Properties: &armoperationalinsights.DataExportProperties{
 				Destination: &armoperationalinsights.Destination{
-					ResourceID: to.Ptr("<resource-id>"),
+					ResourceID: to.Ptr("/subscriptions/192b9f85-a39a-4276-b96d-d5cd351703f9/resourceGroups/OIAutoRest1234/providers/Microsoft.EventHub/namespaces/test"),
 				},
 				TableNames: []*string{
 					to.Ptr("Heartbeat")},
@@ -83,14 +82,14 @@ func ExampleDataExportsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewDataExportsClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewDataExportsClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-export-name>",
+		"RgTest1",
+		"DeWnTest1234",
+		"export1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -106,14 +105,14 @@ func ExampleDataExportsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationalinsights.NewDataExportsClient("<subscription-id>", cred, nil)
+	client, err := armoperationalinsights.NewDataExportsClient("00000000-0000-0000-0000-00000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<data-export-name>",
+		"RgTest1",
+		"DeWnTest1234",
+		"export1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

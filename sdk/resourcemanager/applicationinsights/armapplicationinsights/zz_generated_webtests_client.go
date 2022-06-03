@@ -38,7 +38,7 @@ func NewWebTestsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWebTestsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Creates or updates an Application Insights web test definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // webTestName - The name of the Application Insights webtest resource.
 // webTestDefinition - Properties that need to be specified to create or update an Application Insights web test definition.
@@ -97,7 +98,7 @@ func (client *WebTestsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, webTestDefinition)
 }
 
@@ -112,6 +113,7 @@ func (client *WebTestsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes an Application Insights web test.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // webTestName - The name of the Application Insights webtest resource.
 // options - WebTestsClientDeleteOptions contains the optional parameters for the WebTestsClient.Delete method.
@@ -157,6 +159,7 @@ func (client *WebTestsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Get a specific Application Insights web test definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // webTestName - The name of the Application Insights webtest resource.
 // options - WebTestsClientGetOptions contains the optional parameters for the WebTestsClient.Get method.
@@ -197,7 +200,7 @@ func (client *WebTestsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -212,9 +215,10 @@ func (client *WebTestsClient) getHandleResponse(resp *http.Response) (WebTestsCl
 
 // NewListPager - Get all Application Insights web test alerts definitions within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // options - WebTestsClientListOptions contains the optional parameters for the WebTestsClient.List method.
 func (client *WebTestsClient) NewListPager(options *WebTestsClientListOptions) *runtime.Pager[WebTestsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WebTestsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WebTestsClientListResponse]{
 		More: func(page WebTestsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -255,7 +259,7 @@ func (client *WebTestsClient) listCreateRequest(ctx context.Context, options *We
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -270,12 +274,13 @@ func (client *WebTestsClient) listHandleResponse(resp *http.Response) (WebTestsC
 
 // NewListByComponentPager - Get all Application Insights web tests defined for the specified component.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // componentName - The name of the Application Insights component resource.
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WebTestsClientListByComponentOptions contains the optional parameters for the WebTestsClient.ListByComponent
 // method.
 func (client *WebTestsClient) NewListByComponentPager(componentName string, resourceGroupName string, options *WebTestsClientListByComponentOptions) *runtime.Pager[WebTestsClientListByComponentResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WebTestsClientListByComponentResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WebTestsClientListByComponentResponse]{
 		More: func(page WebTestsClientListByComponentResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -324,7 +329,7 @@ func (client *WebTestsClient) listByComponentCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -339,11 +344,12 @@ func (client *WebTestsClient) listByComponentHandleResponse(resp *http.Response)
 
 // NewListByResourceGroupPager - Get all Application Insights web tests defined within a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - WebTestsClientListByResourceGroupOptions contains the optional parameters for the WebTestsClient.ListByResourceGroup
 // method.
 func (client *WebTestsClient) NewListByResourceGroupPager(resourceGroupName string, options *WebTestsClientListByResourceGroupOptions) *runtime.Pager[WebTestsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WebTestsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WebTestsClientListByResourceGroupResponse]{
 		More: func(page WebTestsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -388,7 +394,7 @@ func (client *WebTestsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -403,6 +409,7 @@ func (client *WebTestsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // UpdateTags - Creates or updates an Application Insights web test definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // webTestName - The name of the Application Insights webtest resource.
 // webTestTags - Updated tag information to set into the web test instance.
@@ -444,7 +451,7 @@ func (client *WebTestsClient) updateTagsCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, webTestTags)
 }
 

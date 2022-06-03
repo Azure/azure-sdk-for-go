@@ -39,7 +39,7 @@ func NewLabsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,23 +57,25 @@ func NewLabsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // BeginClaimAnyVM - Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // options - LabsClientBeginClaimAnyVMOptions contains the optional parameters for the LabsClient.BeginClaimAnyVM method.
-func (client *LabsClient) BeginClaimAnyVM(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginClaimAnyVMOptions) (*armruntime.Poller[LabsClientClaimAnyVMResponse], error) {
+func (client *LabsClient) BeginClaimAnyVM(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginClaimAnyVMOptions) (*runtime.Poller[LabsClientClaimAnyVMResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.claimAnyVM(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LabsClientClaimAnyVMResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LabsClientClaimAnyVMResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LabsClientClaimAnyVMResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientClaimAnyVMResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ClaimAnyVM - Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *LabsClient) claimAnyVM(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginClaimAnyVMOptions) (*http.Response, error) {
 	req, err := client.claimAnyVMCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -111,31 +113,33 @@ func (client *LabsClient) claimAnyVMCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginCreateEnvironment - Create virtual machines in a lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // labVirtualMachineCreationParameter - Properties for creating a virtual machine.
 // options - LabsClientBeginCreateEnvironmentOptions contains the optional parameters for the LabsClient.BeginCreateEnvironment
 // method.
-func (client *LabsClient) BeginCreateEnvironment(ctx context.Context, resourceGroupName string, name string, labVirtualMachineCreationParameter LabVirtualMachineCreationParameter, options *LabsClientBeginCreateEnvironmentOptions) (*armruntime.Poller[LabsClientCreateEnvironmentResponse], error) {
+func (client *LabsClient) BeginCreateEnvironment(ctx context.Context, resourceGroupName string, name string, labVirtualMachineCreationParameter LabVirtualMachineCreationParameter, options *LabsClientBeginCreateEnvironmentOptions) (*runtime.Poller[LabsClientCreateEnvironmentResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createEnvironment(ctx, resourceGroupName, name, labVirtualMachineCreationParameter, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LabsClientCreateEnvironmentResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LabsClientCreateEnvironmentResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LabsClientCreateEnvironmentResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientCreateEnvironmentResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateEnvironment - Create virtual machines in a lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *LabsClient) createEnvironment(ctx context.Context, resourceGroupName string, name string, labVirtualMachineCreationParameter LabVirtualMachineCreationParameter, options *LabsClientBeginCreateEnvironmentOptions) (*http.Response, error) {
 	req, err := client.createEnvironmentCreateRequest(ctx, resourceGroupName, name, labVirtualMachineCreationParameter, options)
 	if err != nil {
@@ -173,31 +177,33 @@ func (client *LabsClient) createEnvironmentCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, labVirtualMachineCreationParameter)
 }
 
 // BeginCreateOrUpdate - Create or replace an existing lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // lab - A lab.
 // options - LabsClientBeginCreateOrUpdateOptions contains the optional parameters for the LabsClient.BeginCreateOrUpdate
 // method.
-func (client *LabsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, lab Lab, options *LabsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[LabsClientCreateOrUpdateResponse], error) {
+func (client *LabsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, name string, lab Lab, options *LabsClientBeginCreateOrUpdateOptions) (*runtime.Poller[LabsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, name, lab, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LabsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LabsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LabsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or replace an existing lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *LabsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, lab Lab, options *LabsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, lab, options)
 	if err != nil {
@@ -235,29 +241,31 @@ func (client *LabsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, lab)
 }
 
 // BeginDelete - Delete lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // options - LabsClientBeginDeleteOptions contains the optional parameters for the LabsClient.BeginDelete method.
-func (client *LabsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginDeleteOptions) (*armruntime.Poller[LabsClientDeleteResponse], error) {
+func (client *LabsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginDeleteOptions) (*runtime.Poller[LabsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LabsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LabsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LabsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *LabsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *LabsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
@@ -295,31 +303,33 @@ func (client *LabsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginExportResourceUsage - Exports the lab resource usage into a storage account This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // exportResourceUsageParameters - The parameters of the export operation.
 // options - LabsClientBeginExportResourceUsageOptions contains the optional parameters for the LabsClient.BeginExportResourceUsage
 // method.
-func (client *LabsClient) BeginExportResourceUsage(ctx context.Context, resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, options *LabsClientBeginExportResourceUsageOptions) (*armruntime.Poller[LabsClientExportResourceUsageResponse], error) {
+func (client *LabsClient) BeginExportResourceUsage(ctx context.Context, resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, options *LabsClientBeginExportResourceUsageOptions) (*runtime.Poller[LabsClientExportResourceUsageResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.exportResourceUsage(ctx, resourceGroupName, name, exportResourceUsageParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LabsClientExportResourceUsageResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LabsClientExportResourceUsageResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LabsClientExportResourceUsageResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientExportResourceUsageResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ExportResourceUsage - Exports the lab resource usage into a storage account This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *LabsClient) exportResourceUsage(ctx context.Context, resourceGroupName string, name string, exportResourceUsageParameters ExportResourceUsageParameters, options *LabsClientBeginExportResourceUsageOptions) (*http.Response, error) {
 	req, err := client.exportResourceUsageCreateRequest(ctx, resourceGroupName, name, exportResourceUsageParameters, options)
 	if err != nil {
@@ -357,12 +367,13 @@ func (client *LabsClient) exportResourceUsageCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, exportResourceUsageParameters)
 }
 
 // GenerateUploadURI - Generate a URI for uploading custom disk images to a Lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // generateUploadURIParameter - Properties for generating an upload URI.
@@ -404,7 +415,7 @@ func (client *LabsClient) generateUploadURICreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, generateUploadURIParameter)
 }
 
@@ -419,6 +430,7 @@ func (client *LabsClient) generateUploadURIHandleResponse(resp *http.Response) (
 
 // Get - Get lab.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // options - LabsClientGetOptions contains the optional parameters for the LabsClient.Get method.
@@ -462,7 +474,7 @@ func (client *LabsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -477,26 +489,28 @@ func (client *LabsClient) getHandleResponse(resp *http.Response) (LabsClientGetR
 
 // BeginImportVirtualMachine - Import a virtual machine into a different lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // importLabVirtualMachineRequest - This represents the payload required to import a virtual machine from a different lab
 // into the current one
 // options - LabsClientBeginImportVirtualMachineOptions contains the optional parameters for the LabsClient.BeginImportVirtualMachine
 // method.
-func (client *LabsClient) BeginImportVirtualMachine(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest ImportLabVirtualMachineRequest, options *LabsClientBeginImportVirtualMachineOptions) (*armruntime.Poller[LabsClientImportVirtualMachineResponse], error) {
+func (client *LabsClient) BeginImportVirtualMachine(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest ImportLabVirtualMachineRequest, options *LabsClientBeginImportVirtualMachineOptions) (*runtime.Poller[LabsClientImportVirtualMachineResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.importVirtualMachine(ctx, resourceGroupName, name, importLabVirtualMachineRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[LabsClientImportVirtualMachineResponse](resp, client.pl, nil)
+		return runtime.NewPoller[LabsClientImportVirtualMachineResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[LabsClientImportVirtualMachineResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[LabsClientImportVirtualMachineResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ImportVirtualMachine - Import a virtual machine into a different lab. This operation can take a while to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 func (client *LabsClient) importVirtualMachine(ctx context.Context, resourceGroupName string, name string, importLabVirtualMachineRequest ImportLabVirtualMachineRequest, options *LabsClientBeginImportVirtualMachineOptions) (*http.Response, error) {
 	req, err := client.importVirtualMachineCreateRequest(ctx, resourceGroupName, name, importLabVirtualMachineRequest, options)
 	if err != nil {
@@ -534,17 +548,18 @@ func (client *LabsClient) importVirtualMachineCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, importLabVirtualMachineRequest)
 }
 
 // NewListByResourceGroupPager - List labs in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // options - LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.ListByResourceGroup
 // method.
 func (client *LabsClient) NewListByResourceGroupPager(resourceGroupName string, options *LabsClientListByResourceGroupOptions) *runtime.Pager[LabsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LabsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LabsClientListByResourceGroupResponse]{
 		More: func(page LabsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -601,7 +616,7 @@ func (client *LabsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -616,9 +631,10 @@ func (client *LabsClient) listByResourceGroupHandleResponse(resp *http.Response)
 
 // NewListBySubscriptionPager - List labs in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // options - LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.ListBySubscription method.
 func (client *LabsClient) NewListBySubscriptionPager(options *LabsClientListBySubscriptionOptions) *runtime.Pager[LabsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LabsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LabsClientListBySubscriptionResponse]{
 		More: func(page LabsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -671,7 +687,7 @@ func (client *LabsClient) listBySubscriptionCreateRequest(ctx context.Context, o
 	}
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -686,11 +702,12 @@ func (client *LabsClient) listBySubscriptionHandleResponse(resp *http.Response) 
 
 // NewListVhdsPager - List disk images available for custom image creation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // options - LabsClientListVhdsOptions contains the optional parameters for the LabsClient.ListVhds method.
 func (client *LabsClient) NewListVhdsPager(resourceGroupName string, name string, options *LabsClientListVhdsOptions) *runtime.Pager[LabsClientListVhdsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LabsClientListVhdsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LabsClientListVhdsResponse]{
 		More: func(page LabsClientListVhdsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -739,7 +756,7 @@ func (client *LabsClient) listVhdsCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -754,6 +771,7 @@ func (client *LabsClient) listVhdsHandleResponse(resp *http.Response) (LabsClien
 
 // Update - Allows modifying tags of labs. All other properties will be ignored.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // resourceGroupName - The name of the resource group.
 // name - The name of the lab.
 // lab - A lab.
@@ -795,7 +813,7 @@ func (client *LabsClient) updateCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, lab)
 }
 

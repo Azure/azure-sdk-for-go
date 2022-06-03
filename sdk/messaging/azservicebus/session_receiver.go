@@ -10,8 +10,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/Azure/go-amqp"
 )
 
 // SessionReceiver is a Receiver that handles sessions.
@@ -26,12 +26,12 @@ type SessionReceiver struct {
 type SessionReceiverOptions struct {
 	// ReceiveMode controls when a message is deleted from Service Bus.
 	//
-	// `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
+	// ReceiveModePeekLock is the default. The message is locked, preventing multiple
 	// receivers from processing the message at once. You control the lock state of the message
 	// using one of the message settlement functions like SessionReceiver.CompleteMessage(), which removes
-	// it from Service Bus, or SessionReceiver..AbandonMessage(), which makes it available again.
+	// it from Service Bus, or SessionReceiver.AbandonMessage(), which makes it available again.
 	//
-	// `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
+	// ReceiveModeReceiveAndDelete causes Service Bus to remove the message as soon
 	// as it's received.
 	//
 	// More information about receive modes:
@@ -120,10 +120,7 @@ func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSess
 }
 
 // ReceiveMessages receives a fixed number of messages, up to maxMessages.
-// There are two ways to stop receiving messages:
-// 1. Cancelling the `ctx` parameter.
-// 2. An implicit timeout (default: 1 second) that starts after the first
-//    message has been received.
+// This function will block until at least one message is received or until the ctx is cancelled.
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *SessionReceiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveMessagesOptions) ([]*ReceivedMessage, error) {
 	return r.inner.ReceiveMessages(ctx, maxMessages, options)
@@ -202,7 +199,7 @@ func (sr *SessionReceiver) GetSessionState(ctx context.Context, options *GetSess
 	var sessionState []byte
 
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "GetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		s, err := internal.GetSessionState(ctx, lwv.RPC, sr.SessionID())
+		s, err := internal.GetSessionState(ctx, lwv.RPC, lwv.Receiver.LinkName(), sr.SessionID())
 
 		if err != nil {
 			return err
@@ -224,7 +221,7 @@ type SetSessionStateOptions struct {
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte, options *SetSessionStateOptions) error {
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		return internal.SetSessionState(ctx, lwv.RPC, sr.SessionID(), state)
+		return internal.SetSessionState(ctx, lwv.RPC, lwv.Receiver.LinkName(), sr.SessionID(), state)
 	}, sr.inner.retryOptions)
 
 	return internal.TransformError(err)
@@ -240,7 +237,7 @@ type RenewSessionLockOptions struct {
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (sr *SessionReceiver) RenewSessionLock(ctx context.Context, options *RenewSessionLockOptions) error {
 	err := sr.inner.amqpLinks.Retry(ctx, EventReceiver, "SetSessionState", func(ctx context.Context, lwv *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, *sr.sessionID)
+		newLockedUntil, err := internal.RenewSessionLock(ctx, lwv.RPC, lwv.Receiver.LinkName(), *sr.sessionID)
 
 		if err != nil {
 			return err

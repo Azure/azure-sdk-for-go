@@ -23,13 +23,13 @@ func ExampleLinkedWorkspaceClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewLinkedWorkspaceClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewLinkedWorkspaceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
+		"rg",
+		"ContosoAutomationAccount",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

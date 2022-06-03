@@ -12,7 +12,7 @@ package backup
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-12-01/backup"
+	original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2022-03-01/backup"
 )
 
 const (
@@ -62,7 +62,7 @@ const (
 	ContainerTypeBasicProtectionContainerContainerTypeAzureWorkloadContainer                 ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeAzureWorkloadContainer
 	ContainerTypeBasicProtectionContainerContainerTypeDPMContainer                           ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeDPMContainer
 	ContainerTypeBasicProtectionContainerContainerTypeGenericContainer                       ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeGenericContainer
-	ContainerTypeBasicProtectionContainerContainerTypeIaaSVMContainer                        ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeIaaSVMContainer
+	ContainerTypeBasicProtectionContainerContainerTypeIaasVMContainer                        ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeIaasVMContainer
 	ContainerTypeBasicProtectionContainerContainerTypeMicrosoftClassicComputevirtualMachines ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeMicrosoftClassicComputevirtualMachines
 	ContainerTypeBasicProtectionContainerContainerTypeMicrosoftComputevirtualMachines        ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeMicrosoftComputevirtualMachines
 	ContainerTypeBasicProtectionContainerContainerTypeProtectionContainer                    ContainerTypeBasicProtectionContainer = original.ContainerTypeBasicProtectionContainerContainerTypeProtectionContainer

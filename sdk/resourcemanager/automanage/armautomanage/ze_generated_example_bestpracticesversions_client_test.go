@@ -28,8 +28,8 @@ func ExampleBestPracticesVersionsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<best-practice-name>",
-		"<version-name>",
+		"azureBestPracticesProduction",
+		"version1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,13 +49,12 @@ func ExampleBestPracticesVersionsClient_NewListByTenantPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTenantPager("<best-practice-name>",
+	pager := client.NewListByTenantPager("azureBestPracticesProduction",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

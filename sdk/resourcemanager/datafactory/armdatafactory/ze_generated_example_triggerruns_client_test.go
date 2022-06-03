@@ -26,15 +26,15 @@ func ExampleTriggerRunsClient_Rerun() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggerRunsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Rerun(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
-		"<run-id>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
+		"2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -48,15 +48,15 @@ func ExampleTriggerRunsClient_Cancel() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggerRunsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Cancel(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
-		"<trigger-name>",
-		"<run-id>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
+		"exampleTrigger",
+		"2f7fdb90-5df1-4b8e-ac2f-064cfa58202b",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -70,13 +70,13 @@ func ExampleTriggerRunsClient_QueryByFactory() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewTriggerRunsClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewTriggerRunsClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.QueryByFactory(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		armdatafactory.RunFilterParameters{
 			Filters: []*armdatafactory.RunQueryFilter{
 				{

@@ -39,7 +39,7 @@ func NewContentKeyPoliciesClient(subscriptionID string, credential azcore.TokenC
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewContentKeyPoliciesClient(subscriptionID string, credential azcore.TokenC
 
 // CreateOrUpdate - Create or update a Content Key Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // contentKeyPolicyName - The Content Key Policy name.
@@ -104,7 +105,7 @@ func (client *ContentKeyPoliciesClient) createOrUpdateCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *ContentKeyPoliciesClient) createOrUpdateHandleResponse(resp *http.
 
 // Delete - Deletes a Content Key Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // contentKeyPolicyName - The Content Key Policy name.
@@ -165,12 +167,13 @@ func (client *ContentKeyPoliciesClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the details of a Content Key Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // contentKeyPolicyName - The Content Key Policy name.
@@ -216,7 +219,7 @@ func (client *ContentKeyPoliciesClient) getCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,6 +234,7 @@ func (client *ContentKeyPoliciesClient) getHandleResponse(resp *http.Response) (
 
 // GetPolicyPropertiesWithSecrets - Get a Content Key Policy including secret values
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // contentKeyPolicyName - The Content Key Policy name.
@@ -277,7 +281,7 @@ func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -292,11 +296,12 @@ func (client *ContentKeyPoliciesClient) getPolicyPropertiesWithSecretsHandleResp
 
 // NewListPager - Lists the Content Key Policies in the account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - ContentKeyPoliciesClientListOptions contains the optional parameters for the ContentKeyPoliciesClient.List method.
 func (client *ContentKeyPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *ContentKeyPoliciesClientListOptions) *runtime.Pager[ContentKeyPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ContentKeyPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ContentKeyPoliciesClientListResponse]{
 		More: func(page ContentKeyPoliciesClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -354,7 +359,7 @@ func (client *ContentKeyPoliciesClient) listCreateRequest(ctx context.Context, r
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -369,6 +374,7 @@ func (client *ContentKeyPoliciesClient) listHandleResponse(resp *http.Response) 
 
 // Update - Updates an existing Content Key Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // contentKeyPolicyName - The Content Key Policy name.
@@ -416,7 +422,7 @@ func (client *ContentKeyPoliciesClient) updateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

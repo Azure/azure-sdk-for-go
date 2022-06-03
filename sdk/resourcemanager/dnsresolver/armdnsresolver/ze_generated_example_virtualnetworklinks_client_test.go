@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
@@ -26,32 +24,31 @@ func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
-		"<virtual-network-link-name>",
+		"sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
+		"sampleVirtualNetworkLink",
 		armdnsresolver.VirtualNetworkLink{
 			Properties: &armdnsresolver.VirtualNetworkLinkProperties{
 				Metadata: map[string]*string{
 					"additionalProp1": to.Ptr("value1"),
 				},
 				VirtualNetwork: &armdnsresolver.SubResource{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
 				},
 			},
 		},
 		&armdnsresolver.VirtualNetworkLinksClientBeginCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -66,14 +63,14 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
-		"<virtual-network-link-name>",
+		"sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
+		"sampleVirtualNetworkLink",
 		armdnsresolver.VirtualNetworkLinkPatch{
 			Properties: &armdnsresolver.VirtualNetworkLinkPatchProperties{
 				Metadata: map[string]*string{
@@ -81,13 +78,11 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 				},
 			},
 		},
-		&armdnsresolver.VirtualNetworkLinksClientBeginUpdateOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		&armdnsresolver.VirtualNetworkLinksClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -102,21 +97,19 @@ func ExampleVirtualNetworkLinksClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
-		"<virtual-network-link-name>",
-		&armdnsresolver.VirtualNetworkLinksClientBeginDeleteOptions{IfMatch: nil,
-			ResumeToken: "",
-		})
+		"sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
+		"sampleVirtualNetworkLink",
+		&armdnsresolver.VirtualNetworkLinksClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -129,14 +122,14 @@ func ExampleVirtualNetworkLinksClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
-		"<virtual-network-link-name>",
+		"sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
+		"sampleVirtualNetworkLink",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -152,18 +145,17 @@ func ExampleVirtualNetworkLinksClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewVirtualNetworkLinksClient("<subscription-id>", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<dns-forwarding-ruleset-name>",
+	pager := client.NewListPager("sampleResourceGroup",
+		"sampleDnsForwardingRuleset",
 		&armdnsresolver.VirtualNetworkLinksClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

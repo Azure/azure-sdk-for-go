@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
@@ -26,28 +24,28 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewSnapshotsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewSnapshotsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<snapshot-name>",
+		"myResourceGroup",
+		"mySnapshot1",
 		armcompute.Snapshot{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Properties: &armcompute.SnapshotProperties{
 				CreationData: &armcompute.CreationData{
 					CreateOption:     to.Ptr(armcompute.DiskCreateOptionImport),
-					SourceURI:        to.Ptr("<source-uri>"),
-					StorageAccountID: to.Ptr("<storage-account-id>"),
+					SourceURI:        to.Ptr("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd"),
+					StorageAccountID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
 				},
 			},
 		},
-		&armcompute.SnapshotsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -62,13 +60,13 @@ func ExampleSnapshotsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewSnapshotsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewSnapshotsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<snapshot-name>",
+		"myResourceGroup",
+		"mySnapshot",
 		armcompute.SnapshotUpdate{
 			Properties: &armcompute.SnapshotUpdateProperties{
 				DiskSizeGB: to.Ptr[int32](20),
@@ -81,11 +79,11 @@ func ExampleSnapshotsClient_BeginUpdate() {
 				"project":    to.Ptr("UpdateSnapshots"),
 			},
 		},
-		&armcompute.SnapshotsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -100,13 +98,13 @@ func ExampleSnapshotsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewSnapshotsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewSnapshotsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<snapshot-name>",
+		"myResourceGroup",
+		"mySnapshot",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -122,18 +120,18 @@ func ExampleSnapshotsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewSnapshotsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewSnapshotsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<snapshot-name>",
-		&armcompute.SnapshotsClientBeginDeleteOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"mySnapshot",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -146,17 +144,16 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewSnapshotsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewSnapshotsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -172,7 +169,7 @@ func ExampleSnapshotsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewSnapshotsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewSnapshotsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -181,7 +178,6 @@ func ExampleSnapshotsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -197,22 +193,22 @@ func ExampleSnapshotsClient_BeginGrantAccess() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewSnapshotsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewSnapshotsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginGrantAccess(ctx,
-		"<resource-group-name>",
-		"<snapshot-name>",
+		"myResourceGroup",
+		"mySnapshot",
 		armcompute.GrantAccessData{
 			Access:            to.Ptr(armcompute.AccessLevelRead),
 			DurationInSeconds: to.Ptr[int32](300),
 		},
-		&armcompute.SnapshotsClientBeginGrantAccessOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -227,18 +223,18 @@ func ExampleSnapshotsClient_BeginRevokeAccess() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewSnapshotsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewSnapshotsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRevokeAccess(ctx,
-		"<resource-group-name>",
-		"<snapshot-name>",
-		&armcompute.SnapshotsClientBeginRevokeAccessOptions{ResumeToken: ""})
+		"myResourceGroup",
+		"mySnapshot",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

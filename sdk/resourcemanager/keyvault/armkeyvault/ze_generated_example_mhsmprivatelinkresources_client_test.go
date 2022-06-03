@@ -23,13 +23,13 @@ func ExampleMHSMPrivateLinkResourcesClient_ListByMHSMResource() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkeyvault.NewMHSMPrivateLinkResourcesClient("<subscription-id>", cred, nil)
+	client, err := armkeyvault.NewMHSMPrivateLinkResourcesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByMHSMResource(ctx,
-		"<resource-group-name>",
-		"<name>",
+		"sample-group",
+		"sample-mhsm",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

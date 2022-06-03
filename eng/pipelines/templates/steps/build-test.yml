@@ -41,10 +41,15 @@ steps:
 
   - pwsh: |
       go install github.com/jstemmer/go-junit-report@v0.9.1
-      go install github.com/jhendrixMSFT/gocov/gocov@v1.0.1-0.20220325195445-df8497555dba
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      go install github.com/axw/gocov/gocov@v1.1.0
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       go install github.com/AlekSi/gocov-xml@v1.0.0
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     displayName: "Install Coverage and Junit Dependencies"
+    retryCountOnTaskFailure: 3
 
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
@@ -81,6 +86,37 @@ steps:
     condition: and(succeededOrFailed(), eq(variables['generate.bom'], 'true'))
     inputs:
       BuildDropPath: $(Build.ArtifactStagingDirectory)
+
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
+      arguments: >
+        -ServiceDirectory ${{parameters.ServiceDirectory}}
+        -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+      pwsh: true
+      workingDirectory: $(Pipeline.Workspace)
+    displayName: Dump Package properties
+    condition: succeeded()
+
+  - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
+  
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/Create-ApiReview.ps1
+      arguments: >
+        -ServiceDirectory ${{parameters.ServiceDirectory}}
+        -OutPath $(Build.ArtifactStagingDirectory)
+        -ApiviewUri "$(azuresdk-apiview-uri)"
+        -ApiKey "$(azuresdk-apiview-apikey)"
+        -ApiLabel "Auto Review - $(Build.SourceVersion)"
+        -SourceBranch $(Build.SourceBranchName)
+        -DefaultBranch $(DefaultBranch)
+        -ConfigFileDir $(Build.ArtifactStagingDirectory)/PackageInfo
+      pwsh: true
+      workingDirectory: $(Pipeline.Workspace)
+    displayName: Create API review for Go
+    continueOnError: true
+    condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
 
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:

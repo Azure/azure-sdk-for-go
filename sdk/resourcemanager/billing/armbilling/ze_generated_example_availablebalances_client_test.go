@@ -28,8 +28,8 @@ func ExampleAvailableBalancesClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<billing-account-name>",
-		"<billing-profile-name>",
+		"{billingAccountName}",
+		"{billingProfileName}",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

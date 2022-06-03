@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
@@ -26,20 +24,20 @@ func ExampleSyncGroupsClient_BeginRefreshHubSchema() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRefreshHubSchema(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
-		&armsql.SyncGroupsClientBeginRefreshHubSchemaOptions{ResumeToken: ""})
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -52,20 +50,19 @@ func ExampleSyncGroupsClient_NewListHubSchemasPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListHubSchemasPager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
+	pager := client.NewListHubSchemasPager("syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -81,23 +78,22 @@ func ExampleSyncGroupsClient_NewListLogsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListLogsPager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
-		"<start-time>",
-		"<end-time>",
+	pager := client.NewListLogsPager("syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
+		"2017-01-01T00:00:00",
+		"2017-12-31T00:00:00",
 		armsql.SyncGroupsTypeAll,
 		&armsql.SyncGroupsClientListLogsOptions{ContinuationToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -113,15 +109,15 @@ func ExampleSyncGroupsClient_CancelSync() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.CancelSync(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -135,15 +131,15 @@ func ExampleSyncGroupsClient_TriggerSync() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.TriggerSync(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -157,15 +153,15 @@ func ExampleSyncGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -181,29 +177,29 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
 		armsql.SyncGroup{
 			Properties: &armsql.SyncGroupProperties{
 				ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
-				HubDatabaseUserName:      to.Ptr("<hub-database-user-name>"),
+				HubDatabaseUserName:      to.Ptr("hubUser"),
 				Interval:                 to.Ptr[int32](-1),
-				SyncDatabaseID:           to.Ptr("<sync-database-id>"),
+				SyncDatabaseID:           to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 				UsePrivateLinkConnection: to.Ptr(true),
 			},
 		},
-		&armsql.SyncGroupsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -218,20 +214,20 @@ func ExampleSyncGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
-		&armsql.SyncGroupsClientBeginDeleteOptions{ResumeToken: ""})
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -244,30 +240,30 @@ func ExampleSyncGroupsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
-		"<sync-group-name>",
+		"syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
+		"syncgroupcrud-3187",
 		armsql.SyncGroup{
 			Properties: &armsql.SyncGroupProperties{
 				ConflictResolutionPolicy: to.Ptr(armsql.SyncConflictResolutionPolicyHubWin),
-				HubDatabasePassword:      to.Ptr("<hub-database-password>"),
-				HubDatabaseUserName:      to.Ptr("<hub-database-user-name>"),
+				HubDatabasePassword:      to.Ptr("hubPassword"),
+				HubDatabaseUserName:      to.Ptr("hubUser"),
 				Interval:                 to.Ptr[int32](-1),
-				SyncDatabaseID:           to.Ptr("<sync-database-id>"),
+				SyncDatabaseID:           to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/syncgroupcrud-3521/providers/Microsoft.Sql/servers/syncgroupcrud-8475/databases/syncgroupcrud-4328"),
 				UsePrivateLinkConnection: to.Ptr(true),
 			},
 		},
-		&armsql.SyncGroupsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -282,19 +278,18 @@ func ExampleSyncGroupsClient_NewListByDatabasePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewSyncGroupsClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewSyncGroupsClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabasePager("<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+	pager := client.NewListByDatabasePager("syncgroupcrud-65440",
+		"syncgroupcrud-8475",
+		"syncgroupcrud-4328",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

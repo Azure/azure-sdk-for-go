@@ -39,7 +39,7 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,24 +57,26 @@ func NewVirtualMachinesClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateCheckpoint - Creates a checkpoint in virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // options - VirtualMachinesClientBeginCreateCheckpointOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateCheckpoint
 // method.
-func (client *VirtualMachinesClient) BeginCreateCheckpoint(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginCreateCheckpointOptions) (*armruntime.Poller[VirtualMachinesClientCreateCheckpointResponse], error) {
+func (client *VirtualMachinesClient) BeginCreateCheckpoint(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginCreateCheckpointOptions) (*runtime.Poller[VirtualMachinesClientCreateCheckpointResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createCheckpoint(ctx, resourceGroupName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientCreateCheckpointResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientCreateCheckpointResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientCreateCheckpointResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientCreateCheckpointResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateCheckpoint - Creates a checkpoint in virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *VirtualMachinesClient) createCheckpoint(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginCreateCheckpointOptions) (*http.Response, error) {
 	req, err := client.createCheckpointCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 	if err != nil {
@@ -112,7 +114,7 @@ func (client *VirtualMachinesClient) createCheckpointCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -121,27 +123,29 @@ func (client *VirtualMachinesClient) createCheckpointCreateRequest(ctx context.C
 
 // BeginCreateOrUpdate - Creates Or Updates virtual machines deployed on scvmm fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // body - Request payload.
 // options - VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
 // method.
-func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, body VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*armruntime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error) {
+func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, body VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualMachinesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualMachineName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachinesClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates Or Updates virtual machines deployed on scvmm fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, body VirtualMachine, options *VirtualMachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualMachineName, body, options)
 	if err != nil {
@@ -179,32 +183,34 @@ func (client *VirtualMachinesClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginDelete - Deletes a VirtualMachine deployed on ScVmm fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // options - VirtualMachinesClientBeginDeleteOptions contains the optional parameters for the VirtualMachinesClient.BeginDelete
 // method.
-func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteOptions) (*armruntime.Poller[VirtualMachinesClientDeleteResponse], error) {
+func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteOptions) (*runtime.Poller[VirtualMachinesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachinesClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a VirtualMachine deployed on ScVmm fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *VirtualMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 	if err != nil {
@@ -248,30 +254,32 @@ func (client *VirtualMachinesClient) deleteCreateRequest(ctx context.Context, re
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDeleteCheckpoint - Deletes a checkpoint in virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // options - VirtualMachinesClientBeginDeleteCheckpointOptions contains the optional parameters for the VirtualMachinesClient.BeginDeleteCheckpoint
 // method.
-func (client *VirtualMachinesClient) BeginDeleteCheckpoint(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteCheckpointOptions) (*armruntime.Poller[VirtualMachinesClientDeleteCheckpointResponse], error) {
+func (client *VirtualMachinesClient) BeginDeleteCheckpoint(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteCheckpointOptions) (*runtime.Poller[VirtualMachinesClientDeleteCheckpointResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteCheckpoint(ctx, resourceGroupName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientDeleteCheckpointResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientDeleteCheckpointResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientDeleteCheckpointResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientDeleteCheckpointResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeleteCheckpoint - Deletes a checkpoint in virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *VirtualMachinesClient) deleteCheckpoint(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginDeleteCheckpointOptions) (*http.Response, error) {
 	req, err := client.deleteCheckpointCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 	if err != nil {
@@ -309,7 +317,7 @@ func (client *VirtualMachinesClient) deleteCheckpointCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -318,6 +326,7 @@ func (client *VirtualMachinesClient) deleteCheckpointCreateRequest(ctx context.C
 
 // Get - Implements VirtualMachine GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // options - VirtualMachinesClientGetOptions contains the optional parameters for the VirtualMachinesClient.Get method.
@@ -358,7 +367,7 @@ func (client *VirtualMachinesClient) getCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -373,11 +382,12 @@ func (client *VirtualMachinesClient) getHandleResponse(resp *http.Response) (Vir
 
 // NewListByResourceGroupPager - List of VirtualMachines in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // options - VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.ListByResourceGroup
 // method.
 func (client *VirtualMachinesClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualMachinesClientListByResourceGroupOptions) *runtime.Pager[VirtualMachinesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachinesClientListByResourceGroupResponse]{
 		More: func(page VirtualMachinesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -422,7 +432,7 @@ func (client *VirtualMachinesClient) listByResourceGroupCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -437,10 +447,11 @@ func (client *VirtualMachinesClient) listByResourceGroupHandleResponse(resp *htt
 
 // NewListBySubscriptionPager - List of VirtualMachines in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // options - VirtualMachinesClientListBySubscriptionOptions contains the optional parameters for the VirtualMachinesClient.ListBySubscription
 // method.
 func (client *VirtualMachinesClient) NewListBySubscriptionPager(options *VirtualMachinesClientListBySubscriptionOptions) *runtime.Pager[VirtualMachinesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VirtualMachinesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachinesClientListBySubscriptionResponse]{
 		More: func(page VirtualMachinesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -481,7 +492,7 @@ func (client *VirtualMachinesClient) listBySubscriptionCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -496,24 +507,26 @@ func (client *VirtualMachinesClient) listBySubscriptionHandleResponse(resp *http
 
 // BeginRestart - Restart virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // options - VirtualMachinesClientBeginRestartOptions contains the optional parameters for the VirtualMachinesClient.BeginRestart
 // method.
-func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginRestartOptions) (*armruntime.Poller[VirtualMachinesClientRestartResponse], error) {
+func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginRestartOptions) (*runtime.Poller[VirtualMachinesClientRestartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restart(ctx, resourceGroupName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientRestartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientRestartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientRestartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientRestartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Restart - Restart virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *VirtualMachinesClient) restart(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 	if err != nil {
@@ -551,30 +564,32 @@ func (client *VirtualMachinesClient) restartCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginRestoreCheckpoint - Restores to a checkpoint in virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // options - VirtualMachinesClientBeginRestoreCheckpointOptions contains the optional parameters for the VirtualMachinesClient.BeginRestoreCheckpoint
 // method.
-func (client *VirtualMachinesClient) BeginRestoreCheckpoint(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginRestoreCheckpointOptions) (*armruntime.Poller[VirtualMachinesClientRestoreCheckpointResponse], error) {
+func (client *VirtualMachinesClient) BeginRestoreCheckpoint(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginRestoreCheckpointOptions) (*runtime.Poller[VirtualMachinesClientRestoreCheckpointResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restoreCheckpoint(ctx, resourceGroupName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientRestoreCheckpointResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientRestoreCheckpointResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientRestoreCheckpointResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientRestoreCheckpointResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // RestoreCheckpoint - Restores to a checkpoint in virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *VirtualMachinesClient) restoreCheckpoint(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginRestoreCheckpointOptions) (*http.Response, error) {
 	req, err := client.restoreCheckpointCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 	if err != nil {
@@ -612,7 +627,7 @@ func (client *VirtualMachinesClient) restoreCheckpointCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -621,24 +636,26 @@ func (client *VirtualMachinesClient) restoreCheckpointCreateRequest(ctx context.
 
 // BeginStart - Start virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // options - VirtualMachinesClientBeginStartOptions contains the optional parameters for the VirtualMachinesClient.BeginStart
 // method.
-func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*armruntime.Poller[VirtualMachinesClientStartResponse], error) {
+func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*runtime.Poller[VirtualMachinesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, resourceGroupName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientStartResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Start virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 	if err != nil {
@@ -676,30 +693,32 @@ func (client *VirtualMachinesClient) startCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Stop virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // options - VirtualMachinesClientBeginStopOptions contains the optional parameters for the VirtualMachinesClient.BeginStop
 // method.
-func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*armruntime.Poller[VirtualMachinesClientStopResponse], error) {
+func (client *VirtualMachinesClient) BeginStop(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*runtime.Poller[VirtualMachinesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, resourceGroupName, virtualMachineName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VirtualMachinesClientStopResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VirtualMachinesClientStopResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Stop - Stop virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *VirtualMachinesClient) stop(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, virtualMachineName, options)
 	if err != nil {
@@ -737,7 +756,7 @@ func (client *VirtualMachinesClient) stopCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -746,27 +765,29 @@ func (client *VirtualMachinesClient) stopCreateRequest(ctx context.Context, reso
 
 // BeginUpdate - Updates the VirtualMachines resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // virtualMachineName - Name of the VirtualMachine.
 // body - VirtualMachines patch payload.
 // options - VirtualMachinesClientBeginUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginUpdate
 // method.
-func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, body VirtualMachineUpdate, options *VirtualMachinesClientBeginUpdateOptions) (*armruntime.Poller[VirtualMachinesClientUpdateResponse], error) {
+func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, body VirtualMachineUpdate, options *VirtualMachinesClientBeginUpdateOptions) (*runtime.Poller[VirtualMachinesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, virtualMachineName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VirtualMachinesClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualMachinesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VirtualMachinesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualMachinesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates the VirtualMachines resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *VirtualMachinesClient) update(ctx context.Context, resourceGroupName string, virtualMachineName string, body VirtualMachineUpdate, options *VirtualMachinesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualMachineName, body, options)
 	if err != nil {
@@ -804,6 +825,6 @@ func (client *VirtualMachinesClient) updateCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

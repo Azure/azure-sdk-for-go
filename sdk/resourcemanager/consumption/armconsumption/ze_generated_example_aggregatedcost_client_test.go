@@ -28,7 +28,7 @@ func ExampleAggregatedCostClient_GetByManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByManagementGroup(ctx,
-		"<management-group-id>",
+		"managementGroupForTest",
 		&armconsumption.AggregatedCostClientGetByManagementGroupOptions{Filter: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,8 +49,8 @@ func ExampleAggregatedCostClient_GetForBillingPeriodByManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetForBillingPeriodByManagementGroup(ctx,
-		"<management-group-id>",
-		"<billing-period-name>",
+		"managementGroupForTest",
+		"201807",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

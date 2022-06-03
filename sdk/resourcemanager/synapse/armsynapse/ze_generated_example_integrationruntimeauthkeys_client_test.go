@@ -24,14 +24,14 @@ func ExampleIntegrationRuntimeAuthKeysClient_Regenerate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimeAuthKeysClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimeAuthKeysClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Regenerate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleIntegrationRuntime",
 		armsynapse.IntegrationRuntimeRegenerateKeyParameters{
 			KeyName: to.Ptr(armsynapse.IntegrationRuntimeAuthKeyNameAuthKey2),
 		},
@@ -50,14 +50,14 @@ func ExampleIntegrationRuntimeAuthKeysClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewIntegrationRuntimeAuthKeysClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewIntegrationRuntimeAuthKeysClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<integration-runtime-name>",
+		"exampleResourceGroup",
+		"exampleWorkspace",
+		"exampleIntegrationRuntime",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

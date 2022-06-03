@@ -28,7 +28,7 @@ func ExampleSystemAssignedIdentitiesClient_GetByScope() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByScope(ctx,
-		"<scope>",
+		"scope",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

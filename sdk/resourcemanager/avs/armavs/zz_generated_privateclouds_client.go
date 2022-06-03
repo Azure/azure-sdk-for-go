@@ -38,7 +38,7 @@ func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewPrivateCloudsClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreateOrUpdate - Create or update a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // privateCloud - The private cloud
 // options - PrivateCloudsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateCloudsClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateCloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateCloudsClientCreateOrUpdateResponse], error) {
+func (client *PrivateCloudsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateCloudsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, privateCloud, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateCloudsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateCloudsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateCloudsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateCloudsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *PrivateCloudsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloud PrivateCloud, options *PrivateCloudsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, privateCloud, options)
 	if err != nil {
@@ -112,30 +114,32 @@ func (client *PrivateCloudsClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateCloud)
 }
 
 // BeginDelete - Delete a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - PrivateCloudsClientBeginDeleteOptions contains the optional parameters for the PrivateCloudsClient.BeginDelete
 // method.
-func (client *PrivateCloudsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginDeleteOptions) (*armruntime.Poller[PrivateCloudsClientDeleteResponse], error) {
+func (client *PrivateCloudsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginDeleteOptions) (*runtime.Poller[PrivateCloudsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateCloudsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateCloudsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateCloudsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateCloudsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *PrivateCloudsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
@@ -173,12 +177,13 @@ func (client *PrivateCloudsClient) deleteCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - PrivateCloudsClientGetOptions contains the optional parameters for the PrivateCloudsClient.Get method.
@@ -219,7 +224,7 @@ func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -234,10 +239,11 @@ func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (Priva
 
 // NewListPager - List private clouds in a resource group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.List method.
 func (client *PrivateCloudsClient) NewListPager(resourceGroupName string, options *PrivateCloudsClientListOptions) *runtime.Pager[PrivateCloudsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateCloudsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateCloudsClientListResponse]{
 		More: func(page PrivateCloudsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -282,7 +288,7 @@ func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -297,6 +303,7 @@ func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response) (Priv
 
 // ListAdminCredentials - List the admin credentials for the private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - PrivateCloudsClientListAdminCredentialsOptions contains the optional parameters for the PrivateCloudsClient.ListAdminCredentials
@@ -338,7 +345,7 @@ func (client *PrivateCloudsClient) listAdminCredentialsCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -353,10 +360,11 @@ func (client *PrivateCloudsClient) listAdminCredentialsHandleResponse(resp *http
 
 // NewListInSubscriptionPager - List private clouds in a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // options - PrivateCloudsClientListInSubscriptionOptions contains the optional parameters for the PrivateCloudsClient.ListInSubscription
 // method.
 func (client *PrivateCloudsClient) NewListInSubscriptionPager(options *PrivateCloudsClientListInSubscriptionOptions) *runtime.Pager[PrivateCloudsClientListInSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateCloudsClientListInSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateCloudsClientListInSubscriptionResponse]{
 		More: func(page PrivateCloudsClientListInSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -397,7 +405,7 @@ func (client *PrivateCloudsClient) listInSubscriptionCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -412,24 +420,26 @@ func (client *PrivateCloudsClient) listInSubscriptionHandleResponse(resp *http.R
 
 // BeginRotateNsxtPassword - Rotate the NSX-T Manager password
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - PrivateCloudsClientBeginRotateNsxtPasswordOptions contains the optional parameters for the PrivateCloudsClient.BeginRotateNsxtPassword
 // method.
-func (client *PrivateCloudsClient) BeginRotateNsxtPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateNsxtPasswordOptions) (*armruntime.Poller[PrivateCloudsClientRotateNsxtPasswordResponse], error) {
+func (client *PrivateCloudsClient) BeginRotateNsxtPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateNsxtPasswordOptions) (*runtime.Poller[PrivateCloudsClientRotateNsxtPasswordResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.rotateNsxtPassword(ctx, resourceGroupName, privateCloudName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateCloudsClientRotateNsxtPasswordResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateCloudsClientRotateNsxtPasswordResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateCloudsClientRotateNsxtPasswordResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateCloudsClientRotateNsxtPasswordResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // RotateNsxtPassword - Rotate the NSX-T Manager password
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *PrivateCloudsClient) rotateNsxtPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateNsxtPasswordOptions) (*http.Response, error) {
 	req, err := client.rotateNsxtPasswordCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
@@ -467,30 +477,32 @@ func (client *PrivateCloudsClient) rotateNsxtPasswordCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginRotateVcenterPassword - Rotate the vCenter password
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // options - PrivateCloudsClientBeginRotateVcenterPasswordOptions contains the optional parameters for the PrivateCloudsClient.BeginRotateVcenterPassword
 // method.
-func (client *PrivateCloudsClient) BeginRotateVcenterPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateVcenterPasswordOptions) (*armruntime.Poller[PrivateCloudsClientRotateVcenterPasswordResponse], error) {
+func (client *PrivateCloudsClient) BeginRotateVcenterPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateVcenterPasswordOptions) (*runtime.Poller[PrivateCloudsClientRotateVcenterPasswordResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.rotateVcenterPassword(ctx, resourceGroupName, privateCloudName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateCloudsClientRotateVcenterPasswordResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateCloudsClientRotateVcenterPasswordResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateCloudsClientRotateVcenterPasswordResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateCloudsClientRotateVcenterPasswordResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // RotateVcenterPassword - Rotate the vCenter password
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *PrivateCloudsClient) rotateVcenterPassword(ctx context.Context, resourceGroupName string, privateCloudName string, options *PrivateCloudsClientBeginRotateVcenterPasswordOptions) (*http.Response, error) {
 	req, err := client.rotateVcenterPasswordCreateRequest(ctx, resourceGroupName, privateCloudName, options)
 	if err != nil {
@@ -528,31 +540,33 @@ func (client *PrivateCloudsClient) rotateVcenterPasswordCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Update a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // privateCloudName - Name of the private cloud
 // privateCloudUpdate - The private cloud properties to be updated
 // options - PrivateCloudsClientBeginUpdateOptions contains the optional parameters for the PrivateCloudsClient.BeginUpdate
 // method.
-func (client *PrivateCloudsClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsClientBeginUpdateOptions) (*armruntime.Poller[PrivateCloudsClientUpdateResponse], error) {
+func (client *PrivateCloudsClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsClientBeginUpdateOptions) (*runtime.Poller[PrivateCloudsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, privateCloudName, privateCloudUpdate, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[PrivateCloudsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PrivateCloudsClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateCloudsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateCloudsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01
 func (client *PrivateCloudsClient) update(ctx context.Context, resourceGroupName string, privateCloudName string, privateCloudUpdate PrivateCloudUpdate, options *PrivateCloudsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateCloudName, privateCloudUpdate, options)
 	if err != nil {
@@ -590,6 +604,6 @@ func (client *PrivateCloudsClient) updateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateCloudUpdate)
 }

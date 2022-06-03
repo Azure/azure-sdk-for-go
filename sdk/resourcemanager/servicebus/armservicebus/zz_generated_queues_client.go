@@ -40,7 +40,7 @@ func NewQueuesClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewQueuesClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // CreateOrUpdate - Creates or updates a Service Bus queue. This operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
@@ -104,7 +105,7 @@ func (client *QueuesClient) createOrUpdateCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *QueuesClient) createOrUpdateHandleResponse(resp *http.Response) (Q
 
 // CreateOrUpdateAuthorizationRule - Creates an authorization rule for a queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
@@ -171,7 +173,7 @@ func (client *QueuesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -186,6 +188,7 @@ func (client *QueuesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *
 
 // Delete - Deletes a queue from the specified namespace in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
@@ -231,12 +234,13 @@ func (client *QueuesClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // DeleteAuthorizationRule - Deletes a queue authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
@@ -288,12 +292,13 @@ func (client *QueuesClient) deleteAuthorizationRuleCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns a description for the specified queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
@@ -339,7 +344,7 @@ func (client *QueuesClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -354,6 +359,7 @@ func (client *QueuesClient) getHandleResponse(resp *http.Response) (QueuesClient
 
 // GetAuthorizationRule - Gets an authorization rule for a queue by rule name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
@@ -405,7 +411,7 @@ func (client *QueuesClient) getAuthorizationRuleCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -420,13 +426,14 @@ func (client *QueuesClient) getAuthorizationRuleHandleResponse(resp *http.Respon
 
 // NewListAuthorizationRulesPager - Gets all authorization rules for a queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
 // options - QueuesClientListAuthorizationRulesOptions contains the optional parameters for the QueuesClient.ListAuthorizationRules
 // method.
 func (client *QueuesClient) NewListAuthorizationRulesPager(resourceGroupName string, namespaceName string, queueName string, options *QueuesClientListAuthorizationRulesOptions) *runtime.Pager[QueuesClientListAuthorizationRulesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[QueuesClientListAuthorizationRulesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[QueuesClientListAuthorizationRulesResponse]{
 		More: func(page QueuesClientListAuthorizationRulesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -479,7 +486,7 @@ func (client *QueuesClient) listAuthorizationRulesCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -494,11 +501,12 @@ func (client *QueuesClient) listAuthorizationRulesHandleResponse(resp *http.Resp
 
 // NewListByNamespacePager - Gets the queues within a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // options - QueuesClientListByNamespaceOptions contains the optional parameters for the QueuesClient.ListByNamespace method.
 func (client *QueuesClient) NewListByNamespacePager(resourceGroupName string, namespaceName string, options *QueuesClientListByNamespaceOptions) *runtime.Pager[QueuesClientListByNamespaceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[QueuesClientListByNamespaceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[QueuesClientListByNamespaceResponse]{
 		More: func(page QueuesClientListByNamespaceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -553,7 +561,7 @@ func (client *QueuesClient) listByNamespaceCreateRequest(ctx context.Context, re
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -568,6 +576,7 @@ func (client *QueuesClient) listByNamespaceHandleResponse(resp *http.Response) (
 
 // ListKeys - Primary and secondary connection strings to the queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
@@ -618,7 +627,7 @@ func (client *QueuesClient) listKeysCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -633,6 +642,7 @@ func (client *QueuesClient) listKeysHandleResponse(resp *http.Response) (QueuesC
 
 // RegenerateKeys - Regenerates the primary or secondary connection strings to the queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - Name of the Resource group within the Azure subscription.
 // namespaceName - The namespace name
 // queueName - The queue name.
@@ -684,7 +694,7 @@ func (client *QueuesClient) regenerateKeysCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

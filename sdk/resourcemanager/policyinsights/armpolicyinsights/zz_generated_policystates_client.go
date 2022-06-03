@@ -38,7 +38,7 @@ func NewPolicyStatesClient(credential azcore.TokenCredential, options *arm.Clien
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -55,6 +55,7 @@ func NewPolicyStatesClient(credential azcore.TokenCredential, options *arm.Clien
 
 // NewListQueryResultsForManagementGroupPager - Queries policy states for the resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // managementGroupName - Management group name.
@@ -63,7 +64,7 @@ func NewPolicyStatesClient(credential azcore.TokenCredential, options *arm.Clien
 // options - PolicyStatesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForManagementGroup
 // method.
 func (client *PolicyStatesClient) NewListQueryResultsForManagementGroupPager(policyStatesResource PolicyStatesResource, managementGroupName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForManagementGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForManagementGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForManagementGroupResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForManagementGroupResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -133,7 +134,7 @@ func (client *PolicyStatesClient) listQueryResultsForManagementGroupCreateReques
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -148,6 +149,7 @@ func (client *PolicyStatesClient) listQueryResultsForManagementGroupHandleRespon
 
 // NewListQueryResultsForPolicyDefinitionPager - Queries policy states for the subscription level policy definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
@@ -157,7 +159,7 @@ func (client *PolicyStatesClient) listQueryResultsForManagementGroupHandleRespon
 // options - PolicyStatesClientListQueryResultsForPolicyDefinitionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForPolicyDefinition
 // method.
 func (client *PolicyStatesClient) NewListQueryResultsForPolicyDefinitionPager(policyStatesResource PolicyStatesResource, subscriptionID string, policyDefinitionName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForPolicyDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicyDefinitionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForPolicyDefinitionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForPolicyDefinitionResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForPolicyDefinitionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -231,7 +233,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionCreateReque
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -246,6 +248,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionHandleRespo
 
 // NewListQueryResultsForPolicySetDefinitionPager - Queries policy states for the subscription level policy set definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
@@ -255,7 +258,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicyDefinitionHandleRespo
 // options - PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForPolicySetDefinition
 // method.
 func (client *PolicyStatesClient) NewListQueryResultsForPolicySetDefinitionPager(policyStatesResource PolicyStatesResource, subscriptionID string, policySetDefinitionName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForPolicySetDefinitionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForPolicySetDefinitionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -329,7 +332,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionCreateRe
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -344,6 +347,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionHandleRe
 
 // NewListQueryResultsForResourcePager - Queries policy states for the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // resourceID - Resource ID.
@@ -352,7 +356,7 @@ func (client *PolicyStatesClient) listQueryResultsForPolicySetDefinitionHandleRe
 // options - PolicyStatesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForResource
 // method.
 func (client *PolicyStatesClient) NewListQueryResultsForResourcePager(policyStatesResource PolicyStatesResource, resourceID string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForResourceResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForResourceResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -421,7 +425,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceCreateRequest(ctx c
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -436,6 +440,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceHandleResponse(resp
 
 // NewListQueryResultsForResourceGroupPager - Queries policy states for the resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
@@ -445,7 +450,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceHandleResponse(resp
 // options - PolicyStatesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForResourceGroup
 // method.
 func (client *PolicyStatesClient) NewListQueryResultsForResourceGroupPager(policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForResourceGroupResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForResourceGroupResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -518,7 +523,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupCreateRequest(
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -534,6 +539,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupHandleResponse
 // NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager - Queries policy states for the resource group level policy
 // assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
@@ -544,7 +550,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupHandleResponse
 // options - PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions contains the optional parameters
 // for the PolicyStatesClient.ListQueryResultsForResourceGroupLevelPolicyAssignment method.
 func (client *PolicyStatesClient) NewListQueryResultsForResourceGroupLevelPolicyAssignmentPager(policyStatesResource PolicyStatesResource, subscriptionID string, resourceGroupName string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForResourceGroupLevelPolicyAssignmentResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -622,7 +628,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAss
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -637,6 +643,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAss
 
 // NewListQueryResultsForSubscriptionPager - Queries policy states for the resources under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
@@ -645,7 +652,7 @@ func (client *PolicyStatesClient) listQueryResultsForResourceGroupLevelPolicyAss
 // options - PolicyStatesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyStatesClient.ListQueryResultsForSubscription
 // method.
 func (client *PolicyStatesClient) NewListQueryResultsForSubscriptionPager(policyStatesResource PolicyStatesResource, subscriptionID string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForSubscriptionResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForSubscriptionResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -714,7 +721,7 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionCreateRequest(c
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -730,6 +737,7 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionHandleResponse(
 // NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager - Queries policy states for the subscription level policy
 // assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesResource - The virtual resource under PolicyStates resource type. In a given time range, 'latest' represents
 // the latest policy state(s), whereas 'default' represents all policy state(s).
 // subscriptionID - Microsoft Azure subscription ID.
@@ -739,7 +747,7 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionHandleResponse(
 // options - PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions contains the optional parameters
 // for the PolicyStatesClient.ListQueryResultsForSubscriptionLevelPolicyAssignment method.
 func (client *PolicyStatesClient) NewListQueryResultsForSubscriptionLevelPolicyAssignmentPager(policyStatesResource PolicyStatesResource, subscriptionID string, policyAssignmentName string, queryOptions *QueryOptions, options *PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentOptions) *runtime.Pager[PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse]{
 		More: func(page PolicyStatesClientListQueryResultsForSubscriptionLevelPolicyAssignmentResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -813,7 +821,7 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionLevelPolicyAssi
 		reqQP.Set("$skiptoken", *queryOptions.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -828,6 +836,7 @@ func (client *PolicyStatesClient) listQueryResultsForSubscriptionLevelPolicyAssi
 
 // SummarizeForManagementGroup - Summarizes policy states for the resources under the management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // managementGroupName - Management group name.
@@ -881,7 +890,7 @@ func (client *PolicyStatesClient) summarizeForManagementGroupCreateRequest(ctx c
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -896,6 +905,7 @@ func (client *PolicyStatesClient) summarizeForManagementGroupHandleResponse(resp
 
 // SummarizeForPolicyDefinition - Summarizes policy states for the subscription level policy definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -954,7 +964,7 @@ func (client *PolicyStatesClient) summarizeForPolicyDefinitionCreateRequest(ctx 
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -969,6 +979,7 @@ func (client *PolicyStatesClient) summarizeForPolicyDefinitionHandleResponse(res
 
 // SummarizeForPolicySetDefinition - Summarizes policy states for the subscription level policy set definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -1027,7 +1038,7 @@ func (client *PolicyStatesClient) summarizeForPolicySetDefinitionCreateRequest(c
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1042,6 +1053,7 @@ func (client *PolicyStatesClient) summarizeForPolicySetDefinitionHandleResponse(
 
 // SummarizeForResource - Summarizes policy states for the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // resourceID - Resource ID.
@@ -1091,7 +1103,7 @@ func (client *PolicyStatesClient) summarizeForResourceCreateRequest(ctx context.
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1106,6 +1118,7 @@ func (client *PolicyStatesClient) summarizeForResourceHandleResponse(resp *http.
 
 // SummarizeForResourceGroup - Summarizes policy states for the resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -1163,7 +1176,7 @@ func (client *PolicyStatesClient) summarizeForResourceGroupCreateRequest(ctx con
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1178,6 +1191,7 @@ func (client *PolicyStatesClient) summarizeForResourceGroupHandleResponse(resp *
 
 // SummarizeForResourceGroupLevelPolicyAssignment - Summarizes policy states for the resource group level policy assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -1241,7 +1255,7 @@ func (client *PolicyStatesClient) summarizeForResourceGroupLevelPolicyAssignment
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1256,6 +1270,7 @@ func (client *PolicyStatesClient) summarizeForResourceGroupLevelPolicyAssignment
 
 // SummarizeForSubscription - Summarizes policy states for the resources under the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -1308,7 +1323,7 @@ func (client *PolicyStatesClient) summarizeForSubscriptionCreateRequest(ctx cont
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1323,6 +1338,7 @@ func (client *PolicyStatesClient) summarizeForSubscriptionHandleResponse(resp *h
 
 // SummarizeForSubscriptionLevelPolicyAssignment - Summarizes policy states for the subscription level policy assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // policyStatesSummaryResource - The virtual resource under PolicyStates resource type for summarize action. In a given time
 // range, 'latest' represents the latest policy state(s) and is the only allowed value.
 // subscriptionID - Microsoft Azure subscription ID.
@@ -1381,7 +1397,7 @@ func (client *PolicyStatesClient) summarizeForSubscriptionLevelPolicyAssignmentC
 		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -1396,26 +1412,28 @@ func (client *PolicyStatesClient) summarizeForSubscriptionLevelPolicyAssignmentH
 
 // BeginTriggerResourceGroupEvaluation - Triggers a policy evaluation scan for all the resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // subscriptionID - Microsoft Azure subscription ID.
 // resourceGroupName - Resource group name.
 // options - PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions contains the optional parameters for the PolicyStatesClient.BeginTriggerResourceGroupEvaluation
 // method.
-func (client *PolicyStatesClient) BeginTriggerResourceGroupEvaluation(ctx context.Context, subscriptionID string, resourceGroupName string, options *PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions) (*armruntime.Poller[PolicyStatesClientTriggerResourceGroupEvaluationResponse], error) {
+func (client *PolicyStatesClient) BeginTriggerResourceGroupEvaluation(ctx context.Context, subscriptionID string, resourceGroupName string, options *PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions) (*runtime.Poller[PolicyStatesClientTriggerResourceGroupEvaluationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.triggerResourceGroupEvaluation(ctx, subscriptionID, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PolicyStatesClientTriggerResourceGroupEvaluationResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PolicyStatesClientTriggerResourceGroupEvaluationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PolicyStatesClientTriggerResourceGroupEvaluationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PolicyStatesClientTriggerResourceGroupEvaluationResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // TriggerResourceGroupEvaluation - Triggers a policy evaluation scan for all the resources under the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 func (client *PolicyStatesClient) triggerResourceGroupEvaluation(ctx context.Context, subscriptionID string, resourceGroupName string, options *PolicyStatesClientBeginTriggerResourceGroupEvaluationOptions) (*http.Response, error) {
 	req, err := client.triggerResourceGroupEvaluationCreateRequest(ctx, subscriptionID, resourceGroupName, options)
 	if err != nil {
@@ -1449,31 +1467,33 @@ func (client *PolicyStatesClient) triggerResourceGroupEvaluationCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginTriggerSubscriptionEvaluation - Triggers a policy evaluation scan for all the resources under the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // subscriptionID - Microsoft Azure subscription ID.
 // options - PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions contains the optional parameters for the PolicyStatesClient.BeginTriggerSubscriptionEvaluation
 // method.
-func (client *PolicyStatesClient) BeginTriggerSubscriptionEvaluation(ctx context.Context, subscriptionID string, options *PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions) (*armruntime.Poller[PolicyStatesClientTriggerSubscriptionEvaluationResponse], error) {
+func (client *PolicyStatesClient) BeginTriggerSubscriptionEvaluation(ctx context.Context, subscriptionID string, options *PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions) (*runtime.Poller[PolicyStatesClientTriggerSubscriptionEvaluationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.triggerSubscriptionEvaluation(ctx, subscriptionID, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PolicyStatesClientTriggerSubscriptionEvaluationResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PolicyStatesClientTriggerSubscriptionEvaluationResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PolicyStatesClientTriggerSubscriptionEvaluationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PolicyStatesClientTriggerSubscriptionEvaluationResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // TriggerSubscriptionEvaluation - Triggers a policy evaluation scan for all the resources under the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 func (client *PolicyStatesClient) triggerSubscriptionEvaluation(ctx context.Context, subscriptionID string, options *PolicyStatesClientBeginTriggerSubscriptionEvaluationOptions) (*http.Response, error) {
 	req, err := client.triggerSubscriptionEvaluationCreateRequest(ctx, subscriptionID, options)
 	if err != nil {
@@ -1503,6 +1523,6 @@ func (client *PolicyStatesClient) triggerSubscriptionEvaluationCreateRequest(ctx
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

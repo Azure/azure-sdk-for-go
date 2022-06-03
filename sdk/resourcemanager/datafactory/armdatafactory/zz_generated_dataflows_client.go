@@ -38,7 +38,7 @@ func NewDataFlowsClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataFlowsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Creates or updates a data flow.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // dataFlowName - The data flow name.
@@ -104,9 +105,9 @@ func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Raw().Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dataFlow)
 }
 
@@ -121,6 +122,7 @@ func (client *DataFlowsClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Deletes a data flow.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // dataFlowName - The data flow name.
@@ -166,12 +168,13 @@ func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a data flow.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // dataFlowName - The data flow name.
@@ -218,9 +221,9 @@ func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -235,11 +238,12 @@ func (client *DataFlowsClient) getHandleResponse(resp *http.Response) (DataFlows
 
 // NewListByFactoryPager - Lists data flows.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The resource group name.
 // factoryName - The factory name.
 // options - DataFlowsClientListByFactoryOptions contains the optional parameters for the DataFlowsClient.ListByFactory method.
 func (client *DataFlowsClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *DataFlowsClientListByFactoryOptions) *runtime.Pager[DataFlowsClientListByFactoryResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataFlowsClientListByFactoryResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataFlowsClientListByFactoryResponse]{
 		More: func(page DataFlowsClientListByFactoryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -288,7 +292,7 @@ func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

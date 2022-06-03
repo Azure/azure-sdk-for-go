@@ -23,14 +23,14 @@ func ExampleDscConfigurationClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewDscConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewDscConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<configuration-name>",
+		"rg",
+		"myAutomationAccount33",
+		"TemplateBasic",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -44,14 +44,14 @@ func ExampleDscConfigurationClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewDscConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewDscConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<configuration-name>",
+		"rg",
+		"myAutomationAccount33",
+		"TemplateBasic",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -67,14 +67,14 @@ func ExampleDscConfigurationClient_GetContent() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewDscConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewDscConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetContent(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<configuration-name>",
+		"rg",
+		"myAutomationAccount33",
+		"ConfigName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -90,12 +90,12 @@ func ExampleDscConfigurationClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewDscConfigurationClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewDscConfigurationClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"myAutomationAccount33",
 		&armautomation.DscConfigurationClientListByAutomationAccountOptions{Filter: nil,
 			Skip:        nil,
 			Top:         nil,
@@ -105,7 +105,6 @@ func ExampleDscConfigurationClient_NewListByAutomationAccountPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

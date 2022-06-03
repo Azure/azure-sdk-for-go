@@ -1,6 +1,25 @@
 # Release History
 
-## 0.3.0 (Unreleased)
+## 0.3.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 0.3.1 (2022-05-12)
+
+### Features Added
+
+* Added Transactional Batch support
+
+### Other Changes
+* Update to latest `azcore` and `internal` modules
+
+## 0.3.0 (2022-05-10)
 
 ### Features Added
 * Added single partition query support.
@@ -8,10 +27,6 @@
 
 ### Breaking Changes
 * This module now requires Go 1.18
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.2.0 (2022-01-13)
 

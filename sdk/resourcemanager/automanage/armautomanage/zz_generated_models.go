@@ -170,15 +170,69 @@ type ConfigurationProfileAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ConfigurationProfileAssignmentsClientListByClusterNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByClusterName
+// method.
+type ConfigurationProfileAssignmentsClientListByClusterNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileAssignmentsClientListByMachineNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByMachineName
+// method.
+type ConfigurationProfileAssignmentsClientListByMachineNameOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListBySubscription
 // method.
 type ConfigurationProfileAssignmentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByVirtualMachines
+// method.
+type ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.List
 // method.
 type ConfigurationProfileAssignmentsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileHCIAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfileHCIAssignmentsClient.CreateOrUpdate
+// method.
+type ConfigurationProfileHCIAssignmentsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileHCIAssignmentsClientDeleteOptions contains the optional parameters for the ConfigurationProfileHCIAssignmentsClient.Delete
+// method.
+type ConfigurationProfileHCIAssignmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileHCIAssignmentsClientGetOptions contains the optional parameters for the ConfigurationProfileHCIAssignmentsClient.Get
+// method.
+type ConfigurationProfileHCIAssignmentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfileHCRPAssignmentsClient.CreateOrUpdate
+// method.
+type ConfigurationProfileHCRPAssignmentsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileHCRPAssignmentsClientDeleteOptions contains the optional parameters for the ConfigurationProfileHCRPAssignmentsClient.Delete
+// method.
+type ConfigurationProfileHCRPAssignmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationProfileHCRPAssignmentsClientGetOptions contains the optional parameters for the ConfigurationProfileHCRPAssignmentsClient.Get
+// method.
+type ConfigurationProfileHCRPAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -301,6 +355,28 @@ type ErrorDetail struct {
 type ErrorResponse struct {
 	// The error object.
 	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+// HCIReportsClientGetOptions contains the optional parameters for the HCIReportsClient.Get method.
+type HCIReportsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HCIReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCIReportsClient.ListByConfigurationProfileAssignments
+// method.
+type HCIReportsClientListByConfigurationProfileAssignmentsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HCRPReportsClientGetOptions contains the optional parameters for the HCRPReportsClient.Get method.
+type HCRPReportsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HCRPReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCRPReportsClient.ListByConfigurationProfileAssignments
+// method.
+type HCRPReportsClientListByConfigurationProfileAssignmentsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API

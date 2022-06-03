@@ -24,12 +24,12 @@ func ExampleStreamingLocatorsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingLocatorsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingLocatorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("contoso",
+		"contosomedia",
 		&armmediaservices.StreamingLocatorsClientListOptions{Filter: nil,
 			Top:     nil,
 			Orderby: nil,
@@ -38,7 +38,6 @@ func ExampleStreamingLocatorsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,14 +53,14 @@ func ExampleStreamingLocatorsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingLocatorsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingLocatorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-locator-name>",
+		"contoso",
+		"contosomedia",
+		"clearStreamingLocator",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,18 +76,18 @@ func ExampleStreamingLocatorsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingLocatorsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingLocatorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Create(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-locator-name>",
+		"contoso",
+		"contosomedia",
+		"UserCreatedClearStreamingLocator",
 		armmediaservices.StreamingLocator{
 			Properties: &armmediaservices.StreamingLocatorProperties{
-				AssetName:           to.Ptr("<asset-name>"),
-				StreamingPolicyName: to.Ptr("<streaming-policy-name>"),
+				AssetName:           to.Ptr("ClimbingMountRainier"),
+				StreamingPolicyName: to.Ptr("clearStreamingPolicy"),
 			},
 		},
 		nil)
@@ -104,14 +103,14 @@ func ExampleStreamingLocatorsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingLocatorsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingLocatorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-locator-name>",
+		"contoso",
+		"contosomedia",
+		"clearStreamingLocator",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -125,14 +124,14 @@ func ExampleStreamingLocatorsClient_ListContentKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingLocatorsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingLocatorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListContentKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-locator-name>",
+		"contoso",
+		"contosomedia",
+		"secureStreamingLocator",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -148,14 +147,14 @@ func ExampleStreamingLocatorsClient_ListPaths() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewStreamingLocatorsClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewStreamingLocatorsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListPaths(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<streaming-locator-name>",
+		"contoso",
+		"contosomedia",
+		"clearStreamingLocator",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

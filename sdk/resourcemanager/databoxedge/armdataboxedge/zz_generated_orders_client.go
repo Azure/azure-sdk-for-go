@@ -38,7 +38,7 @@ func NewOrdersClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,25 +56,27 @@ func NewOrdersClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Creates or updates an order.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The order details of a device.
 // resourceGroupName - The resource group name.
 // order - The order to be created or updated.
 // options - OrdersClientBeginCreateOrUpdateOptions contains the optional parameters for the OrdersClient.BeginCreateOrUpdate
 // method.
-func (client *OrdersClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersClientBeginCreateOrUpdateOptions) (*armruntime.Poller[OrdersClientCreateOrUpdateResponse], error) {
+func (client *OrdersClient) BeginCreateOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersClientBeginCreateOrUpdateOptions) (*runtime.Poller[OrdersClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, deviceName, resourceGroupName, order, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OrdersClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OrdersClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OrdersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OrdersClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an order.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *OrdersClient) createOrUpdate(ctx context.Context, deviceName string, resourceGroupName string, order Order, options *OrdersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, deviceName, resourceGroupName, order, options)
 	if err != nil {
@@ -112,29 +114,31 @@ func (client *OrdersClient) createOrUpdateCreateRequest(ctx context.Context, dev
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, order)
 }
 
 // BeginDelete - Deletes the order related to the device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - OrdersClientBeginDeleteOptions contains the optional parameters for the OrdersClient.BeginDelete method.
-func (client *OrdersClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientBeginDeleteOptions) (*armruntime.Poller[OrdersClientDeleteResponse], error) {
+func (client *OrdersClient) BeginDelete(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientBeginDeleteOptions) (*runtime.Poller[OrdersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, deviceName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[OrdersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[OrdersClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[OrdersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[OrdersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the order related to the device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 func (client *OrdersClient) deleteOperation(ctx context.Context, deviceName string, resourceGroupName string, options *OrdersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, deviceName, resourceGroupName, options)
 	if err != nil {
@@ -172,12 +176,13 @@ func (client *OrdersClient) deleteCreateRequest(ctx context.Context, deviceName 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a specific order by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - OrdersClientGetOptions contains the optional parameters for the OrdersClient.Get method.
@@ -218,7 +223,7 @@ func (client *OrdersClient) getCreateRequest(ctx context.Context, deviceName str
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -233,12 +238,13 @@ func (client *OrdersClient) getHandleResponse(resp *http.Response) (OrdersClient
 
 // NewListByDataBoxEdgeDevicePager - Lists all the orders related to a Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name.
 // resourceGroupName - The resource group name.
 // options - OrdersClientListByDataBoxEdgeDeviceOptions contains the optional parameters for the OrdersClient.ListByDataBoxEdgeDevice
 // method.
 func (client *OrdersClient) NewListByDataBoxEdgeDevicePager(deviceName string, resourceGroupName string, options *OrdersClientListByDataBoxEdgeDeviceOptions) *runtime.Pager[OrdersClientListByDataBoxEdgeDeviceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OrdersClientListByDataBoxEdgeDeviceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OrdersClientListByDataBoxEdgeDeviceResponse]{
 		More: func(page OrdersClientListByDataBoxEdgeDeviceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -287,7 +293,7 @@ func (client *OrdersClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -302,6 +308,7 @@ func (client *OrdersClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Res
 
 // ListDCAccessCode - Gets the DCAccess Code
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
 // deviceName - The device name
 // resourceGroupName - The resource group name.
 // options - OrdersClientListDCAccessCodeOptions contains the optional parameters for the OrdersClient.ListDCAccessCode method.
@@ -342,7 +349,7 @@ func (client *OrdersClient) listDCAccessCodeCreateRequest(ctx context.Context, d
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

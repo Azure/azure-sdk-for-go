@@ -8,11 +8,6 @@
 
 package generated
 
-const (
-	ModuleName    = "azkeys"
-	ModuleVersion = "v0.5.1"
-)
-
 // ActionType - The type of the action.
 type ActionType string
 

@@ -245,7 +245,7 @@ func (ac *Client) NewListRulesPager(topicName string, subscriptionName string, o
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListRulesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListRulesResponse]{
 		More: func(ltr ListRulesResponse) bool {
 			return ep.More()
 		},

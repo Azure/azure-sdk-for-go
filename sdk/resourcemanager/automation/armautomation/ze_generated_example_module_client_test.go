@@ -24,14 +24,14 @@ func ExampleModuleClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewModuleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewModuleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<module-name>",
+		"rg",
+		"myAutomationAccount33",
+		"OmsCompositeResources",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,14 +45,14 @@ func ExampleModuleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewModuleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewModuleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<module-name>",
+		"rg",
+		"myAutomationAccount33",
+		"OmsCompositeResources",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -68,23 +68,23 @@ func ExampleModuleClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewModuleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewModuleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<module-name>",
+		"rg",
+		"myAutomationAccount33",
+		"OmsCompositeResources",
 		armautomation.ModuleCreateOrUpdateParameters{
 			Properties: &armautomation.ModuleCreateOrUpdateProperties{
 				ContentLink: &armautomation.ContentLink{
 					ContentHash: &armautomation.ContentHash{
-						Algorithm: to.Ptr("<algorithm>"),
-						Value:     to.Ptr("<value>"),
+						Algorithm: to.Ptr("sha265"),
+						Value:     to.Ptr("07E108A962B81DD9C9BAA89BB47C0F6EE52B29E83758B07795E408D258B2B87A"),
 					},
-					URI:     to.Ptr("<uri>"),
-					Version: to.Ptr("<version>"),
+					URI:     to.Ptr("https://teststorage.blob.core.windows.net/dsccomposite/OmsCompositeResources.zip"),
+					Version: to.Ptr("1.0.0.0"),
 				},
 			},
 		},
@@ -103,23 +103,23 @@ func ExampleModuleClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewModuleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewModuleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<automation-account-name>",
-		"<module-name>",
+		"rg",
+		"MyAutomationAccount",
+		"MyModule",
 		armautomation.ModuleUpdateParameters{
 			Properties: &armautomation.ModuleUpdateProperties{
 				ContentLink: &armautomation.ContentLink{
 					ContentHash: &armautomation.ContentHash{
-						Algorithm: to.Ptr("<algorithm>"),
-						Value:     to.Ptr("<value>"),
+						Algorithm: to.Ptr("sha265"),
+						Value:     to.Ptr("07E108A962B81DD9C9BAA89BB47C0F6EE52B29E83758B07795E408D258B2B87A"),
 					},
-					URI:     to.Ptr("<uri>"),
-					Version: to.Ptr("<version>"),
+					URI:     to.Ptr("https://teststorage.blob.core.windows.net/mycontainer/MyModule.zip"),
+					Version: to.Ptr("1.0.0.0"),
 				},
 			},
 		},
@@ -138,18 +138,17 @@ func ExampleModuleClient_NewListByAutomationAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomation.NewModuleClient("<subscription-id>", cred, nil)
+	client, err := armautomation.NewModuleClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByAutomationAccountPager("<resource-group-name>",
-		"<automation-account-name>",
+	pager := client.NewListByAutomationAccountPager("rg",
+		"myAutomationAccount33",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

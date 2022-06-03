@@ -33,7 +33,7 @@ func NewOuContainerOperationsClient(credential azcore.TokenCredential, options *
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,10 +50,11 @@ func NewOuContainerOperationsClient(credential azcore.TokenCredential, options *
 
 // NewListPager - Lists all the available OuContainer operations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // options - OuContainerOperationsClientListOptions contains the optional parameters for the OuContainerOperationsClient.List
 // method.
 func (client *OuContainerOperationsClient) NewListPager(options *OuContainerOperationsClientListOptions) *runtime.Pager[OuContainerOperationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[OuContainerOperationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[OuContainerOperationsClientListResponse]{
 		More: func(page OuContainerOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -90,7 +91,7 @@ func (client *OuContainerOperationsClient) listCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -5,12 +5,13 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 )
 
 // TopicProperties represents the static properties of the topic.
@@ -53,6 +54,10 @@ type TopicProperties struct {
 
 	// AuthorizationRules are the authorization rules for this entity.
 	AuthorizationRules []AuthorizationRule
+
+	// Maximum size (in KB) of the message payload that can be accepted by the topic. This feature is only available when
+	// using Service Bus Premium.
+	MaxMessageSizeInKilobytes *int64
 }
 
 // TopicRuntimeProperties represent dynamic properties of a topic, such as the ActiveMessageCount.
@@ -203,7 +208,7 @@ func (ac *Client) NewListTopicsPager(options *ListTopicsOptions) *runtime.Pager[
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListTopicsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListTopicsResponse]{
 		More: func(ltr ListTopicsResponse) bool {
 			return ep.More()
 		},
@@ -255,7 +260,7 @@ func (ac *Client) NewListTopicsRuntimePropertiesPager(options *ListTopicsRuntime
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListTopicsRuntimePropertiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListTopicsRuntimePropertiesResponse]{
 		More: func(ltr ListTopicsRuntimePropertiesResponse) bool {
 			return ep.More()
 		},
@@ -351,12 +356,13 @@ func newTopicEnvelope(props *TopicProperties, tokenProvider auth.TokenProvider) 
 		DuplicateDetectionHistoryTimeWindow: props.DuplicateDetectionHistoryTimeWindow,
 		EnableBatchedOperations:             props.EnableBatchedOperations,
 
-		Status:             (*atom.EntityStatus)(props.Status),
-		UserMetadata:       props.UserMetadata,
-		SupportOrdering:    props.SupportOrdering,
-		AutoDeleteOnIdle:   props.AutoDeleteOnIdle,
-		EnablePartitioning: props.EnablePartitioning,
-		AuthorizationRules: publicAccessRightsToInternal(props.AuthorizationRules),
+		Status:                    (*atom.EntityStatus)(props.Status),
+		UserMetadata:              props.UserMetadata,
+		SupportOrdering:           props.SupportOrdering,
+		AutoDeleteOnIdle:          props.AutoDeleteOnIdle,
+		EnablePartitioning:        props.EnablePartitioning,
+		AuthorizationRules:        publicAccessRightsToInternal(props.AuthorizationRules),
+		MaxMessageSizeInKilobytes: props.MaxMessageSizeInKilobytes,
 	}
 
 	return atom.WrapWithTopicEnvelope(desc)
@@ -379,12 +385,17 @@ func newTopicItem(te *atom.TopicEnvelope) (*TopicItem, error) {
 			EnablePartitioning:                  td.EnablePartitioning,
 			SupportOrdering:                     td.SupportOrdering,
 			AuthorizationRules:                  internalAccessRightsToPublic(td.AuthorizationRules),
+			MaxMessageSizeInKilobytes:           td.MaxMessageSizeInKilobytes,
 		},
 	}, nil
 }
 
 func newTopicRuntimePropertiesItem(env *atom.TopicEnvelope) (*TopicRuntimePropertiesItem, error) {
 	desc := env.Content.TopicDescription
+
+	if desc.CountDetails == nil {
+		return nil, errors.New("invalid topic runtime properties: no CountDetails element")
+	}
 
 	props := &TopicRuntimeProperties{
 		SizeInBytes:           int64OrZero(desc.SizeInBytes),

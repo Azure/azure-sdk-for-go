@@ -5,12 +5,13 @@ package admin
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
 )
 
 // QueueProperties represents the static properties of the queue.
@@ -74,6 +75,10 @@ type QueueProperties struct {
 
 	// AuthorizationRules are the authorization rules for this entity.
 	AuthorizationRules []AuthorizationRule
+
+	// Maximum size (in KB) of the message payload that can be accepted by the queue. This feature is only available when
+	// using Service Bus Premium.
+	MaxMessageSizeInKilobytes *int64
 }
 
 // QueueRuntimeProperties represent dynamic properties of a queue, such as the ActiveMessageCount.
@@ -273,7 +278,7 @@ func (ac *Client) NewListQueuesPager(options *ListQueuesOptions) *runtime.Pager[
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListQueuesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListQueuesResponse]{
 		More: func(ltr ListQueuesResponse) bool {
 			return ep.More()
 		},
@@ -323,7 +328,7 @@ func (ac *Client) NewListQueuesRuntimePropertiesPager(options *ListQueuesRuntime
 		em:           ac.em,
 	}
 
-	return runtime.NewPager(runtime.PageProcessor[ListQueuesRuntimePropertiesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ListQueuesRuntimePropertiesResponse]{
 		More: func(ltr ListQueuesRuntimePropertiesResponse) bool {
 			return ep.More()
 		},
@@ -394,6 +399,7 @@ func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) 
 		ForwardDeadLetteredMessagesTo:       props.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                        props.UserMetadata,
 		AuthorizationRules:                  publicAccessRightsToInternal(props.AuthorizationRules),
+		MaxMessageSizeInKilobytes:           props.MaxMessageSizeInKilobytes,
 	}
 
 	return atom.WrapWithQueueEnvelope(qpr, tokenProvider)
@@ -419,6 +425,7 @@ func newQueueItem(env *atom.QueueEnvelope) (*QueueItem, error) {
 		ForwardDeadLetteredMessagesTo:       desc.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                        desc.UserMetadata,
 		AuthorizationRules:                  internalAccessRightsToPublic(desc.AuthorizationRules),
+		MaxMessageSizeInKilobytes:           desc.MaxMessageSizeInKilobytes,
 	}
 
 	return &QueueItem{
@@ -429,6 +436,10 @@ func newQueueItem(env *atom.QueueEnvelope) (*QueueItem, error) {
 
 func newQueueRuntimePropertiesItem(env *atom.QueueEnvelope) (*QueueRuntimePropertiesItem, error) {
 	desc := env.Content.QueueDescription
+
+	if desc.CountDetails == nil {
+		return nil, errors.New("invalid queue runtime properties: no CountDetails element")
+	}
 
 	qrt := &QueueRuntimeProperties{
 		SizeInBytes:                    int64OrZero(desc.SizeInBytes),

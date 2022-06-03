@@ -44,7 +44,7 @@ func ExampleAlertsClient_NewGetAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armalertsmanagement.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armalertsmanagement.NewAlertsClient("1e3ff1c0-771a-4119-a03b-be82a51e232d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -70,7 +70,6 @@ func ExampleAlertsClient_NewGetAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -86,12 +85,12 @@ func ExampleAlertsClient_ChangeState() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armalertsmanagement.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armalertsmanagement.NewAlertsClient("9e261de7-c804-4b9d-9ebf-6f50fe350a9a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ChangeState(ctx,
-		"<alert-id>",
+		"66114d64-d9d9-478b-95c9-b789d6502100",
 		armalertsmanagement.AlertStateAcknowledged,
 		nil)
 	if err != nil {
@@ -108,12 +107,12 @@ func ExampleAlertsClient_GetHistory() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armalertsmanagement.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armalertsmanagement.NewAlertsClient("9e261de7-c804-4b9d-9ebf-6f50fe350a9a", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetHistory(ctx,
-		"<alert-id>",
+		"66114d64-d9d9-478b-95c9-b789d6502100",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -129,7 +128,7 @@ func ExampleAlertsClient_GetSummary() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armalertsmanagement.NewAlertsClient("<subscription-id>", cred, nil)
+	client, err := armalertsmanagement.NewAlertsClient("1e3ff1c0-771a-4119-a03b-be82a51e232d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

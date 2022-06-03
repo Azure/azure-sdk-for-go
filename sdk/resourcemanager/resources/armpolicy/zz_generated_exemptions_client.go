@@ -38,7 +38,7 @@ func NewExemptionsClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewExemptionsClient(subscriptionID string, credential azcore.TokenCredentia
 // exemption at resource group scope for a policy assignment at the same or above level, the exemption exempts to all applicable
 // resources in the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // scope - The scope of the policy exemption. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format:
 // '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
@@ -98,7 +99,7 @@ func (client *ExemptionsClient) createOrUpdateCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -115,6 +116,7 @@ func (client *ExemptionsClient) createOrUpdateHandleResponse(resp *http.Response
 // exemption is the part of its ID preceding
 // '/providers/Microsoft.Authorization/policyExemptions/{policyExemptionName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // scope - The scope of the policy exemption. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format:
 // '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
@@ -152,12 +154,13 @@ func (client *ExemptionsClient) deleteCreateRequest(ctx context.Context, scope s
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - This operation retrieves a single policy exemption, given its name and the scope it was created at.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // scope - The scope of the policy exemption. Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'),
 // subscription (format:
 // '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
@@ -195,7 +198,7 @@ func (client *ExemptionsClient) getCreateRequest(ctx context.Context, scope stri
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -215,9 +218,10 @@ func (client *ExemptionsClient) getHandleResponse(resp *http.Response) (Exemptio
 // directly or from management groups that contain the given subscription, as well as any applied to objects contained within
 // the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // options - ExemptionsClientListOptions contains the optional parameters for the ExemptionsClient.List method.
 func (client *ExemptionsClient) NewListPager(options *ExemptionsClientListOptions) *runtime.Pager[ExemptionsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ExemptionsClientListResponse]{
 		More: func(page ExemptionsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -263,7 +267,7 @@ func (client *ExemptionsClient) listCreateRequest(ctx context.Context, options *
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -282,11 +286,12 @@ func (client *ExemptionsClient) listHandleResponse(resp *http.Response) (Exempti
 // policy exemptions that are assigned to the management group or the management
 // group's ancestors.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // managementGroupID - The ID of the management group.
 // options - ExemptionsClientListForManagementGroupOptions contains the optional parameters for the ExemptionsClient.ListForManagementGroup
 // method.
 func (client *ExemptionsClient) NewListForManagementGroupPager(managementGroupID string, options *ExemptionsClientListForManagementGroupOptions) *runtime.Pager[ExemptionsClientListForManagementGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListForManagementGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ExemptionsClientListForManagementGroupResponse]{
 		More: func(page ExemptionsClientListForManagementGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -332,7 +337,7 @@ func (client *ExemptionsClient) listForManagementGroupCreateRequest(ctx context.
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -362,6 +367,7 @@ func (client *ExemptionsClient) listForManagementGroupHandleResponse(resp *http.
 // both in the {resourceType} parameter, format: ({resourceProviderNamespace} == '', {parentResourcePath} == '', {resourceType}
 // == 'Microsoft.Web/sites', {resourceName} == 'MyWebApp').
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // resourceGroupName - The name of the resource group containing the resource.
 // resourceProviderNamespace - The namespace of the resource provider. For example, the namespace of a virtual machine is
 // Microsoft.Compute (from Microsoft.Compute/virtualMachines)
@@ -371,7 +377,7 @@ func (client *ExemptionsClient) listForManagementGroupHandleResponse(resp *http.
 // options - ExemptionsClientListForResourceOptions contains the optional parameters for the ExemptionsClient.ListForResource
 // method.
 func (client *ExemptionsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *ExemptionsClientListForResourceOptions) *runtime.Pager[ExemptionsClientListForResourceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListForResourceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ExemptionsClientListForResourceResponse]{
 		More: func(page ExemptionsClientListForResourceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -431,7 +437,7 @@ func (client *ExemptionsClient) listForResourceCreateRequest(ctx context.Context
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -451,11 +457,12 @@ func (client *ExemptionsClient) listForResourceHandleResponse(resp *http.Respons
 // group, including those that apply directly or apply from containing scopes, as well as any applied to resources contained
 // within the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-07-01-preview
 // resourceGroupName - The name of the resource group containing the resource.
 // options - ExemptionsClientListForResourceGroupOptions contains the optional parameters for the ExemptionsClient.ListForResourceGroup
 // method.
 func (client *ExemptionsClient) NewListForResourceGroupPager(resourceGroupName string, options *ExemptionsClientListForResourceGroupOptions) *runtime.Pager[ExemptionsClientListForResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ExemptionsClientListForResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ExemptionsClientListForResourceGroupResponse]{
 		More: func(page ExemptionsClientListForResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -505,7 +512,7 @@ func (client *ExemptionsClient) listForResourceGroupCreateRequest(ctx context.Co
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
 	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

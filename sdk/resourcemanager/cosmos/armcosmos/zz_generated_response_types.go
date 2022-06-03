@@ -248,6 +248,11 @@ type CollectionRegionClientListMetricsResponse struct {
 	MetricListResult
 }
 
+// DataTransferJobsClientCancelResponse contains the response from method DataTransferJobsClient.Cancel.
+type DataTransferJobsClientCancelResponse struct {
+	DataTransferJobGetResults
+}
+
 // DataTransferJobsClientCreateResponse contains the response from method DataTransferJobsClient.Create.
 type DataTransferJobsClientCreateResponse struct {
 	DataTransferJobGetResults
@@ -261,6 +266,16 @@ type DataTransferJobsClientGetResponse struct {
 // DataTransferJobsClientListByDatabaseAccountResponse contains the response from method DataTransferJobsClient.ListByDatabaseAccount.
 type DataTransferJobsClientListByDatabaseAccountResponse struct {
 	DataTransferJobFeedResults
+}
+
+// DataTransferJobsClientPauseResponse contains the response from method DataTransferJobsClient.Pause.
+type DataTransferJobsClientPauseResponse struct {
+	DataTransferJobGetResults
+}
+
+// DataTransferJobsClientResumeResponse contains the response from method DataTransferJobsClient.Resume.
+type DataTransferJobsClientResumeResponse struct {
+	DataTransferJobGetResults
 }
 
 // DatabaseAccountRegionClientListMetricsResponse contains the response from method DatabaseAccountRegionClient.ListMetrics.
@@ -602,6 +617,16 @@ type MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse struct {
 // MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse contains the response from method MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput.
 type MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse struct {
 	ThroughputSettingsGetResults
+}
+
+// MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse contains the response from method MongoDBResourcesClient.MongoDBContainerRedistributeThroughput.
+type MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse struct {
+	PhysicalPartitionThroughputInfoResult
+}
+
+// MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse contains the response from method MongoDBResourcesClient.MongoDBContainerRetrieveThroughputDistribution.
+type MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse struct {
+	PhysicalPartitionThroughputInfoResult
 }
 
 // MongoDBResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method MongoDBResourcesClient.RetrieveContinuousBackupInformation.
@@ -977,6 +1002,16 @@ type SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse struct {
 // SQLResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method SQLResourcesClient.RetrieveContinuousBackupInformation.
 type SQLResourcesClientRetrieveContinuousBackupInformationResponse struct {
 	BackupInformation
+}
+
+// SQLResourcesClientSQLContainerRedistributeThroughputResponse contains the response from method SQLResourcesClient.SQLContainerRedistributeThroughput.
+type SQLResourcesClientSQLContainerRedistributeThroughputResponse struct {
+	PhysicalPartitionThroughputInfoResult
+}
+
+// SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse contains the response from method SQLResourcesClient.SQLContainerRetrieveThroughputDistribution.
+type SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse struct {
+	PhysicalPartitionThroughputInfoResult
 }
 
 // SQLResourcesClientUpdateSQLContainerThroughputResponse contains the response from method SQLResourcesClient.UpdateSQLContainerThroughput.

@@ -33,7 +33,7 @@ func NewManagementClient(credential azcore.TokenCredential, options *arm.ClientO
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,6 +50,7 @@ func NewManagementClient(credential azcore.TokenCredential, options *arm.ClientO
 
 // GetAvailableOperations - Indicates which operations can be performed by the Power BI Resource Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-01-29
 // options - ManagementClientGetAvailableOperationsOptions contains the optional parameters for the ManagementClient.GetAvailableOperations
 // method.
 func (client *ManagementClient) GetAvailableOperations(ctx context.Context, options *ManagementClientGetAvailableOperationsOptions) (ManagementClientGetAvailableOperationsResponse, error) {
@@ -77,7 +78,7 @@ func (client *ManagementClient) getAvailableOperationsCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-01-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

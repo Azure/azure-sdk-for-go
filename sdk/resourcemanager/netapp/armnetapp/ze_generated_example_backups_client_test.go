@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp"
@@ -26,15 +24,15 @@ func ExampleBackupsClient_GetStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetStatus(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -50,15 +48,15 @@ func ExampleBackupsClient_GetVolumeRestoreStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetVolumeRestoreStatus(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,20 +72,19 @@ func ExampleBackupsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
+	pager := client.NewListPager("myRG",
+		"account1",
+		"pool1",
+		"volume1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -103,16 +100,16 @@ func ExampleBackupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
-		"<backup-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
+		"backup1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -128,27 +125,27 @@ func ExampleBackupsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
-		"<backup-name>",
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
+		"backup1",
 		armnetapp.Backup{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			Properties: &armnetapp.BackupProperties{
-				Label: to.Ptr("<label>"),
+				Label: to.Ptr("myLabel"),
 			},
 		},
-		&armnetapp.BackupsClientBeginCreateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -163,23 +160,21 @@ func ExampleBackupsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
-		"<backup-name>",
-		&armnetapp.BackupsClientBeginUpdateOptions{Body: &armnetapp.BackupPatch{},
-			ResumeToken: "",
-		})
+		"myRG",
+		"account1",
+		"pool1",
+		"volume1",
+		"backup1",
+		&armnetapp.BackupsClientBeginUpdateOptions{Body: &armnetapp.BackupPatch{}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -194,21 +189,21 @@ func ExampleBackupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupsClient("<subscription-id>", cred, nil)
+	client, err := armnetapp.NewBackupsClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<pool-name>",
-		"<volume-name>",
-		"<backup-name>",
-		&armnetapp.BackupsClientBeginDeleteOptions{ResumeToken: ""})
+		"resourceGroup",
+		"accountName",
+		"poolName",
+		"volumeName",
+		"backupName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

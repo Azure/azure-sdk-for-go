@@ -38,7 +38,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Create or update a Maps Account. A Maps Account holds the keys which allow access to the Maps REST APIs.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of the Maps Account.
 // mapsAccount - The new or updated parameters for the Maps Account.
@@ -97,7 +98,7 @@ func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, mapsAccount)
 }
 
@@ -112,6 +113,7 @@ func (client *AccountsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Delete a Maps Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of the Maps Account.
 // options - AccountsClientDeleteOptions contains the optional parameters for the AccountsClient.Delete method.
@@ -152,12 +154,13 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Maps Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of the Maps Account.
 // options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
@@ -198,7 +201,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -213,11 +216,12 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 
 // NewListByResourceGroupPager - Get all Maps Accounts in a Resource Group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
 func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListByResourceGroupResponse]{
 		More: func(page AccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -262,7 +266,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -277,10 +281,11 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Get all Maps Accounts in a Subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription
 // method.
 func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListBySubscriptionResponse]{
 		More: func(page AccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -321,7 +326,7 @@ func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -337,6 +342,7 @@ func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Respon
 // ListKeys - Get the keys to use with the Maps APIs. A key is used to authenticate and authorize access to the Maps REST
 // APIs. Only one key is needed at a time; two are given to provide seamless key regeneration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of the Maps Account.
 // options - AccountsClientListKeysOptions contains the optional parameters for the AccountsClient.ListKeys method.
@@ -377,7 +383,7 @@ func (client *AccountsClient) listKeysCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -396,6 +402,7 @@ func (client *AccountsClient) listKeysHandleResponse(resp *http.Response) (Accou
 // 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the account.
 // 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed Identity is placed.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of the Maps Account.
 // mapsAccountSasParameters - The updated parameters for the Maps Account.
@@ -437,7 +444,7 @@ func (client *AccountsClient) listSasCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, mapsAccountSasParameters)
 }
 
@@ -453,6 +460,7 @@ func (client *AccountsClient) listSasHandleResponse(resp *http.Response) (Accoun
 // RegenerateKeys - Regenerate either the primary or secondary key for use with the Maps APIs. The old key will stop working
 // immediately.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of the Maps Account.
 // keySpecification - Which key to regenerate: primary or secondary.
@@ -494,7 +502,7 @@ func (client *AccountsClient) regenerateKeysCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, keySpecification)
 }
 
@@ -509,6 +517,7 @@ func (client *AccountsClient) regenerateKeysHandleResponse(resp *http.Response) 
 
 // Update - Updates a Maps Account. Only a subset of the parameters may be updated after creation, such as Sku, Tags, Properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The name of the Maps Account.
 // mapsAccountUpdateParameters - The updated parameters for the Maps Account.
@@ -550,7 +559,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, mapsAccountUpdateParameters)
 }
 

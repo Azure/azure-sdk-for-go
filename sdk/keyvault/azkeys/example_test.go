@@ -12,6 +12,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
@@ -63,7 +64,7 @@ func ExampleClient_CreateECKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
+	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{Curve: to.Ptr(azkeys.CurveNameP256)})
 	if err != nil {
 		panic(err)
 	}
@@ -107,14 +108,14 @@ func ExampleClient_UpdateKeyProperties() {
 		panic(err)
 	}
 
-	resp.Key.Properties.Tags = map[string]string{"Tag1": "val1"}
+	resp.Key.Properties.Tags = map[string]*string{"Tag1": to.Ptr("val1")}
 	resp.Key.Properties.Enabled = to.Ptr(true)
 
 	updateResp, err := client.UpdateKeyProperties(context.TODO(), resp.Key, nil)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, updateResp.Key.Properties.Tags["Tag1"])
+	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, *updateResp.Key.Properties.Tags["Tag1"])
 }
 
 func ExampleClient_BeginDeleteKey() {
@@ -133,14 +134,14 @@ func ExampleClient_BeginDeleteKey() {
 	if err != nil {
 		panic(err)
 	}
-	pollResp, err := resp.PollUntilDone(context.TODO(), 1*time.Second)
+	pollResp, err := resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
 }
 
-func ExampleClient_ListPropertiesOfKeys() {
+func ExampleClient_NewListPropertiesOfKeysPager() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +153,7 @@ func ExampleClient_ListPropertiesOfKeys() {
 		panic(err)
 	}
 
-	pager := client.ListPropertiesOfKeys(nil)
+	pager := client.NewListPropertiesOfKeysPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		if err != nil {

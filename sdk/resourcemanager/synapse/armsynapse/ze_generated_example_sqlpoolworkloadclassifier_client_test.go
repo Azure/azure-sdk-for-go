@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/synapse/armsynapse"
@@ -26,16 +24,16 @@ func ExampleSQLPoolWorkloadClassifierClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolWorkloadClassifierClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolWorkloadClassifierClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<workload-group-name>",
-		"<workload-classifier-name>",
+		"sqlcrudtest-6852",
+		"sqlcrudtest-2080",
+		"sqlcrudtest-9187",
+		"wlm_workloadgroup",
+		"wlm_classifier",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -51,31 +49,31 @@ func ExampleSQLPoolWorkloadClassifierClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolWorkloadClassifierClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolWorkloadClassifierClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<workload-group-name>",
-		"<workload-classifier-name>",
+		"sqlcrudtest-6852",
+		"sqlcrudtest-2080",
+		"sqlcrudtest-9187",
+		"wlm_workloadgroup",
+		"wlm_workloadclassifier",
 		armsynapse.WorkloadClassifier{
 			Properties: &armsynapse.WorkloadClassifierProperties{
-				Context:    to.Ptr("<context>"),
-				EndTime:    to.Ptr("<end-time>"),
-				Importance: to.Ptr("<importance>"),
-				Label:      to.Ptr("<label>"),
-				MemberName: to.Ptr("<member-name>"),
-				StartTime:  to.Ptr("<start-time>"),
+				Context:    to.Ptr("test_context"),
+				EndTime:    to.Ptr("14:00"),
+				Importance: to.Ptr("high"),
+				Label:      to.Ptr("test_label"),
+				MemberName: to.Ptr("dbo"),
+				StartTime:  to.Ptr("12:00"),
 			},
 		},
-		&armsynapse.SQLPoolWorkloadClassifierClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -90,21 +88,21 @@ func ExampleSQLPoolWorkloadClassifierClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolWorkloadClassifierClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolWorkloadClassifierClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<workload-group-name>",
-		"<workload-classifier-name>",
-		&armsynapse.SQLPoolWorkloadClassifierClientBeginDeleteOptions{ResumeToken: ""})
+		"sqlcrudtest-6852",
+		"sqlcrudtest-2080",
+		"sqlcrudtest-9187",
+		"wlm_workloadgroup",
+		"wlm_workloadclassifier",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -117,20 +115,19 @@ func ExampleSQLPoolWorkloadClassifierClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolWorkloadClassifierClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolWorkloadClassifierClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<workload-group-name>",
+	pager := client.NewListPager("sqlcrudtest-6852",
+		"sqlcrudtest-2080",
+		"sqlcrudtest-9187",
+		"wlm_workloadgroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

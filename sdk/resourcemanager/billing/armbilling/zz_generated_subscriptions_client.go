@@ -38,7 +38,7 @@ func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft Customer
 // Agreement and Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - SubscriptionsClientGetOptions contains the optional parameters for the SubscriptionsClient.Get method.
 func (client *SubscriptionsClient) Get(ctx context.Context, billingAccountName string, options *SubscriptionsClientGetOptions) (SubscriptionsClientGetResponse, error) {
@@ -92,7 +93,7 @@ func (client *SubscriptionsClient) getCreateRequest(ctx context.Context, billing
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -108,11 +109,12 @@ func (client *SubscriptionsClient) getHandleResponse(resp *http.Response) (Subsc
 // NewListByBillingAccountPager - Lists the subscriptions for a billing account. The operation is supported for billing accounts
 // with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // options - SubscriptionsClientListByBillingAccountOptions contains the optional parameters for the SubscriptionsClient.ListByBillingAccount
 // method.
 func (client *SubscriptionsClient) NewListByBillingAccountPager(billingAccountName string, options *SubscriptionsClientListByBillingAccountOptions) *runtime.Pager[SubscriptionsClientListByBillingAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListByBillingAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionsClientListByBillingAccountResponse]{
 		More: func(page SubscriptionsClientListByBillingAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -153,7 +155,7 @@ func (client *SubscriptionsClient) listByBillingAccountCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -169,12 +171,13 @@ func (client *SubscriptionsClient) listByBillingAccountHandleResponse(resp *http
 // NewListByBillingProfilePager - Lists the subscriptions that are billed to a billing profile. The operation is supported
 // for billing accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - SubscriptionsClientListByBillingProfileOptions contains the optional parameters for the SubscriptionsClient.ListByBillingProfile
 // method.
 func (client *SubscriptionsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *SubscriptionsClientListByBillingProfileOptions) *runtime.Pager[SubscriptionsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionsClientListByBillingProfileResponse]{
 		More: func(page SubscriptionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -219,7 +222,7 @@ func (client *SubscriptionsClient) listByBillingProfileCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -235,12 +238,13 @@ func (client *SubscriptionsClient) listByBillingProfileHandleResponse(resp *http
 // NewListByCustomerPager - Lists the subscriptions for a customer. The operation is supported only for billing accounts with
 // agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // customerName - The ID that uniquely identifies a customer.
 // options - SubscriptionsClientListByCustomerOptions contains the optional parameters for the SubscriptionsClient.ListByCustomer
 // method.
 func (client *SubscriptionsClient) NewListByCustomerPager(billingAccountName string, customerName string, options *SubscriptionsClientListByCustomerOptions) *runtime.Pager[SubscriptionsClientListByCustomerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListByCustomerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionsClientListByCustomerResponse]{
 		More: func(page SubscriptionsClientListByCustomerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -285,7 +289,7 @@ func (client *SubscriptionsClient) listByCustomerCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -301,13 +305,14 @@ func (client *SubscriptionsClient) listByCustomerHandleResponse(resp *http.Respo
 // NewListByInvoiceSectionPager - Lists the subscriptions that are billed to an invoice section. The operation is supported
 // only for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
 // options - SubscriptionsClientListByInvoiceSectionOptions contains the optional parameters for the SubscriptionsClient.ListByInvoiceSection
 // method.
 func (client *SubscriptionsClient) NewListByInvoiceSectionPager(billingAccountName string, billingProfileName string, invoiceSectionName string, options *SubscriptionsClientListByInvoiceSectionOptions) *runtime.Pager[SubscriptionsClientListByInvoiceSectionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SubscriptionsClientListByInvoiceSectionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SubscriptionsClientListByInvoiceSectionResponse]{
 		More: func(page SubscriptionsClientListByInvoiceSectionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -356,7 +361,7 @@ func (client *SubscriptionsClient) listByInvoiceSectionCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -373,18 +378,19 @@ func (client *SubscriptionsClient) listByInvoiceSectionHandleResponse(resp *http
 // profile as the existing invoice section. This operation is supported for billing
 // accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // parameters - Request parameters that are provided to the move subscription operation.
 // options - SubscriptionsClientBeginMoveOptions contains the optional parameters for the SubscriptionsClient.BeginMove method.
-func (client *SubscriptionsClient) BeginMove(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientBeginMoveOptions) (*armruntime.Poller[SubscriptionsClientMoveResponse], error) {
+func (client *SubscriptionsClient) BeginMove(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientBeginMoveOptions) (*runtime.Poller[SubscriptionsClientMoveResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.move(ctx, billingAccountName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[SubscriptionsClientMoveResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SubscriptionsClientMoveResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[SubscriptionsClientMoveResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SubscriptionsClientMoveResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
@@ -392,6 +398,7 @@ func (client *SubscriptionsClient) BeginMove(ctx context.Context, billingAccount
 // profile as the existing invoice section. This operation is supported for billing
 // accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *SubscriptionsClient) move(ctx context.Context, billingAccountName string, parameters TransferBillingSubscriptionRequestProperties, options *SubscriptionsClientBeginMoveOptions) (*http.Response, error) {
 	req, err := client.moveCreateRequest(ctx, billingAccountName, parameters, options)
 	if err != nil {
@@ -425,13 +432,14 @@ func (client *SubscriptionsClient) moveCreateRequest(ctx context.Context, billin
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Update - Updates the properties of a billing subscription. Currently, cost center can be updated. The operation is supported
 // only for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // parameters - Request parameters that are provided to the update billing subscription operation.
 // options - SubscriptionsClientUpdateOptions contains the optional parameters for the SubscriptionsClient.Update method.
@@ -468,7 +476,7 @@ func (client *SubscriptionsClient) updateCreateRequest(ctx context.Context, bill
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -484,6 +492,7 @@ func (client *SubscriptionsClient) updateHandleResponse(resp *http.Response) (Su
 // ValidateMove - Validates if a subscription's charges can be moved to a new invoice section. This operation is supported
 // for billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // parameters - Request parameters that are provided to the validate move eligibility operation.
 // options - SubscriptionsClientValidateMoveOptions contains the optional parameters for the SubscriptionsClient.ValidateMove
@@ -521,7 +530,7 @@ func (client *SubscriptionsClient) validateMoveCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

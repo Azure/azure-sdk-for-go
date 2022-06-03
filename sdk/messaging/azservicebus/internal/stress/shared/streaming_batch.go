@@ -59,7 +59,6 @@ func (sb *StreamingMessageBatch) Add(ctx context.Context, msg *azservicebus.Mess
 	err := sb.currentBatch.AddMessage(msg, options)
 
 	if err == nil {
-		// sent, we're done
 		return nil
 	}
 
@@ -68,12 +67,14 @@ func (sb *StreamingMessageBatch) Add(ctx context.Context, msg *azservicebus.Mess
 		return err
 	}
 
-	log.Printf("Sending message batch")
+	log.Printf("Sending message batch (%d messages)", sb.currentBatch.NumMessages())
 	if err := sb.sender.SendMessageBatch(ctx, sb.currentBatch); err != nil {
 		return err
 	}
 
-	sb.stats.AddSent(sb.currentBatch.NumMessages())
+	if sb.stats != nil {
+		sb.stats.AddSent(sb.currentBatch.NumMessages())
+	}
 
 	// throttle a teeny bit.
 	time.Sleep(time.Second)
@@ -105,6 +106,8 @@ func (sb *StreamingMessageBatch) Close(ctx context.Context) error {
 		return err
 	}
 
-	sb.stats.AddSent(sb.currentBatch.NumMessages())
+	if sb.stats != nil {
+		sb.stats.AddSent(sb.currentBatch.NumMessages())
+	}
 	return nil
 }

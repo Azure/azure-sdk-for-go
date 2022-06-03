@@ -33,7 +33,7 @@ func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,9 +50,10 @@ func NewTenantsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 
 // NewListPager - Gets the tenants for your account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-06-01
 // options - TenantsClientListOptions contains the optional parameters for the TenantsClient.List method.
 func (client *TenantsClient) NewListPager(options *TenantsClientListOptions) *runtime.Pager[TenantsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TenantsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TenantsClientListResponse]{
 		More: func(page TenantsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -89,7 +90,7 @@ func (client *TenantsClient) listCreateRequest(ctx context.Context, options *Ten
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

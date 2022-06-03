@@ -27,7 +27,7 @@ func ExampleDimensionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<scope>",
+	pager := client.NewListPager("providers/Microsoft.Billing/billingAccounts/100",
 		&armcostmanagement.DimensionsClientListOptions{Filter: nil,
 			Expand:    nil,
 			Skiptoken: nil,
@@ -37,7 +37,6 @@ func ExampleDimensionsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -58,7 +57,7 @@ func ExampleDimensionsClient_NewByExternalCloudProviderTypePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewByExternalCloudProviderTypePager(armcostmanagement.ExternalCloudProviderTypeExternalBillingAccounts,
-		"<external-cloud-provider-id>",
+		"100",
 		&armcostmanagement.DimensionsClientByExternalCloudProviderTypeOptions{Filter: nil,
 			Expand:    nil,
 			Skiptoken: nil,
@@ -68,7 +67,6 @@ func ExampleDimensionsClient_NewByExternalCloudProviderTypePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

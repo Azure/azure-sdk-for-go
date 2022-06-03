@@ -38,7 +38,7 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // Get - Get information about a report associated with a configuration profile assignment run
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // configurationProfileAssignmentName - The configuration profile assignment name.
 // reportName - The report name.
@@ -106,7 +107,7 @@ func (client *ReportsClient) getCreateRequest(ctx context.Context, resourceGroup
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -121,13 +122,14 @@ func (client *ReportsClient) getHandleResponse(resp *http.Response) (ReportsClie
 
 // NewListByConfigurationProfileAssignmentsPager - Retrieve a list of reports within a given configuration profile assignment
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-04-30-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // configurationProfileAssignmentName - The configuration profile assignment name.
 // vmName - The name of the virtual machine.
 // options - ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.ListByConfigurationProfileAssignments
 // method.
 func (client *ReportsClient) NewListByConfigurationProfileAssignmentsPager(resourceGroupName string, configurationProfileAssignmentName string, vmName string, options *ReportsClientListByConfigurationProfileAssignmentsOptions) *runtime.Pager[ReportsClientListByConfigurationProfileAssignmentsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ReportsClientListByConfigurationProfileAssignmentsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ReportsClientListByConfigurationProfileAssignmentsResponse]{
 		More: func(page ReportsClientListByConfigurationProfileAssignmentsResponse) bool {
 			return false
 		},
@@ -174,7 +176,7 @@ func (client *ReportsClient) listByConfigurationProfileAssignmentsCreateRequest(
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

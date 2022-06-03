@@ -23,16 +23,16 @@ func ExampleOperationStatusesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewOperationStatusesClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewOperationStatusesClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<track-name>",
-		"<operation-id>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"text1",
+		"86835197-3b47-402e-b313-70b82eaba296",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

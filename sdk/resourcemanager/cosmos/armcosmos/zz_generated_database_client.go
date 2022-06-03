@@ -38,7 +38,7 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,13 +56,14 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListMetricDefinitionsPager - Retrieves metric definitions for the given database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
 // options - DatabaseClientListMetricDefinitionsOptions contains the optional parameters for the DatabaseClient.ListMetricDefinitions
 // method.
 func (client *DatabaseClient) NewListMetricDefinitionsPager(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListMetricDefinitionsOptions) *runtime.Pager[DatabaseClientListMetricDefinitionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DatabaseClientListMetricDefinitionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DatabaseClientListMetricDefinitionsResponse]{
 		More: func(page DatabaseClientListMetricDefinitionsResponse) bool {
 			return false
 		},
@@ -109,7 +110,7 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2022-02-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -124,6 +125,7 @@ func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Res
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
@@ -132,7 +134,7 @@ func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Res
 // and timeGrain. The supported operator is eq.
 // options - DatabaseClientListMetricsOptions contains the optional parameters for the DatabaseClient.ListMetrics method.
 func (client *DatabaseClient) NewListMetricsPager(resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseClientListMetricsOptions) *runtime.Pager[DatabaseClientListMetricsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DatabaseClientListMetricsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DatabaseClientListMetricsResponse]{
 		More: func(page DatabaseClientListMetricsResponse) bool {
 			return false
 		},
@@ -180,7 +182,7 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 	reqQP.Set("api-version", "2022-02-15-preview")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -195,12 +197,13 @@ func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (Da
 
 // NewListUsagesPager - Retrieves the usages (most recent data) for the given database.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - Cosmos DB database account name.
 // databaseRid - Cosmos DB database rid.
 // options - DatabaseClientListUsagesOptions contains the optional parameters for the DatabaseClient.ListUsages method.
 func (client *DatabaseClient) NewListUsagesPager(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListUsagesOptions) *runtime.Pager[DatabaseClientListUsagesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DatabaseClientListUsagesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DatabaseClientListUsagesResponse]{
 		More: func(page DatabaseClientListUsagesResponse) bool {
 			return false
 		},
@@ -250,7 +253,7 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 		reqQP.Set("$filter", *options.Filter)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

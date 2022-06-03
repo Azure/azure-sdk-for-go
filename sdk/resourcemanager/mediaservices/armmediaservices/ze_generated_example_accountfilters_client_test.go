@@ -24,18 +24,17 @@ func ExampleAccountFiltersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAccountFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAccountFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("contoso",
+		"contosomedia",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExampleAccountFiltersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAccountFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAccountFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<filter-name>",
+		"contoso",
+		"contosomedia",
+		"accountFilterWithTrack",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,14 +73,14 @@ func ExampleAccountFiltersClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAccountFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAccountFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<filter-name>",
+		"contoso",
+		"contosomedia",
+		"newAccountFilter",
 		armmediaservices.AccountFilter{
 			Properties: &armmediaservices.MediaFilterProperties{
 				FirstQuality: &armmediaservices.FirstQuality{
@@ -101,17 +100,17 @@ func ExampleAccountFiltersClient_CreateOrUpdate() {
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("Audio"),
 							},
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeLanguage),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("en"),
 							},
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationNotEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeFourCC),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("EC-3"),
 							}},
 					},
 					{
@@ -119,12 +118,12 @@ func ExampleAccountFiltersClient_CreateOrUpdate() {
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeType),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("Video"),
 							},
 							{
 								Operation: to.Ptr(armmediaservices.FilterTrackPropertyCompareOperationEqual),
 								Property:  to.Ptr(armmediaservices.FilterTrackPropertyTypeBitrate),
-								Value:     to.Ptr("<value>"),
+								Value:     to.Ptr("3000000-5000000"),
 							}},
 					}},
 			},
@@ -144,14 +143,14 @@ func ExampleAccountFiltersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAccountFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAccountFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<filter-name>",
+		"contoso",
+		"contosomedia",
+		"accountFilterWithTimeWindowAndTrack",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -165,14 +164,14 @@ func ExampleAccountFiltersClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewAccountFiltersClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewAccountFiltersClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<filter-name>",
+		"contoso",
+		"contosomedia",
+		"accountFilterWithTimeWindowAndTrack",
 		armmediaservices.AccountFilter{
 			Properties: &armmediaservices.MediaFilterProperties{
 				FirstQuality: &armmediaservices.FirstQuality{

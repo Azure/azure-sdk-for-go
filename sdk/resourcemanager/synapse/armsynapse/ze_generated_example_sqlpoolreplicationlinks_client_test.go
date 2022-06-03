@@ -23,19 +23,18 @@ func ExampleSQLPoolReplicationLinksClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolReplicationLinksClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolReplicationLinksClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
+	pager := client.NewListPager("sqlcrudtest-4799",
+		"sqlcrudtest-6440",
+		"testdb",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,15 +50,15 @@ func ExampleSQLPoolReplicationLinksClient_GetByName() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolReplicationLinksClient("<subscription-id>", cred, nil)
+	client, err := armsynapse.NewSQLPoolReplicationLinksClient("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByName(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<sql-pool-name>",
-		"<link-id>",
+		"sqlcrudtest-4799",
+		"sqlcrudtest-6440",
+		"testdb",
+		"5b301b68-03f6-4b26-b0f4-73ebb8634238",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

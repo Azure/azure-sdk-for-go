@@ -38,7 +38,7 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 
 // Get - Returns the properties for the specified encryption scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -104,7 +105,7 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -119,12 +120,13 @@ func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response) (En
 
 // NewListPager - Lists all the encryption scopes available under the specified storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
 // options - EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.List method.
 func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, accountName string, options *EncryptionScopesClientListOptions) *runtime.Pager[EncryptionScopesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EncryptionScopesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EncryptionScopesClientListResponse]{
 		More: func(page EncryptionScopesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -173,7 +175,7 @@ func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -189,6 +191,7 @@ func (client *EncryptionScopesClient) listHandleResponse(resp *http.Response) (E
 // Patch - Update encryption scope properties as specified in the request body. Update fails if the specified encryption scope
 // does not already exist.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -238,7 +241,7 @@ func (client *EncryptionScopesClient) patchCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, encryptionScope)
 }
 
@@ -255,6 +258,7 @@ func (client *EncryptionScopesClient) patchHandleResponse(resp *http.Response) (
 // is already created and a subsequent request is issued with different properties, the
 // encryption scope properties will be updated per the specified request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // accountName - The name of the storage account within the specified resource group. Storage account names must be between
 // 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -304,7 +308,7 @@ func (client *EncryptionScopesClient) putCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, encryptionScope)
 }
 

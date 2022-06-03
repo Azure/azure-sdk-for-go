@@ -39,7 +39,7 @@ func NewVPNSitesConfigurationClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,27 +57,29 @@ func NewVPNSitesConfigurationClient(subscriptionID string, credential azcore.Tok
 
 // BeginDownload - Gives the sas-url to download the configurations for vpn-sites in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The resource group name.
 // virtualWANName - The name of the VirtualWAN for which configuration of all vpn-sites is needed.
 // request - Parameters supplied to download vpn-sites configuration.
 // options - VPNSitesConfigurationClientBeginDownloadOptions contains the optional parameters for the VPNSitesConfigurationClient.BeginDownload
 // method.
-func (client *VPNSitesConfigurationClient) BeginDownload(ctx context.Context, resourceGroupName string, virtualWANName string, request GetVPNSitesConfigurationRequest, options *VPNSitesConfigurationClientBeginDownloadOptions) (*armruntime.Poller[VPNSitesConfigurationClientDownloadResponse], error) {
+func (client *VPNSitesConfigurationClient) BeginDownload(ctx context.Context, resourceGroupName string, virtualWANName string, request GetVPNSitesConfigurationRequest, options *VPNSitesConfigurationClientBeginDownloadOptions) (*runtime.Poller[VPNSitesConfigurationClientDownloadResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.download(ctx, resourceGroupName, virtualWANName, request, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[VPNSitesConfigurationClientDownloadResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VPNSitesConfigurationClientDownloadResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[VPNSitesConfigurationClientDownloadResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VPNSitesConfigurationClientDownloadResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Download - Gives the sas-url to download the configurations for vpn-sites in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *VPNSitesConfigurationClient) download(ctx context.Context, resourceGroupName string, virtualWANName string, request GetVPNSitesConfigurationRequest, options *VPNSitesConfigurationClientBeginDownloadOptions) (*http.Response, error) {
 	req, err := client.downloadCreateRequest(ctx, resourceGroupName, virtualWANName, request, options)
 	if err != nil {
@@ -113,8 +115,8 @@ func (client *VPNSitesConfigurationClient) downloadCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, request)
 }

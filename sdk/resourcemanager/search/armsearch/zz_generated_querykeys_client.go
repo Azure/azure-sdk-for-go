@@ -39,7 +39,7 @@ func NewQueryKeysClient(subscriptionID string, credential azcore.TokenCredential
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewQueryKeysClient(subscriptionID string, credential azcore.TokenCredential
 
 // Create - Generates a new query key for the specified search service. You can create up to 50 query keys per service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 // Azure Resource Manager API or the portal.
 // searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
@@ -106,9 +107,9 @@ func (client *QueryKeysClient) createCreateRequest(ctx context.Context, resource
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
-		req.Raw().Header.Set("x-ms-client-request-id", *searchManagementRequestOptions.ClientRequestID)
+		req.Raw().Header["x-ms-client-request-id"] = []string{*searchManagementRequestOptions.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -124,6 +125,7 @@ func (client *QueryKeysClient) createHandleResponse(resp *http.Response) (QueryK
 // Delete - Deletes the specified query key. Unlike admin keys, query keys are not regenerated. The process for regenerating
 // a query key is to delete and then recreate it.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 // Azure Resource Manager API or the portal.
 // searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
@@ -173,14 +175,15 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
-		req.Raw().Header.Set("x-ms-client-request-id", *searchManagementRequestOptions.ClientRequestID)
+		req.Raw().Header["x-ms-client-request-id"] = []string{*searchManagementRequestOptions.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListBySearchServicePager - Returns the list of query API keys for the given Azure Cognitive Search service.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-08-01
 // resourceGroupName - The name of the resource group within the current subscription. You can obtain this value from the
 // Azure Resource Manager API or the portal.
 // searchServiceName - The name of the Azure Cognitive Search service associated with the specified resource group.
@@ -189,7 +192,7 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 // options - QueryKeysClientListBySearchServiceOptions contains the optional parameters for the QueryKeysClient.ListBySearchService
 // method.
 func (client *QueryKeysClient) NewListBySearchServicePager(resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *QueryKeysClientListBySearchServiceOptions) *runtime.Pager[QueryKeysClientListBySearchServiceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[QueryKeysClientListBySearchServiceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[QueryKeysClientListBySearchServiceResponse]{
 		More: func(page QueryKeysClientListBySearchServiceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -239,9 +242,9 @@ func (client *QueryKeysClient) listBySearchServiceCreateRequest(ctx context.Cont
 	reqQP.Set("api-version", "2020-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if searchManagementRequestOptions != nil && searchManagementRequestOptions.ClientRequestID != nil {
-		req.Raw().Header.Set("x-ms-client-request-id", *searchManagementRequestOptions.ClientRequestID)
+		req.Raw().Header["x-ms-client-request-id"] = []string{*searchManagementRequestOptions.ClientRequestID}
 	}
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

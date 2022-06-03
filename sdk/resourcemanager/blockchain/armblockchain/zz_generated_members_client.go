@@ -39,7 +39,7 @@ func NewMembersClient(subscriptionID string, credential azcore.TokenCredential, 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,24 +57,26 @@ func NewMembersClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginCreate - Create a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - MembersClientBeginCreateOptions contains the optional parameters for the MembersClient.BeginCreate method.
-func (client *MembersClient) BeginCreate(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginCreateOptions) (*armruntime.Poller[MembersClientCreateResponse], error) {
+func (client *MembersClient) BeginCreate(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginCreateOptions) (*runtime.Poller[MembersClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, blockchainMemberName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[MembersClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MembersClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[MembersClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MembersClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 func (client *MembersClient) create(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, blockchainMemberName, resourceGroupName, options)
 	if err != nil {
@@ -112,7 +114,7 @@ func (client *MembersClient) createCreateRequest(ctx context.Context, blockchain
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.BlockchainMember != nil {
 		return req, runtime.MarshalAsJSON(req, *options.BlockchainMember)
 	}
@@ -121,24 +123,26 @@ func (client *MembersClient) createCreateRequest(ctx context.Context, blockchain
 
 // BeginDelete - Delete a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - MembersClientBeginDeleteOptions contains the optional parameters for the MembersClient.BeginDelete method.
-func (client *MembersClient) BeginDelete(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginDeleteOptions) (*armruntime.Poller[MembersClientDeleteResponse], error) {
+func (client *MembersClient) BeginDelete(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginDeleteOptions) (*runtime.Poller[MembersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, blockchainMemberName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[MembersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MembersClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[MembersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MembersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 func (client *MembersClient) deleteOperation(ctx context.Context, blockchainMemberName string, resourceGroupName string, options *MembersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, blockchainMemberName, resourceGroupName, options)
 	if err != nil {
@@ -181,6 +185,7 @@ func (client *MembersClient) deleteCreateRequest(ctx context.Context, blockchain
 
 // Get - Get details about a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -222,7 +227,7 @@ func (client *MembersClient) getCreateRequest(ctx context.Context, blockchainMem
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -237,11 +242,12 @@ func (client *MembersClient) getHandleResponse(resp *http.Response) (MembersClie
 
 // NewListPager - Lists the blockchain members for a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - MembersClientListOptions contains the optional parameters for the MembersClient.List method.
 func (client *MembersClient) NewListPager(resourceGroupName string, options *MembersClientListOptions) *runtime.Pager[MembersClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MembersClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MembersClientListResponse]{
 		More: func(page MembersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -286,7 +292,7 @@ func (client *MembersClient) listCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -301,6 +307,7 @@ func (client *MembersClient) listHandleResponse(resp *http.Response) (MembersCli
 
 // ListAPIKeys - Lists the API keys for a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -342,7 +349,7 @@ func (client *MembersClient) listAPIKeysCreateRequest(ctx context.Context, block
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -357,9 +364,10 @@ func (client *MembersClient) listAPIKeysHandleResponse(resp *http.Response) (Mem
 
 // NewListAllPager - Lists the blockchain members for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // options - MembersClientListAllOptions contains the optional parameters for the MembersClient.ListAll method.
 func (client *MembersClient) NewListAllPager(options *MembersClientListAllOptions) *runtime.Pager[MembersClientListAllResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MembersClientListAllResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MembersClientListAllResponse]{
 		More: func(page MembersClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -400,7 +408,7 @@ func (client *MembersClient) listAllCreateRequest(ctx context.Context, options *
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -415,13 +423,14 @@ func (client *MembersClient) listAllHandleResponse(resp *http.Response) (Members
 
 // NewListConsortiumMembersPager - Lists the consortium members for a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // options - MembersClientListConsortiumMembersOptions contains the optional parameters for the MembersClient.ListConsortiumMembers
 // method.
 func (client *MembersClient) NewListConsortiumMembersPager(blockchainMemberName string, resourceGroupName string, options *MembersClientListConsortiumMembersOptions) *runtime.Pager[MembersClientListConsortiumMembersResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MembersClientListConsortiumMembersResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MembersClientListConsortiumMembersResponse]{
 		More: func(page MembersClientListConsortiumMembersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -470,7 +479,7 @@ func (client *MembersClient) listConsortiumMembersCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -485,6 +494,7 @@ func (client *MembersClient) listConsortiumMembersHandleResponse(resp *http.Resp
 
 // ListRegenerateAPIKeys - Regenerate the API keys for a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -527,7 +537,7 @@ func (client *MembersClient) listRegenerateAPIKeysCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.APIKey != nil {
 		return req, runtime.MarshalAsJSON(req, *options.APIKey)
 	}
@@ -545,6 +555,7 @@ func (client *MembersClient) listRegenerateAPIKeysHandleResponse(resp *http.Resp
 
 // Update - Update a blockchain member.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01-preview
 // blockchainMemberName - Blockchain member name.
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
@@ -586,7 +597,7 @@ func (client *MembersClient) updateCreateRequest(ctx context.Context, blockchain
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.BlockchainMember != nil {
 		return req, runtime.MarshalAsJSON(req, *options.BlockchainMember)
 	}

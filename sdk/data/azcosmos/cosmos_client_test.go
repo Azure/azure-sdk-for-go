@@ -354,6 +354,50 @@ func TestSendQuery(t *testing.T) {
 	}
 }
 
+func TestSendBatch(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200))
+	verifier := pipelineVerifier{}
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDocument,
+		resourceAddress: "",
+	}
+
+	batch := TransactionalBatch{}
+	batch.partitionKey = NewPartitionKeyString("foo")
+
+	body := map[string]string{
+		"foo": "bar",
+	}
+
+	itemMarshall, _ := json.Marshal(body)
+
+	batch.CreateItem(itemMarshall, nil)
+	batch.ReadItem("someId", nil)
+
+	marshalled, err := json.Marshal(batch.operations)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = client.sendBatchRequest(context.Background(), "/", batch.operations, operationContext, &TransactionalBatchOptions{}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if verifier.requests[0].method != http.MethodPost {
+		t.Errorf("Expected %v, but got %v", http.MethodPost, verifier.requests[0].method)
+	}
+
+	if verifier.requests[0].body != string(marshalled) {
+		t.Errorf("Expected %v, but got %v", string(marshalled), verifier.requests[0].body)
+	}
+}
+
 func TestCreateScopeFromEndpoint(t *testing.T) {
 	url := "https://foo.documents.azure.com:443/"
 	scope, err := createScopeFromEndpoint(url)

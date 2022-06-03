@@ -16,21 +16,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/Common/TriggerCancelJob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Common/TriggerCancelJob.json
 func ExampleJobCancellationsClient_Trigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewJobCancellationsClient("<subscription-id>", cred, nil)
+	client, err := armrecoveryservicesbackup.NewJobCancellationsClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Trigger(ctx,
-		"<vault-name>",
-		"<resource-group-name>",
-		"<job-name>",
+		"NetSDKTestRsVault",
+		"SwaggerTestRg",
+		"00000000-0000-0000-0000-000000000000",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

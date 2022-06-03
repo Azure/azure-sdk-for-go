@@ -19,108 +19,107 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_Reimage_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Reimage_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginReimage(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
+		"rgcompute",
+		"aaaaaaaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 		&armcompute.VirtualMachineScaleSetVMsClientBeginReimageOptions{VMScaleSetVMReimageInput: &armcompute.VirtualMachineScaleSetVMReimageParameters{
 			TempDisk: to.Ptr(true),
 		},
-			ResumeToken: "",
 		})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_ReimageAll_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_ReimageAll_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginReimageAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginReimageAll(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		&armcompute.VirtualMachineScaleSetVMsClientBeginReimageAllOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaaaaaaaaaaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_Deallocate_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Deallocate_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeallocate(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		&armcompute.VirtualMachineScaleSetVMsClientBeginDeallocateOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaaaaaaaaaaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Update_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
+		"rgcompute",
+		"aaaaaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 		armcompute.VirtualMachineScaleSetVM{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Tags:     map[string]*string{},
 			Plan: &armcompute.Plan{
-				Name:          to.Ptr("<name>"),
-				Product:       to.Ptr("<product>"),
-				PromotionCode: to.Ptr("<promotion-code>"),
-				Publisher:     to.Ptr("<publisher>"),
+				Name:          to.Ptr("aaaaaaaaaa"),
+				Product:       to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+				PromotionCode: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+				Publisher:     to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
 			},
 			Properties: &armcompute.VirtualMachineScaleSetVMProperties{
 				AdditionalCapabilities: &armcompute.AdditionalCapabilities{
@@ -128,12 +127,12 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 					UltraSSDEnabled:    to.Ptr(true),
 				},
 				AvailabilitySet: &armcompute.SubResource{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 				},
 				DiagnosticsProfile: &armcompute.DiagnosticsProfile{
 					BootDiagnostics: &armcompute.BootDiagnostics{
 						Enabled:    to.Ptr(true),
-						StorageURI: to.Ptr("<storage-uri>"),
+						StorageURI: to.Ptr("aaaaaaaaaaaaa"),
 					},
 				},
 				HardwareProfile: &armcompute.HardwareProfile{
@@ -146,123 +145,123 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 				InstanceView: &armcompute.VirtualMachineScaleSetVMInstanceView{
 					BootDiagnostics: &armcompute.BootDiagnosticsInstanceView{
 						Status: &armcompute.InstanceViewStatus{
-							Code:          to.Ptr("<code>"),
-							DisplayStatus: to.Ptr("<display-status>"),
+							Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+							DisplayStatus: to.Ptr("aaaaaa"),
 							Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-							Message:       to.Ptr("<message>"),
+							Message:       to.Ptr("a"),
 							Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 						},
 					},
 					Disks: []*armcompute.DiskInstanceView{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("aaaaaaaaaaa"),
 							EncryptionSettings: []*armcompute.DiskEncryptionSettings{
 								{
 									DiskEncryptionKey: &armcompute.KeyVaultSecretReference{
-										SecretURL: to.Ptr("<secret-url>"),
+										SecretURL: to.Ptr("aaaaaaaa"),
 										SourceVault: &armcompute.SubResource{
-											ID: to.Ptr("<id>"),
+											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 										},
 									},
 									Enabled: to.Ptr(true),
 									KeyEncryptionKey: &armcompute.KeyVaultKeyReference{
-										KeyURL: to.Ptr("<key-url>"),
+										KeyURL: to.Ptr("aaaaaaaaaaaaaa"),
 										SourceVault: &armcompute.SubResource{
-											ID: to.Ptr("<id>"),
+											ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 										},
 									},
 								}},
 							Statuses: []*armcompute.InstanceViewStatus{
 								{
-									Code:          to.Ptr("<code>"),
-									DisplayStatus: to.Ptr("<display-status>"),
+									Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+									DisplayStatus: to.Ptr("aaaaaa"),
 									Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-									Message:       to.Ptr("<message>"),
+									Message:       to.Ptr("a"),
 									Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 								}},
 						}},
 					MaintenanceRedeployStatus: &armcompute.MaintenanceRedeployStatus{
 						IsCustomerInitiatedMaintenanceAllowed: to.Ptr(true),
-						LastOperationMessage:                  to.Ptr("<last-operation-message>"),
+						LastOperationMessage:                  to.Ptr("aaaaaa"),
 						LastOperationResultCode:               to.Ptr(armcompute.MaintenanceOperationResultCodeTypesNone),
 						MaintenanceWindowEndTime:              to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.531Z"); return t }()),
 						MaintenanceWindowStartTime:            to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.531Z"); return t }()),
 						PreMaintenanceWindowEndTime:           to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.531Z"); return t }()),
 						PreMaintenanceWindowStartTime:         to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.531Z"); return t }()),
 					},
-					PlacementGroupID:     to.Ptr("<placement-group-id>"),
+					PlacementGroupID:     to.Ptr("aaa"),
 					PlatformFaultDomain:  to.Ptr[int32](14),
 					PlatformUpdateDomain: to.Ptr[int32](23),
-					RdpThumbPrint:        to.Ptr("<rdp-thumb-print>"),
+					RdpThumbPrint:        to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 					Statuses: []*armcompute.InstanceViewStatus{
 						{
-							Code:          to.Ptr("<code>"),
-							DisplayStatus: to.Ptr("<display-status>"),
+							Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+							DisplayStatus: to.Ptr("aaaaaa"),
 							Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-							Message:       to.Ptr("<message>"),
+							Message:       to.Ptr("a"),
 							Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 						}},
 					VMAgent: &armcompute.VirtualMachineAgentInstanceView{
 						ExtensionHandlers: []*armcompute.VirtualMachineExtensionHandlerInstanceView{
 							{
-								Type: to.Ptr("<type>"),
+								Type: to.Ptr("aaaaaaaaaaaaa"),
 								Status: &armcompute.InstanceViewStatus{
-									Code:          to.Ptr("<code>"),
-									DisplayStatus: to.Ptr("<display-status>"),
+									Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+									DisplayStatus: to.Ptr("aaaaaa"),
 									Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-									Message:       to.Ptr("<message>"),
+									Message:       to.Ptr("a"),
 									Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 								},
-								TypeHandlerVersion: to.Ptr("<type-handler-version>"),
+								TypeHandlerVersion: to.Ptr("aaaaa"),
 							}},
 						Statuses: []*armcompute.InstanceViewStatus{
 							{
-								Code:          to.Ptr("<code>"),
-								DisplayStatus: to.Ptr("<display-status>"),
+								Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+								DisplayStatus: to.Ptr("aaaaaa"),
 								Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-								Message:       to.Ptr("<message>"),
+								Message:       to.Ptr("a"),
 								Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 							}},
-						VMAgentVersion: to.Ptr("<vmagent-version>"),
+						VMAgentVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
 					},
 					VMHealth: &armcompute.VirtualMachineHealthStatus{
 						Status: &armcompute.InstanceViewStatus{
-							Code:          to.Ptr("<code>"),
-							DisplayStatus: to.Ptr("<display-status>"),
+							Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+							DisplayStatus: to.Ptr("aaaaaa"),
 							Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-							Message:       to.Ptr("<message>"),
+							Message:       to.Ptr("a"),
 							Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 						},
 					},
 					Extensions: []*armcompute.VirtualMachineExtensionInstanceView{
 						{
-							Name: to.Ptr("<name>"),
-							Type: to.Ptr("<type>"),
+							Name: to.Ptr("aaaaaaaaaaaaaaaaa"),
+							Type: to.Ptr("aaaaaaaaa"),
 							Statuses: []*armcompute.InstanceViewStatus{
 								{
-									Code:          to.Ptr("<code>"),
-									DisplayStatus: to.Ptr("<display-status>"),
+									Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+									DisplayStatus: to.Ptr("aaaaaa"),
 									Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-									Message:       to.Ptr("<message>"),
+									Message:       to.Ptr("a"),
 									Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 								}},
 							Substatuses: []*armcompute.InstanceViewStatus{
 								{
-									Code:          to.Ptr("<code>"),
-									DisplayStatus: to.Ptr("<display-status>"),
+									Code:          to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+									DisplayStatus: to.Ptr("aaaaaa"),
 									Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
-									Message:       to.Ptr("<message>"),
+									Message:       to.Ptr("a"),
 									Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 								}},
-							TypeHandlerVersion: to.Ptr("<type-handler-version>"),
+							TypeHandlerVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
 						}},
 				},
-				LicenseType: to.Ptr("<license-type>"),
+				LicenseType: to.Ptr("aaaaaaaaaa"),
 				NetworkProfile: &armcompute.NetworkProfile{
 					NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineNetworkInterfaceConfiguration{
 						{
-							Name: to.Ptr("<name>"),
+							Name: to.Ptr("aaaaaaaaaaa"),
 							Properties: &armcompute.VirtualMachineNetworkInterfaceConfigurationProperties{
 								DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
 								DNSSettings: &armcompute.VirtualMachineNetworkInterfaceDNSSettingsConfiguration{
@@ -270,46 +269,46 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 										to.Ptr("aaaaaa")},
 								},
 								DscpConfiguration: &armcompute.SubResource{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 								},
 								EnableAcceleratedNetworking: to.Ptr(true),
 								EnableFpga:                  to.Ptr(true),
 								EnableIPForwarding:          to.Ptr(true),
 								IPConfigurations: []*armcompute.VirtualMachineNetworkInterfaceIPConfiguration{
 									{
-										Name: to.Ptr("<name>"),
+										Name: to.Ptr("aa"),
 										Properties: &armcompute.VirtualMachineNetworkInterfaceIPConfigurationProperties{
 											ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{
 												{
-													ID: to.Ptr("<id>"),
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 												}},
 											ApplicationSecurityGroups: []*armcompute.SubResource{
 												{
-													ID: to.Ptr("<id>"),
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 												}},
 											LoadBalancerBackendAddressPools: []*armcompute.SubResource{
 												{
-													ID: to.Ptr("<id>"),
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 												}},
 											Primary:                 to.Ptr(true),
 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionsIPv4),
 											PublicIPAddressConfiguration: &armcompute.VirtualMachinePublicIPAddressConfiguration{
-												Name: to.Ptr("<name>"),
+												Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 												Properties: &armcompute.VirtualMachinePublicIPAddressConfigurationProperties{
 													DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
 													DNSSettings: &armcompute.VirtualMachinePublicIPAddressDNSSettingsConfiguration{
-														DomainNameLabel: to.Ptr("<domain-name-label>"),
+														DomainNameLabel: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
 													},
 													IdleTimeoutInMinutes: to.Ptr[int32](2),
 													IPTags: []*armcompute.VirtualMachineIPTag{
 														{
-															IPTagType: to.Ptr("<iptag-type>"),
-															Tag:       to.Ptr("<tag>"),
+															IPTagType: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+															Tag:       to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
 														}},
 													PublicIPAddressVersion:   to.Ptr(armcompute.IPVersionsIPv4),
 													PublicIPAllocationMethod: to.Ptr(armcompute.PublicIPAllocationMethodDynamic),
 													PublicIPPrefix: &armcompute.SubResource{
-														ID: to.Ptr("<id>"),
+														ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 													},
 												},
 												SKU: &armcompute.PublicIPAddressSKU{
@@ -318,19 +317,19 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 												},
 											},
 											Subnet: &armcompute.SubResource{
-												ID: to.Ptr("<id>"),
+												ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 											},
 										},
 									}},
 								NetworkSecurityGroup: &armcompute.SubResource{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 								},
 								Primary: to.Ptr(true),
 							},
 						}},
 					NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
 						{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}/virtualMachines/0/networkInterfaces/vmsstestnetconfig5415"),
 							Properties: &armcompute.NetworkInterfaceReferenceProperties{
 								DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
 								Primary:      to.Ptr(true),
@@ -340,8 +339,8 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 				NetworkProfileConfiguration: &armcompute.VirtualMachineScaleSetVMNetworkProfileConfiguration{
 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
 						{
-							ID:   to.Ptr("<id>"),
-							Name: to.Ptr("<name>"),
+							ID:   to.Ptr("aaaaaaaa"),
+							Name: to.Ptr("vmsstestnetconfig5415"),
 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
 								DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
 								DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
@@ -352,43 +351,43 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 								EnableIPForwarding:          to.Ptr(true),
 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
 									{
-										ID:   to.Ptr("<id>"),
-										Name: to.Ptr("<name>"),
+										ID:   to.Ptr("aaaaaaaaa"),
+										Name: to.Ptr("vmsstestnetconfig9693"),
 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
 											ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{
 												{
-													ID: to.Ptr("<id>"),
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 												}},
 											ApplicationSecurityGroups: []*armcompute.SubResource{
 												{
-													ID: to.Ptr("<id>"),
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 												}},
 											LoadBalancerBackendAddressPools: []*armcompute.SubResource{
 												{
-													ID: to.Ptr("<id>"),
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 												}},
 											LoadBalancerInboundNatPools: []*armcompute.SubResource{
 												{
-													ID: to.Ptr("<id>"),
+													ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 												}},
 											Primary:                 to.Ptr(true),
 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
 											PublicIPAddressConfiguration: &armcompute.VirtualMachineScaleSetPublicIPAddressConfiguration{
-												Name: to.Ptr("<name>"),
+												Name: to.Ptr("aaaaaaaaaaaaaaaaaa"),
 												Properties: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
 													DeleteOption: to.Ptr(armcompute.DeleteOptionsDelete),
 													DNSSettings: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationDNSSettings{
-														DomainNameLabel: to.Ptr("<domain-name-label>"),
+														DomainNameLabel: to.Ptr("aaaaaaaaaaaaaaaaaa"),
 													},
 													IdleTimeoutInMinutes: to.Ptr[int32](18),
 													IPTags: []*armcompute.VirtualMachineScaleSetIPTag{
 														{
-															IPTagType: to.Ptr("<iptag-type>"),
-															Tag:       to.Ptr("<tag>"),
+															IPTagType: to.Ptr("aaaaaaa"),
+															Tag:       to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 														}},
 													PublicIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
 													PublicIPPrefix: &armcompute.SubResource{
-														ID: to.Ptr("<id>"),
+														ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 													},
 												},
 												SKU: &armcompute.PublicIPAddressSKU{
@@ -397,23 +396,23 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 												},
 											},
 											Subnet: &armcompute.APIEntityReference{
-												ID: to.Ptr("<id>"),
+												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/vn4071/subnets/sn5503"),
 											},
 										},
 									}},
 								NetworkSecurityGroup: &armcompute.SubResource{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 								},
 								Primary: to.Ptr(true),
 							},
 						}},
 				},
 				OSProfile: &armcompute.OSProfile{
-					AdminPassword:            to.Ptr("<admin-password>"),
-					AdminUsername:            to.Ptr("<admin-username>"),
+					AdminPassword:            to.Ptr("aaaaaaaaaaaaaaaa"),
+					AdminUsername:            to.Ptr("Foo12"),
 					AllowExtensionOperations: to.Ptr(true),
-					ComputerName:             to.Ptr("<computer-name>"),
-					CustomData:               to.Ptr("<custom-data>"),
+					ComputerName:             to.Ptr("test000000"),
+					CustomData:               to.Ptr("aaaa"),
 					LinuxConfiguration: &armcompute.LinuxConfiguration{
 						DisablePasswordAuthentication: to.Ptr(true),
 						PatchSettings: &armcompute.LinuxPatchSettings{
@@ -424,8 +423,8 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 						SSH: &armcompute.SSHConfiguration{
 							PublicKeys: []*armcompute.SSHPublicKey{
 								{
-									Path:    to.Ptr("<path>"),
-									KeyData: to.Ptr("<key-data>"),
+									Path:    to.Ptr("aaa"),
+									KeyData: to.Ptr("aaaaaa"),
 								}},
 						},
 					},
@@ -434,9 +433,9 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 					WindowsConfiguration: &armcompute.WindowsConfiguration{
 						AdditionalUnattendContent: []*armcompute.AdditionalUnattendContent{
 							{
-								ComponentName: to.Ptr("<component-name>"),
-								Content:       to.Ptr("<content>"),
-								PassName:      to.Ptr("<pass-name>"),
+								ComponentName: to.Ptr("Microsoft-Windows-Shell-Setup"),
+								Content:       to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+								PassName:      to.Ptr("OobeSystem"),
 								SettingName:   to.Ptr(armcompute.SettingNamesAutoLogon),
 							}},
 						EnableAutomaticUpdates: to.Ptr(true),
@@ -446,11 +445,11 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 							PatchMode:         to.Ptr(armcompute.WindowsVMGuestPatchModeManual),
 						},
 						ProvisionVMAgent: to.Ptr(true),
-						TimeZone:         to.Ptr("<time-zone>"),
+						TimeZone:         to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 						WinRM: &armcompute.WinRMConfiguration{
 							Listeners: []*armcompute.WinRMListener{
 								{
-									CertificateURL: to.Ptr("<certificate-url>"),
+									CertificateURL: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
 									Protocol:       to.Ptr(armcompute.ProtocolTypesHTTP),
 								}},
 						},
@@ -471,39 +470,39 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 				StorageProfile: &armcompute.StorageProfile{
 					DataDisks: []*armcompute.DataDisk{
 						{
-							Name:         to.Ptr("<name>"),
+							Name:         to.Ptr("vmss3176_vmss3176_0_disk2_6c4f554bdafa49baa780eb2d128ff39d"),
 							Caching:      to.Ptr(armcompute.CachingTypesNone),
 							CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
 							DeleteOption: to.Ptr(armcompute.DiskDeleteOptionTypesDelete),
 							DetachOption: to.Ptr(armcompute.DiskDetachOptionTypesForceDetach),
 							DiskSizeGB:   to.Ptr[int32](128),
 							Image: &armcompute.VirtualHardDisk{
-								URI: to.Ptr("<uri>"),
+								URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
 							},
 							Lun: to.Ptr[int32](1),
 							ManagedDisk: &armcompute.ManagedDiskParameters{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_0_disk2_6c4f554bdafa49baa780eb2d128ff39d"),
 								DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("aaaaaaaaaaaa"),
 								},
 								StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
 							},
 							ToBeDetached: to.Ptr(true),
 							Vhd: &armcompute.VirtualHardDisk{
-								URI: to.Ptr("<uri>"),
+								URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
 							},
 							WriteAcceleratorEnabled: to.Ptr(true),
 						}},
 					ImageReference: &armcompute.ImageReference{
-						ID:                   to.Ptr("<id>"),
-						Offer:                to.Ptr("<offer>"),
-						Publisher:            to.Ptr("<publisher>"),
-						SharedGalleryImageID: to.Ptr("<shared-gallery-image-id>"),
-						SKU:                  to.Ptr("<sku>"),
-						Version:              to.Ptr("<version>"),
+						ID:                   to.Ptr("a"),
+						Offer:                to.Ptr("WindowsServer"),
+						Publisher:            to.Ptr("MicrosoftWindowsServer"),
+						SharedGalleryImageID: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
+						SKU:                  to.Ptr("2012-R2-Datacenter"),
+						Version:              to.Ptr("4.127.20180315"),
 					},
 					OSDisk: &armcompute.OSDisk{
-						Name:         to.Ptr("<name>"),
+						Name:         to.Ptr("vmss3176_vmss3176_0_OsDisk_1_6d72b805e50e4de6830303c5055077fc"),
 						Caching:      to.Ptr(armcompute.CachingTypesNone),
 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
 						DeleteOption: to.Ptr(armcompute.DiskDeleteOptionTypesDelete),
@@ -514,49 +513,49 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 						DiskSizeGB: to.Ptr[int32](127),
 						EncryptionSettings: &armcompute.DiskEncryptionSettings{
 							DiskEncryptionKey: &armcompute.KeyVaultSecretReference{
-								SecretURL: to.Ptr("<secret-url>"),
+								SecretURL: to.Ptr("aaaaaaaa"),
 								SourceVault: &armcompute.SubResource{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 								},
 							},
 							Enabled: to.Ptr(true),
 							KeyEncryptionKey: &armcompute.KeyVaultKeyReference{
-								KeyURL: to.Ptr("<key-url>"),
+								KeyURL: to.Ptr("aaaaaaaaaaaaaa"),
 								SourceVault: &armcompute.SubResource{
-									ID: to.Ptr("<id>"),
+									ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}"),
 								},
 							},
 						},
 						Image: &armcompute.VirtualHardDisk{
-							URI: to.Ptr("<uri>"),
+							URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
 						},
 						ManagedDisk: &armcompute.ManagedDiskParameters{
-							ID: to.Ptr("<id>"),
+							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/vmss3176_vmss3176_0_OsDisk_1_6d72b805e50e4de6830303c5055077fc"),
 							DiskEncryptionSet: &armcompute.DiskEncryptionSetParameters{
-								ID: to.Ptr("<id>"),
+								ID: to.Ptr("aaaaaaaaaaaa"),
 							},
 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
 						},
 						OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 						Vhd: &armcompute.VirtualHardDisk{
-							URI: to.Ptr("<uri>"),
+							URI: to.Ptr("https://{storageAccountName}.blob.core.windows.net/{containerName}/{vhdName}.vhd"),
 						},
 						WriteAcceleratorEnabled: to.Ptr(true),
 					},
 				},
-				UserData: to.Ptr("<user-data>"),
+				UserData: to.Ptr("RXhhbXBsZSBVc2VyRGF0YQ=="),
 			},
 			SKU: &armcompute.SKU{
-				Name:     to.Ptr("<name>"),
+				Name:     to.Ptr("Classic"),
 				Capacity: to.Ptr[int64](29),
-				Tier:     to.Ptr("<tier>"),
+				Tier:     to.Ptr("aaaaaaaaaaaaaa"),
 			},
 		},
-		&armcompute.VirtualMachineScaleSetVMsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -564,48 +563,46 @@ func ExampleVirtualMachineScaleSetVMsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/ForceDeleteVirtualMachineScaleSetVM.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Delete_Force.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		&armcompute.VirtualMachineScaleSetVMsClientBeginDeleteOptions{ForceDeletion: to.Ptr(true),
-			ResumeToken: "",
-		})
+		"myResourceGroup",
+		"myvmScaleSet",
+		"0",
+		&armcompute.VirtualMachineScaleSetVMsClientBeginDeleteOptions{ForceDeletion: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetVirtualMachineScaleSetVMWithUserData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_WithUserData.json
 func ExampleVirtualMachineScaleSetVMsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
+		"myResourceGroup",
+		"{vmss-name}",
+		"0",
 		&armcompute.VirtualMachineScaleSetVMsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -614,21 +611,21 @@ func ExampleVirtualMachineScaleSetVMsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/GetVirtualMachineScaleSetVMInstanceViewAutoPlacedOnDedicatedHostGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
 func ExampleVirtualMachineScaleSetVMsClient_GetInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetInstanceView(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
+		"myResourceGroup",
+		"myVirtualMachineScaleSet",
+		"0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -637,28 +634,27 @@ func ExampleVirtualMachineScaleSetVMsClient_GetInstanceView() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_List_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<virtual-machine-scale-set-name>",
-		&armcompute.VirtualMachineScaleSetVMsClientListOptions{Filter: to.Ptr("<filter>"),
-			Select: to.Ptr("<select>"),
-			Expand: to.Ptr("<expand>"),
+	pager := client.NewListPager("rgcompute",
+		"aaaaaaaaaaaaaaaaaaaaaa",
+		&armcompute.VirtualMachineScaleSetVMsClientListOptions{Filter: to.Ptr("aaaaaaaaaaaaaa"),
+			Select: to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
+			Expand: to.Ptr("aaaaaaaaaaaaa"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -667,123 +663,121 @@ func ExampleVirtualMachineScaleSetVMsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_PowerOff_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_PowerOff_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginPowerOff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPowerOff(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		&armcompute.VirtualMachineScaleSetVMsClientBeginPowerOffOptions{SkipShutdown: to.Ptr(true),
-			ResumeToken: "",
-		})
+		"rgcompute",
+		"aaaaaa",
+		"aaaaaaaaa",
+		&armcompute.VirtualMachineScaleSetVMsClientBeginPowerOffOptions{SkipShutdown: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_Restart_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Restart_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRestart(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		&armcompute.VirtualMachineScaleSetVMsClientBeginRestartOptions{ResumeToken: ""})
+		"rgcompute",
+		"aa",
+		"aaaaaaaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_Start_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Start_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginStart(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		&armcompute.VirtualMachineScaleSetVMsClientBeginStartOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaaaaaaaaa",
+		"aaaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_Redeploy_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Redeploy_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginRedeploy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRedeploy(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		&armcompute.VirtualMachineScaleSetVMsClientBeginRedeployOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaaaaaaaaaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/RetrieveBootDiagnosticsDataVMScaleSetVM.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_RetrieveBootDiagnosticsData.json
 func ExampleVirtualMachineScaleSetVMsClient_RetrieveBootDiagnosticsData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RetrieveBootDiagnosticsData(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
+		"ResourceGroup",
+		"myvmScaleSet",
+		"0",
 		&armcompute.VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataOptions{SasURIExpirationTimeInMinutes: to.Ptr[int32](60)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -792,77 +786,77 @@ func ExampleVirtualMachineScaleSetVMsClient_RetrieveBootDiagnosticsData() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/VirtualMachineScaleSetVMs_PerformMaintenance_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_PerformMaintenance_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginPerformMaintenance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginPerformMaintenance(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
-		&armcompute.VirtualMachineScaleSetVMsClientBeginPerformMaintenanceOptions{ResumeToken: ""})
+		"rgcompute",
+		"aaaaaaaaaaaaaa",
+		"aaaaaaaaaaaa",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/SimulateEvictionOfVmssVM.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_SimulateEviction.json
 func ExampleVirtualMachineScaleSetVMsClient_SimulateEviction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.SimulateEviction(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
+		"ResourceGroup",
+		"VmScaleSetName",
+		"InstanceId",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/VMScaleSetRunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand.json
 func ExampleVirtualMachineScaleSetVMsClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("<subscription-id>", cred, nil)
+	client, err := armcompute.NewVirtualMachineScaleSetVMsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRunCommand(ctx,
-		"<resource-group-name>",
-		"<vm-scale-set-name>",
-		"<instance-id>",
+		"myResourceGroup",
+		"myVirtualMachineScaleSet",
+		"0",
 		armcompute.RunCommandInput{
-			CommandID: to.Ptr("<command-id>"),
+			CommandID: to.Ptr("RunPowerShellScript"),
 			Script: []*string{
 				to.Ptr("Write-Host Hello World!")},
 		},
-		&armcompute.VirtualMachineScaleSetVMsClientBeginRunCommandOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

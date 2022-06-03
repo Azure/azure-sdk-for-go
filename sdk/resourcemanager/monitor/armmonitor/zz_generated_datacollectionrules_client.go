@@ -38,7 +38,7 @@ func NewDataCollectionRulesClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewDataCollectionRulesClient(subscriptionID string, credential azcore.Token
 
 // Create - Creates or updates a data collection rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
 // options - DataCollectionRulesClientCreateOptions contains the optional parameters for the DataCollectionRulesClient.Create
@@ -97,7 +98,7 @@ func (client *DataCollectionRulesClient) createCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
@@ -115,6 +116,7 @@ func (client *DataCollectionRulesClient) createHandleResponse(resp *http.Respons
 
 // Delete - Deletes a data collection rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
 // options - DataCollectionRulesClientDeleteOptions contains the optional parameters for the DataCollectionRulesClient.Delete
@@ -156,12 +158,13 @@ func (client *DataCollectionRulesClient) deleteCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns the specified data collection rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
 // options - DataCollectionRulesClientGetOptions contains the optional parameters for the DataCollectionRulesClient.Get method.
@@ -202,7 +205,7 @@ func (client *DataCollectionRulesClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -217,11 +220,12 @@ func (client *DataCollectionRulesClient) getHandleResponse(resp *http.Response) 
 
 // NewListByResourceGroupPager - Lists all data collection rules in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DataCollectionRulesClientListByResourceGroupOptions contains the optional parameters for the DataCollectionRulesClient.ListByResourceGroup
 // method.
 func (client *DataCollectionRulesClient) NewListByResourceGroupPager(resourceGroupName string, options *DataCollectionRulesClientListByResourceGroupOptions) *runtime.Pager[DataCollectionRulesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataCollectionRulesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataCollectionRulesClientListByResourceGroupResponse]{
 		More: func(page DataCollectionRulesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -266,7 +270,7 @@ func (client *DataCollectionRulesClient) listByResourceGroupCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -281,10 +285,11 @@ func (client *DataCollectionRulesClient) listByResourceGroupHandleResponse(resp 
 
 // NewListBySubscriptionPager - Lists all data collection rules in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // options - DataCollectionRulesClientListBySubscriptionOptions contains the optional parameters for the DataCollectionRulesClient.ListBySubscription
 // method.
 func (client *DataCollectionRulesClient) NewListBySubscriptionPager(options *DataCollectionRulesClientListBySubscriptionOptions) *runtime.Pager[DataCollectionRulesClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[DataCollectionRulesClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[DataCollectionRulesClientListBySubscriptionResponse]{
 		More: func(page DataCollectionRulesClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -325,7 +330,7 @@ func (client *DataCollectionRulesClient) listBySubscriptionCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -340,6 +345,7 @@ func (client *DataCollectionRulesClient) listBySubscriptionHandleResponse(resp *
 
 // Update - Updates part of a data collection rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-09-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // dataCollectionRuleName - The name of the data collection rule. The name is case insensitive.
 // options - DataCollectionRulesClientUpdateOptions contains the optional parameters for the DataCollectionRulesClient.Update
@@ -381,7 +387,7 @@ func (client *DataCollectionRulesClient) updateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}

@@ -27,14 +27,13 @@ func ExampleAssignmentOperationsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-scope>",
-		"<assignment-name>",
+	pager := client.NewListPager("managementGroups/ContosoOnlineGroup",
+		"assignSimpleBlueprint",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,9 +54,9 @@ func ExampleAssignmentOperationsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-scope>",
-		"<assignment-name>",
-		"<assignment-operation-name>",
+		"managementGroups/ContosoOnlineGroup",
+		"assignSimpleBlueprint",
+		"fb5d4dcb-7ce2-4087-ba7a-459aa74e5e0f",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

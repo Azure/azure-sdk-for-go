@@ -24,14 +24,14 @@ func ExampleTagClient_NewListByOperationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByOperationPager("<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<operation-id>",
+	pager := client.NewListByOperationPager("rg1",
+		"apimService1",
+		"57d2ef278aa04f0888cba3f3",
+		"57d2ef278aa04f0888cba3f6",
 		&armapimanagement.TagClientListByOperationOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -40,7 +40,6 @@ func ExampleTagClient_NewListByOperationPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -56,16 +55,16 @@ func ExampleTagClient_GetEntityStateByOperation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityStateByOperation(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<operation-id>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"59d6bb8f1f7fab13dc67ec9b",
+		"59d6bb8f1f7fab13dc67ec9a",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -79,16 +78,16 @@ func ExampleTagClient_GetByOperation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByOperation(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<operation-id>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"59d6bb8f1f7fab13dc67ec9b",
+		"59d6bb8f1f7fab13dc67ec9a",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -104,16 +103,16 @@ func ExampleTagClient_AssignToOperation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.AssignToOperation(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<operation-id>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"5931a75ae4bbd512a88c680b",
+		"5931a75ae4bbd512a88c680a",
+		"tagId1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -129,16 +128,16 @@ func ExampleTagClient_DetachFromOperation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DetachFromOperation(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<api-id>",
-		"<operation-id>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"59d5b28d1f7fab116c282650",
+		"59d5b28d1f7fab116c282651",
+		"59d5b28e1f7fab116402044e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -152,13 +151,13 @@ func ExampleTagClient_NewListByProductPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByProductPager("<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
+	pager := client.NewListByProductPager("rg1",
+		"apimService1",
+		"57d2ef278aa04f0888cba3f1",
 		&armapimanagement.TagClientListByProductOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -167,7 +166,6 @@ func ExampleTagClient_NewListByProductPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -183,15 +181,15 @@ func ExampleTagClient_GetEntityStateByProduct() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityStateByProduct(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"59306a29e4bbd510dc24e5f8",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -205,15 +203,15 @@ func ExampleTagClient_GetByProduct() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByProduct(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"59d6bb8f1f7fab13dc67ec9b",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -229,15 +227,15 @@ func ExampleTagClient_AssignToProduct() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.AssignToProduct(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"5931a75ae4bbd512a88c680b",
+		"tagId1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -253,15 +251,15 @@ func ExampleTagClient_DetachFromProduct() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DetachFromProduct(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<product-id>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"59d5b28d1f7fab116c282650",
+		"59d5b28e1f7fab116402044e",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -275,12 +273,12 @@ func ExampleTagClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.TagClientListByServiceOptions{Filter: nil,
 			Top:   nil,
 			Skip:  nil,
@@ -290,7 +288,6 @@ func ExampleTagClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -306,14 +303,14 @@ func ExampleTagClient_GetEntityState() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityState(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -327,14 +324,14 @@ func ExampleTagClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"59306a29e4bbd510dc24e5f9",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -350,17 +347,17 @@ func ExampleTagClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<tag-id>",
+		"rg1",
+		"apimService1",
+		"tagId1",
 		armapimanagement.TagCreateUpdateParameters{
 			Properties: &armapimanagement.TagContractProperties{
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("tag1"),
 			},
 		},
 		&armapimanagement.TagClientCreateOrUpdateOptions{IfMatch: nil})
@@ -378,18 +375,18 @@ func ExampleTagClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<tag-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"temptag",
+		"*",
 		armapimanagement.TagCreateUpdateParameters{
 			Properties: &armapimanagement.TagContractProperties{
-				DisplayName: to.Ptr("<display-name>"),
+				DisplayName: to.Ptr("temp tag"),
 			},
 		},
 		nil)
@@ -407,15 +404,15 @@ func ExampleTagClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<tag-id>",
-		"<if-match>",
+		"rg1",
+		"apimService1",
+		"tagId1",
+		"*",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

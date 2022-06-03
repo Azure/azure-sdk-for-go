@@ -24,14 +24,14 @@ func ExampleDatabaseAutomaticTuningClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabaseAutomaticTuningClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabaseAutomaticTuningClient("c3aa9078-0000-0000-0000-e36f151182d7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"default-sql-onebox",
+		"testsvr11",
+		"db1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,14 +47,14 @@ func ExampleDatabaseAutomaticTuningClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsql.NewDatabaseAutomaticTuningClient("<subscription-id>", cred, nil)
+	client, err := armsql.NewDatabaseAutomaticTuningClient("c3aa9078-0000-0000-0000-e36f151182d7", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<server-name>",
-		"<database-name>",
+		"default-sql-onebox",
+		"testsvr11",
+		"db1",
 		armsql.DatabaseAutomaticTuning{
 			Properties: &armsql.DatabaseAutomaticTuningProperties{
 				DesiredState: to.Ptr(armsql.AutomaticTuningModeAuto),

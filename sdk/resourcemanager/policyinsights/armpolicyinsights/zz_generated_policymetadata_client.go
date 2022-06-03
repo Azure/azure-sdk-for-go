@@ -35,7 +35,7 @@ func NewPolicyMetadataClient(credential azcore.TokenCredential, options *arm.Cli
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -52,6 +52,7 @@ func NewPolicyMetadataClient(credential azcore.TokenCredential, options *arm.Cli
 
 // GetResource - Get policy metadata resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // resourceName - The name of the policy metadata resource.
 // options - PolicyMetadataClientGetResourceOptions contains the optional parameters for the PolicyMetadataClient.GetResource
 // method.
@@ -81,7 +82,7 @@ func (client *PolicyMetadataClient) getResourceCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -96,11 +97,12 @@ func (client *PolicyMetadataClient) getResourceHandleResponse(resp *http.Respons
 
 // NewListPager - Get a list of the policy metadata resources.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-10-01
 // QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
 // method.
 // options - PolicyMetadataClientListOptions contains the optional parameters for the PolicyMetadataClient.List method.
 func (client *PolicyMetadataClient) NewListPager(queryOptions *QueryOptions, options *PolicyMetadataClientListOptions) *runtime.Pager[PolicyMetadataClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PolicyMetadataClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PolicyMetadataClientListResponse]{
 		More: func(page PolicyMetadataClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -140,7 +142,7 @@ func (client *PolicyMetadataClient) listCreateRequest(ctx context.Context, query
 		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

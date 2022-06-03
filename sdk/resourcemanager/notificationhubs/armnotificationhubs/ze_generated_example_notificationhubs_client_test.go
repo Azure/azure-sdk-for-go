@@ -24,16 +24,16 @@ func ExampleClient_CheckNotificationHubAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNotificationHubAvailability(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
+		"5ktrial",
+		"locp-newns",
 		armnotificationhubs.CheckAvailabilityParameters{
-			Name:     to.Ptr("<name>"),
-			Location: to.Ptr("<location>"),
+			Name:     to.Ptr("sdktest"),
+			Location: to.Ptr("West Europe"),
 		},
 		nil)
 	if err != nil {
@@ -50,16 +50,16 @@ func ExampleClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
 		armnotificationhubs.NotificationHubCreateOrUpdateParameters{
-			Location:   to.Ptr("<location>"),
+			Location:   to.Ptr("eastus"),
 			Properties: &armnotificationhubs.NotificationHubProperties{},
 		},
 		nil)
@@ -77,14 +77,14 @@ func ExampleClient_Patch() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Patch(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
+		"sdkresourceGroup",
+		"nh-sdk-ns",
+		"sdk-notificationHubs-8708",
 		&armnotificationhubs.ClientPatchOptions{Parameters: &armnotificationhubs.NotificationHubPatchParameters{}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -100,14 +100,14 @@ func ExampleClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -121,14 +121,14 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -144,14 +144,14 @@ func ExampleClient_DebugSend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DebugSend(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
 		&armnotificationhubs.ClientDebugSendOptions{Parameters: map[string]interface{}{
 			"data": map[string]interface{}{
 				"message": "Hello",
@@ -170,15 +170,15 @@ func ExampleClient_CreateOrUpdateAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdateAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
+		"DefaultListenSharedAccessSignature",
 		armnotificationhubs.SharedAccessAuthorizationRuleCreateOrUpdateParameters{
 			Properties: &armnotificationhubs.SharedAccessAuthorizationRuleProperties{
 				Rights: []*armnotificationhubs.AccessRights{
@@ -201,15 +201,15 @@ func ExampleClient_DeleteAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.DeleteAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
+		"DefaultListenSharedAccessSignature",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -223,15 +223,15 @@ func ExampleClient_GetAuthorizationRule() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetAuthorizationRule(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
+		"DefaultListenSharedAccessSignature",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -247,18 +247,17 @@ func ExampleClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<namespace-name>",
+	pager := client.NewListPager("5ktrial",
+		"nh-sdk-ns",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -274,19 +273,18 @@ func ExampleClient_NewListAuthorizationRulesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAuthorizationRulesPager("<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
+	pager := client.NewListAuthorizationRulesPager("5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -302,15 +300,15 @@ func ExampleClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
+		"sdk-AuthRules-5800",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -326,17 +324,17 @@ func ExampleClient_RegenerateKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegenerateKeys(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
-		"<authorization-rule-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
+		"DefaultListenSharedAccessSignature",
 		armnotificationhubs.PolicykeyResource{
-			PolicyKey: to.Ptr("<policy-key>"),
+			PolicyKey: to.Ptr("PrimaryKey"),
 		},
 		nil)
 	if err != nil {
@@ -353,14 +351,14 @@ func ExampleClient_GetPnsCredentials() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnotificationhubs.NewClient("<subscription-id>", cred, nil)
+	client, err := armnotificationhubs.NewClient("29cfa613-cbbc-4512-b1d6-1b3a92c7fa40", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetPnsCredentials(ctx,
-		"<resource-group-name>",
-		"<namespace-name>",
-		"<notification-hub-name>",
+		"5ktrial",
+		"nh-sdk-ns",
+		"nh-sdk-hub",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

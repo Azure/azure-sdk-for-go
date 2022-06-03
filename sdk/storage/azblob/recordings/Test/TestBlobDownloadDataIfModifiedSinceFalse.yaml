@@ -10,12 +10,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:19:34 GMT
+      - Fri, 13 May 2022 00:21:17 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifmodifiedsincefalse?restype=container
+    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdownloaddataifmodifiedsincefalse?restype=container
     method: PUT
   response:
     body: ""
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Apr 2022 12:19:35 GMT
+      - Fri, 13 May 2022 00:21:16 GMT
       Etag:
-      - '"0x8DA1890E11EFFFA"'
+      - '"0x8DA34767F355F78"'
       Last-Modified:
-      - Thu, 07 Apr 2022 12:19:35 GMT
+      - Fri, 13 May 2022 00:21:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c0f97a43-d01e-003b-3579-4acadc000000
+      - 83171e88-301e-0046-2e5f-663fbd000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -50,14 +50,14 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:19:35 GMT
+      - Fri, 13 May 2022 00:21:17 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifmodifiedsincefalse/gotestblobblobdownloaddataifmodifiedsincefalse
+    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdownloaddataifmodifiedsincefalse/gotestblobblobdownloaddataifmodifiedsincefalse
     method: PUT
   response:
     body: ""
@@ -67,23 +67,21 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Thu, 07 Apr 2022 12:19:35 GMT
+      - Fri, 13 May 2022 00:21:16 GMT
       Etag:
-      - '"0x8DA1890E143385F"'
+      - '"0x8DA34767F4202F6"'
       Last-Modified:
-      - Thu, 07 Apr 2022 12:19:35 GMT
+      - Fri, 13 May 2022 00:21:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - c0f97ab6-d01e-003b-2179-4acadc000000
+      - 83171e97-301e-0046-3c5f-663fbd000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
-      X-Ms-Version-Id:
-      - "2022-04-07T12:19:35.9982687Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -96,14 +94,14 @@ interactions:
       Authorization:
       - sanitized
       If-Modified-Since:
-      - Thu, 07 Apr 2022 12:19:45 GMT
+      - Fri, 13 May 2022 00:21:26 GMT
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:19:35 GMT
+      - Fri, 13 May 2022 00:21:17 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifmodifiedsincefalse/gotestblobblobdownloaddataifmodifiedsincefalse
+    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdownloaddataifmodifiedsincefalse/gotestblobblobdownloaddataifmodifiedsincefalse
     method: GET
   response:
     body: ""
@@ -111,13 +109,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Apr 2022 12:19:35 GMT
+      - Fri, 13 May 2022 00:21:16 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - ConditionNotMet
       X-Ms-Request-Id:
-      - c0f97b5f-d01e-003b-3779-4acadc000000
+      - 83171ec8-301e-0046-6b5f-663fbd000000
       X-Ms-Version:
       - "2020-10-02"
     status: 304 The condition specified using HTTP conditional header(s) is not met.
@@ -132,12 +130,12 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.3.0 azsdk-go-azcore/v0.22.0 (go1.16.14; Windows_NT)
+      - azsdk-go-azblob/v0.4.1 (go1.18; Windows_NT)
       X-Ms-Date:
-      - Thu, 07 Apr 2022 12:19:35 GMT
+      - Fri, 13 May 2022 00:21:17 GMT
       X-Ms-Version:
       - "2020-10-02"
-    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifmodifiedsincefalse?restype=container
+    url: https://jhendrixstorage1.blob.core.windows.net/gocblobdownloaddataifmodifiedsincefalse?restype=container
     method: DELETE
   response:
     body: ""
@@ -145,11 +143,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 07 Apr 2022 12:19:36 GMT
+      - Fri, 13 May 2022 00:21:16 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c0f97c06-d01e-003b-4c79-4acadc000000
+      - 83171edb-301e-0046-7e5f-663fbd000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

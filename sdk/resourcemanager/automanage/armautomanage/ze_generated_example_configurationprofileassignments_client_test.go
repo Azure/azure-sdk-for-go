@@ -24,17 +24,17 @@ func ExampleConfigurationProfileAssignmentsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<configuration-profile-assignment-name>",
-		"<resource-group-name>",
-		"<vm-name>",
+		"default",
+		"myResourceGroupName",
+		"myVMName",
 		armautomanage.ConfigurationProfileAssignment{
 			Properties: &armautomanage.ConfigurationProfileAssignmentProperties{
-				ConfigurationProfile: to.Ptr("<configuration-profile>"),
+				ConfigurationProfile: to.Ptr("/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"),
 			},
 		},
 		nil)
@@ -52,14 +52,14 @@ func ExampleConfigurationProfileAssignmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<configuration-profile-assignment-name>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"default",
+		"myVMName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -75,17 +75,43 @@ func ExampleConfigurationProfileAssignmentsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<configuration-profile-assignment-name>",
-		"<vm-name>",
+		"myResourceGroupName",
+		"default",
+		"myVMName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfileAssignmentsByVirtualMachines.json
+func ExampleConfigurationProfileAssignmentsClient_NewListByVirtualMachinesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("mySubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByVirtualMachinesPager("myResourceGroupName",
+		"myVMName",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
 	}
 }
 
@@ -96,17 +122,16 @@ func ExampleConfigurationProfileAssignmentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
+	pager := client.NewListPager("myResourceGroupName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -122,7 +147,7 @@ func ExampleConfigurationProfileAssignmentsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("<subscription-id>", cred, nil)
+	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("mySubscriptionId", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -131,7 +156,58 @@ func ExampleConfigurationProfileAssignmentsClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfileAssignmentsByMachineName.json
+func ExampleConfigurationProfileAssignmentsClient_NewListByMachineNamePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("mySubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByMachineNamePager("myResourceGroupName",
+		"myMachineName",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range nextResult.Value {
+			// TODO: use page item
+			_ = v
+		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/listConfigurationProfileAssignmentsByClusterName.json
+func ExampleConfigurationProfileAssignmentsClient_NewListByClusterNamePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	client, err := armautomanage.NewConfigurationProfileAssignmentsClient("mySubscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := client.NewListByClusterNamePager("myResourceGroupName",
+		"myClusterName",
+		nil)
+	for pager.More() {
+		nextResult, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

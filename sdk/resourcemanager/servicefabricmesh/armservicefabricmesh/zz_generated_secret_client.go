@@ -38,7 +38,7 @@ func NewSecretClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewSecretClient(subscriptionID string, credential azcore.TokenCredential, o
 // Create - Creates a secret resource with the specified name, description and properties. If a secret resource with the same
 // name exists, then it is updated with the specified description and properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // secretResourceName - The name of the secret resource.
 // secretResourceDescription - Description for creating a secret resource.
@@ -95,7 +96,7 @@ func (client *SecretClient) createCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, secretResourceDescription)
 }
 
@@ -110,6 +111,7 @@ func (client *SecretClient) createHandleResponse(resp *http.Response) (SecretCli
 
 // Delete - Deletes the secret resource identified by the name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // secretResourceName - The name of the secret resource.
 // options - SecretClientDeleteOptions contains the optional parameters for the SecretClient.Delete method.
@@ -147,13 +149,14 @@ func (client *SecretClient) deleteCreateRequest(ctx context.Context, resourceGro
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the information about the secret resource with the given name. The information include the description and other
 // properties of the secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // secretResourceName - The name of the secret resource.
 // options - SecretClientGetOptions contains the optional parameters for the SecretClient.Get method.
@@ -191,7 +194,7 @@ func (client *SecretClient) getCreateRequest(ctx context.Context, resourceGroupN
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -207,11 +210,12 @@ func (client *SecretClient) getHandleResponse(resp *http.Response) (SecretClient
 // NewListByResourceGroupPager - Gets the information about all secret resources in a given resource group. The information
 // include the description and other properties of the Secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // resourceGroupName - Azure resource group name
 // options - SecretClientListByResourceGroupOptions contains the optional parameters for the SecretClient.ListByResourceGroup
 // method.
 func (client *SecretClient) NewListByResourceGroupPager(resourceGroupName string, options *SecretClientListByResourceGroupOptions) *runtime.Pager[SecretClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecretClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecretClientListByResourceGroupResponse]{
 		More: func(page SecretClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -256,7 +260,7 @@ func (client *SecretClient) listByResourceGroupCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -272,10 +276,11 @@ func (client *SecretClient) listByResourceGroupHandleResponse(resp *http.Respons
 // NewListBySubscriptionPager - Gets the information about all secret resources in a given resource group. The information
 // include the description and other properties of the secret.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-01-preview
 // options - SecretClientListBySubscriptionOptions contains the optional parameters for the SecretClient.ListBySubscription
 // method.
 func (client *SecretClient) NewListBySubscriptionPager(options *SecretClientListBySubscriptionOptions) *runtime.Pager[SecretClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[SecretClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[SecretClientListBySubscriptionResponse]{
 		More: func(page SecretClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -316,7 +321,7 @@ func (client *SecretClient) listBySubscriptionCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

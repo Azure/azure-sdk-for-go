@@ -24,7 +24,7 @@ func ParseID(id *string) (*string, *string, *string) {
 		return nil, nil, nil
 	}
 
-	url := fmt.Sprintf("%s://%s/", parsed.Scheme, parsed.Host)
+	url := fmt.Sprintf("%s://%s", parsed.Scheme, parsed.Host)
 	split := strings.Split(strings.TrimPrefix(parsed.Path, "/"), "/")
 	if len(split) < 3 {
 		if len(split) == 2 {

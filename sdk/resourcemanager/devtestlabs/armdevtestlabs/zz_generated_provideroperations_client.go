@@ -33,7 +33,7 @@ func NewProviderOperationsClient(credential azcore.TokenCredential, options *arm
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -50,9 +50,10 @@ func NewProviderOperationsClient(credential azcore.TokenCredential, options *arm
 
 // NewListPager - Result of the request to list REST API operations
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-09-15
 // options - ProviderOperationsClientListOptions contains the optional parameters for the ProviderOperationsClient.List method.
 func (client *ProviderOperationsClient) NewListPager(options *ProviderOperationsClientListOptions) *runtime.Pager[ProviderOperationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ProviderOperationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ProviderOperationsClientListResponse]{
 		More: func(page ProviderOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -89,7 +90,7 @@ func (client *ProviderOperationsClient) listCreateRequest(ctx context.Context, o
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-09-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

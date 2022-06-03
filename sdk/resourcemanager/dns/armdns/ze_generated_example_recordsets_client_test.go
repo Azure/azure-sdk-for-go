@@ -24,14 +24,14 @@ func ExampleRecordSetsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
-		"<relative-record-set-name>",
+		"rg1",
+		"zone1",
+		"record1",
 		armdns.RecordTypeA,
 		armdns.RecordSet{
 			Properties: &armdns.RecordSetProperties{
@@ -55,20 +55,20 @@ func ExampleRecordSetsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
-		"<relative-record-set-name>",
+		"rg1",
+		"zone1",
+		"record1",
 		armdns.RecordTypeA,
 		armdns.RecordSet{
 			Properties: &armdns.RecordSetProperties{
 				ARecords: []*armdns.ARecord{
 					{
-						IPv4Address: to.Ptr("<ipv4address>"),
+						IPv4Address: to.Ptr("127.0.0.1"),
 					}},
 				TTL: to.Ptr[int64](3600),
 				Metadata: map[string]*string{
@@ -93,14 +93,14 @@ func ExampleRecordSetsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
-		"<relative-record-set-name>",
+		"rg1",
+		"zone1",
+		"record1",
 		armdns.RecordTypeA,
 		&armdns.RecordSetsClientDeleteOptions{IfMatch: nil})
 	if err != nil {
@@ -115,14 +115,14 @@ func ExampleRecordSetsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<zone-name>",
-		"<relative-record-set-name>",
+		"rg1",
+		"zone1",
+		"record1",
 		armdns.RecordTypeA,
 		nil)
 	if err != nil {
@@ -139,12 +139,12 @@ func ExampleRecordSetsClient_NewListByTypePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdns.NewRecordSetsClient("<subscription-id>", cred, nil)
+	client, err := armdns.NewRecordSetsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByTypePager("<resource-group-name>",
-		"<zone-name>",
+	pager := client.NewListByTypePager("rg1",
+		"zone1",
 		armdns.RecordTypeA,
 		&armdns.RecordSetsClientListByTypeOptions{Top: nil,
 			Recordsetnamesuffix: nil,
@@ -153,7 +153,6 @@ func ExampleRecordSetsClient_NewListByTypePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

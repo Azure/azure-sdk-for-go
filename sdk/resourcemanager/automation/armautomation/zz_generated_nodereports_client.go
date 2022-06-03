@@ -39,7 +39,7 @@ func NewNodeReportsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewNodeReportsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Get - Retrieve the Dsc node report data by node id and report id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // nodeID - The Dsc node id.
@@ -107,7 +108,7 @@ func (client *NodeReportsClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -122,6 +123,7 @@ func (client *NodeReportsClient) getHandleResponse(resp *http.Response) (NodeRep
 
 // GetContent - Retrieve the Dsc node reports by node id and report id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // nodeID - The Dsc node id.
@@ -172,7 +174,7 @@ func (client *NodeReportsClient) getContentCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -187,12 +189,13 @@ func (client *NodeReportsClient) getContentHandleResponse(resp *http.Response) (
 
 // NewListByNodePager - Retrieve the Dsc node report list by node id.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-01-13-preview
 // resourceGroupName - Name of an Azure Resource group.
 // automationAccountName - The name of the automation account.
 // nodeID - The parameters supplied to the list operation.
 // options - NodeReportsClientListByNodeOptions contains the optional parameters for the NodeReportsClient.ListByNode method.
 func (client *NodeReportsClient) NewListByNodePager(resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsClientListByNodeOptions) *runtime.Pager[NodeReportsClientListByNodeResponse] {
-	return runtime.NewPager(runtime.PageProcessor[NodeReportsClientListByNodeResponse]{
+	return runtime.NewPager(runtime.PagingHandler[NodeReportsClientListByNodeResponse]{
 		More: func(page NodeReportsClientListByNodeResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -248,7 +251,7 @@ func (client *NodeReportsClient) listByNodeCreateRequest(ctx context.Context, re
 	}
 	reqQP.Set("api-version", "2020-01-13-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

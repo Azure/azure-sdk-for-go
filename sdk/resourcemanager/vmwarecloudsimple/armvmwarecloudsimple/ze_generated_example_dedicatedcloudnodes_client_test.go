@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/vmwarecloudsimple/armvmwarecloudsimple"
@@ -26,7 +24,7 @@ func ExampleDedicatedCloudNodesClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -38,7 +36,6 @@ func ExampleDedicatedCloudNodesClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,11 +51,11 @@ func ExampleDedicatedCloudNodesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("myResourceGroup",
 		&armvmwarecloudsimple.DedicatedCloudNodesClientListByResourceGroupOptions{Filter: nil,
 			Top:       nil,
 			SkipToken: nil,
@@ -67,7 +64,6 @@ func ExampleDedicatedCloudNodesClient_NewListByResourceGroupPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -83,13 +79,13 @@ func ExampleDedicatedCloudNodesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<dedicated-cloud-node-name>",
+		"myResourceGroup",
+		"myNode",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,35 +101,35 @@ func ExampleDedicatedCloudNodesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<referer>",
-		"<dedicated-cloud-node-name>",
+		"myResourceGroup",
+		"https://management.azure.com/",
+		"myNode",
 		armvmwarecloudsimple.DedicatedCloudNode{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armvmwarecloudsimple.DedicatedCloudNodeProperties{
-				AvailabilityZoneID: to.Ptr("<availability-zone-id>"),
+				AvailabilityZoneID: to.Ptr("az1"),
 				NodesCount:         to.Ptr[int32](1),
-				PlacementGroupID:   to.Ptr("<placement-group-id>"),
-				PurchaseID:         to.Ptr("<purchase-id>"),
+				PlacementGroupID:   to.Ptr("n1"),
+				PurchaseID:         to.Ptr("56acbd46-3d36-4bbf-9b08-57c30fdf6932"),
 				SKUDescription: &armvmwarecloudsimple.SKUDescription{
-					Name: to.Ptr("<name>"),
-					ID:   to.Ptr("<id>"),
+					Name: to.Ptr("CS28-Node"),
+					ID:   to.Ptr("general"),
 				},
 			},
 			SKU: &armvmwarecloudsimple.SKU{
-				Name: to.Ptr("<name>"),
+				Name: to.Ptr("VMware_CloudSimple_CS28"),
 			},
 		},
-		&armvmwarecloudsimple.DedicatedCloudNodesClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -148,13 +144,13 @@ func ExampleDedicatedCloudNodesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<dedicated-cloud-node-name>",
+		"myResourceGroup",
+		"myNode",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -168,13 +164,13 @@ func ExampleDedicatedCloudNodesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewDedicatedCloudNodesClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<dedicated-cloud-node-name>",
+		"myResourceGroup",
+		"myNode",
 		armvmwarecloudsimple.PatchPayload{
 			Tags: map[string]*string{
 				"myTag": to.Ptr("tagValue"),

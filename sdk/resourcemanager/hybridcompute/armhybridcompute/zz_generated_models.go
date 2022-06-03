@@ -13,8 +13,23 @@ import "time"
 // AgentConfiguration - Configurable properties that the user can set locally via the azcmagent config command, or remotely
 // via ARM.
 type AgentConfiguration struct {
+	// READ-ONLY; Array of extensions that are allowed to be installed or updated.
+	ExtensionsAllowList []*ConfigurationExtension `json:"extensionsAllowList,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of extensions that are blocked (cannot be installed or updated)
+	ExtensionsBlockList []*ConfigurationExtension `json:"extensionsBlockList,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies whether the extension service is enabled or disabled.
+	ExtensionsEnabled *string `json:"extensionsEnabled,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specified whether the guest configuration service is enabled or disabled.
+	GuestConfigurationEnabled *string `json:"guestConfigurationEnabled,omitempty" azure:"ro"`
+
 	// READ-ONLY; Specifies the list of ports that the agent will be able to listen on.
 	IncomingConnectionsPorts []*string `json:"incomingConnectionsPorts,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of service names which should not use the specified proxy server.
+	ProxyBypass []*string `json:"proxyBypass,omitempty" azure:"ro"`
 
 	// READ-ONLY; Specifies the URL of the proxy to be used.
 	ProxyURL *string `json:"proxyUrl,omitempty" azure:"ro"`
@@ -24,6 +39,15 @@ type AgentConfiguration struct {
 type CloudMetadata struct {
 	// READ-ONLY; Specifies the cloud provider (Azure/AWS/GCP…).
 	Provider *string `json:"provider,omitempty" azure:"ro"`
+}
+
+// ConfigurationExtension - Describes properties that can identify extensions.
+type ConfigurationExtension struct {
+	// READ-ONLY; Publisher of the extension.
+	Publisher *string `json:"publisher,omitempty" azure:"ro"`
+
+	// READ-ONLY; Type of the extension.
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 type ConnectionDetail struct {
@@ -322,9 +346,6 @@ type MachineListResult struct {
 
 // MachineProperties - Describes the properties of a hybrid machine.
 type MachineProperties struct {
-	// Configurable properties that the user can set locally via the azcmagent config command, or remotely via ARM.
-	AgentConfiguration *AgentConfiguration `json:"agentConfiguration,omitempty"`
-
 	// Public Key that the client provides to be used during initial resource onboarding
 	ClientPublicKey *string `json:"clientPublicKey,omitempty"`
 
@@ -352,11 +373,17 @@ type MachineProperties struct {
 	// The resource id of the private link scope this machine is assigned to, if any.
 	PrivateLinkScopeResourceID *string `json:"privateLinkScopeResourceId,omitempty"`
 
+	// Statuses of dependent services that are reported back to ARM.
+	ServiceStatuses *ServiceStatuses `json:"serviceStatuses,omitempty"`
+
 	// Specifies the hybrid machine unique ID.
 	VMID *string `json:"vmId,omitempty"`
 
 	// READ-ONLY; Specifies the AD fully qualified display name.
 	AdFqdn *string `json:"adFqdn,omitempty" azure:"ro"`
+
+	// READ-ONLY; Configurable properties that the user can set locally via the azcmagent config command, or remotely via ARM.
+	AgentConfiguration *AgentConfiguration `json:"agentConfiguration,omitempty" azure:"ro"`
 
 	// READ-ONLY; The hybrid machine agent full version.
 	AgentVersion *string `json:"agentVersion,omitempty" azure:"ro"`
@@ -504,6 +531,9 @@ type OperationValue struct {
 	// Display properties
 	Display *OperationValueDisplay `json:"display,omitempty"`
 
+	// READ-ONLY; This property indicates if the operation is an action or a data action
+	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+
 	// READ-ONLY; The name of the compute operation.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
@@ -534,10 +564,10 @@ type OperationsClientListOptions struct {
 // PatchSettings - Specifies the patch settings.
 type PatchSettings struct {
 	// Specifies the assessment mode.
-	AssessmentMode *string `json:"assessmentMode,omitempty"`
+	AssessmentMode *AssessmentModeTypes `json:"assessmentMode,omitempty"`
 
 	// Specifies the patch mode.
-	PatchMode *string `json:"patchMode,omitempty"`
+	PatchMode *PatchModeTypes `json:"patchMode,omitempty"`
 }
 
 // PrivateEndpointConnection - A private endpoint connection
@@ -589,6 +619,9 @@ type PrivateEndpointConnectionProperties struct {
 
 	// Connection state of the private endpoint connection.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
+
+	// READ-ONLY; List of group IDs.
+	GroupIDs []*string `json:"groupIds,omitempty" azure:"ro"`
 
 	// READ-ONLY; State of the private endpoint connection.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -843,6 +876,24 @@ type Resource struct {
 type ResourceUpdate struct {
 	// Resource tags
 	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// ServiceStatus - Describes the status and behavior of a service.
+type ServiceStatus struct {
+	// The behavior of the service when the Arc-enabled machine starts up.
+	StartupType *string `json:"startupType,omitempty"`
+
+	// The current status of the service.
+	Status *string `json:"status,omitempty"`
+}
+
+// ServiceStatuses - Reports the state and behavior of dependent services.
+type ServiceStatuses struct {
+	// The state of the extension service on the Arc-enabled machine.
+	ExtensionService *ServiceStatus `json:"extensionService,omitempty"`
+
+	// The state of the guest configuration service on the Arc-enabled machine.
+	GuestConfigurationService *ServiceStatus `json:"guestConfigurationService,omitempty"`
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
@@ -597,6 +598,80 @@ func ExampleContainerClient_NewQueryItemsPager() {
 		}
 
 		fmt.Printf("Query page received with %v items. ActivityId %s consuming %v RU", len(queryResponse.Items), queryResponse.ActivityID, queryResponse.RequestCharge)
+	}
+}
+
+func ExampleContainerClient_NewTransactionalBatch() {
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
+	if !ok {
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
+	}
+
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
+	if !ok {
+		panic("AZURE_COSMOS_KEY could not be found")
+	}
+
+	cred, err := azcosmos.NewKeyCredential(key)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		panic(err)
+	}
+
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
+
+	batch := container.NewTransactionalBatch(pk)
+
+	item := map[string]string{
+		"id":             "anId",
+		"value":          "2",
+		"myPartitionKey": "newPartitionKey",
+	}
+
+	marshalledItem, err := json.Marshal(item)
+	if err != nil {
+		panic(err)
+	}
+
+	batch.CreateItem(marshalledItem, nil)
+	batch.ReadItem("anIdThatExists", nil)
+	batch.DeleteItem("yetAnotherExistingId", nil)
+
+	batchResponse, err := container.ExecuteTransactionalBatch(context.Background(), batch, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	if batchResponse.Success {
+		// Transaction succeeded
+		// We can inspect the individual operation results
+		for index, operation := range batchResponse.OperationResults {
+			fmt.Printf("Operation %v completed with status code %v consumed %v RU", index, operation.StatusCode, operation.RequestCharge)
+			if index == 1 {
+				// Read operation would have body available
+				var itemResponseBody map[string]string
+				err = json.Unmarshal(operation.ResourceBody, &itemResponseBody)
+				if err != nil {
+					panic(err)
+				}
+			}
+		}
+	} else {
+		// Transaction failed, look for the offending operation
+		for index, operation := range batchResponse.OperationResults {
+			if operation.StatusCode != http.StatusFailedDependency {
+				fmt.Printf("Transaction failed due to operation %v which failed with status code %v", index, operation.StatusCode)
+			}
+		}
 	}
 }
 

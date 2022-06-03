@@ -38,7 +38,7 @@ func NewWorkloadGroupsClient(subscriptionID string, credential azcore.TokenCrede
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewWorkloadGroupsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Creates or updates a workload group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -64,20 +65,21 @@ func NewWorkloadGroupsClient(subscriptionID string, credential azcore.TokenCrede
 // parameters - The requested workload group state.
 // options - WorkloadGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkloadGroupsClient.BeginCreateOrUpdate
 // method.
-func (client *WorkloadGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[WorkloadGroupsClientCreateOrUpdateResponse], error) {
+func (client *WorkloadGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkloadGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkloadGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadGroupsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkloadGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a workload group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *WorkloadGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters WorkloadGroup, options *WorkloadGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, parameters, options)
 	if err != nil {
@@ -123,12 +125,13 @@ func (client *WorkloadGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes a workload group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -136,20 +139,21 @@ func (client *WorkloadGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 // workloadGroupName - The name of the workload group to delete.
 // options - WorkloadGroupsClientBeginDeleteOptions contains the optional parameters for the WorkloadGroupsClient.BeginDelete
 // method.
-func (client *WorkloadGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientBeginDeleteOptions) (*armruntime.Poller[WorkloadGroupsClientDeleteResponse], error) {
+func (client *WorkloadGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientBeginDeleteOptions) (*runtime.Poller[WorkloadGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[WorkloadGroupsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[WorkloadGroupsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[WorkloadGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[WorkloadGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a workload group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *WorkloadGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, options *WorkloadGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serverName, databaseName, workloadGroupName, options)
 	if err != nil {
@@ -200,6 +204,7 @@ func (client *WorkloadGroupsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets a workload group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -251,7 +256,7 @@ func (client *WorkloadGroupsClient) getCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -266,6 +271,7 @@ func (client *WorkloadGroupsClient) getHandleResponse(resp *http.Response) (Work
 
 // NewListByDatabasePager - Gets the list of workload groups
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // serverName - The name of the server.
@@ -273,7 +279,7 @@ func (client *WorkloadGroupsClient) getHandleResponse(resp *http.Response) (Work
 // options - WorkloadGroupsClientListByDatabaseOptions contains the optional parameters for the WorkloadGroupsClient.ListByDatabase
 // method.
 func (client *WorkloadGroupsClient) NewListByDatabasePager(resourceGroupName string, serverName string, databaseName string, options *WorkloadGroupsClientListByDatabaseOptions) *runtime.Pager[WorkloadGroupsClientListByDatabaseResponse] {
-	return runtime.NewPager(runtime.PageProcessor[WorkloadGroupsClientListByDatabaseResponse]{
+	return runtime.NewPager(runtime.PagingHandler[WorkloadGroupsClientListByDatabaseResponse]{
 		More: func(page WorkloadGroupsClientListByDatabaseResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -326,7 +332,7 @@ func (client *WorkloadGroupsClient) listByDatabaseCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

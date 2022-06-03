@@ -38,7 +38,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // Get - Get the specified private link resource associated with the device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // groupID - The group ID of the private link resource.
@@ -100,9 +101,9 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 
 // NewListByAccountPager - List all private link resources in a device update account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByAccount
 // method.
 func (client *PrivateLinkResourcesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByAccountOptions) *runtime.Pager[PrivateLinkResourcesClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkResourcesClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourcesClientListByAccountResponse]{
 		More: func(page PrivateLinkResourcesClientListByAccountResponse) bool {
 			return false
 		},
@@ -163,9 +165,9 @@ func (client *PrivateLinkResourcesClient) listByAccountCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

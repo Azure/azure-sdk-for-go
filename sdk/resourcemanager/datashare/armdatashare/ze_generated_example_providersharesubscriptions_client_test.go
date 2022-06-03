@@ -26,15 +26,15 @@ func ExampleProviderShareSubscriptionsClient_Adjust() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewProviderShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewProviderShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Adjust(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<provider-share-subscription-id>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"4256e2cf-0f82-4865-961b-12f83333f487",
 		armdatashare.ProviderShareSubscription{
 			Properties: &armdatashare.ProviderShareSubscriptionProperties{
 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-26T22:33:24.5785265Z"); return t }()),
@@ -55,15 +55,15 @@ func ExampleProviderShareSubscriptionsClient_Reinstate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewProviderShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewProviderShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Reinstate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<provider-share-subscription-id>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"4256e2cf-0f82-4865-961b-12f83333f487",
 		armdatashare.ProviderShareSubscription{
 			Properties: &armdatashare.ProviderShareSubscriptionProperties{
 				ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-26T22:33:24.5785265Z"); return t }()),
@@ -84,20 +84,20 @@ func ExampleProviderShareSubscriptionsClient_BeginRevoke() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewProviderShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewProviderShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginRevoke(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<provider-share-subscription-id>",
-		&armdatashare.ProviderShareSubscriptionsClientBeginRevokeOptions{ResumeToken: ""})
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"4256e2cf-0f82-4865-961b-12f83333f487",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -112,15 +112,15 @@ func ExampleProviderShareSubscriptionsClient_GetByShare() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewProviderShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewProviderShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetByShare(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
-		"<provider-share-subscription-id>",
+		"SampleResourceGroup",
+		"Account1",
+		"Share1",
+		"4256e2cf-0f82-4865-961b-12f83333f487",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -136,19 +136,18 @@ func ExampleProviderShareSubscriptionsClient_NewListBySharePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatashare.NewProviderShareSubscriptionsClient("<subscription-id>", cred, nil)
+	client, err := armdatashare.NewProviderShareSubscriptionsClient("12345678-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySharePager("<resource-group-name>",
-		"<account-name>",
-		"<share-name>",
+	pager := client.NewListBySharePager("SampleResourceGroup",
+		"Account1",
+		"Share1",
 		&armdatashare.ProviderShareSubscriptionsClientListByShareOptions{SkipToken: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
@@ -26,18 +24,17 @@ func ExampleGraphResourcesClient_NewListGraphsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewGraphResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListGraphsPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListGraphsPager("rgName",
+		"ddb1",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +50,14 @@ func ExampleGraphResourcesClient_GetGraph() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewGraphResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetGraph(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<graph-name>",
+		"rg1",
+		"ddb1",
+		"graphName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,29 +73,29 @@ func ExampleGraphResourcesClient_BeginCreateUpdateGraph() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewGraphResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateUpdateGraph(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<graph-name>",
+		"rg1",
+		"ddb1",
+		"graphName",
 		armcosmos.GraphResourceCreateUpdateParameters{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			Tags:     map[string]*string{},
 			Properties: &armcosmos.GraphResourceCreateUpdateProperties{
 				Options: &armcosmos.CreateUpdateOptions{},
 				Resource: &armcosmos.GraphResource{
-					ID: to.Ptr("<id>"),
+					ID: to.Ptr("graphName"),
 				},
 			},
 		},
-		&armcosmos.GraphResourcesClientBeginCreateUpdateGraphOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -113,19 +110,19 @@ func ExampleGraphResourcesClient_BeginDeleteGraphResource() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewGraphResourcesClient("<subscription-id>", cred, nil)
+	client, err := armcosmos.NewGraphResourcesClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDeleteGraphResource(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<graph-name>",
-		&armcosmos.GraphResourcesClientBeginDeleteGraphResourceOptions{ResumeToken: ""})
+		"rg1",
+		"ddb1",
+		"graphName",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

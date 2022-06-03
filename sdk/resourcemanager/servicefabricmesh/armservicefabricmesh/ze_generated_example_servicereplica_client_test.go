@@ -23,15 +23,15 @@ func ExampleServiceReplicaClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewServiceReplicaClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewServiceReplicaClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<application-resource-name>",
-		"<service-resource-name>",
-		"<replica-name>",
+		"sbz_demo",
+		"helloWorldApp",
+		"helloWorldService",
+		"0",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -47,19 +47,18 @@ func ExampleServiceReplicaClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicefabricmesh.NewServiceReplicaClient("<subscription-id>", cred, nil)
+	client, err := armservicefabricmesh.NewServiceReplicaClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<application-resource-name>",
-		"<service-resource-name>",
+	pager := client.NewListPager("sbz_demo",
+		"sampleApplication",
+		"helloWorldService",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

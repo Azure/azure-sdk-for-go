@@ -36,7 +36,7 @@ func NewTenantConfigurationsClient(credential azcore.TokenCredential, options *a
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,6 +54,7 @@ func NewTenantConfigurationsClient(credential azcore.TokenCredential, options *a
 // Create - Create the tenant configuration. If configuration already exists - update it. User has to be a Tenant Admin for
 // this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // configurationName - The configuration name. Value must be 'default'
 // tenantConfiguration - The parameters required to create or update tenant configuration.
 // options - TenantConfigurationsClientCreateOptions contains the optional parameters for the TenantConfigurationsClient.Create
@@ -87,7 +88,7 @@ func (client *TenantConfigurationsClient) createCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, tenantConfiguration)
 }
 
@@ -102,6 +103,7 @@ func (client *TenantConfigurationsClient) createHandleResponse(resp *http.Respon
 
 // Delete - Delete the tenant configuration. User has to be a Tenant Admin for this operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // configurationName - The configuration name. Value must be 'default'
 // options - TenantConfigurationsClientDeleteOptions contains the optional parameters for the TenantConfigurationsClient.Delete
 // method.
@@ -134,12 +136,13 @@ func (client *TenantConfigurationsClient) deleteCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the tenant configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // configurationName - The configuration name. Value must be 'default'
 // options - TenantConfigurationsClientGetOptions contains the optional parameters for the TenantConfigurationsClient.Get
 // method.
@@ -172,7 +175,7 @@ func (client *TenantConfigurationsClient) getCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -187,10 +190,11 @@ func (client *TenantConfigurationsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - Gets list of the tenant configurations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01-preview
 // options - TenantConfigurationsClientListOptions contains the optional parameters for the TenantConfigurationsClient.List
 // method.
 func (client *TenantConfigurationsClient) NewListPager(options *TenantConfigurationsClientListOptions) *runtime.Pager[TenantConfigurationsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TenantConfigurationsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TenantConfigurationsClientListResponse]{
 		More: func(page TenantConfigurationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -227,7 +231,7 @@ func (client *TenantConfigurationsClient) listCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

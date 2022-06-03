@@ -39,7 +39,7 @@ func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCre
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,27 +57,29 @@ func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Onboards the ScVmm availability set as an Azure resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // availabilitySetName - Name of the AvailabilitySet.
 // body - Request payload.
 // options - AvailabilitySetsClientBeginCreateOrUpdateOptions contains the optional parameters for the AvailabilitySetsClient.BeginCreateOrUpdate
 // method.
-func (client *AvailabilitySetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, body AvailabilitySet, options *AvailabilitySetsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[AvailabilitySetsClientCreateOrUpdateResponse], error) {
+func (client *AvailabilitySetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, body AvailabilitySet, options *AvailabilitySetsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AvailabilitySetsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, availabilitySetName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AvailabilitySetsClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AvailabilitySetsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AvailabilitySetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AvailabilitySetsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Onboards the ScVmm availability set as an Azure resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *AvailabilitySetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, body AvailabilitySet, options *AvailabilitySetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, availabilitySetName, body, options)
 	if err != nil {
@@ -115,30 +117,32 @@ func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginDelete - Deregisters the ScVmm availability set from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // availabilitySetName - Name of the AvailabilitySet.
 // options - AvailabilitySetsClientBeginDeleteOptions contains the optional parameters for the AvailabilitySetsClient.BeginDelete
 // method.
-func (client *AvailabilitySetsClient) BeginDelete(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientBeginDeleteOptions) (*armruntime.Poller[AvailabilitySetsClientDeleteResponse], error) {
+func (client *AvailabilitySetsClient) BeginDelete(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientBeginDeleteOptions) (*runtime.Poller[AvailabilitySetsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, availabilitySetName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[AvailabilitySetsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AvailabilitySetsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[AvailabilitySetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AvailabilitySetsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deregisters the ScVmm availability set from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *AvailabilitySetsClient) deleteOperation(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
 	if err != nil {
@@ -179,12 +183,13 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Implements AvailabilitySet GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // availabilitySetName - Name of the AvailabilitySet.
 // options - AvailabilitySetsClientGetOptions contains the optional parameters for the AvailabilitySetsClient.Get method.
@@ -225,7 +230,7 @@ func (client *AvailabilitySetsClient) getCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -240,11 +245,12 @@ func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response) (Av
 
 // NewListByResourceGroupPager - List of AvailabilitySets in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // options - AvailabilitySetsClientListByResourceGroupOptions contains the optional parameters for the AvailabilitySetsClient.ListByResourceGroup
 // method.
 func (client *AvailabilitySetsClient) NewListByResourceGroupPager(resourceGroupName string, options *AvailabilitySetsClientListByResourceGroupOptions) *runtime.Pager[AvailabilitySetsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailabilitySetsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListByResourceGroupResponse]{
 		More: func(page AvailabilitySetsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -289,7 +295,7 @@ func (client *AvailabilitySetsClient) listByResourceGroupCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -304,10 +310,11 @@ func (client *AvailabilitySetsClient) listByResourceGroupHandleResponse(resp *ht
 
 // NewListBySubscriptionPager - List of AvailabilitySets in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // options - AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.ListBySubscription
 // method.
 func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *AvailabilitySetsClientListBySubscriptionOptions) *runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AvailabilitySetsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AvailabilitySetsClientListBySubscriptionResponse]{
 		More: func(page AvailabilitySetsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -348,7 +355,7 @@ func (client *AvailabilitySetsClient) listBySubscriptionCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -363,27 +370,29 @@ func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *htt
 
 // BeginUpdate - Updates the AvailabilitySets resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 // resourceGroupName - The name of the resource group.
 // availabilitySetName - Name of the AvailabilitySet.
 // body - AvailabilitySets patch payload.
 // options - AvailabilitySetsClientBeginUpdateOptions contains the optional parameters for the AvailabilitySetsClient.BeginUpdate
 // method.
-func (client *AvailabilitySetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, body ResourcePatch, options *AvailabilitySetsClientBeginUpdateOptions) (*armruntime.Poller[AvailabilitySetsClientUpdateResponse], error) {
+func (client *AvailabilitySetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, body ResourcePatch, options *AvailabilitySetsClientBeginUpdateOptions) (*runtime.Poller[AvailabilitySetsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, availabilitySetName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AvailabilitySetsClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AvailabilitySetsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AvailabilitySetsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AvailabilitySetsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates the AvailabilitySets resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-06-05-preview
 func (client *AvailabilitySetsClient) update(ctx context.Context, resourceGroupName string, availabilitySetName string, body ResourcePatch, options *AvailabilitySetsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, availabilitySetName, body, options)
 	if err != nil {
@@ -421,6 +430,6 @@ func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-05-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }

@@ -28,13 +28,12 @@ func ExampleClient_NewListLocationsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListLocationsPager("<subscription-id>",
+	pager := client.NewListLocationsPager("291bba3f-e0a5-47bc-a099-3bdcb2a50a05",
 		&armsubscriptions.ClientListLocationsOptions{IncludeExtendedLocations: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,7 +54,7 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<subscription-id>",
+		"291bba3f-e0a5-47bc-a099-3bdcb2a50a05",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -80,7 +79,6 @@ func ExampleClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -101,9 +99,9 @@ func ExampleClient_CheckZonePeers() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckZonePeers(ctx,
-		"<subscription-id>",
+		"00000000-0000-0000-0000-00000000000000",
 		armsubscriptions.CheckZonePeersRequest{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("eastus"),
 			SubscriptionIDs: []*string{
 				to.Ptr("subscriptions/11111111-1111-1111-1111-111111111111")},
 		},

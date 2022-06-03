@@ -38,7 +38,7 @@ func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.Tok
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.Tok
 
 // Cancel - Cancel marketplace terms.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // publisherID - Publisher identifier string of image being deployed.
 // offerID - Offer identifier string of image being deployed.
 // planID - Plan identifier string of image being deployed.
@@ -102,7 +103,7 @@ func (client *MarketplaceAgreementsClient) cancelCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,6 +118,7 @@ func (client *MarketplaceAgreementsClient) cancelHandleResponse(resp *http.Respo
 
 // Create - Save marketplace terms.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // offerType - Offer Type, currently only virtualmachine type is supported.
 // publisherID - Publisher identifier string of image being deployed.
 // offerID - Offer identifier string of image being deployed.
@@ -169,7 +171,7 @@ func (client *MarketplaceAgreementsClient) createCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -184,6 +186,7 @@ func (client *MarketplaceAgreementsClient) createHandleResponse(resp *http.Respo
 
 // Get - Get marketplace terms.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // offerType - Offer Type, currently only virtualmachine type is supported.
 // publisherID - Publisher identifier string of image being deployed.
 // offerID - Offer identifier string of image being deployed.
@@ -235,7 +238,7 @@ func (client *MarketplaceAgreementsClient) getCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -250,6 +253,7 @@ func (client *MarketplaceAgreementsClient) getHandleResponse(resp *http.Response
 
 // GetAgreement - Get marketplace agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // publisherID - Publisher identifier string of image being deployed.
 // offerID - Offer identifier string of image being deployed.
 // planID - Plan identifier string of image being deployed.
@@ -296,7 +300,7 @@ func (client *MarketplaceAgreementsClient) getAgreementCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -311,6 +315,7 @@ func (client *MarketplaceAgreementsClient) getAgreementHandleResponse(resp *http
 
 // List - List marketplace agreements in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // options - MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.List
 // method.
 func (client *MarketplaceAgreementsClient) List(ctx context.Context, options *MarketplaceAgreementsClientListOptions) (MarketplaceAgreementsClientListResponse, error) {
@@ -342,7 +347,7 @@ func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -357,6 +362,7 @@ func (client *MarketplaceAgreementsClient) listHandleResponse(resp *http.Respons
 
 // Sign - Sign marketplace terms.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-01-01
 // publisherID - Publisher identifier string of image being deployed.
 // offerID - Offer identifier string of image being deployed.
 // planID - Plan identifier string of image being deployed.
@@ -403,7 +409,7 @@ func (client *MarketplaceAgreementsClient) signCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

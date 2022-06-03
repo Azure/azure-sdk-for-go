@@ -38,7 +38,7 @@ func NewManagedInstanceKeysClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewManagedInstanceKeysClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Creates or updates a managed instance key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -63,20 +64,21 @@ func NewManagedInstanceKeysClient(subscriptionID string, credential azcore.Token
 // parameters - The requested managed instance key resource state.
 // options - ManagedInstanceKeysClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedInstanceKeysClient.BeginCreateOrUpdate
 // method.
-func (client *ManagedInstanceKeysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, parameters ManagedInstanceKey, options *ManagedInstanceKeysClientBeginCreateOrUpdateOptions) (*armruntime.Poller[ManagedInstanceKeysClientCreateOrUpdateResponse], error) {
+func (client *ManagedInstanceKeysClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, parameters ManagedInstanceKey, options *ManagedInstanceKeysClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedInstanceKeysClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, managedInstanceName, keyName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagedInstanceKeysClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagedInstanceKeysClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagedInstanceKeysClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagedInstanceKeysClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a managed instance key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ManagedInstanceKeysClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, parameters ManagedInstanceKey, options *ManagedInstanceKeysClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, managedInstanceName, keyName, parameters, options)
 	if err != nil {
@@ -118,32 +120,34 @@ func (client *ManagedInstanceKeysClient) createOrUpdateCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // BeginDelete - Deletes the managed instance key with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // keyName - The name of the managed instance key to be deleted.
 // options - ManagedInstanceKeysClientBeginDeleteOptions contains the optional parameters for the ManagedInstanceKeysClient.BeginDelete
 // method.
-func (client *ManagedInstanceKeysClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, options *ManagedInstanceKeysClientBeginDeleteOptions) (*armruntime.Poller[ManagedInstanceKeysClientDeleteResponse], error) {
+func (client *ManagedInstanceKeysClient) BeginDelete(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, options *ManagedInstanceKeysClientBeginDeleteOptions) (*runtime.Poller[ManagedInstanceKeysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, managedInstanceName, keyName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ManagedInstanceKeysClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ManagedInstanceKeysClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagedInstanceKeysClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagedInstanceKeysClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes the managed instance key with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 func (client *ManagedInstanceKeysClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, keyName string, options *ManagedInstanceKeysClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, managedInstanceName, keyName, options)
 	if err != nil {
@@ -190,6 +194,7 @@ func (client *ManagedInstanceKeysClient) deleteCreateRequest(ctx context.Context
 
 // Get - Gets a managed instance key.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
@@ -236,7 +241,7 @@ func (client *ManagedInstanceKeysClient) getCreateRequest(ctx context.Context, r
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -251,13 +256,14 @@ func (client *ManagedInstanceKeysClient) getHandleResponse(resp *http.Response) 
 
 // NewListByInstancePager - Gets a list of managed instance keys.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-11-01-preview
 // resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 // Resource Manager API or the portal.
 // managedInstanceName - The name of the managed instance.
 // options - ManagedInstanceKeysClientListByInstanceOptions contains the optional parameters for the ManagedInstanceKeysClient.ListByInstance
 // method.
 func (client *ManagedInstanceKeysClient) NewListByInstancePager(resourceGroupName string, managedInstanceName string, options *ManagedInstanceKeysClientListByInstanceOptions) *runtime.Pager[ManagedInstanceKeysClientListByInstanceResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagedInstanceKeysClientListByInstanceResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagedInstanceKeysClientListByInstanceResponse]{
 		More: func(page ManagedInstanceKeysClientListByInstanceResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -309,7 +315,7 @@ func (client *ManagedInstanceKeysClient) listByInstanceCreateRequest(ctx context
 	}
 	reqQP.Set("api-version", "2020-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

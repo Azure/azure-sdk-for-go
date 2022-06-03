@@ -24,18 +24,17 @@ func ExampleLocalUsersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewLocalUsersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewLocalUsersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
+	pager := client.NewListPager("res6977",
+		"sto2527",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -51,14 +50,14 @@ func ExampleLocalUsersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewLocalUsersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewLocalUsersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<username>",
+		"res6977",
+		"sto2527",
+		"user1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -74,33 +73,33 @@ func ExampleLocalUsersClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewLocalUsersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewLocalUsersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<username>",
+		"res6977",
+		"sto2527",
+		"user1",
 		armstorage.LocalUser{
 			Properties: &armstorage.LocalUserProperties{
 				HasSSHPassword: to.Ptr(true),
-				HomeDirectory:  to.Ptr("<home-directory>"),
+				HomeDirectory:  to.Ptr("homedirectory"),
 				PermissionScopes: []*armstorage.PermissionScope{
 					{
-						Permissions:  to.Ptr("<permissions>"),
-						ResourceName: to.Ptr("<resource-name>"),
-						Service:      to.Ptr("<service>"),
+						Permissions:  to.Ptr("rwd"),
+						ResourceName: to.Ptr("share1"),
+						Service:      to.Ptr("file"),
 					},
 					{
-						Permissions:  to.Ptr("<permissions>"),
-						ResourceName: to.Ptr("<resource-name>"),
-						Service:      to.Ptr("<service>"),
+						Permissions:  to.Ptr("rw"),
+						ResourceName: to.Ptr("share2"),
+						Service:      to.Ptr("file"),
 					}},
 				SSHAuthorizedKeys: []*armstorage.SSHPublicKey{
 					{
-						Description: to.Ptr("<description>"),
-						Key:         to.Ptr("<key>"),
+						Description: to.Ptr("key name"),
+						Key:         to.Ptr("ssh-rsa keykeykeykeykey="),
 					}},
 			},
 		},
@@ -119,14 +118,14 @@ func ExampleLocalUsersClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewLocalUsersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewLocalUsersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<username>",
+		"res6977",
+		"sto2527",
+		"user1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -140,14 +139,14 @@ func ExampleLocalUsersClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewLocalUsersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewLocalUsersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<username>",
+		"res6977",
+		"sto2527",
+		"user1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -163,14 +162,14 @@ func ExampleLocalUsersClient_RegeneratePassword() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstorage.NewLocalUsersClient("<subscription-id>", cred, nil)
+	client, err := armstorage.NewLocalUsersClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.RegeneratePassword(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<username>",
+		"res6977",
+		"sto2527",
+		"user1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

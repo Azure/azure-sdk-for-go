@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationsmanagement/armoperationsmanagement"
@@ -26,20 +24,20 @@ func ExampleSolutionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewSolutionsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewSolutionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
+		"rg1",
+		"solution1",
 		armoperationsmanagement.Solution{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 			Plan: &armoperationsmanagement.SolutionPlan{
-				Name:          to.Ptr("<name>"),
-				Product:       to.Ptr("<product>"),
-				PromotionCode: to.Ptr("<promotion-code>"),
-				Publisher:     to.Ptr("<publisher>"),
+				Name:          to.Ptr("name1"),
+				Product:       to.Ptr("product1"),
+				PromotionCode: to.Ptr("promocode1"),
+				Publisher:     to.Ptr("publisher1"),
 			},
 			Properties: &armoperationsmanagement.SolutionProperties{
 				ContainedResources: []*string{
@@ -48,14 +46,14 @@ func ExampleSolutionsClient_BeginCreateOrUpdate() {
 				ReferencedResources: []*string{
 					to.Ptr("/subscriptions/sub2/resourceGroups/rg2/providers/provider1/resources/resource2"),
 					to.Ptr("/subscriptions/sub2/resourceGroups/rg2/providers/provider2/resources/resource3")},
-				WorkspaceResourceID: to.Ptr("<workspace-resource-id>"),
+				WorkspaceResourceID: to.Ptr("/subscriptions/sub2/resourceGroups/rg2/providers/Microsoft.OperationalInsights/workspaces/ws1"),
 			},
 		},
-		&armoperationsmanagement.SolutionsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -68,24 +66,24 @@ func ExampleSolutionsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewSolutionsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewSolutionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
+		"rg1",
+		"solution1",
 		armoperationsmanagement.SolutionPatch{
 			Tags: map[string]*string{
 				"Dept":        to.Ptr("IT"),
 				"Environment": to.Ptr("Test"),
 			},
 		},
-		&armoperationsmanagement.SolutionsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -100,18 +98,18 @@ func ExampleSolutionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewSolutionsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewSolutionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
-		&armoperationsmanagement.SolutionsClientBeginDeleteOptions{ResumeToken: ""})
+		"rg1",
+		"solution1",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -124,13 +122,13 @@ func ExampleSolutionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewSolutionsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewSolutionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<solution-name>",
+		"rg1",
+		"solution1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -146,12 +144,12 @@ func ExampleSolutionsClient_ListByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewSolutionsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewSolutionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListByResourceGroup(ctx,
-		"<resource-group-name>",
+		"rg1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -167,7 +165,7 @@ func ExampleSolutionsClient_ListBySubscription() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armoperationsmanagement.NewSolutionsClient("<subscription-id>", cred, nil)
+	client, err := armoperationsmanagement.NewSolutionsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

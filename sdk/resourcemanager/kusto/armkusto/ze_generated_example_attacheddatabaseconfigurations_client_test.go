@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kusto/armkusto"
@@ -26,16 +24,16 @@ func ExampleAttachedDatabaseConfigurationsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CheckNameAvailability(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
+		"kustorptest",
+		"kustoCluster",
 		armkusto.AttachedDatabaseConfigurationsCheckNameRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("adc1"),
+			Type: to.Ptr("Microsoft.Kusto/clusters/attachedDatabaseConfigurations"),
 		},
 		nil)
 	if err != nil {
@@ -52,18 +50,17 @@ func ExampleAttachedDatabaseConfigurationsClient_NewListByClusterPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByClusterPager("<resource-group-name>",
-		"<cluster-name>",
+	pager := client.NewListByClusterPager("kustorptest",
+		"kustoCluster2",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -79,14 +76,14 @@ func ExampleAttachedDatabaseConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<attached-database-configuration-name>",
+		"kustorptest",
+		"kustoCluster2",
+		"attachedDatabaseConfigurationsTest",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,19 +99,19 @@ func ExampleAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<attached-database-configuration-name>",
+		"kustorptest",
+		"kustoCluster2",
+		"attachedDatabaseConfigurationsTest",
 		armkusto.AttachedDatabaseConfiguration{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus"),
 			Properties: &armkusto.AttachedDatabaseConfigurationProperties{
-				ClusterResourceID:                 to.Ptr("<cluster-resource-id>"),
-				DatabaseName:                      to.Ptr("<database-name>"),
+				ClusterResourceID:                 to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster2"),
+				DatabaseName:                      to.Ptr("kustodatabase"),
 				DefaultPrincipalsModificationKind: to.Ptr(armkusto.DefaultPrincipalsModificationKindUnion),
 				TableLevelSharingProperties: &armkusto.TableLevelSharingProperties{
 					ExternalTablesToExclude: []*string{
@@ -132,11 +129,11 @@ func ExampleAttachedDatabaseConfigurationsClient_BeginCreateOrUpdate() {
 				},
 			},
 		},
-		&armkusto.AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -151,19 +148,19 @@ func ExampleAttachedDatabaseConfigurationsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armkusto.NewAttachedDatabaseConfigurationsClient("12345678-1234-1234-1234-123456789098", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<cluster-name>",
-		"<attached-database-configuration-name>",
-		&armkusto.AttachedDatabaseConfigurationsClientBeginDeleteOptions{ResumeToken: ""})
+		"kustorptest",
+		"kustoCluster",
+		"attachedDatabaseConfigurationsTest",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

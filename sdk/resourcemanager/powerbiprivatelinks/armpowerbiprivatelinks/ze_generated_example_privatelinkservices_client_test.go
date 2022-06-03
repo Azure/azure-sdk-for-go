@@ -23,8 +23,8 @@ func ExamplePrivateLinkServicesClient_ListByResourceGroup() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpowerbiprivatelinks.NewPrivateLinkServicesClient("<subscription-id>",
-		"<resource-group-name>", cred, nil)
+	client, err := armpowerbiprivatelinks.NewPrivateLinkServicesClient("a0020869-4d28-422a-89f4-c2413130d73c",
+		"resourceGroup", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

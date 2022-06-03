@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc"
@@ -26,19 +24,18 @@ func ExampleConfigurationsClient_NewListByServerPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewConfigurationsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerPager("<resource-group-name>",
-		"<server-group-name>",
-		"<server-name>",
+	pager := client.NewListByServerPager("TestResourceGroup",
+		"hsctestsg",
+		"testserver",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,18 +51,17 @@ func ExampleConfigurationsClient_NewListByServerGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewConfigurationsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServerGroupPager("<resource-group-name>",
-		"<server-group-name>",
+	pager := client.NewListByServerGroupPager("TestResourceGroup",
+		"hsctestsg",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -81,32 +77,32 @@ func ExampleConfigurationsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewConfigurationsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
-		"<configuration-name>",
+		"TestResourceGroup",
+		"hsctestsg",
+		"array_nulls",
 		armpostgresqlhsc.ServerGroupConfiguration{
 			Properties: &armpostgresqlhsc.ServerGroupConfigurationProperties{
 				ServerRoleGroupConfigurations: []*armpostgresqlhsc.ServerRoleGroupConfiguration{
 					{
 						Role:  to.Ptr(armpostgresqlhsc.ServerRoleCoordinator),
-						Value: to.Ptr("<value>"),
+						Value: to.Ptr("on"),
 					},
 					{
 						Role:  to.Ptr(armpostgresqlhsc.ServerRoleWorker),
-						Value: to.Ptr("<value>"),
+						Value: to.Ptr("off"),
 					}},
 			},
 		},
-		&armpostgresqlhsc.ConfigurationsClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -121,14 +117,14 @@ func ExampleConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresqlhsc.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armpostgresqlhsc.NewConfigurationsClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<server-group-name>",
-		"<configuration-name>",
+		"TestResourceGroup",
+		"hsctestsg",
+		"array_nulls",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

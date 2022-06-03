@@ -10,81 +10,47 @@ package armblockchain
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 )
-
-// MarshalJSON implements the json.Marshaller interface for type APIKeyCollection.
-func (a APIKeyCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "keys", a.Keys)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConsortiumCollection.
-func (c ConsortiumCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConsortiumMember.
-func (c ConsortiumMember) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "dateModified", c.DateModified)
-	populate(objectMap, "displayName", c.DisplayName)
-	populateTimeRFC3339(objectMap, "joinDate", c.JoinDate)
-	populate(objectMap, "name", c.Name)
-	populate(objectMap, "role", c.Role)
-	populate(objectMap, "status", c.Status)
-	populate(objectMap, "subscriptionId", c.SubscriptionID)
-	return json.Marshal(objectMap)
-}
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type ConsortiumMember.
 func (c *ConsortiumMember) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "dateModified":
-			err = unpopulateTimeRFC3339(val, &c.DateModified)
+			err = unpopulateTimeRFC3339(val, "DateModified", &c.DateModified)
 			delete(rawMsg, key)
 		case "displayName":
-			err = unpopulate(val, &c.DisplayName)
+			err = unpopulate(val, "DisplayName", &c.DisplayName)
 			delete(rawMsg, key)
 		case "joinDate":
-			err = unpopulateTimeRFC3339(val, &c.JoinDate)
+			err = unpopulateTimeRFC3339(val, "JoinDate", &c.JoinDate)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &c.Name)
+			err = unpopulate(val, "Name", &c.Name)
 			delete(rawMsg, key)
 		case "role":
-			err = unpopulate(val, &c.Role)
+			err = unpopulate(val, "Role", &c.Role)
 			delete(rawMsg, key)
 		case "status":
-			err = unpopulate(val, &c.Status)
+			err = unpopulate(val, "Status", &c.Status)
 			delete(rawMsg, key)
 		case "subscriptionId":
-			err = unpopulate(val, &c.SubscriptionID)
+			err = unpopulate(val, "SubscriptionID", &c.SubscriptionID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ConsortiumMemberCollection.
-func (c ConsortiumMemberCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", c.NextLink)
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Member.
@@ -97,14 +63,6 @@ func (m Member) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sku", m.SKU)
 	populate(objectMap, "tags", m.Tags)
 	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MemberCollection.
-func (m MemberCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", m.NextLink)
-	populate(objectMap, "value", m.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -145,72 +103,30 @@ func (m MemberUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OperationResult.
-func (o OperationResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateTimeRFC3339(objectMap, "endTime", o.EndTime)
-	populate(objectMap, "name", o.Name)
-	populateTimeRFC3339(objectMap, "startTime", o.StartTime)
-	return json.Marshal(objectMap)
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type OperationResult.
 func (o *OperationResult) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
+		return fmt.Errorf("unmarshalling type %T: %v", o, err)
 	}
 	for key, val := range rawMsg {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeRFC3339(val, &o.EndTime)
+			err = unpopulateTimeRFC3339(val, "EndTime", &o.EndTime)
 			delete(rawMsg, key)
 		case "name":
-			err = unpopulate(val, &o.Name)
+			err = unpopulate(val, "Name", &o.Name)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeRFC3339(val, &o.StartTime)
+			err = unpopulateTimeRFC3339(val, "StartTime", &o.StartTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return err
+			return fmt.Errorf("unmarshalling type %T: %v", o, err)
 		}
 	}
 	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceProviderOperationCollection.
-func (r ResourceProviderOperationCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", r.NextLink)
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceTypeSKU.
-func (r ResourceTypeSKU) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "resourceType", r.ResourceType)
-	populate(objectMap, "skus", r.SKUs)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ResourceTypeSKUCollection.
-func (r ResourceTypeSKUCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", r.Value)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SKUSetting.
-func (s SKUSetting) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "locations", s.Locations)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "requiredFeatures", s.RequiredFeatures)
-	populate(objectMap, "tier", s.Tier)
-	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
@@ -221,14 +137,6 @@ func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "name", t.Name)
 	populate(objectMap, "tags", t.Tags)
 	populate(objectMap, "type", t.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TransactionNodeCollection.
-func (t TransactionNodeCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nextLink", t.NextLink)
-	populate(objectMap, "value", t.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -269,9 +177,12 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, fn string, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(data, v)
+	if err := json.Unmarshal(data, v); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	return nil
 }

@@ -16,19 +16,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/base"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
-// Client performs cryptographic operations using Azure Key Vault Keys. This client
+// Client performs cryptographic operations using Azure Key Vault Keys. It
 // will perform operations locally when it's initialized with the necessary key material or
 // is able to get that material from Key Vault. When the required key material is unavailable,
 // cryptographic operations are performed by the Key Vault service.
 type Client struct {
-	kvClient   *generated.KeyVaultClient
-	vaultURL   string
-	keyID      string
-	keyVersion string
+	base.CryptoClient
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -85,10 +84,9 @@ func parseVaultURL(base string) (string, error) {
 	return fmt.Sprintf("%s://%s/", parsed.Scheme, parsed.Host), nil
 }
 
-// NewClient creates a new azcrytpo.Client that will perform operations against the Key Vault service. The key should
+// NewClient constructs a Client that performs cryptographic operations with a Key Vault's keys. The keyURL should
 // be an identifier of an Azure Key Vault key. Including a version is recommended but not required.
 func NewClient(keyURL string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	// TODO: should this return by pointer or by reference, ask Joel
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -98,7 +96,7 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 		genOptions.PerRetryPolicies,
 		shared.NewKeyVaultChallengePolicy(credential),
 	)
-	pl := runtime.NewPipeline(generated.ModuleName, generated.ModuleVersion, runtime.PipelineOptions{}, genOptions)
+	pl := runtime.NewPipeline(internal.ModuleName, internal.ModuleVersion, runtime.PipelineOptions{}, genOptions)
 
 	vaultURL, err := parseVaultURL(keyURL)
 	if err != nil {
@@ -110,23 +108,18 @@ func NewClient(keyURL string, credential azcore.TokenCredential, options *Client
 		return nil, err
 	}
 
-	return &Client{
-		kvClient:   generated.NewKeyVaultClient(pl),
-		vaultURL:   vaultURL,
-		keyID:      keyID,
-		keyVersion: keyVersion,
-	}, nil
+	return &Client{base.NewCryptoClient(vaultURL, keyID, keyVersion, pl)}, nil
 }
 
 // EncryptOptions contains optional parameters for Client.EncryptOptions
 type EncryptOptions struct {
-	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
+	// AuthData is additional data that is authenticated but not encrypted. For use in AES-GCM encryption.
 	AuthData []byte `json:"aad,omitempty"`
 
-	// The tag to authenticate when performing decryption with an authenticated algorithm.
+	// AuthTag is a tag to authenticate when performing decryption with an authenticated algorithm.
 	AuthTag []byte `json:"tag,omitempty"`
 
-	// Initialization vector for symmetric algorithms.
+	// IV is the initialization vector for symmetric algorithms.
 	IV []byte `json:"iv,omitempty"`
 }
 
@@ -140,24 +133,24 @@ func (e EncryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlg, va
 	}
 }
 
-// EncryptResponse contains response fields for Client.EncryptResponse
+// EncryptResponse is returned by EncryptResponse.
 type EncryptResponse struct {
-	// The algorithm used to encrypt
+	// Algorithm is the algorithm used to encrypt.
 	Algorithm *EncryptionAlg
 
-	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
+	// AuthData is additional data that is authenticated but not encrypted. For use in AES-GCM encryption.
 	AuthData []byte `json:"aad,omitempty"`
 
-	// The tag to authenticate when performing decryption with an authenticated algorithm.
+	// AuthTag is a tag to authenticate when performing decryption with an authenticated algorithm.
 	AuthTag []byte `json:"tag,omitempty"`
 
-	// The encrypted data
+	// Ciphertext is the encrypted data.
 	Ciphertext []byte
 
-	// Initialization vector for symmetric algorithms.
+	// IV is the initialization vector for symmetric algorithms.
 	IV []byte `json:"iv,omitempty"`
 
-	// The key ID used to encrypt
+	// KeyID is the ID of the encrypting key.
 	KeyID *string
 }
 
@@ -172,23 +165,34 @@ func encryptResponseFromGenerated(i generated.KeyVaultClientEncryptResponse, alg
 	}
 }
 
-// Encrypt encrypts an arbitrary sequence of bytes using an encryption key that is stored in
-// Azure Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which
-// is dependent on the target key and the encryption algorithm to be used. The ENCRYPT operation is only
-// strictly necessary for symmetric keys stored in Azure Key Vault since protection with an asymmetric key
-// can be performed using public portion of the key. This operation is supported for asymmetric keys as a
-// convenience for callers that have a key-reference but do not have access to the public key material.
-// This operation requires the keys/encrypt permission.
+func (c *Client) client() *generated.KeyVaultClient {
+	return base.Client(c.CryptoClient)
+}
+
+func (c *Client) vaultURL() string {
+	return base.VaultURL(c.CryptoClient)
+}
+
+func (c *Client) keyID() string {
+	return base.KeyName(c.CryptoClient)
+}
+
+func (c *Client) keyVersion() string {
+	return base.KeyVersion(c.CryptoClient)
+}
+
+// Encrypt encrypts plaintext using the client's key. This method encrypts only a single block of data, whose
+// size dependens on the key and algorithm.
 func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlg, plaintext []byte, options *EncryptOptions) (EncryptResponse, error) {
 	if options == nil {
 		options = &EncryptOptions{}
 	}
 
-	resp, err := c.kvClient.Encrypt(
+	resp, err := c.client().Encrypt(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		options.toGeneratedKeyOperationsParameters(alg, plaintext),
 		&generated.KeyVaultClientEncryptOptions{},
 	)
@@ -199,15 +203,15 @@ func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlg, plaintext []byt
 	return encryptResponseFromGenerated(resp, alg), nil
 }
 
-// DecryptOptions contains the optional parameters for the Client.Decrypt function
+// DecryptOptions contains optional parameters for Decrypt.
 type DecryptOptions struct {
-	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
+	// AuthData is additional data that is authenticated but not encrypted. For use in AES-GCM encryption.
 	AuthData []byte `json:"aad,omitempty"`
 
-	// The tag to authenticate when performing decryption with an authenticated algorithm.
+	// AuthTag is a tag to authenticate when performing decryption with an authenticated algorithm.
 	AuthTag []byte `json:"tag,omitempty"`
 
-	// Initialization vector for symmetric algorithms.
+	// IV is the initialization vector for symmetric algorithms.
 	IV []byte `json:"iv,omitempty"`
 }
 
@@ -221,15 +225,15 @@ func (e DecryptOptions) toGeneratedKeyOperationsParameters(alg EncryptionAlg, va
 	}
 }
 
-// DecryptResponse contains response fields for Client.Decrypt
+// DecryptResponse is returned by Decrypt.
 type DecryptResponse struct {
-	// The algorithm used to decrypt
+	// Algorithm is the decryption algorithm.
 	Algorithm *EncryptionAlg
 
-	// The KeyID used
+	// KeyID is the ID of the decrypting key.
 	KeyID *string
 
-	// The plaintext bytes of the decrypt response
+	// Plaintext is the decrypted bytes.
 	Plaintext []byte
 }
 
@@ -241,21 +245,18 @@ func decryptResponseFromGenerated(i generated.KeyVaultClientDecryptResponse, alg
 	}
 }
 
-// Decrypt decrypts a well-formed block of ciphertext using the target encryption key and
-// specified algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of
-// data may be decrypted, the size of this block is dependent on the target key and the algorithm to be
-// used. The DECRYPT operation applies to asymmetric and symmetric keys stored in Azure Key Vault since
-// it uses the private portion of the key. This operation requires the keys/decrypt permission.
+// Decrypt decrypts the specified ciphertext. This method decrypts only a single block of data, whose
+// size dependens on the key and algorithm.
 func (c *Client) Decrypt(ctx context.Context, alg EncryptionAlg, ciphertext []byte, options *DecryptOptions) (DecryptResponse, error) {
 	if options == nil {
 		options = &DecryptOptions{}
 	}
 
-	resp, err := c.kvClient.Decrypt(
+	resp, err := c.client().Decrypt(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		options.toGeneratedKeyOperationsParameters(alg, ciphertext),
 		&generated.KeyVaultClientDecryptOptions{},
 	)
@@ -267,7 +268,7 @@ func (c *Client) Decrypt(ctx context.Context, alg EncryptionAlg, ciphertext []by
 	return decryptResponseFromGenerated(resp, alg), nil
 }
 
-// WrapKeyOptions contains the optional parameters for the Client.WrapKey method.
+// WrapKeyOptions contains optional parameters for WrapKey.
 type WrapKeyOptions struct {
 	// placeholder for future optional parameters
 }
@@ -279,15 +280,15 @@ func (w WrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlg, value []
 	}
 }
 
-// WrapKeyResponse contains the response for the Client.WrapKey method
+// WrapKeyResponse is returned by WrapKey.
 type WrapKeyResponse struct {
-	// The algorithm used to wrap
+	// Algorithm is the key wrapping algorithm.
 	Algorithm *WrapAlg
 
-	// The encrypted data
+	// EncryptedKey is the wrapped key.
 	EncryptedKey []byte
 
-	// The ID for the key used
+	// KeyID is the ID of the wrapping key.
 	KeyID *string
 }
 
@@ -299,21 +300,17 @@ func wrapKeyResponseFromGenerated(i generated.KeyVaultClientWrapKeyResponse, alg
 	}
 }
 
-// WrapKey supports encryption of a symmetric key using a key encryption key that has previously
-// been stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored
-// in Azure Key Vault since protection with an asymmetric key can be performed using the public portion of
-// the key. This operation is supported for asymmetric keys as a convenience for callers that have a
-// key-reference but do not have access to the public key material. This operation requires the keys/wrapKey permission.
+// WrapKey encrypts the specified key.
 func (c *Client) WrapKey(ctx context.Context, alg WrapAlg, key []byte, options *WrapKeyOptions) (WrapKeyResponse, error) {
 	if options == nil {
 		options = &WrapKeyOptions{}
 	}
 
-	resp, err := c.kvClient.WrapKey(
+	resp, err := c.client().WrapKey(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		options.toGeneratedKeyOperationsParameters(alg, key),
 		&generated.KeyVaultClientWrapKeyOptions{},
 	)
@@ -325,7 +322,7 @@ func (c *Client) WrapKey(ctx context.Context, alg WrapAlg, key []byte, options *
 	return wrapKeyResponseFromGenerated(resp, alg), nil
 }
 
-// UnwrapKeyOptions contains the optional parameters for the Client.UnwrapKey method
+// UnwrapKeyOptions contains optional parameters for UnwrapKey.
 type UnwrapKeyOptions struct {
 	// placeholder for future optional parameters
 }
@@ -337,15 +334,15 @@ func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg WrapAlg, value 
 	}
 }
 
-// UnwrapKeyResponse contains the response for the Client.UnwrapKey method
+// UnwrapKeyResponse is returned by UnwrapKey.
 type UnwrapKeyResponse struct {
-	// Alg used to unwrap
+	// Algorithm is the wrapping algorithm.
 	Algorithm *WrapAlg
 
-	// The unwrapped data
+	// Key is the unwrapped key.
 	Key []byte
 
-	// The KeyID used to unwrap
+	// KeyID is the ID of the wrapping key.
 	KeyID *string
 }
 
@@ -357,20 +354,17 @@ func unwrapKeyResponseFromGenerated(i generated.KeyVaultClientUnwrapKeyResponse,
 	}
 }
 
-// UnwrapKey supports decryption of a symmetric key using the target key encryption key.
-// This operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric
-// keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
-// keys/unwrapKey permission.
+// UnwrapKey decrypts an encrypted key.
 func (c *Client) UnwrapKey(ctx context.Context, alg WrapAlg, encryptedKey []byte, options *UnwrapKeyOptions) (UnwrapKeyResponse, error) {
 	if options == nil {
 		options = &UnwrapKeyOptions{}
 	}
 
-	resp, err := c.kvClient.UnwrapKey(
+	resp, err := c.client().UnwrapKey(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		options.toGeneratedKeyOperationsParameters(alg, encryptedKey),
 		&generated.KeyVaultClientUnwrapKeyOptions{},
 	)
@@ -381,7 +375,7 @@ func (c *Client) UnwrapKey(ctx context.Context, alg WrapAlg, encryptedKey []byte
 	return unwrapKeyResponseFromGenerated(resp, alg), nil
 }
 
-// SignOptions contains the optional parameters for the Client.Sign method.
+// SignOptions contains optional parameters for Sign.
 type SignOptions struct {
 	// placeholder for future optional parameters
 }
@@ -390,15 +384,15 @@ func (s SignOptions) toGenerated() *generated.KeyVaultClientSignOptions {
 	return &generated.KeyVaultClientSignOptions{}
 }
 
-// SignResponse contains the response for the Client.Sign method.
+// SignResponse is returned by Sign.
 type SignResponse struct {
-	// Algorithm used to sign data
+	// Algorithm is the signing algorithm.
 	Algorithm *SignatureAlg
 
-	// KeyID used to sign
+	// KeyID is the ID of the signing key.
 	KeyID *string
 
-	// Signature is the signed data
+	// Signature is the signed data.
 	Signature []byte
 }
 
@@ -410,18 +404,17 @@ func signResponseFromGenerated(i generated.KeyVaultClientSignResponse, alg Signa
 	}
 }
 
-// Sign is applicable to asymmetric and symmetric keys stored in Azure Key Vault since
-// this operation uses the private portion of the key. This operation requires the keys/sign permission.
+// Sign signs the specified digest. The hash algorithm used to compute the digest must be compatible with the specified algorithm.
 func (c *Client) Sign(ctx context.Context, algorithm SignatureAlg, digest []byte, options *SignOptions) (SignResponse, error) {
 	if options == nil {
 		options = &SignOptions{}
 	}
 
-	resp, err := c.kvClient.Sign(
+	resp, err := c.client().Sign(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		generated.KeySignParameters{
 			Algorithm: (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
 			Value:     digest,
@@ -435,7 +428,7 @@ func (c *Client) Sign(ctx context.Context, algorithm SignatureAlg, digest []byte
 	return signResponseFromGenerated(resp, algorithm), nil
 }
 
-// VerifyOptions contains the optional parameters for the Client.Verify method
+// VerifyOptions contains optional parameters for Verify.
 type VerifyOptions struct {
 	// placeholder for future optional parameters
 }
@@ -444,40 +437,38 @@ func (v VerifyOptions) toGenerated() *generated.KeyVaultClientVerifyOptions {
 	return &generated.KeyVaultClientVerifyOptions{}
 }
 
-// VerifyResponse contains the response for the Client.Verify method
+// VerifyResponse is returned by Verify.
 type VerifyResponse struct {
-	// Algorithm used to verify
+	// Algorithm is the verification algorithm.
 	Algorithm *SignatureAlg
 
-	// READ-ONLY; True if the signature is verified, otherwise false.
+	// IsValid is true when the signature is verified.
 	IsValid *bool `json:"value,omitempty" azure:"ro"`
 
-	// ID for the key used to verify
+	// KeyID is the ID of the verifying key.
 	KeyID *string
 }
 
-func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse, id *string, alg SignatureAlg) VerifyResponse {
+func verifyResponseFromGenerated(i generated.KeyVaultClientVerifyResponse, id string, alg SignatureAlg) VerifyResponse {
 	return VerifyResponse{
 		IsValid:   i.Value,
-		KeyID:     id,
+		KeyID:     &id,
 		Algorithm: to.Ptr(alg),
 	}
 }
 
-// Verify is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
-// necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed
-// using the public portion of the key but this operation is supported as a convenience for callers that
-// only have a key-reference and not the public portion of the key. This operation requires the keys/verify permission.
+// Verify verifies the specified signature. The algorithm must be the same algorithm used to sign the digest, and
+// compatible with the hash algorithm used to compute the digest.
 func (c *Client) Verify(ctx context.Context, algorithm SignatureAlg, digest []byte, signature []byte, options *VerifyOptions) (VerifyResponse, error) {
 	if options == nil {
 		options = &VerifyOptions{}
 	}
 
-	resp, err := c.kvClient.Verify(
+	resp, err := c.client().Verify(
 		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
+		c.vaultURL(),
+		c.keyID(),
+		c.keyVersion(),
 		generated.KeyVerifyParameters{
 			Algorithm: (*generated.JSONWebKeySignatureAlgorithm)(&algorithm),
 			Digest:    digest,
@@ -490,5 +481,5 @@ func (c *Client) Verify(ctx context.Context, algorithm SignatureAlg, digest []by
 		return VerifyResponse{}, err
 	}
 
-	return verifyResponseFromGenerated(resp, &c.keyID, algorithm), nil
+	return verifyResponseFromGenerated(resp, c.keyID(), algorithm), nil
 }

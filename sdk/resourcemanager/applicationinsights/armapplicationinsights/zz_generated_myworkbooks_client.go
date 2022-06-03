@@ -39,7 +39,7 @@ func NewMyWorkbooksClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewMyWorkbooksClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Create a new private workbook.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // workbookProperties - Properties that need to be specified to create a new private workbook.
@@ -97,12 +98,9 @@ func (client *MyWorkbooksClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SourceID != nil {
-		reqQP.Set("sourceId", *options.SourceID)
-	}
-	reqQP.Set("api-version", "2021-03-08")
+	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, workbookProperties)
 }
 
@@ -117,6 +115,7 @@ func (client *MyWorkbooksClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Delete a private workbook.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - MyWorkbooksClientDeleteOptions contains the optional parameters for the MyWorkbooksClient.Delete method.
@@ -129,7 +128,7 @@ func (client *MyWorkbooksClient) Delete(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return MyWorkbooksClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusCreated, http.StatusNoContent) {
 		return MyWorkbooksClientDeleteResponse{}, runtime.NewResponseError(resp)
 	}
 	return MyWorkbooksClientDeleteResponse{}, nil
@@ -155,14 +154,15 @@ func (client *MyWorkbooksClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-08")
+	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a single private workbook by its resourceName.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // options - MyWorkbooksClientGetOptions contains the optional parameters for the MyWorkbooksClient.Get method.
@@ -201,9 +201,9 @@ func (client *MyWorkbooksClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-08")
+	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -218,23 +218,18 @@ func (client *MyWorkbooksClient) getHandleResponse(resp *http.Response) (MyWorkb
 
 // NewListByResourceGroupPager - Get all private workbooks defined within a specified resource group and category.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // category - Category of workbook to return.
 // options - MyWorkbooksClientListByResourceGroupOptions contains the optional parameters for the MyWorkbooksClient.ListByResourceGroup
 // method.
 func (client *MyWorkbooksClient) NewListByResourceGroupPager(resourceGroupName string, category CategoryType, options *MyWorkbooksClientListByResourceGroupOptions) *runtime.Pager[MyWorkbooksClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MyWorkbooksClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MyWorkbooksClientListByResourceGroupResponse]{
 		More: func(page MyWorkbooksClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+			return false
 		},
 		Fetcher: func(ctx context.Context, page *MyWorkbooksClientListByResourceGroupResponse) (MyWorkbooksClientListByResourceGroupResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listByResourceGroupCreateRequest(ctx, resourceGroupName, category, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, category, options)
 			if err != nil {
 				return MyWorkbooksClientListByResourceGroupResponse{}, err
 			}
@@ -270,15 +265,12 @@ func (client *MyWorkbooksClient) listByResourceGroupCreateRequest(ctx context.Co
 	if options != nil && options.Tags != nil {
 		reqQP.Set("tags", strings.Join(options.Tags, ","))
 	}
-	if options != nil && options.SourceID != nil {
-		reqQP.Set("sourceId", *options.SourceID)
-	}
 	if options != nil && options.CanFetchContent != nil {
 		reqQP.Set("canFetchContent", strconv.FormatBool(*options.CanFetchContent))
 	}
-	reqQP.Set("api-version", "2021-03-08")
+	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -293,22 +285,17 @@ func (client *MyWorkbooksClient) listByResourceGroupHandleResponse(resp *http.Re
 
 // NewListBySubscriptionPager - Get all private workbooks defined within a specified subscription and category.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // category - Category of workbook to return.
 // options - MyWorkbooksClientListBySubscriptionOptions contains the optional parameters for the MyWorkbooksClient.ListBySubscription
 // method.
 func (client *MyWorkbooksClient) NewListBySubscriptionPager(category CategoryType, options *MyWorkbooksClientListBySubscriptionOptions) *runtime.Pager[MyWorkbooksClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[MyWorkbooksClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[MyWorkbooksClientListBySubscriptionResponse]{
 		More: func(page MyWorkbooksClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+			return false
 		},
 		Fetcher: func(ctx context.Context, page *MyWorkbooksClientListBySubscriptionResponse) (MyWorkbooksClientListBySubscriptionResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBySubscriptionCreateRequest(ctx, category, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
+			req, err := client.listBySubscriptionCreateRequest(ctx, category, options)
 			if err != nil {
 				return MyWorkbooksClientListBySubscriptionResponse{}, err
 			}
@@ -343,9 +330,9 @@ func (client *MyWorkbooksClient) listBySubscriptionCreateRequest(ctx context.Con
 	if options != nil && options.CanFetchContent != nil {
 		reqQP.Set("canFetchContent", strconv.FormatBool(*options.CanFetchContent))
 	}
-	reqQP.Set("api-version", "2021-03-08")
+	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -360,6 +347,7 @@ func (client *MyWorkbooksClient) listBySubscriptionHandleResponse(resp *http.Res
 
 // Update - Updates a private workbook that has already been added.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2015-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // resourceName - The name of the Application Insights component resource.
 // workbookProperties - Properties that need to be specified to create a new private workbook.
@@ -373,7 +361,7 @@ func (client *MyWorkbooksClient) Update(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return MyWorkbooksClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MyWorkbooksClientUpdateResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.updateHandleResponse(resp)
@@ -399,12 +387,9 @@ func (client *MyWorkbooksClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SourceID != nil {
-		reqQP.Set("sourceId", *options.SourceID)
-	}
-	reqQP.Set("api-version", "2021-03-08")
+	reqQP.Set("api-version", "2015-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, workbookProperties)
 }
 

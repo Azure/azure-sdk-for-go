@@ -38,7 +38,7 @@ func NewAutoProvisioningSettingsClient(subscriptionID string, credential azcore.
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAutoProvisioningSettingsClient(subscriptionID string, credential azcore.
 
 // Create - Details of a specific setting
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // settingName - Auto provisioning setting key
 // setting - Auto provisioning setting key
 // options - AutoProvisioningSettingsClientCreateOptions contains the optional parameters for the AutoProvisioningSettingsClient.Create
@@ -93,7 +94,7 @@ func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, setting)
 }
 
@@ -108,6 +109,7 @@ func (client *AutoProvisioningSettingsClient) createHandleResponse(resp *http.Re
 
 // Get - Details of a specific setting
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // settingName - Auto provisioning setting key
 // options - AutoProvisioningSettingsClientGetOptions contains the optional parameters for the AutoProvisioningSettingsClient.Get
 // method.
@@ -144,7 +146,7 @@ func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -159,10 +161,11 @@ func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *http.Respo
 
 // NewListPager - Exposes the auto provisioning settings of the subscriptions
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // options - AutoProvisioningSettingsClientListOptions contains the optional parameters for the AutoProvisioningSettingsClient.List
 // method.
 func (client *AutoProvisioningSettingsClient) NewListPager(options *AutoProvisioningSettingsClientListOptions) *runtime.Pager[AutoProvisioningSettingsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AutoProvisioningSettingsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AutoProvisioningSettingsClientListResponse]{
 		More: func(page AutoProvisioningSettingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -203,7 +206,7 @@ func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Cont
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

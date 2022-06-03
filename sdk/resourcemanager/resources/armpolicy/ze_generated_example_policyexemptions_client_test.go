@@ -29,8 +29,8 @@ func ExampleExemptionsClient_Delete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<scope>",
-		"<policy-exemption-name>",
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+		"DemoExpensiveVM",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -49,17 +49,17 @@ func ExampleExemptionsClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<scope>",
-		"<policy-exemption-name>",
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+		"DemoExpensiveVM",
 		armpolicy.Exemption{
 			Properties: &armpolicy.ExemptionProperties{
-				Description:       to.Ptr("<description>"),
-				DisplayName:       to.Ptr("<display-name>"),
+				Description:       to.Ptr("Exempt demo cluster from limit sku"),
+				DisplayName:       to.Ptr("Exempt demo cluster"),
 				ExemptionCategory: to.Ptr(armpolicy.ExemptionCategoryWaiver),
 				Metadata: map[string]interface{}{
 					"reason": "Temporary exemption for a expensive VM demo",
 				},
-				PolicyAssignmentID: to.Ptr("<policy-assignment-id>"),
+				PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
 				PolicyDefinitionReferenceIDs: []*string{
 					to.Ptr("Limit_Skus")},
 			},
@@ -84,8 +84,8 @@ func ExampleExemptionsClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<scope>",
-		"<policy-exemption-name>",
+		"subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
+		"DemoExpensiveVM",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -101,16 +101,15 @@ func ExampleExemptionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewExemptionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewExemptionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(&armpolicy.ExemptionsClientListOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListPager(&armpolicy.ExemptionsClientListOptions{Filter: to.Ptr("atScope()")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -126,17 +125,16 @@ func ExampleExemptionsClient_NewListForResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewExemptionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewExemptionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForResourceGroupPager("<resource-group-name>",
-		&armpolicy.ExemptionsClientListForResourceGroupOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListForResourceGroupPager("TestResourceGroup",
+		&armpolicy.ExemptionsClientListForResourceGroupOptions{Filter: to.Ptr("atScope()")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -152,21 +150,20 @@ func ExampleExemptionsClient_NewListForResourcePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpolicy.NewExemptionsClient("<subscription-id>", cred, nil)
+	client, err := armpolicy.NewExemptionsClient("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForResourcePager("<resource-group-name>",
-		"<resource-provider-namespace>",
-		"<parent-resource-path>",
-		"<resource-type>",
-		"<resource-name>",
+	pager := client.NewListForResourcePager("TestResourceGroup",
+		"Microsoft.Compute",
+		"virtualMachines/MyTestVm",
+		"domainNames",
+		"MyTestComputer.cloudapp.net",
 		&armpolicy.ExemptionsClientListForResourceOptions{Filter: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -186,13 +183,12 @@ func ExampleExemptionsClient_NewListForManagementGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListForManagementGroupPager("<management-group-id>",
-		&armpolicy.ExemptionsClientListForManagementGroupOptions{Filter: to.Ptr("<filter>")})
+	pager := client.NewListForManagementGroupPager("DevOrg",
+		&armpolicy.ExemptionsClientListForManagementGroupOptions{Filter: to.Ptr("atScope()")})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

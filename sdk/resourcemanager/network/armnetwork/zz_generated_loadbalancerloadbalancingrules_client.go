@@ -39,7 +39,7 @@ func NewLoadBalancerLoadBalancingRulesClient(subscriptionID string, credential a
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewLoadBalancerLoadBalancingRulesClient(subscriptionID string, credential a
 
 // Get - Gets the specified load balancer load balancing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // loadBalancerName - The name of the load balancer.
 // loadBalancingRuleName - The name of the load balancing rule.
@@ -101,9 +102,9 @@ func (client *LoadBalancerLoadBalancingRulesClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -118,12 +119,13 @@ func (client *LoadBalancerLoadBalancingRulesClient) getHandleResponse(resp *http
 
 // NewListPager - Gets all the load balancing rules in a load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // loadBalancerName - The name of the load balancer.
 // options - LoadBalancerLoadBalancingRulesClientListOptions contains the optional parameters for the LoadBalancerLoadBalancingRulesClient.List
 // method.
 func (client *LoadBalancerLoadBalancingRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesClientListOptions) *runtime.Pager[LoadBalancerLoadBalancingRulesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[LoadBalancerLoadBalancingRulesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[LoadBalancerLoadBalancingRulesClientListResponse]{
 		More: func(page LoadBalancerLoadBalancingRulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -170,9 +172,9 @@ func (client *LoadBalancerLoadBalancingRulesClient) listCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

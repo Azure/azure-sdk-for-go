@@ -23,18 +23,17 @@ func ExampleResourcePoolsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewResourcePoolsClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewResourcePoolsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<region-id>",
-		"<pc-name>",
+	pager := client.NewListPager("westus2",
+		"myPrivateCloud",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,14 +49,14 @@ func ExampleResourcePoolsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armvmwarecloudsimple.NewResourcePoolsClient("<subscription-id>", cred, nil)
+	client, err := armvmwarecloudsimple.NewResourcePoolsClient("{subscription-id}", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<region-id>",
-		"<pc-name>",
-		"<resource-pool-name>",
+		"westus2",
+		"myPrivateCloud",
+		"resgroup-26",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

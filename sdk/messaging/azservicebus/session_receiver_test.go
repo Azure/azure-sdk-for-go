@@ -14,8 +14,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/admin"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
-	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -43,10 +43,7 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	messages, err := receiver.inner.ReceiveMessages(ctx, 1, nil)
 	require.NoError(t, err)
 
-	body, err := messages[0].Body()
-	require.NoError(t, err)
-
-	require.EqualValues(t, "session-based message", body)
+	require.EqualValues(t, "session-based message", messages[0].Body)
 	require.EqualValues(t, "session-1", *messages[0].SessionID)
 	require.NoError(t, receiver.CompleteMessage(ctx, messages[0], nil))
 
@@ -112,11 +109,8 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	}
 
 	for _, msg := range received {
-		body, err := msg.Body()
-		require.NoError(t, err)
 		require.EqualValues(t, "", *msg.SessionID)
-
-		require.EqualValues(t, "session-based message", string(body))
+		require.EqualValues(t, "session-based message", string(msg.Body))
 	}
 }
 
@@ -165,9 +159,7 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	messages, err := receiver.inner.ReceiveMessages(ctx, 1, nil)
 	require.NoError(t, err)
 
-	body, err := messages[0].Body()
-	require.NoError(t, err)
-	require.EqualValues(t, "session-based message", body)
+	require.EqualValues(t, "session-based message", messages[0].Body)
 	require.EqualValues(t, "acceptnextsession-test", *messages[0].SessionID)
 	require.NoError(t, receiver.CompleteMessage(ctx, messages[0], nil))
 

@@ -39,7 +39,7 @@ func NewVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,26 +57,28 @@ func NewVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreate - Create a volume group along with specified volumes
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // volumeGroupName - The name of the volumeGroup
 // body - Volume Group object supplied in the body of the operation.
 // options - VolumeGroupsClientBeginCreateOptions contains the optional parameters for the VolumeGroupsClient.BeginCreate
 // method.
-func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsClientBeginCreateOptions) (*armruntime.Poller[VolumeGroupsClientCreateResponse], error) {
+func (client *VolumeGroupsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsClientBeginCreateOptions) (*runtime.Poller[VolumeGroupsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, volumeGroupName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VolumeGroupsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VolumeGroupsClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumeGroupsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumeGroupsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create a volume group along with specified volumes
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumeGroupsClient) create(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, body VolumeGroupDetails, options *VolumeGroupsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, volumeGroupName, body, options)
 	if err != nil {
@@ -118,31 +120,33 @@ func (client *VolumeGroupsClient) createCreateRequest(ctx context.Context, resou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
 }
 
 // BeginDelete - Delete the specified volume group only if there are no volumes under volume group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // volumeGroupName - The name of the volumeGroup
 // options - VolumeGroupsClientBeginDeleteOptions contains the optional parameters for the VolumeGroupsClient.BeginDelete
 // method.
-func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*armruntime.Poller[VolumeGroupsClientDeleteResponse], error) {
+func (client *VolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*runtime.Poller[VolumeGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, volumeGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[VolumeGroupsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VolumeGroupsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[VolumeGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VolumeGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete the specified volume group only if there are no volumes under volume group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 func (client *VolumeGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, volumeGroupName string, options *VolumeGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, volumeGroupName, options)
 	if err != nil {
@@ -189,6 +193,7 @@ func (client *VolumeGroupsClient) deleteCreateRequest(ctx context.Context, resou
 
 // Get - Get details of the specified volume group
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // volumeGroupName - The name of the volumeGroup
@@ -234,7 +239,7 @@ func (client *VolumeGroupsClient) getCreateRequest(ctx context.Context, resource
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -249,12 +254,13 @@ func (client *VolumeGroupsClient) getHandleResponse(resp *http.Response) (Volume
 
 // NewListByNetAppAccountPager - List all volume groups for given account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // resourceGroupName - The name of the resource group.
 // accountName - The name of the NetApp account
 // options - VolumeGroupsClientListByNetAppAccountOptions contains the optional parameters for the VolumeGroupsClient.ListByNetAppAccount
 // method.
 func (client *VolumeGroupsClient) NewListByNetAppAccountPager(resourceGroupName string, accountName string, options *VolumeGroupsClientListByNetAppAccountOptions) *runtime.Pager[VolumeGroupsClientListByNetAppAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VolumeGroupsClientListByNetAppAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VolumeGroupsClientListByNetAppAccountResponse]{
 		More: func(page VolumeGroupsClientListByNetAppAccountResponse) bool {
 			return false
 		},
@@ -297,7 +303,7 @@ func (client *VolumeGroupsClient) listByNetAppAccountCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

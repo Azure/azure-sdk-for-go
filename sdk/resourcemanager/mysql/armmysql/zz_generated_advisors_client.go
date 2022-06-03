@@ -38,7 +38,7 @@ func NewAdvisorsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewAdvisorsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Get - Get a recommendation action advisor.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // advisorName - The advisor name for recommendation action.
@@ -101,7 +102,7 @@ func (client *AdvisorsClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -116,11 +117,12 @@ func (client *AdvisorsClient) getHandleResponse(resp *http.Response) (AdvisorsCl
 
 // NewListByServerPager - List recommendation action advisors.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-06-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - AdvisorsClientListByServerOptions contains the optional parameters for the AdvisorsClient.ListByServer method.
 func (client *AdvisorsClient) NewListByServerPager(resourceGroupName string, serverName string, options *AdvisorsClientListByServerOptions) *runtime.Pager[AdvisorsClientListByServerResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AdvisorsClientListByServerResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AdvisorsClientListByServerResponse]{
 		More: func(page AdvisorsClientListByServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -169,7 +171,7 @@ func (client *AdvisorsClient) listByServerCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -23,12 +23,12 @@ func ExampleTagResourceClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewTagResourceClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewTagResourceClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
 		&armapimanagement.TagResourceClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -37,7 +37,6 @@ func ExampleTagResourceClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

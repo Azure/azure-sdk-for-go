@@ -17,56 +17,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/applicationinsights/armapplicationinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList2.json
-func ExampleWorkbooksClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbooksClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := client.NewListBySubscriptionPager(armapplicationinsights.CategoryTypeWorkbook,
-		&armapplicationinsights.WorkbooksClientListBySubscriptionOptions{Tags: []string{},
-			CanFetchContent: nil,
-		})
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-			return
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbooksList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbooksList.json
 func ExampleWorkbooksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbooksClient("6b643656-33eb-422f-aee8-3ac145d124af", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("my-resource-group",
 		armapplicationinsights.CategoryTypeWorkbook,
 		&armapplicationinsights.WorkbooksClientListByResourceGroupOptions{Tags: []string{},
-			SourceID:        to.Ptr("<source-id>"),
 			CanFetchContent: nil,
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -75,21 +45,21 @@ func ExampleWorkbooksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbookGet.json
 func ExampleWorkbooksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbooksClient("6b643656-33eb-422f-aee8-3ac145d124af", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		&armapplicationinsights.WorkbooksClientGetOptions{CanFetchContent: nil})
+		"my-resource-group",
+		"deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -97,55 +67,59 @@ func ExampleWorkbooksClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbookDelete.json
 func ExampleWorkbooksClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbooksClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookAdd.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbookAdd.json
 func ExampleWorkbooksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbooksClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"deadb33f-8bee-4d3b-a059-9be8dac93960",
 		armapplicationinsights.Workbook{
-			Location: to.Ptr("<location>"),
+			Name:     to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
+			ID:       to.Ptr("c0deea5e-3344-40f2-96f8-6f8e1c3b5722"),
+			Location: to.Ptr("west us"),
 			Tags: map[string]*string{
-				"TagSample01": to.Ptr("sample01"),
-				"TagSample02": to.Ptr("sample02"),
+				"0": to.Ptr("TagSample01"),
+				"1": to.Ptr("TagSample02"),
 			},
-			Kind: to.Ptr(armapplicationinsights.KindShared),
 			Properties: &armapplicationinsights.WorkbookProperties{
-				Description:    to.Ptr("<description>"),
-				Category:       to.Ptr("<category>"),
-				DisplayName:    to.Ptr("<display-name>"),
-				SerializedData: to.Ptr("<serialized-data>"),
+				Name:             to.Ptr("Blah Blah Blah"),
+				Category:         to.Ptr("workbook"),
+				SharedTypeKind:   to.Ptr(armapplicationinsights.SharedTypeKindShared),
+				SerializedData:   to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+				SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/MyGroup/providers/Microsoft.Web/sites/MyTestApp-CodeLens"),
+				UserID:           to.Ptr("userId"),
+				WorkbookID:       to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
 			},
 		},
-		&armapplicationinsights.WorkbooksClientCreateOrUpdateOptions{SourceID: to.Ptr("<source-id>")})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -153,70 +127,37 @@ func ExampleWorkbooksClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookManagedUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WorkbookUpdate.json
 func ExampleWorkbooksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbooksClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewWorkbooksClient("6b643656-33eb-422f-aee8-3ac145d124af", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		&armapplicationinsights.WorkbooksClientUpdateOptions{SourceID: to.Ptr("<source-id>"),
-			WorkbookUpdateParameters: nil,
-		})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookRevisionsList.json
-func ExampleWorkbooksClient_NewRevisionsListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbooksClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := client.NewRevisionsListPager("<resource-group-name>",
-		"<resource-name>",
-		nil)
-	for pager.More() {
-		nextResult, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-			return
-		}
-		for _, v := range nextResult.Value {
-			// TODO: use page item
-			_ = v
-		}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-08-01/examples/WorkbookRevisionGet.json
-func ExampleWorkbooksClient_RevisionGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	client, err := armapplicationinsights.NewWorkbooksClient("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := client.RevisionGet(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
-		"<revision-id>",
+	res, err := client.Update(ctx,
+		"my-resource-group",
+		"deadb33f-5e0d-4064-8ebb-1a4ed0313eb2",
+		armapplicationinsights.Workbook{
+			Name:     to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
+			Location: to.Ptr("west us"),
+			Tags: map[string]*string{
+				"0": to.Ptr("TagSample01"),
+				"1": to.Ptr("TagSample02"),
+			},
+			Properties: &armapplicationinsights.WorkbookProperties{
+				Name:           to.Ptr("Blah Blah Blah"),
+				Category:       to.Ptr("workbook"),
+				SharedTypeKind: to.Ptr(armapplicationinsights.SharedTypeKindShared),
+				SerializedData: to.Ptr("{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":1,\"content\":\"{\"json\":\"## New workbook\\r\\n---\\r\\n\\r\\nWelcome to your new workbook.  This area will display text formatted as markdown.\\r\\n\\r\\n\\r\\nWe've included a basic analytics query to get you started. Use the `Edit` button below each section to configure it or add more sections.\"}\",\"halfWidth\":null,\"conditionalVisibility\":null},{\"type\":3,\"content\":\"{\"version\":\"KqlItem/1.0\",\"query\":\"union withsource=TableName *\\n| summarize Count=count() by TableName\\n| render barchart\",\"showQuery\":false,\"size\":1,\"aggregation\":0,\"showAnnotations\":false}\",\"halfWidth\":null,\"conditionalVisibility\":null}],\"isLocked\":false}"),
+				UserID:         to.Ptr("userId"),
+				Version:        to.Ptr("ME"),
+				WorkbookID:     to.Ptr("deadb33f-8bee-4d3b-a059-9be8dac93960"),
+			},
+		},
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

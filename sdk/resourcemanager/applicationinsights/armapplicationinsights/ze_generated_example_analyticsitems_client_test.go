@@ -24,13 +24,13 @@ func ExampleAnalyticsItemsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnalyticsItemsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.List(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.ItemScopePathAnalyticsItems,
 		&armapplicationinsights.AnalyticsItemsClientListOptions{Scope: nil,
 			Type:           nil,
@@ -50,15 +50,15 @@ func ExampleAnalyticsItemsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnalyticsItemsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.ItemScopePathAnalyticsItems,
-		&armapplicationinsights.AnalyticsItemsClientGetOptions{ID: to.Ptr("<id>"),
+		&armapplicationinsights.AnalyticsItemsClientGetOptions{ID: to.Ptr("3466c160-4a10-4df8-afdf-0007f3f6dee5"),
 			Name: nil,
 		})
 	if err != nil {
@@ -75,17 +75,17 @@ func ExampleAnalyticsItemsClient_Put() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnalyticsItemsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Put(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.ItemScopePathAnalyticsItems,
 		armapplicationinsights.ComponentAnalyticsItem{
-			Content: to.Ptr("<content>"),
-			Name:    to.Ptr("<name>"),
+			Content: to.Ptr("let newExceptionsTimeRange = 1d;\nlet timeRangeToCheckBefore = 7d;\nexceptions\n| where timestamp < ago(timeRangeToCheckBefore)\n| summarize count() by problemId\n| join kind= rightanti (\nexceptions\n| where timestamp >= ago(newExceptionsTimeRange)\n| extend stack = tostring(details[0].rawStack)\n| summarize count(), dcount(user_AuthenticatedId), min(timestamp), max(timestamp), any(stack) by problemId  \n) on problemId \n| order by  count_ desc\n"),
+			Name:    to.Ptr("Exceptions - New in the last 24 hours"),
 			Scope:   to.Ptr(armapplicationinsights.ItemScopeShared),
 			Type:    to.Ptr(armapplicationinsights.ItemTypeQuery),
 		},
@@ -104,15 +104,15 @@ func ExampleAnalyticsItemsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapplicationinsights.NewAnalyticsItemsClient("<subscription-id>", cred, nil)
+	client, err := armapplicationinsights.NewAnalyticsItemsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"my-resource-group",
+		"my-component",
 		armapplicationinsights.ItemScopePathAnalyticsItems,
-		&armapplicationinsights.AnalyticsItemsClientDeleteOptions{ID: to.Ptr("<id>"),
+		&armapplicationinsights.AnalyticsItemsClientDeleteOptions{ID: to.Ptr("3466c160-4a10-4df8-afdf-0007f3f6dee5"),
 			Name: nil,
 		})
 	if err != nil {

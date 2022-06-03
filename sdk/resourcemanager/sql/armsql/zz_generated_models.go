@@ -37,6 +37,16 @@ type AdministratorProperties struct {
 	AzureADOnlyAuthentication *bool `json:"azureADOnlyAuthentication,omitempty" azure:"ro"`
 }
 
+// AdvancedThreatProtectionProperties - Properties of an Advanced Threat Protection state.
+type AdvancedThreatProtectionProperties struct {
+	// REQUIRED; Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled or a state has not been
+	// applied yet on the specific database or server.
+	State *AdvancedThreatProtectionState `json:"state,omitempty"`
+
+	// READ-ONLY; Specifies the UTC creation time of the policy.
+	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+}
+
 // Advisor - Database, Server or Elastic Pool Advisor.
 type Advisor struct {
 	// Resource properties.
@@ -561,6 +571,51 @@ type Database struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// DatabaseAdvancedThreatProtection - A database Advanced Threat Protection.
+type DatabaseAdvancedThreatProtection struct {
+	// Resource properties.
+	Properties *AdvancedThreatProtectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; SystemData of AdvancedThreatProtectionResource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DatabaseAdvancedThreatProtectionListResult - A list of the database's Advanced Threat Protection configurations.
+type DatabaseAdvancedThreatProtectionListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of results.
+	Value []*DatabaseAdvancedThreatProtection `json:"value,omitempty" azure:"ro"`
+}
+
+// DatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateOptions contains the optional parameters for the DatabaseAdvancedThreatProtectionSettingsClient.CreateOrUpdate
+// method.
+type DatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatabaseAdvancedThreatProtectionSettingsClientGetOptions contains the optional parameters for the DatabaseAdvancedThreatProtectionSettingsClient.Get
+// method.
+type DatabaseAdvancedThreatProtectionSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DatabaseAdvancedThreatProtectionSettingsClientListByDatabaseOptions contains the optional parameters for the DatabaseAdvancedThreatProtectionSettingsClient.ListByDatabase
+// method.
+type DatabaseAdvancedThreatProtectionSettingsClientListByDatabaseOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DatabaseAdvisorsClientGetOptions contains the optional parameters for the DatabaseAdvisorsClient.Get method.
 type DatabaseAdvisorsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -678,7 +733,8 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
 	// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
 	// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
-	// BATCHSTARTEDGROUP BATCHCOMPLETED_GROUP
+	// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
+	// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
 	// in combination with other groups as this will result in duplicate audit logs.
 	// For more information, see Database-Level Audit Action Groups
@@ -705,6 +761,9 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsAzureMonitorTargetEnabled *bool `json:"isAzureMonitorTargetEnabled,omitempty"`
+
+	// Specifies whether Managed Identity is used to access blob storage
+	IsManagedIdentityInUse *bool `json:"isManagedIdentityInUse,omitempty"`
 
 	// Specifies whether storageAccountAccessKey value is the storage's secondary key.
 	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
@@ -2585,7 +2644,8 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
 	// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
 	// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
-	// BATCHSTARTEDGROUP BATCHCOMPLETED_GROUP
+	// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
+	// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
 	// in combination with other groups as this will result in duplicate audit logs.
 	// For more information, see Database-Level Audit Action Groups
@@ -2612,6 +2672,9 @@ type ExtendedDatabaseBlobAuditingPolicyProperties struct {
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsAzureMonitorTargetEnabled *bool `json:"isAzureMonitorTargetEnabled,omitempty"`
+
+	// Specifies whether Managed Identity is used to access blob storage
+	IsManagedIdentityInUse *bool `json:"isManagedIdentityInUse,omitempty"`
 
 	// Specifies whether storageAccountAccessKey value is the storage's secondary key.
 	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
@@ -2703,7 +2766,8 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
 	// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
 	// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
-	// BATCHSTARTEDGROUP BATCHCOMPLETED_GROUP
+	// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
+	// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
 	// in combination with other groups as this will result in duplicate audit logs.
 	// For more information, see Database-Level Audit Action Groups
@@ -2741,6 +2805,9 @@ type ExtendedServerBlobAuditingPolicyProperties struct {
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsDevopsAuditEnabled *bool `json:"isDevopsAuditEnabled,omitempty"`
+
+	// Specifies whether Managed Identity is used to access blob storage
+	IsManagedIdentityInUse *bool `json:"isManagedIdentityInUse,omitempty"`
 
 	// Specifies whether storageAccountAccessKey value is the storage's secondary key.
 	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
@@ -4230,6 +4297,15 @@ type LogicalDatabaseTransparentDataEncryptionListResult struct {
 	Value []*LogicalDatabaseTransparentDataEncryption `json:"value,omitempty" azure:"ro"`
 }
 
+// LogicalServerAdvancedThreatProtectionListResult - A list of the server's Advanced Threat Protection configurations.
+type LogicalServerAdvancedThreatProtectionListResult struct {
+	// READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Array of results.
+	Value []*ServerAdvancedThreatProtection `json:"value,omitempty" azure:"ro"`
+}
+
 // LogicalServerSecurityAlertPolicyListResult - A list of the server's security alert policies.
 type LogicalServerSecurityAlertPolicyListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
@@ -5003,13 +5079,6 @@ type ManagedDatabaseSensitivityLabelsClientEnableRecommendationOptions struct {
 // method.
 type ManagedDatabaseSensitivityLabelsClientGetOptions struct {
 	// placeholder for future optional parameters
-}
-
-// ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions contains the optional parameters for the ManagedDatabaseSensitivityLabelsClient.ListByDatabase
-// method.
-type ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions struct {
-	// An OData filter expression that filters elements in the collection.
-	Filter *string
 }
 
 // ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions contains the optional parameters for the ManagedDatabaseSensitivityLabelsClient.ListCurrentByDatabase
@@ -6265,80 +6334,6 @@ type ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetOp
 // optional parameters for the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClient.ListByRestorableDroppedDatabase
 // method.
 type ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientListByRestorableDroppedDatabaseOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedServerDNSAlias - A managed server DNS alias.
-type ManagedServerDNSAlias struct {
-	// Resource properties.
-	Properties *ManagedServerDNSAliasProperties `json:"properties,omitempty"`
-
-	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ManagedServerDNSAliasAcquisition - A managed server DNS alias acquisition request.
-type ManagedServerDNSAliasAcquisition struct {
-	// REQUIRED; The resource ID of the managed server DNS alias that will be acquired to point to this managed server instead.
-	OldManagedServerDNSAliasResourceID *string `json:"oldManagedServerDnsAliasResourceId,omitempty"`
-}
-
-// ManagedServerDNSAliasCreation - A managed server dns alias creation request.
-type ManagedServerDNSAliasCreation struct {
-	// Whether or not DNS record should be created for this alias.
-	CreateDNSRecord *bool `json:"createDnsRecord,omitempty"`
-}
-
-// ManagedServerDNSAliasListResult - A list of managed server DNS aliases.
-type ManagedServerDNSAliasListResult struct {
-	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
-
-	// READ-ONLY; Array of results.
-	Value []*ManagedServerDNSAlias `json:"value,omitempty" azure:"ro"`
-}
-
-// ManagedServerDNSAliasProperties - Properties of a managed server DNS alias.
-type ManagedServerDNSAliasProperties struct {
-	// READ-ONLY; The fully qualified DNS record for managed server alias
-	AzureDNSRecord *string `json:"azureDnsRecord,omitempty" azure:"ro"`
-}
-
-// ManagedServerDNSAliasesClientBeginAcquireOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginAcquire
-// method.
-type ManagedServerDNSAliasesClientBeginAcquireOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginCreateOrUpdate
-// method.
-type ManagedServerDNSAliasesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagedServerDNSAliasesClientBeginDeleteOptions contains the optional parameters for the ManagedServerDNSAliasesClient.BeginDelete
-// method.
-type ManagedServerDNSAliasesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagedServerDNSAliasesClientGetOptions contains the optional parameters for the ManagedServerDNSAliasesClient.Get method.
-type ManagedServerDNSAliasesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedServerDNSAliasesClientListByManagedInstanceOptions contains the optional parameters for the ManagedServerDNSAliasesClient.ListByManagedInstance
-// method.
-type ManagedServerDNSAliasesClientListByManagedInstanceOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -7894,13 +7889,6 @@ type SensitivityLabelsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SensitivityLabelsClientListByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListByDatabase
-// method.
-type SensitivityLabelsClientListByDatabaseOptions struct {
-	// An OData filter expression that filters elements in the collection.
-	Filter *string
-}
-
 // SensitivityLabelsClientListCurrentByDatabaseOptions contains the optional parameters for the SensitivityLabelsClient.ListCurrentByDatabase
 // method.
 type SensitivityLabelsClientListCurrentByDatabaseOptions struct {
@@ -7950,6 +7938,43 @@ type Server struct {
 
 	// READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServerAdvancedThreatProtection - A server Advanced Threat Protection.
+type ServerAdvancedThreatProtection struct {
+	// Resource properties.
+	Properties *AdvancedThreatProtectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; SystemData of AdvancedThreatProtectionResource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ServerAdvancedThreatProtectionSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerAdvancedThreatProtectionSettingsClient.BeginCreateOrUpdate
+// method.
+type ServerAdvancedThreatProtectionSettingsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ServerAdvancedThreatProtectionSettingsClientGetOptions contains the optional parameters for the ServerAdvancedThreatProtectionSettingsClient.Get
+// method.
+type ServerAdvancedThreatProtectionSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServerAdvancedThreatProtectionSettingsClientListByServerOptions contains the optional parameters for the ServerAdvancedThreatProtectionSettingsClient.ListByServer
+// method.
+type ServerAdvancedThreatProtectionSettingsClientListByServerOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ServerAdvisorsClientGetOptions contains the optional parameters for the ServerAdvisorsClient.Get method.
@@ -8135,7 +8160,8 @@ type ServerBlobAuditingPolicyProperties struct {
 	// DATABASEPERMISSIONCHANGEGROUP DATABASEPRINCIPALCHANGEGROUP DATABASEPRINCIPALIMPERSONATIONGROUP DATABASEROLEMEMBERCHANGEGROUP
 	// FAILEDDATABASEAUTHENTICATIONGROUP SCHEMAOBJECTACCESSGROUP SCHEMAOBJECT
 	// CHANGEGROUP SCHEMAOBJECTOWNERSHIPCHANGEGROUP SCHEMAOBJECTPERMISSIONCHANGEGROUP SUCCESSFULDATABASEAUTHENTICATIONGROUP USERCHANGEPASSWORDGROUP
-	// BATCHSTARTEDGROUP BATCHCOMPLETED_GROUP
+	// BATCHSTARTEDGROUP BATCHCOMPLETEDGROUP DBCCGROUP DATABASE
+	// OWNERSHIPCHANGEGROUP DATABASECHANGEGROUP LEDGEROPERATION_GROUP
 	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used
 	// in combination with other groups as this will result in duplicate audit logs.
 	// For more information, see Database-Level Audit Action Groups
@@ -8173,6 +8199,9 @@ type ServerBlobAuditingPolicyProperties struct {
 	// For more information, see Diagnostic Settings REST API [https://go.microsoft.com/fwlink/?linkid=2033207]or Diagnostic Settings
 	// PowerShell [https://go.microsoft.com/fwlink/?linkid=2033043]
 	IsDevopsAuditEnabled *bool `json:"isDevopsAuditEnabled,omitempty"`
+
+	// Specifies whether Managed Identity is used to access blob storage
+	IsManagedIdentityInUse *bool `json:"isManagedIdentityInUse,omitempty"`
 
 	// Specifies whether storageAccountAccessKey value is the storage's secondary key.
 	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`

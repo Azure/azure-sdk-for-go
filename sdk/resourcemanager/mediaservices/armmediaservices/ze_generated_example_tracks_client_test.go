@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices"
@@ -26,19 +24,18 @@ func ExampleTracksClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTracksClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTracksClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
+	pager := client.NewListPager("contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -54,15 +51,15 @@ func ExampleTracksClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTracksClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTracksClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<track-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"text1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -78,30 +75,30 @@ func ExampleTracksClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTracksClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTracksClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<track-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"text3",
 		armmediaservices.AssetTrack{
 			Properties: &armmediaservices.AssetTrackProperties{
 				Track: &armmediaservices.TextTrack{
-					ODataType:        to.Ptr("<odata-type>"),
-					DisplayName:      to.Ptr("<display-name>"),
-					FileName:         to.Ptr("<file-name>"),
+					ODataType:        to.Ptr("#Microsoft.Media.TextTrack"),
+					DisplayName:      to.Ptr("A new track"),
+					FileName:         to.Ptr("text3.ttml"),
 					PlayerVisibility: to.Ptr(armmediaservices.VisibilityVisible),
 				},
 			},
 		},
-		&armmediaservices.TracksClientBeginCreateOrUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -116,20 +113,20 @@ func ExampleTracksClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTracksClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTracksClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<track-name>",
-		&armmediaservices.TracksClientBeginDeleteOptions{ResumeToken: ""})
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"text2",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -142,28 +139,28 @@ func ExampleTracksClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTracksClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTracksClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<track-name>",
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"text1",
 		armmediaservices.AssetTrack{
 			Properties: &armmediaservices.AssetTrackProperties{
 				Track: &armmediaservices.TextTrack{
-					ODataType:   to.Ptr("<odata-type>"),
-					DisplayName: to.Ptr("<display-name>"),
+					ODataType:   to.Ptr("#Microsoft.Media.TextTrack"),
+					DisplayName: to.Ptr("A new name"),
 				},
 			},
 		},
-		&armmediaservices.TracksClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -176,20 +173,20 @@ func ExampleTracksClient_BeginUpdateTrackData() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewTracksClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewTracksClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdateTrackData(ctx,
-		"<resource-group-name>",
-		"<account-name>",
-		"<asset-name>",
-		"<track-name>",
-		&armmediaservices.TracksClientBeginUpdateTrackDataOptions{ResumeToken: ""})
+		"contoso",
+		"contosomedia",
+		"ClimbingMountRainer",
+		"text2",
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, 30*time.Second)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}

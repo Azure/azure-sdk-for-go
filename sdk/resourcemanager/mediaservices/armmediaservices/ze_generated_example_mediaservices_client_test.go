@@ -24,17 +24,16 @@ func ExampleClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
+	pager := client.NewListPager("contoso",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -50,13 +49,13 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contosotv",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -72,21 +71,21 @@ func ExampleClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contososports",
 		armmediaservices.MediaService{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("South Central US"),
 			Tags: map[string]*string{
 				"key1": to.Ptr("value1"),
 				"key2": to.Ptr("value2"),
 			},
 			Identity: &armmediaservices.MediaServiceIdentity{
-				Type: to.Ptr("<type>"),
+				Type: to.Ptr("UserAssigned"),
 				UserAssignedIdentities: map[string]*armmediaservices.UserAssignedManagedIdentity{
 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
 					"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2": {},
@@ -97,19 +96,19 @@ func ExampleClient_CreateOrUpdate() {
 					Type: to.Ptr(armmediaservices.AccountEncryptionKeyTypeCustomerKey),
 					Identity: &armmediaservices.ResourceIdentity{
 						UseSystemAssignedIdentity: to.Ptr(false),
-						UserAssignedIdentity:      to.Ptr("<user-assigned-identity>"),
+						UserAssignedIdentity:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"),
 					},
 					KeyVaultProperties: &armmediaservices.KeyVaultProperties{
-						KeyIdentifier: to.Ptr("<key-identifier>"),
+						KeyIdentifier: to.Ptr("https://keyvault.vault.azure.net/keys/key1"),
 					},
 				},
 				StorageAccounts: []*armmediaservices.StorageAccount{
 					{
 						Type: to.Ptr(armmediaservices.StorageAccountTypePrimary),
-						ID:   to.Ptr("<id>"),
+						ID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso/providers/Microsoft.Storage/storageAccounts/contososportsstore"),
 						Identity: &armmediaservices.ResourceIdentity{
 							UseSystemAssignedIdentity: to.Ptr(false),
-							UserAssignedIdentity:      to.Ptr("<user-assigned-identity>"),
+							UserAssignedIdentity:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"),
 						},
 					}},
 				StorageAuthentication: to.Ptr(armmediaservices.StorageAuthenticationManagedIdentity),
@@ -130,13 +129,13 @@ func ExampleClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contososports",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -150,13 +149,13 @@ func ExampleClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contososports",
 		armmediaservices.MediaServiceUpdate{
 			Tags: map[string]*string{
 				"key1": to.Ptr("value3"),
@@ -177,15 +176,15 @@ func ExampleClient_SyncStorageKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.SyncStorageKeys(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contososports",
 		armmediaservices.SyncStorageKeysInput{
-			ID: to.Ptr("<id>"),
+			ID: to.Ptr("contososportsstore"),
 		},
 		nil)
 	if err != nil {
@@ -200,15 +199,15 @@ func ExampleClient_ListEdgePolicies() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ListEdgePolicies(ctx,
-		"<resource-group-name>",
-		"<account-name>",
+		"contoso",
+		"contososports",
 		armmediaservices.ListEdgePoliciesInput{
-			DeviceID: to.Ptr("<device-id>"),
+			DeviceID: to.Ptr("contosiothubhost_contosoiotdevice"),
 		},
 		nil)
 	if err != nil {
@@ -225,7 +224,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmediaservices.NewClient("<subscription-id>", cred, nil)
+	client, err := armmediaservices.NewClient("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -234,7 +233,6 @@ func ExampleClient_NewListBySubscriptionPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

@@ -38,7 +38,7 @@ func NewRoleInstancesClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,6 +56,7 @@ func NewRoleInstancesClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Gets the information of role instance of vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // locationName - The Azure region where the network function resource was created by customer.
 // vendorName - The name of the vendor.
 // serviceKey - The GUID for the vendor network function.
@@ -104,9 +105,9 @@ func (client *RoleInstancesClient) getCreateRequest(ctx context.Context, locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -121,12 +122,13 @@ func (client *RoleInstancesClient) getHandleResponse(resp *http.Response) (RoleI
 
 // NewListPager - Lists the information of role instances of vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // locationName - The Azure region where the network function resource was created by customer.
 // vendorName - The name of the vendor.
 // serviceKey - The GUID for the vendor network function.
 // options - RoleInstancesClientListOptions contains the optional parameters for the RoleInstancesClient.List method.
 func (client *RoleInstancesClient) NewListPager(locationName string, vendorName string, serviceKey string, options *RoleInstancesClientListOptions) *runtime.Pager[RoleInstancesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RoleInstancesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RoleInstancesClientListResponse]{
 		More: func(page RoleInstancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -177,9 +179,9 @@ func (client *RoleInstancesClient) listCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -194,28 +196,30 @@ func (client *RoleInstancesClient) listHandleResponse(resp *http.Response) (Role
 
 // BeginRestart - Restarts a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // locationName - The Azure region where the network function resource was created by customer.
 // vendorName - The name of the vendor.
 // serviceKey - The GUID for the vendor network function.
 // roleInstanceName - The name of the role instance of the vendor network function.
 // options - RoleInstancesClientBeginRestartOptions contains the optional parameters for the RoleInstancesClient.BeginRestart
 // method.
-func (client *RoleInstancesClient) BeginRestart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginRestartOptions) (*armruntime.Poller[RoleInstancesClientRestartResponse], error) {
+func (client *RoleInstancesClient) BeginRestart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginRestartOptions) (*runtime.Poller[RoleInstancesClientRestartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.restart(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoleInstancesClientRestartResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RoleInstancesClientRestartResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RoleInstancesClientRestartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RoleInstancesClientRestartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Restart - Restarts a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *RoleInstancesClient) restart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginRestartOptions) (*http.Response, error) {
 	req, err := client.restartCreateRequest(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
 	if err != nil {
@@ -259,36 +263,38 @@ func (client *RoleInstancesClient) restartCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStart - Starts a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // locationName - The Azure region where the network function resource was created by customer.
 // vendorName - The name of the vendor.
 // serviceKey - The GUID for the vendor network function.
 // roleInstanceName - The name of the role instance of the vendor network function.
 // options - RoleInstancesClientBeginStartOptions contains the optional parameters for the RoleInstancesClient.BeginStart
 // method.
-func (client *RoleInstancesClient) BeginStart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStartOptions) (*armruntime.Poller[RoleInstancesClientStartResponse], error) {
+func (client *RoleInstancesClient) BeginStart(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStartOptions) (*runtime.Poller[RoleInstancesClientStartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.start(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoleInstancesClientStartResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RoleInstancesClientStartResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RoleInstancesClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RoleInstancesClientStartResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Start - Starts a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *RoleInstancesClient) start(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
 	if err != nil {
@@ -332,35 +338,37 @@ func (client *RoleInstancesClient) startCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStop - Powers off (stop) a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 // locationName - The Azure region where the network function resource was created by customer.
 // vendorName - The name of the vendor.
 // serviceKey - The GUID for the vendor network function.
 // roleInstanceName - The name of the role instance of the vendor network function.
 // options - RoleInstancesClientBeginStopOptions contains the optional parameters for the RoleInstancesClient.BeginStop method.
-func (client *RoleInstancesClient) BeginStop(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStopOptions) (*armruntime.Poller[RoleInstancesClientStopResponse], error) {
+func (client *RoleInstancesClient) BeginStop(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStopOptions) (*runtime.Poller[RoleInstancesClientStopResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.stop(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[RoleInstancesClientStopResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[RoleInstancesClientStopResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[RoleInstancesClientStopResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RoleInstancesClientStopResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Stop - Powers off (stop) a role instance of a vendor network function.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-05-01
 func (client *RoleInstancesClient) stop(ctx context.Context, locationName string, vendorName string, serviceKey string, roleInstanceName string, options *RoleInstancesClientBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, locationName, vendorName, serviceKey, roleInstanceName, options)
 	if err != nil {
@@ -404,8 +412,8 @@ func (client *RoleInstancesClient) stopCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01-preview")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -38,7 +38,7 @@ func NewPrivateLinkServicesForEDMUploadClient(subscriptionID string, credential 
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,27 +56,29 @@ func NewPrivateLinkServicesForEDMUploadClient(subscriptionID string, credential 
 
 // BeginCreateOrUpdate - Create or update the metadata of a privateLinkServicesForEDMUpload instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // privateLinkServicesForEDMUploadDescription - The service instance metadata.
 // options - PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.BeginCreateOrUpdate
 // method.
-func (client *PrivateLinkServicesForEDMUploadClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForEDMUploadDescription PrivateLinkServicesForEDMUploadDescription, options *PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse], error) {
+func (client *PrivateLinkServicesForEDMUploadClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForEDMUploadDescription PrivateLinkServicesForEDMUploadDescription, options *PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, privateLinkServicesForEDMUploadDescription, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkServicesForEDMUploadClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Create or update the metadata of a privateLinkServicesForEDMUpload instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateLinkServicesForEDMUploadClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, privateLinkServicesForEDMUploadDescription PrivateLinkServicesForEDMUploadDescription, options *PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, privateLinkServicesForEDMUploadDescription, options)
 	if err != nil {
@@ -114,12 +116,13 @@ func (client *PrivateLinkServicesForEDMUploadClient) createOrUpdateCreateRequest
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, privateLinkServicesForEDMUploadDescription)
 }
 
 // Get - Get the metadata of a privateLinkServicesForEDMUpload resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // options - PrivateLinkServicesForEDMUploadClientGetOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.Get
@@ -161,7 +164,7 @@ func (client *PrivateLinkServicesForEDMUploadClient) getCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -176,10 +179,11 @@ func (client *PrivateLinkServicesForEDMUploadClient) getHandleResponse(resp *htt
 
 // NewListPager - Get all the privateLinkServicesForEDMUpload instances in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // options - PrivateLinkServicesForEDMUploadClientListOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.List
 // method.
 func (client *PrivateLinkServicesForEDMUploadClient) NewListPager(options *PrivateLinkServicesForEDMUploadClientListOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForEDMUploadClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesForEDMUploadClientListResponse]{
 		More: func(page PrivateLinkServicesForEDMUploadClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -220,7 +224,7 @@ func (client *PrivateLinkServicesForEDMUploadClient) listCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -235,11 +239,12 @@ func (client *PrivateLinkServicesForEDMUploadClient) listHandleResponse(resp *ht
 
 // NewListByResourceGroupPager - Get all the service instances in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // options - PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.ListByResourceGroup
 // method.
 func (client *PrivateLinkServicesForEDMUploadClient) NewListByResourceGroupPager(resourceGroupName string, options *PrivateLinkServicesForEDMUploadClientListByResourceGroupOptions) *runtime.Pager[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse]{
 		More: func(page PrivateLinkServicesForEDMUploadClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,7 +289,7 @@ func (client *PrivateLinkServicesForEDMUploadClient) listByResourceGroupCreateRe
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -299,27 +304,29 @@ func (client *PrivateLinkServicesForEDMUploadClient) listByResourceGroupHandleRe
 
 // BeginUpdate - Update the metadata of a privateLinkServicesForEDMUpload instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 // resourceGroupName - The name of the resource group that contains the service instance.
 // resourceName - The name of the service instance.
 // servicePatchDescription - The service instance metadata and security metadata.
 // options - PrivateLinkServicesForEDMUploadClientBeginUpdateOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.BeginUpdate
 // method.
-func (client *PrivateLinkServicesForEDMUploadClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForEDMUploadClientBeginUpdateOptions) (*armruntime.Poller[PrivateLinkServicesForEDMUploadClientUpdateResponse], error) {
+func (client *PrivateLinkServicesForEDMUploadClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForEDMUploadClientBeginUpdateOptions) (*runtime.Poller[PrivateLinkServicesForEDMUploadClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[PrivateLinkServicesForEDMUploadClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PrivateLinkServicesForEDMUploadClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[PrivateLinkServicesForEDMUploadClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PrivateLinkServicesForEDMUploadClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Update the metadata of a privateLinkServicesForEDMUpload instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-03-25-preview
 func (client *PrivateLinkServicesForEDMUploadClient) update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription ServicesPatchDescription, options *PrivateLinkServicesForEDMUploadClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, servicePatchDescription, options)
 	if err != nil {
@@ -357,6 +364,6 @@ func (client *PrivateLinkServicesForEDMUploadClient) updateCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-25-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, servicePatchDescription)
 }

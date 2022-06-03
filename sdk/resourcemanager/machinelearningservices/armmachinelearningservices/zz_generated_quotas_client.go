@@ -38,7 +38,7 @@ func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,10 +56,11 @@ func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - Gets the currently assigned Workspace Quotas based on VMFamily.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // location - The location for which resource usage is queried.
 // options - QuotasClientListOptions contains the optional parameters for the QuotasClient.List method.
 func (client *QuotasClient) NewListPager(location string, options *QuotasClientListOptions) *runtime.Pager[QuotasClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[QuotasClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[QuotasClientListResponse]{
 		More: func(page QuotasClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -104,7 +105,7 @@ func (client *QuotasClient) listCreateRequest(ctx context.Context, location stri
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -119,6 +120,7 @@ func (client *QuotasClient) listHandleResponse(resp *http.Response) (QuotasClien
 
 // Update - Update quota for each VM family in workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-07-01
 // location - The location for update quota is queried.
 // parameters - Quota update parameters.
 // options - QuotasClientUpdateOptions contains the optional parameters for the QuotasClient.Update method.
@@ -155,7 +157,7 @@ func (client *QuotasClient) updateCreateRequest(ctx context.Context, location st
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

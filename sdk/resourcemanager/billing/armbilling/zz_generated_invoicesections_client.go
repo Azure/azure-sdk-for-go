@@ -36,7 +36,7 @@ func NewInvoiceSectionsClient(credential azcore.TokenCredential, options *arm.Cl
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -54,27 +54,29 @@ func NewInvoiceSectionsClient(credential azcore.TokenCredential, options *arm.Cl
 // BeginCreateOrUpdate - Creates or updates an invoice section. The operation is supported only for billing accounts with
 // agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
 // parameters - The new or updated invoice section.
 // options - InvoiceSectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the InvoiceSectionsClient.BeginCreateOrUpdate
 // method.
-func (client *InvoiceSectionsClient) BeginCreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters InvoiceSection, options *InvoiceSectionsClientBeginCreateOrUpdateOptions) (*armruntime.Poller[InvoiceSectionsClientCreateOrUpdateResponse], error) {
+func (client *InvoiceSectionsClient) BeginCreateOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters InvoiceSection, options *InvoiceSectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[InvoiceSectionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, billingAccountName, billingProfileName, invoiceSectionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[InvoiceSectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[InvoiceSectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[InvoiceSectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InvoiceSectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an invoice section. The operation is supported only for billing accounts with agreement
 // type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 func (client *InvoiceSectionsClient) createOrUpdate(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, parameters InvoiceSection, options *InvoiceSectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, billingAccountName, billingProfileName, invoiceSectionName, parameters, options)
 	if err != nil {
@@ -112,13 +114,14 @@ func (client *InvoiceSectionsClient) createOrUpdateCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // Get - Gets an invoice section by its ID. The operation is supported only for billing accounts with agreement type Microsoft
 // Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // invoiceSectionName - The ID that uniquely identifies an invoice section.
@@ -160,7 +163,7 @@ func (client *InvoiceSectionsClient) getCreateRequest(ctx context.Context, billi
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -176,12 +179,13 @@ func (client *InvoiceSectionsClient) getHandleResponse(resp *http.Response) (Inv
 // NewListByBillingProfilePager - Lists the invoice sections that a user has access to. The operation is supported only for
 // billing accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-05-01
 // billingAccountName - The ID that uniquely identifies a billing account.
 // billingProfileName - The ID that uniquely identifies a billing profile.
 // options - InvoiceSectionsClientListByBillingProfileOptions contains the optional parameters for the InvoiceSectionsClient.ListByBillingProfile
 // method.
 func (client *InvoiceSectionsClient) NewListByBillingProfilePager(billingAccountName string, billingProfileName string, options *InvoiceSectionsClientListByBillingProfileOptions) *runtime.Pager[InvoiceSectionsClientListByBillingProfileResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InvoiceSectionsClientListByBillingProfileResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InvoiceSectionsClientListByBillingProfileResponse]{
 		More: func(page InvoiceSectionsClientListByBillingProfileResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -226,7 +230,7 @@ func (client *InvoiceSectionsClient) listByBillingProfileCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

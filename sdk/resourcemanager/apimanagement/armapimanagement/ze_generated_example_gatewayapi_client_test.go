@@ -24,13 +24,13 @@ func ExampleGatewayAPIClient_NewListByServicePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByServicePager("<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
+	pager := client.NewListByServicePager("rg1",
+		"apimService1",
+		"gw1",
 		&armapimanagement.GatewayAPIClientListByServiceOptions{Filter: nil,
 			Top:  nil,
 			Skip: nil,
@@ -39,7 +39,6 @@ func ExampleGatewayAPIClient_NewListByServicePager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -55,15 +54,15 @@ func ExampleGatewayAPIClient_GetEntityTag() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.GetEntityTag(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"api1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -77,18 +76,18 @@ func ExampleGatewayAPIClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"echo-api",
 		&armapimanagement.GatewayAPIClientCreateOrUpdateOptions{Parameters: &armapimanagement.AssociationContract{
 			Properties: &armapimanagement.AssociationContractProperties{
-				ProvisioningState: to.Ptr("<provisioning-state>"),
+				ProvisioningState: to.Ptr("created"),
 			},
 		},
 		})
@@ -106,15 +105,15 @@ func ExampleGatewayAPIClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armapimanagement.NewGatewayAPIClient("<subscription-id>", cred, nil)
+	client, err := armapimanagement.NewGatewayAPIClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<service-name>",
-		"<gateway-id>",
-		"<api-id>",
+		"rg1",
+		"apimService1",
+		"gw1",
+		"echo-api",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

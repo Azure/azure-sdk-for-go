@@ -10,7 +10,7 @@ package armmobilenetwork
 
 const (
 	moduleName    = "armmobilenetwork"
-	moduleVersion = "v0.4.0"
+	moduleVersion = "v0.5.0"
 )
 
 // CoreNetworkType - Core network type.

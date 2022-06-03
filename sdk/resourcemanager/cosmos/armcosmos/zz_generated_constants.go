@@ -10,7 +10,7 @@ package armcosmos
 
 const (
 	moduleName    = "armcosmos"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v1.1.0-beta.1"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -757,6 +757,24 @@ func PossibleSpatialTypeValues() []SpatialType {
 		SpatialTypeMultiPolygon,
 		SpatialTypePoint,
 		SpatialTypePolygon,
+	}
+}
+
+// ThroughputPolicyType - ThroughputPolicy to apply for throughput redistribution
+type ThroughputPolicyType string
+
+const (
+	ThroughputPolicyTypeCustom ThroughputPolicyType = "custom"
+	ThroughputPolicyTypeEqual  ThroughputPolicyType = "equal"
+	ThroughputPolicyTypeNone   ThroughputPolicyType = "none"
+)
+
+// PossibleThroughputPolicyTypeValues returns the possible values for the ThroughputPolicyType const type.
+func PossibleThroughputPolicyTypeValues() []ThroughputPolicyType {
+	return []ThroughputPolicyType{
+		ThroughputPolicyTypeCustom,
+		ThroughputPolicyTypeEqual,
+		ThroughputPolicyTypeNone,
 	}
 }
 

@@ -20,12 +20,12 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/armloc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/async"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers/body"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
 
 type none struct{}
@@ -102,7 +102,7 @@ func TestLocPollerSimple(t *testing.T) {
 	}
 	var respFromCtx *http.Response
 	ctxWithResp := WithCaptureResponse(context.Background(), &respFromCtx)
-	_, err = lro.PollUntilDone(ctxWithResp, &PollUntilDoneOptions{Frequency: time.Second})
+	_, err = lro.PollUntilDone(ctxWithResp, &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -135,7 +135,7 @@ func TestLocPollerWithWidget(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -168,7 +168,17 @@ func TestLocPollerCancelled(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if _, ok := err.(*exported.ResponseError); !ok {
+		t.Fatal("expected pollerError")
+	}
+	if w.Size != 0 {
+		t.Fatalf("unexpected widget size %d", w.Size)
+	}
+	w, err = lro.Result(context.Background())
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -204,7 +214,7 @@ func TestLocPollerWithError(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -262,7 +272,7 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	_, err = lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -292,7 +302,7 @@ func TestLocPollerWithTimeout(t *testing.T) {
 		t.Fatal("initial response body wasn't closed")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	_, err = lro.PollUntilDone(ctx, &PollUntilDoneOptions{Frequency: time.Second})
+	_, err = lro.PollUntilDone(ctx, &PollUntilDoneOptions{Frequency: time.Millisecond})
 	cancel()
 	if err == nil {
 		t.Fatal("unexpected nil error")
@@ -331,7 +341,7 @@ func TestOpPollerSimple(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	_, err = lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	_, err = lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -371,13 +381,75 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
 	if w.Size != 2 {
 		t.Fatalf("unexpected widget size %d", w.Size)
 	}
+}
+
+type nonRetriableError struct {
+	Msg string
+}
+
+func (n *nonRetriableError) Error() string {
+	return n.Msg
+}
+
+func (*nonRetriableError) NonRetriable() {
+	// prevent the retry policy from masking this transient error
+}
+
+func TestOpPollerWithWidgetFinalGetError(t *testing.T) {
+	srv, close := mock.NewServer()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted), mock.WithBody([]byte(`{"status": "InProgress"}`)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"status": "Succeeded"}`)))
+	// PUT and PATCH state that a final GET will happen
+	// the first attempt at a final GET returns an error
+	srv.AppendError(&nonRetriableError{Msg: "failed attempt"})
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"size": 2}`)))
+	defer close()
+
+	reqURL, err := url.Parse(srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp := &http.Response{
+		Body:       body,
+		StatusCode: http.StatusAccepted,
+		Header: http.Header{
+			"Operation-Location": []string{srv.URL()},
+		},
+		Request: &http.Request{
+			Method: http.MethodPut,
+			URL:    reqURL,
+		},
+	}
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
+	lro, err := NewPoller[widget](firstResp, pl, nil)
+	require.Nil(t, err)
+	require.True(t, closed(), "initial response body wasn't closed")
+
+	resp, err := lro.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusAccepted, resp.StatusCode)
+	require.False(t, lro.Done())
+
+	resp, err = lro.Poll(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	require.True(t, lro.Done())
+
+	w, err := lro.Result(context.Background())
+	require.Error(t, err)
+	require.Empty(t, w)
+
+	w, err = lro.Result(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, w.Size, 2)
 }
 
 func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
@@ -415,7 +487,7 @@ func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -457,7 +529,7 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -502,7 +574,7 @@ func TestOpPollerWithWidgetResourceLocation(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -565,7 +637,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	_, err = lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -606,7 +678,7 @@ func TestNopPoller(t *testing.T) {
 	if resp != firstResp {
 		t.Fatal("unexpected response")
 	}
-	_, err = lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	_, err = lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -662,7 +734,7 @@ func TestOpPollerWithResponseType(t *testing.T) {
 	if !closed() {
 		t.Fatal("initial response body wasn't closed")
 	}
-	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	w, err := lro.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -744,7 +816,14 @@ func TestNewPollerAsync(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if v := *result.Field; v != "value" {
+		t.Fatalf("unexpected value %s", v)
+	}
+	result, err = poller.Result(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -779,52 +858,7 @@ func TestNewPollerBody(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if v := *result.Field; v != "value" {
-		t.Fatalf("unexpected value %s", v)
-	}
-}
-
-func TestNewPollerARMLoc(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	srv.AppendResponse(mock.WithBody([]byte(successResp)))
-	resp, closed := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
-	resp.Header.Set(shared.HeaderLocation, srv.URL())
-	resp.StatusCode = http.StatusAccepted
-	pl := getPipeline(srv)
-	poller, err := NewPoller[mockType](resp, pl, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !closed() {
-		t.Fatal("initial response body wasn't closed")
-	}
-	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*armloc.Poller[mockType])(nil)) {
-		t.Fatalf("unexpected poller type %s", pt.String())
-	}
-	tk, err := poller.ResumeToken()
-	if err != nil {
-		t.Fatal(err)
-	}
-	poller, err = NewPollerFromResumeToken[mockType](tk, pl, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for {
-		if poller.Done() {
-			break
-		}
-		_, err = poller.Poll(context.Background())
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
-	result, err := poller.Result(context.Background())
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -854,7 +888,7 @@ func TestNewPollerInitialRetryAfter(t *testing.T) {
 	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -921,7 +955,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 	if pt := typeOfOpField(poller); pt != reflect.TypeOf((*async.Poller[mockType])(nil)) {
 		t.Fatalf("unexpected poller type %s", pt.String())
 	}
-	_, err = poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	_, err = poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err == nil {
 		t.Fatal(err)
 	}
@@ -953,7 +987,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1015,7 +1049,7 @@ func TestNewPollerWithResponseType(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Second})
+	result, err := poller.PollUntilDone(context.Background(), &PollUntilDoneOptions{Frequency: time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}

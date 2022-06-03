@@ -34,6 +34,92 @@ type AccessKeys struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
 }
 
+// ApplicationGroup - The Application Group object
+type ApplicationGroup struct {
+	Properties *ApplicationGroupProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The geo-location where the resource lives
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ApplicationGroupClientCreateOrUpdateApplicationGroupOptions contains the optional parameters for the ApplicationGroupClient.CreateOrUpdateApplicationGroup
+// method.
+type ApplicationGroupClientCreateOrUpdateApplicationGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationGroupClientDeleteOptions contains the optional parameters for the ApplicationGroupClient.Delete method.
+type ApplicationGroupClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationGroupClientGetOptions contains the optional parameters for the ApplicationGroupClient.Get method.
+type ApplicationGroupClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationGroupClientListByNamespaceOptions contains the optional parameters for the ApplicationGroupClient.ListByNamespace
+// method.
+type ApplicationGroupClientListByNamespaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ApplicationGroupListResult - The response from the List Application Groups operation.
+type ApplicationGroupListResult struct {
+	// Result of the List Application Groups operation.
+	Value []*ApplicationGroup `json:"value,omitempty"`
+
+	// READ-ONLY; Link to the next set of results. Not empty if Value contains an incomplete list of Authorization Rules
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// ApplicationGroupPolicyClassification provides polymorphic access to related types.
+// Call the interface's GetApplicationGroupPolicy() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ApplicationGroupPolicy, *ThrottlingPolicy
+type ApplicationGroupPolicyClassification interface {
+	// GetApplicationGroupPolicy returns the ApplicationGroupPolicy content of the underlying type.
+	GetApplicationGroupPolicy() *ApplicationGroupPolicy
+}
+
+// ApplicationGroupPolicy - Properties of the Application Group policy
+type ApplicationGroupPolicy struct {
+	// REQUIRED; The Name of this policy
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; Application Group Policy types
+	Type *ApplicationGroupPolicyType `json:"type,omitempty"`
+}
+
+// GetApplicationGroupPolicy implements the ApplicationGroupPolicyClassification interface for type ApplicationGroupPolicy.
+func (a *ApplicationGroupPolicy) GetApplicationGroupPolicy() *ApplicationGroupPolicy { return a }
+
+type ApplicationGroupProperties struct {
+	// REQUIRED; The Unique identifier for application group.Supports SAS(SASKeyName=KeyName) or AAD(AADAppID=Guid)
+	ClientAppGroupIdentifier *string `json:"clientAppGroupIdentifier,omitempty"`
+
+	// Determines if Application Group is allowed to create connection with namespace or not. Once the isEnabled is set to false,
+	// all the existing connections of application group gets dropped and no new
+	// connections will be allowed
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+
+	// List of group policies that define the behavior of application group. The policies can support resource governance scenarios
+	// such as limiting ingress or egress traffic.
+	Policies []ApplicationGroupPolicyClassification `json:"policies,omitempty"`
+}
+
 // ArmDisasterRecovery - Single item in List or Get Alias(Disaster Recovery configuration) operation
 type ArmDisasterRecovery struct {
 	// Properties required to the Create Or Update Alias(Disaster Recovery configurations)
@@ -211,6 +297,9 @@ type ClusterListResult struct {
 
 // ClusterProperties - Event Hubs Cluster properties supplied in responses in List or Get operations.
 type ClusterProperties struct {
+	// A value that indicates whether Scaling is Supported.
+	SupportsScaling *bool `json:"supportsScaling,omitempty"`
+
 	// READ-ONLY; The UTC time when the Event Hubs Cluster was created.
 	CreatedAt *string `json:"createdAt,omitempty" azure:"ro"`
 
@@ -539,8 +628,14 @@ type EHNamespaceProperties struct {
 	// AutoInflateEnabled = true)
 	MaximumThroughputUnits *int32 `json:"maximumThroughputUnits,omitempty"`
 
+	// The minimum TLS version for the cluster to support, e.g. '1.2'
+	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
+
 	// List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+
+	// This determines if traffic is allowed over public network. By default it is enabled.
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
 	// Enabling this property creates a Standard Event Hubs Namespace in regions supported availability zones.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
@@ -875,7 +970,9 @@ type NetworkRuleSetProperties struct {
 	// List of IpRules
 	IPRules []*NWRuleSetIPRules `json:"ipRules,omitempty"`
 
-	// This determines if traffic is allowed over public network. By default it is enabled.
+	// This determines if traffic is allowed over public network. By default it is enabled. If value is SecuredByPerimeter then
+	// Inbound and Outbound communication is controlled by the network security
+	// perimeter and profile's access rules.
 	PublicNetworkAccess *PublicNetworkAccessFlag `json:"publicNetworkAccess,omitempty"`
 
 	// Value that indicates whether Trusted Service Access is Enabled or not.
@@ -883,6 +980,136 @@ type NetworkRuleSetProperties struct {
 
 	// List VirtualNetwork Rules
 	VirtualNetworkRules []*NWRuleSetVirtualNetworkRules `json:"virtualNetworkRules,omitempty"`
+}
+
+// NetworkSecurityPerimeter related information
+type NetworkSecurityPerimeter struct {
+	// Fully qualified identifier of the resource
+	ID *string `json:"id,omitempty"`
+
+	// Location of the resource
+	Location *string `json:"location,omitempty"`
+
+	// Guid of the resource
+	PerimeterGUID *string `json:"perimeterGuid,omitempty"`
+}
+
+// NetworkSecurityPerimeterConfiguration - Network Security Perimeter related configurations of a given namespace
+type NetworkSecurityPerimeterConfiguration struct {
+	// Resource location.
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Properties of the Network Security Perimeter Configuration
+	Properties *NetworkSecurityPerimeterConfigurationProperties `json:"properties,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// NetworkSecurityPerimeterConfigurationClientListOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationClient.List
+// method.
+type NetworkSecurityPerimeterConfigurationClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkSecurityPerimeterConfigurationList - Result of the List NetworkSecurityPerimeterConfiguration operation.
+type NetworkSecurityPerimeterConfigurationList struct {
+	// READ-ONLY; A collection of NetworkSecurityPerimeterConfigurations
+	Value []*NetworkSecurityPerimeterConfiguration `json:"value,omitempty" azure:"ro"`
+}
+
+// NetworkSecurityPerimeterConfigurationProperties - Properties of NetworkSecurityPerimeterConfiguration
+type NetworkSecurityPerimeterConfigurationProperties struct {
+	// List of Provisioning Issues if any
+	ProvisioningIssues []*ProvisioningIssue `json:"provisioningIssues,omitempty"`
+
+	// Provisioning state of NetworkSecurityPerimeter configuration propagation
+	ProvisioningState *NetworkSecurityPerimeterConfigurationProvisioningState `json:"provisioningState,omitempty"`
+
+	// READ-ONLY; NetworkSecurityPerimeter related information
+	NetworkSecurityPerimeter *NetworkSecurityPerimeter `json:"networkSecurityPerimeter,omitempty" azure:"ro"`
+
+	// READ-ONLY; Information about current network profile
+	Profile *NetworkSecurityPerimeterConfigurationPropertiesProfile `json:"profile,omitempty" azure:"ro"`
+
+	// READ-ONLY; Information about resource association
+	ResourceAssociation *NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation `json:"resourceAssociation,omitempty" azure:"ro"`
+}
+
+// NetworkSecurityPerimeterConfigurationPropertiesProfile - Information about current network profile
+type NetworkSecurityPerimeterConfigurationPropertiesProfile struct {
+	// List of Access Rules
+	AccessRules []*NspAccessRule `json:"accessRules,omitempty"`
+
+	// Current access rules version
+	AccessRulesVersion *string `json:"accessRulesVersion,omitempty"`
+
+	// Name of the resource
+	Name *string `json:"name,omitempty"`
+}
+
+// NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation - Information about resource association
+type NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation struct {
+	// Access Mode of the resource association
+	AccessMode *ResourceAssociationAccessMode `json:"accessMode,omitempty"`
+
+	// Name of the resource association
+	Name *string `json:"name,omitempty"`
+}
+
+// NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.BeginCreateOrUpdate
+// method.
+type NetworkSecurityPerimeterConfigurationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// NspAccessRule - Information of Access Rule in Network Profile
+type NspAccessRule struct {
+	// Fully qualified identifier of the resource
+	ID *string `json:"id,omitempty"`
+
+	// Name of the resource
+	Name *string `json:"name,omitempty"`
+
+	// Type of the resource
+	Type *string `json:"type,omitempty"`
+
+	// READ-ONLY; Properties of Access Rule
+	Properties *NspAccessRuleProperties `json:"properties,omitempty" azure:"ro"`
+}
+
+// NspAccessRuleProperties - Properties of Access Rule
+type NspAccessRuleProperties struct {
+	// Address prefixes in the CIDR format for inbound rules
+	AddressPrefixes []*string `json:"addressPrefixes,omitempty"`
+
+	// Direction of Access Rule
+	Direction *NspAccessRuleDirection `json:"direction,omitempty"`
+
+	// Subscriptions for inbound rules
+	Subscriptions []*NspAccessRulePropertiesSubscriptionsItem `json:"subscriptions,omitempty"`
+
+	// READ-ONLY; FQDN for outbound rules
+	FullyQualifiedDomainNames []*string `json:"fullyQualifiedDomainNames,omitempty" azure:"ro"`
+
+	// READ-ONLY; NetworkSecurityPerimeters for inbound rules
+	NetworkSecurityPerimeters []*NetworkSecurityPerimeter `json:"networkSecurityPerimeters,omitempty" azure:"ro"`
+}
+
+// NspAccessRulePropertiesSubscriptionsItem - Subscription for inbound rule
+type NspAccessRulePropertiesSubscriptionsItem struct {
+	// Fully qualified identifier of subscription
+	ID *string `json:"id,omitempty"`
 }
 
 // Operation - A Event Hub REST API operation
@@ -1071,6 +1298,24 @@ type Properties struct {
 	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
 }
 
+// ProvisioningIssue - Describes Provisioning issue for given NetworkSecurityPerimeterConfiguration
+type ProvisioningIssue struct {
+	// Name of the issue
+	Name *string `json:"name,omitempty"`
+
+	// READ-ONLY; Properties of Provisioning Issue
+	Properties *ProvisioningIssueProperties `json:"properties,omitempty" azure:"ro"`
+}
+
+// ProvisioningIssueProperties - Properties of Provisioning Issue
+type ProvisioningIssueProperties struct {
+	// Description of the issue
+	Description *string `json:"description,omitempty"`
+
+	// Type of Issue
+	IssueType *string `json:"issueType,omitempty"`
+}
+
 // ProxyResource - Common fields that are returned in the response for all Azure Resource Manager resources
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1218,6 +1463,30 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// ThrottlingPolicy - Properties of the throttling policy
+type ThrottlingPolicy struct {
+	// REQUIRED; Metric Id on which the throttle limit should be set, MetricId can be discovered by hovering over Metric in the
+	// Metrics section of Event Hub Namespace inside Azure Portal
+	MetricID *MetricID `json:"metricId,omitempty"`
+
+	// REQUIRED; The Name of this policy
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; The Threshold limit above which the application group will be throttled.Rate limit is always per second.
+	RateLimitThreshold *int64 `json:"rateLimitThreshold,omitempty"`
+
+	// REQUIRED; Application Group Policy types
+	Type *ApplicationGroupPolicyType `json:"type,omitempty"`
+}
+
+// GetApplicationGroupPolicy implements the ApplicationGroupPolicyClassification interface for type ThrottlingPolicy.
+func (t *ThrottlingPolicy) GetApplicationGroupPolicy() *ApplicationGroupPolicy {
+	return &ApplicationGroupPolicy{
+		Name: t.Name,
+		Type: t.Type,
+	}
 }
 
 // TrackedResource - Definition of resource.

@@ -12,8 +12,6 @@ import (
 	"context"
 	"log"
 
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations"
@@ -31,19 +29,19 @@ func ExampleReservationClient_BeginAvailableScopes() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginAvailableScopes(ctx,
-		"<reservation-order-id>",
-		"<reservation-id>",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
+		"356e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		armreservations.AvailableScopeRequest{
 			Properties: &armreservations.AvailableScopeRequestProperties{
 				Scopes: []*string{
 					to.Ptr("/subscriptions/efc7c997-7700-4a74-b731-55aec16c15e9")},
 			},
 		},
-		&armreservations.ReservationClientBeginAvailableScopesOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -63,20 +61,20 @@ func ExampleReservationClient_BeginSplit() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginSplit(ctx,
-		"<reservation-order-id>",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		armreservations.SplitRequest{
 			Properties: &armreservations.SplitProperties{
 				Quantities: []*int32{
 					to.Ptr[int32](1),
 					to.Ptr[int32](2)},
-				ReservationID: to.Ptr("<reservation-id>"),
+				ReservationID: to.Ptr("/providers/Microsoft.Capacity/reservationOrders/276e7ae4-84d0-4da6-ab4b-d6b94f3557da/reservations/bcae77cd-3119-4766-919f-b50d36c75c7a"),
 			},
 		},
-		&armreservations.ReservationClientBeginSplitOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -96,7 +94,7 @@ func ExampleReservationClient_BeginMerge() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginMerge(ctx,
-		"<reservation-order-id>",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		armreservations.MergeRequest{
 			Properties: &armreservations.MergeProperties{
 				Sources: []*string{
@@ -104,11 +102,11 @@ func ExampleReservationClient_BeginMerge() {
 					to.Ptr("/providers/Microsoft.Capacity/reservationOrders/c0565a8a-4491-4e77-b07b-5e6d66718e1c/reservations/5bf54dc7-dacd-4f46-a16b-7b78f4a59799")},
 			},
 		},
-		&armreservations.ReservationClientBeginMergeOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -127,13 +125,12 @@ func ExampleReservationClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<reservation-order-id>",
+	pager := client.NewListPager("276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -154,9 +151,9 @@ func ExampleReservationClient_Get() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<reservation-id>",
-		"<reservation-order-id>",
-		&armreservations.ReservationClientGetOptions{Expand: to.Ptr("<expand>")})
+		"6ef59113-3482-40da-8d79-787f823e34bc",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
+		&armreservations.ReservationClientGetOptions{Expand: to.Ptr("renewProperties")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -176,19 +173,19 @@ func ExampleReservationClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
-		"<reservation-order-id>",
-		"<reservation-id>",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
+		"6ef59113-3482-40da-8d79-787f823e34bc",
 		armreservations.Patch{
 			Properties: &armreservations.PatchProperties{
 				AppliedScopeType:    to.Ptr(armreservations.AppliedScopeTypeShared),
 				InstanceFlexibility: to.Ptr(armreservations.InstanceFlexibilityOff),
 			},
 		},
-		&armreservations.ReservationClientBeginUpdateOptions{ResumeToken: ""})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, 30*time.Second)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
@@ -207,14 +204,13 @@ func ExampleReservationClient_NewListRevisionsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListRevisionsPager("<reservation-id>",
-		"<reservation-order-id>",
+	pager := client.NewListRevisionsPager("6ef59113-3482-40da-8d79-787f823e34bc",
+		"276e7ae4-84d0-4da6-ab4b-d6b94f3557da",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -234,8 +230,8 @@ func ExampleReservationClient_NewListAllPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(&armreservations.ReservationClientListAllOptions{Filter: to.Ptr("<filter>"),
-		Orderby:        to.Ptr("<orderby>"),
+	pager := client.NewListAllPager(&armreservations.ReservationClientListAllOptions{Filter: to.Ptr("(properties%2farchived+eq+false)"),
+		Orderby:        to.Ptr("properties/displayName asc"),
 		RefreshSummary: nil,
 		Skiptoken:      to.Ptr[float32](50),
 		SelectedState:  nil,
@@ -245,7 +241,6 @@ func ExampleReservationClient_NewListAllPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

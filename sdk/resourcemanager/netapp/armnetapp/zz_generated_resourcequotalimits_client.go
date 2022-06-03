@@ -39,7 +39,7 @@ func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.Token
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.Token
 
 // Get - Get the default and current subscription quota limit
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // location - The location
 // quotaLimitName - The name of the Quota Limit
 // options - ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
@@ -97,7 +98,7 @@ func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, l
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -112,11 +113,12 @@ func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - Get the default and current limits for quotas
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-10-01
 // location - The location
 // options - ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.List
 // method.
 func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *ResourceQuotaLimitsClientListOptions) *runtime.Pager[ResourceQuotaLimitsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ResourceQuotaLimitsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ResourceQuotaLimitsClientListResponse]{
 		More: func(page ResourceQuotaLimitsClientListResponse) bool {
 			return false
 		},
@@ -155,7 +157,7 @@ func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

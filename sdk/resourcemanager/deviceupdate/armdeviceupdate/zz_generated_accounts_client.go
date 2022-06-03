@@ -38,7 +38,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreate - Creates or updates Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // account - Account details.
 // options - AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
-func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginCreateOptions) (*armruntime.Poller[AccountsClientCreateResponse], error) {
+func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginCreateOptions) (*runtime.Poller[AccountsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, account, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountsClientCreateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AccountsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates or updates Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 func (client *AccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, account, options)
 	if err != nil {
@@ -111,33 +113,35 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, account)
 }
 
 // BeginDelete - Deletes account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
-func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*armruntime.Poller[AccountsClientDeleteResponse], error) {
+func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*runtime.Poller[AccountsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountsClientDeleteResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AccountsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
@@ -173,14 +177,15 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Returns account details for the given account name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
@@ -219,9 +224,9 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -235,6 +240,7 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 }
 
 // Head - Checks whether account exists.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // options - AccountsClientHeadOptions contains the optional parameters for the AccountsClient.Head method.
@@ -247,11 +253,10 @@ func (client *AccountsClient) Head(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return AccountsClientHeadResponse{}, err
 	}
-	result := AccountsClientHeadResponse{}
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		result.Success = true
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AccountsClientHeadResponse{}, runtime.NewResponseError(resp)
 	}
-	return result, nil
+	return AccountsClientHeadResponse{Success: resp.StatusCode >= 200 && resp.StatusCode < 300}, nil
 }
 
 // headCreateRequest creates the Head request.
@@ -274,19 +279,20 @@ func (client *AccountsClient) headCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListByResourceGroupPager - Returns list of Accounts.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
 func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountsClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListByResourceGroupResponse]{
 		More: func(page AccountsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -329,9 +335,9 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -346,10 +352,11 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Returns list of Accounts.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription
 // method.
 func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[AccountsClientListBySubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[AccountsClientListBySubscriptionResponse]{
 		More: func(page AccountsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -388,9 +395,9 @@ func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -405,26 +412,28 @@ func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // BeginUpdate - Updates account's patchable properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The resource group name.
 // accountName - Account name.
 // accountUpdatePayload - Updated Account.
 // options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, accountUpdatePayload AccountUpdate, options *AccountsClientBeginUpdateOptions) (*armruntime.Poller[AccountsClientUpdateResponse], error) {
+func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, accountUpdatePayload AccountUpdate, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, accountUpdatePayload, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[AccountsClientUpdateResponse]{
-			FinalStateVia: armruntime.FinalStateViaAzureAsyncOp,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[AccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates account's patchable properties
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
 func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, accountUpdatePayload AccountUpdate, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, accountUpdatePayload, options)
 	if err != nil {
@@ -460,8 +469,8 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-03-01-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, accountUpdatePayload)
 }

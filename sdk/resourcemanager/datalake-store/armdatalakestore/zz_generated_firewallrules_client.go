@@ -39,7 +39,7 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,6 +58,7 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 // CreateOrUpdate - Creates or updates the specified firewall rule. During update, the firewall rule with the specified name
 // will be replaced with this new firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // firewallRuleName - The name of the firewall rule to create or update.
@@ -105,7 +106,7 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -120,6 +121,7 @@ func (client *FirewallRulesClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // Delete - Deletes the specified firewall rule from the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // firewallRuleName - The name of the firewall rule to delete.
@@ -170,6 +172,7 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - Gets the specified Data Lake Store firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // firewallRuleName - The name of the firewall rule to retrieve.
@@ -215,7 +218,7 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -230,12 +233,13 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 
 // NewListByAccountPager - Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // options - FirewallRulesClientListByAccountOptions contains the optional parameters for the FirewallRulesClient.ListByAccount
 // method.
 func (client *FirewallRulesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *FirewallRulesClientListByAccountOptions) *runtime.Pager[FirewallRulesClientListByAccountResponse] {
-	return runtime.NewPager(runtime.PageProcessor[FirewallRulesClientListByAccountResponse]{
+	return runtime.NewPager(runtime.PagingHandler[FirewallRulesClientListByAccountResponse]{
 		More: func(page FirewallRulesClientListByAccountResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -284,7 +288,7 @@ func (client *FirewallRulesClient) listByAccountCreateRequest(ctx context.Contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -299,6 +303,7 @@ func (client *FirewallRulesClient) listByAccountHandleResponse(resp *http.Respon
 
 // Update - Updates the specified firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-11-01
 // resourceGroupName - The name of the Azure resource group.
 // accountName - The name of the Data Lake Store account.
 // firewallRuleName - The name of the firewall rule to update.
@@ -344,7 +349,7 @@ func (client *FirewallRulesClient) updateCreateRequest(ctx context.Context, reso
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}

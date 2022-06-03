@@ -38,7 +38,7 @@ func NewRestorableGremlinResourcesClient(subscriptionID string, credential azcor
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -58,12 +58,13 @@ func NewRestorableGremlinResourcesClient(subscriptionID string, credential azcor
 // location. This helps in scenarios to validate what resources exist at given timestamp and
 // location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-15-preview
 // location - Cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - The instanceId GUID of a restorable database account.
 // options - RestorableGremlinResourcesClientListOptions contains the optional parameters for the RestorableGremlinResourcesClient.List
 // method.
 func (client *RestorableGremlinResourcesClient) NewListPager(location string, instanceID string, options *RestorableGremlinResourcesClientListOptions) *runtime.Pager[RestorableGremlinResourcesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RestorableGremlinResourcesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RestorableGremlinResourcesClientListResponse]{
 		More: func(page RestorableGremlinResourcesClientListResponse) bool {
 			return false
 		},
@@ -112,7 +113,7 @@ func (client *RestorableGremlinResourcesClient) listCreateRequest(ctx context.Co
 		reqQP.Set("restoreTimestampInUtc", *options.RestoreTimestampInUTC)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

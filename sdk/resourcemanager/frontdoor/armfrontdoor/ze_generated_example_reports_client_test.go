@@ -25,14 +25,14 @@ func ExampleReportsClient_GetLatencyScorecards() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfrontdoor.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetLatencyScorecards(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<experiment-name>",
+		"MyResourceGroup",
+		"MyProfile",
+		"MyExperiment",
 		armfrontdoor.LatencyScorecardAggregationIntervalDaily,
 		&armfrontdoor.ReportsClientGetLatencyScorecardsOptions{EndDateTimeUTC: nil,
 			Country: nil,
@@ -51,14 +51,14 @@ func ExampleReportsClient_GetTimeseries() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armfrontdoor.NewReportsClient("<subscription-id>", cred, nil)
+	client, err := armfrontdoor.NewReportsClient("subid", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetTimeseries(ctx,
-		"<resource-group-name>",
-		"<profile-name>",
-		"<experiment-name>",
+		"MyResourceGroup",
+		"MyProfile",
+		"MyExperiment",
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-21T17:32:28Z"); return t }(),
 		func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-21T17:32:28Z"); return t }(),
 		armfrontdoor.TimeseriesAggregationIntervalHourly,

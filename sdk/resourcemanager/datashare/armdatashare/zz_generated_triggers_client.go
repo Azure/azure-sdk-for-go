@@ -38,7 +38,7 @@ func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential,
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,26 +56,28 @@ func NewTriggersClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreate - Create a Trigger
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the share subscription which will hold the data set sink.
 // triggerName - The name of the trigger.
 // trigger - Trigger details.
 // options - TriggersClientBeginCreateOptions contains the optional parameters for the TriggersClient.BeginCreate method.
-func (client *TriggersClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, trigger TriggerClassification, options *TriggersClientBeginCreateOptions) (*armruntime.Poller[TriggersClientCreateResponse], error) {
+func (client *TriggersClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, trigger TriggerClassification, options *TriggersClientBeginCreateOptions) (*runtime.Poller[TriggersClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, shareSubscriptionName, triggerName, trigger, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TriggersClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TriggersClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Create a Trigger
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *TriggersClient) create(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, trigger TriggerClassification, options *TriggersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, triggerName, trigger, options)
 	if err != nil {
@@ -121,31 +123,33 @@ func (client *TriggersClient) createCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, trigger)
 }
 
 // BeginDelete - Delete a Trigger in a shareSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the shareSubscription.
 // triggerName - The name of the trigger.
 // options - TriggersClientBeginDeleteOptions contains the optional parameters for the TriggersClient.BeginDelete method.
-func (client *TriggersClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersClientBeginDeleteOptions) (*armruntime.Poller[TriggersClientDeleteResponse], error) {
+func (client *TriggersClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersClientBeginDeleteOptions) (*runtime.Poller[TriggersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, shareSubscriptionName, triggerName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[TriggersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[TriggersClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[TriggersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[TriggersClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Delete a Trigger in a shareSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 func (client *TriggersClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, triggerName string, options *TriggersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareSubscriptionName, triggerName, options)
 	if err != nil {
@@ -191,12 +195,13 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get a Trigger in a shareSubscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the shareSubscription.
@@ -247,7 +252,7 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -262,13 +267,14 @@ func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersCl
 
 // NewListByShareSubscriptionPager - List Triggers in a share subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2020-09-01
 // resourceGroupName - The resource group name.
 // accountName - The name of the share account.
 // shareSubscriptionName - The name of the share subscription.
 // options - TriggersClientListByShareSubscriptionOptions contains the optional parameters for the TriggersClient.ListByShareSubscription
 // method.
 func (client *TriggersClient) NewListByShareSubscriptionPager(resourceGroupName string, accountName string, shareSubscriptionName string, options *TriggersClientListByShareSubscriptionOptions) *runtime.Pager[TriggersClientListByShareSubscriptionResponse] {
-	return runtime.NewPager(runtime.PageProcessor[TriggersClientListByShareSubscriptionResponse]{
+	return runtime.NewPager(runtime.PagingHandler[TriggersClientListByShareSubscriptionResponse]{
 		More: func(page TriggersClientListByShareSubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -324,7 +330,7 @@ func (client *TriggersClient) listByShareSubscriptionCreateRequest(ctx context.C
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

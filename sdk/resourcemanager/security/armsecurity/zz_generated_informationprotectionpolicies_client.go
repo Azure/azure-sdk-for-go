@@ -36,7 +36,7 @@ func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, o
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, o
 
 // CreateOrUpdate - Details of the information protection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // informationProtectionPolicyName - Name of the information protection policy.
@@ -89,7 +90,7 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(c
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, informationProtectionPolicy)
 }
 
@@ -104,6 +105,7 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateHandleResponse(
 
 // Get - Details of the information protection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // informationProtectionPolicyName - Name of the information protection policy.
@@ -139,7 +141,7 @@ func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -154,12 +156,13 @@ func (client *InformationProtectionPoliciesClient) getHandleResponse(resp *http.
 
 // NewListPager - Information protection policies of a specific management group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2017-08-01-preview
 // scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
 // (/providers/Microsoft.Management/managementGroups/mgName).
 // options - InformationProtectionPoliciesClientListOptions contains the optional parameters for the InformationProtectionPoliciesClient.List
 // method.
 func (client *InformationProtectionPoliciesClient) NewListPager(scope string, options *InformationProtectionPoliciesClientListOptions) *runtime.Pager[InformationProtectionPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[InformationProtectionPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[InformationProtectionPoliciesClientListResponse]{
 		More: func(page InformationProtectionPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -197,7 +200,7 @@ func (client *InformationProtectionPoliciesClient) listCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

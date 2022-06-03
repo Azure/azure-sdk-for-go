@@ -24,13 +24,13 @@ func ExampleConfigurationsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"examplerg",
+		"configuration1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -46,25 +46,25 @@ func ExampleConfigurationsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"examplerg",
+		"configuration1",
 		armmaintenance.Configuration{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus2"),
 			Properties: &armmaintenance.ConfigurationProperties{
 				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 				MaintenanceWindow: &armmaintenance.Window{
-					Duration:           to.Ptr("<duration>"),
-					ExpirationDateTime: to.Ptr("<expiration-date-time>"),
-					RecurEvery:         to.Ptr("<recur-every>"),
-					StartDateTime:      to.Ptr("<start-date-time>"),
-					TimeZone:           to.Ptr("<time-zone>"),
+					Duration:           to.Ptr("05:00"),
+					ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
+					RecurEvery:         to.Ptr("Day"),
+					StartDateTime:      to.Ptr("2020-04-30 08:00"),
+					TimeZone:           to.Ptr("Pacific Standard Time"),
 				},
-				Namespace:  to.Ptr("<namespace>"),
+				Namespace:  to.Ptr("Microsoft.Maintenance"),
 				Visibility: to.Ptr(armmaintenance.VisibilityCustom),
 			},
 		},
@@ -83,13 +83,13 @@ func ExampleConfigurationsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"examplerg",
+		"example1",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -105,25 +105,25 @@ func ExampleConfigurationsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"examplerg",
+		"configuration1",
 		armmaintenance.Configuration{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("westus2"),
 			Properties: &armmaintenance.ConfigurationProperties{
 				MaintenanceScope: to.Ptr(armmaintenance.MaintenanceScopeOSImage),
 				MaintenanceWindow: &armmaintenance.Window{
-					Duration:           to.Ptr("<duration>"),
-					ExpirationDateTime: to.Ptr("<expiration-date-time>"),
-					RecurEvery:         to.Ptr("<recur-every>"),
-					StartDateTime:      to.Ptr("<start-date-time>"),
-					TimeZone:           to.Ptr("<time-zone>"),
+					Duration:           to.Ptr("05:00"),
+					ExpirationDateTime: to.Ptr("9999-12-31 00:00"),
+					RecurEvery:         to.Ptr("Month Third Sunday"),
+					StartDateTime:      to.Ptr("2020-04-30 08:00"),
+					TimeZone:           to.Ptr("Pacific Standard Time"),
 				},
-				Namespace:  to.Ptr("<namespace>"),
+				Namespace:  to.Ptr("Microsoft.Maintenance"),
 				Visibility: to.Ptr(armmaintenance.VisibilityCustom),
 			},
 		},
@@ -142,7 +142,7 @@ func ExampleConfigurationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armmaintenance.NewConfigurationsClient("<subscription-id>", cred, nil)
+	client, err := armmaintenance.NewConfigurationsClient("5b4b650e-28b9-4790-b3ab-ddbd88d727c4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -151,7 +151,6 @@ func ExampleConfigurationsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item

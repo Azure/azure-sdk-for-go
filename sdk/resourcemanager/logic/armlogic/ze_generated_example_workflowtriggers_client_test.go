@@ -24,12 +24,12 @@ func ExampleWorkflowTriggersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewWorkflowTriggersClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workflow-name>",
+	pager := client.NewListPager("test-resource-group",
+		"test-workflow",
 		&armlogic.WorkflowTriggersClientListOptions{Top: nil,
 			Filter: nil,
 		})
@@ -37,7 +37,6 @@ func ExampleWorkflowTriggersClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -53,14 +52,14 @@ func ExampleWorkflowTriggersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewWorkflowTriggersClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workflow-name>",
-		"<trigger-name>",
+		"test-resource-group",
+		"test-workflow",
+		"manual",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -76,14 +75,14 @@ func ExampleWorkflowTriggersClient_Reset() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewWorkflowTriggersClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Reset(ctx,
-		"<resource-group-name>",
-		"<workflow-name>",
-		"<trigger-name>",
+		"testResourceGroup",
+		"testWorkflow",
+		"testTrigger",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -97,14 +96,14 @@ func ExampleWorkflowTriggersClient_Run() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewWorkflowTriggersClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Run(ctx,
-		"<resource-group-name>",
-		"<workflow-name>",
-		"<trigger-name>",
+		"test-resource-group",
+		"test-workflow",
+		"manual",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -118,17 +117,17 @@ func ExampleWorkflowTriggersClient_SetState() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armlogic.NewWorkflowTriggersClient("<subscription-id>", cred, nil)
+	client, err := armlogic.NewWorkflowTriggersClient("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.SetState(ctx,
-		"<resource-group-name>",
-		"<workflow-name>",
-		"<trigger-name>",
+		"testResourceGroup",
+		"testWorkflow",
+		"testTrigger",
 		armlogic.SetTriggerStateActionDefinition{
 			Source: &armlogic.WorkflowTriggerReference{
-				ID: to.Ptr("<id>"),
+				ID: to.Ptr("subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/sourceResGroup/providers/Microsoft.Logic/workflows/sourceWorkflow/triggers/sourceTrigger"),
 			},
 		},
 		nil)

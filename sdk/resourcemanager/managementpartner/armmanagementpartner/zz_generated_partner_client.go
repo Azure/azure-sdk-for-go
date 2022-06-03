@@ -36,7 +36,7 @@ func NewPartnerClient(credential azcore.TokenCredential, options *arm.ClientOpti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -53,6 +53,7 @@ func NewPartnerClient(credential azcore.TokenCredential, options *arm.ClientOpti
 
 // Create - Create a management partner for the objectId and tenantId.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-01
 // partnerID - Id of the Partner
 // options - PartnerClientCreateOptions contains the optional parameters for the PartnerClient.Create method.
 func (client *PartnerClient) Create(ctx context.Context, partnerID string, options *PartnerClientCreateOptions) (PartnerClientCreateResponse, error) {
@@ -84,7 +85,7 @@ func (client *PartnerClient) createCreateRequest(ctx context.Context, partnerID 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -99,6 +100,7 @@ func (client *PartnerClient) createHandleResponse(resp *http.Response) (PartnerC
 
 // Delete - Delete the management partner for the objectId and tenantId.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-01
 // partnerID - Id of the Partner
 // options - PartnerClientDeleteOptions contains the optional parameters for the PartnerClient.Delete method.
 func (client *PartnerClient) Delete(ctx context.Context, partnerID string, options *PartnerClientDeleteOptions) (PartnerClientDeleteResponse, error) {
@@ -130,12 +132,13 @@ func (client *PartnerClient) deleteCreateRequest(ctx context.Context, partnerID 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the management partner using the partnerId, objectId and tenantId.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-01
 // partnerID - Id of the Partner
 // options - PartnerClientGetOptions contains the optional parameters for the PartnerClient.Get method.
 func (client *PartnerClient) Get(ctx context.Context, partnerID string, options *PartnerClientGetOptions) (PartnerClientGetResponse, error) {
@@ -167,7 +170,7 @@ func (client *PartnerClient) getCreateRequest(ctx context.Context, partnerID str
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -182,6 +185,7 @@ func (client *PartnerClient) getHandleResponse(resp *http.Response) (PartnerClie
 
 // Update - Update the management partner for the objectId and tenantId.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2018-02-01
 // partnerID - Id of the Partner
 // options - PartnerClientUpdateOptions contains the optional parameters for the PartnerClient.Update method.
 func (client *PartnerClient) Update(ctx context.Context, partnerID string, options *PartnerClientUpdateOptions) (PartnerClientUpdateResponse, error) {
@@ -213,7 +217,7 @@ func (client *PartnerClient) updateCreateRequest(ctx context.Context, partnerID 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

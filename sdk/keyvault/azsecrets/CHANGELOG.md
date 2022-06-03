@@ -1,14 +1,33 @@
 # Release History
 
-## 0.7.1 (Unreleased)
+## 0.8.0 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+* Deleted types `DeleteSecretPoller` and `RecoverDeletedSecretPoller`
+* Methods `BeginDeleteSecret` and `BeginRecoverDeletedSecret` now return a `*runtime.Poller[T]` with their respective response types.
+* Options types with a `ResumeToken` field now take the token by value.
+* Renamed methods which return `Pager[T]`:
+  * `ListDeletedSecrets` to `NewListDeletedSecretsPager`
+  * `ListPropertiesOfSecrets` to `NewListPropertiesOfSecretsPager`
+  * `NewListPropertiesOfSecretVersionsPager` to `NewListPropertiesOfSecretVersionsPager`
+* Renamed `ListSecretVersionsOptions` to `ListPropertiesOfSecretVersionsOptions` and
+  `ListSecretsOptions` to `ListPropertiesOfSecretsOptions`
+* Renamed `Properties.IsManaged` to `.Managed`
+* Deleted redundant fields `ContentType`, `IsManaged` and `Tags` from several types. These fields are available via the types'
+  `Properties` fields, for example `SecretItem.Properties`.
+* Changed paged API content values to pointer types. For example, `ListPropertiesOfSecretsResponse.Secrets`
+  changed type from `[]SecretItem` to `[]*SecretItem`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.7.1 (2022-05-12)
+
+### Other Changes
+* Updated to latest `azcore` and `internal` modules.
 
 ## 0.7.0 (2022-04-06)
 

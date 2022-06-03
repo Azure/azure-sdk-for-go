@@ -24,7 +24,7 @@ func ExampleFactoriesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewFactoriesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -33,7 +33,6 @@ func ExampleFactoriesClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,23 +48,23 @@ func ExampleFactoriesClient_ConfigureFactoryRepo() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewFactoriesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.ConfigureFactoryRepo(ctx,
-		"<location-id>",
+		"East US",
 		armdatafactory.FactoryRepoUpdate{
-			FactoryResourceID: to.Ptr("<factory-resource-id>"),
+			FactoryResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.DataFactory/factories/exampleFactoryName"),
 			RepoConfiguration: &armdatafactory.FactoryVSTSConfiguration{
-				Type:                to.Ptr("<type>"),
-				AccountName:         to.Ptr("<account-name>"),
-				CollaborationBranch: to.Ptr("<collaboration-branch>"),
-				LastCommitID:        to.Ptr("<last-commit-id>"),
-				RepositoryName:      to.Ptr("<repository-name>"),
-				RootFolder:          to.Ptr("<root-folder>"),
-				ProjectName:         to.Ptr("<project-name>"),
-				TenantID:            to.Ptr("<tenant-id>"),
+				Type:                to.Ptr("FactoryVSTSConfiguration"),
+				AccountName:         to.Ptr("ADF"),
+				CollaborationBranch: to.Ptr("master"),
+				LastCommitID:        to.Ptr(""),
+				RepositoryName:      to.Ptr("repo"),
+				RootFolder:          to.Ptr("/"),
+				ProjectName:         to.Ptr("project"),
+				TenantID:            to.Ptr(""),
 			},
 		},
 		nil)
@@ -83,17 +82,16 @@ func ExampleFactoriesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewFactoriesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("exampleResourceGroup",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -109,15 +107,15 @@ func ExampleFactoriesClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewFactoriesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		armdatafactory.Factory{
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("East US"),
 		},
 		&armdatafactory.FactoriesClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -134,13 +132,13 @@ func ExampleFactoriesClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewFactoriesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		armdatafactory.FactoryUpdateParameters{
 			Tags: map[string]*string{
 				"exampleTag": to.Ptr("exampleValue"),
@@ -161,13 +159,13 @@ func ExampleFactoriesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewFactoriesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		&armdatafactory.FactoriesClientGetOptions{IfNoneMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -183,13 +181,13 @@ func ExampleFactoriesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewFactoriesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -203,17 +201,17 @@ func ExampleFactoriesClient_GetGitHubAccessToken() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewFactoriesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetGitHubAccessToken(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		armdatafactory.GitHubAccessTokenRequest{
-			GitHubAccessCode:         to.Ptr("<git-hub-access-code>"),
-			GitHubAccessTokenBaseURL: to.Ptr("<git-hub-access-token-base-url>"),
-			GitHubClientID:           to.Ptr("<git-hub-client-id>"),
+			GitHubAccessCode:         to.Ptr("some"),
+			GitHubAccessTokenBaseURL: to.Ptr("some"),
+			GitHubClientID:           to.Ptr("some"),
 		},
 		nil)
 	if err != nil {
@@ -230,19 +228,19 @@ func ExampleFactoriesClient_GetDataPlaneAccess() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewFactoriesClient("<subscription-id>", cred, nil)
+	client, err := armdatafactory.NewFactoriesClient("12345678-1234-1234-1234-12345678abc", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.GetDataPlaneAccess(ctx,
-		"<resource-group-name>",
-		"<factory-name>",
+		"exampleResourceGroup",
+		"exampleFactoryName",
 		armdatafactory.UserAccessPolicy{
-			AccessResourcePath: to.Ptr("<access-resource-path>"),
-			ExpireTime:         to.Ptr("<expire-time>"),
-			Permissions:        to.Ptr("<permissions>"),
-			ProfileName:        to.Ptr("<profile-name>"),
-			StartTime:          to.Ptr("<start-time>"),
+			AccessResourcePath: to.Ptr(""),
+			ExpireTime:         to.Ptr("2018-11-10T09:46:20.2659347Z"),
+			Permissions:        to.Ptr("r"),
+			ProfileName:        to.Ptr("DefaultProfile"),
+			StartTime:          to.Ptr("2018-11-10T02:46:20.2659347Z"),
 		},
 		nil)
 	if err != nil {

@@ -12,12 +12,12 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // Kind is the identifier of this type in a resume token.
-const kind = "Body"
+const kind = "body"
 
 // Applicable returns true if the LRO is using no headers, just provisioning state.
 // This is only applicable to PATCH and PUT methods and assumes no polling headers.
@@ -125,6 +125,6 @@ func (p *Poller[T]) Poll(ctx context.Context) (*http.Response, error) {
 	return p.resp, nil
 }
 
-func (p *Poller[T]) Result(ctx context.Context, out *T) (T, error) {
+func (p *Poller[T]) Result(ctx context.Context, out *T) error {
 	return pollers.ResultHelper(p.resp, pollers.Failed(p.CurState), out)
 }

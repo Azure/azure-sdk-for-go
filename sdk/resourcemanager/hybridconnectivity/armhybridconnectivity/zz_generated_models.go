@@ -10,6 +10,15 @@ package armhybridconnectivity
 
 import "time"
 
+// AADProfileProperties - The AAD Profile
+type AADProfileProperties struct {
+	// REQUIRED; The arc ingress gateway server app id.
+	ServerID *string `json:"serverId,omitempty"`
+
+	// REQUIRED; The target resource home tenant id.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // EndpointAccessResource - The endpoint access for the target resource.
 type EndpointAccessResource struct {
 	// Azure relay hybrid connection access properties
@@ -24,7 +33,7 @@ type EndpointProperties struct {
 	// The resource Id of the connectivity endpoint (optional).
 	ResourceID *string `json:"resourceId,omitempty"`
 
-	// READ-ONLY
+	// READ-ONLY; The resource provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
@@ -65,6 +74,12 @@ type EndpointsClientGetOptions struct {
 type EndpointsClientListCredentialsOptions struct {
 	// The is how long the endpoint access token is valid (in seconds).
 	Expiresin *int64
+}
+
+// EndpointsClientListManagedProxyDetailsOptions contains the optional parameters for the EndpointsClient.ListManagedProxyDetails
+// method.
+type EndpointsClientListManagedProxyDetailsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // EndpointsClientListOptions contains the optional parameters for the EndpointsClient.List method.
@@ -118,6 +133,42 @@ type ErrorDetail struct {
 type ErrorResponse struct {
 	// The error object.
 	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+// IngressGatewayResource - The ingress gateway access credentials
+type IngressGatewayResource struct {
+	// Ingress gateway profile
+	Ingress *IngressProfileProperties `json:"ingress,omitempty"`
+
+	// Azure relay hybrid connection access properties
+	Relay *RelayNamespaceAccessProperties `json:"relay,omitempty"`
+}
+
+// IngressProfileProperties - Ingress gateway profile
+type IngressProfileProperties struct {
+	// REQUIRED; The AAD Profile
+	AADProfile *AADProfileProperties `json:"aadProfile,omitempty"`
+
+	// REQUIRED; The ingress hostname.
+	Hostname *string `json:"hostname,omitempty"`
+}
+
+// ManagedProxyRequest - Represent ManageProxy Request object.
+type ManagedProxyRequest struct {
+	// REQUIRED; The name of the service.
+	Service *string `json:"service,omitempty"`
+
+	// The target host name.
+	Hostname *string `json:"hostname,omitempty"`
+}
+
+// ManagedProxyResource - Managed Proxy
+type ManagedProxyResource struct {
+	// REQUIRED; The expiration time of short lived proxy name in unix epoch.
+	ExpiresOn *int64 `json:"expiresOn,omitempty"`
+
+	// REQUIRED; The short lived proxy name.
+	Proxy *string `json:"proxy,omitempty"`
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API

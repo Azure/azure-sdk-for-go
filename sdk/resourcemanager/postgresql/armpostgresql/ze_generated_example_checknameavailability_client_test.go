@@ -24,14 +24,14 @@ func ExampleCheckNameAvailabilityClient_Execute() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armpostgresql.NewCheckNameAvailabilityClient("<subscription-id>", cred, nil)
+	client, err := armpostgresql.NewCheckNameAvailabilityClient("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Execute(ctx,
 		armpostgresql.NameAvailabilityRequest{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("name1"),
+			Type: to.Ptr("Microsoft.DBforPostgreSQL"),
 		},
 		nil)
 	if err != nil {

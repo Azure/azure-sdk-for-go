@@ -39,7 +39,7 @@ func NewEdgeModulesClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -62,6 +62,7 @@ func NewEdgeModulesClient(subscriptionID string, credential azcore.TokenCredenti
 // be created for every new instance of an Azure Video Analyzer edge module deployed to you Azure IoT edge environment. Edge
 // module resources can be deleted if the specific module is not in use anymore.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // edgeModuleName - The Edge Module name.
@@ -109,7 +110,7 @@ func (client *EdgeModulesClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -126,6 +127,7 @@ func (client *EdgeModulesClient) createOrUpdateHandleResponse(resp *http.Respons
 // IoT edge module which was previously initiated with the module provisioning token from
 // communicating with the cloud.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // edgeModuleName - The Edge Module name.
@@ -171,12 +173,13 @@ func (client *EdgeModulesClient) deleteCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Retrieves an existing edge module resource with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // edgeModuleName - The Edge Module name.
@@ -222,7 +225,7 @@ func (client *EdgeModulesClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -237,11 +240,12 @@ func (client *EdgeModulesClient) getHandleResponse(resp *http.Response) (EdgeMod
 
 // NewListPager - List all existing edge module resources, along with their JSON representations.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // options - EdgeModulesClientListOptions contains the optional parameters for the EdgeModulesClient.List method.
 func (client *EdgeModulesClient) NewListPager(resourceGroupName string, accountName string, options *EdgeModulesClientListOptions) *runtime.Pager[EdgeModulesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[EdgeModulesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[EdgeModulesClientListResponse]{
 		More: func(page EdgeModulesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -293,7 +297,7 @@ func (client *EdgeModulesClient) listCreateRequest(ctx context.Context, resource
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -314,6 +318,7 @@ func (client *EdgeModulesClient) listHandleResponse(resp *http.Response) (EdgeMo
 // token can be generated for the same IoT edge module in case the module state lost
 // or reset.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // accountName - The Azure Video Analyzer account name.
 // edgeModuleName - The Edge Module name.
@@ -361,7 +366,7 @@ func (client *EdgeModulesClient) listProvisioningTokenCreateRequest(ctx context.
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 

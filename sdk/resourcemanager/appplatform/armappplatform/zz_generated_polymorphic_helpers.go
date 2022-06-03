@@ -48,6 +48,28 @@ func unmarshalCustomPersistentDiskPropertiesClassification(rawMsg json.RawMessag
 	return b, json.Unmarshal(rawMsg, b)
 }
 
+func unmarshalProbeActionClassification(rawMsg json.RawMessage) (ProbeActionClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ProbeActionClassification
+	switch m["type"] {
+	case string(ProbeActionTypeExecAction):
+		b = &ExecAction{}
+	case string(ProbeActionTypeHTTPGetAction):
+		b = &HTTPGetAction{}
+	case string(ProbeActionTypeTCPSocketAction):
+		b = &TCPSocketAction{}
+	default:
+		b = &ProbeAction{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
 func unmarshalStoragePropertiesClassification(rawMsg json.RawMessage) (StoragePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil

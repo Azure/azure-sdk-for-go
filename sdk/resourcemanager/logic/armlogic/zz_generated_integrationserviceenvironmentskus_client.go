@@ -38,7 +38,7 @@ func NewIntegrationServiceEnvironmentSKUsClient(subscriptionID string, credentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -56,12 +56,13 @@ func NewIntegrationServiceEnvironmentSKUsClient(subscriptionID string, credentia
 
 // NewListPager - Gets a list of integration service environment Skus.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-05-01
 // resourceGroup - The resource group.
 // integrationServiceEnvironmentName - The integration service environment name.
 // options - IntegrationServiceEnvironmentSKUsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentSKUsClient.List
 // method.
 func (client *IntegrationServiceEnvironmentSKUsClient) NewListPager(resourceGroup string, integrationServiceEnvironmentName string, options *IntegrationServiceEnvironmentSKUsClientListOptions) *runtime.Pager[IntegrationServiceEnvironmentSKUsClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[IntegrationServiceEnvironmentSKUsClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[IntegrationServiceEnvironmentSKUsClientListResponse]{
 		More: func(page IntegrationServiceEnvironmentSKUsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -110,7 +111,7 @@ func (client *IntegrationServiceEnvironmentSKUsClient) listCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

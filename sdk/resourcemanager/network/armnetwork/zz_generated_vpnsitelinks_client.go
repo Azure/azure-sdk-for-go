@@ -39,7 +39,7 @@ func NewVPNSiteLinksClient(subscriptionID string, credential azcore.TokenCredent
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewVPNSiteLinksClient(subscriptionID string, credential azcore.TokenCredent
 
 // Get - Retrieves the details of a VPN site link.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The resource group name of the VpnSite.
 // vpnSiteName - The name of the VpnSite.
 // vpnSiteLinkName - The name of the VpnSiteLink being retrieved.
@@ -100,9 +101,9 @@ func (client *VPNSiteLinksClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -117,12 +118,13 @@ func (client *VPNSiteLinksClient) getHandleResponse(resp *http.Response) (VPNSit
 
 // NewListByVPNSitePager - Lists all the vpnSiteLinks in a resource group for a vpn site.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The resource group name of the VpnSite.
 // vpnSiteName - The name of the VpnSite.
 // options - VPNSiteLinksClientListByVPNSiteOptions contains the optional parameters for the VPNSiteLinksClient.ListByVPNSite
 // method.
 func (client *VPNSiteLinksClient) NewListByVPNSitePager(resourceGroupName string, vpnSiteName string, options *VPNSiteLinksClientListByVPNSiteOptions) *runtime.Pager[VPNSiteLinksClientListByVPNSiteResponse] {
-	return runtime.NewPager(runtime.PageProcessor[VPNSiteLinksClientListByVPNSiteResponse]{
+	return runtime.NewPager(runtime.PagingHandler[VPNSiteLinksClientListByVPNSiteResponse]{
 		More: func(page VPNSiteLinksClientListByVPNSiteResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -169,9 +171,9 @@ func (client *VPNSiteLinksClient) listByVPNSiteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

@@ -9,7 +9,7 @@ package azsecrets
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal/generated"
 	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
@@ -49,16 +49,16 @@ type Secret struct {
 	Value *string `json:"value,omitempty"`
 }
 
-func (s Secret) toGeneratedProperties() internal.SecretUpdateParameters {
+func (s Secret) toGeneratedProperties() generated.SecretUpdateParameters {
 	var contentType *string
 	if s.Properties != nil && s.Properties.ContentType != nil {
 		contentType = s.Properties.ContentType
 	}
 	var tags map[string]*string
 	if s.Properties != nil && s.Properties.Tags != nil {
-		tags = convertToGeneratedMap(s.Properties.Tags)
+		tags = s.Properties.Tags
 	}
-	return internal.SecretUpdateParameters{
+	return generated.SecretUpdateParameters{
 		ContentType:      contentType,
 		SecretAttributes: s.Properties.toGenerated(),
 		Tags:             tags,
@@ -81,7 +81,7 @@ type Properties struct {
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
 	// will be true.
-	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
 	// certificate.
@@ -99,7 +99,7 @@ type Properties struct {
 	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Last updated time in UTC.
 	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
@@ -114,13 +114,13 @@ type Properties struct {
 	Name *string
 }
 
-func (s *Properties) toGenerated() *internal.SecretAttributes {
+func (s *Properties) toGenerated() *generated.SecretAttributes {
 	if s == nil {
 		return nil
 	}
-	return &internal.SecretAttributes{
+	return &generated.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
-		RecoveryLevel:   (*internal.DeletionRecoveryLevel)(s.RecoveryLevel),
+		RecoveryLevel:   (*generated.DeletionRecoveryLevel)(s.RecoveryLevel),
 		Enabled:         s.Enabled,
 		Expires:         s.ExpiresOn,
 		NotBefore:       s.NotBefore,
@@ -129,23 +129,27 @@ func (s *Properties) toGenerated() *internal.SecretAttributes {
 	}
 }
 
-// create a SecretAttributes object from an internal.SecretAttributes object
-func secretPropertiesFromGenerated(i *internal.SecretAttributes) *Properties {
+// create a SecretAttributes object from an generated.SecretAttributes object
+func secretPropertiesFromGenerated(i *generated.SecretAttributes, ID, contentType, keyID *string, managed *bool, tags map[string]*string) *Properties {
 	if i == nil {
 		return nil
 	}
+	vaultURL, name, version := shared.ParseID(ID)
 	return &Properties{
-		ContentType:     nil,
+		ContentType:     contentType,
 		CreatedOn:       i.Created,
 		Enabled:         i.Enabled,
 		ExpiresOn:       i.Expires,
-		IsManaged:       nil,
-		KeyID:           nil,
+		KeyID:           keyID,
+		Managed:         managed,
+		Name:            name,
 		NotBefore:       i.NotBefore,
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   (*string)(i.RecoveryLevel),
-		Tags:            nil,
+		Tags:            tags,
 		UpdatedOn:       i.Updated,
+		VaultURL:        vaultURL,
+		Version:         version,
 	}
 }
 
@@ -154,36 +158,24 @@ type SecretItem struct {
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
 
-	// Type of the secret value such as a password.
-	ContentType *string `json:"contentType,omitempty"`
-
 	// Secret identifier.
 	ID *string `json:"id,omitempty"`
 
 	// Name of the secret
 	Name *string
-
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
-	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-// create a SecretItem from the internal.SecretItem model
-func secretItemFromGenerated(i *internal.SecretItem) SecretItem {
+// create a SecretItem from the generated.SecretItem model
+func secretItemFromGenerated(i *generated.SecretItem) *SecretItem {
 	if i == nil {
-		return SecretItem{}
+		return nil
 	}
 
 	_, name, _ := shared.ParseID(i.ID)
-	return SecretItem{
-		Properties:  secretPropertiesFromGenerated(i.Attributes),
-		ContentType: i.ContentType,
-		ID:          i.ID,
-		Name:        name,
-		Tags:        convertPtrMap(i.Tags),
-		IsManaged:   i.Managed,
+	return &SecretItem{
+		Properties: secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, nil, i.Managed, i.Tags),
+		ID:         i.ID,
+		Name:       name,
 	}
 }
 
@@ -191,9 +183,6 @@ func secretItemFromGenerated(i *internal.SecretItem) SecretItem {
 type DeletedSecretItem struct {
 	// The secret management attributes.
 	Properties *Properties `json:"attributes,omitempty"`
-
-	// Type of the secret value such as a password.
-	ContentType *string `json:"contentType,omitempty"`
 
 	// Secret identifier.
 	ID *string `json:"id,omitempty"`
@@ -204,61 +193,25 @@ type DeletedSecretItem struct {
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
-	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]string `json:"tags,omitempty"`
-
 	// READ-ONLY; The time when the secret was deleted, in UTC
 	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
-
-	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed
-	// will be true.
-	IsManaged *bool `json:"managed,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecretItem {
+func deletedSecretItemFromGenerated(i *generated.DeletedSecretItem) *DeletedSecretItem {
 	if i == nil {
-		return DeletedSecretItem{}
+		return nil
 	}
 
 	_, name, _ := shared.ParseID(i.ID)
-	return DeletedSecretItem{
-		Properties:         secretPropertiesFromGenerated(i.Attributes),
-		ContentType:        i.ContentType,
+	return &DeletedSecretItem{
+		Properties:         secretPropertiesFromGenerated(i.Attributes, i.ID, i.ContentType, nil, i.Managed, i.Tags),
 		Name:               name,
 		ID:                 i.ID,
 		RecoveryID:         i.RecoveryID,
-		Tags:               convertPtrMap(i.Tags),
 		DeletedOn:          i.DeletedDate,
-		IsManaged:          i.Managed,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
 	}
-}
-
-func convertPtrMap(m map[string]*string) map[string]string {
-	if m == nil {
-		return nil
-	}
-
-	ret := map[string]string{}
-	for key, val := range m {
-		ret[key] = *val
-	}
-
-	return ret
-}
-
-func convertToGeneratedMap(m map[string]string) map[string]*string {
-	if m == nil {
-		return nil
-	}
-
-	ret := map[string]*string{}
-	for key, val := range m {
-		ret[key] = &val
-	}
-
-	return ret
 }

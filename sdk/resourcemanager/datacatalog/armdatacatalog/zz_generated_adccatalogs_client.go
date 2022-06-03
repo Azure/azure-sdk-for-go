@@ -39,7 +39,7 @@ func NewADCCatalogsClient(subscriptionID string, credential azcore.TokenCredenti
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -59,6 +59,7 @@ func NewADCCatalogsClient(subscriptionID string, credential azcore.TokenCredenti
 // parameters. If the specific service already exists, then any patchable properties will be updated
 // and any immutable properties will remain unchanged.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-30
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // catalogName - The name of the data catalog in the specified subscription and resource group.
 // properties - Properties supplied to the Create or Update a data catalog.
@@ -101,7 +102,7 @@ func (client *ADCCatalogsClient) createOrUpdateCreateRequest(ctx context.Context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 
@@ -116,23 +117,25 @@ func (client *ADCCatalogsClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // BeginDelete - The Delete Azure Data Catalog Service operation deletes an existing data catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-30
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // catalogName - The name of the data catalog in the specified subscription and resource group.
 // options - ADCCatalogsClientBeginDeleteOptions contains the optional parameters for the ADCCatalogsClient.BeginDelete method.
-func (client *ADCCatalogsClient) BeginDelete(ctx context.Context, resourceGroupName string, catalogName string, options *ADCCatalogsClientBeginDeleteOptions) (*armruntime.Poller[ADCCatalogsClientDeleteResponse], error) {
+func (client *ADCCatalogsClient) BeginDelete(ctx context.Context, resourceGroupName string, catalogName string, options *ADCCatalogsClientBeginDeleteOptions) (*runtime.Poller[ADCCatalogsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, catalogName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[ADCCatalogsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ADCCatalogsClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[ADCCatalogsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ADCCatalogsClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - The Delete Azure Data Catalog Service operation deletes an existing data catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-30
 func (client *ADCCatalogsClient) deleteOperation(ctx context.Context, resourceGroupName string, catalogName string, options *ADCCatalogsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, catalogName, options)
 	if err != nil {
@@ -175,6 +178,7 @@ func (client *ADCCatalogsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - The Get Azure Data Catalog Service operation retrieves a json representation of the data catalog.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-30
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // catalogName - The name of the data catalog in the specified subscription and resource group.
 // options - ADCCatalogsClientGetOptions contains the optional parameters for the ADCCatalogsClient.Get method.
@@ -215,7 +219,7 @@ func (client *ADCCatalogsClient) getCreateRequest(ctx context.Context, resourceG
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,6 +235,7 @@ func (client *ADCCatalogsClient) getHandleResponse(resp *http.Response) (ADCCata
 // ListtByResourceGroup - The List catalogs in Resource Group operation lists all the Azure Data Catalogs available under
 // the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-30
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // options - ADCCatalogsClientListtByResourceGroupOptions contains the optional parameters for the ADCCatalogsClient.ListtByResourceGroup
 // method.
@@ -267,7 +272,7 @@ func (client *ADCCatalogsClient) listtByResourceGroupCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -283,6 +288,7 @@ func (client *ADCCatalogsClient) listtByResourceGroupHandleResponse(resp *http.R
 // Update - The Update Azure Data Catalog Service operation can be used to update the existing deployment. The update call
 // only supports the properties listed in the PATCH body.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2016-03-30
 // resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
 // catalogName - The name of the data catalog in the specified subscription and resource group.
 // properties - Properties supplied to the Update a data catalog.
@@ -324,7 +330,7 @@ func (client *ADCCatalogsClient) updateCreateRequest(ctx context.Context, resour
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-30")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, properties)
 }
 

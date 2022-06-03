@@ -24,17 +24,17 @@ func ExampleBotsClient_Create() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Create(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"OneResourceGroupName",
+		"samplebotname",
 		armbotservice.Bot{
-			Etag:     to.Ptr("<etag>"),
+			Etag:     to.Ptr("etag1"),
 			Kind:     to.Ptr(armbotservice.KindSdk),
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			SKU: &armbotservice.SKU{
 				Name: to.Ptr(armbotservice.SKUNameS1),
 			},
@@ -43,26 +43,26 @@ func ExampleBotsClient_Create() {
 				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armbotservice.BotProperties{
-				Description:                       to.Ptr("<description>"),
-				CmekKeyVaultURL:                   to.Ptr("<cmek-key-vault-url>"),
-				DeveloperAppInsightKey:            to.Ptr("<developer-app-insight-key>"),
-				DeveloperAppInsightsAPIKey:        to.Ptr("<developer-app-insights-apikey>"),
-				DeveloperAppInsightsApplicationID: to.Ptr("<developer-app-insights-application-id>"),
+				Description:                       to.Ptr("The description of the bot"),
+				CmekKeyVaultURL:                   to.Ptr("https://myCmekKey"),
+				DeveloperAppInsightKey:            to.Ptr("appinsightskey"),
+				DeveloperAppInsightsAPIKey:        to.Ptr("appinsightsapikey"),
+				DeveloperAppInsightsApplicationID: to.Ptr("appinsightsappid"),
 				DisableLocalAuth:                  to.Ptr(true),
-				DisplayName:                       to.Ptr("<display-name>"),
-				Endpoint:                          to.Ptr("<endpoint>"),
-				IconURL:                           to.Ptr("<icon-url>"),
+				DisplayName:                       to.Ptr("The Name of the bot"),
+				Endpoint:                          to.Ptr("http://mybot.coffee"),
+				IconURL:                           to.Ptr("http://myicon"),
 				IsCmekEnabled:                     to.Ptr(true),
 				LuisAppIDs: []*string{
 					to.Ptr("luisappid1"),
 					to.Ptr("luisappid2")},
-				LuisKey:                     to.Ptr("<luis-key>"),
-				MsaAppID:                    to.Ptr("<msa-app-id>"),
-				MsaAppMSIResourceID:         to.Ptr("<msa-app-msiresource-id>"),
-				MsaAppTenantID:              to.Ptr("<msa-app-tenant-id>"),
+				LuisKey:                     to.Ptr("luiskey"),
+				MsaAppID:                    to.Ptr("exampleappid"),
+				MsaAppMSIResourceID:         to.Ptr("/subscriptions/foo/resourcegroups/bar/providers/microsoft.managedidentity/userassignedidentities/sampleId"),
+				MsaAppTenantID:              to.Ptr("exampleapptenantid"),
 				MsaAppType:                  to.Ptr(armbotservice.MsaAppTypeUserAssignedMSI),
 				PublicNetworkAccess:         to.Ptr(armbotservice.PublicNetworkAccessEnabled),
-				SchemaTransformationVersion: to.Ptr("<schema-transformation-version>"),
+				SchemaTransformationVersion: to.Ptr("1.0"),
 			},
 		},
 		nil)
@@ -80,17 +80,17 @@ func ExampleBotsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Update(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"OneResourceGroupName",
+		"samplebotname",
 		armbotservice.Bot{
-			Etag:     to.Ptr("<etag>"),
+			Etag:     to.Ptr("etag1"),
 			Kind:     to.Ptr(armbotservice.KindSdk),
-			Location: to.Ptr("<location>"),
+			Location: to.Ptr("West US"),
 			SKU: &armbotservice.SKU{
 				Name: to.Ptr(armbotservice.SKUNameS1),
 			},
@@ -99,26 +99,26 @@ func ExampleBotsClient_Update() {
 				"tag2": to.Ptr("value2"),
 			},
 			Properties: &armbotservice.BotProperties{
-				Description:                       to.Ptr("<description>"),
-				CmekKeyVaultURL:                   to.Ptr("<cmek-key-vault-url>"),
-				DeveloperAppInsightKey:            to.Ptr("<developer-app-insight-key>"),
-				DeveloperAppInsightsAPIKey:        to.Ptr("<developer-app-insights-apikey>"),
-				DeveloperAppInsightsApplicationID: to.Ptr("<developer-app-insights-application-id>"),
+				Description:                       to.Ptr("The description of the bot"),
+				CmekKeyVaultURL:                   to.Ptr("https://myCmekKey"),
+				DeveloperAppInsightKey:            to.Ptr("appinsightskey"),
+				DeveloperAppInsightsAPIKey:        to.Ptr("appinsightsapikey"),
+				DeveloperAppInsightsApplicationID: to.Ptr("appinsightsappid"),
 				DisableLocalAuth:                  to.Ptr(true),
-				DisplayName:                       to.Ptr("<display-name>"),
-				Endpoint:                          to.Ptr("<endpoint>"),
-				IconURL:                           to.Ptr("<icon-url>"),
+				DisplayName:                       to.Ptr("The Name of the bot"),
+				Endpoint:                          to.Ptr("http://mybot.coffee"),
+				IconURL:                           to.Ptr("http://myicon"),
 				IsCmekEnabled:                     to.Ptr(true),
 				LuisAppIDs: []*string{
 					to.Ptr("luisappid1"),
 					to.Ptr("luisappid2")},
-				LuisKey:                     to.Ptr("<luis-key>"),
-				MsaAppID:                    to.Ptr("<msa-app-id>"),
-				MsaAppMSIResourceID:         to.Ptr("<msa-app-msiresource-id>"),
-				MsaAppTenantID:              to.Ptr("<msa-app-tenant-id>"),
+				LuisKey:                     to.Ptr("luiskey"),
+				MsaAppID:                    to.Ptr("msaappid"),
+				MsaAppMSIResourceID:         to.Ptr("/subscriptions/foo/resourcegroups/bar/providers/microsoft.managedidentity/userassignedidentities/sampleId"),
+				MsaAppTenantID:              to.Ptr("msaapptenantid"),
 				MsaAppType:                  to.Ptr(armbotservice.MsaAppTypeUserAssignedMSI),
 				PublicNetworkAccess:         to.Ptr(armbotservice.PublicNetworkAccessEnabled),
-				SchemaTransformationVersion: to.Ptr("<schema-transformation-version>"),
+				SchemaTransformationVersion: to.Ptr("1.0"),
 			},
 		},
 		nil)
@@ -136,13 +136,13 @@ func ExampleBotsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"OneResourceGroupName",
+		"samplebotname",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -156,13 +156,13 @@ func ExampleBotsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<resource-name>",
+		"OneResourceGroupName",
+		"samplebotname",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -178,17 +178,16 @@ func ExampleBotsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("<resource-group-name>",
+	pager := client.NewListByResourceGroupPager("OneResourceGroupName",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -204,7 +203,7 @@ func ExampleBotsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armbotservice.NewBotsClient("<subscription-id>", cred, nil)
+	client, err := armbotservice.NewBotsClient("subscription-id", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -213,7 +212,6 @@ func ExampleBotsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -235,8 +233,8 @@ func ExampleBotsClient_GetCheckNameAvailability() {
 	}
 	res, err := client.GetCheckNameAvailability(ctx,
 		armbotservice.CheckNameAvailabilityRequestBody{
-			Name: to.Ptr("<name>"),
-			Type: to.Ptr("<type>"),
+			Name: to.Ptr("testbotname"),
+			Type: to.Ptr("string"),
 		},
 		nil)
 	if err != nil {

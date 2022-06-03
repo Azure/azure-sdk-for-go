@@ -39,7 +39,7 @@ func NewStreamingPoliciesClient(subscriptionID string, credential azcore.TokenCr
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewStreamingPoliciesClient(subscriptionID string, credential azcore.TokenCr
 
 // Create - Create a Streaming Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingPolicyName - The Streaming Policy name.
@@ -104,7 +105,7 @@ func (client *StreamingPoliciesClient) createCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
@@ -119,6 +120,7 @@ func (client *StreamingPoliciesClient) createHandleResponse(resp *http.Response)
 
 // Delete - Deletes a Streaming Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingPolicyName - The Streaming Policy name.
@@ -165,12 +167,13 @@ func (client *StreamingPoliciesClient) deleteCreateRequest(ctx context.Context, 
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Get the details of a Streaming Policy in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // streamingPolicyName - The Streaming Policy name.
@@ -216,7 +219,7 @@ func (client *StreamingPoliciesClient) getCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -231,11 +234,12 @@ func (client *StreamingPoliciesClient) getHandleResponse(resp *http.Response) (S
 
 // NewListPager - Lists the Streaming Policies in the account
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-11-01
 // resourceGroupName - The name of the resource group within the Azure subscription.
 // accountName - The Media Services account name.
 // options - StreamingPoliciesClientListOptions contains the optional parameters for the StreamingPoliciesClient.List method.
 func (client *StreamingPoliciesClient) NewListPager(resourceGroupName string, accountName string, options *StreamingPoliciesClientListOptions) *runtime.Pager[StreamingPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[StreamingPoliciesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[StreamingPoliciesClientListResponse]{
 		More: func(page StreamingPoliciesClientListResponse) bool {
 			return page.ODataNextLink != nil && len(*page.ODataNextLink) > 0
 		},
@@ -293,7 +297,7 @@ func (client *StreamingPoliciesClient) listCreateRequest(ctx context.Context, re
 		reqQP.Set("$orderby", *options.Orderby)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

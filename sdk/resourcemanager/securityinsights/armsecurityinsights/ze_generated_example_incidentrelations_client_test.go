@@ -17,20 +17,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/relations/GetAllIncidentRelations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/incidents/relations/GetAllIncidentRelations.json
 func ExampleIncidentRelationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewIncidentRelationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentRelationsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("<resource-group-name>",
-		"<workspace-name>",
-		"<incident-id>",
+	pager := client.NewListPager("myRg",
+		"myWorkspace",
+		"afbd324f-6c48-459c-8710-8d1e1cd03812",
 		&armsecurityinsights.IncidentRelationsClientListOptions{Filter: nil,
 			Orderby:   nil,
 			Top:       nil,
@@ -40,7 +40,6 @@ func ExampleIncidentRelationsClient_NewListPager() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
 			log.Fatalf("failed to advance page: %v", err)
-			return
 		}
 		for _, v := range nextResult.Value {
 			// TODO: use page item
@@ -49,22 +48,22 @@ func ExampleIncidentRelationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/relations/GetIncidentRelationByName.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/incidents/relations/GetIncidentRelationByName.json
 func ExampleIncidentRelationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewIncidentRelationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentRelationsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<incident-id>",
-		"<relation-name>",
+		"myRg",
+		"myWorkspace",
+		"afbd324f-6c48-459c-8710-8d1e1cd03812",
+		"4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -73,25 +72,25 @@ func ExampleIncidentRelationsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/relations/CreateIncidentRelation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/incidents/relations/CreateIncidentRelation.json
 func ExampleIncidentRelationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewIncidentRelationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentRelationsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.CreateOrUpdate(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<incident-id>",
-		"<relation-name>",
+		"myRg",
+		"myWorkspace",
+		"afbd324f-6c48-459c-8710-8d1e1cd03812",
+		"4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014",
 		armsecurityinsights.Relation{
 			Properties: &armsecurityinsights.RelationProperties{
-				RelatedResourceID: to.Ptr("<related-resource-id>"),
+				RelatedResourceID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/bookmarks/2216d0e1-91e3-4902-89fd-d2df8c535096"),
 			},
 		},
 		nil)
@@ -102,22 +101,22 @@ func ExampleIncidentRelationsClient_CreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-04-01-preview/examples/incidents/relations/DeleteIncidentRelation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2021-10-01/examples/incidents/relations/DeleteIncidentRelation.json
 func ExampleIncidentRelationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsecurityinsights.NewIncidentRelationsClient("<subscription-id>", cred, nil)
+	client, err := armsecurityinsights.NewIncidentRelationsClient("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = client.Delete(ctx,
-		"<resource-group-name>",
-		"<workspace-name>",
-		"<incident-id>",
-		"<relation-name>",
+		"myRg",
+		"myWorkspace",
+		"afbd324f-6c48-459c-8710-8d1e1cd03812",
+		"4bb36b7b-26ff-4d1c-9cbe-0d8ab3da0014",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

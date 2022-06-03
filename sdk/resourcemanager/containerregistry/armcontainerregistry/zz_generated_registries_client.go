@@ -38,7 +38,7 @@ func NewRegistriesClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewRegistriesClient(subscriptionID string, credential azcore.TokenCredentia
 // CheckNameAvailability - Checks whether the container registry name is available for use. The name must contain only alphanumeric
 // characters, be globally unique, and between 5 and 50 characters in length.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // registryNameCheckRequest - The object containing information for the availability request.
 // options - RegistriesClientCheckNameAvailabilityOptions contains the optional parameters for the RegistriesClient.CheckNameAvailability
 // method.
@@ -87,9 +88,9 @@ func (client *RegistriesClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, registryNameCheckRequest)
 }
 
@@ -104,24 +105,26 @@ func (client *RegistriesClient) checkNameAvailabilityHandleResponse(resp *http.R
 
 // BeginCreate - Creates a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // registry - The parameters for creating a container registry.
 // options - RegistriesClientBeginCreateOptions contains the optional parameters for the RegistriesClient.BeginCreate method.
-func (client *RegistriesClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesClientBeginCreateOptions) (*armruntime.Poller[RegistriesClientCreateResponse], error) {
+func (client *RegistriesClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesClientBeginCreateOptions) (*runtime.Poller[RegistriesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, registryName, registry, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RegistriesClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RegistriesClientCreateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RegistriesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RegistriesClientCreateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Create - Creates a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *RegistriesClient) create(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, registry, options)
 	if err != nil {
@@ -157,31 +160,33 @@ func (client *RegistriesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, registry)
 }
 
 // BeginDelete - Deletes a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - RegistriesClientBeginDeleteOptions contains the optional parameters for the RegistriesClient.BeginDelete method.
-func (client *RegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientBeginDeleteOptions) (*armruntime.Poller[RegistriesClientDeleteResponse], error) {
+func (client *RegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientBeginDeleteOptions) (*runtime.Poller[RegistriesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RegistriesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RegistriesClientDeleteResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RegistriesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RegistriesClientDeleteResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Delete - Deletes a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *RegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
@@ -217,32 +222,34 @@ func (client *RegistriesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginGenerateCredentials - Generate keys for a token of a specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // generateCredentialsParameters - The parameters for generating credentials.
 // options - RegistriesClientBeginGenerateCredentialsOptions contains the optional parameters for the RegistriesClient.BeginGenerateCredentials
 // method.
-func (client *RegistriesClient) BeginGenerateCredentials(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesClientBeginGenerateCredentialsOptions) (*armruntime.Poller[RegistriesClientGenerateCredentialsResponse], error) {
+func (client *RegistriesClient) BeginGenerateCredentials(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesClientBeginGenerateCredentialsOptions) (*runtime.Poller[RegistriesClientGenerateCredentialsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.generateCredentials(ctx, resourceGroupName, registryName, generateCredentialsParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RegistriesClientGenerateCredentialsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RegistriesClientGenerateCredentialsResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RegistriesClientGenerateCredentialsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RegistriesClientGenerateCredentialsResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // GenerateCredentials - Generate keys for a token of a specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *RegistriesClient) generateCredentials(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesClientBeginGenerateCredentialsOptions) (*http.Response, error) {
 	req, err := client.generateCredentialsCreateRequest(ctx, resourceGroupName, registryName, generateCredentialsParameters, options)
 	if err != nil {
@@ -278,14 +285,15 @@ func (client *RegistriesClient) generateCredentialsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, generateCredentialsParameters)
 }
 
 // Get - Gets the properties of the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - RegistriesClientGetOptions contains the optional parameters for the RegistriesClient.Get method.
@@ -324,9 +332,9 @@ func (client *RegistriesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -341,6 +349,7 @@ func (client *RegistriesClient) getHandleResponse(resp *http.Response) (Registri
 
 // GetBuildSourceUploadURL - Get the upload location for the user to be able to upload the source.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - RegistriesClientGetBuildSourceUploadURLOptions contains the optional parameters for the RegistriesClient.GetBuildSourceUploadURL
@@ -382,7 +391,7 @@ func (client *RegistriesClient) getBuildSourceUploadURLCreateRequest(ctx context
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -397,6 +406,7 @@ func (client *RegistriesClient) getBuildSourceUploadURLHandleResponse(resp *http
 
 // GetPrivateLinkResource - Gets a private link resource by a specified group name for a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // groupName - The name of the private link resource.
@@ -441,9 +451,9 @@ func (client *RegistriesClient) getPrivateLinkResourceCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -458,25 +468,27 @@ func (client *RegistriesClient) getPrivateLinkResourceHandleResponse(resp *http.
 
 // BeginImportImage - Copies an image to this container registry from the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // parameters - The parameters specifying the image to copy and the source container registry.
 // options - RegistriesClientBeginImportImageOptions contains the optional parameters for the RegistriesClient.BeginImportImage
 // method.
-func (client *RegistriesClient) BeginImportImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesClientBeginImportImageOptions) (*armruntime.Poller[RegistriesClientImportImageResponse], error) {
+func (client *RegistriesClient) BeginImportImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesClientBeginImportImageOptions) (*runtime.Poller[RegistriesClientImportImageResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.importImage(ctx, resourceGroupName, registryName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RegistriesClientImportImageResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RegistriesClientImportImageResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RegistriesClientImportImageResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RegistriesClientImportImageResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ImportImage - Copies an image to this container registry from the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *RegistriesClient) importImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesClientBeginImportImageOptions) (*http.Response, error) {
 	req, err := client.importImageCreateRequest(ctx, resourceGroupName, registryName, parameters, options)
 	if err != nil {
@@ -512,16 +524,17 @@ func (client *RegistriesClient) importImageCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // NewListPager - Lists all the container registries under the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // options - RegistriesClientListOptions contains the optional parameters for the RegistriesClient.List method.
 func (client *RegistriesClient) NewListPager(options *RegistriesClientListOptions) *runtime.Pager[RegistriesClientListResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RegistriesClientListResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RegistriesClientListResponse]{
 		More: func(page RegistriesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -560,9 +573,9 @@ func (client *RegistriesClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -577,11 +590,12 @@ func (client *RegistriesClient) listHandleResponse(resp *http.Response) (Registr
 
 // NewListByResourceGroupPager - Lists all the container registries under the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // options - RegistriesClientListByResourceGroupOptions contains the optional parameters for the RegistriesClient.ListByResourceGroup
 // method.
 func (client *RegistriesClient) NewListByResourceGroupPager(resourceGroupName string, options *RegistriesClientListByResourceGroupOptions) *runtime.Pager[RegistriesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RegistriesClientListByResourceGroupResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RegistriesClientListByResourceGroupResponse]{
 		More: func(page RegistriesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -624,9 +638,9 @@ func (client *RegistriesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -641,6 +655,7 @@ func (client *RegistriesClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // ListCredentials - Lists the login credentials for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - RegistriesClientListCredentialsOptions contains the optional parameters for the RegistriesClient.ListCredentials
@@ -680,9 +695,9 @@ func (client *RegistriesClient) listCredentialsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -697,12 +712,13 @@ func (client *RegistriesClient) listCredentialsHandleResponse(resp *http.Respons
 
 // NewListPrivateLinkResourcesPager - Lists the private link resources for a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - RegistriesClientListPrivateLinkResourcesOptions contains the optional parameters for the RegistriesClient.ListPrivateLinkResources
 // method.
 func (client *RegistriesClient) NewListPrivateLinkResourcesPager(resourceGroupName string, registryName string, options *RegistriesClientListPrivateLinkResourcesOptions) *runtime.Pager[RegistriesClientListPrivateLinkResourcesResponse] {
-	return runtime.NewPager(runtime.PageProcessor[RegistriesClientListPrivateLinkResourcesResponse]{
+	return runtime.NewPager(runtime.PagingHandler[RegistriesClientListPrivateLinkResourcesResponse]{
 		More: func(page RegistriesClientListPrivateLinkResourcesResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -749,9 +765,9 @@ func (client *RegistriesClient) listPrivateLinkResourcesCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -766,6 +782,7 @@ func (client *RegistriesClient) listPrivateLinkResourcesHandleResponse(resp *htt
 
 // ListUsages - Gets the quota usages for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // options - RegistriesClientListUsagesOptions contains the optional parameters for the RegistriesClient.ListUsages method.
@@ -804,9 +821,9 @@ func (client *RegistriesClient) listUsagesCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -821,6 +838,7 @@ func (client *RegistriesClient) listUsagesHandleResponse(resp *http.Response) (R
 
 // RegenerateCredential - Regenerates one of the login credentials for the specified container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // regenerateCredentialParameters - Specifies name of the password which should be regenerated -- password or password2.
@@ -861,9 +879,9 @@ func (client *RegistriesClient) regenerateCredentialCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, regenerateCredentialParameters)
 }
 
@@ -878,25 +896,27 @@ func (client *RegistriesClient) regenerateCredentialHandleResponse(resp *http.Re
 
 // BeginScheduleRun - Schedules a new run based on the request parameters and add it to the run queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // runRequest - The parameters of a run that needs to scheduled.
 // options - RegistriesClientBeginScheduleRunOptions contains the optional parameters for the RegistriesClient.BeginScheduleRun
 // method.
-func (client *RegistriesClient) BeginScheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesClientBeginScheduleRunOptions) (*armruntime.Poller[RegistriesClientScheduleRunResponse], error) {
+func (client *RegistriesClient) BeginScheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesClientBeginScheduleRunOptions) (*runtime.Poller[RegistriesClientScheduleRunResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.scheduleRun(ctx, resourceGroupName, registryName, runRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RegistriesClientScheduleRunResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RegistriesClientScheduleRunResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RegistriesClientScheduleRunResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RegistriesClientScheduleRunResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // ScheduleRun - Schedules a new run based on the request parameters and add it to the run queue.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-06-01-preview
 func (client *RegistriesClient) scheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesClientBeginScheduleRunOptions) (*http.Response, error) {
 	req, err := client.scheduleRunCreateRequest(ctx, resourceGroupName, registryName, runRequest, options)
 	if err != nil {
@@ -934,30 +954,32 @@ func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, re
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, runRequest)
 }
 
 // BeginUpdate - Updates a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 // resourceGroupName - The name of the resource group to which the container registry belongs.
 // registryName - The name of the container registry.
 // registryUpdateParameters - The parameters for updating a container registry.
 // options - RegistriesClientBeginUpdateOptions contains the optional parameters for the RegistriesClient.BeginUpdate method.
-func (client *RegistriesClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesClientBeginUpdateOptions) (*armruntime.Poller[RegistriesClientUpdateResponse], error) {
+func (client *RegistriesClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesClientBeginUpdateOptions) (*runtime.Poller[RegistriesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, registryName, registryUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller[RegistriesClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RegistriesClientUpdateResponse](resp, client.pl, nil)
 	} else {
-		return armruntime.NewPollerFromResumeToken[RegistriesClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RegistriesClientUpdateResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Update - Updates a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-02-01-preview
 func (client *RegistriesClient) update(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, registryUpdateParameters, options)
 	if err != nil {
@@ -993,8 +1015,8 @@ func (client *RegistriesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2022-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, registryUpdateParameters)
 }

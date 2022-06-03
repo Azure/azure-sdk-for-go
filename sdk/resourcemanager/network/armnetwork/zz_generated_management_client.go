@@ -39,7 +39,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
-	ep := cloud.AzurePublicCloud.Services[cloud.ResourceManager].Endpoint
+	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
 	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
 		ep = c.Endpoint
 	}
@@ -57,6 +57,7 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CheckDNSNameAvailability - Checks whether a domain name in the cloudapp.azure.com zone is available for use.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // location - The location of the domain name.
 // domainNameLabel - The domain name to be verified. It must conform to the following regular expression: ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
 // options - ManagementClientCheckDNSNameAvailabilityOptions contains the optional parameters for the ManagementClient.CheckDNSNameAvailability
@@ -93,9 +94,9 @@ func (client *ManagementClient) checkDNSNameAvailabilityCreateRequest(ctx contex
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("domainNameLabel", domainNameLabel)
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -110,27 +111,29 @@ func (client *ManagementClient) checkDNSNameAvailabilityHandleResponse(resp *htt
 
 // BeginDeleteBastionShareableLink - Deletes the Bastion Shareable Links for all the VMs specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // bastionHostName - The name of the Bastion Host.
 // bslRequest - Post request for all the Bastion Shareable Link endpoints.
 // options - ManagementClientBeginDeleteBastionShareableLinkOptions contains the optional parameters for the ManagementClient.BeginDeleteBastionShareableLink
 // method.
-func (client *ManagementClient) BeginDeleteBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientBeginDeleteBastionShareableLinkOptions) (*armruntime.Poller[ManagementClientDeleteBastionShareableLinkResponse], error) {
+func (client *ManagementClient) BeginDeleteBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientBeginDeleteBastionShareableLinkOptions) (*runtime.Poller[ManagementClientDeleteBastionShareableLinkResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteBastionShareableLink(ctx, resourceGroupName, bastionHostName, bslRequest, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ManagementClientDeleteBastionShareableLinkResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ManagementClientDeleteBastionShareableLinkResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientDeleteBastionShareableLinkResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientDeleteBastionShareableLinkResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // DeleteBastionShareableLink - Deletes the Bastion Shareable Links for all the VMs specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *ManagementClient) deleteBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientBeginDeleteBastionShareableLinkOptions) (*http.Response, error) {
 	req, err := client.deleteBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
 	if err != nil {
@@ -166,21 +169,22 @@ func (client *ManagementClient) deleteBastionShareableLinkCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, bslRequest)
 }
 
 // NewDisconnectActiveSessionsPager - Returns the list of currently active sessions on the Bastion.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // bastionHostName - The name of the Bastion Host.
 // sessionIDs - The list of sessionids to disconnect.
 // options - ManagementClientDisconnectActiveSessionsOptions contains the optional parameters for the ManagementClient.DisconnectActiveSessions
 // method.
 func (client *ManagementClient) NewDisconnectActiveSessionsPager(resourceGroupName string, bastionHostName string, sessionIDs SessionIDs, options *ManagementClientDisconnectActiveSessionsOptions) *runtime.Pager[ManagementClientDisconnectActiveSessionsResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientDisconnectActiveSessionsResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientDisconnectActiveSessionsResponse]{
 		More: func(page ManagementClientDisconnectActiveSessionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -227,9 +231,9 @@ func (client *ManagementClient) disconnectActiveSessionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, sessionIDs)
 }
 
@@ -245,28 +249,30 @@ func (client *ManagementClient) disconnectActiveSessionsHandleResponse(resp *htt
 // BeginGeneratevirtualwanvpnserverconfigurationvpnprofile - Generates a unique VPN profile for P2S clients for VirtualWan
 // and associated VpnServerConfiguration combination in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The resource group name.
 // virtualWANName - The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
 // vpnClientParams - Parameters supplied to the generate VirtualWan VPN profile generation operation.
 // options - ManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions contains the optional parameters
 // for the ManagementClient.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile method.
-func (client *ManagementClient) BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx context.Context, resourceGroupName string, virtualWANName string, vpnClientParams VirtualWanVPNProfileParameters, options *ManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions) (*armruntime.Poller[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse], error) {
+func (client *ManagementClient) BeginGeneratevirtualwanvpnserverconfigurationvpnprofile(ctx context.Context, resourceGroupName string, virtualWANName string, vpnClientParams VirtualWanVPNProfileParameters, options *ManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions) (*runtime.Poller[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.generatevirtualwanvpnserverconfigurationvpnprofile(ctx, resourceGroupName, virtualWANName, vpnClientParams, options)
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ManagementClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse](options.ResumeToken, client.pl, nil)
 	}
 }
 
 // Generatevirtualwanvpnserverconfigurationvpnprofile - Generates a unique VPN profile for P2S clients for VirtualWan and
 // associated VpnServerConfiguration combination in the specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *ManagementClient) generatevirtualwanvpnserverconfigurationvpnprofile(ctx context.Context, resourceGroupName string, virtualWANName string, vpnClientParams VirtualWanVPNProfileParameters, options *ManagementClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions) (*http.Response, error) {
 	req, err := client.generatevirtualwanvpnserverconfigurationvpnprofileCreateRequest(ctx, resourceGroupName, virtualWANName, vpnClientParams, options)
 	if err != nil {
@@ -302,20 +308,21 @@ func (client *ManagementClient) generatevirtualwanvpnserverconfigurationvpnprofi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, vpnClientParams)
 }
 
 // BeginGetActiveSessions - Returns the list of currently active sessions on the Bastion.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // bastionHostName - The name of the Bastion Host.
 // options - ManagementClientBeginGetActiveSessionsOptions contains the optional parameters for the ManagementClient.BeginGetActiveSessions
 // method.
-func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, resourceGroupName string, bastionHostName string, options *ManagementClientBeginGetActiveSessionsOptions) (*armruntime.Poller[*runtime.Pager[ManagementClientGetActiveSessionsResponse]], error) {
-	pager := runtime.NewPager(runtime.PageProcessor[ManagementClientGetActiveSessionsResponse]{
+func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, resourceGroupName string, bastionHostName string, options *ManagementClientBeginGetActiveSessionsOptions) (*runtime.Poller[*runtime.Pager[ManagementClientGetActiveSessionsResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[ManagementClientGetActiveSessionsResponse]{
 		More: func(page ManagementClientGetActiveSessionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -339,12 +346,12 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[*runtime.Pager[ManagementClientGetActiveSessionsResponse]]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[ManagementClientGetActiveSessionsResponse]]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 			Response:      &pager,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &armruntime.NewPollerFromResumeTokenOptions[*runtime.Pager[ManagementClientGetActiveSessionsResponse]]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[ManagementClientGetActiveSessionsResponse]]{
 			Response: &pager,
 		})
 	}
@@ -352,6 +359,7 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 
 // GetActiveSessions - Returns the list of currently active sessions on the Bastion.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *ManagementClient) getActiveSessions(ctx context.Context, resourceGroupName string, bastionHostName string, options *ManagementClientBeginGetActiveSessionsOptions) (*http.Response, error) {
 	req, err := client.getActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, options)
 	if err != nil {
@@ -387,9 +395,9 @@ func (client *ManagementClient) getActiveSessionsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -404,13 +412,14 @@ func (client *ManagementClient) getActiveSessionsHandleResponse(resp *http.Respo
 
 // NewGetBastionShareableLinkPager - Return the Bastion Shareable Links for all the VMs specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // bastionHostName - The name of the Bastion Host.
 // bslRequest - Post request for all the Bastion Shareable Link endpoints.
 // options - ManagementClientGetBastionShareableLinkOptions contains the optional parameters for the ManagementClient.GetBastionShareableLink
 // method.
 func (client *ManagementClient) NewGetBastionShareableLinkPager(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientGetBastionShareableLinkOptions) *runtime.Pager[ManagementClientGetBastionShareableLinkResponse] {
-	return runtime.NewPager(runtime.PageProcessor[ManagementClientGetBastionShareableLinkResponse]{
+	return runtime.NewPager(runtime.PagingHandler[ManagementClientGetBastionShareableLinkResponse]{
 		More: func(page ManagementClientGetBastionShareableLinkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -457,9 +466,9 @@ func (client *ManagementClient) getBastionShareableLinkCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, bslRequest)
 }
 
@@ -474,13 +483,14 @@ func (client *ManagementClient) getBastionShareableLinkHandleResponse(resp *http
 
 // BeginPutBastionShareableLink - Creates a Bastion Shareable Links for all the VMs specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The name of the resource group.
 // bastionHostName - The name of the Bastion Host.
 // bslRequest - Post request for all the Bastion Shareable Link endpoints.
 // options - ManagementClientBeginPutBastionShareableLinkOptions contains the optional parameters for the ManagementClient.BeginPutBastionShareableLink
 // method.
-func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientBeginPutBastionShareableLinkOptions) (*armruntime.Poller[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]], error) {
-	pager := runtime.NewPager(runtime.PageProcessor[ManagementClientPutBastionShareableLinkResponse]{
+func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientBeginPutBastionShareableLinkOptions) (*runtime.Poller[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]], error) {
+	pager := runtime.NewPager(runtime.PagingHandler[ManagementClientPutBastionShareableLinkResponse]{
 		More: func(page ManagementClientPutBastionShareableLinkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
@@ -504,12 +514,12 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		return armruntime.NewPoller(resp, client.pl, &armruntime.NewPollerOptions[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]]{
-			FinalStateVia: armruntime.FinalStateViaLocation,
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]]{
+			FinalStateVia: runtime.FinalStateViaLocation,
 			Response:      &pager,
 		})
 	} else {
-		return armruntime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &armruntime.NewPollerFromResumeTokenOptions[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.pl, &runtime.NewPollerFromResumeTokenOptions[*runtime.Pager[ManagementClientPutBastionShareableLinkResponse]]{
 			Response: &pager,
 		})
 	}
@@ -517,6 +527,7 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 
 // PutBastionShareableLink - Creates a Bastion Shareable Links for all the VMs specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 func (client *ManagementClient) putBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *ManagementClientBeginPutBastionShareableLinkOptions) (*http.Response, error) {
 	req, err := client.putBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
 	if err != nil {
@@ -552,9 +563,9 @@ func (client *ManagementClient) putBastionShareableLinkCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, bslRequest)
 }
 
@@ -569,6 +580,7 @@ func (client *ManagementClient) putBastionShareableLinkHandleResponse(resp *http
 
 // SupportedSecurityProviders - Gives the supported security providers for the virtual wan.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2021-08-01
 // resourceGroupName - The resource group name.
 // virtualWANName - The name of the VirtualWAN for which supported security providers are needed.
 // options - ManagementClientSupportedSecurityProvidersOptions contains the optional parameters for the ManagementClient.SupportedSecurityProviders
@@ -608,9 +620,9 @@ func (client *ManagementClient) supportedSecurityProvidersCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("Accept", "application/json")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 

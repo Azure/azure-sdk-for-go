@@ -182,9 +182,9 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	ctx := context.Background()
 	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 	destBlob := containerClient.NewBlockBlobClient("destblob")
-	uploadResp, err := srcBlob.Upload(ctx, rsc, nil)
+	_, err = srcBlob.Upload(ctx, rsc, nil)
 	_require.Nil(err)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
@@ -213,7 +213,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
 	_require.Nil(err)
-	_require.Equal(stageResp1.RawResponse.StatusCode, 201)
+	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 	_require.NotEqual(stageResp1.ContentMD5, "")
 	_require.NotEqual(stageResp1.RequestID, "")
 	_require.NotEqual(stageResp1.Version, "")
@@ -228,7 +228,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
 	_require.Nil(err)
-	_require.Equal(stageResp2.RawResponse.StatusCode, 201)
+	// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
 	_require.NotEqual(stageResp2.ContentMD5, "")
 	_require.NotEqual(stageResp2.RequestID, "")
 	_require.NotEqual(stageResp2.Version, "")
@@ -237,7 +237,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_require.Nil(err)
-	_require.Equal(blockList.RawResponse.StatusCode, 200)
+	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.CommittedBlocks)
 	_require.NotNil(blockList.BlockList.UncommittedBlocks)
@@ -249,7 +249,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	}
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
 	_require.Nil(err)
-	_require.Equal(listResp.RawResponse.StatusCode, 201)
+	// _require.Equal(listResp.RawResponse.StatusCode,  201)
 	_require.NotNil(listResp.LastModified)
 	_require.Equal((*listResp.LastModified).IsZero(), false)
 	_require.NotNil(listResp.ETag)
@@ -261,7 +261,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	// Check block list.
 	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_require.Nil(err)
-	_require.Equal(blockList.RawResponse.StatusCode, 200)
+	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.UncommittedBlocks)
 	_require.NotNil(blockList.BlockList.CommittedBlocks)
@@ -300,9 +300,9 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	ctx := context.Background()
 	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 	destBlob := containerClient.NewBlockBlobClient("destblob")
-	uploadResp, err := srcBlob.Upload(ctx, rsc, nil)
+	_, err = srcBlob.Upload(ctx, rsc, nil)
 	_require.Nil(err)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
@@ -331,7 +331,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
 	_require.Nil(err)
-	_require.Equal(stageResp1.RawResponse.StatusCode, 201)
+	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 	_require.NotEqual(stageResp1.ContentMD5, "")
 	_require.NotEqual(stageResp1.RequestID, "")
 	_require.NotEqual(stageResp1.Version, "")
@@ -346,7 +346,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
 	_require.Nil(err)
-	_require.Equal(stageResp2.RawResponse.StatusCode, 201)
+	//_require.Equal(stageResp2.RawResponse.StatusCode, 201)
 	_require.NotEqual(stageResp2.ContentMD5, "")
 	_require.NotEqual(stageResp2.RequestID, "")
 	_require.NotEqual(stageResp2.Version, "")
@@ -355,7 +355,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_require.Nil(err)
-	_require.Equal(blockList.RawResponse.StatusCode, 200)
+	//_require.Equal(blockList.RawResponse.StatusCode, 200)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.CommittedBlocks)
 	_require.NotNil(blockList.BlockList.UncommittedBlocks)
@@ -367,7 +367,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	}
 	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
 	_require.Nil(err)
-	_require.Equal(listResp.RawResponse.StatusCode, 201)
+	//_require.Equal(listResp.RawResponse.StatusCode, 201)
 	_require.NotNil(listResp.LastModified)
 	_require.Equal((*listResp.LastModified).IsZero(), false)
 	_require.NotNil(listResp.ETag)
@@ -379,7 +379,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	// Check block list.
 	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_require.Nil(err)
-	_require.Equal(blockList.RawResponse.StatusCode, 200)
+	//_require.Equal(blockList.RawResponse.StatusCode, 200)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.UncommittedBlocks)
 	_require.NotNil(blockList.BlockList.CommittedBlocks)
@@ -417,7 +417,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlobWithMD5WithCPK() {
 	}
 	uploadResp, err := bbClient.Upload(ctx, r, &uploadBlockBlobOptions)
 	_require.Nil(err)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.Equal(*uploadResp.IsServerEncrypted, true)
 	_require.EqualValues(uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
@@ -463,7 +463,7 @@ func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 	}
 	uploadResp, err := bbClient.Upload(ctx, r, &uploadBlockBlobOptions)
 	_require.Nil(err)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.Equal(*uploadResp.IsServerEncrypted, true)
 	_require.EqualValues(uploadResp.EncryptionScope, testCPKByScope.EncryptionScope)
 
@@ -496,9 +496,9 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 	createAppendBlobOptions := AppendBlobCreateOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	resp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
+	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
@@ -507,7 +507,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 		}
 		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_require.Nil(err)
-		_require.Equal(resp.RawResponse.StatusCode, 201)
+		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
 		_require.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
 		_require.NotNil(resp.ETag)
@@ -555,9 +555,9 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 	createAppendBlobOptions := AppendBlobCreateOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	resp, err := abClient.Create(context.Background(), &createAppendBlobOptions)
+	_, err = abClient.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	words := []string{"AAA ", "BBB ", "CCC "}
 	for index, word := range words {
@@ -566,7 +566,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 		}
 		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_require.Nil(err)
-		_require.Equal(resp.RawResponse.StatusCode, 201)
+		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
 		_require.Equal(*resp.BlobCommittedBlockCount, int32(index+1))
 		_require.NotNil(resp.ETag)
@@ -613,13 +613,13 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	srcABClient := containerClient.NewAppendBlobClient(generateName("src"))
 	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
 
-	cResp1, err := srcABClient.Create(context.Background(), nil)
+	_, err = srcABClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(cResp1.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 
 	resp, err := srcABClient.AppendBlock(context.Background(), internal.NopCloser(r), nil)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 	_require.Equal(*resp.BlobAppendOffset, "0")
 	_require.Equal(*resp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(resp.ETag)
@@ -651,9 +651,9 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	createAppendBlobOptions := AppendBlobCreateOptions{
 		CpkInfo: &testCPKByValue,
 	}
-	cResp2, err := destBlob.Create(context.Background(), &createAppendBlobOptions)
+	_, err = destBlob.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
-	_require.Equal(cResp2.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp2.RawResponse.StatusCode, 201)
 
 	offset := int64(0)
 	count := int64(contentSize)
@@ -664,7 +664,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	_require.Nil(err)
-	_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
 	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendFromURLResp.ETag)
@@ -723,13 +723,13 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	srcClient := containerClient.NewAppendBlobClient(generateName("src"))
 	destBlob := containerClient.NewAppendBlobClient(generateName("dest"))
 
-	cResp1, err := srcClient.Create(context.Background(), nil)
+	_, err = srcClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(cResp1.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 
 	resp, err := srcClient.AppendBlock(context.Background(), internal.NopCloser(r), nil)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 	_require.Equal(*resp.BlobAppendOffset, "0")
 	_require.Equal(*resp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(resp.ETag)
@@ -761,9 +761,9 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	createAppendBlobOptions := AppendBlobCreateOptions{
 		CpkScopeInfo: &testCPKByScope,
 	}
-	cResp2, err := destBlob.Create(context.Background(), &createAppendBlobOptions)
+	_, err = destBlob.Create(context.Background(), &createAppendBlobOptions)
 	_require.Nil(err)
-	_require.Equal(cResp2.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp2.RawResponse.StatusCode, 201)
 
 	offset := int64(0)
 	count := int64(contentSize)
@@ -774,7 +774,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	_require.Nil(err)
-	_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
 	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendFromURLResp.ETag)
@@ -824,18 +824,21 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	}
 	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.Nil(err)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.EqualValues(uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
 	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, CountToEnd)})
-	for pager.NextPage(ctx) {
-		_require.Nil(pager.Err())
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
 		pageListResp := resp.PageList.PageRange
 		start, end := int64(0), int64(contentSize-1)
 		rawStart, rawEnd := pageListResp[0].Raw()
 		_require.Equal(rawStart, start)
 		_require.Equal(rawEnd, end)
+		if err != nil {
+			break
+		}
 	}
 
 	// Get blob content without encryption key should fail the request.
@@ -884,18 +887,21 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	}
 	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.Nil(err)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.EqualValues(uploadResp.EncryptionScope, testCPKByScope.EncryptionScope)
 
 	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, CountToEnd)})
-	for pager.NextPage(ctx) {
-		_require.Nil(pager.Err())
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
 		pageListResp := resp.PageList.PageRange
 		start, end := int64(0), int64(contentSize-1)
 		rawStart, rawEnd := pageListResp[0].Raw()
 		_require.Equal(rawStart, start)
 		_require.Equal(rawEnd, end)
+		if err != nil {
+			break
+		}
 	}
 
 	// Download blob to do data integrity check.
@@ -936,9 +942,9 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
-	uploadResp, err := bbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
+	_, err = bbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_require.Nil(err)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	srcBlobParts, _ := NewBlobURLParts(bbClient.URL())
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
@@ -961,7 +967,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	}
 	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 	_require.NotNil(resp.ETag)
 	_require.NotNil(resp.LastModified)
 	_require.NotNil(resp.ContentMD5)
@@ -1021,9 +1027,9 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
-	uploadResp, err := srcPBClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
+	_, err = srcPBClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_require.Nil(err)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	srcBlobParts, _ := NewBlobURLParts(srcPBClient.URL())
 
 	credential, err := getGenericCredential(nil, testAccountDefault)
@@ -1046,7 +1052,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	}
 	resp, err := dstPBBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 	_require.NotNil(resp.ETag)
 	_require.NotNil(resp.LastModified)
 	_require.NotNil(resp.ContentMD5)
@@ -1094,9 +1100,9 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	uploadPagesOptions := PageBlobUploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
-	uploadResp, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
+	_, err = srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_require.Nil(err)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 
@@ -1122,7 +1128,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	}
 	resp, err := destPBClient.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 	_require.NotNil(resp.ETag)
 	_require.NotNil(resp.LastModified)
 	_require.NotNil(resp.ContentMD5)
@@ -1451,7 +1457,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKK
 	blobContentReader, blobData := generateData(blobSize)
 
 	// Perform UploadStream
-	uploadResp, err := bbClient.UploadStream(ctx, blobContentReader,
+	_, err = bbClient.UploadStream(ctx, blobContentReader,
 		UploadStreamOptions{
 			BufferSize:  bufferSize,
 			MaxBuffers:  maxBuffers,
@@ -1463,7 +1469,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKK
 
 	// Assert that upload was successful
 	_require.Equal(err, nil)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	getPropertiesResp, err := bbClient.GetProperties(ctx, &BlobGetPropertiesOptions{CpkInfo: &testCPKByValue})
 	_require.NoError(err)
@@ -1483,7 +1489,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKK
 	_require.NoError(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.Body(nil))
 	_require.NoError(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)
@@ -1516,7 +1522,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKS
 	blobContentReader, blobData := generateData(blobSize)
 
 	// Perform UploadStream
-	uploadResp, err := bbClient.UploadStream(ctx, blobContentReader,
+	_, err = bbClient.UploadStream(ctx, blobContentReader,
 		UploadStreamOptions{
 			BufferSize:   bufferSize,
 			MaxBuffers:   maxBuffers,
@@ -1528,7 +1534,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKS
 
 	// Assert that upload was successful
 	_require.Equal(err, nil)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	getPropertiesResp, err := bbClient.GetProperties(ctx, nil)
 	_require.NoError(err)
@@ -1548,7 +1554,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKS
 	_require.NoError(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.Body(nil))
 	_require.NoError(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)

@@ -23,13 +23,13 @@ file-prefix: "zz_generated_"
 openapi-type: "data-plane"
 verbose: true
 security: AzureKey
-module-version: "0.3.0"
+module-version: "0.5.0"
 modelerfour:
   group-parameters: false
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
 export-clients: false
-use: "@autorest/go@4.0.0-preview.36"
+use: "@autorest/go@4.0.0-preview.41"
 ```
 
 ### Fix BlobMetadata.

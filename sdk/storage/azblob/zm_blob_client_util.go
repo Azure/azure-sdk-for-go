@@ -9,7 +9,6 @@ package azblob
 import (
 	"context"
 	"io"
-	"net/http"
 	"time"
 )
 
@@ -75,10 +74,10 @@ func (r *BlobDownloadResponse) Body(options *RetryReaderOptions) io.ReadCloser {
 	}
 
 	if options.MaxRetryRequests == 0 { // No additional retries
-		return r.RawResponse.Body
+		return r.blobClientDownloadResponse.Body
 	}
-	return NewRetryReader(r.ctx, r.RawResponse, r.getInfo, *options,
-		func(ctx context.Context, getInfo HTTPGetterInfo) (*http.Response, error) {
+	return NewRetryReader(r.ctx, r.blobClientDownloadResponse.Body, r.getInfo, *options,
+		func(ctx context.Context, getInfo HTTPGetterInfo) (io.ReadCloser, error) {
 			accessConditions := &BlobAccessConditions{
 				ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
 			}
@@ -87,13 +86,13 @@ func (r *BlobDownloadResponse) Body(options *RetryReaderOptions) io.ReadCloser {
 				Count:                &getInfo.Count,
 				BlobAccessConditions: accessConditions,
 				CpkInfo:              options.CpkInfo,
-				//CpkScopeInfo: 			  o.CpkScopeInfo,
+				CpkScopeInfo:         options.CpkScopeInfo,
 			}
 			resp, err := r.b.Download(ctx, &options)
 			if err != nil {
 				return nil, err
 			}
-			return resp.RawResponse, err
+			return resp.blobClientDownloadResponse.Body, err
 		},
 	)
 }

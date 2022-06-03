@@ -12,6 +12,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"net/http"
 	"net/url"
@@ -191,7 +192,7 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	response, err := req.Next()
 	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
 		// Service failed to authenticate request, log it
-		log.Write(log.EventResponse, "===== HTTP Forbidden status, String-to-NewSASQueryParameters:\n"+stringToSign+"\n===============================\n")
+		log.Write(azlog.EventResponse, "===== HTTP Forbidden status, String-to-NewSASQueryParameters:\n"+stringToSign+"\n===============================\n")
 	}
 	return response, err
 }

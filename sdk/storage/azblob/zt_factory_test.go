@@ -204,16 +204,15 @@ func getContainerClient(containerName string, s *ServiceClient) *ContainerClient
 func createNewContainer(_require *require.Assertions, containerName string, serviceClient *ServiceClient) *ContainerClient {
 	containerClient := getContainerClient(containerName, serviceClient)
 
-	cResp, err := containerClient.Create(ctx, nil)
+	_, err := containerClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return containerClient
 }
 
 func deleteContainer(_require *require.Assertions, containerClient *ContainerClient) {
-	deleteContainerResp, err := containerClient.Delete(context.Background(), nil)
+	_, err := containerClient.Delete(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(deleteContainerResp.RawResponse.StatusCode, 202)
 }
 
 // 2. BlobClient -------------------------------------------------------------------------------------------------------
@@ -233,11 +232,9 @@ func getBlockBlobClient(blockBlobName string, containerClient *ContainerClient) 
 func createNewBlockBlob(_require *require.Assertions, blockBlobName string, containerClient *ContainerClient) *BlockBlobClient {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
-	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
-
+	_, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
-
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	return bbClient
 }
 
@@ -250,7 +247,7 @@ func createNewBlockBlobWithCPK(_require *require.Assertions, blockBlobName strin
 	}
 	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	// _require.Equal(cResp.RawResponse.StatusCode, 201)
 	_require.Equal(*cResp.IsServerEncrypted, true)
 	if cpkInfo != nil {
 		_require.EqualValues(cResp.EncryptionKeySHA256, cpkInfo.EncryptionKeySHA256)
@@ -270,10 +267,9 @@ func getAppendBlobClient(appendBlobName string, containerClient *ContainerClient
 func createNewAppendBlob(_require *require.Assertions, appendBlobName string, containerClient *ContainerClient) *AppendBlobClient {
 	abClient := getAppendBlobClient(appendBlobName, containerClient)
 
-	appendBlobCreateResp, err := abClient.Create(ctx, nil)
-
+	_, err := abClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	return abClient
 }
 
@@ -291,21 +287,21 @@ func createNewPageBlobWithSize(_require *require.Assertions, pageBlobName string
 	containerClient *ContainerClient, sizeInBytes int64) *PageBlobClient {
 	pbClient := getPageBlobClient(pageBlobName, containerClient)
 
-	pageBlobCreateResponse, err := pbClient.Create(ctx, sizeInBytes, nil)
+	_, err := pbClient.Create(ctx, sizeInBytes, nil)
 	_require.Nil(err)
-	_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
+	//_require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 	return pbClient
 }
 
 func createNewPageBlobWithCPK(_require *require.Assertions, pageBlobName string, container *ContainerClient, sizeInBytes int64, cpkInfo *CpkInfo, cpkScopeInfo *CpkScopeInfo) (pbClient *PageBlobClient) {
 	pbClient = getPageBlobClient(pageBlobName, container)
 
-	resp, err := pbClient.Create(ctx, sizeInBytes, &PageBlobCreateOptions{
+	_, err := pbClient.Create(ctx, sizeInBytes, &PageBlobCreateOptions{
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
 	})
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 	return
 }
 

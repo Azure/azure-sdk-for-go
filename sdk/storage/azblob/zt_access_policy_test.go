@@ -642,7 +642,6 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
 	defer deleteContainer(_require, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
@@ -674,7 +673,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 	defer deleteContainer(_require, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
@@ -704,7 +703,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 	defer deleteContainer(_require, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
@@ -736,7 +735,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp.RawResponse.StatusCode, 201)
 	defer deleteContainer(_require, containerClient)
 
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)

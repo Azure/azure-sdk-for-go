@@ -125,12 +125,12 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithRetry() {
 		body.doInjectTimes = 1
 		body.injectedError = &net.DNSError{IsTemporary: true}
 
-		getter := func(ctx context.Context, info HTTPGetterInfo) (*http.Response, error) {
+		getter := func(ctx context.Context, info HTTPGetterInfo) (io.ReadCloser, error) {
 			r := http.Response{}
 			body.currentByteIndex = int(info.Offset)
 			r.Body = body
 
-			return &r, nil
+			return r.Body, nil
 		}
 
 		httpGetterInfo := HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}
@@ -197,12 +197,12 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderWithRetryIoUnexpectedEOF() {
 		body.doInjectTimes = 1
 		body.injectedError = io.ErrUnexpectedEOF
 
-		getter := func(ctx context.Context, info HTTPGetterInfo) (*http.Response, error) {
+		getter := func(ctx context.Context, info HTTPGetterInfo) (io.ReadCloser, error) {
 			r := http.Response{}
 			body.currentByteIndex = int(info.Offset)
 			r.Body = body
 
-			return &r, nil
+			return r.Body, nil
 		}
 
 		httpGetterInfo := HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}
@@ -263,21 +263,20 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadNegativeNormalFail() {
 	body.doInjectTimes = 2
 	body.injectedError = &net.DNSError{IsTemporary: true}
 
-	startResponse := http.Response{}
-	startResponse.Body = body
+	startResponse := body
 
-	getter := func(ctx context.Context, info HTTPGetterInfo) (*http.Response, error) {
+	getter := func(ctx context.Context, info HTTPGetterInfo) (io.ReadCloser, error) {
 		r := http.Response{}
 		body.currentByteIndex = int(info.Offset)
 		r.Body = body
 
-		return &r, nil
+		return r.Body, nil
 	}
 
 	rrOptions := RetryReaderOptions{
 		MaxRetryRequests: 1,
 		NotifyFailedRead: failureMethod}
-	retryReader := NewRetryReader(context.Background(), &startResponse, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, rrOptions, getter)
+	retryReader := NewRetryReader(context.Background(), startResponse, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, rrOptions, getter)
 
 	// should fail
 	can := make([]byte, 1)
@@ -305,18 +304,17 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadCount0() {
 	body.doInjectTimes = 1
 	body.injectedError = &net.DNSError{IsTemporary: true}
 
-	startResponse := http.Response{}
-	startResponse.Body = body
+	startResponseBody := body
 
-	getter := func(ctx context.Context, info HTTPGetterInfo) (*http.Response, error) {
+	getter := func(ctx context.Context, info HTTPGetterInfo) (io.ReadCloser, error) {
 		r := http.Response{}
 		body.currentByteIndex = int(info.Offset)
 		r.Body = body
 
-		return &r, nil
+		return r.Body, nil
 	}
 
-	retryReader := NewRetryReader(context.Background(), &startResponse, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, RetryReaderOptions{MaxRetryRequests: 1}, getter)
+	retryReader := NewRetryReader(context.Background(), startResponseBody, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, RetryReaderOptions{MaxRetryRequests: 1}, getter)
 
 	// should consume the only byte
 	can := make([]byte, 1)
@@ -340,18 +338,17 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadNegativeNonRetriableError
 	body.doInjectTimes = 1
 	body.injectedError = fmt.Errorf("not retriable error")
 
-	startResponse := http.Response{}
-	startResponse.Body = body
+	startResponseBody := body
 
-	getter := func(ctx context.Context, info HTTPGetterInfo) (*http.Response, error) {
+	getter := func(ctx context.Context, info HTTPGetterInfo) (io.ReadCloser, error) {
 		r := http.Response{}
 		body.currentByteIndex = int(info.Offset)
 		r.Body = body
 
-		return &r, nil
+		return r.Body, nil
 	}
 
-	retryReader := NewRetryReader(context.Background(), &startResponse, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, RetryReaderOptions{MaxRetryRequests: 2}, getter)
+	retryReader := NewRetryReader(context.Background(), startResponseBody, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, RetryReaderOptions{MaxRetryRequests: 2}, getter)
 
 	dest := make([]byte, 1)
 	_, err := retryReader.Read(dest)
@@ -379,14 +376,14 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithForcedRetry() {
 		sleepDuration := 100 * time.Millisecond
 		randBytes := make([]byte, byteCount)
 		_, _ = rand.Read(randBytes)
-		getter := func(ctx context.Context, info HTTPGetterInfo) (*http.Response, error) {
+		getter := func(ctx context.Context, info HTTPGetterInfo) (io.ReadCloser, error) {
 			body := newSingleUsePerByteReader(randBytes) // make new one every time, since we force closes in this test, and its unusable after a close
 			body.sleepDuration = sleepDuration
 			r := http.Response{}
 			body.currentByteIndex = int(info.Offset)
 			r.Body = body
 
-			return &r, nil
+			return r.Body, nil
 		}
 
 		httpGetterInfo := HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}

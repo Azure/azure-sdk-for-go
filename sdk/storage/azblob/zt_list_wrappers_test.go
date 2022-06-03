@@ -36,14 +36,18 @@ func (s *azblobTestSuite) TestBlobListWrapper() {
 
 	found := make([]string, 0)
 
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
 
 		for _, blob := range resp.Segment.BlobItems {
 			found = append(found, *blob.Name)
 		}
+
+		if err != nil {
+			break
+		}
 	}
-	_require.Nil(pager.Err())
 
 	sort.Strings(files)
 	sort.Strings(found)
@@ -75,14 +79,18 @@ func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
 
 	found := make([]string, 0)
 
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
 
 		for _, blob := range resp.Segment.BlobItems {
 			found = append(found, *blob.Name)
 		}
+
+		if err != nil {
+			break
+		}
 	}
-	_require.Nil(pager.Err())
 
 	sort.Strings(files)
 	sort.Strings(found)
@@ -102,7 +110,11 @@ func (s *azblobTestSuite) TestBlobListWrapperListingError() {
 	containerClient := getContainerClient(generateContainerName(testName), svcClient)
 
 	pager := containerClient.ListBlobsFlat(nil)
-
-	_require.Equal(pager.NextPage(ctx), false)
-	_require.NotNil(pager.Err())
+	for pager.More() {
+		_, err := pager.NextPage(ctx)
+		_require.NotNil(err)
+		if err != nil {
+			break
+		}
+	}
 }

@@ -40,20 +40,20 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
 	contentSize := 4 * 1024 * 1024 // 4MB
 	r, _ := generateData(contentSize)
 
-	blockBlobUploadResp, err := bbClient.Upload(ctx, r, nil)
+	_, err = bbClient.Upload(ctx, r, nil)
 	_require.Nil(err)
-	_require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
 	setTagsBlobOptions := BlobSetTagsOptions{
 		BlobTags: blobTagsMap,
 	}
-	blobSetTagsResponse, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
 	_require.Nil(err)
-	_require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
+	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
 	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, 3)
@@ -83,28 +83,28 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 
 	blockBlobUploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), nil)
 	_require.Nil(err)
-	_require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	versionId1 := blockBlobUploadResp.VersionID
 
 	blockBlobUploadResp, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))), nil)
 	_require.Nil(err)
-	_require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	versionId2 := blockBlobUploadResp.VersionID
 
 	setTagsBlobOptions := BlobSetTagsOptions{
 		BlobTags:  blobTagsMap,
 		VersionID: versionId1,
 	}
-	blobSetTagsResponse, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
 	_require.Nil(err)
-	_require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
+	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
 
 	getTagsBlobOptions1 := BlobGetTagsOptions{
 		VersionID: versionId1,
 	}
 	blobGetTagsResponse, err := bbClient.GetTags(ctx, &getTagsBlobOptions1)
 	_require.Nil(err)
-	_require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	_require.NotNil(blobGetTagsResponse.BlobTagSet)
 	_require.Len(blobGetTagsResponse.BlobTagSet, 3)
 	for _, blobTag := range blobGetTagsResponse.BlobTagSet {
@@ -116,7 +116,7 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 	}
 	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
 	_require.Nil(err)
-	_require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	_require.Nil(blobGetTagsResponse.BlobTagSet)
 }
 
@@ -146,14 +146,14 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTa
 		HTTPHeaders: &basicHeaders,
 		BlobTags:    blobTagsMap,
 	}
-	blockBlobUploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
+	_, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 	_require.Nil(err)
 	// TODO: Check for metadata and header
-	_require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
 	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	_require.Len(blobGetTagsResponse.BlobTagSet, 3)
 	for _, blobTag := range blobGetTagsResponse.BlobTagSet {
 		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
@@ -183,7 +183,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
 		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
 		_require.Nil(err)
-		_require.Equal(resp.RawResponse.StatusCode, 201)
+		// _require.Equal(resp.RawResponse.StatusCode, 201)
 		_require.NotEqual(*resp.Version, "")
 	}
 
@@ -260,7 +260,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	}
 	uploadSrcResp, err := srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
 	_require.Nil(err)
-	_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 	uploadDate := uploadSrcResp.Date
 
 	// Get source blob url with SAS for StageFromURL.
@@ -289,7 +289,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
 	_require.Nil(err)
-	_require.Equal(stageResp1.RawResponse.StatusCode, 201)
+	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 	_require.NotEqual(*stageResp1.RequestID, "")
 	_require.NotEqual(*stageResp1.Version, "")
 	_require.NotNil(stageResp1.Date)
@@ -302,7 +302,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
 	_require.Nil(err)
-	_require.Equal(stageResp2.RawResponse.StatusCode, 201)
+	// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
 	_require.NotEqual(*stageResp2.RequestID, "")
 	_require.NotEqual(*stageResp2.Version, "")
 	_require.NotNil(stageResp2.Date)
@@ -310,16 +310,16 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 
 	blockList, err := destBlob.GetBlockList(ctx, BlockListTypeAll, nil)
 	_require.Nil(err)
-	_require.Equal(blockList.RawResponse.StatusCode, 200)
+	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 	_require.Nil(blockList.BlockList.CommittedBlocks)
 	_require.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	commitBlockListOptions := BlockBlobCommitBlockListOptions{
 		BlobTagsMap: blobTagsMap,
 	}
-	listResp, err := destBlob.CommitBlockList(ctx, []string{blockID1, blockID2}, &commitBlockListOptions)
+	_, err = destBlob.CommitBlockList(ctx, []string{blockID1, blockID2}, &commitBlockListOptions)
 	_require.Nil(err)
-	_require.Equal(listResp.RawResponse.StatusCode, 201)
+	// _require.Equal(listResp.RawResponse.StatusCode,  201)
 	//versionId := listResp.VersionID()
 
 	blobGetTagsResp, err := destBlob.GetTags(ctx, nil)
@@ -367,9 +367,9 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	uploadBlockBlobOptions := BlockBlobUploadOptions{
 		BlobTags: blobTagsMap,
 	}
-	uploadSrcResp, err := srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
+	_, err = srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
 	_require.Nil(err)
-	_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
@@ -393,7 +393,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	}
 	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 202)
+	// _require.Equal(resp.RawResponse.StatusCode, 202)
 	_require.NotEqual(*resp.ETag, "")
 	_require.NotEqual(*resp.RequestID, "")
 	_require.NotEqual(*resp.Version, "")
@@ -422,7 +422,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions3)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 202)
+	// _require.Equal(resp.RawResponse.StatusCode, 202)
 }
 
 //nolint
@@ -446,9 +446,9 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 		HTTPHeaders: &basicHeaders,
 		Metadata:    basicMetadata,
 	}
-	blockBlobUploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
+	_, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 	_require.Nil(err)
-	_require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 
 	getPropertiesResponse, err := bbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
@@ -518,11 +518,11 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 		"+-./:=_1": "+-./:=_",
 	}
 
-	resp, err := blobClient.SetTags(ctx, &BlobSetTagsOptions{
+	_, err = blobClient.SetTags(ctx, &BlobSetTagsOptions{
 		BlobTags: blobTagsMap,
 	})
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 204)
+	// _require.Equal(resp.RawResponse.StatusCode,204)
 
 	include := []ListBlobsIncludeItem{ListBlobsIncludeItemTags}
 	pager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
@@ -530,12 +530,14 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	})
 
 	found := make([]*BlobItemInternal, 0)
-
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
 		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
 	}
-	_require.Nil(pager.Err())
 
 	_require.Equal(*(found[0].Name), blobName)
 	_require.Len(found[0].BlobTags.BlobTagSet, 3)
@@ -695,7 +697,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	}
 	putResp, err := pbClient.UploadPages(ctx, getReaderToGeneratedBytes(1024), &uploadPagesOptions)
 	_require.Nil(err)
-	_require.Equal(putResp.RawResponse.StatusCode, 201)
+	//_require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.Equal(putResp.LastModified.IsZero(), false)
 	_require.NotEqual(putResp.ETag, ETagNone)
 	_require.NotEqual(putResp.Version, "")
@@ -703,9 +705,9 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	setTagsBlobOptions := BlobSetTagsOptions{
 		BlobTags: basicBlobTagsMap,
 	}
-	setTagResp, err := pbClient.SetTags(ctx, &setTagsBlobOptions)
+	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
 	_require.Nil(err)
-	_require.Equal(setTagResp.RawResponse.StatusCode, 204)
+	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
 
 	gpResp, err := pbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
@@ -714,7 +716,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 
 	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, len(basicBlobTagsMap))
@@ -730,9 +732,9 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	setTagsBlobOptions2 := BlobSetTagsOptions{
 		BlobTags: modifiedBlobTags,
 	}
-	setTagResp, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
+	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
 	_require.Nil(err)
-	_require.Equal(setTagResp.RawResponse.StatusCode, 204)
+	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
 
 	gpResp, err = pbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
@@ -741,7 +743,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 
 	blobGetTagsResponse, err = pbClient.GetTags(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet = blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, len(modifiedBlobTags))
@@ -780,7 +782,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 
 	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, len(specialCharBlobTagsMap))
@@ -817,7 +819,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
 
 	blobGetTagsResponse, err := abClient.GetTags(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet := blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, len(specialCharBlobTagsMap))
@@ -835,7 +837,7 @@ func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
 
 	blobGetTagsResponse, err = abClient.GetTags(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
 	blobTagsSet = blobGetTagsResponse.BlobTagSet
 	_require.NotNil(blobTagsSet)
 	_require.Len(blobTagsSet, len(specialCharBlobTagsMap))

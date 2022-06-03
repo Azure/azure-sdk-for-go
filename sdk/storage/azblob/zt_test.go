@@ -37,8 +37,8 @@ type azblobUnrecordedTestSuite struct {
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
-	//suite.Run(t, &azblobUnrecordedTestSuite{})
+	suite.Run(t, &azblobTestSuite{mode: testframework.Live})
+	suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 type testContext struct {
@@ -148,7 +148,7 @@ func disableSoftDelete(_require *require.Assertions, bsu *ServiceClient) {
 func validateUpload(_require *require.Assertions, blobClient *BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
 	_require.Nil(err)
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.Body(nil))
 	_require.Nil(err)
 	_require.Len(data, 0)
 }

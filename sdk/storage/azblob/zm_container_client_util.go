@@ -6,8 +6,6 @@
 
 package azblob
 
-import "context"
-
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ContainerCreateOptions provides set of configurations for CreateContainer operation
@@ -203,12 +201,12 @@ type ContainerListBlobsFlatOptions struct {
 	Prefix *string
 }
 
-func (o *ContainerListBlobsFlatOptions) format() *containerClientListBlobFlatSegmentOptions {
+func (o *ContainerListBlobsFlatOptions) format() containerClientListBlobFlatSegmentOptions {
 	if o == nil {
-		return nil
+		return containerClientListBlobFlatSegmentOptions{}
 	}
 
-	return &containerClientListBlobFlatSegmentOptions{
+	return containerClientListBlobFlatSegmentOptions{
 		Include:    o.Include,
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
@@ -216,38 +214,38 @@ func (o *ContainerListBlobsFlatOptions) format() *containerClientListBlobFlatSeg
 	}
 }
 
-// ContainerListBlobFlatPager provides operations for iterating over paged responses
-type ContainerListBlobFlatPager struct {
-	*containerClientListBlobFlatSegmentPager
-}
+//// ContainerListBlobFlatPager provides operations for iterating over paged responses
+//type ContainerListBlobFlatPager struct {
+//	*containerClientListBlobFlatSegmentPager
+//}
+//
+//func toContainerListBlobFlatSegmentPager(resp *containerClientListBlobFlatSegmentPager) *ContainerListBlobFlatPager {
+//	return &ContainerListBlobFlatPager{resp}
+//}
+//
+//// Err returns the last error encountered while paging.
+//func (p *ContainerListBlobFlatPager) Err() error {
+//	return p.containerClientListBlobFlatSegmentPager.Err()
+//}
+//
+//// NextPage returns true if the pager advanced to the next page.
+//// Returns false if there are no more pages or an error occurred.
+//func (p *ContainerListBlobFlatPager) NextPage(ctx context.Context) bool {
+//	return p.containerClientListBlobFlatSegmentPager.NextPage(ctx)
+//}
+//
+//// PageResponse returns the current containerClientListBlobFlatSegmentResponse page.
+//func (p *ContainerListBlobFlatPager) PageResponse() ContainerListBlobsFlatResponse {
+//	return toContainerListBlobsFlatResponse(p.containerClientListBlobFlatSegmentPager.PageResponse())
+//}
 
-func toContainerListBlobFlatSegmentPager(resp *containerClientListBlobFlatSegmentPager) *ContainerListBlobFlatPager {
-	return &ContainerListBlobFlatPager{resp}
-}
-
-// Err returns the last error encountered while paging.
-func (p *ContainerListBlobFlatPager) Err() error {
-	return p.containerClientListBlobFlatSegmentPager.Err()
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *ContainerListBlobFlatPager) NextPage(ctx context.Context) bool {
-	return p.containerClientListBlobFlatSegmentPager.NextPage(ctx)
-}
-
-// PageResponse returns the current containerClientListBlobFlatSegmentResponse page.
-func (p *ContainerListBlobFlatPager) PageResponse() ContainerListBlobFlatPagerResponse {
-	return toContainerListBlobFlatPagerResponse(p.containerClientListBlobFlatSegmentPager.PageResponse())
-}
-
-// ContainerListBlobFlatPagerResponse contains the response from method containerClientListBlobFlatSegmentPager.PageResponse()
-type ContainerListBlobFlatPagerResponse struct {
+// ContainerListBlobsFlatResponse contains the response from method containerClientListBlobFlatSegmentPager.PageResponse()
+type ContainerListBlobsFlatResponse struct {
 	containerClientListBlobFlatSegmentResponse
 }
 
-func toContainerListBlobFlatPagerResponse(resp containerClientListBlobFlatSegmentResponse) ContainerListBlobFlatPagerResponse {
-	return ContainerListBlobFlatPagerResponse{resp}
+func toContainerListBlobsFlatResponse(resp containerClientListBlobFlatSegmentResponse) ContainerListBlobsFlatResponse {
+	return ContainerListBlobsFlatResponse{resp}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -272,12 +270,12 @@ type ContainerListBlobsHierarchyOptions struct {
 	Prefix *string
 }
 
-func (o *ContainerListBlobsHierarchyOptions) format() *containerClientListBlobHierarchySegmentOptions {
+func (o *ContainerListBlobsHierarchyOptions) format() containerClientListBlobHierarchySegmentOptions {
 	if o == nil {
-		return nil
+		return containerClientListBlobHierarchySegmentOptions{}
 	}
 
-	return &containerClientListBlobHierarchySegmentOptions{
+	return containerClientListBlobHierarchySegmentOptions{
 		Include:    o.Include,
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
@@ -285,39 +283,39 @@ func (o *ContainerListBlobsHierarchyOptions) format() *containerClientListBlobHi
 	}
 }
 
-// ContainerListBlobHierarchyPager provides operations for iterating over paged responses.
-type ContainerListBlobHierarchyPager struct {
-	containerClientListBlobHierarchySegmentPager
-}
+//// ContainerListBlobHierarchyPager provides operations for iterating over paged responses.
+//type ContainerListBlobHierarchyPager struct {
+//	containerClientListBlobHierarchySegmentPager
+//}
+//
+//func toContainerListBlobHierarchySegmentPager(resp *containerClientListBlobHierarchySegmentPager) *ContainerListBlobHierarchyPager {
+//	if resp == nil {
+//		return nil
+//	}
+//	return &ContainerListBlobHierarchyPager{*resp}
+//}
+//
+//// Err returns the last error encountered while paging.
+//func (p *ContainerListBlobHierarchyPager) Err() error {
+//	return p.containerClientListBlobHierarchySegmentPager.Err()
+//}
+//
+//// NextPage returns true if the pager advanced to the next page.
+//// Returns false if there are no more pages or an error occurred.
+//func (p *ContainerListBlobHierarchyPager) NextPage(ctx context.Context) bool {
+//	return p.containerClientListBlobHierarchySegmentPager.NextPage(ctx)
+//}
+//
+//// PageResponse returns the current containerClientListBlobFlatSegmentResponse page.
+//func (p *ContainerListBlobHierarchyPager) PageResponse() ContainerListBlobHierarchyResponse {
+//	return toContainerListBlobHierarchyResponse(p.containerClientListBlobHierarchySegmentPager.PageResponse())
+//}
 
-func toContainerListBlobHierarchySegmentPager(resp *containerClientListBlobHierarchySegmentPager) *ContainerListBlobHierarchyPager {
-	if resp == nil {
-		return nil
-	}
-	return &ContainerListBlobHierarchyPager{*resp}
-}
-
-// Err returns the last error encountered while paging.
-func (p *ContainerListBlobHierarchyPager) Err() error {
-	return p.containerClientListBlobHierarchySegmentPager.Err()
-}
-
-// NextPage returns true if the pager advanced to the next page.
-// Returns false if there are no more pages or an error occurred.
-func (p *ContainerListBlobHierarchyPager) NextPage(ctx context.Context) bool {
-	return p.containerClientListBlobHierarchySegmentPager.NextPage(ctx)
-}
-
-// PageResponse returns the current containerClientListBlobFlatSegmentResponse page.
-func (p *ContainerListBlobHierarchyPager) PageResponse() ContainerListBlobHierarchyPagerResponse {
-	return toContainerListBlobHierarchyPagerResponse(p.containerClientListBlobHierarchySegmentPager.PageResponse())
-}
-
-// ContainerListBlobHierarchyPagerResponse contains the response from method containerClientListBlobFlatSegmentPager.PageResponse()
-type ContainerListBlobHierarchyPagerResponse struct {
+// ContainerListBlobHierarchyResponse contains the response from method containerClientListBlobFlatSegmentPager.PageResponse()
+type ContainerListBlobHierarchyResponse struct {
 	containerClientListBlobHierarchySegmentResponse
 }
 
-func toContainerListBlobHierarchyPagerResponse(resp containerClientListBlobHierarchySegmentResponse) ContainerListBlobHierarchyPagerResponse {
-	return ContainerListBlobHierarchyPagerResponse{resp}
+func toContainerListBlobHierarchyResponse(resp containerClientListBlobHierarchySegmentResponse) ContainerListBlobHierarchyResponse {
+	return ContainerListBlobHierarchyResponse{resp}
 }

@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"time"
 )
 
 const _1MiB = 1024 * 1024
@@ -48,6 +49,78 @@ type UploadOption struct {
 	TransactionalContentCRC64 *[]byte
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 *[]byte
+}
+
+type UploadResponse struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
+	ContentMD5 []byte
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// EncryptionKeySHA256 contains the information returned from the x-ms-encryption-key-sha256 header response.
+	EncryptionKeySHA256 *string
+
+	// EncryptionScope contains the information returned from the x-ms-encryption-scope header response.
+	EncryptionScope *string
+
+	// IsServerEncrypted contains the information returned from the x-ms-request-server-encrypted header response.
+	IsServerEncrypted *bool
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+
+	// VersionID contains the information returned from the x-ms-version-id header response.
+	VersionID *string
+
+	// XMSContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	// Will be a part of response only if uploading data >= internal.BlockBlobMaxUploadBlobBytes (= 256 * 1024 * 1024 // 256MB)
+	XMSContentCRC64 []byte
+}
+
+func toUploadResponseFromBlockBlobUploadResponse(resp BlockBlobUploadResponse) UploadResponse {
+	return UploadResponse{
+		ClientRequestID:     resp.ClientRequestID,
+		ContentMD5:          resp.ContentMD5,
+		Date:                resp.Date,
+		ETag:                resp.ETag,
+		EncryptionKeySHA256: resp.EncryptionKeySHA256,
+		EncryptionScope:     resp.EncryptionScope,
+		IsServerEncrypted:   resp.IsServerEncrypted,
+		LastModified:        resp.LastModified,
+		RequestID:           resp.RequestID,
+		Version:             resp.Version,
+		VersionID:           resp.VersionID,
+	}
+}
+
+func toUploadResponseFromBlockBlobCommitBlockListResponse(resp BlockBlobCommitBlockListResponse) UploadResponse {
+	return UploadResponse{
+		ClientRequestID:     resp.ClientRequestID,
+		ContentMD5:          resp.ContentMD5,
+		Date:                resp.Date,
+		ETag:                resp.ETag,
+		EncryptionKeySHA256: resp.EncryptionKeySHA256,
+		EncryptionScope:     resp.EncryptionScope,
+		IsServerEncrypted:   resp.IsServerEncrypted,
+		LastModified:        resp.LastModified,
+		RequestID:           resp.RequestID,
+		Version:             resp.Version,
+		VersionID:           resp.VersionID,
+		XMSContentCRC64:     resp.XMSContentCRC64,
+	}
 }
 
 func (o *UploadOption) getStageBlockOptions() *BlockBlobStageBlockOptions {
@@ -192,8 +265,8 @@ func (o *DownloadOptions) getDownloadBlobOptions(offSet, count int64, rangeGetCo
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// BatchTransferOptions identifies options used by DoBatchTransfer.
-type BatchTransferOptions struct {
+// batchTransferOptions identifies options used by doBatchTransfer.
+type batchTransferOptions struct {
 	TransferSize  int64
 	ChunkSize     int64
 	Parallelism   uint16

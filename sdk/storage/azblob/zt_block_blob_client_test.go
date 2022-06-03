@@ -46,7 +46,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 		io.NopCloser(strings.NewReader("hello world"))
 		putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
 		_require.Nil(err)
-		_require.Equal(putResp.RawResponse.StatusCode, 201)
+		//_require.Equal(putResp.RawResponse.StatusCode, 201)
 		_require.Nil(putResp.ContentMD5)
 		_require.NotNil(putResp.RequestID)
 		_require.NotNil(putResp.Version)
@@ -56,7 +56,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 
 	blockList, err := bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_require.Nil(err)
-	_require.Equal(blockList.RawResponse.StatusCode, 200)
+	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 	_require.Nil(blockList.LastModified)
 	_require.Nil(blockList.ETag)
 	_require.NotNil(blockList.ContentType)
@@ -72,7 +72,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 
 	listResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
 	_require.Nil(err)
-	_require.Equal(listResp.RawResponse.StatusCode, 201)
+	// _require.Equal(listResp.RawResponse.StatusCode,  201)
 	_require.NotNil(listResp.LastModified)
 	_require.Equal((*listResp.LastModified).IsZero(), false)
 	_require.NotNil(listResp.ETag)
@@ -83,7 +83,7 @@ func (s *azblobTestSuite) TestStageGetBlocks() {
 
 	blockList, err = bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_require.Nil(err)
-	_require.Equal(blockList.RawResponse.StatusCode, 200)
+	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 	_require.NotNil(blockList.LastModified)
 	_require.Equal((*blockList.LastModified).IsZero(), false)
 	_require.NotNil(blockList.ETag)
@@ -123,9 +123,9 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
 
 	// Prepare source bbClient for copy.
-	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
+	_, err = srcBlob.Upload(ctx, rsc, nil)
 	_require.Nil(err)
-	_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
@@ -152,7 +152,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 		Count:  to.Ptr(int64(contentSize / 2)),
 	})
 	_require.Nil(err)
-	_require.Equal(stageResp1.RawResponse.StatusCode, 201)
+	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 	_require.NotEqual(stageResp1.ContentMD5, "")
 	_require.NotEqual(stageResp1.RequestID, "")
 	_require.NotEqual(stageResp1.Version, "")
@@ -163,7 +163,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 		Count:  to.Ptr(int64(CountToEnd)),
 	})
 	_require.Nil(err)
-	_require.Equal(stageResp2.RawResponse.StatusCode, 201)
+	// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
 	_require.NotEqual(stageResp2.ContentMD5, "")
 	_require.NotEqual(stageResp2.RequestID, "")
 	_require.NotEqual(stageResp2.Version, "")
@@ -172,7 +172,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_require.Nil(err)
-	_require.Equal(blockList.RawResponse.StatusCode, 200)
+	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.CommittedBlocks)
 	_require.NotNil(blockList.BlockList.UncommittedBlocks)
@@ -181,7 +181,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
 	// Commit block list.
 	listResp, err := destBlob.CommitBlockList(context.Background(), blockIDs, nil)
 	_require.Nil(err)
-	_require.Equal(listResp.RawResponse.StatusCode, 201)
+	// _require.Equal(listResp.RawResponse.StatusCode,  201)
 	_require.NotNil(listResp.LastModified)
 	_require.Equal((*listResp.LastModified).IsZero(), false)
 	_require.NotNil(listResp.ETag)
@@ -221,9 +221,9 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	destBlob := containerClient.NewBlockBlobClient("destblob")
 
 	// Prepare source bbClient for copy.
-	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(body), nil)
+	_, err = srcBlob.Upload(ctx, internal.NopCloser(body), nil)
 	_require.Nil(err)
-	_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
@@ -251,7 +251,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 		SourceContentMD5: sourceContentMD5,
 	})
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 202)
+	// _require.Equal(resp.RawResponse.StatusCode, 202)
 	_require.NotNil(resp.ETag)
 	_require.NotNil(resp.RequestID)
 	_require.NotNil(resp.Version)
@@ -290,7 +290,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 202)
+	// _require.Equal(resp.RawResponse.StatusCode, 202)
 	_require.EqualValues(*resp.CopyStatus, "success")
 }
 
@@ -316,9 +316,9 @@ func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders
 
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
-	uploadSrcResp, err := bbClient.Upload(ctx, internal.NopCloser(body), nil)
+	_, err = bbClient.Upload(ctx, internal.NopCloser(body), nil)
 	_require.Nil(err)
-	_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get blob url with SAS.
 	blobParts, _ := NewBlobURLParts(bbClient.URL())
@@ -391,7 +391,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithMD5() {
 		TransactionalContentMD5: contentMD5,
 	})
 	_require.Nil(err)
-	_require.Equal(putResp.RawResponse.StatusCode, 201)
+	//_require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.EqualValues(putResp.ContentMD5, contentMD5)
 	_require.NotNil(putResp.RequestID)
 	_require.NotNil(putResp.Version)
@@ -545,7 +545,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
-	_require.Equal(createResp.RawResponse.StatusCode, 201)
+	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
@@ -581,7 +581,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
-	_require.Equal(createResp.RawResponse.StatusCode, 201)
+	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, 10)
@@ -622,7 +622,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
-	_require.Equal(createResp.RawResponse.StatusCode, 201)
+	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, 10)
@@ -662,7 +662,7 @@ func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
 
 	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_require.Nil(err)
-	_require.Equal(createResp.RawResponse.StatusCode, 201)
+	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 	_require.NotNil(createResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
@@ -1043,7 +1043,7 @@ func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
 
 	resp, err := bbClient.Download(ctx, nil)
 	_require.Nil(err)
-	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	data, err := ioutil.ReadAll(resp.Body(nil))
 	_require.Nil(err)
 	_require.Equal(string(data), blockBlobDefaultData)
 }
@@ -1164,9 +1164,9 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	srcBlob := containerClient.NewBlockBlobClient(generateBlobName(testName))
 
 	tier := AccessTierCool
-	uploadSrcResp, err := srcBlob.Upload(ctx, internal.NopCloser(contentReader), &BlockBlobUploadOptions{Tier: &tier})
+	_, err = srcBlob.Upload(ctx, internal.NopCloser(contentReader), &BlockBlobUploadOptions{Tier: &tier})
 	_require.Nil(err)
-	_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
@@ -1199,7 +1199,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
 		}
 		resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
 		_require.Nil(err)
-		_require.Equal(resp.RawResponse.StatusCode, 202)
+		// _require.Equal(resp.RawResponse.StatusCode, 202)
 		_require.Equal(*resp.CopyStatus, "success")
 
 		destBlobPropResp, err := destBlob.GetProperties(ctx, nil)
@@ -1229,9 +1229,9 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
 	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
 	tier := AccessTierCool
-	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &BlockBlobUploadOptions{Tier: &tier})
+	_, err = srcBlob.Upload(ctx, rsc, &BlockBlobUploadOptions{Tier: &tier})
 	_require.Nil(err)
-	_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 
 	// Get source blob url with SAS for StageFromURL.
 	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
@@ -1259,7 +1259,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	}
 	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
 	_require.Nil(err)
-	_require.Equal(stageResp1.RawResponse.StatusCode, 201)
+	// _require.Equal(stageResp1.RawResponse.StatusCode, 201)
 	_require.Nil(stageResp1.ContentMD5)
 	_require.NotEqual(*stageResp1.RequestID, "")
 	_require.NotEqual(*stageResp1.Version, "")
@@ -1273,7 +1273,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	}
 	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
 	_require.Nil(err)
-	_require.Equal(stageResp2.RawResponse.StatusCode, 201)
+	// _require.Equal(stageResp2.RawResponse.StatusCode, 201)
 	_require.NotEqual(stageResp2.ContentMD5, "")
 	_require.NotEqual(stageResp2.RequestID, "")
 	_require.NotEqual(stageResp2.Version, "")
@@ -1282,7 +1282,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 	// Check block list.
 	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
 	_require.Nil(err)
-	_require.Equal(blockList.RawResponse.StatusCode, 200)
+	// _require.Equal(blockList.RawResponse.StatusCode, 200)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.CommittedBlocks)
 	_require.NotNil(blockList.BlockList.UncommittedBlocks)
@@ -1293,7 +1293,7 @@ func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
 		Tier: &tier,
 	})
 	_require.Nil(err)
-	_require.Equal(listResp.RawResponse.StatusCode, 201)
+	// _require.Equal(listResp.RawResponse.StatusCode,  201)
 	_require.NotNil(listResp.LastModified)
 	_require.Equal((*listResp.LastModified).IsZero(), false)
 	_require.NotNil(listResp.ETag)
@@ -1381,11 +1381,14 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 
 	pager := containerClient.ListBlobsFlat(nil)
 	var blobs []*BlobItemInternal
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
 		blobs = append(blobs, resp.ListBlobsFlatSegmentResponse.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
 	}
-	_require.Nil(pager.Err())
 	_require.GreaterOrEqual(len(blobs), 1)
 	_require.Equal(*blobs[0].Properties.AccessTier, AccessTierArchive)
 	_require.Equal(*blobs[0].Properties.ArchiveStatus, ArchiveStatusRehydratePendingToCool)

@@ -10,12 +10,12 @@ import (
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"net/http"
 	"net/url"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
@@ -115,28 +115,6 @@ func (s *ServiceClient) DeleteContainer(ctx context.Context, containerName strin
 	return containerDeleteResp, err
 }
 
-// appendToURLPath appends a string to the end of a URL's path (prefixing the string with a '/' if required)
-func appendToURLPath(u string, name string) string {
-	// e.g. "https://ms.com/a/b/?k1=v1&k2=v2#f"
-	// When you call url.Parse() this is what you'll get:
-	//     Scheme: "https"
-	//     Opaque: ""
-	//       User: nil
-	//       Host: "ms.com"
-	//       Path: "/a/b/"	This should start with a / and it might or might not have a trailing slash
-	//    RawPath: ""
-	// ForceQuery: false
-	//   RawQuery: "k1=v1&k2=v2"
-	//   Fragment: "f"
-	uri, _ := url.Parse(u)
-
-	if len(uri.Path) == 0 || uri.Path[len(uri.Path)-1] != '/' {
-		uri.Path += "/" // Append "/" to end before appending name
-	}
-	uri.Path += name
-	return uri.String()
-}
-
 // GetAccountInfo provides account level information
 func (s *ServiceClient) GetAccountInfo(ctx context.Context, o *ServiceGetAccountInfoOptions) (ServiceGetAccountInfoResponse, error) {
 	getAccountInfoOptions := o.format()
@@ -147,31 +125,52 @@ func (s *ServiceClient) GetAccountInfo(ctx context.Context, o *ServiceGetAccount
 // ListContainers operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-func (s *ServiceClient) ListContainers(o *ServiceListContainersOptions) *ServiceListContainersPager {
+func (s *ServiceClient) ListContainers(o *ServiceListContainersOptions) *runtime.Pager[ServiceListContainersResponse] {
 	listOptions := o.format()
-	pager := s.client.ListContainersSegment(listOptions)
-	//TODO: .Err()?
-	//// override the generated advancer, which is incorrect
-	//if pager.Err() != nil {
-	//	return pager
-	//}
+	return runtime.NewPager(runtime.PagingHandler[ServiceListContainersResponse]{
+		More: func(page ServiceListContainersResponse) bool {
+			if page.Marker == nil || len(*page.Marker) == 0 {
+				return false
+			}
+			return true
+		},
+		Fetcher: func(ctx context.Context, page *ServiceListContainersResponse) (ServiceListContainersResponse, error) {
+			var marker *string
+			if page != nil {
+				if page.NextMarker != nil {
+					marker = page.NextMarker
+				}
+			} else {
+				// If provided by the user, then use the one from options bag
+				marker = listOptions.Marker
+			}
 
-	pager.advancer = func(ctx context.Context, response serviceClientListContainersSegmentResponse) (*policy.Request, error) {
-		if response.ListContainersSegmentResponse.NextMarker == nil {
-			return nil, errors.New("unexpected missing NextMarker")
-		}
-		req, err := s.client.listContainersSegmentCreateRequest(ctx, listOptions)
-		if err != nil {
-			return nil, err
-		}
-		queryValues, _ := url.ParseQuery(req.Raw().URL.RawQuery)
-		queryValues.Set("marker", *response.ListContainersSegmentResponse.NextMarker)
+			req, err := s.client.listContainersSegmentCreateRequest(ctx, &listOptions)
+			if err != nil {
+				return ServiceListContainersResponse{}, err
+			}
 
-		req.Raw().URL.RawQuery = queryValues.Encode()
-		return req, nil
-	}
+			if marker != nil {
+				queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+				if err != nil {
+					return ServiceListContainersResponse{}, err
+				}
+				queryValues.Set("marker", *marker)
+				req.Raw().URL.RawQuery = queryValues.Encode()
+			}
 
-	return toServiceListContainersSegmentPager(*pager)
+			resp, err := s.client.pl.Do(req)
+			if err != nil {
+				return ServiceListContainersResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ServiceListContainersResponse{}, runtime.NewResponseError(resp)
+			}
+
+			generatedResp, err := s.client.listContainersSegmentHandleResponse(resp)
+			return toServiceListContainersResponse(generatedResp), err
+		},
+	})
 }
 
 // GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics

@@ -8,9 +8,9 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
+	"net/http"
 	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -174,52 +174,106 @@ func (pb *PageBlobClient) ClearPages(ctx context.Context, pageRange HttpRange, o
 
 // GetPageRanges returns the list of valid page ranges for a page blob or snapshot of a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb *PageBlobClient) GetPageRanges(options *PageBlobGetPageRangesOptions) *PageBlobGetPageRangesPager {
+func (pb *PageBlobClient) GetPageRanges(options *PageBlobGetPageRangesOptions) *runtime.Pager[PageBlobGetPageRangesResponse] {
 	getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions := options.format()
 
-	pageBlobGetPageRangesPager := pb.client.GetPageRanges(getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
+	return runtime.NewPager(runtime.PagingHandler[PageBlobGetPageRangesResponse]{
+		More: func(page PageBlobGetPageRangesResponse) bool {
+			if page.NextMarker == nil || len(*page.NextMarker) == 0 {
+				return false
+			}
+			return true
+		},
+		Fetcher: func(ctx context.Context, page *PageBlobGetPageRangesResponse) (PageBlobGetPageRangesResponse, error) {
+			var marker *string
+			if page != nil {
+				if page.NextMarker != nil {
+					marker = page.NextMarker
+				}
+			} else {
+				// If provided by the user, then use the one from options bag
+				marker = getPageRangesOptions.Marker
+			}
 
-	// Fixing Advancer
-	pageBlobGetPageRangesPager.advancer = func(ctx context.Context, response pageBlobClientGetPageRangesResponse) (*policy.Request, error) {
-		getPageRangesOptions.Marker = response.NextMarker
-		req, err := pb.client.getPageRangesCreateRequest(ctx, getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
-		if err != nil {
-			return nil, err
-		}
-		queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
-		if err != nil {
-			return nil, err
-		}
-		req.Raw().URL.RawQuery = queryValues.Encode()
-		return req, nil
-	}
+			req, err := pb.client.getPageRangesCreateRequest(ctx, &getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
+			if err != nil {
+				return PageBlobGetPageRangesResponse{}, err
+			}
+			if marker != nil {
+				queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+				if err != nil {
+					return PageBlobGetPageRangesResponse{}, err
+				}
+				queryValues.Set("marker", *marker)
+				req.Raw().URL.RawQuery = queryValues.Encode()
+				if err != nil {
+					return PageBlobGetPageRangesResponse{}, err
+				}
+			}
 
-	return toPageBlobGetPageRangesPager(pageBlobGetPageRangesPager)
+			resp, err := pb.client.pl.Do(req)
+			if err != nil {
+				return PageBlobGetPageRangesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PageBlobGetPageRangesResponse{}, runtime.NewResponseError(resp)
+			}
+			generatedResp, err := pb.client.getPageRangesHandleResponse(resp)
+			return toPageBlobGetPageRangesResponse(generatedResp), err
+		},
+	})
 }
 
 // GetPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb *PageBlobClient) GetPageRangesDiff(options *PageBlobGetPageRangesDiffOptions) *PageBlobGetPageRangesDiffPager {
+func (pb *PageBlobClient) GetPageRangesDiff(options *PageBlobGetPageRangesDiffOptions) *runtime.Pager[PageBlobGetPageRangesDiffResponse] {
 	getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions := options.format()
 
-	getPageRangesDiffPager := pb.client.GetPageRangesDiff(getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
+	return runtime.NewPager(runtime.PagingHandler[PageBlobGetPageRangesDiffResponse]{
+		More: func(page PageBlobGetPageRangesDiffResponse) bool {
+			if page.NextMarker == nil || len(*page.NextMarker) == 0 {
+				return false
+			}
+			return true
+		},
+		Fetcher: func(ctx context.Context, page *PageBlobGetPageRangesDiffResponse) (PageBlobGetPageRangesDiffResponse, error) {
+			var marker *string
+			if page != nil {
+				if page.NextMarker != nil {
+					marker = page.NextMarker
+				}
+			} else {
+				// If provided by the user, then use the one from options bag
+				marker = getPageRangesDiffOptions.Marker
+			}
 
-	// Fixing Advancer
-	getPageRangesDiffPager.advancer = func(ctx context.Context, response pageBlobClientGetPageRangesDiffResponse) (*policy.Request, error) {
-		getPageRangesDiffOptions.Marker = response.NextMarker
-		req, err := pb.client.getPageRangesDiffCreateRequest(ctx, getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
-		if err != nil {
-			return nil, err
-		}
-		queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
-		if err != nil {
-			return nil, err
-		}
-		req.Raw().URL.RawQuery = queryValues.Encode()
-		return req, nil
-	}
+			req, err := pb.client.getPageRangesDiffCreateRequest(ctx, &getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
+			if err != nil {
+				return PageBlobGetPageRangesDiffResponse{}, err
+			}
+			if marker != nil {
+				queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+				if err != nil {
+					return PageBlobGetPageRangesDiffResponse{}, err
+				}
+				queryValues.Set("marker", *marker)
+				req.Raw().URL.RawQuery = queryValues.Encode()
+				if err != nil {
+					return PageBlobGetPageRangesDiffResponse{}, err
+				}
+			}
 
-	return toPageBlobGetPageRangesDiffPager(getPageRangesDiffPager)
+			resp, err := pb.client.pl.Do(req)
+			if err != nil {
+				return PageBlobGetPageRangesDiffResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return PageBlobGetPageRangesDiffResponse{}, runtime.NewResponseError(resp)
+			}
+			generatedResp, err := pb.client.getPageRangesDiffHandleResponse(resp)
+			return toPageBlobGetPageRangesDiffResponse(generatedResp), err
+		},
+	})
 }
 
 // Resize resizes the page blob to the specified size (which must be a multiple of 512).

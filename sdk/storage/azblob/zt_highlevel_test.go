@@ -52,19 +52,19 @@ func performUploadStreamToBlockBlobTest(_require *require.Assertions, testName s
 	blobContentReader, blobData := generateData(blobSize)
 
 	// Perform UploadStream
-	uploadResp, err := blobClient.UploadStream(ctx, blobContentReader,
+	_, err = blobClient.UploadStream(ctx, blobContentReader,
 		UploadStreamOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 
 	// Assert that upload was successful
 	_require.Equal(err, nil)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	// Download the blob to verify
 	downloadResponse, err := blobClient.Download(ctx, nil)
 	_require.Nil(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.Body(nil))
 	_require.Nil(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)
@@ -153,7 +153,7 @@ func performUploadAndDownloadFileTest(_require *require.Assertions, testName str
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Upload the file to a block blob
-	response, err := bbClient.UploadFile(context.Background(), file,
+	_, err = bbClient.UploadFile(context.Background(), file,
 		UploadOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
@@ -163,7 +163,7 @@ func performUploadAndDownloadFileTest(_require *require.Assertions, testName str
 			},
 		})
 	_require.Equal(err, nil)
-	_require.Equal(response.StatusCode, 201)
+	//_require.Equal(response.StatusCode, 201)
 
 	// Set up file to download the blob to
 	destFileName := "BigFile-downloaded.bin"
@@ -181,7 +181,7 @@ func performUploadAndDownloadFileTest(_require *require.Assertions, testName str
 	// Perform download
 	err = bbClient.DownloadToFile(context.Background(), int64(downloadOffset), int64(downloadCount),
 		destFile,
-		DownloadOptions{
+		&DownloadOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -315,7 +315,7 @@ func performUploadAndDownloadBufferTest(_require *require.Assertions, testName s
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-	response, err := bbClient.UploadBuffer(context.Background(), bytesToUpload,
+	_, err = bbClient.UploadBuffer(context.Background(), bytesToUpload,
 		UploadOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
@@ -325,7 +325,7 @@ func performUploadAndDownloadBufferTest(_require *require.Assertions, testName s
 			},
 		})
 	_require.Equal(err, nil)
-	_require.Equal(response.StatusCode, 201)
+	//_require.Equal(response.StatusCode, 201)
 
 	// Set up buffer to download the blob to
 	var destBuffer []byte
@@ -337,7 +337,7 @@ func performUploadAndDownloadBufferTest(_require *require.Assertions, testName s
 
 	// Download the blob to a buffer
 	err = bbClient.DownloadToBuffer(context.Background(), int64(downloadOffset), int64(downloadCount),
-		destBuffer, DownloadOptions{
+		destBuffer, &DownloadOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -462,7 +462,7 @@ func (s *azblobUnrecordedTestSuite) TestBasicDoBatchTransfer() {
 		totalSizeCount := int64(0)
 		runCount := int64(0)
 
-		err := DoBatchTransfer(ctx, BatchTransferOptions{
+		err := doBatchTransfer(ctx, &batchTransferOptions{
 			TransferSize: test.transferSize,
 			ChunkSize:    test.chunkSize,
 			Parallelism:  test.parallelism,
@@ -507,7 +507,7 @@ func (s *azblobUnrecordedTestSuite) TestDoBatchTransferWithError() {
 	mmf := mockMMF{failHandle: _require}
 	expectedFirstError := errors.New("#3 means trouble")
 
-	err := DoBatchTransfer(ctx, BatchTransferOptions{
+	err := doBatchTransfer(ctx, &batchTransferOptions{
 		TransferSize: 5,
 		ChunkSize:    1,
 		Parallelism:  5,
@@ -567,7 +567,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	blobContentReader, blobData := generateData(blobSize)
 
 	// Perform UploadStream
-	uploadResp, err := bbClient.UploadStream(ctx, blobContentReader,
+	_, err = bbClient.UploadStream(ctx, blobContentReader,
 		UploadStreamOptions{
 			BufferSize:  bufferSize,
 			MaxBuffers:  maxBuffers,
@@ -578,7 +578,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 
 	// Assert that upload was successful
 	_require.Equal(err, nil)
-	_require.Equal(uploadResp.RawResponse.StatusCode, 201)
+	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 
 	getPropertiesResp, err := bbClient.GetProperties(ctx, nil)
 	_require.NoError(err)
@@ -598,7 +598,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 	_require.NoError(err)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.Body(nil))
 	_require.NoError(err)
 	_require.Equal(len(actualBlobData), blobSize)
 	_require.EqualValues(actualBlobData, blobData)

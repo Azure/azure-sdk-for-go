@@ -10,7 +10,6 @@ import (
 	"context"
 	"encoding/base64"
 	"io"
-	"net/http"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
@@ -23,11 +22,11 @@ import (
 )
 
 // uploadReaderAtToBlockBlob uploads a buffer in blocks to a block blob.
-func (bb *BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o UploadOption) (*http.Response, error) {
+func (bb *BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o UploadOption) (UploadResponse, error) {
 	if o.BlockSize == 0 {
 		// If bufferSize > (BlockBlobMaxStageBlockBytes * BlockBlobMaxBlocks), then error
 		if readerSize > internal.BlockBlobMaxStageBlockBytes*internal.BlockBlobMaxBlocks {
-			return nil, errors.New("buffer is too large to upload to a block blob")
+			return UploadResponse{}, errors.New("buffer is too large to upload to a block blob")
 		}
 		// If bufferSize <= BlockBlobMaxUploadBlobBytes, then Upload should be used with just 1 I/O request
 		if readerSize <= internal.BlockBlobMaxUploadBlobBytes {
@@ -51,7 +50,7 @@ func (bb *BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader
 		uploadBlockBlobOptions := o.getUploadBlockBlobOptions()
 		resp, err := bb.Upload(ctx, internal.NopCloser(body), uploadBlockBlobOptions)
 
-		return resp.RawResponse, err
+		return toUploadResponseFromBlockBlobUploadResponse(resp), err
 	}
 
 	var numBlocks = uint16(((readerSize - 1) / o.BlockSize) + 1)
@@ -60,7 +59,7 @@ func (bb *BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
 
-	err := DoBatchTransfer(ctx, BatchTransferOptions{
+	err := doBatchTransfer(ctx, &batchTransferOptions{
 		OperationName: "uploadReaderAtToBlockBlob",
 		TransferSize:  readerSize,
 		ChunkSize:     o.BlockSize,
@@ -97,26 +96,25 @@ func (bb *BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader
 		},
 	})
 	if err != nil {
-		return nil, err
+		return UploadResponse{}, err
 	}
 	// All put blocks were successful, call Put Block List to finalize the blob
 	commitBlockListOptions := o.getCommitBlockListOptions()
 	resp, err := bb.CommitBlockList(ctx, blockIDList, commitBlockListOptions)
 
-	return resp.RawResponse, err
+	return toUploadResponseFromBlockBlobCommitBlockListResponse(resp), err
 }
 
 // UploadBuffer uploads a buffer in blocks to a block blob.
-func (bb *BlockBlobClient) UploadBuffer(ctx context.Context, b []byte, o UploadOption) (*http.Response, error) {
+func (bb *BlockBlobClient) UploadBuffer(ctx context.Context, b []byte, o UploadOption) (UploadResponse, error) {
 	return bb.uploadReaderAtToBlockBlob(ctx, bytes.NewReader(b), int64(len(b)), o)
 }
 
 // UploadFile uploads a file in blocks to a block blob.
-func (bb *BlockBlobClient) UploadFile(ctx context.Context, file *os.File, o UploadOption) (*http.Response, error) {
-
+func (bb *BlockBlobClient) UploadFile(ctx context.Context, file *os.File, o UploadOption) (UploadResponse, error) {
 	stat, err := file.Stat()
 	if err != nil {
-		return nil, err
+		return UploadResponse{}, err
 	}
 	return bb.uploadReaderAtToBlockBlob(ctx, file, stat.Size(), o)
 }
@@ -147,7 +145,7 @@ func (bb *BlockBlobClient) UploadStream(ctx context.Context, body io.Reader, o U
 
 // DownloadToWriterAt downloads an Azure blob to a WriterAt with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset int64, count int64, writer io.WriterAt, o DownloadOptions) error {
+func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset int64, count int64, writer io.WriterAt, o *DownloadOptions) error {
 	if o.BlockSize == 0 {
 		o.BlockSize = internal.BlobDefaultDownloadBlockSize
 	}
@@ -171,7 +169,7 @@ func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset int64, count
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
 
-	err := DoBatchTransfer(ctx, BatchTransferOptions{
+	err := doBatchTransfer(ctx, &batchTransferOptions{
 		OperationName: "downloadBlobToWriterAt",
 		TransferSize:  count,
 		ChunkSize:     o.BlockSize,
@@ -213,14 +211,14 @@ func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset int64, count
 
 // DownloadToBuffer downloads an Azure blob to a buffer with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (b *BlobClient) DownloadToBuffer(ctx context.Context, offset int64, count int64, _bytes []byte, o DownloadOptions) error {
+func (b *BlobClient) DownloadToBuffer(ctx context.Context, offset int64, count int64, _bytes []byte, o *DownloadOptions) error {
 	return b.DownloadToWriterAt(ctx, offset, count, internal.NewBytesWriter(_bytes), o)
 }
 
 // DownloadToFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (b *BlobClient) DownloadToFile(ctx context.Context, offset int64, count int64, file *os.File, o DownloadOptions) error {
+func (b *BlobClient) DownloadToFile(ctx context.Context, offset int64, count int64, file *os.File, o *DownloadOptions) error {
 	// 1. Calculate the size of the destination file
 	var size int64
 
@@ -256,9 +254,9 @@ func (b *BlobClient) DownloadToFile(ctx context.Context, offset int64, count int
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DoBatchTransfer helps to execute operations in a batch manner.
+// doBatchTransfer helps to execute operations in a batch manner.
 // Can be used by users to customize batch works (for other scenarios that the SDK does not provide)
-func DoBatchTransfer(ctx context.Context, o BatchTransferOptions) error {
+func doBatchTransfer(ctx context.Context, o *batchTransferOptions) error {
 	if o.ChunkSize == 0 {
 		return errors.New("ChunkSize cannot be 0")
 	}

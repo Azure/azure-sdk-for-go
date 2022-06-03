@@ -73,9 +73,9 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	pager := svcClient.ListContainers(&listOptions)
 
 	count := 0
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
-
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
 		for _, container := range resp.ContainerItems {
 			_require.NotNil(container.Name)
 
@@ -99,9 +99,11 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 				_require.EqualValues(unwrappedMeta, md)
 			}
 		}
+		if err != nil {
+			break
+		}
 	}
 
-	_require.Nil(pager.Err())
 	_require.Nil(err)
 	_require.GreaterOrEqual(count, 0)
 }
@@ -132,8 +134,9 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 	pager := svcClient.ListContainers(&listOptions)
 
 	count := 0
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
 
 		for _, container := range resp.ContainerItems {
 			_require.NotNil(container.Name)
@@ -158,9 +161,11 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 				_require.EqualValues(unwrappedMeta, md)
 			}
 		}
+		if err != nil {
+			break
+		}
 	}
 
-	_require.Nil(pager.Err())
 	_require.Nil(err)
 	_require.GreaterOrEqual(count, 0)
 }
@@ -248,15 +253,18 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 	count := 0
 	pager := svcClient.ListContainers(nil)
 
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
 
 		for _, container := range resp.ContainerItems {
 			count++
 			_require.NotNil(container.Name)
 		}
+		if err != nil {
+			break
+		}
 	}
-	_require.Nil(pager.Err())
 	_require.GreaterOrEqual(count, 2)
 }
 

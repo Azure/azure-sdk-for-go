@@ -10,10 +10,11 @@ import (
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
+	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
@@ -193,17 +194,53 @@ func (c *ContainerClient) SetAccessPolicy(ctx context.Context, o *ContainerSetAc
 // ListBlobsFlat returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
-func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobsFlatOptions) *ContainerListBlobFlatPager {
+func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobsFlatOptions) *runtime.Pager[ContainerListBlobsFlatResponse] {
 	listOptions := o.format()
-	pager := c.client.ListBlobFlatSegment(listOptions)
+	return runtime.NewPager(runtime.PagingHandler[ContainerListBlobsFlatResponse]{
+		More: func(page ContainerListBlobsFlatResponse) bool {
+			if page.Marker == nil || len(*page.Marker) == 0 {
+				return false
+			}
+			return true
+		},
+		Fetcher: func(ctx context.Context, page *ContainerListBlobsFlatResponse) (ContainerListBlobsFlatResponse, error) {
+			var marker *string
+			if page != nil {
+				if page.NextMarker != nil {
+					marker = page.NextMarker
+				}
+			} else {
+				// If provided by the user, then use the one from options bag
+				marker = listOptions.Marker
+			}
 
-	// override the advancer
-	pager.advancer = func(ctx context.Context, response containerClientListBlobFlatSegmentResponse) (*policy.Request, error) {
-		listOptions.Marker = response.NextMarker
-		return c.client.listBlobFlatSegmentCreateRequest(ctx, listOptions)
-	}
+			req, err := c.client.listBlobFlatSegmentCreateRequest(ctx, &listOptions)
+			if err != nil {
+				return ContainerListBlobsFlatResponse{}, err
+			}
+			if marker != nil {
+				queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+				if err != nil {
+					return ContainerListBlobsFlatResponse{}, err
+				}
+				queryValues.Set("marker", *marker)
+				req.Raw().URL.RawQuery = queryValues.Encode()
+				if err != nil {
+					return ContainerListBlobsFlatResponse{}, err
+				}
+			}
 
-	return toContainerListBlobFlatSegmentPager(pager)
+			resp, err := c.client.pl.Do(req)
+			if err != nil {
+				return ContainerListBlobsFlatResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ContainerListBlobsFlatResponse{}, runtime.NewResponseError(resp)
+			}
+			generatedResp, err := c.client.listBlobFlatSegmentHandleResponse(resp)
+			return toContainerListBlobsFlatResponse(generatedResp), err
+		},
+	})
 }
 
 // ListBlobsHierarchy returns a channel of blobs starting from the specified Marker. Use an empty
@@ -214,17 +251,53 @@ func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobsFlatOptions) *Conta
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
 // Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (c *ContainerClient) ListBlobsHierarchy(delimiter string, o *ContainerListBlobsHierarchyOptions) *ContainerListBlobHierarchyPager {
+func (c *ContainerClient) ListBlobsHierarchy(delimiter string, o *ContainerListBlobsHierarchyOptions) *runtime.Pager[ContainerListBlobHierarchyResponse] {
 	listOptions := o.format()
-	pager := c.client.ListBlobHierarchySegment(delimiter, listOptions)
+	return runtime.NewPager(runtime.PagingHandler[ContainerListBlobHierarchyResponse]{
+		More: func(page ContainerListBlobHierarchyResponse) bool {
+			if page.Marker == nil || len(*page.Marker) == 0 {
+				return false
+			}
+			return true
+		},
+		Fetcher: func(ctx context.Context, page *ContainerListBlobHierarchyResponse) (ContainerListBlobHierarchyResponse, error) {
+			var marker *string
+			if page != nil {
+				if page.NextMarker != nil {
+					marker = page.NextMarker
+				}
+			} else {
+				// If provided by the user, then use the one from options bag
+				marker = listOptions.Marker
+			}
 
-	// override the advancer
-	pager.advancer = func(ctx context.Context, response containerClientListBlobHierarchySegmentResponse) (*policy.Request, error) {
-		listOptions.Marker = response.NextMarker
-		return c.client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, listOptions)
-	}
+			req, err := c.client.listBlobHierarchySegmentCreateRequest(ctx, delimiter, &listOptions)
+			if err != nil {
+				return ContainerListBlobHierarchyResponse{}, err
+			}
+			if marker != nil {
+				queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
+				if err != nil {
+					return ContainerListBlobHierarchyResponse{}, err
+				}
+				queryValues.Set("marker", *marker)
+				req.Raw().URL.RawQuery = queryValues.Encode()
+				if err != nil {
+					return ContainerListBlobHierarchyResponse{}, err
+				}
+			}
 
-	return toContainerListBlobHierarchySegmentPager(pager)
+			resp, err := c.client.pl.Do(req)
+			if err != nil {
+				return ContainerListBlobHierarchyResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ContainerListBlobHierarchyResponse{}, runtime.NewResponseError(resp)
+			}
+			generatedResp, err := c.client.listBlobHierarchySegmentHandleResponse(resp)
+			return toContainerListBlobHierarchyResponse(generatedResp), err
+		},
+	})
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.

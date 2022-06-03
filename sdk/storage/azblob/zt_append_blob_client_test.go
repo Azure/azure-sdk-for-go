@@ -34,13 +34,13 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
 
-	resp, err := abClient.Create(context.Background(), nil)
+	_, err = abClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_require.Nil(err)
-	_require.Equal(appendResp.RawResponse.StatusCode, 201)
+	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendResp.ETag)
@@ -73,9 +73,9 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 
 	// set up abClient to test
 	abClient := containerClient.NewAppendBlobClient(generateBlobName(testName))
-	resp, err := abClient.Create(context.Background(), nil)
+	_, err = abClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(resp.RawResponse.StatusCode, 201)
+	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	// test append block with valid MD5 value
 	readerToBody, body := getRandomDataAndReader(1024)
@@ -87,7 +87,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
 	_require.Nil(err)
-	_require.Equal(appendResp.RawResponse.StatusCode, 201)
+	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendResp.ETag)
@@ -133,14 +133,14 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
-	cResp1, err := srcBlob.Create(ctx, nil)
+	_, err = srcBlob.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp1.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 
 	appendResp, err := srcBlob.AppendBlock(context.Background(), internal.NopCloser(r), nil)
 	_require.Nil(err)
 	_require.Nil(err)
-	_require.Equal(appendResp.RawResponse.StatusCode, 201)
+	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendResp.ETag)
@@ -172,9 +172,9 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	// Append block from URL.
-	cResp2, err := destBlob.Create(ctx, nil)
+	_, err = destBlob.Create(ctx, nil)
 	_require.Nil(err)
-	_require.Equal(cResp2.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp2.RawResponse.StatusCode, 201)
 
 	//ctx context.Context, source url.URL, contentLength int64, options *AppendBlobAppendBlockFromURLOptions)
 	offset := int64(0)
@@ -185,7 +185,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	_require.Nil(err)
-	_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
 	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendFromURLResp.ETag)
@@ -202,7 +202,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	downloadResp, err := destBlob.Download(ctx, nil)
 	_require.Nil(err)
 
-	destData, err := ioutil.ReadAll(downloadResp.RawResponse.Body)
+	destData, err := ioutil.ReadAll(downloadResp.Body(nil))
 	_require.Nil(err)
 	_require.Equal(destData, sourceData)
 	_ = downloadResp.Body(nil).Close()
@@ -229,13 +229,13 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
-	cResp1, err := srcBlob.Create(context.Background(), nil)
+	_, err = srcBlob.Create(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(cResp1.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 
 	appendResp, err := srcBlob.AppendBlock(context.Background(), internal.NopCloser(r), nil)
 	_require.Nil(err)
-	_require.Equal(appendResp.RawResponse.StatusCode, 201)
+	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendResp.ETag)
@@ -267,9 +267,9 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	// Append block from URL.
-	cResp2, err := destBlob.Create(context.Background(), nil)
+	_, err = destBlob.Create(context.Background(), nil)
 	_require.Nil(err)
-	_require.Equal(cResp2.RawResponse.StatusCode, 201)
+	//_require.Equal(cResp2.RawResponse.StatusCode, 201)
 
 	offset := int64(0)
 	count := int64(contentSize)
@@ -281,7 +281,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	}
 	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	_require.Nil(err)
-	_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendFromURLResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendFromURLResp.BlobAppendOffset, "0")
 	_require.Equal(*appendFromURLResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendFromURLResp.ETag)
@@ -444,9 +444,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
-
 	_require.Nil(err)
-	_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
@@ -485,7 +484,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
 
 	_require.Nil(err)
-	_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
@@ -522,9 +521,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
-
 	_require.Nil(err)
-	_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
@@ -561,9 +559,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
-
 	_require.Nil(err)
-	_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
@@ -801,9 +798,8 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceTrue() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
-
 	_require.Nil(err)
-	_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
@@ -838,9 +834,8 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceFalse() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
-
 	_require.Nil(err)
-	_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
@@ -875,9 +870,8 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
-
 	_require.Nil(err)
-	_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
@@ -912,9 +906,8 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	appendBlobCreateResp, err := abClient.Create(ctx, nil)
-
 	_require.Nil(err)
-	_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
+	//_require.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	_require.NotNil(appendBlobCreateResp.Date)
 
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
@@ -1235,7 +1228,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 
 	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_require.Nil(err)
-	_require.Equal(appendResp.RawResponse.StatusCode, 201)
+	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
 
@@ -1342,7 +1335,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 
 	appendResp3, err := copiedBlob3.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_require.Nil(err)
-	_require.Equal(appendResp3.RawResponse.StatusCode, 201)
+	//_require.Equal(appendResp3.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp3.BlobAppendOffset, "0")
 	_require.Equal(*appendResp3.BlobCommittedBlockCount, int32(1))
 }

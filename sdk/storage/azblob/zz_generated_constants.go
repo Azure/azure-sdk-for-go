@@ -9,11 +9,10 @@
 package azblob
 
 const (
-	moduleName    = "azblob"
-	moduleVersion = "v0.4.1"
+	moduleName    = ""
+	moduleVersion = "v0.5.0"
 )
 
-// AccessTier enum
 type AccessTier string
 
 const (
@@ -31,6 +30,7 @@ const (
 	AccessTierP60     AccessTier = "P60"
 	AccessTierP70     AccessTier = "P70"
 	AccessTierP80     AccessTier = "P80"
+	AccessTierPremium AccessTier = "Premium"
 )
 
 // PossibleAccessTierValues returns the possible values for the AccessTier const type.
@@ -50,15 +50,10 @@ func PossibleAccessTierValues() []AccessTier {
 		AccessTierP60,
 		AccessTierP70,
 		AccessTierP80,
+		AccessTierPremium,
 	}
 }
 
-// ToPtr returns a *AccessTier pointing to the current value.
-func (c AccessTier) ToPtr() *AccessTier {
-	return &c
-}
-
-// AccountKind enum
 type AccountKind string
 
 const (
@@ -80,12 +75,6 @@ func PossibleAccountKindValues() []AccountKind {
 	}
 }
 
-// ToPtr returns a *AccountKind pointing to the current value.
-func (c AccountKind) ToPtr() *AccountKind {
-	return &c
-}
-
-// ArchiveStatus enum
 type ArchiveStatus string
 
 const (
@@ -101,12 +90,21 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 	}
 }
 
-// ToPtr returns a *ArchiveStatus pointing to the current value.
-func (c ArchiveStatus) ToPtr() *ArchiveStatus {
-	return &c
+type BlobDeleteType string
+
+const (
+	BlobDeleteTypeNone      BlobDeleteType = "None"
+	BlobDeleteTypePermanent BlobDeleteType = "Permanent"
+)
+
+// PossibleBlobDeleteTypeValues returns the possible values for the BlobDeleteType const type.
+func PossibleBlobDeleteTypeValues() []BlobDeleteType {
+	return []BlobDeleteType{
+		BlobDeleteTypeNone,
+		BlobDeleteTypePermanent,
+	}
 }
 
-// BlobExpiryOptions enum
 type BlobExpiryOptions string
 
 const (
@@ -124,11 +122,6 @@ func PossibleBlobExpiryOptionsValues() []BlobExpiryOptions {
 		BlobExpiryOptionsRelativeToCreation,
 		BlobExpiryOptionsRelativeToNow,
 	}
-}
-
-// ToPtr returns a *BlobExpiryOptions pointing to the current value.
-func (c BlobExpiryOptions) ToPtr() *BlobExpiryOptions {
-	return &c
 }
 
 // BlobGeoReplicationStatus - The status of the secondary location
@@ -149,12 +142,6 @@ func PossibleBlobGeoReplicationStatusValues() []BlobGeoReplicationStatus {
 	}
 }
 
-// ToPtr returns a *BlobGeoReplicationStatus pointing to the current value.
-func (c BlobGeoReplicationStatus) ToPtr() *BlobGeoReplicationStatus {
-	return &c
-}
-
-// BlobImmutabilityPolicyMode enum
 type BlobImmutabilityPolicyMode string
 
 const (
@@ -172,12 +159,6 @@ func PossibleBlobImmutabilityPolicyModeValues() []BlobImmutabilityPolicyMode {
 	}
 }
 
-// ToPtr returns a *BlobImmutabilityPolicyMode pointing to the current value.
-func (c BlobImmutabilityPolicyMode) ToPtr() *BlobImmutabilityPolicyMode {
-	return &c
-}
-
-// BlobType enum
 type BlobType string
 
 const (
@@ -195,12 +176,6 @@ func PossibleBlobTypeValues() []BlobType {
 	}
 }
 
-// ToPtr returns a *BlobType pointing to the current value.
-func (c BlobType) ToPtr() *BlobType {
-	return &c
-}
-
-// BlockListType enum
 type BlockListType string
 
 const (
@@ -218,12 +193,6 @@ func PossibleBlockListTypeValues() []BlockListType {
 	}
 }
 
-// ToPtr returns a *BlockListType pointing to the current value.
-func (c BlockListType) ToPtr() *BlockListType {
-	return &c
-}
-
-// CopyStatusType enum
 type CopyStatusType string
 
 const (
@@ -243,12 +212,6 @@ func PossibleCopyStatusTypeValues() []CopyStatusType {
 	}
 }
 
-// ToPtr returns a *CopyStatusType pointing to the current value.
-func (c CopyStatusType) ToPtr() *CopyStatusType {
-	return &c
-}
-
-// DeleteSnapshotsOptionType enum
 type DeleteSnapshotsOptionType string
 
 const (
@@ -264,12 +227,6 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 	}
 }
 
-// ToPtr returns a *DeleteSnapshotsOptionType pointing to the current value.
-func (c DeleteSnapshotsOptionType) ToPtr() *DeleteSnapshotsOptionType {
-	return &c
-}
-
-// EncryptionAlgorithmType enum
 type EncryptionAlgorithmType string
 
 const (
@@ -285,12 +242,6 @@ func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
 	}
 }
 
-// ToPtr returns a *EncryptionAlgorithmType pointing to the current value.
-func (c EncryptionAlgorithmType) ToPtr() *EncryptionAlgorithmType {
-	return &c
-}
-
-// LeaseDurationType enum
 type LeaseDurationType string
 
 const (
@@ -306,12 +257,6 @@ func PossibleLeaseDurationTypeValues() []LeaseDurationType {
 	}
 }
 
-// ToPtr returns a *LeaseDurationType pointing to the current value.
-func (c LeaseDurationType) ToPtr() *LeaseDurationType {
-	return &c
-}
-
-// LeaseStateType enum
 type LeaseStateType string
 
 const (
@@ -333,12 +278,6 @@ func PossibleLeaseStateTypeValues() []LeaseStateType {
 	}
 }
 
-// ToPtr returns a *LeaseStateType pointing to the current value.
-func (c LeaseStateType) ToPtr() *LeaseStateType {
-	return &c
-}
-
-// LeaseStatusType enum
 type LeaseStatusType string
 
 const (
@@ -354,12 +293,6 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 	}
 }
 
-// ToPtr returns a *LeaseStatusType pointing to the current value.
-func (c LeaseStatusType) ToPtr() *LeaseStatusType {
-	return &c
-}
-
-// ListBlobsIncludeItem enum
 type ListBlobsIncludeItem string
 
 const (
@@ -391,12 +324,6 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 	}
 }
 
-// ToPtr returns a *ListBlobsIncludeItem pointing to the current value.
-func (c ListBlobsIncludeItem) ToPtr() *ListBlobsIncludeItem {
-	return &c
-}
-
-// ListContainersIncludeType enum
 type ListContainersIncludeType string
 
 const (
@@ -414,12 +341,6 @@ func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
 	}
 }
 
-// ToPtr returns a *ListContainersIncludeType pointing to the current value.
-func (c ListContainersIncludeType) ToPtr() *ListContainersIncludeType {
-	return &c
-}
-
-// PremiumPageBlobAccessTier enum
 type PremiumPageBlobAccessTier string
 
 const (
@@ -453,12 +374,6 @@ func PossiblePremiumPageBlobAccessTierValues() []PremiumPageBlobAccessTier {
 	}
 }
 
-// ToPtr returns a *PremiumPageBlobAccessTier pointing to the current value.
-func (c PremiumPageBlobAccessTier) ToPtr() *PremiumPageBlobAccessTier {
-	return &c
-}
-
-// PublicAccessType enum
 type PublicAccessType string
 
 const (
@@ -472,11 +387,6 @@ func PossiblePublicAccessTypeValues() []PublicAccessType {
 		PublicAccessTypeBlob,
 		PublicAccessTypeContainer,
 	}
-}
-
-// ToPtr returns a *PublicAccessType pointing to the current value.
-func (c PublicAccessType) ToPtr() *PublicAccessType {
-	return &c
 }
 
 // QueryFormatType - The quick query format type.
@@ -499,11 +409,6 @@ func PossibleQueryFormatTypeValues() []QueryFormatType {
 	}
 }
 
-// ToPtr returns a *QueryFormatType pointing to the current value.
-func (c QueryFormatType) ToPtr() *QueryFormatType {
-	return &c
-}
-
 // RehydratePriority - If an object is in rehydrate pending state then this header is returned with priority of rehydrate.
 // Valid values are High and Standard.
 type RehydratePriority string
@@ -521,12 +426,6 @@ func PossibleRehydratePriorityValues() []RehydratePriority {
 	}
 }
 
-// ToPtr returns a *RehydratePriority pointing to the current value.
-func (c RehydratePriority) ToPtr() *RehydratePriority {
-	return &c
-}
-
-// SKUName enum
 type SKUName string
 
 const (
@@ -548,12 +447,6 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
-// ToPtr returns a *SKUName pointing to the current value.
-func (c SKUName) ToPtr() *SKUName {
-	return &c
-}
-
-// SequenceNumberActionType enum
 type SequenceNumberActionType string
 
 const (
@@ -569,11 +462,6 @@ func PossibleSequenceNumberActionTypeValues() []SequenceNumberActionType {
 		SequenceNumberActionTypeUpdate,
 		SequenceNumberActionTypeIncrement,
 	}
-}
-
-// ToPtr returns a *SequenceNumberActionType pointing to the current value.
-func (c SequenceNumberActionType) ToPtr() *SequenceNumberActionType {
-	return &c
 }
 
 // StorageErrorCode - Error codes returned by the service
@@ -812,30 +700,4 @@ func PossibleStorageErrorCodeValues() []StorageErrorCode {
 		StorageErrorCodeUnsupportedQueryParameter,
 		StorageErrorCodeUnsupportedXMLNode,
 	}
-}
-
-// ToPtr returns a *StorageErrorCode pointing to the current value.
-func (c StorageErrorCode) ToPtr() *StorageErrorCode {
-	return &c
-}
-
-// BlobDeleteType enum
-type BlobDeleteType string
-
-const (
-	BlobDeleteTypeNone      BlobDeleteType = "None"
-	BlobDeleteTypePermanent BlobDeleteType = "Permanent"
-)
-
-// PossibleBlobDeleteTypeValues returns the possible values for the BlobDeleteType const type.
-func PossibleBlobDeleteTypeValues() []BlobDeleteType {
-	return []BlobDeleteType{
-		BlobDeleteTypeNone,
-		BlobDeleteTypePermanent,
-	}
-}
-
-// ToPtr returns a *BlobDeleteType pointing to the current value.
-func (c BlobDeleteType) ToPtr() *BlobDeleteType {
-	return &c
 }

@@ -191,10 +191,10 @@ func (c *ContainerClient) SetAccessPolicy(ctx context.Context, o *ContainerSetAc
 	return toContainerSetAccessPolicyResponse(resp), err
 }
 
-// ListBlobsFlat returns a pager for blobs starting from the specified Marker. Use an empty
+// NewListBlobsFlatPager returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
-func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobsFlatOptions) *runtime.Pager[ContainerListBlobsFlatResponse] {
+func (c *ContainerClient) NewListBlobsFlatPager(o *ContainerListBlobsFlatOptions) *runtime.Pager[ContainerListBlobsFlatResponse] {
 	listOptions := o.format()
 	return runtime.NewPager(runtime.PagingHandler[ContainerListBlobsFlatResponse]{
 		More: func(page ContainerListBlobsFlatResponse) bool {
@@ -243,7 +243,7 @@ func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobsFlatOptions) *runti
 	})
 }
 
-// ListBlobsHierarchy returns a channel of blobs starting from the specified Marker. Use an empty
+// NewListBlobsHierarchyPager returns a channel of blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // After getting a segment, process it, and then call ListBlobsHierarchicalSegment again (passing the the
 // previously-returned Marker) to get the next segment.
@@ -251,7 +251,7 @@ func (c *ContainerClient) ListBlobsFlat(o *ContainerListBlobsFlatOptions) *runti
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
 // Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (c *ContainerClient) ListBlobsHierarchy(delimiter string, o *ContainerListBlobsHierarchyOptions) *runtime.Pager[ContainerListBlobHierarchyResponse] {
+func (c *ContainerClient) NewListBlobsHierarchyPager(delimiter string, o *ContainerListBlobsHierarchyOptions) *runtime.Pager[ContainerListBlobHierarchyResponse] {
 	listOptions := o.format()
 	return runtime.NewPager(runtime.PagingHandler[ContainerListBlobHierarchyResponse]{
 		More: func(page ContainerListBlobHierarchyResponse) bool {

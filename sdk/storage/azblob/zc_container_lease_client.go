@@ -30,14 +30,17 @@ func (c *ContainerClient) NewContainerLeaseClient(leaseID *string) (*ContainerLe
 		leaseID = to.Ptr(generatedUuid.String())
 	}
 	return &ContainerLeaseClient{
-		ContainerClient: *c,
-		leaseID:         leaseID,
+		ContainerClient: ContainerClient{
+			client:    newContainerClient(c.URL(), c.client.pl),
+			sharedKey: c.sharedKey,
+		},
+		leaseID: leaseID,
 	}, nil
 }
 
-// AcquireLease acquires a lease on the container for delete operations. The lease Duration must be between 15 to 60 seconds, or infinite (-1).
+// Acquire acquires a lease on the container for delete operations. The lease Duration must be between 15 to 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (clc *ContainerLeaseClient) AcquireLease(ctx context.Context, options *ContainerAcquireLeaseOptions) (ContainerAcquireLeaseResponse, error) {
+func (clc *ContainerLeaseClient) Acquire(ctx context.Context, options *ContainerAcquireLeaseOptions) (ContainerAcquireLeaseResponse, error) {
 	containerAcquireLeaseOptions, modifiedAccessConditions := options.format()
 	containerAcquireLeaseOptions.ProposedLeaseID = clc.leaseID
 
@@ -48,17 +51,17 @@ func (clc *ContainerLeaseClient) AcquireLease(ctx context.Context, options *Cont
 	return toContainerAcquireLeaseResponse(resp), err
 }
 
-// BreakLease breaks the container's previously-acquired lease (if it exists).
+// Break breaks the container's previously-acquired lease (if it exists).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (clc *ContainerLeaseClient) BreakLease(ctx context.Context, options *ContainerBreakLeaseOptions) (ContainerBreakLeaseResponse, error) {
+func (clc *ContainerLeaseClient) Break(ctx context.Context, options *ContainerBreakLeaseOptions) (ContainerBreakLeaseResponse, error) {
 	containerBreakLeaseOptions, modifiedAccessConditions := options.format()
 	resp, err := clc.client.BreakLease(ctx, containerBreakLeaseOptions, modifiedAccessConditions)
 	return toContainerBreakLeaseResponse(resp), err
 }
 
-// ChangeLease changes the container's lease ID.
+// Change changes the container's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (clc *ContainerLeaseClient) ChangeLease(ctx context.Context, options *ContainerChangeLeaseOptions) (ContainerChangeLeaseResponse, error) {
+func (clc *ContainerLeaseClient) Change(ctx context.Context, options *ContainerChangeLeaseOptions) (ContainerChangeLeaseResponse, error) {
 	if clc.leaseID == nil {
 		return ContainerChangeLeaseResponse{}, errors.New("leaseID cannot be nil")
 	}
@@ -75,9 +78,9 @@ func (clc *ContainerLeaseClient) ChangeLease(ctx context.Context, options *Conta
 	return toContainerChangeLeaseResponse(resp), err
 }
 
-// ReleaseLease releases the container's previously-acquired lease.
+// Release releases the container's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (clc *ContainerLeaseClient) ReleaseLease(ctx context.Context, options *ContainerReleaseLeaseOptions) (ContainerReleaseLeaseResponse, error) {
+func (clc *ContainerLeaseClient) Release(ctx context.Context, options *ContainerReleaseLeaseOptions) (ContainerReleaseLeaseResponse, error) {
 	if clc.leaseID == nil {
 		return ContainerReleaseLeaseResponse{}, errors.New("leaseID cannot be nil")
 	}
@@ -87,9 +90,9 @@ func (clc *ContainerLeaseClient) ReleaseLease(ctx context.Context, options *Cont
 	return toContainerReleaseLeaseResponse(resp), err
 }
 
-// RenewLease renews the container's previously-acquired lease.
+// Renew renews the container's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
-func (clc *ContainerLeaseClient) RenewLease(ctx context.Context, options *ContainerRenewLeaseOptions) (ContainerRenewLeaseResponse, error) {
+func (clc *ContainerLeaseClient) Renew(ctx context.Context, options *ContainerRenewLeaseOptions) (ContainerRenewLeaseResponse, error) {
 	if clc.leaseID == nil {
 		return ContainerRenewLeaseResponse{}, errors.New("leaseID cannot be nil")
 	}

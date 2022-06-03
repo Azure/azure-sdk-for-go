@@ -146,7 +146,7 @@ func (o *UploadOption) getUploadBlockBlobOptions() *BlockBlobUploadOptions {
 
 func (o *UploadOption) getCommitBlockListOptions() *BlockBlobCommitBlockListOptions {
 	return &BlockBlobCommitBlockListOptions{
-		BlobTagsMap:     o.BlobTags,
+		BlobTags:        o.BlobTags,
 		Metadata:        o.Metadata,
 		Tier:            o.AccessTier,
 		BlobHTTPHeaders: o.HTTPHeaders,
@@ -163,7 +163,7 @@ type UploadStreamOptions struct {
 	// concurrency. This overrides BufferSize and MaxBuffers if set.
 	TransferManager      internal.TransferManager
 	transferMangerNotSet bool
-	// BufferSize sizes the buffer used to read data from source. If < 1 MiB, defaults to 1 MiB.
+	// BufferSize sizes the buffer used to read data from source. If < 1 MiB, format to 1 MiB.
 	BufferSize int
 	// MaxBuffers defines the number of simultaneous uploads will be performed to upload the file.
 	MaxBuffers           int
@@ -171,13 +171,13 @@ type UploadStreamOptions struct {
 	Metadata             map[string]string
 	BlobAccessConditions *BlobAccessConditions
 	AccessTier           *AccessTier
-	BlobTagsMap          map[string]string
+	BlobTags             map[string]string
 	CpkInfo              *CpkInfo
 	CpkScopeInfo         *CpkScopeInfo
 }
 
-func (u *UploadStreamOptions) defaults() error {
-	if u.TransferManager != nil {
+func (u *UploadStreamOptions) format() error {
+	if u == nil || u.TransferManager != nil {
 		return nil
 	}
 
@@ -209,7 +209,7 @@ func (u *UploadStreamOptions) getStageBlockOptions() *BlockBlobStageBlockOptions
 
 func (u *UploadStreamOptions) getCommitBlockListOptions() *BlockBlobCommitBlockListOptions {
 	options := &BlockBlobCommitBlockListOptions{
-		BlobTagsMap:          u.BlobTagsMap,
+		BlobTags:             u.BlobTags,
 		Metadata:             u.Metadata,
 		Tier:                 u.AccessTier,
 		BlobHTTPHeaders:      u.HTTPHeaders,

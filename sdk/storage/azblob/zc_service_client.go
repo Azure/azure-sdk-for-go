@@ -122,10 +122,10 @@ func (s *ServiceClient) GetAccountInfo(ctx context.Context, o *ServiceGetAccount
 	return toServiceGetAccountInfoResponse(resp), err
 }
 
-// ListContainers operation returns a pager of the containers under the specified account.
+// NewListContainersPager operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-func (s *ServiceClient) ListContainers(o *ServiceListContainersOptions) *runtime.Pager[ServiceListContainersResponse] {
+func (s *ServiceClient) NewListContainersPager(o *ServiceListContainersOptions) *runtime.Pager[ServiceListContainersResponse] {
 	listOptions := o.format()
 	return runtime.NewPager(runtime.PagingHandler[ServiceListContainersResponse]{
 		More: func(page ServiceListContainersResponse) bool {

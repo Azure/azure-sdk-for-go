@@ -172,9 +172,9 @@ func (pb *PageBlobClient) ClearPages(ctx context.Context, pageRange HttpRange, o
 	return toPageBlobClearPagesResponse(resp), err
 }
 
-// GetPageRanges returns the list of valid page ranges for a page blob or snapshot of a page blob.
+// NewGetPageRangesPager returns the list of valid page ranges for a page blob or snapshot of a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb *PageBlobClient) GetPageRanges(options *PageBlobGetPageRangesOptions) *runtime.Pager[PageBlobGetPageRangesResponse] {
+func (pb *PageBlobClient) NewGetPageRangesPager(options *PageBlobGetPageRangesOptions) *runtime.Pager[PageBlobGetPageRangesResponse] {
 	getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions := options.format()
 
 	return runtime.NewPager(runtime.PagingHandler[PageBlobGetPageRangesResponse]{
@@ -224,9 +224,9 @@ func (pb *PageBlobClient) GetPageRanges(options *PageBlobGetPageRangesOptions) *
 	})
 }
 
-// GetPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob.
+// NewGetPageRangesDiffPager gets the collection of page ranges that differ between a specified snapshot and this page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb *PageBlobClient) GetPageRangesDiff(options *PageBlobGetPageRangesDiffOptions) *runtime.Pager[PageBlobGetPageRangesDiffResponse] {
+func (pb *PageBlobClient) NewGetPageRangesDiffPager(options *PageBlobGetPageRangesDiffOptions) *runtime.Pager[PageBlobGetPageRangesDiffResponse] {
 	getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions := options.format()
 
 	return runtime.NewPager(runtime.PagingHandler[PageBlobGetPageRangesDiffResponse]{

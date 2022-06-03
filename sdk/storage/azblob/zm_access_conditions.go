@@ -6,14 +6,6 @@
 
 package azblob
 
-const (
-	// ETagNone represents an empty entity tag.
-	ETagNone = ""
-
-	// ETagAny matches any entity tag.
-	ETagAny = "*"
-)
-
 // ContainerAccessConditions identifies container-specific access conditions which you optionally set.
 type ContainerAccessConditions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions

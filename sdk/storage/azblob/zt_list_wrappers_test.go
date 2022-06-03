@@ -32,7 +32,7 @@ func (s *azblobTestSuite) TestBlobListWrapper() {
 
 	createNewBlobs(_require, files, containerClient)
 
-	pager := containerClient.ListBlobsFlat(nil)
+	pager := containerClient.NewListBlobsFlatPager(nil)
 
 	found := make([]string, 0)
 
@@ -75,7 +75,7 @@ func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
 
 	createNewBlobs(_require, files, containerClient)
 
-	pager := containerClient.ListBlobsFlat(nil)
+	pager := containerClient.NewListBlobsFlatPager(nil)
 
 	found := make([]string, 0)
 
@@ -109,7 +109,7 @@ func (s *azblobTestSuite) TestBlobListWrapperListingError() {
 
 	containerClient := getContainerClient(generateContainerName(testName), svcClient)
 
-	pager := containerClient.ListBlobsFlat(nil)
+	pager := containerClient.NewListBlobsFlatPager(nil)
 	for pager.More() {
 		_, err := pager.NextPage(ctx)
 		_require.NotNil(err)

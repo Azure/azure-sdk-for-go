@@ -1379,7 +1379,7 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 	_require.Equal(*getResp1.AccessTier, string(AccessTierArchive))
 	_require.Equal(*getResp1.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
 
-	pager := containerClient.ListBlobsFlat(nil)
+	pager := containerClient.NewListBlobsFlatPager(nil)
 	var blobs []*BlobItemInternal
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)

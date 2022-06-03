@@ -113,12 +113,16 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 
 func (m *listPerfTest) Run(ctx context.Context) error {
 	c := int32(listTestOpts.count)
-	pager := m.containerClient.ListBlobsFlat(&azblob.ContainerListBlobsFlatOptions{
+	pager := m.containerClient.NewListBlobsFlatPager(&azblob.ContainerListBlobsFlatOptions{
 		MaxResults: &c,
 	})
-	for pager.NextPage(context.Background()) {
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		if err != nil {
+			return err
+		}
 	}
-	return pager.Err()
+	return nil
 }
 
 func (m *listPerfTest) Cleanup(ctx context.Context) error {

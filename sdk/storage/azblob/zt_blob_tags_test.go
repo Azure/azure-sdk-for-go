@@ -194,7 +194,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 	}
 
 	commitBlockListOptions := BlockBlobCommitBlockListOptions{
-		BlobTagsMap: blobTagsMap,
+		BlobTags: blobTagsMap,
 	}
 	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
 	_require.Nil(err)
@@ -315,7 +315,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 	_require.Len(blockList.BlockList.UncommittedBlocks, 2)
 
 	commitBlockListOptions := BlockBlobCommitBlockListOptions{
-		BlobTagsMap: blobTagsMap,
+		BlobTags: blobTagsMap,
 	}
 	_, err = destBlob.CommitBlockList(ctx, []string{blockID1, blockID2}, &commitBlockListOptions)
 	_require.Nil(err)
@@ -388,7 +388,7 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 	srcBlobURLWithSAS := srcBlobParts.URL()
 	sourceContentMD5 := sourceDataMD5Value[:]
 	copyBlockBlobFromURLOptions1 := BlockBlobCopyFromURLOptions{
-		BlobTagsMap:      map[string]string{"foo": "bar"},
+		BlobTags:         map[string]string{"foo": "bar"},
 		SourceContentMD5: sourceContentMD5,
 	}
 	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
@@ -411,14 +411,14 @@ func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 
 	_, badMD5 := getRandomDataAndReader(16)
 	copyBlockBlobFromURLOptions2 := BlockBlobCopyFromURLOptions{
-		BlobTagsMap:      blobTagsMap,
+		BlobTags:         blobTagsMap,
 		SourceContentMD5: badMD5,
 	}
 	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
 	_require.NotNil(err)
 
 	copyBlockBlobFromURLOptions3 := BlockBlobCopyFromURLOptions{
-		BlobTagsMap: blobTagsMap,
+		BlobTags: blobTagsMap,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions3)
 	_require.Nil(err)
@@ -525,7 +525,7 @@ func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
 	// _require.Equal(resp.RawResponse.StatusCode,204)
 
 	include := []ListBlobsIncludeItem{ListBlobsIncludeItemTags}
-	pager := containerClient.ListBlobsFlat(&ContainerListBlobsFlatOptions{
+	pager := containerClient.NewListBlobsFlatPager(&ContainerListBlobsFlatOptions{
 		Include: include,
 	})
 
@@ -699,7 +699,7 @@ func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
 	_require.Nil(err)
 	//_require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.Equal(putResp.LastModified.IsZero(), false)
-	_require.NotEqual(putResp.ETag, ETagNone)
+	_require.NotEqual(putResp.ETag, "")
 	_require.NotEqual(putResp.Version, "")
 
 	setTagsBlobOptions := BlobSetTagsOptions{

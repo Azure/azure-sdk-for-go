@@ -37,7 +37,7 @@ type blockWriter interface {
 // choose a max value for the memory setting based on internal transfers within Azure (which will give us the maximum throughput model).
 // We can even provide a utility to dial this number in for customer networks to optimize their copies.
 func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o UploadStreamOptions) (BlockBlobCommitBlockListResponse, error) {
-	if err := o.defaults(); err != nil {
+	if err := o.format(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}
 

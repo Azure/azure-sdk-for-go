@@ -51,7 +51,7 @@ func (s *azblobTestSuite) TestPutGetPages() {
 	_require.NotNil(putResp.Date)
 	_require.Equal((*putResp.Date).IsZero(), false)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: &HttpRange{Offset: 0, Count: 1023}})
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: &HttpRange{Offset: 0, Count: 1023}})
 
 	for pager.More() {
 		pageListResp, err := pager.NextPage(ctx)
@@ -257,7 +257,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	_, err = pbClient.UploadPages(context.Background(), r1, &PageBlobUploadPagesOptions{PageRange: NewHttpRange(int64(contentSize), int64(contentSize))})
 	_require.Nil(err)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{PageRange: &HttpRange{Offset: 0, Count: int64(4096)}, PrevSnapshot: snapshotResp.Snapshot})
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{PageRange: &HttpRange{Offset: 0, Count: int64(4096)}, PrevSnapshot: snapshotResp.Snapshot})
 
 	for pager.More() {
 		pageListResp, err := pager.NextPage(ctx)
@@ -278,7 +278,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	_require.Nil(err)
 	// _require.Equal(clearResp.RawResponse.StatusCode, 201)
 
-	pager = pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{PageRange: &HttpRange{Offset: 0, Count: int64(4096)}, PrevSnapshot: snapshotResp.Snapshot})
+	pager = pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{PageRange: &HttpRange{Offset: 0, Count: int64(4096)}, PrevSnapshot: snapshotResp.Snapshot})
 
 	for pager.More() {
 		pageListResp, err := pager.NextPage(ctx)
@@ -1042,7 +1042,7 @@ func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 
 func validateUploadPages(_require *require.Assertions, pbClient *PageBlobClient) {
 	// This will only validate a single put page at 0-PageBlobPageBytes-1
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{
 		PageRange: &HttpRange{0, CountToEnd},
 	})
 
@@ -1695,7 +1695,7 @@ func setupClearPagesTest(_require *require.Assertions, testName string) (*Contai
 }
 
 func validateClearPagesTest(_require *require.Assertions, pbClient *PageBlobClient) {
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
 	for pager.More() {
 		pageListResp, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -2137,7 +2137,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob() {
 	blobName := generateBlobName(testName)
 	pbClient := createNewPageBlob(_require, blobName, containerClient)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -2155,7 +2155,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesEmptyRange() {
 	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
 	defer deleteContainer(_require, containerClient)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -2174,7 +2174,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesInvalidRange() {
 	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
 	defer deleteContainer(_require, containerClient)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(-2, 500)})
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(-2, 500)})
 	for pager.More() {
 		_, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -2198,7 +2198,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	_require.Nil(err)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -2228,7 +2228,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNotPageAligned() {
 	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
 	defer deleteContainer(_require, containerClient)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 2000)})
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 2000)})
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -2251,7 +2251,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesSnapshot() {
 	_require.NotNil(resp.Snapshot)
 
 	snapshotURL, _ := pbClient.WithSnapshot(*resp.Snapshot)
-	pager := snapshotURL.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
+	pager := snapshotURL.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0)})
 	for pager.More() {
 		resp2, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -2275,7 +2275,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		},
@@ -2302,7 +2302,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		},
@@ -2329,7 +2329,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfUnmodifiedSince: &currentTime,
 		},
@@ -2356,7 +2356,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfUnmodifiedSince: &currentTime,
 		},
@@ -2381,7 +2381,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfMatch: resp.ETag,
 		},
@@ -2402,7 +2402,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
 	defer deleteContainer(_require, containerClient)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfMatch: to.Ptr("garbage"),
 		},
@@ -2423,7 +2423,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
 	defer deleteContainer(_require, containerClient)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfNoneMatch: to.Ptr("garbage"),
 		},
@@ -2446,7 +2446,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
 			IfNoneMatch: resp.ETag,
 		},
@@ -2522,7 +2522,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() 
 
 	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
 	snapshotTime = snapshotTime.Add(time.Minute)
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
 		PageRange:    NewHttpRange(0, 0),
 		PrevSnapshot: to.Ptr(snapshotTime.Format(SnapshotTimeFormat))})
 	for pager.More() {
@@ -2542,7 +2542,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeInvalidRange() {
 	testName := s.T().Name()
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
 	defer deleteContainer(_require, containerClient)
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{PageRange: NewHttpRange(-22, 14), Snapshot: &snapshot})
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{PageRange: NewHttpRange(-22, 14), Snapshot: &snapshot})
 	for pager.More() {
 		_, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -2561,7 +2561,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeGMT(-10)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
 		PageRange: NewHttpRange(0, 0),
 		Snapshot:  to.Ptr(snapshot),
 		BlobAccessConditions: &BlobAccessConditions{
@@ -2586,7 +2586,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() 
 
 	currentTime := getRelativeTimeGMT(10)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
 		PageRange: NewHttpRange(0, 0),
 		Snapshot:  to.Ptr(snapshot),
 		BlobAccessConditions: &BlobAccessConditions{
@@ -2615,7 +2615,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue()
 
 	currentTime := getRelativeTimeGMT(10)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
 		PageRange: NewHttpRange(0, 0),
 		Snapshot:  to.Ptr(snapshot),
 		BlobAccessConditions: &BlobAccessConditions{
@@ -2641,7 +2641,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(
 
 	currentTime := getRelativeTimeGMT(-10)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
 		PageRange: NewHttpRange(0, 0),
 		Snapshot:  to.Ptr(snapshot),
 		BlobAccessConditions: &BlobAccessConditions{
@@ -2669,7 +2669,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	_require.Nil(err)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
 		PageRange: NewHttpRange(0, 0),
 		Snapshot:  to.Ptr(snapshot),
 		BlobAccessConditions: &BlobAccessConditions{
@@ -2695,7 +2695,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 	containerClient, pbClient, snapshotStr := setupDiffPageRangesTest(_require, testName)
 	defer deleteContainer(_require, containerClient)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
 		PageRange: NewHttpRange(0, 0),
 		Snapshot:  to.Ptr(snapshotStr),
 		BlobAccessConditions: &BlobAccessConditions{
@@ -2722,7 +2722,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 	containerClient, pbClient, snapshotStr := setupDiffPageRangesTest(_require, testName)
 	defer deleteContainer(_require, containerClient)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
 		PageRange:    NewHttpRange(0, 0),
 		PrevSnapshot: to.Ptr(snapshotStr),
 		BlobAccessConditions: &BlobAccessConditions{
@@ -2750,7 +2750,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	pager := pbClient.GetPageRangesDiff(&PageBlobGetPageRangesDiffOptions{
+	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
 		PageRange:    NewHttpRange(0, 0),
 		PrevSnapshot: to.Ptr(snapshot),
 		BlobAccessConditions: &BlobAccessConditions{

@@ -31,7 +31,7 @@ func (o *BlobAcquireLeaseOptions) format() (blobClientAcquireLeaseOptions, *Modi
 	}, o.ModifiedAccessConditions
 }
 
-// BlobAcquireLeaseResponse contains the response from method BlobLeaseClient.AcquireLease.
+// BlobAcquireLeaseResponse contains the response from method BlobLeaseClient.Acquire.
 type BlobAcquireLeaseResponse struct {
 	blobClientAcquireLeaseResponse
 }
@@ -68,7 +68,7 @@ func (o *BlobBreakLeaseOptions) format() (*blobClientBreakLeaseOptions, *Modifie
 	return nil, o.ModifiedAccessConditions
 }
 
-// BlobBreakLeaseResponse contains the response from method BlobLeaseClient.BreakLease.
+// BlobBreakLeaseResponse contains the response from method BlobLeaseClient.Break.
 type BlobBreakLeaseResponse struct {
 	blobClientBreakLeaseResponse
 }
@@ -102,7 +102,7 @@ func (o *BlobChangeLeaseOptions) format() (*string, *blobClientChangeLeaseOption
 	return o.ProposedLeaseID, nil, o.ModifiedAccessConditions, nil
 }
 
-// BlobChangeLeaseResponse contains the response from method BlobLeaseClient.ChangeLease
+// BlobChangeLeaseResponse contains the response from method BlobLeaseClient.Change
 type BlobChangeLeaseResponse struct {
 	blobClientChangeLeaseResponse
 }
@@ -126,7 +126,7 @@ func (o *BlobRenewLeaseOptions) format() (*blobClientRenewLeaseOptions, *Modifie
 	return nil, o.ModifiedAccessConditions
 }
 
-// BlobRenewLeaseResponse contains the response from method BlobClient.RenewLease.
+// BlobRenewLeaseResponse contains the response from method BlobClient.Renew.
 type BlobRenewLeaseResponse struct {
 	blobClientRenewLeaseResponse
 }
@@ -150,7 +150,7 @@ func (o *ReleaseLeaseBlobOptions) format() (*blobClientReleaseLeaseOptions, *Mod
 	return nil, o.ModifiedAccessConditions
 }
 
-// BlobReleaseLeaseResponse contains the response from method BlobClient.ReleaseLease.
+// BlobReleaseLeaseResponse contains the response from method BlobClient.Release.
 type BlobReleaseLeaseResponse struct {
 	blobClientReleaseLeaseResponse
 }

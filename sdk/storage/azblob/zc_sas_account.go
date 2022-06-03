@@ -18,7 +18,7 @@ import (
 // AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/constructing-an-account-sas
 type AccountSASSignatureValues struct {
-	Version       string      `param:"sv"`  // If not specified, this defaults to SASVersion
+	Version       string      `param:"sv"`  // If not specified, this format to SASVersion
 	Protocol      SASProtocol `param:"spr"` // See the SASProtocol* constants
 	StartTime     time.Time   `param:"st"`  // Not specified if IsZero
 	ExpiryTime    time.Time   `param:"se"`  // Not specified if IsZero

@@ -143,7 +143,7 @@ func toBlockBlobStageBlockFromURLResponse(resp blockBlobClientStageBlockFromURLR
 
 // BlockBlobCommitBlockListOptions provides set of configurations for CommitBlockList operation
 type BlockBlobCommitBlockListOptions struct {
-	BlobTagsMap               map[string]string
+	BlobTags                  map[string]string
 	Metadata                  map[string]string
 	RequestID                 *string
 	Tier                      *AccessTier
@@ -162,7 +162,7 @@ func (o *BlockBlobCommitBlockListOptions) format() (*blockBlobClientCommitBlockL
 	}
 
 	options := &blockBlobClientCommitBlockListOptions{
-		BlobTagsString:            serializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:            serializeBlobTagsToStrPtr(o.BlobTags),
 		Metadata:                  o.Metadata,
 		RequestID:                 o.RequestID,
 		Tier:                      o.Tier,
@@ -214,7 +214,7 @@ func toBlockBlobGetBlockListResponse(resp blockBlobClientGetBlockListResponse) B
 // BlockBlobCopyFromURLOptions provides set of configurations for CopyBlockBlobFromURL operation
 type BlockBlobCopyFromURLOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsMap map[string]string
+	BlobTags map[string]string
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
 	// Specifies the date time when the blobs immutability policy is set to expire.
@@ -246,7 +246,7 @@ func (o *BlockBlobCopyFromURLOptions) format() (*blobClientCopyFromURLOptions, *
 	}
 
 	options := &blobClientCopyFromURLOptions{
-		BlobTagsString:           serializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:           serializeBlobTagsToStrPtr(o.BlobTags),
 		CopySourceAuthorization:  o.CopySourceAuthorization,
 		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
 		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,

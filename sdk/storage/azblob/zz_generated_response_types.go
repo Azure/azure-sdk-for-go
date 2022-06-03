@@ -1671,7 +1671,7 @@ type pageBlobClientCreateResponse struct {
 	VersionID *string
 }
 
-// pageBlobClientGetPageRangesDiffResponse contains the response from method pageBlobClient.GetPageRangesDiff.
+// pageBlobClientGetPageRangesDiffResponse contains the response from method pageBlobClient.NewGetPageRangesDiffPager.
 type pageBlobClientGetPageRangesDiffResponse struct {
 	PageList
 	// BlobContentLength contains the information returned from the x-ms-blob-content-length header response.
@@ -1696,7 +1696,7 @@ type pageBlobClientGetPageRangesDiffResponse struct {
 	Version *string `xml:"Version"`
 }
 
-// pageBlobClientGetPageRangesResponse contains the response from method pageBlobClient.GetPageRanges.
+// pageBlobClientGetPageRangesResponse contains the response from method pageBlobClient.NewGetPageRangesPager.
 type pageBlobClientGetPageRangesResponse struct {
 	PageList
 	// BlobContentLength contains the information returned from the x-ms-blob-content-length header response.

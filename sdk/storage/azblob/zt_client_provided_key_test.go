@@ -827,7 +827,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPK() {
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.EqualValues(uploadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, CountToEnd)})
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, CountToEnd)})
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -890,7 +890,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 	_require.EqualValues(uploadResp.EncryptionScope, testCPKByScope.EncryptionScope)
 
-	pager := pbClient.GetPageRanges(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, CountToEnd)})
+	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, CountToEnd)})
 	for pager.More() {
 		resp, err := pager.NextPage(ctx)
 		_require.Nil(err)
@@ -1205,7 +1205,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 //	_, err = pbClient.UploadPages(context.Background(), getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
 //	_require.Nil(err)
 //
-//	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
+//	pageListResp, err := pbClient.NewGetPageRangesDiffPager(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
 //	_require.Nil(err)
 //	pageRangeResp := pageListResp.PageList.Range
 //	_require.NotNil(pageRangeResp)
@@ -1221,7 +1221,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 //	_require.Nil(err)
 //	_require.Equal(clearResp.RawResponse.StatusCode, 201)
 //
-//	pageListResp, err = pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4095}, *snapshotResp.Snapshot, nil)
+//	pageListResp, err = pbClient.NewGetPageRangesDiffPager(context.Background(), HttpRange{0, 4095}, *snapshotResp.Snapshot, nil)
 //	_require.Nil(err)
 //	_require.Nil(pageListResp.PageList.Range)
 //}
@@ -1458,11 +1458,11 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKK
 
 	// Perform UploadStream
 	_, err = bbClient.UploadStream(ctx, blobContentReader,
-		UploadStreamOptions{
+		&UploadStreamOptions{
 			BufferSize:  bufferSize,
 			MaxBuffers:  maxBuffers,
 			Metadata:    basicMetadata,
-			BlobTagsMap: basicBlobTagsMap,
+			BlobTags:    basicBlobTagsMap,
 			HTTPHeaders: &basicHeaders,
 			CpkInfo:     &testCPKByValue,
 		})
@@ -1523,11 +1523,11 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobBlobPropertiesWithCPKS
 
 	// Perform UploadStream
 	_, err = bbClient.UploadStream(ctx, blobContentReader,
-		UploadStreamOptions{
+		&UploadStreamOptions{
 			BufferSize:   bufferSize,
 			MaxBuffers:   maxBuffers,
 			Metadata:     basicMetadata,
-			BlobTagsMap:  basicBlobTagsMap,
+			BlobTags:     basicBlobTagsMap,
 			HTTPHeaders:  &basicHeaders,
 			CpkScopeInfo: &testCPKByScope,
 		})

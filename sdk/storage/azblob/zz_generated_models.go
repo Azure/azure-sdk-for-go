@@ -1512,7 +1512,7 @@ type pageBlobClientCreateOptions struct {
 	Timeout *int32
 }
 
-// pageBlobClientGetPageRangesDiffOptions contains the optional parameters for the pageBlobClient.GetPageRangesDiff method.
+// pageBlobClientGetPageRangesDiffOptions contains the optional parameters for the pageBlobClient.NewGetPageRangesDiffPager method.
 type pageBlobClientGetPageRangesDiffOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
@@ -1550,7 +1550,7 @@ type pageBlobClientGetPageRangesDiffOptions struct {
 	Timeout *int32
 }
 
-// pageBlobClientGetPageRangesOptions contains the optional parameters for the pageBlobClient.GetPageRanges method.
+// pageBlobClientGetPageRangesOptions contains the optional parameters for the pageBlobClient.NewGetPageRangesPager method.
 type pageBlobClientGetPageRangesOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing

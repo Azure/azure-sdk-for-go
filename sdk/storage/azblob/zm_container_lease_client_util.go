@@ -13,7 +13,7 @@ import (
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// LeaseBreakNaturally tells ContainerClient's or BlobClient's BreakLease method to break the lease using service semantics.
+// LeaseBreakNaturally tells ContainerClient's or BlobClient's Break method to break the lease using service semantics.
 const LeaseBreakNaturally = -1
 
 func leasePeriodPointer(period int32) *int32 {
@@ -43,7 +43,7 @@ func (o *ContainerAcquireLeaseOptions) format() (containerClientAcquireLeaseOpti
 	return containerAcquireLeaseOptions, o.ModifiedAccessConditions
 }
 
-// ContainerAcquireLeaseResponse contains the response from method ContainerLeaseClient.AcquireLease.
+// ContainerAcquireLeaseResponse contains the response from method ContainerLeaseClient.Acquire.
 type ContainerAcquireLeaseResponse struct {
 	containerClientAcquireLeaseResponse
 }
@@ -72,7 +72,7 @@ func (o *ContainerBreakLeaseOptions) format() (*containerClientBreakLeaseOptions
 	return containerBreakLeaseOptions, o.ModifiedAccessConditions
 }
 
-// ContainerBreakLeaseResponse contains the response from method ContainerLeaseClient.BreakLease.
+// ContainerBreakLeaseResponse contains the response from method ContainerLeaseClient.Break.
 type ContainerBreakLeaseResponse struct {
 	containerClientBreakLeaseResponse
 }
@@ -106,7 +106,7 @@ func (o *ContainerChangeLeaseOptions) format() (*string, *containerClientChangeL
 	return o.ProposedLeaseID, nil, o.ModifiedAccessConditions, err
 }
 
-// ContainerChangeLeaseResponse contains the response from method ContainerLeaseClient.ChangeLease.
+// ContainerChangeLeaseResponse contains the response from method ContainerLeaseClient.Change.
 type ContainerChangeLeaseResponse struct {
 	containerClientChangeLeaseResponse
 }
@@ -130,7 +130,7 @@ func (o *ContainerReleaseLeaseOptions) format() (*containerClientReleaseLeaseOpt
 	return nil, o.ModifiedAccessConditions
 }
 
-// ContainerReleaseLeaseResponse contains the response from method ContainerLeaseClient.ReleaseLease.
+// ContainerReleaseLeaseResponse contains the response from method ContainerLeaseClient.Release.
 type ContainerReleaseLeaseResponse struct {
 	containerClientReleaseLeaseResponse
 }
@@ -154,7 +154,7 @@ func (o *ContainerRenewLeaseOptions) format() (*containerClientRenewLeaseOptions
 	return nil, o.ModifiedAccessConditions
 }
 
-// ContainerRenewLeaseResponse contains the response from method ContainerLeaseClient.RenewLease.
+// ContainerRenewLeaseResponse contains the response from method ContainerLeaseClient.Renew.
 type ContainerRenewLeaseResponse struct {
 	containerClientRenewLeaseResponse
 }

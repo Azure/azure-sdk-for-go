@@ -196,7 +196,7 @@ func toPageBlobClearPagesResponse(resp pageBlobClientClearPagesResponse) PageBlo
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// PageBlobGetPageRangesOptions provides set of configurations for GetPageRanges operation
+// PageBlobGetPageRangesOptions provides set of configurations for NewGetPageRangesPager operation
 type PageBlobGetPageRangesOptions struct {
 	Marker *string
 	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
@@ -275,7 +275,7 @@ func toPageBlobGetPageRangesResponse(resp pageBlobClientGetPageRangesResponse) P
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// PageBlobGetPageRangesDiffOptions provides set of configurations for PageBlobClient.GetPageRangesDiff operation
+// PageBlobGetPageRangesDiffOptions provides set of configurations for PageBlobClient.NewGetPageRangesDiffPager operation
 type PageBlobGetPageRangesDiffOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing

@@ -107,7 +107,7 @@ func (client *blobClient) abortCopyFromURLHandleResponse(resp *http.Response) (b
 // AcquireLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// options - blobClientAcquireLeaseOptions contains the optional parameters for the blobClient.AcquireLease method.
+// options - blobClientAcquireLeaseOptions contains the optional parameters for the blobClient.Acquire method.
 // ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the containerClient.Delete method.
 func (client *blobClient) AcquireLease(ctx context.Context, options *blobClientAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (blobClientAcquireLeaseResponse, error) {
 	req, err := client.acquireLeaseCreateRequest(ctx, options, modifiedAccessConditions)
@@ -204,7 +204,7 @@ func (client *blobClient) acquireLeaseHandleResponse(resp *http.Response) (blobC
 // BreakLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// options - blobClientBreakLeaseOptions contains the optional parameters for the blobClient.BreakLease method.
+// options - blobClientBreakLeaseOptions contains the optional parameters for the blobClient.Break method.
 // ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the containerClient.Delete method.
 func (client *blobClient) BreakLease(ctx context.Context, options *blobClientBreakLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (blobClientBreakLeaseResponse, error) {
 	req, err := client.breakLeaseCreateRequest(ctx, options, modifiedAccessConditions)
@@ -307,7 +307,7 @@ func (client *blobClient) breakLeaseHandleResponse(resp *http.Response) (blobCli
 // proposedLeaseID - Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed
 // lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
 // string formats.
-// options - blobClientChangeLeaseOptions contains the optional parameters for the blobClient.ChangeLease method.
+// options - blobClientChangeLeaseOptions contains the optional parameters for the blobClient.Change method.
 // ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the containerClient.Delete method.
 func (client *blobClient) ChangeLease(ctx context.Context, leaseID string, proposedLeaseID string, options *blobClientChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (blobClientChangeLeaseResponse, error) {
 	req, err := client.changeLeaseCreateRequest(ctx, leaseID, proposedLeaseID, options, modifiedAccessConditions)
@@ -1827,7 +1827,7 @@ func (client *blobClient) queryHandleResponse(resp *http.Response) (blobClientQu
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
 // leaseID - Specifies the current lease ID on the resource.
-// options - blobClientReleaseLeaseOptions contains the optional parameters for the blobClient.ReleaseLease method.
+// options - blobClientReleaseLeaseOptions contains the optional parameters for the blobClient.Release method.
 // ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the containerClient.Delete method.
 func (client *blobClient) ReleaseLease(ctx context.Context, leaseID string, options *blobClientReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (blobClientReleaseLeaseResponse, error) {
 	req, err := client.releaseLeaseCreateRequest(ctx, leaseID, options, modifiedAccessConditions)
@@ -1917,7 +1917,7 @@ func (client *blobClient) releaseLeaseHandleResponse(resp *http.Response) (blobC
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
 // leaseID - Specifies the current lease ID on the resource.
-// options - blobClientRenewLeaseOptions contains the optional parameters for the blobClient.RenewLease method.
+// options - blobClientRenewLeaseOptions contains the optional parameters for the blobClient.Renew method.
 // ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the containerClient.Delete method.
 func (client *blobClient) RenewLease(ctx context.Context, leaseID string, options *blobClientRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (blobClientRenewLeaseResponse, error) {
 	req, err := client.renewLeaseCreateRequest(ctx, leaseID, options, modifiedAccessConditions)

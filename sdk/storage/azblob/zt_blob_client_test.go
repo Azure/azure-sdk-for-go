@@ -2043,7 +2043,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
 ////		Include: include,
 ////	}
-////	blobs, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+////	blobs, errChan := containerClient.NewListBlobsFlatPager(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
 ////	_assert(<- errChan, chk.IsNil)
 ////	_assert(<- blobs, chk.HasLen, 0)
 ////}
@@ -2067,7 +2067,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobsFlatOptions{
 ////		Include: include,
 ////	}
-////	blobs, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+////	blobs, errChan := containerClient.NewListBlobsFlatPager(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
 ////	_assert(<- errChan, chk.IsNil)
 ////	_assert(blobs, chk.HasLen, 1)
 ////	_assert(*(<-blobs).Snapshot == "", chk.Equals, true)
@@ -3299,7 +3299,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	_require.Nil(err)
 ////	_assert(resp.AccessTierInferred(), chk.Equals, "true")
 ////
-////	resp2, err := containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	resp2, err := containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	_require.Nil(err)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.NotNil)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTier, chk.Not(chk.Equals), "")
@@ -3311,7 +3311,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	_require.Nil(err)
 ////	_assert(resp.AccessTierInferred(), chk.Equals, "")
 ////
-////	resp2, err = containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	resp2, err = containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	_require.Nil(err)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.IsNil) // AccessTierInferred never returned if false
 ////}
@@ -3335,7 +3335,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	_require.Nil(err)
 ////	_assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToCool))
 ////
-////	resp2, err := containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	resp2, err := containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	_require.Nil(err)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToCool)
 ////
@@ -3354,7 +3354,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	_require.Nil(err)
 ////	_assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToHot))
 ////
-////	resp2, err = containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	resp2, err = containerClient.NewListBlobsFlatPager(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	_require.Nil(err)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToHot)
 ////}

@@ -54,7 +54,7 @@ func (o *ListContainersDetail) format() []ListContainersIncludeType {
 	return items
 }
 
-// ServiceListContainersOptions provides set of configurations for ListContainers operation
+// ServiceListContainersOptions provides set of configurations for NewListContainersPager operation
 type ServiceListContainersOptions struct {
 	Include ListContainersDetail
 

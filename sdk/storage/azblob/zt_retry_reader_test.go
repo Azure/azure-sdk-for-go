@@ -31,7 +31,7 @@ type perByteReader struct {
 	doInjectTimes          int
 	injectedError          error
 
-	// sleepDuraion and closeChannel are only use in "forced cancellation" tests
+	// sleepDuration and closeChannel are only use in "forced cancellation" tests
 	sleepDuration time.Duration
 	closeChannel  chan struct{}
 }
@@ -141,7 +141,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithRetry() {
 		if logThisRun {
 			rrOptions.NotifyFailedRead = failureMethod
 		}
-		retryReader := NewRetryReader(context.Background(), initResponse, httpGetterInfo, rrOptions, getter)
+		retryReader := NewRetryReader(context.Background(), initResponse, httpGetterInfo, getter, &rrOptions)
 
 		// should fail and succeed through retry
 		can := make([]byte, 1)
@@ -213,7 +213,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderWithRetryIoUnexpectedEOF() {
 		if logThisRun {
 			rrOptions.NotifyFailedRead = failureMethod
 		}
-		retryReader := NewRetryReader(context.Background(), initResponse, httpGetterInfo, rrOptions, getter)
+		retryReader := NewRetryReader(context.Background(), initResponse, httpGetterInfo, getter, &rrOptions)
 
 		// should fail and succeed through retry
 		can := make([]byte, 1)
@@ -276,7 +276,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadNegativeNormalFail() {
 	rrOptions := RetryReaderOptions{
 		MaxRetryRequests: 1,
 		NotifyFailedRead: failureMethod}
-	retryReader := NewRetryReader(context.Background(), startResponse, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, rrOptions, getter)
+	retryReader := NewRetryReader(context.Background(), startResponse, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, getter, &rrOptions)
 
 	// should fail
 	can := make([]byte, 1)
@@ -284,7 +284,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadNegativeNormalFail() {
 	_require.Equal(n, 0)
 	_require.Equal(err, body.injectedError)
 
-	// Check that we recieved the right notification callbacks
+	// Check that we received the right notification callbacks
 	// We only expect two failed tries in this test, but only one
 	// of the would have had willRetry = true
 	_require.Equal(failureMethodNumCalls, 2)           // this is the number of calls we counted
@@ -314,7 +314,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadCount0() {
 		return r.Body, nil
 	}
 
-	retryReader := NewRetryReader(context.Background(), startResponseBody, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, RetryReaderOptions{MaxRetryRequests: 1}, getter)
+	retryReader := NewRetryReader(context.Background(), startResponseBody, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, getter, &RetryReaderOptions{MaxRetryRequests: 1})
 
 	// should consume the only byte
 	can := make([]byte, 1)
@@ -348,7 +348,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadNegativeNonRetriableError
 		return r.Body, nil
 	}
 
-	retryReader := NewRetryReader(context.Background(), startResponseBody, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, RetryReaderOptions{MaxRetryRequests: 2}, getter)
+	retryReader := NewRetryReader(context.Background(), startResponseBody, HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}, getter, &RetryReaderOptions{MaxRetryRequests: 2})
 
 	dest := make([]byte, 1)
 	_, err := retryReader.Read(dest)
@@ -377,7 +377,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithForcedRetry() {
 		randBytes := make([]byte, byteCount)
 		_, _ = rand.Read(randBytes)
 		getter := func(ctx context.Context, info HTTPGetterInfo) (io.ReadCloser, error) {
-			body := newSingleUsePerByteReader(randBytes) // make new one every time, since we force closes in this test, and its unusable after a close
+			body := newSingleUsePerByteReader(randBytes) // make new one every time, since we force closes in this test, and it is unusable after a close
 			body.sleepDuration = sleepDuration
 			r := http.Response{}
 			body.currentByteIndex = int(info.Offset)
@@ -392,7 +392,7 @@ func (s *azblobUnrecordedTestSuite) TestRetryReaderReadWithForcedRetry() {
 
 		rrOptions := RetryReaderOptions{MaxRetryRequests: 2, TreatEarlyCloseAsError: !enableRetryOnEarlyClose}
 		rrOptions.NotifyFailedRead = failureMethod
-		retryReader := NewRetryReader(context.Background(), initResponse, httpGetterInfo, rrOptions, getter)
+		retryReader := NewRetryReader(context.Background(), initResponse, httpGetterInfo, getter, &rrOptions)
 
 		// set up timed cancellation from separate goroutine
 		go func() {

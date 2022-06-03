@@ -74,7 +74,7 @@ type retryReader struct {
 	ctx             context.Context
 	info            HTTPGetterInfo
 	countWasBounded bool
-	o               RetryReaderOptions
+	o               *RetryReaderOptions
 	getter          HTTPGetter
 
 	// we support Close-ing during Reads (from other goroutines), so we protect the shared state, which is responseBody
@@ -83,8 +83,7 @@ type retryReader struct {
 }
 
 // NewRetryReader creates a retry reader.
-func NewRetryReader(ctx context.Context, responseBody io.ReadCloser,
-	info HTTPGetterInfo, o RetryReaderOptions, getter HTTPGetter) io.ReadCloser {
+func NewRetryReader(ctx context.Context, responseBody io.ReadCloser, info HTTPGetterInfo, getter HTTPGetter, o *RetryReaderOptions) io.ReadCloser {
 	if getter == nil {
 		panic("getter must not be nil")
 	}

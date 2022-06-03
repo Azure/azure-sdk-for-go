@@ -190,7 +190,7 @@ Examples
 	// To iterate over a page use the NextPage(context.Context) to fetch the next page of results.
 	// PageResponse() can be used to iterate over the results of the specific page.
 	// Always check the Err() method after paging to see if an error was returned by the pager. A pager will return either an error or the page of results.
-	pager := containerClient.ListBlobsFlat(nil)
+	pager := containerClient.NewListBlobsFlatPager(nil)
 	for pager.NextPage(context.TODO()) {
 		resp := pager.PageResponse()
 		for _, v := range resp.Segment.BlobItems {

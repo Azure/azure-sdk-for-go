@@ -8,11 +8,15 @@ package azblob
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // ClientOptions adds additional client options while constructing connection
 type ClientOptions struct {
+	// Cloud specifies a cloud for the client. The default is Azure Public Cloud.
+	Cloud cloud.Configuration
+
 	// Logging configures the built-in logging policy.
 	Logging policy.LogOptions
 
@@ -36,6 +40,7 @@ type ClientOptions struct {
 
 func (c *ClientOptions) toPolicyOptions() *azcore.ClientOptions {
 	return &azcore.ClientOptions{
+		Cloud:            c.Cloud,
 		Logging:          c.Logging,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,
@@ -47,7 +52,7 @@ func (c *ClientOptions) toPolicyOptions() *azcore.ClientOptions {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-func getConnectionOptions(options *ClientOptions) *policy.ClientOptions {
+func getConnectionOptions(options *ClientOptions) *azcore.ClientOptions {
 	if options == nil {
 		options = &ClientOptions{}
 	}

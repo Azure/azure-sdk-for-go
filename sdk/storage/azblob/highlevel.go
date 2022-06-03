@@ -106,26 +106,38 @@ func (bb *BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader
 }
 
 // UploadBuffer uploads a buffer in blocks to a block blob.
-func (bb *BlockBlobClient) UploadBuffer(ctx context.Context, b []byte, o UploadOption) (UploadResponse, error) {
-	return bb.uploadReaderAtToBlockBlob(ctx, bytes.NewReader(b), int64(len(b)), o)
+func (bb *BlockBlobClient) UploadBuffer(ctx context.Context, b []byte, o *UploadOption) (UploadResponse, error) {
+	uploadOptions := UploadOption{}
+	if o != nil {
+		uploadOptions = *o
+	}
+	return bb.uploadReaderAtToBlockBlob(ctx, bytes.NewReader(b), int64(len(b)), uploadOptions)
 }
 
 // UploadFile uploads a file in blocks to a block blob.
-func (bb *BlockBlobClient) UploadFile(ctx context.Context, file *os.File, o UploadOption) (UploadResponse, error) {
+func (bb *BlockBlobClient) UploadFile(ctx context.Context, file *os.File, o *UploadOption) (UploadResponse, error) {
 	stat, err := file.Stat()
 	if err != nil {
 		return UploadResponse{}, err
 	}
-	return bb.uploadReaderAtToBlockBlob(ctx, file, stat.Size(), o)
+	uploadOptions := UploadOption{}
+	if o != nil {
+		uploadOptions = *o
+	}
+	return bb.uploadReaderAtToBlockBlob(ctx, file, stat.Size(), uploadOptions)
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
 // UploadStream copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func (bb *BlockBlobClient) UploadStream(ctx context.Context, body io.Reader, o UploadStreamOptions) (BlockBlobCommitBlockListResponse, error) {
-	if err := o.defaults(); err != nil {
+func (bb *BlockBlobClient) UploadStream(ctx context.Context, body io.Reader, o *UploadStreamOptions) (BlockBlobCommitBlockListResponse, error) {
+	if err := o.format(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
+	}
+
+	if o == nil {
+		o = &UploadStreamOptions{}
 	}
 
 	// If we used the default manager, we need to close it.
@@ -133,7 +145,7 @@ func (bb *BlockBlobClient) UploadStream(ctx context.Context, body io.Reader, o U
 		defer o.TransferManager.Close()
 	}
 
-	result, err := copyFromReader(ctx, body, bb, o)
+	result, err := copyFromReader(ctx, body, bb, *o)
 	if err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}
@@ -145,7 +157,7 @@ func (bb *BlockBlobClient) UploadStream(ctx context.Context, body io.Reader, o U
 
 // DownloadToWriterAt downloads an Azure blob to a WriterAt with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset int64, count int64, writer io.WriterAt, o *DownloadOptions) error {
+func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset, count int64, writer io.WriterAt, o *DownloadOptions) error {
 	if o.BlockSize == 0 {
 		o.BlockSize = internal.BlobDefaultDownloadBlockSize
 	}
@@ -211,14 +223,14 @@ func (b *BlobClient) DownloadToWriterAt(ctx context.Context, offset int64, count
 
 // DownloadToBuffer downloads an Azure blob to a buffer with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (b *BlobClient) DownloadToBuffer(ctx context.Context, offset int64, count int64, _bytes []byte, o *DownloadOptions) error {
+func (b *BlobClient) DownloadToBuffer(ctx context.Context, offset, count int64, _bytes []byte, o *DownloadOptions) error {
 	return b.DownloadToWriterAt(ctx, offset, count, internal.NewBytesWriter(_bytes), o)
 }
 
 // DownloadToFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func (b *BlobClient) DownloadToFile(ctx context.Context, offset int64, count int64, file *os.File, o *DownloadOptions) error {
+func (b *BlobClient) DownloadToFile(ctx context.Context, offset, count int64, file *os.File, o *DownloadOptions) error {
 	// 1. Calculate the size of the destination file
 	var size int64
 

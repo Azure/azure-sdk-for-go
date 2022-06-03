@@ -53,7 +53,7 @@ func performUploadStreamToBlockBlobTest(_require *require.Assertions, testName s
 
 	// Perform UploadStream
 	_, err = blobClient.UploadStream(ctx, blobContentReader,
-		UploadStreamOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
+		&UploadStreamOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 
 	// Assert that upload was successful
 	_require.Equal(err, nil)
@@ -154,7 +154,7 @@ func performUploadAndDownloadFileTest(_require *require.Assertions, testName str
 
 	// Upload the file to a block blob
 	_, err = bbClient.UploadFile(context.Background(), file,
-		UploadOption{
+		&UploadOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -316,7 +316,7 @@ func performUploadAndDownloadBufferTest(_require *require.Assertions, testName s
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
 	_, err = bbClient.UploadBuffer(context.Background(), bytesToUpload,
-		UploadOption{
+		&UploadOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
@@ -568,11 +568,11 @@ func (s *azblobUnrecordedTestSuite) TestUploadStreamToBlobProperties() {
 
 	// Perform UploadStream
 	_, err = bbClient.UploadStream(ctx, blobContentReader,
-		UploadStreamOptions{
+		&UploadStreamOptions{
 			BufferSize:  bufferSize,
 			MaxBuffers:  maxBuffers,
 			Metadata:    basicMetadata,
-			BlobTagsMap: basicBlobTagsMap,
+			BlobTags:    basicBlobTagsMap,
 			HTTPHeaders: &basicHeaders,
 		})
 

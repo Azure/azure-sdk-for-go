@@ -250,7 +250,7 @@ func toContainerListBlobsFlatResponse(resp containerClientListBlobFlatSegmentRes
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-//ContainerListBlobsHierarchyOptions provides set of configurations for ContainerClient.ListBlobsHierarchy
+//ContainerListBlobsHierarchyOptions provides set of configurations for ContainerClient.NewListBlobsHierarchyPager
 type ContainerListBlobsHierarchyOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
 	Include []ListBlobsIncludeItem

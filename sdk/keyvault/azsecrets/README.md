@@ -342,18 +342,20 @@ func main() {
 
 ### Error Handling
 
-All methods which send HTTP requests return an `error` when these requests fail. For deeper debugging, you can capture the raw response from Key Vault with `runtime.WithCaptureResponse()`:
+All methods which send HTTP requests return `*azcore.ResponseError` when these requests fail. `ResponseError` has error details and the raw response from Key Vault.
 
 ```go
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-var resp *http.Response
-ctx := runtime.WithCaptureResponse(context.TODO(), &resp)
-_, err = client.GetSecret(ctx, "secretName", nil)
+resp, err := client.GetSecret(context.Background(), "secretName", nil)
 if err != nil {
-    // TODO: handle error
+    var httpErr *azcore.ResponseError
+    if errors.As(err, &httpErr) {
+        // TODO: investigate httpErr
+    } else {
+        // TODO: not an HTTP error
+    }
 }
-// TODO: investigate resp
 ```
 
 ### Logging
@@ -370,6 +372,22 @@ azlog.SetListener(func(cls azlog.Event, msg string) {
 
 // Includes only requests and responses in credential logs
 azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
+```
+
+### Accessing `http.Response`
+
+You can access the raw `*http.Response` returned by Key Vault using the `runtime.WithCaptureResponse` method and a context passed to any client method.
+
+```go
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+
+var response *http.Response
+ctx := runtime.WithCaptureResponse(context.TODO(), &response)
+_, err = client.GetSecret(ctx, "secretName", nil)
+if err != nil {
+    // TODO: handle error
+}
+// TODO: do something with response
 ```
 
 ###  Additional Documentation

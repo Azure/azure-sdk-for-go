@@ -129,7 +129,7 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 		AutoDeleteOnIdle:                    MaxTimeSpanForTests,
 		UserMetadata:                        to.Ptr("some metadata"),
 		AuthorizationRules:                  authRules,
-		MaxMessageSizeInKilobytes:           to.Ptr(int64(102400)), // the default size for standard.
+		MaxMessageSizeInKilobytes:           to.Ptr(int64(256)), // the default size for standard.
 	}, resp.QueueProperties)
 
 	runtimeResp, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName, nil)

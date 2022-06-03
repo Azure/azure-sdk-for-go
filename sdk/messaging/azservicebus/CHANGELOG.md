@@ -2,6 +2,11 @@
 
 ## 1.0.1 (2022-06-07)
 
+### Features Added
+
+- Adding in (QueueProperties|TopicProperties).MaxMessageSizeInKilobytes property, which can be used to increase the max message
+  size for Service Bus Premium namespaces. (#TBD)
+
 ### Bugs Fixed
 
 - Handle a missing CountDetails node in the returned responses for Get<Entity>RuntimeProperties which could cause a panic. (#18213)

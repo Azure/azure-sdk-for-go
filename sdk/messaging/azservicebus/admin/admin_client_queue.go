@@ -75,6 +75,10 @@ type QueueProperties struct {
 
 	// AuthorizationRules are the authorization rules for this entity.
 	AuthorizationRules []AuthorizationRule
+
+	// Maximum size (in KB) of the message payload that can be accepted by the queue. This feature is only available when
+	// using Service Bus Premium.
+	MaxMessageSizeInKilobytes *int64
 }
 
 // QueueRuntimeProperties represent dynamic properties of a queue, such as the ActiveMessageCount.
@@ -395,6 +399,7 @@ func newQueueEnvelope(props *QueueProperties, tokenProvider auth.TokenProvider) 
 		ForwardDeadLetteredMessagesTo:       props.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                        props.UserMetadata,
 		AuthorizationRules:                  publicAccessRightsToInternal(props.AuthorizationRules),
+		MaxMessageSizeInKilobytes:           props.MaxMessageSizeInKilobytes,
 	}
 
 	return atom.WrapWithQueueEnvelope(qpr, tokenProvider)
@@ -420,6 +425,7 @@ func newQueueItem(env *atom.QueueEnvelope) (*QueueItem, error) {
 		ForwardDeadLetteredMessagesTo:       desc.ForwardDeadLetteredMessagesTo,
 		UserMetadata:                        desc.UserMetadata,
 		AuthorizationRules:                  internalAccessRightsToPublic(desc.AuthorizationRules),
+		MaxMessageSizeInKilobytes:           desc.MaxMessageSizeInKilobytes,
 	}
 
 	return &QueueItem{

@@ -20,6 +20,7 @@
 * Changed type of key `Tags` to `map[string]*string`
 * Changed type of `ListPropertiesOfKeyVersionsResponse.Keys` to `[]*KeyItem`
 * Changed type of `JSONWebKey.KeyOps` to `[]*Operation`
+* Removed JSON tags from models
 
 ### Bugs Fixed
 * `ReleaseKey()` returns an error when no key version is specified

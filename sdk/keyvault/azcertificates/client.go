@@ -1051,10 +1051,6 @@ type UpdateCertificatePropertiesOptions struct {
 
 }
 
-func (u *UpdateCertificatePropertiesOptions) toGenerated() *generated.KeyVaultClientUpdateCertificateOptions {
-	return &generated.KeyVaultClientUpdateCertificateOptions{}
-}
-
 // UpdateCertificatePropertiesResponse contains response fields for Client.UpdateCertificateProperties
 type UpdateCertificatePropertiesResponse struct {
 	Certificate

@@ -45,6 +45,8 @@ steps:
       go install github.com/AlekSi/gocov-xml@v1.0.0
       go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
     displayName: "Install Coverage and Junit Dependencies"
+    failOnStderr: true
+    retryCountOnTaskFailure: 3
 
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml

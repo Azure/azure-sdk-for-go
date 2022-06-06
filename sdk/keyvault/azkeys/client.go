@@ -737,7 +737,8 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 
 // UpdateKeyPropertiesOptions contains optional parameters for UpdateKeyProperties
 type UpdateKeyPropertiesOptions struct {
-	// placeholder for future optional parameters
+	// Operations are the operations Key Vault will allow for the key.
+	Operations []*Operation
 }
 
 // UpdateKeyPropertiesResponse is returned by UpdateKeyProperties.
@@ -761,22 +762,28 @@ func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyRespons
 // UpdateKeyProperties updates the management properties of a key, but not its cryptographic material.
 // Pass nil for options to accept default values.
 func (c *Client) UpdateKeyProperties(ctx context.Context, properties Properties, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
-	version := ""
+	if options == nil {
+		options = &UpdateKeyPropertiesOptions{}
+	}
+	name, version := "", ""
+	if properties.Name != nil {
+		name = *properties.Name
+	}
 	if properties.Version != nil {
 		version = *properties.Version
 	}
-	resp, err := c.kvClient.UpdateKey(
-		ctx,
-		c.vaultURL,
-		*properties.Name,
-		version,
-		generated.KeyUpdateParameters{
-			KeyAttributes: properties.toGenerated(),
-			ReleasePolicy: properties.ReleasePolicy.toGenerated(),
-			Tags:          properties.Tags,
-		},
-		nil,
-	)
+	params := generated.KeyUpdateParameters{
+		KeyAttributes: properties.toGenerated(),
+		ReleasePolicy: properties.ReleasePolicy.toGenerated(),
+		Tags:          properties.Tags,
+	}
+	if options.Operations != nil {
+		params.KeyOps = make([]*generated.JSONWebKeyOperation, len(options.Operations))
+		for i, op := range options.Operations {
+			params.KeyOps[i] = (*generated.JSONWebKeyOperation)(op)
+		}
+	}
+	resp, err := c.kvClient.UpdateKey(ctx, c.vaultURL, name, version, params, nil)
 	if err != nil {
 		return UpdateKeyPropertiesResponse{}, err
 	}

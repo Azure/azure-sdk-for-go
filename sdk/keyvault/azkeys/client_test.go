@@ -66,7 +66,7 @@ func TestCreateKeyRSA(t *testing.T) {
 }
 
 func TestCreateKeyRSATags(t *testing.T) {
-	startTest(t, "")
+	startTest(t, REGULARTEST)
 
 	client, err := createClient(t, REGULARTEST)
 	require.NoError(t, err)
@@ -258,7 +258,7 @@ func TestDeleteKey(t *testing.T) {
 }
 
 func TestBeginDeleteKeyRehydrate(t *testing.T) {
-	startTest(t, "")
+	startTest(t, REGULARTEST)
 
 	client, err := createClient(t, testTypes[0])
 	require.NoError(t, err)
@@ -819,7 +819,7 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 }
 
 func TestClient_EncryptDecrypt(t *testing.T) {
-	startTest(t, "")
+	startTest(t, REGULARTEST)
 
 	keyName, err := createRandomName(t, "key")
 	require.NoError(t, err)
@@ -841,7 +841,7 @@ func TestClient_EncryptDecrypt(t *testing.T) {
 }
 
 func TestClient_WrapUnwrap(t *testing.T) {
-	startTest(t, "")
+	startTest(t, REGULARTEST)
 
 	keyName, err := createRandomName(t, "key")
 	require.NoError(t, err)
@@ -867,7 +867,7 @@ func TestClient_WrapUnwrap(t *testing.T) {
 }
 
 func TestClient_SignVerify(t *testing.T) {
-	startTest(t, "")
+	startTest(t, REGULARTEST)
 
 	keyName, err := createRandomName(t, "key")
 	require.NoError(t, err)

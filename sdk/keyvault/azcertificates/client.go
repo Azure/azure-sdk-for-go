@@ -1059,14 +1059,17 @@ type UpdateCertificatePropertiesResponse struct {
 // UpdateCertificateProperties applies the specified update on the given certificate; the only elements updated are the certificate's
 // attributes. This operation requires the certificates/update permission.
 func (c *Client) UpdateCertificateProperties(ctx context.Context, properties Properties, options *UpdateCertificatePropertiesOptions) (UpdateCertificatePropertiesResponse, error) {
-	version := ""
+	name, version := "", ""
+	if properties.Name != nil {
+		name = *properties.Name
+	}
 	if properties.Version != nil {
 		version = *properties.Version
 	}
 	resp, err := c.genClient.UpdateCertificate(
 		ctx,
 		c.vaultURL,
-		*properties.Name,
+		name,
 		version,
 		generated.CertificateUpdateParameters{
 			CertificateAttributes: properties.toGenerated(),

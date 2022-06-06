@@ -278,14 +278,17 @@ func updateSecretPropertiesResponseFromGenerated(i generated.KeyVaultClientUpdat
 // UpdateSecretProperties updates a secret's properties, such as whether it's enabled. See the Properties type for a complete list.
 // nil fields will keep their current values. This method can't change the secret's value; use SetSecret to do that.
 func (c *Client) UpdateSecretProperties(ctx context.Context, properties Properties, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
-	version := ""
+	name, version := "", ""
+	if properties.Name != nil {
+		name = *properties.Name
+	}
 	if properties.Version != nil {
 		version = *properties.Version
 	}
 	resp, err := c.kvClient.UpdateSecret(
 		ctx,
 		c.vaultUrl,
-		*properties.Name,
+		name,
 		version,
 		generated.SecretUpdateParameters{
 			ContentType:      properties.ContentType,

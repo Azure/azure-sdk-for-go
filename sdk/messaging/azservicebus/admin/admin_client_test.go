@@ -129,6 +129,7 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 		AutoDeleteOnIdle:                    MaxTimeSpanForTests,
 		UserMetadata:                        to.Ptr("some metadata"),
 		AuthorizationRules:                  authRules,
+		MaxMessageSizeInKilobytes:           to.Ptr(int64(256)), // the default size for standard.
 	}, resp.QueueProperties)
 
 	runtimeResp, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName, nil)
@@ -144,20 +145,33 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 	require.Zero(t, runtimeResp.TotalMessageCount)
 }
 
-func TestAdminClient_CreateQueue(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+func TestAdminClient_CreateQueue_Standard(t *testing.T) {
+	testCreateQueue(t, false)
+}
+
+func TestAdminClient_CreateQueue_Premium(t *testing.T) {
+	testCreateQueue(t, true)
+}
+
+func testCreateQueue(t *testing.T, isPremium bool) {
+	var cs string
+
+	if isPremium {
+		cs = test.GetConnectionStringForPremiumSB(t)
+	} else {
+		cs = test.GetConnectionString(t)
+	}
+
+	adminClient, err := NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
 	es := EntityStatusReceiveDisabled
-	createResp, err := adminClient.CreateQueue(context.Background(), queueName, &CreateQueueOptions{
+
+	createQueueOptions := &CreateQueueOptions{
 		Properties: &QueueProperties{
-			LockDuration: to.Ptr("PT45S"),
-			// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
-			// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
-			EnablePartitioning:                  to.Ptr(true),
-			MaxSizeInMegabytes:                  to.Ptr(int32(4096)),
+			LockDuration:                        to.Ptr("PT45S"),
 			RequiresDuplicateDetection:          to.Ptr(true),
 			RequiresSession:                     to.Ptr(true),
 			DefaultMessageTimeToLive:            to.Ptr("PT6H"),
@@ -168,18 +182,32 @@ func TestAdminClient_CreateQueue(t *testing.T) {
 			Status:                              &es,
 			AutoDeleteOnIdle:                    to.Ptr("PT10M"),
 		},
-	})
+	}
+
+	if isPremium {
+		createQueueOptions.Properties.MaxMessageSizeInKilobytes = to.Ptr(int64(102400))
+
+		// no partitioning in premium
+		createQueueOptions.Properties.EnablePartitioning = to.Ptr(false)
+	} else {
+		// can't update message size in standard
+		createQueueOptions.Properties.MaxMessageSizeInKilobytes = nil
+
+		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
+		// of MaxSizeInMegabytes. This means when we retrieve this queue we'll get 16*4096 as the size (ie: 64GB)
+		createQueueOptions.Properties.EnablePartitioning = to.Ptr(true)
+		createQueueOptions.Properties.MaxSizeInMegabytes = to.Ptr(int32(4096))
+	}
+
+	createResp, err := adminClient.CreateQueue(context.Background(), queueName, createQueueOptions)
 	require.NoError(t, err)
 
 	defer func() {
 		deleteQueue(t, adminClient, queueName)
 	}()
 
-	require.EqualValues(t, QueueProperties{
-		LockDuration: to.Ptr("PT45S"),
-		// ie: this response was from a partitioned queue so the size is the original max size * # of partitions
-		EnablePartitioning:                  to.Ptr(true),
-		MaxSizeInMegabytes:                  to.Ptr(int32(16 * 4096)),
+	expectedQueueProperties := QueueProperties{
+		LockDuration:                        to.Ptr("PT45S"),
 		RequiresDuplicateDetection:          to.Ptr(true),
 		RequiresSession:                     to.Ptr(true),
 		DefaultMessageTimeToLive:            to.Ptr("PT6H"),
@@ -189,12 +217,33 @@ func TestAdminClient_CreateQueue(t *testing.T) {
 		EnableBatchedOperations:             to.Ptr(false),
 		Status:                              &es,
 		AutoDeleteOnIdle:                    to.Ptr("PT10M"),
-	}, createResp.QueueProperties)
+	}
+
+	if isPremium {
+		expectedQueueProperties.MaxMessageSizeInKilobytes = to.Ptr(int64(102400))
+
+		expectedQueueProperties.EnablePartitioning = to.Ptr(false)
+		expectedQueueProperties.MaxSizeInMegabytes = to.Ptr(int32(1024))
+	} else {
+		// (the message size for SB Standard)
+		expectedQueueProperties.MaxMessageSizeInKilobytes = to.Ptr(int64(256))
+
+		expectedQueueProperties.EnablePartitioning = to.Ptr(true)
+		expectedQueueProperties.MaxSizeInMegabytes = to.Ptr(int32(16 * 4096))
+	}
+
+	require.EqualValues(t, expectedQueueProperties, createResp.QueueProperties)
 
 	getResp, err := adminClient.GetQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, getResp.QueueProperties, createResp.QueueProperties)
+
+	// ensure we can round-trip
+	updateResp, err := adminClient.UpdateQueue(context.Background(), queueName, getResp.QueueProperties, nil)
+	require.NoError(t, err)
+
+	require.EqualValues(t, expectedQueueProperties, updateResp.QueueProperties)
 }
 
 func TestAdminClient_UpdateQueue(t *testing.T) {
@@ -373,8 +422,24 @@ func TestAdminClient_ISO8601StringToDuration(t *testing.T) {
 	require.EqualValues(t, utils.MaxTimeDuration, *duration)
 }
 
-func TestAdminClient_TopicAndSubscription(t *testing.T) {
-	adminClient, err := NewClientFromConnectionString(test.GetConnectionString(t), nil)
+func TestAdminClient_TopicAndSubscription_Standard(t *testing.T) {
+	testTopicCreation(t, false)
+}
+
+func TestAdminClient_TopicAndSubscription_Premium(t *testing.T) {
+	testTopicCreation(t, true)
+}
+
+func testTopicCreation(t *testing.T, isPremium bool) {
+	var cs string
+
+	if isPremium {
+		cs = test.GetConnectionStringForPremiumSB(t)
+	} else {
+		cs = test.GetConnectionString(t)
+	}
+
+	adminClient, err := NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
 
 	topicName := fmt.Sprintf("topic-%X", time.Now().UnixNano())
@@ -382,11 +447,8 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 
 	status := EntityStatusActive
 
-	// check topic properties, existence
-	addResp, err := adminClient.CreateTopic(context.Background(), topicName, &CreateTopicOptions{
+	createTopicOptions := &CreateTopicOptions{
 		Properties: &TopicProperties{
-			EnablePartitioning:                  to.Ptr(true),
-			MaxSizeInMegabytes:                  to.Ptr(int32(2048)),
 			RequiresDuplicateDetection:          to.Ptr(true),
 			DefaultMessageTimeToLive:            to.Ptr("PT3M"),
 			DuplicateDetectionHistoryTimeWindow: to.Ptr("PT4M"),
@@ -395,14 +457,31 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 			AutoDeleteOnIdle:                    to.Ptr("PT7M"),
 			SupportOrdering:                     to.Ptr(true),
 			UserMetadata:                        to.Ptr("user metadata"),
-		}})
+		},
+	}
+
+	if isPremium {
+		// premium doesn't support partitioning.
+		createTopicOptions.Properties.EnablePartitioning = to.Ptr(false)
+
+		// premium allows you to update the max message size
+		createTopicOptions.Properties.MaxMessageSizeInKilobytes = to.Ptr(int64(102400))
+	} else {
+		createTopicOptions.Properties.EnablePartitioning = to.Ptr(true)
+		createTopicOptions.Properties.MaxSizeInMegabytes = to.Ptr(int32(2048))
+
+		// standard can't change MaxMessageSizeInKilobytes
+		createTopicOptions.Properties.MaxMessageSizeInKilobytes = nil
+	}
+
+	// check topic properties, existence
+	addResp, err := adminClient.CreateTopic(context.Background(), topicName, createTopicOptions)
 	require.NoError(t, err)
 
 	defer deleteTopic(t, adminClient, topicName)
 
-	require.EqualValues(t, TopicProperties{
-		EnablePartitioning:                  to.Ptr(true),
-		MaxSizeInMegabytes:                  to.Ptr(int32(16 * 2048)), // enabling partitioning increases our max size because of the 16 partition),
+	expectedTopicProps := TopicProperties{
+		MaxSizeInMegabytes:                  to.Ptr(int32(1024)),
 		RequiresDuplicateDetection:          to.Ptr(true),
 		DefaultMessageTimeToLive:            to.Ptr("PT3M"),
 		DuplicateDetectionHistoryTimeWindow: to.Ptr("PT4M"),
@@ -411,23 +490,29 @@ func TestAdminClient_TopicAndSubscription(t *testing.T) {
 		AutoDeleteOnIdle:                    to.Ptr("PT7M"),
 		SupportOrdering:                     to.Ptr(true),
 		UserMetadata:                        to.Ptr("user metadata"),
-	}, addResp.TopicProperties)
+	}
+
+	if isPremium {
+		expectedTopicProps.MaxMessageSizeInKilobytes = to.Ptr(int64(102400))
+
+		// no partitioning in premium.
+		expectedTopicProps.EnablePartitioning = to.Ptr(false)
+		expectedTopicProps.MaxSizeInMegabytes = to.Ptr(int32(1024))
+	} else {
+		expectedTopicProps.MaxMessageSizeInKilobytes = to.Ptr(int64(256))
+
+		// enabling partitioning increases our max size because of the 16 partition),
+		expectedTopicProps.EnablePartitioning = to.Ptr(true)
+		expectedTopicProps.MaxSizeInMegabytes = to.Ptr(int32(16 * 2048))
+
+	}
+
+	require.EqualValues(t, expectedTopicProps, addResp.TopicProperties)
 
 	getResp, err := adminClient.GetTopic(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
-	require.EqualValues(t, TopicProperties{
-		EnablePartitioning:                  to.Ptr(true),
-		MaxSizeInMegabytes:                  to.Ptr(int32(16 * 2048)), // enabling partitioning increases our max size because of the 16 partition),
-		RequiresDuplicateDetection:          to.Ptr(true),
-		DefaultMessageTimeToLive:            to.Ptr("PT3M"),
-		DuplicateDetectionHistoryTimeWindow: to.Ptr("PT4M"),
-		EnableBatchedOperations:             to.Ptr(true),
-		Status:                              &status,
-		AutoDeleteOnIdle:                    to.Ptr("PT7M"),
-		SupportOrdering:                     to.Ptr(true),
-		UserMetadata:                        to.Ptr("user metadata"),
-	}, getResp.TopicProperties)
+	require.EqualValues(t, expectedTopicProps, getResp.TopicProperties)
 
 	runtimeResp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
 	require.NoError(t, err)

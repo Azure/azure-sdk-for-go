@@ -172,7 +172,7 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 	}
 
 	q := req.Raw().URL.Query()
-	q.Add("api-version", "2017-04")
+	q.Add("api-version", "2021-05")
 	req.Raw().URL.RawQuery = q.Encode()
 
 	if body != nil && body != http.NoBody {

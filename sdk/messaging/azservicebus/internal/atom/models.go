@@ -85,6 +85,7 @@ type (
 		ForwardTo                           *string             `xml:"ForwardTo,omitempty"`
 		ForwardDeadLetteredMessagesTo       *string             `xml:"ForwardDeadLetteredMessagesTo,omitempty"` // ForwardDeadLetteredMessagesTo - absolute URI of the entity to forward dead letter messages
 		UserMetadata                        *string             `xml:"UserMetadata,omitempty"`
+		MaxMessageSizeInKilobytes           *int64              `xml:"MaxMessageSizeInKilobytes,omitempty"`
 	}
 )
 
@@ -145,6 +146,7 @@ type (
 		EnableExpress                       *bool               `xml:"EnableExpress,omitempty"`
 		CountDetails                        *CountDetails       `xml:"CountDetails,omitempty"`
 		SubscriptionCount                   *int32              `xml:"SubscriptionCount,omitempty"`
+		MaxMessageSizeInKilobytes           *int64              `xml:"MaxMessageSizeInKilobytes,omitempty"`
 	}
 )
 

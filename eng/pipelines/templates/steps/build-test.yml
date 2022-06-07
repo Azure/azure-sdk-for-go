@@ -41,10 +41,15 @@ steps:
 
   - pwsh: |
       go install github.com/jstemmer/go-junit-report@v0.9.1
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       go install github.com/axw/gocov/gocov@v1.1.0
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       go install github.com/AlekSi/gocov-xml@v1.0.0
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
+      if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     displayName: "Install Coverage and Junit Dependencies"
+    retryCountOnTaskFailure: 3
 
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml

@@ -14,6 +14,7 @@
   * `ListCertificatesOptions` to `ListPropertiesOfCertificatesOptions`
   * `ListCertificateVersionsOptions` to `ListPropertiesOfCertificateVersionsOptions`
 * Renamed `ListDeletedCertificatesResponse.Certificates` to `.DeletedCertificates`
+* `UpdateCertificateProperties()` has a `Properties` parameter instead of a `string` parameter
 * Removed JSON tags from models
 
 ### Bugs Fixed

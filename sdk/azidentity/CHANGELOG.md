@@ -1,12 +1,6 @@
 # Release History
 
-## 1.0.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.1 (2022-06-07)
 
 ### Other Changes
 * Upgrade `microsoft-authentication-library-for-go` requirement to v0.5.1

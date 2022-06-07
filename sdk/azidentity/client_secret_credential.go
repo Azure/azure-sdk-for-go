@@ -9,6 +9,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -47,6 +48,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	c, err := confidential.New(clientID, cred,
 		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
 		confidential.WithHTTPClient(newPipelineAdapter(&options.ClientOptions)),
+		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
 	)
 	if err != nil {
 		return nil, err

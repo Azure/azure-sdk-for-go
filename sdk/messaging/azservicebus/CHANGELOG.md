@@ -5,13 +5,14 @@
 ### Features Added
 
 - Adding in (QueueProperties|TopicProperties).MaxMessageSizeInKilobytes property, which can be used to increase the max message
-  size for Service Bus Premium namespaces. (#TBD)
+  size for Service Bus Premium namespaces. (#18310)
 
 ### Bugs Fixed
 
 - Handle a missing CountDetails node in the returned responses for Get<Entity>RuntimeProperties which could cause a panic. (#18213)
 - Adding the `associated-link-name` property to management operations (RenewLock, settlement and others), which 
   can help extend link lifetime (#18291)
+- Namespace closing didn't reset the internal client, which could lead to connection recovery thrashing. (#18323)
 
 ## 1.0.0 (2022-05-16)
 

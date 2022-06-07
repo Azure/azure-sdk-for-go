@@ -49,11 +49,14 @@ type (
 		RetryOptions exported.RetryOptions
 
 		clientMu         sync.RWMutex
-		client           *amqp.Client
+		client           amqpwrap.AMQPClient
 		negotiateClaimMu sync.Mutex
 		// indicates that the client was closed permanently, and not just
 		// for recovery.
 		closedPermanently bool
+
+		// newClientFn exists so we can stub out newClient for unit tests.
+		newClientFn func(ctx context.Context) (amqpwrap.AMQPClient, error)
 	}
 
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
@@ -143,6 +146,8 @@ func NamespaceWithRetryOptions(retryOptions exported.RetryOptions) NamespaceOpti
 func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	ns := &Namespace{}
 
+	ns.newClientFn = ns.newClientImpl
+
 	for _, opt := range opts {
 		err := opt(ns)
 		if err != nil {
@@ -153,7 +158,7 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	return ns, nil
 }
 
-func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
+func (ns *Namespace) newClientImpl(ctx context.Context) (amqpwrap.AMQPClient, error) {
 	defaultConnOptions := []amqp.ConnOption{
 		amqp.ConnSASLAnonymous(),
 		amqp.ConnMaxSessions(65535),
@@ -181,10 +186,12 @@ func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
 			return nil, err
 		}
 
-		return amqp.New(nConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.FQDN))...)
+		client, err := amqp.New(nConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.FQDN))...)
+		return &amqpwrap.AMQPClientWrapper{Inner: client}, err
 	}
 
-	return amqp.Dial(ns.getAMQPHostURI(), defaultConnOptions...)
+	client, err := amqp.Dial(ns.getAMQPHostURI(), defaultConnOptions...)
+	return &amqpwrap.AMQPClientWrapper{Inner: client}, err
 }
 
 // NewAMQPSession creates a new AMQP session with the internally cached *amqp.Client.
@@ -202,7 +209,7 @@ func (ns *Namespace) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, 
 		return nil, 0, err
 	}
 
-	return &amqpwrap.AMQPSessionWrapper{Inner: session}, clientRevision, err
+	return session, clientRevision, err
 }
 
 // NewRPCLink creates a new amqp-common *rpc.Link with the internally cached *amqp.Client.
@@ -214,7 +221,7 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (RPC
 	}
 
 	return NewRPCLink(RPCLinkArgs{
-		Client:   &amqpwrap.AMQPClientWrapper{Inner: client},
+		Client:   client,
 		Address:  managementPath,
 		LogEvent: exported.EventReceiver,
 	})
@@ -241,7 +248,9 @@ func (ns *Namespace) Close(ctx context.Context, permanently bool) error {
 	}
 
 	if ns.client != nil {
-		return ns.client.Close()
+		err := ns.client.Close()
+		ns.client = nil
+		return err
 	}
 
 	return nil
@@ -291,16 +300,12 @@ func (ns *Namespace) Recover(ctx context.Context, theirConnID uint64) (bool, err
 		_ = oldClient.Close()
 	}
 
-	var err error
 	log.Writef(exported.EventConn, "Creating a new client (rev:%d)", ns.connID)
-	ns.client, err = ns.newClient(ctx)
 
-	if err != nil {
+	if _, _, err := ns.updateClientWithoutLock(ctx); err != nil {
 		return false, err
 	}
 
-	ns.connID++
-	log.Writef(exported.EventConn, "New client created, (rev: %d)", ns.connID)
 	return true, nil
 }
 
@@ -310,7 +315,6 @@ func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (con
 	return ns.startNegotiateClaimRenewer(ctx,
 		entityPath,
 		NegotiateClaim,
-		ns.GetAMQPClientImpl,
 		nextClaimRefreshDuration)
 }
 
@@ -320,15 +324,14 @@ func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (con
 // when the background renewal stops or an error.
 func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	entityPath string,
-	cbsNegotiateClaim func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error,
-	nsGetAMQPClientImpl func(ctx context.Context) (*amqp.Client, uint64, error),
+	cbsNegotiateClaim func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error,
 	nextClaimRefreshDurationFn func(expirationTime time.Time, currentTime time.Time) time.Duration) (func(), <-chan struct{}, error) {
 	audience := ns.GetEntityAudience(entityPath)
 
 	refreshClaim := func(ctx context.Context) (time.Time, error) {
 		log.Writef(exported.EventAuth, "(%s) refreshing claim", entityPath)
 
-		amqpClient, clientRevision, err := nsGetAMQPClientImpl(ctx)
+		amqpClient, clientRevision, err := ns.GetAMQPClientImpl(ctx)
 
 		if err != nil {
 			return time.Time{}, err
@@ -430,7 +433,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	}, refreshStoppedCh, nil
 }
 
-func (ns *Namespace) GetAMQPClientImpl(ctx context.Context) (*amqp.Client, uint64, error) {
+func (ns *Namespace) GetAMQPClientImpl(ctx context.Context) (amqpwrap.AMQPClient, uint64, error) {
 	if err := ns.Check(); err != nil {
 		return nil, 0, err
 	}
@@ -442,16 +445,26 @@ func (ns *Namespace) GetAMQPClientImpl(ctx context.Context) (*amqp.Client, uint6
 		return nil, 0, ErrClientClosed
 	}
 
+	return ns.updateClientWithoutLock(ctx)
+}
+
+// updateClientWithoutLock takes care of initializing a client (if needed)
+// and returns the initialized client and it's connection ID, or an error.
+func (ns *Namespace) updateClientWithoutLock(ctx context.Context) (amqpwrap.AMQPClient, uint64, error) {
 	if ns.client != nil {
 		return ns.client, ns.connID, nil
 	}
 
-	var err error
-	ns.client, err = ns.newClient(ctx)
+	log.Writef(exported.EventConn, "Creating new client, current rev: %d", ns.connID)
+	tempClient, err := ns.newClientFn(ctx)
 
-	if err == nil {
-		ns.connID++
+	if err != nil {
+		return nil, 0, err
 	}
+
+	ns.connID++
+	ns.client = tempClient
+	log.Writef(exported.EventConn, "Client created, new rev: %d", ns.connID)
 
 	return ns.client, ns.connID, err
 }

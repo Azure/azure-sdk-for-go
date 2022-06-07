@@ -42,7 +42,9 @@ type EnvironmentCredentialOptions struct {
 //
 // AZURE_CLIENT_ID: the service principal's client ID
 //
-// AZURE_CLIENT_CERTIFICATE_PATH: path to a PEM or PKCS12 certificate file including the unencrypted private key.
+// AZURE_CLIENT_CERTIFICATE_PATH: path to a PEM or PKCS12 certificate file including the private key.
+//
+// AZURE_CLIENT_CERTIFICATE_PASSWORD: (optional) password for the certificate file.
 //
 // User with username and password
 //
@@ -85,7 +87,11 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf(`failed to read certificate file "%s": %v`, certPath, err)
 		}
-		certs, key, err := ParseCertificates(certData, nil)
+		var password []byte
+		if v := os.Getenv("AZURE_CLIENT_CERTIFICATE_PASSWORD"); v != "" {
+			password = []byte(v)
+		}
+		certs, key, err := ParseCertificates(certData, password)
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}

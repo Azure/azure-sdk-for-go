@@ -4,6 +4,7 @@
 
 ### Features Added
 * Added `NewCryptoClient()` to `azkeys.Client` to simplify access to the crypto client.
+* `UpdateKeyProperties()` can set a key's allowed operations
 
 ### Breaking Changes
 * Renamed methods which return `Pager[T]`:

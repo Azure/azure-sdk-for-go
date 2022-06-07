@@ -451,9 +451,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 func TestUpdateKeyPropertiesPatchSemantics(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(testType, func(t *testing.T) {
-			skipHSM(t, testType)
-			stop := startTest(t)
-			defer stop()
+			startTest(t, testType)
 
 			client, err := createClient(t, testType)
 			require.NoError(t, err)

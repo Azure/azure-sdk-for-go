@@ -456,7 +456,6 @@ func (ns *Namespace) updateClientWithoutLock(ctx context.Context) (amqpwrap.AMQP
 	}
 
 	log.Writef(exported.EventConn, "Creating new client, current rev: %d", ns.connID)
-	var err error
 	tempClient, err := ns.newClientFn(ctx)
 
 	if err != nil {

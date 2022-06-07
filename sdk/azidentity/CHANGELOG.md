@@ -12,6 +12,7 @@
 * `ClientCertificateCredential` and `ClientSecretCredential` support ESTS-R. First-party
   applications can set environment variable `AZURE_REGIONAL_AUTHORITY_NAME` with a
   region name.
+  ([#15605](https://github.com/Azure/azure-sdk-for-go/issues/15605))
 
 ## 1.0.1 (2022-06-07)
 

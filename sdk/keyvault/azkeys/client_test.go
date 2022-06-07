@@ -86,7 +86,7 @@ func TestCreateKeyRSATags(t *testing.T) {
 
 	resp.Key.Properties.Tags = map[string]*string{}
 	// Remove the tag
-	resp2, err := client.UpdateKeyProperties(ctx, resp.Key, nil)
+	resp2, err := client.UpdateKeyProperties(ctx, *resp.Key.Properties, nil)
 	require.NoError(t, err)
 	require.Equal(t, 0, len(resp2.Properties.Tags))
 	validateKey(t, &resp2.Key)
@@ -411,34 +411,71 @@ func TestUpdateKeyProperties(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
 			startTest(t, testType)
-			err := recording.SetBodilessMatcher(t, nil)
-			require.NoError(t, err)
-
 			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
 			require.NoError(t, err)
 
-			createResp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{})
+			createResp, err := client.CreateRSAKey(ctx, key, &CreateRSAKeyOptions{
+				Properties: &Properties{
+					Enabled:   to.Ptr(true),
+					ExpiresOn: to.Ptr(time.Date(2050, 2, 1, 0, 0, 0, 0, time.UTC)),
+					NotBefore: to.Ptr(time.Date(2050, 1, 1, 0, 0, 0, 0, time.UTC)),
+				},
+			})
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			createResp.Key.Properties.Tags = map[string]*string{
-				"Tag1": to.Ptr("Val1"),
+			expectedOps := []*Operation{to.Ptr(OperationUnwrapKey)}
+			expectedProps := Properties{
+				Enabled:   to.Ptr(false),
+				ExpiresOn: to.Ptr(createResp.Properties.ExpiresOn.Add(time.Hour)),
+				Name:      createResp.Name,
+				NotBefore: to.Ptr(createResp.Properties.NotBefore.Add(time.Minute)),
+				Tags:      map[string]*string{"Tag1": to.Ptr("Val1")},
 			}
-			createResp.Key.Properties.ExpiresOn = to.Ptr(time.Now().AddDate(1, 0, 0))
-
-			resp, err := client.UpdateKeyProperties(ctx, createResp.Key, nil)
+			resp, err := client.UpdateKeyProperties(ctx, expectedProps, &UpdateKeyPropertiesOptions{
+				Operations: expectedOps,
+			})
 			require.NoError(t, err)
-			require.NotNil(t, resp.Properties)
-			require.Equal(t, *resp.Properties.Tags["Tag1"], "Val1")
-			require.NotNil(t, resp.Properties.ExpiresOn)
+			require.Equal(t, expectedOps, resp.JSONWebKey.KeyOps)
+			require.Equal(t, *expectedProps.Enabled, *resp.Properties.Enabled)
+			require.Equal(t, *expectedProps.ExpiresOn, *resp.Properties.ExpiresOn)
+			require.Equal(t, *expectedProps.NotBefore, *resp.Properties.NotBefore)
+			require.Equal(t, expectedProps.Tags, resp.Properties.Tags)
+		})
+	}
+}
 
-			createResp.Key.Properties.Name = to.Ptr("doesnotexist")
-			invalid, err := client.UpdateKeyProperties(ctx, createResp.Key, nil)
-			require.Error(t, err)
-			require.Nil(t, invalid.Properties)
+func TestUpdateKeyPropertiesPatchSemantics(t *testing.T) {
+	for _, testType := range testTypes {
+		t.Run(testType, func(t *testing.T) {
+			startTest(t, testType)
+
+			client, err := createClient(t, testType)
+			require.NoError(t, err)
+
+			key, err := createRandomName(t, "test-update-semantics")
+			require.NoError(t, err)
+
+			expectedOps := []*Operation{to.Ptr(OperationVerify)}
+			expectedTags := map[string]*string{"tag": to.Ptr("value")}
+			createResp, err := client.CreateECKey(ctx, key, &CreateECKeyOptions{
+				Operations: expectedOps,
+				Tags:       expectedTags,
+			})
+			require.NoError(t, err)
+			defer cleanUpKey(t, client, key)
+
+			// a no-op update shouldn't change properties set at creation
+			_, err = client.UpdateKeyProperties(ctx, Properties{Name: createResp.Name}, &UpdateKeyPropertiesOptions{})
+			require.NoError(t, err)
+
+			getResp, err := client.GetKey(ctx, key, nil)
+			require.NoError(t, err)
+			require.Equal(t, expectedOps, getResp.JSONWebKey.KeyOps)
+			require.Equal(t, expectedTags, getResp.Properties.Tags)
 		})
 	}
 }
@@ -479,7 +516,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 			require.NoError(t, err)
 			defer cleanUpKey(t, client, key)
 
-			createResp.Key.ReleasePolicy = &ReleasePolicy{
+			createResp.Key.Properties.ReleasePolicy = &ReleasePolicy{
 				Immutable:     to.Ptr(true),
 				EncodedPolicy: getMarshalledReleasePolicy(fakeAttestationUrl),
 			}
@@ -489,7 +526,7 @@ func TestUpdateKeyPropertiesImmutable(t *testing.T) {
 				createResp.Key.Properties.Version = nil
 			}
 
-			_, err = client.UpdateKeyProperties(ctx, createResp.Key, nil)
+			_, err = client.UpdateKeyProperties(ctx, *createResp.Key.Properties, nil)
 			require.Contains(t, strings.ToLower(err.Error()), "release policy cannot be modified")
 		})
 	}

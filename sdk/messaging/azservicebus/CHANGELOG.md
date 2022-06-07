@@ -5,7 +5,7 @@
 ### Features Added
 
 - Adding in (QueueProperties|TopicProperties).MaxMessageSizeInKilobytes property, which can be used to increase the max message
-  size for Service Bus Premium namespaces. (#TBD)
+  size for Service Bus Premium namespaces. (#18310)
 
 ### Bugs Fixed
 

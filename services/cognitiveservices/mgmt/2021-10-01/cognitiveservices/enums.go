@@ -67,11 +67,13 @@ type DeploymentScaleType string
 const (
 	// DeploymentScaleTypeManual ...
 	DeploymentScaleTypeManual DeploymentScaleType = "Manual"
+	// DeploymentScaleTypeStandard ...
+	DeploymentScaleTypeStandard DeploymentScaleType = "Standard"
 )
 
 // PossibleDeploymentScaleTypeValues returns an array of possible values for the DeploymentScaleType const type.
 func PossibleDeploymentScaleTypeValues() []DeploymentScaleType {
-	return []DeploymentScaleType{DeploymentScaleTypeManual}
+	return []DeploymentScaleType{DeploymentScaleTypeManual, DeploymentScaleTypeStandard}
 }
 
 // HostingModel enumerates the values for hosting model.

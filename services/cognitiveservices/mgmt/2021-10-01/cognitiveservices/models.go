@@ -1454,7 +1454,7 @@ func (dp DeploymentProperties) MarshalJSON() ([]byte, error) {
 
 // DeploymentScaleSettings properties of Cognitive Services account deployment model.
 type DeploymentScaleSettings struct {
-	// ScaleType - Deployment scale type. Possible values include: 'DeploymentScaleTypeManual'
+	// ScaleType - Deployment scale type. Possible values include: 'DeploymentScaleTypeStandard', 'DeploymentScaleTypeManual'
 	ScaleType DeploymentScaleType `json:"scaleType,omitempty"`
 	// Capacity - Deployment capacity.
 	Capacity *int32 `json:"capacity,omitempty"`

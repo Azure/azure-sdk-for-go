@@ -85,25 +85,25 @@ func (c *Client) NewCryptoClient(keyName string, keyVersion *string) *crypto.Cli
 // CreateKeyOptions contains optional parameters for CreateKey.
 type CreateKeyOptions struct {
 	// Curve is the elliptic curve name. For valid values, see PossibleCurveNameValues.
-	Curve *CurveName `json:"crv,omitempty"`
+	Curve *CurveName
 
 	// Properties is the key's management properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Operations are the operations Key Vault will allow for the key.
-	Operations []*Operation `json:"key_ops,omitempty"`
+	Operations []*Operation
 
 	// ReleasePolicy specifies conditions under which the key can be exported.
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy
 
 	// Size is the key size in bits. For example: 2048, 3072, or 4096 for RSA.
-	Size *int32 `json:"key_size,omitempty"`
+	Size *int32
 
 	// PublicExponent is the public exponent of an RSA key.
-	PublicExponent *int32 `json:"public_exponent,omitempty"`
+	PublicExponent *int32
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // convert CreateKeyOptions to *generated.KeyVaultClientCreateKeyOptions
@@ -175,22 +175,22 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 // CreateECKeyOptions contains optional parameters for CreateECKey
 type CreateECKeyOptions struct {
 	// Curve is the elliptic curve name. For valid values, see PossibleCurveNameValues.
-	Curve *CurveName `json:"crv,omitempty"`
+	Curve *CurveName
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// HardwareProtected determines whether the key is is created in a hardware security module (HSM).
 	HardwareProtected *bool
 
 	// Properties is the key's management properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Operations are the operations Key Vault will allow for the key.
-	Operations []*Operation `json:"key_ops,omitempty"`
+	Operations []*Operation
 
 	// ReleasePolicy specifies conditions under which the key can be exported
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy
 }
 
 // convert CreateECKeyOptions to generated.KeyCreateParameters
@@ -256,19 +256,19 @@ type CreateOctKeyOptions struct {
 	HardwareProtected *bool
 
 	// Size is the key size in bits. For example: 128, 192 or 256.
-	Size *int32 `json:"key_size,omitempty"`
+	Size *int32
 
 	// Properties is the key's management properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Operations are the operations Key Vault will allow for the key.
-	Operations []*Operation `json:"key_ops,omitempty"`
+	Operations []*Operation
 
 	// ReleasePolicy specifies conditions under which the key can be exported
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // conver the CreateOctKeyOptions to generated.KeyCreateParameters
@@ -332,22 +332,22 @@ type CreateRSAKeyOptions struct {
 	HardwareProtected *bool
 
 	// Size is the key size in bits. For example: 2048, 3072, or 4096.
-	Size *int32 `json:"key_size,omitempty"`
+	Size *int32
 
 	// PublicExponent is the key's public exponent.
-	PublicExponent *int32 `json:"public_exponent,omitempty"`
+	PublicExponent *int32
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Properties is the key's management properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Operations are the operations Key Vault will allow for the key.
-	Operations []*Operation `json:"key_ops,omitempty"`
+	Operations []*Operation
 
 	// ReleasePolicy specifies conditions under which the key can be exported
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy
 }
 
 // convert CreateRSAKeyOptions to generated.KeyCreateParameters
@@ -418,10 +418,10 @@ type ListPropertiesOfKeysOptions struct {
 // ListPropertiesOfKeysResponse contains a page of key properties.
 type ListPropertiesOfKeysResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// Keys is the page's content.
-	Keys []*KeyItem `json:"value,omitempty" azure:"ro"`
+	Keys []*KeyItem
 }
 
 // convert internal Response to ListKeysPage
@@ -645,7 +645,7 @@ func (b BackupKeyOptions) toGenerated() *generated.KeyVaultClientBackupKeyOption
 // BackupKeyResponse contains the response from the Client.BackupKey method
 type BackupKeyResponse struct {
 	// READ-ONLY; The backup blob containing the backed up key.
-	Value []byte `json:"value,omitempty" azure:"ro"`
+	Value []byte
 }
 
 // convert internal reponse to BackupKeyResponse
@@ -794,10 +794,10 @@ func (c *Client) UpdateKeyProperties(ctx context.Context, properties Properties,
 // ListDeletedKeysResponse holds the data for a single page.
 type ListDeletedKeysResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// DeletedKeys is the page's content.
-	DeletedKeys []*DeletedKeyItem `json:"value,omitempty" azure:"ro"`
+	DeletedKeys []*DeletedKeyItem
 }
 
 // ListDeletedKeysOptions contains optional parameters for NewListDeletedKeysPager.
@@ -868,10 +868,10 @@ func (l *ListPropertiesOfKeyVersionsOptions) toGenerated() *generated.KeyVaultCl
 // ListPropertiesOfKeyVersionsResponse contains a page of key versions.
 type ListPropertiesOfKeyVersionsResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// Keys is the page's content.
-	Keys []*KeyItem `json:"value,omitempty" azure:"ro"`
+	Keys []*KeyItem
 }
 
 // create ListKeysPage from generated pager
@@ -966,10 +966,10 @@ func (c *Client) RestoreKeyBackup(ctx context.Context, keyBackup []byte, options
 // ImportKeyOptions contains optional parameters for ImportKeyOptions.
 type ImportKeyOptions struct {
 	// HardwareProtected determines whether Key Vault protects the imported key with an HSM.
-	HardwareProtected *bool `json:"Hsm,omitempty"`
+	HardwareProtected *bool
 
 	// Properties is the properties of the key.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 }
 
 func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
@@ -1028,7 +1028,7 @@ func (g GetRandomBytesOptions) toGenerated() *generated.KeyVaultClientGetRandomB
 // GetRandomBytesResponse is returned by GetRandomBytes.
 type GetRandomBytesResponse struct {
 	// Value is the random bytes.
-	Value []byte `json:"value,omitempty"`
+	Value []byte
 }
 
 // GetRandomBytes gets the requested number of random bytes from Azure Managed HSM. Pass nil for options to accept default values.
@@ -1155,16 +1155,16 @@ type ReleaseKeyOptions struct {
 	Version *string
 
 	// Algorithm is the encryption algorithm used to protected exported key material.
-	Algorithm *ExportEncryptionAlg `json:"algorithm,omitempty"`
+	Algorithm *ExportEncryptionAlg
 
 	// Nonce is client-provided nonce for freshness.
-	Nonce *string `json:"nonce,omitempty"`
+	Nonce *string
 }
 
 // ReleaseKeyResponse is returned by ReleaseKey.
 type ReleaseKeyResponse struct {
 	// Value is a signed token containing the released key.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // ReleaseKey is applicable to all key types. The target key must be exportable. Pass nil for options to accept default values.

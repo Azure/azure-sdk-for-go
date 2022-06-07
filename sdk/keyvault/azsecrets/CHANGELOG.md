@@ -19,6 +19,7 @@
   `Properties` fields, for example `SecretItem.Properties`.
 * Changed paged API content values to pointer types. For example, `ListPropertiesOfSecretsResponse.Secrets`
   changed type from `[]SecretItem` to `[]*SecretItem`.
+* Removed JSON tags from models
 * `UpdateSecretProperties()` has a `Properties` parameter instead of a `Secret` parameter
 
 ### Bugs Fixed

@@ -95,10 +95,10 @@ func (c *Client) GetSecret(ctx context.Context, name string, options *GetSecretO
 // SetSecretOptions contains optional parameters for SetSecret.
 type SetSecretOptions struct {
 	// Type of the secret value such as a password.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// The secret management attributes.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 }
 
 // Convert the exposed struct to the generated code version
@@ -316,7 +316,7 @@ func (b *BackupSecretOptions) toGenerated() *generated.KeyVaultClientBackupSecre
 // BackupSecretResponse is returned by BackupSecret.
 type BackupSecretResponse struct {
 	// READ-ONLY; The backup blob containing the backed up secret.
-	Value []byte `json:"value,omitempty" azure:"ro"`
+	Value []byte
 }
 
 // convert generated response to the publicly exposed version.
@@ -475,10 +475,10 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, name string, opt
 // ListDeletedSecretsResponse contains a page of deleted secrets.
 type ListDeletedSecretsResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// DeletedSecrets is the page's content.
-	DeletedSecrets []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
+	DeletedSecrets []*DeletedSecretItem
 }
 
 func listDeletedSecretsPageFromGenerated(g generated.KeyVaultClientGetDeletedSecretsResponse) ListDeletedSecretsResponse {
@@ -539,10 +539,10 @@ type ListPropertiesOfSecretVersionsOptions struct {
 // ListPropertiesOfSecretVersionsResponse contains a page of secret versions.
 type ListPropertiesOfSecretVersionsResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// Secrets is the page's content.
-	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem
 }
 
 // create ListSecretsPage from generated pager
@@ -598,10 +598,10 @@ type ListPropertiesOfSecretsOptions struct {
 // ListPropertiesOfSecretsResponse contains a page of secret properties.
 type ListPropertiesOfSecretsResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// Secrets is the page's content.
-	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem
 }
 
 // create a ListSecretsPage from a generated code response

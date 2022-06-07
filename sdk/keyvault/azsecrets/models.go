@@ -16,77 +16,77 @@ import (
 // DeletedSecret consists of the previous ID, attributes, tags, and information on when it will be purged.
 type DeletedSecret struct {
 	// The secret management attributes.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// The secret id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the secret
 	Name *string
 
 	// The url of the recovery object, used to identify and recover the deleted secret.
-	RecoveryID *string `json:"recoveryId,omitempty"`
+	RecoveryID *string
 
 	// READ-ONLY; The time when the secret was deleted, in UTC
-	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
-	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+	ScheduledPurgeDate *time.Time
 }
 
 // Secret - A secret consisting of a value, id and its attributes.
 type Secret struct {
 	// The secret management attributes.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// The secret id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The name of the secret
 	Name *string
 
 	// The secret value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Properties - The secret management properties.
 type Properties struct {
 	// The content type of the secret.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// READ-ONLY; Creation time in UTC.
-	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 
 	// Determines whether the object is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Expiry date in UTC.
-	ExpiresOn *time.Time `json:"exp,omitempty"`
+	ExpiresOn *time.Time
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed
 	// will be true.
-	Managed *bool `json:"managed,omitempty" azure:"ro"`
+	Managed *bool
 
 	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV
 	// certificate.
-	KeyID *string `json:"kid,omitempty" azure:"ro"`
+	KeyID *string
 
 	// NotBefore is the secret's not before date in UTC.
-	NotBefore *time.Time `json:"nbf,omitempty"`
+	NotBefore *time.Time
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
-	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
+	RecoverableDays *int32
 
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains 'Purgeable', the secret can be permanently
 	// deleted by a privileged user; otherwise, only the
 	// system can purge the secret, at the end of the retention interval.
-	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
+	RecoveryLevel *string
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Last updated time in UTC.
-	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time
 
 	// VaultURL is the vault url the secret came from
 	VaultURL *string
@@ -140,10 +140,10 @@ func secretPropertiesFromGenerated(i *generated.SecretAttributes, ID, contentTyp
 // SecretItem contains secret metadata.
 type SecretItem struct {
 	// The secret management attributes.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Secret identifier.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the secret
 	Name *string
@@ -166,22 +166,22 @@ func secretItemFromGenerated(i *generated.SecretItem) *SecretItem {
 // DeletedSecretItem - The deleted secret item containing metadata about the deleted secret.
 type DeletedSecretItem struct {
 	// The secret management attributes.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Secret identifier.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The name of the deleted secret
 	Name *string
 
 	// The url of the recovery object, used to identify and recover the deleted secret.
-	RecoveryID *string `json:"recoveryId,omitempty"`
+	RecoveryID *string
 
 	// READ-ONLY; The time when the secret was deleted, in UTC
-	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time
 
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
-	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+	ScheduledPurgeDate *time.Time
 }
 
 func deletedSecretItemFromGenerated(i *generated.DeletedSecretItem) *DeletedSecretItem {

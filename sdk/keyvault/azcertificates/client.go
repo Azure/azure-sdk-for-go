@@ -67,10 +67,10 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 // BeginCreateCertificateOptions contains optional parameters for Client.BeginCreateCertificate
 type BeginCreateCertificateOptions struct {
 	// Determines whether the object is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Application specific metadata in the form of key-value pairs
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// ResumeToken is a token for resuming long running operations from a previous poller
 	ResumeToken string
@@ -359,7 +359,7 @@ func (b *BackupCertificateOptions) toGenerated() *generated.KeyVaultClientBackup
 // BackupCertificateResponse contains response field for Client.BackupCertificate
 type BackupCertificateResponse struct {
 	// READ-ONLY; The backup blob containing the backed up certificate.
-	Value []byte `json:"value,omitempty" azure:"ro"`
+	Value []byte
 }
 
 // BackupCertificate requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded.
@@ -378,16 +378,16 @@ func (c *Client) BackupCertificate(ctx context.Context, certificateName string, 
 // ImportCertificateOptions contains optional parameters for Client.ImportCertificate
 type ImportCertificateOptions struct {
 	// The management policy for the certificate.
-	CertificatePolicy *Policy `json:"policy,omitempty"`
+	CertificatePolicy *Policy
 
 	// Determines whether the object is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
-	Password *string `json:"pwd,omitempty"`
+	Password *string
 
 	// Application specific metadata in the form of key-value pairs
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ImportCertificateResponse contains response fields for Client.ImportCertificate
@@ -442,7 +442,7 @@ type ListPropertiesOfCertificatesOptions struct {
 // ListPropertiesOfCertificatesResponse contains response fields for ListCertificatesPager.NextPage
 type ListPropertiesOfCertificatesResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
-	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
+	Certificates []*CertificateItem
 
 	// NextLink is a link to the next page of results
 	NextLink *string
@@ -493,7 +493,7 @@ type ListPropertiesOfCertificateVersionsOptions struct {
 // ListPropertiesOfCertificateVersionsResponse contains response fields for ListCertificateVersionsPager.NextPage
 type ListPropertiesOfCertificateVersionsResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
-	Certificates []*CertificateItem `json:"value,omitempty" azure:"ro"`
+	Certificates []*CertificateItem
 
 	// NextLink is a link to the next page of results to fetch
 	NextLink *string
@@ -537,16 +537,16 @@ func (c *Client) NewListPropertiesOfCertificateVersionsPager(certificateName str
 // CreateIssuerOptions contains optional parameters for Client.CreateIssuer
 type CreateIssuerOptions struct {
 	// Determines whether the issuer is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The credentials to be used for the issuer.
-	Credentials *IssuerCredentials `json:"credentials,omitempty"`
+	Credentials *IssuerCredentials
 
 	// Details of the organization administrator.
-	AdministratorContacts []*AdministratorContact `json:"admin_details,omitempty"`
+	AdministratorContacts []*AdministratorContact
 
 	// Id of the organization.
-	OrganizationID *string `json:"id,omitempty"`
+	OrganizationID *string
 }
 
 func (c *CreateIssuerOptions) toGenerated() *generated.KeyVaultClientSetCertificateIssuerOptions {
@@ -700,7 +700,7 @@ type ListPropertiesOfIssuersOptions struct {
 // ListPropertiesOfIssuersResponse contains response fields for ListPropertiesOfIssuersPager.NextPage
 type ListPropertiesOfIssuersResponse struct {
 	// READ-ONLY; A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
-	Issuers []*IssuerItem `json:"value,omitempty" azure:"ro"`
+	Issuers []*IssuerItem
 
 	// NextLink is the next link of pages to fetch
 	NextLink *string
@@ -1088,7 +1088,7 @@ func (c *Client) UpdateCertificateProperties(ctx context.Context, properties Pro
 // MergeCertificateOptions contains optional parameters for Client.MergeCertificate
 type MergeCertificateOptions struct {
 	// The attributes of the certificate (optional).
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 }
 
 func (m *MergeCertificateOptions) toGenerated() *generated.KeyVaultClientMergeCertificateOptions {
@@ -1236,7 +1236,7 @@ func (c *Client) BeginRecoverDeletedCertificate(ctx context.Context, certificate
 // ListDeletedCertificatesResponse contains response field for ListDeletedCertificatesPager.NextPage
 type ListDeletedCertificatesResponse struct {
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page of deleted certificates
-	DeletedCertificates []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
+	DeletedCertificates []*DeletedCertificateItem
 
 	// NextLink gives the next page of items to fetch
 	NextLink *string

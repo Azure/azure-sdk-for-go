@@ -1,5 +1,12 @@
 # Release History
 
+## 1.1.0 (2022-06-07)
+
+### Features Added
+* `ClientCertificateCredential` and `ClientSecretCredential` support ESTS-R. First-party
+  applications can set environment variable `AZURE_REGIONAL_AUTHORITY_NAME` with a
+  region name.
+
 ## 1.0.1 (2022-06-07)
 
 ### Other Changes

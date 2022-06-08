@@ -53,14 +53,14 @@ func NewPrivateStoreCollectionOfferClient(credential azcore.TokenCredential, opt
 
 // CreateOrUpdate - Update or add an offer to a specific collection of the private store.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2022-03-01
 // privateStoreID - The store ID - must use the tenant ID
-// offerID - The offer ID to update or delete
 // collectionID - The collection ID
+// offerID - The offer ID to update or delete
 // options - PrivateStoreCollectionOfferClientCreateOrUpdateOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.CreateOrUpdate
 // method.
-func (client *PrivateStoreCollectionOfferClient) CreateOrUpdate(ctx context.Context, privateStoreID string, offerID string, collectionID string, options *PrivateStoreCollectionOfferClientCreateOrUpdateOptions) (PrivateStoreCollectionOfferClientCreateOrUpdateResponse, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, privateStoreID, offerID, collectionID, options)
+func (client *PrivateStoreCollectionOfferClient) CreateOrUpdate(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientCreateOrUpdateOptions) (PrivateStoreCollectionOfferClientCreateOrUpdateResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, privateStoreID, collectionID, offerID, options)
 	if err != nil {
 		return PrivateStoreCollectionOfferClientCreateOrUpdateResponse{}, err
 	}
@@ -75,26 +75,26 @@ func (client *PrivateStoreCollectionOfferClient) CreateOrUpdate(ctx context.Cont
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateStoreCollectionOfferClient) createOrUpdateCreateRequest(ctx context.Context, privateStoreID string, offerID string, collectionID string, options *PrivateStoreCollectionOfferClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionOfferClient) createOrUpdateCreateRequest(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers/{offerId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	if offerID == "" {
-		return nil, errors.New("parameter offerID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
 	if collectionID == "" {
 		return nil, errors.New("parameter collectionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
+	if offerID == "" {
+		return nil, errors.New("parameter offerID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
@@ -114,14 +114,14 @@ func (client *PrivateStoreCollectionOfferClient) createOrUpdateHandleResponse(re
 
 // Delete - Deletes an offer from the given collection of private store.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2022-03-01
 // privateStoreID - The store ID - must use the tenant ID
-// offerID - The offer ID to update or delete
 // collectionID - The collection ID
+// offerID - The offer ID to update or delete
 // options - PrivateStoreCollectionOfferClientDeleteOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.Delete
 // method.
-func (client *PrivateStoreCollectionOfferClient) Delete(ctx context.Context, privateStoreID string, offerID string, collectionID string, options *PrivateStoreCollectionOfferClientDeleteOptions) (PrivateStoreCollectionOfferClientDeleteResponse, error) {
-	req, err := client.deleteCreateRequest(ctx, privateStoreID, offerID, collectionID, options)
+func (client *PrivateStoreCollectionOfferClient) Delete(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientDeleteOptions) (PrivateStoreCollectionOfferClientDeleteResponse, error) {
+	req, err := client.deleteCreateRequest(ctx, privateStoreID, collectionID, offerID, options)
 	if err != nil {
 		return PrivateStoreCollectionOfferClientDeleteResponse{}, err
 	}
@@ -136,26 +136,26 @@ func (client *PrivateStoreCollectionOfferClient) Delete(ctx context.Context, pri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateStoreCollectionOfferClient) deleteCreateRequest(ctx context.Context, privateStoreID string, offerID string, collectionID string, options *PrivateStoreCollectionOfferClientDeleteOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionOfferClient) deleteCreateRequest(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers/{offerId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	if offerID == "" {
-		return nil, errors.New("parameter offerID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
 	if collectionID == "" {
 		return nil, errors.New("parameter collectionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
+	if offerID == "" {
+		return nil, errors.New("parameter offerID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -163,14 +163,14 @@ func (client *PrivateStoreCollectionOfferClient) deleteCreateRequest(ctx context
 
 // Get - Gets information about a specific offer.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2022-03-01
 // privateStoreID - The store ID - must use the tenant ID
-// offerID - The offer ID to update or delete
 // collectionID - The collection ID
+// offerID - The offer ID to update or delete
 // options - PrivateStoreCollectionOfferClientGetOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.Get
 // method.
-func (client *PrivateStoreCollectionOfferClient) Get(ctx context.Context, privateStoreID string, offerID string, collectionID string, options *PrivateStoreCollectionOfferClientGetOptions) (PrivateStoreCollectionOfferClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, privateStoreID, offerID, collectionID, options)
+func (client *PrivateStoreCollectionOfferClient) Get(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientGetOptions) (PrivateStoreCollectionOfferClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, privateStoreID, collectionID, offerID, options)
 	if err != nil {
 		return PrivateStoreCollectionOfferClientGetResponse{}, err
 	}
@@ -185,26 +185,26 @@ func (client *PrivateStoreCollectionOfferClient) Get(ctx context.Context, privat
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateStoreCollectionOfferClient) getCreateRequest(ctx context.Context, privateStoreID string, offerID string, collectionID string, options *PrivateStoreCollectionOfferClientGetOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionOfferClient) getCreateRequest(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers/{offerId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	if offerID == "" {
-		return nil, errors.New("parameter offerID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
 	if collectionID == "" {
 		return nil, errors.New("parameter collectionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
+	if offerID == "" {
+		return nil, errors.New("parameter offerID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -221,7 +221,7 @@ func (client *PrivateStoreCollectionOfferClient) getHandleResponse(resp *http.Re
 
 // NewListPager - Get a list of all private offers in the given private store and collection
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2022-03-01
 // privateStoreID - The store ID - must use the tenant ID
 // collectionID - The collection ID
 // options - PrivateStoreCollectionOfferClientListOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.List
@@ -270,7 +270,7 @@ func (client *PrivateStoreCollectionOfferClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -287,14 +287,14 @@ func (client *PrivateStoreCollectionOfferClient) listHandleResponse(resp *http.R
 
 // Post - Delete Private store offer. This is a workaround.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-12-01
+// Generated from API version 2022-03-01
 // privateStoreID - The store ID - must use the tenant ID
-// offerID - The offer ID to update or delete
 // collectionID - The collection ID
+// offerID - The offer ID to update or delete
 // options - PrivateStoreCollectionOfferClientPostOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.Post
 // method.
-func (client *PrivateStoreCollectionOfferClient) Post(ctx context.Context, privateStoreID string, offerID string, collectionID string, options *PrivateStoreCollectionOfferClientPostOptions) (PrivateStoreCollectionOfferClientPostResponse, error) {
-	req, err := client.postCreateRequest(ctx, privateStoreID, offerID, collectionID, options)
+func (client *PrivateStoreCollectionOfferClient) Post(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientPostOptions) (PrivateStoreCollectionOfferClientPostResponse, error) {
+	req, err := client.postCreateRequest(ctx, privateStoreID, collectionID, offerID, options)
 	if err != nil {
 		return PrivateStoreCollectionOfferClientPostResponse{}, err
 	}
@@ -309,30 +309,91 @@ func (client *PrivateStoreCollectionOfferClient) Post(ctx context.Context, priva
 }
 
 // postCreateRequest creates the Post request.
-func (client *PrivateStoreCollectionOfferClient) postCreateRequest(ctx context.Context, privateStoreID string, offerID string, collectionID string, options *PrivateStoreCollectionOfferClientPostOptions) (*policy.Request, error) {
+func (client *PrivateStoreCollectionOfferClient) postCreateRequest(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientPostOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers/{offerId}"
 	if privateStoreID == "" {
 		return nil, errors.New("parameter privateStoreID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
-	if offerID == "" {
-		return nil, errors.New("parameter offerID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
 	if collectionID == "" {
 		return nil, errors.New("parameter collectionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
+	if offerID == "" {
+		return nil, errors.New("parameter offerID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		return req, runtime.MarshalAsJSON(req, *options.Payload)
 	}
 	return req, nil
+}
+
+// UpsertOfferWithMultiContext - Upsert an offer with multiple context details.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-03-01
+// privateStoreID - The store ID - must use the tenant ID
+// collectionID - The collection ID
+// offerID - The offer ID to update or delete
+// options - PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextOptions contains the optional parameters for the
+// PrivateStoreCollectionOfferClient.UpsertOfferWithMultiContext method.
+func (client *PrivateStoreCollectionOfferClient) UpsertOfferWithMultiContext(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextOptions) (PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse, error) {
+	req, err := client.upsertOfferWithMultiContextCreateRequest(ctx, privateStoreID, collectionID, offerID, options)
+	if err != nil {
+		return PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.upsertOfferWithMultiContextHandleResponse(resp)
+}
+
+// upsertOfferWithMultiContextCreateRequest creates the UpsertOfferWithMultiContext request.
+func (client *PrivateStoreCollectionOfferClient) upsertOfferWithMultiContextCreateRequest(ctx context.Context, privateStoreID string, collectionID string, offerID string, options *PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Marketplace/privateStores/{privateStoreId}/collections/{collectionId}/offers/{offerId}/upsertOfferWithMultiContext"
+	if privateStoreID == "" {
+		return nil, errors.New("parameter privateStoreID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateStoreId}", url.PathEscape(privateStoreID))
+	if collectionID == "" {
+		return nil, errors.New("parameter collectionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{collectionId}", url.PathEscape(collectionID))
+	if offerID == "" {
+		return nil, errors.New("parameter offerID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{offerId}", url.PathEscape(offerID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Payload != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Payload)
+	}
+	return req, nil
+}
+
+// upsertOfferWithMultiContextHandleResponse handles the UpsertOfferWithMultiContext response.
+func (client *PrivateStoreCollectionOfferClient) upsertOfferWithMultiContextHandleResponse(resp *http.Response) (PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse, error) {
+	result := PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Offer); err != nil {
+		return PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse{}, err
+	}
+	return result, nil
 }

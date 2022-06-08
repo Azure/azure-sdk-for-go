@@ -60,6 +60,9 @@ type AdminRequestApprovalProperties struct {
 	// READ-ONLY; Gets display name
 	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
 
+	// READ-ONLY; The offer icon url.
+	Icon *string `json:"icon,omitempty" azure:"ro"`
+
 	// READ-ONLY; Gets list of plans with requesters details
 	Plans []*PlanRequesterDetails `json:"plans,omitempty" azure:"ro"`
 }
@@ -88,6 +91,12 @@ type AdminRequestApprovalsResource struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AnyExistingOffersInTheCollectionsResponse - Response object of query if are there existing offers in the collections.
+type AnyExistingOffersInTheCollectionsResponse struct {
+	// Boolean answer, true if exists at least a single offer in an enabled collection, otherwise, false.
+	Value *bool `json:"value,omitempty"`
 }
 
 // BillingAccountsResponse - Billing accounts response object
@@ -158,6 +167,12 @@ type CollectionProperties struct {
 	// is considered as bad request
 	SubscriptionsList []*string `json:"subscriptionsList,omitempty"`
 
+	// READ-ONLY; Indicating whether all items are approved for this collection (=true) or not (=false).
+	AllItemsApproved *bool `json:"allItemsApproved,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the modified date of all items approved.
+	AllItemsApprovedModifiedAt *time.Time `json:"allItemsApprovedModifiedAt,omitempty" azure:"ro"`
+
 	// READ-ONLY; Gets collection Id.
 	CollectionID *string `json:"collectionId,omitempty" azure:"ro"`
 
@@ -207,6 +222,15 @@ type CollectionsToSubscriptionsMappingResponse struct {
 	Details map[string]*CollectionsSubscriptionsMappingDetails `json:"details,omitempty"`
 }
 
+// ContextAndPlansDetails - Object of plans per context.
+type ContextAndPlansDetails struct {
+	// Plan's context, e.g. subscription ID, tenant ID.
+	Context *string `json:"context,omitempty"`
+
+	// List of plan IDs.
+	PlanIDs []*string `json:"planIds,omitempty"`
+}
+
 // ErrorResponse - Error response indicates Microsoft.Marketplace service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
@@ -221,6 +245,22 @@ type ErrorResponseError struct {
 
 	// READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty" azure:"ro"`
+}
+
+// MultiContextAndPlansPayload - Payload object for upsert offer with multiple context and plans.
+type MultiContextAndPlansPayload struct {
+	// Object describes multiple context and plans.
+	Properties *MultiContextAndPlansProperties `json:"properties,omitempty"`
+}
+
+// MultiContextAndPlansProperties - Object describes multiple context and plans.
+type MultiContextAndPlansProperties struct {
+	// The offer's eTag.
+	ETag *string `json:"eTag,omitempty"`
+
+	// The offer ID which contains the plans.
+	OfferID      *string                   `json:"offerId,omitempty"`
+	PlansContext []*ContextAndPlansDetails `json:"plansContext,omitempty"`
 }
 
 // NewNotifications - New plans notification details
@@ -425,6 +465,12 @@ type PrivateStoreClientAdminRequestApprovalsListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PrivateStoreClientAnyExistingOffersInTheCollectionsOptions contains the optional parameters for the PrivateStoreClient.AnyExistingOffersInTheCollections
+// method.
+type PrivateStoreClientAnyExistingOffersInTheCollectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PrivateStoreClientBillingAccountsOptions contains the optional parameters for the PrivateStoreClient.BillingAccounts method.
 type PrivateStoreClientBillingAccountsOptions struct {
 	// placeholder for future optional parameters
@@ -535,6 +581,11 @@ type PrivateStoreClientQueryRequestApprovalOptions struct {
 	Payload *QueryRequestApprovalProperties
 }
 
+// PrivateStoreClientQueryUserOffersOptions contains the optional parameters for the PrivateStoreClient.QueryUserOffers method.
+type PrivateStoreClientQueryUserOffersOptions struct {
+	Payload *QueryUserOffersProperties
+}
+
 // PrivateStoreClientUpdateAdminRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.UpdateAdminRequestApproval
 // method.
 type PrivateStoreClientUpdateAdminRequestApprovalOptions struct {
@@ -546,6 +597,12 @@ type PrivateStoreClientWithdrawPlanOptions struct {
 	Payload *WithdrawProperties
 }
 
+// PrivateStoreCollectionClientApproveAllItemsOptions contains the optional parameters for the PrivateStoreCollectionClient.ApproveAllItems
+// method.
+type PrivateStoreCollectionClientApproveAllItemsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PrivateStoreCollectionClientCreateOrUpdateOptions contains the optional parameters for the PrivateStoreCollectionClient.CreateOrUpdate
 // method.
 type PrivateStoreCollectionClientCreateOrUpdateOptions struct {
@@ -555,6 +612,12 @@ type PrivateStoreCollectionClientCreateOrUpdateOptions struct {
 // PrivateStoreCollectionClientDeleteOptions contains the optional parameters for the PrivateStoreCollectionClient.Delete
 // method.
 type PrivateStoreCollectionClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateStoreCollectionClientDisableApproveAllItemsOptions contains the optional parameters for the PrivateStoreCollectionClient.DisableApproveAllItems
+// method.
+type PrivateStoreCollectionClientDisableApproveAllItemsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -609,6 +672,12 @@ type PrivateStoreCollectionOfferClientPostOptions struct {
 	Payload *Operation
 }
 
+// PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.UpsertOfferWithMultiContext
+// method.
+type PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextOptions struct {
+	Payload *MultiContextAndPlansPayload
+}
+
 // PrivateStoreList - Describes the json payload for the list of available private stores (between zero and one, inclusive)
 type PrivateStoreList struct {
 	// URL to get the next set of PrivateStore list results if there are any.
@@ -660,6 +729,9 @@ type QueryApprovedPlans struct {
 
 	// Offer plan ids
 	PlanIDs []*string `json:"planIds,omitempty"`
+
+	// List of subscription IDs
+	SubscriptionIDs []*string `json:"subscriptionIds,omitempty"`
 }
 
 // QueryApprovedPlansDetails - Query approved plans response
@@ -715,6 +787,21 @@ type QueryRequestApproval struct {
 type QueryRequestApprovalProperties struct {
 	// The details to get the request plans statuses
 	Properties *RequestDetails `json:"properties,omitempty"`
+}
+
+// QueryUserOffersDetails - List of offers IDs and list of user's subscriptions IDs to query the user's approved offers
+type QueryUserOffersDetails struct {
+	// List of offer IDs
+	OfferIDs []*string `json:"offerIds,omitempty"`
+
+	// List of subscription IDs
+	SubscriptionIDs []*string `json:"subscriptionIds,omitempty"`
+}
+
+// QueryUserOffersProperties - Query user's offers properties
+type QueryUserOffersProperties struct {
+	// Query user's offers details
+	Properties *QueryUserOffersDetails `json:"properties,omitempty"`
 }
 
 // Recipient - Describes the json payload for a notified recipient for new requests

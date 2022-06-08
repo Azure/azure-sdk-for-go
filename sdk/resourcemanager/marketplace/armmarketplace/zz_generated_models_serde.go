@@ -35,6 +35,7 @@ func (a AdminRequestApprovalProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "collectionIds", a.CollectionIDs)
 	populate(objectMap, "comment", a.Comment)
 	populate(objectMap, "displayName", a.DisplayName)
+	populate(objectMap, "icon", a.Icon)
 	populate(objectMap, "offerId", a.OfferID)
 	populate(objectMap, "plans", a.Plans)
 	populate(objectMap, "publisherId", a.PublisherID)
@@ -52,6 +53,8 @@ func (b BulkCollectionsDetails) MarshalJSON() ([]byte, error) {
 // MarshalJSON implements the json.Marshaller interface for type CollectionProperties.
 func (c CollectionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "allItemsApproved", c.AllItemsApproved)
+	populateTimeRFC3339(objectMap, "allItemsApprovedModifiedAt", c.AllItemsApprovedModifiedAt)
 	populate(objectMap, "allSubscriptions", c.AllSubscriptions)
 	populate(objectMap, "claim", c.Claim)
 	populate(objectMap, "collectionId", c.CollectionID)
@@ -62,10 +65,71 @@ func (c CollectionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type CollectionProperties.
+func (c *CollectionProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "allItemsApproved":
+			err = unpopulate(val, "AllItemsApproved", &c.AllItemsApproved)
+			delete(rawMsg, key)
+		case "allItemsApprovedModifiedAt":
+			err = unpopulateTimeRFC3339(val, "AllItemsApprovedModifiedAt", &c.AllItemsApprovedModifiedAt)
+			delete(rawMsg, key)
+		case "allSubscriptions":
+			err = unpopulate(val, "AllSubscriptions", &c.AllSubscriptions)
+			delete(rawMsg, key)
+		case "claim":
+			err = unpopulate(val, "Claim", &c.Claim)
+			delete(rawMsg, key)
+		case "collectionId":
+			err = unpopulate(val, "CollectionID", &c.CollectionID)
+			delete(rawMsg, key)
+		case "collectionName":
+			err = unpopulate(val, "CollectionName", &c.CollectionName)
+			delete(rawMsg, key)
+		case "enabled":
+			err = unpopulate(val, "Enabled", &c.Enabled)
+			delete(rawMsg, key)
+		case "numberOfOffers":
+			err = unpopulate(val, "NumberOfOffers", &c.NumberOfOffers)
+			delete(rawMsg, key)
+		case "subscriptionsList":
+			err = unpopulate(val, "SubscriptionsList", &c.SubscriptionsList)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type CollectionsToSubscriptionsMappingProperties.
 func (c CollectionsToSubscriptionsMappingProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "subscriptionIds", c.SubscriptionIDs)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ContextAndPlansDetails.
+func (c ContextAndPlansDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "context", c.Context)
+	populate(objectMap, "planIds", c.PlanIDs)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MultiContextAndPlansProperties.
+func (m MultiContextAndPlansProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "eTag", m.ETag)
+	populate(objectMap, "offerId", m.OfferID)
+	populate(objectMap, "plansContext", m.PlansContext)
 	return json.Marshal(objectMap)
 }
 
@@ -123,6 +187,15 @@ func (q QueryApprovedPlans) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "offerId", q.OfferID)
 	populate(objectMap, "planIds", q.PlanIDs)
+	populate(objectMap, "subscriptionIds", q.SubscriptionIDs)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type QueryUserOffersDetails.
+func (q QueryUserOffersDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "offerIds", q.OfferIDs)
+	populate(objectMap, "subscriptionIds", q.SubscriptionIDs)
 	return json.Marshal(objectMap)
 }
 

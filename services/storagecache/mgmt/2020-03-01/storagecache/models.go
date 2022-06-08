@@ -316,6 +316,128 @@ type AscOperation struct {
 	Status *string `json:"status,omitempty"`
 	// Error - The error detail of the operation if any.
 	Error *ErrorResponse `json:"error,omitempty"`
+	// AscOperationProperties - Additional operation specific properties
+	*AscOperationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AscOperation.
+func (ao AscOperation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ao.ID != nil {
+		objectMap["id"] = ao.ID
+	}
+	if ao.Name != nil {
+		objectMap["name"] = ao.Name
+	}
+	if ao.StartTime != nil {
+		objectMap["startTime"] = ao.StartTime
+	}
+	if ao.EndTime != nil {
+		objectMap["endTime"] = ao.EndTime
+	}
+	if ao.Status != nil {
+		objectMap["status"] = ao.Status
+	}
+	if ao.Error != nil {
+		objectMap["error"] = ao.Error
+	}
+	if ao.AscOperationProperties != nil {
+		objectMap["properties"] = ao.AscOperationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AscOperation struct.
+func (ao *AscOperation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ao.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ao.Name = &name
+			}
+		case "startTime":
+			if v != nil {
+				var startTime string
+				err = json.Unmarshal(*v, &startTime)
+				if err != nil {
+					return err
+				}
+				ao.StartTime = &startTime
+			}
+		case "endTime":
+			if v != nil {
+				var endTime string
+				err = json.Unmarshal(*v, &endTime)
+				if err != nil {
+					return err
+				}
+				ao.EndTime = &endTime
+			}
+		case "status":
+			if v != nil {
+				var status string
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				ao.Status = &status
+			}
+		case "error":
+			if v != nil {
+				var errorVar ErrorResponse
+				err = json.Unmarshal(*v, &errorVar)
+				if err != nil {
+					return err
+				}
+				ao.Error = &errorVar
+			}
+		case "properties":
+			if v != nil {
+				var ascOperationProperties AscOperationProperties
+				err = json.Unmarshal(*v, &ascOperationProperties)
+				if err != nil {
+					return err
+				}
+				ao.AscOperationProperties = &ascOperationProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// AscOperationProperties operation specific output
+type AscOperationProperties struct {
+	// Output - Additional Operation Specific Properties
+	Output map[string]interface{} `json:"output"`
+}
+
+// MarshalJSON is the custom marshaler for AscOperationProperties.
+func (aop AscOperationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aop.Output != nil {
+		objectMap["output"] = aop.Output
+	}
+	return json.Marshal(objectMap)
 }
 
 // Cache a Cache instance. Follows Azure Resource Manager standards:
@@ -607,7 +729,7 @@ type CachesDeleteFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
-	Result func(CachesClient) (SetObject, error)
+	Result func(CachesClient) (autorest.Response, error)
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
@@ -622,7 +744,7 @@ func (future *CachesDeleteFuture) UnmarshalJSON(body []byte) error {
 }
 
 // result is the default implementation for CachesDeleteFuture.Result.
-func (future *CachesDeleteFuture) result(client CachesClient) (so SetObject, err error) {
+func (future *CachesDeleteFuture) result(client CachesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -630,17 +752,11 @@ func (future *CachesDeleteFuture) result(client CachesClient) (so SetObject, err
 		return
 	}
 	if !done {
-		so.Response.Response = future.Response()
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.DeleteResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagecache.CachesDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -655,7 +771,7 @@ type CachesFlushFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
-	Result func(CachesClient) (SetObject, error)
+	Result func(CachesClient) (autorest.Response, error)
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
@@ -670,7 +786,7 @@ func (future *CachesFlushFuture) UnmarshalJSON(body []byte) error {
 }
 
 // result is the default implementation for CachesFlushFuture.Result.
-func (future *CachesFlushFuture) result(client CachesClient) (so SetObject, err error) {
+func (future *CachesFlushFuture) result(client CachesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -678,17 +794,11 @@ func (future *CachesFlushFuture) result(client CachesClient) (so SetObject, err 
 		return
 	}
 	if !done {
-		so.Response.Response = future.Response()
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesFlushFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.FlushResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagecache.CachesFlushFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -863,7 +973,7 @@ type CachesStartFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
-	Result func(CachesClient) (SetObject, error)
+	Result func(CachesClient) (autorest.Response, error)
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
@@ -878,7 +988,7 @@ func (future *CachesStartFuture) UnmarshalJSON(body []byte) error {
 }
 
 // result is the default implementation for CachesStartFuture.Result.
-func (future *CachesStartFuture) result(client CachesClient) (so SetObject, err error) {
+func (future *CachesStartFuture) result(client CachesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -886,17 +996,11 @@ func (future *CachesStartFuture) result(client CachesClient) (so SetObject, err 
 		return
 	}
 	if !done {
-		so.Response.Response = future.Response()
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesStartFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.StartResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagecache.CachesStartFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -905,7 +1009,7 @@ type CachesStopFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
-	Result func(CachesClient) (SetObject, error)
+	Result func(CachesClient) (autorest.Response, error)
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
@@ -920,7 +1024,7 @@ func (future *CachesStopFuture) UnmarshalJSON(body []byte) error {
 }
 
 // result is the default implementation for CachesStopFuture.Result.
-func (future *CachesStopFuture) result(client CachesClient) (so SetObject, err error) {
+func (future *CachesStopFuture) result(client CachesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -928,17 +1032,11 @@ func (future *CachesStopFuture) result(client CachesClient) (so SetObject, err e
 		return
 	}
 	if !done {
-		so.Response.Response = future.Response()
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesStopFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.StopResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagecache.CachesStopFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -948,7 +1046,7 @@ type CachesUpgradeFirmwareFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
-	Result func(CachesClient) (SetObject, error)
+	Result func(CachesClient) (autorest.Response, error)
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
@@ -963,7 +1061,7 @@ func (future *CachesUpgradeFirmwareFuture) UnmarshalJSON(body []byte) error {
 }
 
 // result is the default implementation for CachesUpgradeFirmwareFuture.Result.
-func (future *CachesUpgradeFirmwareFuture) result(client CachesClient) (so SetObject, err error) {
+func (future *CachesUpgradeFirmwareFuture) result(client CachesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -971,17 +1069,11 @@ func (future *CachesUpgradeFirmwareFuture) result(client CachesClient) (so SetOb
 		return
 	}
 	if !done {
-		so.Response.Response = future.Response()
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesUpgradeFirmwareFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.UpgradeFirmwareResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagecache.CachesUpgradeFirmwareFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -1470,12 +1562,6 @@ func (r Restriction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SetObject ...
-type SetObject struct {
-	autorest.Response `json:"-"`
-	Value             interface{} `json:"value,omitempty"`
-}
-
 // StorageTarget type of the Storage Target.
 type StorageTarget struct {
 	autorest.Response `json:"-"`
@@ -1756,7 +1842,7 @@ type StorageTargetsDeleteFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
-	Result func(StorageTargetsClient) (SetObject, error)
+	Result func(StorageTargetsClient) (autorest.Response, error)
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
@@ -1771,7 +1857,7 @@ func (future *StorageTargetsDeleteFuture) UnmarshalJSON(body []byte) error {
 }
 
 // result is the default implementation for StorageTargetsDeleteFuture.Result.
-func (future *StorageTargetsDeleteFuture) result(client StorageTargetsClient) (so SetObject, err error) {
+func (future *StorageTargetsDeleteFuture) result(client StorageTargetsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -1779,17 +1865,11 @@ func (future *StorageTargetsDeleteFuture) result(client StorageTargetsClient) (s
 		return
 	}
 	if !done {
-		so.Response.Response = future.Response()
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.StorageTargetsDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
-		so, err = client.DeleteResponder(so.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -1964,7 +2044,7 @@ type SystemData struct {
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
-	// LastModifiedAt - The type of identity that last modified the resource.
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 

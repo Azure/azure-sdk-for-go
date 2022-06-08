@@ -169,7 +169,10 @@ func ExampleMonitorsClient_Update() {
 	res, err := client.Update(ctx,
 		"myResourceGroup",
 		"mySapMonitor",
-		armworkloads.Tags{
+		armworkloads.UpdateMonitorRequest{
+			Identity: &armworkloads.UserAssignedServiceIdentity{
+				Type: to.Ptr(armworkloads.ManagedServiceIdentityTypeNone),
+			},
 			Tags: map[string]*string{},
 		},
 		nil)

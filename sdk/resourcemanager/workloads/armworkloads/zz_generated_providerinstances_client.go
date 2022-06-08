@@ -54,7 +54,8 @@ func NewProviderInstancesClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// BeginCreate - Creates a provider instance for the specified subscription, resource group, Monitor name, and resource name.
+// BeginCreate - Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+// name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -77,7 +78,7 @@ func (client *ProviderInstancesClient) BeginCreate(ctx context.Context, resource
 	}
 }
 
-// Create - Creates a provider instance for the specified subscription, resource group, Monitor name, and resource name.
+// Create - Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 func (client *ProviderInstancesClient) create(ctx context.Context, resourceGroupName string, monitorName string, providerInstanceName string, providerInstanceParameter ProviderInstance, options *ProviderInstancesClientBeginCreateOptions) (*http.Response, error) {
@@ -125,7 +126,8 @@ func (client *ProviderInstancesClient) createCreateRequest(ctx context.Context, 
 	return req, runtime.MarshalAsJSON(req, providerInstanceParameter)
 }
 
-// BeginDelete - Deletes a provider instance for the specified subscription, resource group, Monitor name, and resource name.
+// BeginDelete - Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+// name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -145,7 +147,7 @@ func (client *ProviderInstancesClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Deletes a provider instance for the specified subscription, resource group, Monitor name, and resource name.
+// Delete - Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview
 func (client *ProviderInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, providerInstanceName string, options *ProviderInstancesClientBeginDeleteOptions) (*http.Response, error) {
@@ -193,7 +195,7 @@ func (client *ProviderInstancesClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// Get - Gets properties of a provider instance for the specified subscription, resource group, Monitor name, and resource
+// Get - Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and resource
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-12-01-preview

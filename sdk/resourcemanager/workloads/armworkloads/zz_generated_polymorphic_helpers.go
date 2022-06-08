@@ -10,6 +10,46 @@ package armworkloads
 
 import "encoding/json"
 
+func unmarshalInfrastructureConfigurationClassification(rawMsg json.RawMessage) (InfrastructureConfigurationClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b InfrastructureConfigurationClassification
+	switch m["deploymentType"] {
+	case string(SAPDeploymentTypeSingleServer):
+		b = &SingleServerConfiguration{}
+	case string(SAPDeploymentTypeThreeTier):
+		b = &ThreeTierConfiguration{}
+	default:
+		b = &InfrastructureConfiguration{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalOSConfigurationClassification(rawMsg json.RawMessage) (OSConfigurationClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b OSConfigurationClassification
+	switch m["osType"] {
+	case string(OSTypeLinux):
+		b = &LinuxConfiguration{}
+	case string(OSTypeWindows):
+		b = &WindowsConfiguration{}
+	default:
+		b = &OSConfiguration{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
 func unmarshalProviderSpecificPropertiesClassification(rawMsg json.RawMessage) (ProviderSpecificPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -34,6 +74,68 @@ func unmarshalProviderSpecificPropertiesClassification(rawMsg json.RawMessage) (
 		b = &SapNetWeaverProviderInstanceProperties{}
 	default:
 		b = &ProviderSpecificProperties{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalSAPConfigurationClassification(rawMsg json.RawMessage) (SAPConfigurationClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b SAPConfigurationClassification
+	switch m["configurationType"] {
+	case string(SAPConfigurationTypeDeployment):
+		b = &DeploymentConfiguration{}
+	case string(SAPConfigurationTypeDeploymentWithOSConfig):
+		b = &DeploymentWithOSConfiguration{}
+	case string(SAPConfigurationTypeDiscovery):
+		b = &DiscoveryConfiguration{}
+	default:
+		b = &SAPConfiguration{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalSAPSizingRecommendationResultClassification(rawMsg json.RawMessage) (SAPSizingRecommendationResultClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b SAPSizingRecommendationResultClassification
+	switch m["deploymentType"] {
+	case string(SAPDeploymentTypeSingleServer):
+		b = &SingleServerRecommendationResult{}
+	case string(SAPDeploymentTypeThreeTier):
+		b = &ThreeTierRecommendationResult{}
+	default:
+		b = &SAPSizingRecommendationResult{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalSoftwareConfigurationClassification(rawMsg json.RawMessage) (SoftwareConfigurationClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b SoftwareConfigurationClassification
+	switch m["softwareInstallationType"] {
+	case string(SAPSoftwareInstallationTypeSAPInstallWithoutOSConfig):
+		b = &SAPInstallWithoutOSConfigSoftwareConfiguration{}
+	case string(SAPSoftwareInstallationTypeServiceInitiated):
+		b = &ServiceInitiatedSoftwareConfiguration{}
+	default:
+		b = &SoftwareConfiguration{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }

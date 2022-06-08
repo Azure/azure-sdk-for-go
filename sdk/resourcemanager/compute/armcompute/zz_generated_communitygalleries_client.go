@@ -57,7 +57,7 @@ func NewCommunityGalleriesClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Get a community gallery by gallery public name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-01
+// Generated from API version 2022-01-03
 // location - Resource location.
 // publicGalleryName - The public name of the community gallery.
 // options - CommunityGalleriesClientGetOptions contains the optional parameters for the CommunityGalleriesClient.Get method.
@@ -96,7 +96,7 @@ func (client *CommunityGalleriesClient) getCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
+	reqQP.Set("api-version", "2022-01-03")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1085,6 +1085,16 @@ type CommunityGalleryImage struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// CommunityGalleryImageList - The List Community Gallery Images operation response.
+type CommunityGalleryImageList struct {
+	// REQUIRED; A list of community gallery images.
+	Value []*CommunityGalleryImage `json:"value,omitempty"`
+
+	// The uri to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of community
+	// gallery images.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // CommunityGalleryImageProperties - Describes the properties of a gallery image definition.
 type CommunityGalleryImageProperties struct {
 	// REQUIRED; This is the gallery image definition identifier.
@@ -1101,6 +1111,9 @@ type CommunityGalleryImageProperties struct {
 	// Linux
 	OSType *OperatingSystemTypes `json:"osType,omitempty"`
 
+	// The architecture of the image. Applicable to OS disks only.
+	Architecture *Architecture `json:"architecture,omitempty"`
+
 	// Describes the disallowed disk types.
 	Disallowed *Disallowed `json:"disallowed,omitempty"`
 
@@ -1108,11 +1121,17 @@ type CommunityGalleryImageProperties struct {
 	// is updatable.
 	EndOfLifeDate *time.Time `json:"endOfLifeDate,omitempty"`
 
+	// End-user license agreement for the current community gallery image.
+	Eula *string `json:"eula,omitempty"`
+
 	// A list of gallery image features.
 	Features []*GalleryImageFeature `json:"features,omitempty"`
 
 	// The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
 	HyperVGeneration *HyperVGeneration `json:"hyperVGeneration,omitempty"`
+
+	// Privacy statement uri for the current community gallery image.
+	PrivacyStatementURI *string `json:"privacyStatementUri,omitempty"`
 
 	// Describes the gallery image definition purchase plan. This is used by marketplace images.
 	PurchasePlan *ImagePurchasePlan `json:"purchasePlan,omitempty"`
@@ -1139,15 +1158,31 @@ type CommunityGalleryImageVersion struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// CommunityGalleryImageVersionList - The List Community Gallery Image versions operation response.
+type CommunityGalleryImageVersionList struct {
+	// REQUIRED; A list of community gallery image versions.
+	Value []*CommunityGalleryImageVersion `json:"value,omitempty"`
+
+	// The uri to fetch the next page of community gallery image versions. Call ListNext() with this to fetch the next page of
+	// community gallery image versions.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // CommunityGalleryImageVersionProperties - Describes the properties of a gallery image version.
 type CommunityGalleryImageVersionProperties struct {
 	// The end of life date of the gallery image version Definition. This property can be used for decommissioning purposes. This
 	// property is updatable.
 	EndOfLifeDate *time.Time `json:"endOfLifeDate,omitempty"`
 
+	// If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
+	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
+
 	// The published date of the gallery image version Definition. This property can be used for decommissioning purposes. This
 	// property is updatable.
 	PublishedDate *time.Time `json:"publishedDate,omitempty"`
+
+	// Describes the storage profile of the image version.
+	StorageProfile *SharedGalleryImageVersionStorageProfile `json:"storageProfile,omitempty"`
 }
 
 // CommunityGalleryImageVersionsClientGetOptions contains the optional parameters for the CommunityGalleryImageVersionsClient.Get
@@ -1156,23 +1191,34 @@ type CommunityGalleryImageVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CommunityGalleryImageVersionsClientListOptions contains the optional parameters for the CommunityGalleryImageVersionsClient.List
+// method.
+type CommunityGalleryImageVersionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CommunityGalleryImagesClientGetOptions contains the optional parameters for the CommunityGalleryImagesClient.Get method.
 type CommunityGalleryImagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// CommunityGalleryImagesClientListOptions contains the optional parameters for the CommunityGalleryImagesClient.List method.
+type CommunityGalleryImagesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CommunityGalleryInfo - Information of community gallery if current gallery is shared to community
 type CommunityGalleryInfo struct {
-	// Community gallery publisher eula
+	// End-user license agreement for community gallery image.
 	Eula *string `json:"eula,omitempty"`
 
-	// Community gallery public name prefix
+	// The prefix of the gallery name that will be displayed publicly. Visible to all users.
 	PublicNamePrefix *string `json:"publicNamePrefix,omitempty"`
 
-	// Community gallery publisher contact email
+	// Community gallery publisher support email. The email address of the publisher. Visible to all users.
 	PublisherContact *string `json:"publisherContact,omitempty"`
 
-	// Community gallery publisher uri
+	// The link to the publisher website. Visible to all users.
 	PublisherURI *string `json:"publisherUri,omitempty"`
 
 	// READ-ONLY; Contains info about whether community gallery sharing is enabled.
@@ -1182,16 +1228,27 @@ type CommunityGalleryInfo struct {
 	PublicNames []*string `json:"publicNames,omitempty" azure:"ro"`
 }
 
+// CopyCompletionError - Indicates the error details if the background copy of a resource created via the CopyStart operation
+// fails.
+type CopyCompletionError struct {
+	// REQUIRED; Indicates the error code if the background copy of a resource created via the CopyStart operation fails.
+	ErrorCode *CopyCompletionErrorReason `json:"errorCode,omitempty"`
+
+	// REQUIRED; Indicates the error message if the background copy of a resource created via the CopyStart operation fails.
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
 // CreationData - Data used when creating a disk.
 type CreationData struct {
 	// REQUIRED; This enumerates the possible sources of a disk's creation.
 	CreateOption *DiskCreateOption `json:"createOption,omitempty"`
 
-	// Required if creating from a Gallery Image. The id of the ImageDiskReference will be the ARM id of the shared galley image
-	// version from which to create a disk.
+	// Required if creating from a Gallery Image. The id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference
+	// will be the ARM id of the shared galley image version from which to create a
+	// disk.
 	GalleryImageReference *ImageDiskReference `json:"galleryImageReference,omitempty"`
 
-	// Disk source information.
+	// Disk source information for PIR or user images.
 	ImageReference *ImageDiskReference `json:"imageReference,omitempty"`
 
 	// Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. 4096 is the default.
@@ -1657,7 +1714,7 @@ type Disk struct {
 	// Disk resource properties.
 	Properties *DiskProperties `json:"properties,omitempty"`
 
-	// The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, UltraSSDLRS, PremiumZRS, or StandardSSDZRS.
+	// The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, UltraSSDLRS, PremiumZRS, StandardSSDZRS, or PremiumV2_LRS.
 	SKU *DiskSKU `json:"sku,omitempty"`
 
 	// Resource tags
@@ -1862,6 +1919,10 @@ type DiskEncryptionSetUpdateProperties struct {
 
 	// The type of key used to encrypt the data of the disk.
 	EncryptionType *DiskEncryptionSetType `json:"encryptionType,omitempty"`
+
+	// Multi-tenant application client id to access key vault in a different tenant. Setting the value to 'None' will clear the
+	// property.
+	FederatedClientID *string `json:"federatedClientId,omitempty"`
 
 	// Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.
 	RotationToLatestKeyVersionEnabled *bool `json:"rotationToLatestKeyVersionEnabled,omitempty"`
@@ -2146,6 +2207,9 @@ type DiskRestorePointProperties struct {
 	// Purchase plan information for the the image from which the OS disk was created.
 	PurchasePlan *DiskPurchasePlan `json:"purchasePlan,omitempty"`
 
+	// Contains the security related information for the resource.
+	SecurityProfile *DiskSecurityProfile `json:"securityProfile,omitempty"`
+
 	// List of supported capabilities for the image from which the OS disk was created.
 	SupportedCapabilities *SupportedCapabilities `json:"supportedCapabilities,omitempty"`
 
@@ -2186,7 +2250,8 @@ type DiskRestorePointReplicationStatus struct {
 	Status *InstanceViewStatus `json:"status,omitempty"`
 }
 
-// DiskSKU - The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, UltraSSDLRS, PremiumZRS, or StandardSSDZRS.
+// DiskSKU - The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, UltraSSDLRS, PremiumZRS, StandardSSDZRS,
+// or PremiumV2_LRS.
 type DiskSKU struct {
 	// The sku name.
 	Name *DiskStorageAccountTypes `json:"name,omitempty"`
@@ -2209,7 +2274,7 @@ type DiskUpdate struct {
 	// Disk resource update properties.
 	Properties *DiskUpdateProperties `json:"properties,omitempty"`
 
-	// The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, UltraSSDLRS, PremiumZRS, or StandardSSDZRS.
+	// The disks sku name. Can be StandardLRS, PremiumLRS, StandardSSDLRS, UltraSSDLRS, PremiumZRS, StandardSSDZRS, or PremiumV2_LRS.
 	SKU *DiskSKU `json:"sku,omitempty"`
 
 	// Resource tags
@@ -2357,6 +2422,11 @@ type EncryptionSetIdentity struct {
 	// subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the keys.
 	Type *DiskEncryptionSetIdentityType `json:"type,omitempty"`
 
+	// The list of user identities associated with the disk encryption set. The user identity dictionary key references will be
+	// ARM resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
+
 	// READ-ONLY; The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id
 	// header in the PUT request if the resource has a systemAssigned(implicit)
 	// identity
@@ -2373,6 +2443,10 @@ type EncryptionSetProperties struct {
 
 	// The type of key used to encrypt the data of the disk.
 	EncryptionType *DiskEncryptionSetType `json:"encryptionType,omitempty"`
+
+	// Multi-tenant application client id to access key vault in a different tenant. Setting the value to 'None' will clear the
+	// property.
+	FederatedClientID *string `json:"federatedClientId,omitempty"`
 
 	// Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.
 	RotationToLatestKeyVersionEnabled *bool `json:"rotationToLatestKeyVersionEnabled,omitempty"`
@@ -2606,7 +2680,7 @@ type GalleryApplicationVersionProperties struct {
 	PublishingProfile *GalleryApplicationVersionPublishingProfile `json:"publishingProfile,omitempty"`
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *GalleryApplicationVersionPropertiesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *GalleryProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; This is the replication status of the gallery image version.
 	ReplicationStatus *ReplicationStatus `json:"replicationStatus,omitempty" azure:"ro"`
@@ -2616,6 +2690,9 @@ type GalleryApplicationVersionProperties struct {
 type GalleryApplicationVersionPublishingProfile struct {
 	// REQUIRED; The source image from which the Image Version is going to be created.
 	Source *UserArtifactSource `json:"source,omitempty"`
+
+	// Optional. Additional settings to pass to the vm-application-manager extension. For advanced use only.
+	AdvancedSettings map[string]*string `json:"advancedSettings,omitempty"`
 
 	// Optional. Whether or not this application reports health.
 	EnableHealthCheck *bool `json:"enableHealthCheck,omitempty"`
@@ -2634,6 +2711,10 @@ type GalleryApplicationVersionPublishingProfile struct {
 
 	// Optional parameter which specifies the mode to be used for replication. This property is not updatable.
 	ReplicationMode *ReplicationMode `json:"replicationMode,omitempty"`
+
+	// Additional settings for the VM app that contains the target package and config file name when it is deployed to target
+	// VM or VM scale set.
+	Settings *UserArtifactSettings `json:"settings,omitempty"`
 
 	// Specifies the storage account type to be used to store the image. This property is not updatable.
 	StorageAccountType *StorageAccountType `json:"storageAccountType,omitempty"`
@@ -2922,7 +3003,7 @@ type GalleryImageProperties struct {
 	ReleaseNoteURI *string `json:"releaseNoteUri,omitempty"`
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *GalleryImagePropertiesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *GalleryProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // GalleryImageUpdate - Specifies information about the gallery image definition that you want to update.
@@ -2983,7 +3064,7 @@ type GalleryImageVersionProperties struct {
 	PublishingProfile *GalleryImageVersionPublishingProfile `json:"publishingProfile,omitempty"`
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *GalleryImageVersionPropertiesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *GalleryProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; This is the replication status of the gallery image version.
 	ReplicationStatus *ReplicationStatus `json:"replicationStatus,omitempty" azure:"ro"`
@@ -3146,7 +3227,7 @@ type GalleryProperties struct {
 	SoftDeletePolicy *SoftDeletePolicy `json:"softDeletePolicy,omitempty"`
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *GalleryPropertiesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *GalleryProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; Sharing status of current gallery.
 	SharingStatus *SharingStatus `json:"sharingStatus,omitempty" azure:"ro"`
@@ -3321,12 +3402,18 @@ type ImageDisk struct {
 
 // ImageDiskReference - The source image used for creating the disk.
 type ImageDiskReference struct {
-	// REQUIRED; A relative uri containing either a Platform Image Repository or user image reference.
+	// A relative uri containing a community Azure Compute Gallery image reference.
+	CommunityGalleryImageID *string `json:"communityGalleryImageId,omitempty"`
+
+	// A relative uri containing either a Platform Image Repository, user image, or Azure Compute Gallery image reference.
 	ID *string `json:"id,omitempty"`
 
 	// If the disk is created from an image's data disk, this is an index that indicates which of the data disks in the image
 	// to use. For OS disks, this field is null.
 	Lun *int32 `json:"lun,omitempty"`
+
+	// A relative uri containing a direct shared Azure Compute Gallery image reference.
+	SharedGalleryImageID *string `json:"sharedGalleryImageId,omitempty"`
 }
 
 // ImageListResult - The List Image operation response.
@@ -5578,6 +5665,29 @@ type SharedGallery struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 }
 
+// SharedGalleryDataDiskImage - This is the data disk image.
+type SharedGalleryDataDiskImage struct {
+	// REQUIRED; This property specifies the logical unit number of the data disk. This value is used to identify data disks within
+	// the Virtual Machine and therefore must be unique for each data disk attached to the
+	// Virtual Machine.
+	Lun *int32 `json:"lun,omitempty"`
+
+	// The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
+	HostCaching *SharedGalleryHostCaching `json:"hostCaching,omitempty"`
+
+	// READ-ONLY; This property indicates the size of the VHD to be created.
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty" azure:"ro"`
+}
+
+// SharedGalleryDiskImage - This is the disk image base class.
+type SharedGalleryDiskImage struct {
+	// The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
+	HostCaching *SharedGalleryHostCaching `json:"hostCaching,omitempty"`
+
+	// READ-ONLY; This property indicates the size of the VHD to be created.
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty" azure:"ro"`
+}
+
 // SharedGalleryIdentifier - The identifier information of shared gallery.
 type SharedGalleryIdentifier struct {
 	// The unique id of this shared gallery.
@@ -5624,6 +5734,9 @@ type SharedGalleryImageProperties struct {
 	// Windows
 	// Linux
 	OSType *OperatingSystemTypes `json:"osType,omitempty"`
+
+	// The architecture of the image. Applicable to OS disks only.
+	Architecture *Architecture `json:"architecture,omitempty"`
 
 	// Describes the disallowed disk types.
 	Disallowed *Disallowed `json:"disallowed,omitempty"`
@@ -5676,9 +5789,24 @@ type SharedGalleryImageVersionProperties struct {
 	// property is updatable.
 	EndOfLifeDate *time.Time `json:"endOfLifeDate,omitempty"`
 
+	// If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
+	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
+
 	// The published date of the gallery image version Definition. This property can be used for decommissioning purposes. This
 	// property is updatable.
 	PublishedDate *time.Time `json:"publishedDate,omitempty"`
+
+	// Describes the storage profile of the image version.
+	StorageProfile *SharedGalleryImageVersionStorageProfile `json:"storageProfile,omitempty"`
+}
+
+// SharedGalleryImageVersionStorageProfile - This is the storage profile of a Gallery Image Version.
+type SharedGalleryImageVersionStorageProfile struct {
+	// A list of data disk images.
+	DataDiskImages []*SharedGalleryDataDiskImage `json:"dataDiskImages,omitempty"`
+
+	// This is the OS disk image.
+	OSDiskImage *SharedGalleryOSDiskImage `json:"osDiskImage,omitempty"`
 }
 
 // SharedGalleryImageVersionsClientGetOptions contains the optional parameters for the SharedGalleryImageVersionsClient.Get
@@ -5714,6 +5842,15 @@ type SharedGalleryList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// SharedGalleryOSDiskImage - This is the OS disk image.
+type SharedGalleryOSDiskImage struct {
+	// The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
+	HostCaching *SharedGalleryHostCaching `json:"hostCaching,omitempty"`
+
+	// READ-ONLY; This property indicates the size of the VHD to be created.
+	DiskSizeGB *int32 `json:"diskSizeGB,omitempty" azure:"ro"`
+}
+
 // SharingProfile - Profile for gallery sharing to subscription or tenant
 type SharingProfile struct {
 	// Information of community gallery if current gallery is shared to community.
@@ -5723,6 +5860,7 @@ type SharingProfile struct {
 	// Possible values are:
 	// Private
 	// Groups
+	// Community
 	Permissions *GallerySharingPermissionTypes `json:"permissions,omitempty"`
 
 	// READ-ONLY; A list of sharing profile groups.
@@ -5738,7 +5876,6 @@ type SharingProfileGroup struct {
 	// Possible values are:
 	// Subscriptions
 	// AADTenants
-	// Community
 	Type *SharingProfileGroupTypes `json:"type,omitempty"`
 }
 
@@ -5812,6 +5949,9 @@ type SnapshotProperties struct {
 
 	// Percentage complete for the background copy when a resource is created via the CopyStart operation.
 	CompletionPercent *float32 `json:"completionPercent,omitempty"`
+
+	// Indicates the error details if the background copy of a resource created via the CopyStart operation fails.
+	CopyCompletionError *CopyCompletionError `json:"copyCompletionError,omitempty"`
 
 	// Additional authentication requirements when exporting or uploading to a disk or snapshot.
 	DataAccessAuthMode *DataAccessAuthMode `json:"dataAccessAuthMode,omitempty"`
@@ -6257,6 +6397,19 @@ type UserArtifactManage struct {
 	// command on the previous version and install command on the current version
 	// of the gallery application. This is limited to 4096 characters.
 	Update *string `json:"update,omitempty"`
+}
+
+// UserArtifactSettings - Additional settings for the VM app that contains the target package and config file name when it
+// is deployed to target VM or VM scale set.
+type UserArtifactSettings struct {
+	// Optional. The name to assign the downloaded config file on the VM. This is limited to 4096 characters. If not specified,
+	// the config file will be named the Gallery Application name appended with
+	// "_config".
+	ConfigFileName *string `json:"configFileName,omitempty"`
+
+	// Optional. The name to assign the downloaded package file on the VM. This is limited to 4096 characters. If not specified,
+	// the package file will be named the same as the Gallery Application name.
+	PackageFileName *string `json:"packageFileName,omitempty"`
 }
 
 // UserArtifactSource - The source image from which the Image Version is going to be created.
@@ -7757,7 +7910,7 @@ type VirtualMachineScaleSetIdentity struct {
 	// The list of user identities associated with the virtual machine scale set. The user identity dictionary key references
 	// will be ARM resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
 
 	// READ-ONLY; The principal id of virtual machine scale set identity. This property will only be provided for a system assigned
 	// identity.
@@ -7766,14 +7919,6 @@ type VirtualMachineScaleSetIdentity struct {
 	// READ-ONLY; The tenant id associated with the virtual machine scale set. This property will only be provided for a system
 	// assigned identity.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
-}
-
-type VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue struct {
-	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
-
-	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
 // VirtualMachineScaleSetInstanceView - The instance view of a virtual machine scale set.

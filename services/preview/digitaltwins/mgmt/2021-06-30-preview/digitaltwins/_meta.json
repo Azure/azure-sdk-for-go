@@ -1,10 +1,10 @@
 {
   "commit": "360b1d56294cdc384a4f48d187c3da90f2826895",
   "readme": "/_/azure-rest-api-specs/specification/digitaltwins/resource-manager/readme.md",
-  "tag": "package-2020-12",
+  "tag": "package-2021-06-30-preview",
   "use": "@microsoft.azure/autorest.go@2.1.187",
   "repository_url": "https://github.com/Azure/azure-rest-api-specs.git",
-  "autorest_command": "autorest --use=@microsoft.azure/autorest.go@2.1.187 --tag=package-2020-12 --go-sdk-folder=/_/azure-sdk-for-go --go --verbose --use-onever --version=2.0.4421 --go.license-header=MICROSOFT_MIT_NO_VERSION /_/azure-rest-api-specs/specification/digitaltwins/resource-manager/readme.md",
+  "autorest_command": "autorest --use=@microsoft.azure/autorest.go@2.1.187 --tag=package-2021-06-30-preview --go-sdk-folder=/_/azure-sdk-for-go --go --verbose --use-onever --version=2.0.4421 --go.license-header=MICROSOFT_MIT_NO_VERSION /_/azure-rest-api-specs/specification/digitaltwins/resource-manager/readme.md",
   "additional_properties": {
     "additional_options": "--go --verbose --use-onever --version=2.0.4421 --go.license-header=MICROSOFT_MIT_NO_VERSION"
   }

@@ -2,12 +2,6 @@
 
 ## `v66.0.0`
 
-### Breaking Changes
-
-| Package Path | Changelog |
-| :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-03-01/containerinstance` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/containerinstance/mgmt/2021-03-01/containerinstance/CHANGELOG.md) |
-
 ### Revert package removal
 
 - `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights`

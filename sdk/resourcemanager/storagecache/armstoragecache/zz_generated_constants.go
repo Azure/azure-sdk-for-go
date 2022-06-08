@@ -10,7 +10,7 @@ package armstoragecache
 
 const (
 	moduleName    = "armstoragecache"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0"
 )
 
 // CacheIdentityType - The type of identity used for the cache
@@ -96,11 +96,14 @@ const (
 	HealthStateTypeDown          HealthStateType = "Down"
 	HealthStateTypeFlushing      HealthStateType = "Flushing"
 	HealthStateTypeHealthy       HealthStateType = "Healthy"
+	HealthStateTypeStartFailed   HealthStateType = "StartFailed"
 	HealthStateTypeStopped       HealthStateType = "Stopped"
 	HealthStateTypeStopping      HealthStateType = "Stopping"
 	HealthStateTypeTransitioning HealthStateType = "Transitioning"
 	HealthStateTypeUnknown       HealthStateType = "Unknown"
+	HealthStateTypeUpgradeFailed HealthStateType = "UpgradeFailed"
 	HealthStateTypeUpgrading     HealthStateType = "Upgrading"
+	HealthStateTypeWaitingForKey HealthStateType = "WaitingForKey"
 )
 
 // PossibleHealthStateTypeValues returns the possible values for the HealthStateType const type.
@@ -110,11 +113,14 @@ func PossibleHealthStateTypeValues() []HealthStateType {
 		HealthStateTypeDown,
 		HealthStateTypeFlushing,
 		HealthStateTypeHealthy,
+		HealthStateTypeStartFailed,
 		HealthStateTypeStopped,
 		HealthStateTypeStopping,
 		HealthStateTypeTransitioning,
 		HealthStateTypeUnknown,
+		HealthStateTypeUpgradeFailed,
 		HealthStateTypeUpgrading,
+		HealthStateTypeWaitingForKey,
 	}
 }
 
@@ -196,6 +202,26 @@ func PossibleOperationalStateTypeValues() []OperationalStateType {
 		OperationalStateTypeFlushing,
 		OperationalStateTypeReady,
 		OperationalStateTypeSuspended,
+	}
+}
+
+// PrimingJobState - The state of the priming operation.
+type PrimingJobState string
+
+const (
+	PrimingJobStateComplete PrimingJobState = "Complete"
+	PrimingJobStatePaused   PrimingJobState = "Paused"
+	PrimingJobStateQueued   PrimingJobState = "Queued"
+	PrimingJobStateRunning  PrimingJobState = "Running"
+)
+
+// PossiblePrimingJobStateValues returns the possible values for the PrimingJobState const type.
+func PossiblePrimingJobStateValues() []PrimingJobState {
+	return []PrimingJobState{
+		PrimingJobStateComplete,
+		PrimingJobStatePaused,
+		PrimingJobStateQueued,
+		PrimingJobStateRunning,
 	}
 }
 

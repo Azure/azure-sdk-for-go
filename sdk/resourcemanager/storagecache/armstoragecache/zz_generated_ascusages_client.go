@@ -57,7 +57,7 @@ func NewAscUsagesClient(subscriptionID string, credential azcore.TokenCredential
 
 // NewListPager - Gets the quantity used and quota limit for resources
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // location - The name of the region to query for usage information.
 // options - AscUsagesClientListOptions contains the optional parameters for the AscUsagesClient.List method.
 func (client *AscUsagesClient) NewListPager(location string, options *AscUsagesClientListOptions) *runtime.Pager[AscUsagesClientListResponse] {
@@ -104,7 +104,7 @@ func (client *AscUsagesClient) listCreateRequest(ctx context.Context, location s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

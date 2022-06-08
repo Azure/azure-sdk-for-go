@@ -57,7 +57,7 @@ func NewUsageModelsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // NewListPager - Get the list of Cache Usage Models available to this subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // options - UsageModelsClientListOptions contains the optional parameters for the UsageModelsClient.List method.
 func (client *UsageModelsClient) NewListPager(options *UsageModelsClientListOptions) *runtime.Pager[UsageModelsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[UsageModelsClientListResponse]{
@@ -99,7 +99,7 @@ func (client *UsageModelsClient) listCreateRequest(ctx context.Context, options 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

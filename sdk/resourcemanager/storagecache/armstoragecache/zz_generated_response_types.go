@@ -53,8 +53,33 @@ type CachesClientListResponse struct {
 	CachesListResult
 }
 
+// CachesClientPausePrimingJobResponse contains the response from method CachesClient.PausePrimingJob.
+type CachesClientPausePrimingJobResponse struct {
+	// placeholder for future response values
+}
+
+// CachesClientResumePrimingJobResponse contains the response from method CachesClient.ResumePrimingJob.
+type CachesClientResumePrimingJobResponse struct {
+	// placeholder for future response values
+}
+
+// CachesClientSpaceAllocationResponse contains the response from method CachesClient.SpaceAllocation.
+type CachesClientSpaceAllocationResponse struct {
+	// placeholder for future response values
+}
+
+// CachesClientStartPrimingJobResponse contains the response from method CachesClient.StartPrimingJob.
+type CachesClientStartPrimingJobResponse struct {
+	// placeholder for future response values
+}
+
 // CachesClientStartResponse contains the response from method CachesClient.Start.
 type CachesClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// CachesClientStopPrimingJobResponse contains the response from method CachesClient.StopPrimingJob.
+type CachesClientStopPrimingJobResponse struct {
 	// placeholder for future response values
 }
 

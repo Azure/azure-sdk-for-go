@@ -69,9 +69,12 @@ func (c CacheProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "health", c.Health)
 	populate(objectMap, "mountAddresses", c.MountAddresses)
 	populate(objectMap, "networkSettings", c.NetworkSettings)
+	populate(objectMap, "primingJobs", c.PrimingJobs)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "securitySettings", c.SecuritySettings)
+	populate(objectMap, "spaceAllocation", c.SpaceAllocation)
 	populate(objectMap, "subnet", c.Subnet)
+	populate(objectMap, "upgradeSettings", c.UpgradeSettings)
 	populate(objectMap, "upgradeStatus", c.UpgradeStatus)
 	populate(objectMap, "zones", c.Zones)
 	return json.Marshal(objectMap)
@@ -82,6 +85,37 @@ func (c CacheSecuritySettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "accessPolicies", c.AccessPolicies)
 	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CacheUpgradeSettings.
+func (c CacheUpgradeSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "scheduledTime", c.ScheduledTime)
+	populate(objectMap, "upgradeScheduleEnabled", c.UpgradeScheduleEnabled)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CacheUpgradeSettings.
+func (c *CacheUpgradeSettings) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", c, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "scheduledTime":
+			err = unpopulateTimeRFC3339(val, "ScheduledTime", &c.ScheduledTime)
+			delete(rawMsg, key)
+		case "upgradeScheduleEnabled":
+			err = unpopulate(val, "UpgradeScheduleEnabled", &c.UpgradeScheduleEnabled)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", c, err)
+		}
+	}
+	return nil
 }
 
 // MarshalJSON implements the json.Marshaller interface for type CacheUpgradeStatus.
@@ -169,6 +203,7 @@ func (n NfsAccessPolicy) MarshalJSON() ([]byte, error) {
 // MarshalJSON implements the json.Marshaller interface for type StorageTargetProperties.
 func (s StorageTargetProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "allocationPercentage", s.AllocationPercentage)
 	populate(objectMap, "blobNfs", s.BlobNfs)
 	populate(objectMap, "clfs", s.Clfs)
 	populate(objectMap, "junctions", s.Junctions)

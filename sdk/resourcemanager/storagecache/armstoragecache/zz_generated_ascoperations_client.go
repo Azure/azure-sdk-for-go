@@ -57,7 +57,7 @@ func NewAscOperationsClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Gets the status of an asynchronous operation for the Azure HPC Cache
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-01-01
+// Generated from API version 2022-05-01
 // location - The name of the region used to look up the operation.
 // operationID - The operation id which uniquely identifies the asynchronous operation.
 // options - AscOperationsClientGetOptions contains the optional parameters for the AscOperationsClient.Get method.
@@ -96,7 +96,7 @@ func (client *AscOperationsClient) getCreateRequest(ctx context.Context, locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-01-01")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

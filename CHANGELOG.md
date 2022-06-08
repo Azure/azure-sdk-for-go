@@ -2,6 +2,17 @@
 
 ## `v66.0.0`
 
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-03-01/containerinstance` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/containerinstance/mgmt/2021-03-01/containerinstance/CHANGELOG.md) |
+
+### Revert package removal
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights`
+
 ### Removed Packages
 
 - `github.com/Azure/azure-sdk-for-go/services/maps/mgmt/2017-01-01-preview/maps`
@@ -36,7 +47,6 @@
 - `github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2021-03-01-preview/network`
 - `github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-08-01-preview/peering`
 - `github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-09-01-preview/peering`
-- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2015-10-01-preview/policy`
 - `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2016-09-01-preview/managedapplications`
 - `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-06-01-preview/policy`
 - `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/managementgroups`

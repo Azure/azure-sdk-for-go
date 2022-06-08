@@ -112,7 +112,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	} else {
 		log.Printf("Package '%s' existed, do update process", packagePath)
 
-		log.Printf("Remove all the files that start with `zz_generated_`...")
+		log.Printf("Remove all the generated files ...")
 		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
 			return nil, err
 		}

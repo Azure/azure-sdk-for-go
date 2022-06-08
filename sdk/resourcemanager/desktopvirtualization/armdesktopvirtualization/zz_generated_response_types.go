@@ -148,6 +148,56 @@ type OperationsClientListResponse struct {
 	ResourceProviderOperationList
 }
 
+// PrivateEndpointConnectionsClientDeleteByHostPoolResponse contains the response from method PrivateEndpointConnectionsClient.DeleteByHostPool.
+type PrivateEndpointConnectionsClientDeleteByHostPoolResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientDeleteByWorkspaceResponse contains the response from method PrivateEndpointConnectionsClient.DeleteByWorkspace.
+type PrivateEndpointConnectionsClientDeleteByWorkspaceResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetByHostPoolResponse contains the response from method PrivateEndpointConnectionsClient.GetByHostPool.
+type PrivateEndpointConnectionsClientGetByHostPoolResponse struct {
+	PrivateEndpointConnectionWithSystemData
+}
+
+// PrivateEndpointConnectionsClientGetByWorkspaceResponse contains the response from method PrivateEndpointConnectionsClient.GetByWorkspace.
+type PrivateEndpointConnectionsClientGetByWorkspaceResponse struct {
+	PrivateEndpointConnectionWithSystemData
+}
+
+// PrivateEndpointConnectionsClientListByHostPoolResponse contains the response from method PrivateEndpointConnectionsClient.ListByHostPool.
+type PrivateEndpointConnectionsClientListByHostPoolResponse struct {
+	PrivateEndpointConnectionListResultWithSystemData
+}
+
+// PrivateEndpointConnectionsClientListByWorkspaceResponse contains the response from method PrivateEndpointConnectionsClient.ListByWorkspace.
+type PrivateEndpointConnectionsClientListByWorkspaceResponse struct {
+	PrivateEndpointConnectionListResultWithSystemData
+}
+
+// PrivateEndpointConnectionsClientUpdateByHostPoolResponse contains the response from method PrivateEndpointConnectionsClient.UpdateByHostPool.
+type PrivateEndpointConnectionsClientUpdateByHostPoolResponse struct {
+	PrivateEndpointConnectionWithSystemData
+}
+
+// PrivateEndpointConnectionsClientUpdateByWorkspaceResponse contains the response from method PrivateEndpointConnectionsClient.UpdateByWorkspace.
+type PrivateEndpointConnectionsClientUpdateByWorkspaceResponse struct {
+	PrivateEndpointConnectionWithSystemData
+}
+
+// PrivateLinkResourcesClientListByHostPoolResponse contains the response from method PrivateLinkResourcesClient.ListByHostPool.
+type PrivateLinkResourcesClientListByHostPoolResponse struct {
+	PrivateLinkResourceListResult
+}
+
+// PrivateLinkResourcesClientListByWorkspaceResponse contains the response from method PrivateLinkResourcesClient.ListByWorkspace.
+type PrivateLinkResourcesClientListByWorkspaceResponse struct {
+	PrivateLinkResourceListResult
+}
+
 // ScalingPlansClientCreateResponse contains the response from method ScalingPlansClient.Create.
 type ScalingPlansClientCreateResponse struct {
 	ScalingPlan

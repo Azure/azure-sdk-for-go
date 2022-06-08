@@ -57,7 +57,7 @@ func NewHostPoolsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CreateOrUpdate - Create or update a host pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // hostPool - Object containing HostPool definitions.
@@ -98,7 +98,7 @@ func (client *HostPoolsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, hostPool)
@@ -115,7 +115,7 @@ func (client *HostPoolsClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Remove a host pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - HostPoolsClientDeleteOptions contains the optional parameters for the HostPoolsClient.Delete method.
@@ -154,7 +154,7 @@ func (client *HostPoolsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -165,7 +165,7 @@ func (client *HostPoolsClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Get a host pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - HostPoolsClientGetOptions contains the optional parameters for the HostPoolsClient.Get method.
@@ -204,7 +204,7 @@ func (client *HostPoolsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -221,7 +221,7 @@ func (client *HostPoolsClient) getHandleResponse(resp *http.Response) (HostPools
 
 // NewListPager - List hostPools in subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // options - HostPoolsClientListOptions contains the optional parameters for the HostPoolsClient.List method.
 func (client *HostPoolsClient) NewListPager(options *HostPoolsClientListOptions) *runtime.Pager[HostPoolsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[HostPoolsClientListResponse]{
@@ -263,7 +263,7 @@ func (client *HostPoolsClient) listCreateRequest(ctx context.Context, options *H
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *HostPoolsClient) listHandleResponse(resp *http.Response) (HostPool
 
 // NewListByResourceGroupPager - List hostPools.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - HostPoolsClientListByResourceGroupOptions contains the optional parameters for the HostPoolsClient.ListByResourceGroup
 // method.
@@ -328,7 +328,7 @@ func (client *HostPoolsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -345,7 +345,7 @@ func (client *HostPoolsClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // RetrieveRegistrationToken - Registration token of the host pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - HostPoolsClientRetrieveRegistrationTokenOptions contains the optional parameters for the HostPoolsClient.RetrieveRegistrationToken
@@ -385,7 +385,7 @@ func (client *HostPoolsClient) retrieveRegistrationTokenCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -402,7 +402,7 @@ func (client *HostPoolsClient) retrieveRegistrationTokenHandleResponse(resp *htt
 
 // Update - Update a host pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // hostPoolName - The name of the host pool within the specified resource group
 // options - HostPoolsClientUpdateOptions contains the optional parameters for the HostPoolsClient.Update method.
@@ -441,7 +441,7 @@ func (client *HostPoolsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.HostPool != nil {

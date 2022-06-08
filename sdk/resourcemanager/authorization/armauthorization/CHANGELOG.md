@@ -1,5 +1,600 @@
 # Release History
 
+## 2.0.0-beta.1 (2022-06-02)
+### Breaking Changes
+
+- Const `MemberTypeInherited` has been removed
+- Const `StatusPendingApprovalProvisioning` has been removed
+- Const `RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule` has been removed
+- Const `EnablementRulesMultiFactorAuthentication` has been removed
+- Const `RecipientTypeAdmin` has been removed
+- Const `TypeAfterDuration` has been removed
+- Const `AssignmentTypeActivated` has been removed
+- Const `StatusCanceled` has been removed
+- Const `UserTypeGroup` has been removed
+- Const `ApprovalModeSingleStage` has been removed
+- Const `StatusPendingProvisioning` has been removed
+- Const `RequestTypeSelfRenew` has been removed
+- Const `StatusAdminDenied` has been removed
+- Const `StatusRevoked` has been removed
+- Const `StatusPendingExternalProvisioning` has been removed
+- Const `StatusGranted` has been removed
+- Const `StatusPendingAdminDecision` has been removed
+- Const `RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule` has been removed
+- Const `StatusProvisioningStarted` has been removed
+- Const `RecipientTypeRequestor` has been removed
+- Const `StatusPendingApproval` has been removed
+- Const `StatusProvisioned` has been removed
+- Const `NotificationLevelAll` has been removed
+- Const `PrincipalTypeGroup` has been removed
+- Const `RequestTypeAdminRenew` has been removed
+- Const `StatusPendingScheduleCreation` has been removed
+- Const `RecipientTypeApprover` has been removed
+- Const `MemberTypeGroup` has been removed
+- Const `UserTypeUser` has been removed
+- Const `AssignmentTypeAssigned` has been removed
+- Const `RequestTypeAdminRemove` has been removed
+- Const `RequestTypeSelfExtend` has been removed
+- Const `StatusTimedOut` has been removed
+- Const `NotificationLevelCritical` has been removed
+- Const `StatusPendingEvaluation` has been removed
+- Const `PrincipalTypeUser` has been removed
+- Const `PrincipalTypeDevice` has been removed
+- Const `EnablementRulesJustification` has been removed
+- Const `PrincipalTypeForeignGroup` has been removed
+- Const `StatusFailedAsResourceIsLocked` has been removed
+- Const `StatusScheduleCreated` has been removed
+- Const `StatusDenied` has been removed
+- Const `StatusFailed` has been removed
+- Const `ApprovalModeSerial` has been removed
+- Const `ApprovalModeParallel` has been removed
+- Const `MemberTypeDirect` has been removed
+- Const `ApprovalModeNoApproval` has been removed
+- Const `RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule` has been removed
+- Const `RoleManagementPolicyRuleTypeRoleManagementPolicyAuthenticationContextRule` has been removed
+- Const `NotificationLevelNone` has been removed
+- Const `StatusAdminApproved` has been removed
+- Const `RequestTypeAdminAssign` has been removed
+- Const `RequestTypeSelfActivate` has been removed
+- Const `PrincipalTypeServicePrincipal` has been removed
+- Const `RequestTypeAdminExtend` has been removed
+- Const `NotificationDeliveryMechanismEmail` has been removed
+- Const `EnablementRulesTicketing` has been removed
+- Const `RequestTypeSelfDeactivate` has been removed
+- Const `TypeAfterDateTime` has been removed
+- Const `TypeNoExpiration` has been removed
+- Const `RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule` has been removed
+- Const `StatusAccepted` has been removed
+- Const `StatusPendingRevocation` has been removed
+- Const `StatusInvalid` has been removed
+- Const `RequestTypeAdminUpdate` has been removed
+- Function `RoleManagementPolicyExpirationRule.MarshalJSON` has been removed
+- Function `NewGlobalAdministratorClient` has been removed
+- Function `*RoleAssignmentScheduleRequestsClient.Cancel` has been removed
+- Function `PolicyAssignmentPropertiesPolicy.MarshalJSON` has been removed
+- Function `*RoleEligibilityScheduleRequestProperties.UnmarshalJSON` has been removed
+- Function `*RoleEligibilityScheduleRequestsClient.Create` has been removed
+- Function `Permission.MarshalJSON` has been removed
+- Function `*RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration.UnmarshalJSON` has been removed
+- Function `*PermissionsClient.NewListForResourcePager` has been removed
+- Function `RoleManagementPolicyProperties.MarshalJSON` has been removed
+- Function `NewRoleManagementPolicyAssignmentsClient` has been removed
+- Function `NewRoleEligibilityScheduleInstancesClient` has been removed
+- Function `NewRoleAssignmentScheduleRequestsClient` has been removed
+- Function `NewRoleAssignmentScheduleInstancesClient` has been removed
+- Function `NewRoleAssignmentsClient` has been removed
+- Function `PossibleStatusValues` has been removed
+- Function `*RoleDefinitionsClient.CreateOrUpdate` has been removed
+- Function `RoleManagementPolicyAuthenticationContextRule.MarshalJSON` has been removed
+- Function `*RoleAssignmentSchedulesClient.Get` has been removed
+- Function `*RoleEligibilityScheduleProperties.UnmarshalJSON` has been removed
+- Function `*ProviderOperationsMetadataClient.NewListPager` has been removed
+- Function `RoleAssignmentScheduleRequestPropertiesScheduleInfo.MarshalJSON` has been removed
+- Function `*RoleDefinitionsClient.Get` has been removed
+- Function `*RoleAssignmentScheduleInstancesClient.Get` has been removed
+- Function `PossibleRoleManagementPolicyRuleTypeValues` has been removed
+- Function `NewEligibleChildResourcesClient` has been removed
+- Function `*RoleManagementPolicyAssignmentsClient.Create` has been removed
+- Function `PossiblePrincipalTypeValues` has been removed
+- Function `*RoleAssignmentScheduleRequestPropertiesScheduleInfo.UnmarshalJSON` has been removed
+- Function `*RoleAssignmentScheduleProperties.UnmarshalJSON` has been removed
+- Function `RoleEligibilityScheduleRequestProperties.MarshalJSON` has been removed
+- Function `*RoleAssignmentScheduleRequestsClient.Get` has been removed
+- Function `*RoleAssignmentsClient.NewListPager` has been removed
+- Function `*RoleAssignmentScheduleRequestProperties.UnmarshalJSON` has been removed
+- Function `*RoleAssignmentsClient.GetByID` has been removed
+- Function `*RoleManagementPolicyApprovalRule.GetRoleManagementPolicyRule` has been removed
+- Function `RoleManagementPolicy.MarshalJSON` has been removed
+- Function `NewRoleManagementPoliciesClient` has been removed
+- Function `*RoleEligibilityScheduleInstanceProperties.UnmarshalJSON` has been removed
+- Function `PossibleRequestTypeValues` has been removed
+- Function `*RoleManagementPolicyNotificationRule.GetRoleManagementPolicyRule` has been removed
+- Function `RoleManagementPolicyEnablementRule.MarshalJSON` has been removed
+- Function `*RoleAssignmentScheduleRequestsClient.Create` has been removed
+- Function `*RoleManagementPolicyNotificationRule.UnmarshalJSON` has been removed
+- Function `*RoleManagementPolicyExpirationRule.GetRoleManagementPolicyRule` has been removed
+- Function `*RoleAssignmentsClient.NewListForResourceGroupPager` has been removed
+- Function `*RoleManagementPoliciesClient.Delete` has been removed
+- Function `*RoleEligibilityScheduleRequestsClient.NewListForScopePager` has been removed
+- Function `PossibleTypeValues` has been removed
+- Function `PossibleMemberTypeValues` has been removed
+- Function `PossibleNotificationLevelValues` has been removed
+- Function `RoleManagementPolicyNotificationRule.MarshalJSON` has been removed
+- Function `NewRoleEligibilityScheduleRequestsClient` has been removed
+- Function `*RoleManagementPolicyRule.GetRoleManagementPolicyRule` has been removed
+- Function `*RoleManagementPolicyExpirationRule.UnmarshalJSON` has been removed
+- Function `RoleManagementPolicyApprovalRule.MarshalJSON` has been removed
+- Function `NewPermissionsClient` has been removed
+- Function `*RoleManagementPoliciesClient.Get` has been removed
+- Function `*ClassicAdministratorsClient.NewListPager` has been removed
+- Function `PossibleAssignmentTypeValues` has been removed
+- Function `*RoleManagementPoliciesClient.Update` has been removed
+- Function `NewClassicAdministratorsClient` has been removed
+- Function `*RoleManagementPolicyAuthenticationContextRule.GetRoleManagementPolicyRule` has been removed
+- Function `*RoleEligibilitySchedulesClient.Get` has been removed
+- Function `*PolicyAssignmentPropertiesPolicy.UnmarshalJSON` has been removed
+- Function `*RoleAssignmentsClient.NewListForResourcePager` has been removed
+- Function `ApprovalStage.MarshalJSON` has been removed
+- Function `*RoleManagementPolicyAuthenticationContextRule.UnmarshalJSON` has been removed
+- Function `*RoleAssignmentsClient.Get` has been removed
+- Function `*RoleManagementPolicyAssignmentsClient.NewListForScopePager` has been removed
+- Function `RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration.MarshalJSON` has been removed
+- Function `RoleManagementPolicyAssignmentProperties.MarshalJSON` has been removed
+- Function `RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration.MarshalJSON` has been removed
+- Function `*RoleAssignmentSchedulesClient.NewListForScopePager` has been removed
+- Function `*RoleEligibilityScheduleInstancesClient.NewListForScopePager` has been removed
+- Function `PossibleEnablementRulesValues` has been removed
+- Function `*RoleAssignmentsClient.CreateByID` has been removed
+- Function `*RoleManagementPoliciesClient.NewListForScopePager` has been removed
+- Function `*RoleAssignmentsClient.Create` has been removed
+- Function `*RoleAssignmentsClient.NewListForScopePager` has been removed
+- Function `*RoleAssignmentScheduleInstanceProperties.UnmarshalJSON` has been removed
+- Function `*RoleManagementPolicyAssignmentProperties.UnmarshalJSON` has been removed
+- Function `*RoleAssignmentsClient.Delete` has been removed
+- Function `PossibleUserTypeValues` has been removed
+- Function `RoleAssignmentScheduleRequestProperties.MarshalJSON` has been removed
+- Function `PossibleNotificationDeliveryMechanismValues` has been removed
+- Function `*RoleManagementPolicyApprovalRule.UnmarshalJSON` has been removed
+- Function `*ProviderOperationsMetadataClient.Get` has been removed
+- Function `*RoleEligibilityScheduleRequestPropertiesScheduleInfo.UnmarshalJSON` has been removed
+- Function `*EligibleChildResourcesClient.NewGetPager` has been removed
+- Function `*RoleAssignmentsClient.DeleteByID` has been removed
+- Function `*RoleAssignmentScheduleInstancesClient.NewListForScopePager` has been removed
+- Function `*RoleAssignmentScheduleRequestsClient.NewListForScopePager` has been removed
+- Function `*GlobalAdministratorClient.ElevateAccess` has been removed
+- Function `*RoleManagementPolicyProperties.UnmarshalJSON` has been removed
+- Function `*RoleAssignmentScheduleRequestsClient.Validate` has been removed
+- Function `*RoleManagementPolicyAssignmentsClient.Delete` has been removed
+- Function `*RoleManagementPolicyEnablementRule.UnmarshalJSON` has been removed
+- Function `*RoleDefinitionsClient.GetByID` has been removed
+- Function `NewRoleEligibilitySchedulesClient` has been removed
+- Function `PossibleRecipientTypeValues` has been removed
+- Function `PossibleApprovalModeValues` has been removed
+- Function `ApprovalSettings.MarshalJSON` has been removed
+- Function `*RoleEligibilitySchedulesClient.NewListForScopePager` has been removed
+- Function `NewProviderOperationsMetadataClient` has been removed
+- Function `NewRoleAssignmentSchedulesClient` has been removed
+- Function `RoleEligibilityScheduleRequestPropertiesScheduleInfo.MarshalJSON` has been removed
+- Function `*RoleEligibilityScheduleRequestsClient.Cancel` has been removed
+- Function `*RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration.UnmarshalJSON` has been removed
+- Function `*RoleManagementPolicyAssignmentsClient.Get` has been removed
+- Function `*RoleDefinitionsClient.NewListPager` has been removed
+- Function `RoleDefinitionProperties.MarshalJSON` has been removed
+- Function `*RoleDefinitionsClient.Delete` has been removed
+- Function `RoleManagementPolicyRuleTarget.MarshalJSON` has been removed
+- Function `*PermissionsClient.NewListForResourceGroupPager` has been removed
+- Function `NewRoleDefinitionsClient` has been removed
+- Function `*RoleEligibilityScheduleRequestsClient.Get` has been removed
+- Function `*RoleEligibilityScheduleRequestsClient.Validate` has been removed
+- Function `*RoleEligibilityScheduleInstancesClient.Get` has been removed
+- Function `*RoleManagementPolicyEnablementRule.GetRoleManagementPolicyRule` has been removed
+- Struct `ApprovalSettings` has been removed
+- Struct `ApprovalStage` has been removed
+- Struct `ClassicAdministrator` has been removed
+- Struct `ClassicAdministratorListResult` has been removed
+- Struct `ClassicAdministratorProperties` has been removed
+- Struct `ClassicAdministratorsClient` has been removed
+- Struct `ClassicAdministratorsClientListOptions` has been removed
+- Struct `ClassicAdministratorsClientListResponse` has been removed
+- Struct `CloudError` has been removed
+- Struct `CloudErrorBody` has been removed
+- Struct `EligibleChildResource` has been removed
+- Struct `EligibleChildResourcesClient` has been removed
+- Struct `EligibleChildResourcesClientGetOptions` has been removed
+- Struct `EligibleChildResourcesClientGetResponse` has been removed
+- Struct `EligibleChildResourcesListResult` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ExpandedProperties` has been removed
+- Struct `ExpandedPropertiesPrincipal` has been removed
+- Struct `ExpandedPropertiesRoleDefinition` has been removed
+- Struct `ExpandedPropertiesScope` has been removed
+- Struct `GlobalAdministratorClient` has been removed
+- Struct `GlobalAdministratorClientElevateAccessOptions` has been removed
+- Struct `GlobalAdministratorClientElevateAccessResponse` has been removed
+- Struct `Permission` has been removed
+- Struct `PermissionAutoGenerated` has been removed
+- Struct `PermissionGetResult` has been removed
+- Struct `PermissionsClient` has been removed
+- Struct `PermissionsClientListForResourceGroupOptions` has been removed
+- Struct `PermissionsClientListForResourceGroupResponse` has been removed
+- Struct `PermissionsClientListForResourceOptions` has been removed
+- Struct `PermissionsClientListForResourceResponse` has been removed
+- Struct `PolicyAssignmentProperties` has been removed
+- Struct `PolicyAssignmentPropertiesPolicy` has been removed
+- Struct `PolicyAssignmentPropertiesRoleDefinition` has been removed
+- Struct `PolicyAssignmentPropertiesScope` has been removed
+- Struct `PolicyProperties` has been removed
+- Struct `PolicyPropertiesScope` has been removed
+- Struct `Principal` has been removed
+- Struct `ProviderOperation` has been removed
+- Struct `ProviderOperationsMetadata` has been removed
+- Struct `ProviderOperationsMetadataClient` has been removed
+- Struct `ProviderOperationsMetadataClientGetOptions` has been removed
+- Struct `ProviderOperationsMetadataClientGetResponse` has been removed
+- Struct `ProviderOperationsMetadataClientListOptions` has been removed
+- Struct `ProviderOperationsMetadataClientListResponse` has been removed
+- Struct `ProviderOperationsMetadataListResult` has been removed
+- Struct `ResourceType` has been removed
+- Struct `RoleAssignment` has been removed
+- Struct `RoleAssignmentCreateParameters` has been removed
+- Struct `RoleAssignmentFilter` has been removed
+- Struct `RoleAssignmentListResult` has been removed
+- Struct `RoleAssignmentProperties` has been removed
+- Struct `RoleAssignmentPropertiesWithScope` has been removed
+- Struct `RoleAssignmentSchedule` has been removed
+- Struct `RoleAssignmentScheduleFilter` has been removed
+- Struct `RoleAssignmentScheduleInstance` has been removed
+- Struct `RoleAssignmentScheduleInstanceFilter` has been removed
+- Struct `RoleAssignmentScheduleInstanceListResult` has been removed
+- Struct `RoleAssignmentScheduleInstanceProperties` has been removed
+- Struct `RoleAssignmentScheduleInstancesClient` has been removed
+- Struct `RoleAssignmentScheduleInstancesClientGetOptions` has been removed
+- Struct `RoleAssignmentScheduleInstancesClientGetResponse` has been removed
+- Struct `RoleAssignmentScheduleInstancesClientListForScopeOptions` has been removed
+- Struct `RoleAssignmentScheduleInstancesClientListForScopeResponse` has been removed
+- Struct `RoleAssignmentScheduleListResult` has been removed
+- Struct `RoleAssignmentScheduleProperties` has been removed
+- Struct `RoleAssignmentScheduleRequest` has been removed
+- Struct `RoleAssignmentScheduleRequestFilter` has been removed
+- Struct `RoleAssignmentScheduleRequestListResult` has been removed
+- Struct `RoleAssignmentScheduleRequestProperties` has been removed
+- Struct `RoleAssignmentScheduleRequestPropertiesScheduleInfo` has been removed
+- Struct `RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration` has been removed
+- Struct `RoleAssignmentScheduleRequestPropertiesTicketInfo` has been removed
+- Struct `RoleAssignmentScheduleRequestsClient` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientCancelOptions` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientCancelResponse` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientCreateOptions` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientCreateResponse` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientGetOptions` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientGetResponse` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientListForScopeOptions` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientListForScopeResponse` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientValidateOptions` has been removed
+- Struct `RoleAssignmentScheduleRequestsClientValidateResponse` has been removed
+- Struct `RoleAssignmentSchedulesClient` has been removed
+- Struct `RoleAssignmentSchedulesClientGetOptions` has been removed
+- Struct `RoleAssignmentSchedulesClientGetResponse` has been removed
+- Struct `RoleAssignmentSchedulesClientListForScopeOptions` has been removed
+- Struct `RoleAssignmentSchedulesClientListForScopeResponse` has been removed
+- Struct `RoleAssignmentsClient` has been removed
+- Struct `RoleAssignmentsClientCreateByIDOptions` has been removed
+- Struct `RoleAssignmentsClientCreateByIDResponse` has been removed
+- Struct `RoleAssignmentsClientCreateOptions` has been removed
+- Struct `RoleAssignmentsClientCreateResponse` has been removed
+- Struct `RoleAssignmentsClientDeleteByIDOptions` has been removed
+- Struct `RoleAssignmentsClientDeleteByIDResponse` has been removed
+- Struct `RoleAssignmentsClientDeleteOptions` has been removed
+- Struct `RoleAssignmentsClientDeleteResponse` has been removed
+- Struct `RoleAssignmentsClientGetByIDOptions` has been removed
+- Struct `RoleAssignmentsClientGetByIDResponse` has been removed
+- Struct `RoleAssignmentsClientGetOptions` has been removed
+- Struct `RoleAssignmentsClientGetResponse` has been removed
+- Struct `RoleAssignmentsClientListForResourceGroupOptions` has been removed
+- Struct `RoleAssignmentsClientListForResourceGroupResponse` has been removed
+- Struct `RoleAssignmentsClientListForResourceOptions` has been removed
+- Struct `RoleAssignmentsClientListForResourceResponse` has been removed
+- Struct `RoleAssignmentsClientListForScopeOptions` has been removed
+- Struct `RoleAssignmentsClientListForScopeResponse` has been removed
+- Struct `RoleAssignmentsClientListOptions` has been removed
+- Struct `RoleAssignmentsClientListResponse` has been removed
+- Struct `RoleDefinition` has been removed
+- Struct `RoleDefinitionFilter` has been removed
+- Struct `RoleDefinitionListResult` has been removed
+- Struct `RoleDefinitionProperties` has been removed
+- Struct `RoleDefinitionsClient` has been removed
+- Struct `RoleDefinitionsClientCreateOrUpdateOptions` has been removed
+- Struct `RoleDefinitionsClientCreateOrUpdateResponse` has been removed
+- Struct `RoleDefinitionsClientDeleteOptions` has been removed
+- Struct `RoleDefinitionsClientDeleteResponse` has been removed
+- Struct `RoleDefinitionsClientGetByIDOptions` has been removed
+- Struct `RoleDefinitionsClientGetByIDResponse` has been removed
+- Struct `RoleDefinitionsClientGetOptions` has been removed
+- Struct `RoleDefinitionsClientGetResponse` has been removed
+- Struct `RoleDefinitionsClientListOptions` has been removed
+- Struct `RoleDefinitionsClientListResponse` has been removed
+- Struct `RoleEligibilitySchedule` has been removed
+- Struct `RoleEligibilityScheduleFilter` has been removed
+- Struct `RoleEligibilityScheduleInstance` has been removed
+- Struct `RoleEligibilityScheduleInstanceFilter` has been removed
+- Struct `RoleEligibilityScheduleInstanceListResult` has been removed
+- Struct `RoleEligibilityScheduleInstanceProperties` has been removed
+- Struct `RoleEligibilityScheduleInstancesClient` has been removed
+- Struct `RoleEligibilityScheduleInstancesClientGetOptions` has been removed
+- Struct `RoleEligibilityScheduleInstancesClientGetResponse` has been removed
+- Struct `RoleEligibilityScheduleInstancesClientListForScopeOptions` has been removed
+- Struct `RoleEligibilityScheduleInstancesClientListForScopeResponse` has been removed
+- Struct `RoleEligibilityScheduleListResult` has been removed
+- Struct `RoleEligibilityScheduleProperties` has been removed
+- Struct `RoleEligibilityScheduleRequest` has been removed
+- Struct `RoleEligibilityScheduleRequestFilter` has been removed
+- Struct `RoleEligibilityScheduleRequestListResult` has been removed
+- Struct `RoleEligibilityScheduleRequestProperties` has been removed
+- Struct `RoleEligibilityScheduleRequestPropertiesScheduleInfo` has been removed
+- Struct `RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration` has been removed
+- Struct `RoleEligibilityScheduleRequestPropertiesTicketInfo` has been removed
+- Struct `RoleEligibilityScheduleRequestsClient` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientCancelOptions` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientCancelResponse` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientCreateOptions` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientCreateResponse` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientGetOptions` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientGetResponse` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientListForScopeOptions` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientListForScopeResponse` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientValidateOptions` has been removed
+- Struct `RoleEligibilityScheduleRequestsClientValidateResponse` has been removed
+- Struct `RoleEligibilitySchedulesClient` has been removed
+- Struct `RoleEligibilitySchedulesClientGetOptions` has been removed
+- Struct `RoleEligibilitySchedulesClientGetResponse` has been removed
+- Struct `RoleEligibilitySchedulesClientListForScopeOptions` has been removed
+- Struct `RoleEligibilitySchedulesClientListForScopeResponse` has been removed
+- Struct `RoleManagementPoliciesClient` has been removed
+- Struct `RoleManagementPoliciesClientDeleteOptions` has been removed
+- Struct `RoleManagementPoliciesClientDeleteResponse` has been removed
+- Struct `RoleManagementPoliciesClientGetOptions` has been removed
+- Struct `RoleManagementPoliciesClientGetResponse` has been removed
+- Struct `RoleManagementPoliciesClientListForScopeOptions` has been removed
+- Struct `RoleManagementPoliciesClientListForScopeResponse` has been removed
+- Struct `RoleManagementPoliciesClientUpdateOptions` has been removed
+- Struct `RoleManagementPoliciesClientUpdateResponse` has been removed
+- Struct `RoleManagementPolicy` has been removed
+- Struct `RoleManagementPolicyApprovalRule` has been removed
+- Struct `RoleManagementPolicyAssignment` has been removed
+- Struct `RoleManagementPolicyAssignmentListResult` has been removed
+- Struct `RoleManagementPolicyAssignmentProperties` has been removed
+- Struct `RoleManagementPolicyAssignmentsClient` has been removed
+- Struct `RoleManagementPolicyAssignmentsClientCreateOptions` has been removed
+- Struct `RoleManagementPolicyAssignmentsClientCreateResponse` has been removed
+- Struct `RoleManagementPolicyAssignmentsClientDeleteOptions` has been removed
+- Struct `RoleManagementPolicyAssignmentsClientDeleteResponse` has been removed
+- Struct `RoleManagementPolicyAssignmentsClientGetOptions` has been removed
+- Struct `RoleManagementPolicyAssignmentsClientGetResponse` has been removed
+- Struct `RoleManagementPolicyAssignmentsClientListForScopeOptions` has been removed
+- Struct `RoleManagementPolicyAssignmentsClientListForScopeResponse` has been removed
+- Struct `RoleManagementPolicyAuthenticationContextRule` has been removed
+- Struct `RoleManagementPolicyEnablementRule` has been removed
+- Struct `RoleManagementPolicyExpirationRule` has been removed
+- Struct `RoleManagementPolicyListResult` has been removed
+- Struct `RoleManagementPolicyNotificationRule` has been removed
+- Struct `RoleManagementPolicyProperties` has been removed
+- Struct `RoleManagementPolicyRule` has been removed
+- Struct `RoleManagementPolicyRuleTarget` has been removed
+- Struct `UserSet` has been removed
+
+### Features Added
+
+- New const `AccessReviewScopePrincipalTypeUserGroup`
+- New const `AccessReviewInstanceStatusInitializing`
+- New const `AccessReviewInstanceStatusAutoReviewing`
+- New const `AccessReviewHistoryDefinitionStatusError`
+- New const `AccessReviewInstanceStatusInProgress`
+- New const `AccessReviewScopePrincipalTypeUser`
+- New const `AccessRecommendationTypeDeny`
+- New const `AccessReviewScopePrincipalTypeRedeemedGuestUser`
+- New const `AccessReviewScheduleDefinitionStatusInProgress`
+- New const `DecisionResourceTypeAzureRole`
+- New const `AccessReviewScheduleDefinitionStatusCompleting`
+- New const `AccessReviewScheduleDefinitionStatusScheduled`
+- New const `AccessReviewResultDontKnow`
+- New const `AccessReviewApplyResultApplying`
+- New const `AccessReviewScheduleDefinitionStatusNotStarted`
+- New const `AccessReviewScheduleDefinitionStatusAutoReviewing`
+- New const `AccessReviewRecurrenceRangeTypeNoEnd`
+- New const `AccessReviewInstanceStatusNotStarted`
+- New const `AccessReviewInstanceStatusAutoReviewed`
+- New const `DefaultDecisionTypeDeny`
+- New const `AccessReviewScopeAssignmentStateEligible`
+- New const `AccessReviewInstanceReviewersTypeAssigned`
+- New const `AccessReviewHistoryDefinitionStatusDone`
+- New const `AccessReviewApplyResultAppliedWithUnknownFailure`
+- New const `DefaultDecisionTypeRecommendation`
+- New const `AccessReviewActorIdentityTypeUser`
+- New const `AccessReviewActorIdentityTypeServicePrincipal`
+- New const `AccessReviewApplyResultAppliedSuccessfullyButObjectNotFound`
+- New const `AccessReviewRecurrenceRangeTypeEndDate`
+- New const `AccessReviewScheduleDefinitionStatusApplied`
+- New const `AccessReviewHistoryDefinitionStatusInProgress`
+- New const `AccessReviewScheduleDefinitionStatusStarting`
+- New const `DecisionTargetTypeServicePrincipal`
+- New const `AccessRecommendationTypeNoInfoAvailable`
+- New const `AccessReviewScopePrincipalTypeGuestUser`
+- New const `AccessReviewRecurrencePatternTypeWeekly`
+- New const `AccessReviewScheduleDefinitionStatusCompleted`
+- New const `AccessReviewScheduleDefinitionReviewersTypeSelf`
+- New const `AccessRecommendationTypeApprove`
+- New const `AccessReviewInstanceStatusApplying`
+- New const `AccessReviewRecurrenceRangeTypeNumbered`
+- New const `AccessReviewInstanceStatusCompleting`
+- New const `AccessReviewScheduleDefinitionStatusApplying`
+- New const `AccessReviewScopePrincipalTypeServicePrincipal`
+- New const `AccessReviewInstanceStatusApplied`
+- New const `AccessReviewResultDeny`
+- New const `AccessReviewInstanceStatusCompleted`
+- New const `AccessReviewScheduleDefinitionStatusAutoReviewed`
+- New const `AccessReviewHistoryDefinitionStatusRequested`
+- New const `AccessReviewResultApprove`
+- New const `AccessReviewInstanceStatusScheduled`
+- New const `AccessReviewScopeAssignmentStateActive`
+- New const `AccessReviewResultNotNotified`
+- New const `AccessReviewScheduleDefinitionReviewersTypeAssigned`
+- New const `AccessReviewScheduleDefinitionStatusInitializing`
+- New const `AccessReviewRecurrencePatternTypeAbsoluteMonthly`
+- New const `AccessReviewApplyResultAppliedSuccessfully`
+- New const `AccessReviewReviewerTypeUser`
+- New const `AccessReviewInstanceReviewersTypeSelf`
+- New const `DecisionTargetTypeUser`
+- New const `AccessReviewReviewerTypeServicePrincipal`
+- New const `AccessReviewResultNotReviewed`
+- New const `AccessReviewScheduleDefinitionReviewersTypeManagers`
+- New const `AccessReviewApplyResultApplyNotSupported`
+- New const `AccessReviewApplyResultNew`
+- New const `DefaultDecisionTypeApprove`
+- New const `AccessReviewInstanceStatusStarting`
+- New const `AccessReviewInstanceReviewersTypeManagers`
+- New function `*AccessReviewDecisionServicePrincipalIdentity.GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity`
+- New function `PossibleDecisionResourceTypeValues() []DecisionResourceType`
+- New function `PossibleAccessReviewReviewerTypeValues() []AccessReviewReviewerType`
+- New function `AccessReviewHistoryDefinitionProperties.MarshalJSON() ([]byte, error)`
+- New function `*AccessReviewDecisionServicePrincipalIdentity.UnmarshalJSON([]byte) error`
+- New function `PossibleAccessReviewScheduleDefinitionStatusValues() []AccessReviewScheduleDefinitionStatus`
+- New function `AccessReviewInstanceProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleAccessReviewResultValues() []AccessReviewResult`
+- New function `AccessReviewRecurrenceRange.MarshalJSON() ([]byte, error)`
+- New function `*AccessReviewInstanceProperties.UnmarshalJSON([]byte) error`
+- New function `AccessReviewHistoryInstanceProperties.MarshalJSON() ([]byte, error)`
+- New function `*AccessReviewDecisionUserIdentity.GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity`
+- New function `*AccessReviewDecisionProperties.UnmarshalJSON([]byte) error`
+- New function `AccessReviewDecisionProperties.MarshalJSON() ([]byte, error)`
+- New function `*AccessReviewDecisionResource.GetAccessReviewDecisionResource() *AccessReviewDecisionResource`
+- New function `PossibleAccessRecommendationTypeValues() []AccessRecommendationType`
+- New function `PossibleAccessReviewInstanceReviewersTypeValues() []AccessReviewInstanceReviewersType`
+- New function `PossibleAccessReviewScheduleDefinitionReviewersTypeValues() []AccessReviewScheduleDefinitionReviewersType`
+- New function `AccessReviewDecisionResourceAzureRole.MarshalJSON() ([]byte, error)`
+- New function `*AccessReviewDecisionUserIdentity.UnmarshalJSON([]byte) error`
+- New function `*AccessReviewContactedReviewerProperties.UnmarshalJSON([]byte) error`
+- New function `PossibleAccessReviewHistoryDefinitionStatusValues() []AccessReviewHistoryDefinitionStatus`
+- New function `PossibleAccessReviewActorIdentityTypeValues() []AccessReviewActorIdentityType`
+- New function `*AccessReviewHistoryDefinitionProperties.UnmarshalJSON([]byte) error`
+- New function `AccessReviewScheduleDefinitionProperties.MarshalJSON() ([]byte, error)`
+- New function `PossibleAccessReviewApplyResultValues() []AccessReviewApplyResult`
+- New function `*AccessReviewDecisionIdentity.GetAccessReviewDecisionIdentity() *AccessReviewDecisionIdentity`
+- New function `PossibleAccessReviewScopePrincipalTypeValues() []AccessReviewScopePrincipalType`
+- New function `*AccessReviewHistoryInstanceProperties.UnmarshalJSON([]byte) error`
+- New function `PossibleAccessReviewRecurrencePatternTypeValues() []AccessReviewRecurrencePatternType`
+- New function `*AccessReviewRecurrenceRange.UnmarshalJSON([]byte) error`
+- New function `*AccessReviewDecisionResourceAzureRole.UnmarshalJSON([]byte) error`
+- New function `AccessReviewDecisionUserIdentity.MarshalJSON() ([]byte, error)`
+- New function `PossibleAccessReviewRecurrenceRangeTypeValues() []AccessReviewRecurrenceRangeType`
+- New function `PossibleAccessReviewScopeAssignmentStateValues() []AccessReviewScopeAssignmentState`
+- New function `PossibleDecisionTargetTypeValues() []DecisionTargetType`
+- New function `PossibleAccessReviewInstanceStatusValues() []AccessReviewInstanceStatus`
+- New function `AccessReviewDecisionServicePrincipalIdentity.MarshalJSON() ([]byte, error)`
+- New function `*AccessReviewDecisionResourceAzureRole.GetAccessReviewDecisionResource() *AccessReviewDecisionResource`
+- New function `PossibleDefaultDecisionTypeValues() []DefaultDecisionType`
+- New struct `AccessReviewActorIdentity`
+- New struct `AccessReviewContactedReviewer`
+- New struct `AccessReviewContactedReviewerListResult`
+- New struct `AccessReviewContactedReviewerProperties`
+- New struct `AccessReviewDecision`
+- New struct `AccessReviewDecisionIdentity`
+- New struct `AccessReviewDecisionListResult`
+- New struct `AccessReviewDecisionProperties`
+- New struct `AccessReviewDecisionResource`
+- New struct `AccessReviewDecisionResourceAzureRole`
+- New struct `AccessReviewDecisionServicePrincipalIdentity`
+- New struct `AccessReviewDecisionUserIdentity`
+- New struct `AccessReviewDefaultSettings`
+- New struct `AccessReviewDefaultSettingsClientGetOptions`
+- New struct `AccessReviewDefaultSettingsClientGetResponse`
+- New struct `AccessReviewDefaultSettingsClientPutOptions`
+- New struct `AccessReviewDefaultSettingsClientPutResponse`
+- New struct `AccessReviewHistoryDefinition`
+- New struct `AccessReviewHistoryDefinitionClientCreateOptions`
+- New struct `AccessReviewHistoryDefinitionClientCreateResponse`
+- New struct `AccessReviewHistoryDefinitionClientDeleteByIDOptions`
+- New struct `AccessReviewHistoryDefinitionClientDeleteByIDResponse`
+- New struct `AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIOptions`
+- New struct `AccessReviewHistoryDefinitionInstanceClientGenerateDownloadURIResponse`
+- New struct `AccessReviewHistoryDefinitionInstanceListResult`
+- New struct `AccessReviewHistoryDefinitionInstancesClientListOptions`
+- New struct `AccessReviewHistoryDefinitionInstancesClientListResponse`
+- New struct `AccessReviewHistoryDefinitionListResult`
+- New struct `AccessReviewHistoryDefinitionProperties`
+- New struct `AccessReviewHistoryDefinitionsClientGetByIDOptions`
+- New struct `AccessReviewHistoryDefinitionsClientGetByIDResponse`
+- New struct `AccessReviewHistoryDefinitionsClientListOptions`
+- New struct `AccessReviewHistoryDefinitionsClientListResponse`
+- New struct `AccessReviewHistoryInstance`
+- New struct `AccessReviewHistoryInstanceProperties`
+- New struct `AccessReviewHistoryScheduleSettings`
+- New struct `AccessReviewInstance`
+- New struct `AccessReviewInstanceClientAcceptRecommendationsOptions`
+- New struct `AccessReviewInstanceClientAcceptRecommendationsResponse`
+- New struct `AccessReviewInstanceClientApplyDecisionsOptions`
+- New struct `AccessReviewInstanceClientApplyDecisionsResponse`
+- New struct `AccessReviewInstanceClientResetDecisionsOptions`
+- New struct `AccessReviewInstanceClientResetDecisionsResponse`
+- New struct `AccessReviewInstanceClientSendRemindersOptions`
+- New struct `AccessReviewInstanceClientSendRemindersResponse`
+- New struct `AccessReviewInstanceClientStopOptions`
+- New struct `AccessReviewInstanceClientStopResponse`
+- New struct `AccessReviewInstanceContactedReviewersClientListOptions`
+- New struct `AccessReviewInstanceContactedReviewersClientListResponse`
+- New struct `AccessReviewInstanceDecisionsClientListOptions`
+- New struct `AccessReviewInstanceDecisionsClientListResponse`
+- New struct `AccessReviewInstanceListResult`
+- New struct `AccessReviewInstanceMyDecisionsClientGetByIDOptions`
+- New struct `AccessReviewInstanceMyDecisionsClientGetByIDResponse`
+- New struct `AccessReviewInstanceMyDecisionsClientListOptions`
+- New struct `AccessReviewInstanceMyDecisionsClientListResponse`
+- New struct `AccessReviewInstanceMyDecisionsClientPatchOptions`
+- New struct `AccessReviewInstanceMyDecisionsClientPatchResponse`
+- New struct `AccessReviewInstanceProperties`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientGetByIDOptions`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientGetByIDResponse`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientListOptions`
+- New struct `AccessReviewInstancesAssignedForMyApprovalClientListResponse`
+- New struct `AccessReviewInstancesClientCreateOptions`
+- New struct `AccessReviewInstancesClientCreateResponse`
+- New struct `AccessReviewInstancesClientGetByIDOptions`
+- New struct `AccessReviewInstancesClientGetByIDResponse`
+- New struct `AccessReviewInstancesClientListOptions`
+- New struct `AccessReviewInstancesClientListResponse`
+- New struct `AccessReviewRecurrencePattern`
+- New struct `AccessReviewRecurrenceRange`
+- New struct `AccessReviewRecurrenceSettings`
+- New struct `AccessReviewReviewer`
+- New struct `AccessReviewScheduleDefinition`
+- New struct `AccessReviewScheduleDefinitionListResult`
+- New struct `AccessReviewScheduleDefinitionProperties`
+- New struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions`
+- New struct `AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse`
+- New struct `AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDOptions`
+- New struct `AccessReviewScheduleDefinitionsClientCreateOrUpdateByIDResponse`
+- New struct `AccessReviewScheduleDefinitionsClientDeleteByIDOptions`
+- New struct `AccessReviewScheduleDefinitionsClientDeleteByIDResponse`
+- New struct `AccessReviewScheduleDefinitionsClientGetByIDOptions`
+- New struct `AccessReviewScheduleDefinitionsClientGetByIDResponse`
+- New struct `AccessReviewScheduleDefinitionsClientListOptions`
+- New struct `AccessReviewScheduleDefinitionsClientListResponse`
+- New struct `AccessReviewScheduleDefinitionsClientStopOptions`
+- New struct `AccessReviewScheduleDefinitionsClientStopResponse`
+- New struct `AccessReviewScheduleSettings`
+- New struct `AccessReviewScope`
+- New struct `ErrorDefinition`
+- New struct `ErrorDefinitionProperties`
+- New struct `Operation`
+- New struct `OperationDisplay`
+- New struct `OperationListResult`
+- New struct `OperationsClientListOptions`
+- New struct `OperationsClientListResponse`
+- New struct `TenantLevelAccessReviewInstanceContactedReviewersClientListOptions`
+- New struct `TenantLevelAccessReviewInstanceContactedReviewersClientListResponse`
+
+
 ## 1.0.0 (2022-06-02)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

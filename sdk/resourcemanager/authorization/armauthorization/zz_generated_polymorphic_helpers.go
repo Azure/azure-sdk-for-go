@@ -10,7 +10,7 @@ package armauthorization
 
 import "encoding/json"
 
-func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (RoleManagementPolicyRuleClassification, error) {
+func unmarshalAccessReviewDecisionIdentityClassification(rawMsg json.RawMessage) (AccessReviewDecisionIdentityClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -18,39 +18,32 @@ func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (Ro
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b RoleManagementPolicyRuleClassification
-	switch m["ruleType"] {
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule):
-		b = &RoleManagementPolicyApprovalRule{}
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyAuthenticationContextRule):
-		b = &RoleManagementPolicyAuthenticationContextRule{}
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule):
-		b = &RoleManagementPolicyEnablementRule{}
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule):
-		b = &RoleManagementPolicyExpirationRule{}
-	case string(RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule):
-		b = &RoleManagementPolicyNotificationRule{}
+	var b AccessReviewDecisionIdentityClassification
+	switch m["type"] {
+	case string(DecisionTargetTypeServicePrincipal):
+		b = &AccessReviewDecisionServicePrincipalIdentity{}
+	case string(DecisionTargetTypeUser):
+		b = &AccessReviewDecisionUserIdentity{}
 	default:
-		b = &RoleManagementPolicyRule{}
+		b = &AccessReviewDecisionIdentity{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalRoleManagementPolicyRuleClassificationArray(rawMsg json.RawMessage) ([]RoleManagementPolicyRuleClassification, error) {
+func unmarshalAccessReviewDecisionResourceClassification(rawMsg json.RawMessage) (AccessReviewDecisionResourceClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var rawMessages []json.RawMessage
-	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	fArray := make([]RoleManagementPolicyRuleClassification, len(rawMessages))
-	for index, rawMessage := range rawMessages {
-		f, err := unmarshalRoleManagementPolicyRuleClassification(rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		fArray[index] = f
+	var b AccessReviewDecisionResourceClassification
+	switch m["type"] {
+	case string(DecisionResourceTypeAzureRole):
+		b = &AccessReviewDecisionResourceAzureRole{}
+	default:
+		b = &AccessReviewDecisionResource{}
 	}
-	return fArray, nil
+	return b, json.Unmarshal(rawMsg, b)
 }

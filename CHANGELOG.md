@@ -2,6 +2,9 @@
 
 ## `v66.0.0`
 
+### Others
+Deprecate all old management plane packages. We strongly encourage you to upgrade to continue receiving updates. See [Migration Guide]( https://aka.ms/azsdk/golang/t2/migration) for guidance on upgrading. Refer to our [deprecation policy](https://azure.github.io/azure-sdk/policies_support.html) for more details.
+
 ### Revert package removal
 
 - `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights`

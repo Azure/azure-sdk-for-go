@@ -255,7 +255,7 @@ func (client DomainsClient) CreateOrUpdateResponder(resp *http.Response) (result
 }
 
 // CreateOrUpdateOwnershipIdentifier creates an ownership identifier for a domain or updates identifier details for an
-// existing identifer
+// existing identifier
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of domain.
@@ -1411,7 +1411,7 @@ func (client DomainsClient) UpdateResponder(resp *http.Response) (result Domain,
 }
 
 // UpdateOwnershipIdentifier creates an ownership identifier for a domain or updates identifier details for an existing
-// identifer
+// identifier
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // domainName - name of domain.

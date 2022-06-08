@@ -2720,8 +2720,7 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlotResponder(resp 
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
 // parameter.
 // siteEnvelope - a JSON representation of the app properties. See example.
-// slot - name of the deployment slot to create or update. By default, this API attempts to create or modify
-// the production slot.
+// slot - name of the deployment slot to create or update. The name 'production' is reserved.
 // skipDNSRegistration - if true web app hostname is not registered with DNS on creation. This parameter is
 // only used for app creation.
 // skipCustomDomainVerification - if true, custom (non *.azurewebsites.net) domains associated with web app are
@@ -29180,8 +29179,7 @@ func (client AppsClient) UpdateSitePushSettingsSlotResponder(resp *http.Response
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
 // parameter.
 // siteEnvelope - a JSON representation of the app properties. See example.
-// slot - name of the deployment slot to create or update. By default, this API attempts to create or modify
-// the production slot.
+// slot - name of the deployment slot to create or update. The name 'production' is reserved.
 // skipDNSRegistration - if true web app hostname is not registered with DNS on creation. This parameter is
 // only used for app creation.
 // skipCustomDomainVerification - if true, custom (non *.azurewebsites.net) domains associated with web app are

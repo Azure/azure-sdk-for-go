@@ -33,19 +33,22 @@ func (pe fakeNetError) Timeout() bool   { return pe.timeout }
 func (pe fakeNetError) Temporary() bool { return pe.temp }
 func (pe fakeNetError) Error() string   { return "Fake but very permanent error" }
 
-func assertFailedLinks(t *testing.T, lwid *LinksWithID, expectedErr error, expectedRPCError error) {
+func assertFailedLinks[T error, T2 error](t *testing.T, lwid *LinksWithID, expectedErr T, expectedRPCError T2) {
 	err := lwid.Sender.Send(context.TODO(), &amqp.Message{
 		Data: [][]byte{
 			{0},
 		},
 	})
+
+	require.True(t, errors.Is(err, expectedErr) || errors.As(err, &expectedErr))
 	require.ErrorIs(t, err, expectedErr)
 
 	_, err = PeekMessages(context.TODO(), lwid.RPC, lwid.Receiver.LinkName(), 0, 1)
-	require.ErrorIs(t, err, expectedRPCError)
+	require.True(t, errors.Is(err, expectedRPCError) || errors.As(err, &expectedRPCError))
 
 	msg, err := lwid.Receiver.Receive(context.TODO())
 	require.ErrorIs(t, err, expectedErr)
+	require.True(t, errors.Is(err, expectedErr) || errors.As(err, &expectedErr))
 	require.Nil(t, msg)
 
 }
@@ -126,7 +129,7 @@ func TestAMQPLinksLive(t *testing.T) {
 	}()
 
 	require.EqualValues(t, 0, createLinksCalled)
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.ConnectionError{}))
 	require.EqualValues(t, 1, createLinksCalled)
 
 	lwr, err := links.Get(context.Background())
@@ -138,10 +141,10 @@ func TestAMQPLinksLive(t *testing.T) {
 	require.NoError(t, amqpClient.Close())
 
 	// all the links are dead because the connection is dead.
-	assertFailedLinks(t, lwr, amqp.ErrConnClosed, amqp.ErrConnClosed)
+	assertFailedLinks(t, lwr, &amqp.ConnectionError{}, &amqp.ConnectionError{})
 
 	// now we'll recover, which should recreate everything
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.ID, amqp.ErrConnClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), lwr.ID, &amqp.ConnectionError{}))
 	require.EqualValues(t, 2, createLinksCalled)
 
 	lwr, err = links.Get(context.Background())
@@ -199,7 +202,7 @@ func TestAMQPLinksLiveRecoverLink(t *testing.T) {
 	}()
 
 	require.EqualValues(t, 0, createLinksCalled)
-	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed))
+	require.NoError(t, links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.ConnectionError{}))
 	require.EqualValues(t, 1, createLinksCalled)
 
 	lwr, err := links.Get(context.Background())
@@ -242,7 +245,7 @@ func TestAMQPLinksLiveRace(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			err := links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed)
+			err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.ConnectionError{})
 			require.NoError(t, err)
 		}()
 	}
@@ -334,7 +337,7 @@ func TestAMQPLinksRetry(t *testing.T) {
 
 	err = links.Retry(context.Background(), log.Event("NotUsed"), "NotUsed", func(ctx context.Context, lwid *LinksWithID, args *utils.RetryFnArgs) error {
 		// force recoveries
-		return amqp.ErrConnClosed
+		return &amqp.ConnectionError{}
 	}, exported.RetryOptions{
 		MaxRetries: 2,
 		// note: omitting MaxRetries just to give a sanity check that
@@ -343,7 +346,8 @@ func TestAMQPLinksRetry(t *testing.T) {
 		MaxRetryDelay: time.Millisecond,
 	})
 
-	require.ErrorIs(t, err, amqp.ErrConnClosed)
+	var connErr *amqp.ConnectionError
+	require.ErrorAs(t, err, &connErr)
 	require.EqualValues(t, 3, createLinksCalled)
 }
 
@@ -530,7 +534,7 @@ func TestAMQPLinksCloseIfNeeded(t *testing.T) {
 		_, err := links.Get(context.Background())
 		require.NoError(t, err)
 
-		rk := links.CloseIfNeeded(context.Background(), amqp.ErrConnClosed)
+		rk := links.CloseIfNeeded(context.Background(), &amqp.ConnectionError{})
 		require.Equal(t, RecoveryKindConn, rk)
 		require.Equal(t, 1, receiver.Closed)
 		require.Equal(t, 1, sender.Closed)
@@ -577,7 +581,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 		{Err: nil, Attempts: []int32{0}},
 
 		// connection related or unknown failures happen, all attempts exhausted
-		{Err: amqp.ErrConnClosed, Attempts: []int32{0, 1, 2, 3}},
+		{Err: &amqp.ConnectionError{}, Attempts: []int32{0, 1, 2, 3}},
 		{Err: errors.New("unknown error"), Attempts: []int32{0, 1, 2, 3}},
 
 		// fatal errors don't retry at all.
@@ -698,7 +702,7 @@ func TestAMQPLinks_Logging(t *testing.T) {
 		endCapture := test.CaptureLogsForTest()
 		defer endCapture()
 
-		err := links.RecoverIfNeeded(context.Background(), LinkID{}, amqp.ErrConnClosed)
+		err := links.RecoverIfNeeded(context.Background(), LinkID{}, &amqp.ConnectionError{})
 		require.NoError(t, err)
 
 		messages := endCapture()

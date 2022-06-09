@@ -134,14 +134,14 @@ func ExampleReceiver_GetDeadLetterMessage() {
 	}
 	defer deadLetterReceiver.Close(context.TODO())
 	// Get messages from the dead letter queue
-	deadLettermessages, err := deadLetterReceiver.ReceiveMessages(context.TODO(), 1, nil)
+	deadLetterMessages, err := deadLetterReceiver.ReceiveMessages(context.TODO(), 1, nil)
 	if err != nil {
 		panic(err)
 	}
 	// Make messages in the dead letter queue as complete
 	for _, deadLetterMessage := range deadLetterMessages {
-		fmt.Printf("DeadLetter Reason: %s\nDeadLetter Description: %s\n", *deadLetter.DeadLetterReason, *deadLetter.DeadLetterErrorDescription)
-		err := deadLetterReceiver.CompleteMessage(context.TODO(), deadLetter, nil)
+		fmt.Printf("DeadLetter Reason: %s\nDeadLetter Description: %s\n", *deadLetterMessage.DeadLetterReason, *deadLetter.DeadLetterErrorDescription)
+		err := deadLetterReceiver.CompleteMessage(context.TODO(), deadLetterMessage, nil)
 		if err != nil {
 			panic(err)
 		}

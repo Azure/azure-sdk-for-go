@@ -8,57 +8,128 @@
 
 package armcommunication
 
+// DomainsClientCancelVerificationResponse contains the response from method DomainsClient.CancelVerification.
+type DomainsClientCancelVerificationResponse struct {
+	// placeholder for future response values
+}
+
+// DomainsClientCreateOrUpdateResponse contains the response from method DomainsClient.CreateOrUpdate.
+type DomainsClientCreateOrUpdateResponse struct {
+	DomainResource
+}
+
+// DomainsClientDeleteResponse contains the response from method DomainsClient.Delete.
+type DomainsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DomainsClientGetResponse contains the response from method DomainsClient.Get.
+type DomainsClientGetResponse struct {
+	DomainResource
+}
+
+// DomainsClientInitiateVerificationResponse contains the response from method DomainsClient.InitiateVerification.
+type DomainsClientInitiateVerificationResponse struct {
+	// placeholder for future response values
+}
+
+// DomainsClientListByEmailServiceResourceResponse contains the response from method DomainsClient.ListByEmailServiceResource.
+type DomainsClientListByEmailServiceResourceResponse struct {
+	DomainResourceList
+}
+
+// DomainsClientUpdateResponse contains the response from method DomainsClient.Update.
+type DomainsClientUpdateResponse struct {
+	DomainResource
+}
+
+// EmailServicesClientCreateOrUpdateResponse contains the response from method EmailServicesClient.CreateOrUpdate.
+type EmailServicesClientCreateOrUpdateResponse struct {
+	EmailServiceResource
+}
+
+// EmailServicesClientDeleteResponse contains the response from method EmailServicesClient.Delete.
+type EmailServicesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EmailServicesClientGetResponse contains the response from method EmailServicesClient.Get.
+type EmailServicesClientGetResponse struct {
+	EmailServiceResource
+}
+
+// EmailServicesClientListByResourceGroupResponse contains the response from method EmailServicesClient.ListByResourceGroup.
+type EmailServicesClientListByResourceGroupResponse struct {
+	EmailServiceResourceList
+}
+
+// EmailServicesClientListBySubscriptionResponse contains the response from method EmailServicesClient.ListBySubscription.
+type EmailServicesClientListBySubscriptionResponse struct {
+	EmailServiceResourceList
+}
+
+// EmailServicesClientListVerifiedExchangeOnlineDomainsResponse contains the response from method EmailServicesClient.ListVerifiedExchangeOnlineDomains.
+type EmailServicesClientListVerifiedExchangeOnlineDomainsResponse struct {
+	// List of FQDNs of verified domains in Exchange Online.
+	StringArray []*string
+}
+
+// EmailServicesClientUpdateResponse contains the response from method EmailServicesClient.Update.
+type EmailServicesClientUpdateResponse struct {
+	EmailServiceResource
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// ServiceClientCheckNameAvailabilityResponse contains the response from method ServiceClient.CheckNameAvailability.
-type ServiceClientCheckNameAvailabilityResponse struct {
-	NameAvailability
+// ServicesClientCheckNameAvailabilityResponse contains the response from method ServicesClient.CheckNameAvailability.
+type ServicesClientCheckNameAvailabilityResponse struct {
+	CheckNameAvailabilityResponse
 }
 
-// ServiceClientCreateOrUpdateResponse contains the response from method ServiceClient.CreateOrUpdate.
-type ServiceClientCreateOrUpdateResponse struct {
+// ServicesClientCreateOrUpdateResponse contains the response from method ServicesClient.CreateOrUpdate.
+type ServicesClientCreateOrUpdateResponse struct {
 	ServiceResource
 }
 
-// ServiceClientDeleteResponse contains the response from method ServiceClient.Delete.
-type ServiceClientDeleteResponse struct {
+// ServicesClientDeleteResponse contains the response from method ServicesClient.Delete.
+type ServicesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ServiceClientGetResponse contains the response from method ServiceClient.Get.
-type ServiceClientGetResponse struct {
+// ServicesClientGetResponse contains the response from method ServicesClient.Get.
+type ServicesClientGetResponse struct {
 	ServiceResource
 }
 
-// ServiceClientLinkNotificationHubResponse contains the response from method ServiceClient.LinkNotificationHub.
-type ServiceClientLinkNotificationHubResponse struct {
+// ServicesClientLinkNotificationHubResponse contains the response from method ServicesClient.LinkNotificationHub.
+type ServicesClientLinkNotificationHubResponse struct {
 	LinkedNotificationHub
 }
 
-// ServiceClientListByResourceGroupResponse contains the response from method ServiceClient.ListByResourceGroup.
-type ServiceClientListByResourceGroupResponse struct {
+// ServicesClientListByResourceGroupResponse contains the response from method ServicesClient.ListByResourceGroup.
+type ServicesClientListByResourceGroupResponse struct {
 	ServiceResourceList
 }
 
-// ServiceClientListBySubscriptionResponse contains the response from method ServiceClient.ListBySubscription.
-type ServiceClientListBySubscriptionResponse struct {
+// ServicesClientListBySubscriptionResponse contains the response from method ServicesClient.ListBySubscription.
+type ServicesClientListBySubscriptionResponse struct {
 	ServiceResourceList
 }
 
-// ServiceClientListKeysResponse contains the response from method ServiceClient.ListKeys.
-type ServiceClientListKeysResponse struct {
+// ServicesClientListKeysResponse contains the response from method ServicesClient.ListKeys.
+type ServicesClientListKeysResponse struct {
 	ServiceKeys
 }
 
-// ServiceClientRegenerateKeyResponse contains the response from method ServiceClient.RegenerateKey.
-type ServiceClientRegenerateKeyResponse struct {
+// ServicesClientRegenerateKeyResponse contains the response from method ServicesClient.RegenerateKey.
+type ServicesClientRegenerateKeyResponse struct {
 	ServiceKeys
 }
 
-// ServiceClientUpdateResponse contains the response from method ServiceClient.Update.
-type ServiceClientUpdateResponse struct {
+// ServicesClientUpdateResponse contains the response from method ServicesClient.Update.
+type ServicesClientUpdateResponse struct {
 	ServiceResource
 }

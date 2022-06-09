@@ -63,6 +63,36 @@ type MaintenanceConfigurationsClientListByManagedClusterResponse struct {
 	MaintenanceConfigurationListResult
 }
 
+// ManagedClusterSnapshotsClientCreateOrUpdateResponse contains the response from method ManagedClusterSnapshotsClient.CreateOrUpdate.
+type ManagedClusterSnapshotsClientCreateOrUpdateResponse struct {
+	ManagedClusterSnapshot
+}
+
+// ManagedClusterSnapshotsClientDeleteResponse contains the response from method ManagedClusterSnapshotsClient.Delete.
+type ManagedClusterSnapshotsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedClusterSnapshotsClientGetResponse contains the response from method ManagedClusterSnapshotsClient.Get.
+type ManagedClusterSnapshotsClientGetResponse struct {
+	ManagedClusterSnapshot
+}
+
+// ManagedClusterSnapshotsClientListByResourceGroupResponse contains the response from method ManagedClusterSnapshotsClient.ListByResourceGroup.
+type ManagedClusterSnapshotsClientListByResourceGroupResponse struct {
+	ManagedClusterSnapshotListResult
+}
+
+// ManagedClusterSnapshotsClientListResponse contains the response from method ManagedClusterSnapshotsClient.List.
+type ManagedClusterSnapshotsClientListResponse struct {
+	ManagedClusterSnapshotListResult
+}
+
+// ManagedClusterSnapshotsClientUpdateTagsResponse contains the response from method ManagedClusterSnapshotsClient.UpdateTags.
+type ManagedClusterSnapshotsClientUpdateTagsResponse struct {
+	ManagedClusterSnapshot
+}
+
 // ManagedClustersClientCreateOrUpdateResponse contains the response from method ManagedClustersClient.CreateOrUpdate.
 type ManagedClustersClientCreateOrUpdateResponse struct {
 	ManagedCluster
@@ -140,6 +170,11 @@ type ManagedClustersClientResetServicePrincipalProfileResponse struct {
 
 // ManagedClustersClientRotateClusterCertificatesResponse contains the response from method ManagedClustersClient.RotateClusterCertificates.
 type ManagedClustersClientRotateClusterCertificatesResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedClustersClientRotateServiceAccountSigningKeysResponse contains the response from method ManagedClustersClient.RotateServiceAccountSigningKeys.
+type ManagedClustersClientRotateServiceAccountSigningKeysResponse struct {
 	// placeholder for future response values
 }
 
@@ -226,4 +261,29 @@ type SnapshotsClientListResponse struct {
 // SnapshotsClientUpdateTagsResponse contains the response from method SnapshotsClient.UpdateTags.
 type SnapshotsClientUpdateTagsResponse struct {
 	Snapshot
+}
+
+// TrustedAccessRoleBindingsClientCreateOrUpdateResponse contains the response from method TrustedAccessRoleBindingsClient.CreateOrUpdate.
+type TrustedAccessRoleBindingsClientCreateOrUpdateResponse struct {
+	TrustedAccessRoleBinding
+}
+
+// TrustedAccessRoleBindingsClientDeleteResponse contains the response from method TrustedAccessRoleBindingsClient.Delete.
+type TrustedAccessRoleBindingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TrustedAccessRoleBindingsClientGetResponse contains the response from method TrustedAccessRoleBindingsClient.Get.
+type TrustedAccessRoleBindingsClientGetResponse struct {
+	TrustedAccessRoleBinding
+}
+
+// TrustedAccessRoleBindingsClientListResponse contains the response from method TrustedAccessRoleBindingsClient.List.
+type TrustedAccessRoleBindingsClientListResponse struct {
+	TrustedAccessRoleBindingListResult
+}
+
+// TrustedAccessRolesClientListResponse contains the response from method TrustedAccessRolesClient.List.
+type TrustedAccessRolesClientListResponse struct {
+	TrustedAccessRoleListResult
 }

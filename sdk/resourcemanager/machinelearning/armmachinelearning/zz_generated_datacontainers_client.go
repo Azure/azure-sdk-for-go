@@ -56,14 +56,14 @@ func NewDataContainersClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Create or update container.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name.
 // body - Container entity to create or update.
 // options - DataContainersClientCreateOrUpdateOptions contains the optional parameters for the DataContainersClient.CreateOrUpdate
 // method.
-func (client *DataContainersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, body DataContainerData, options *DataContainersClientCreateOrUpdateOptions) (DataContainersClientCreateOrUpdateResponse, error) {
+func (client *DataContainersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, body DataContainer, options *DataContainersClientCreateOrUpdateOptions) (DataContainersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, name, body, options)
 	if err != nil {
 		return DataContainersClientCreateOrUpdateResponse{}, err
@@ -79,7 +79,7 @@ func (client *DataContainersClient) CreateOrUpdate(ctx context.Context, resource
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body DataContainerData, options *DataContainersClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DataContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body DataContainer, options *DataContainersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/data/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,7 +102,7 @@ func (client *DataContainersClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -111,7 +111,7 @@ func (client *DataContainersClient) createOrUpdateCreateRequest(ctx context.Cont
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DataContainersClient) createOrUpdateHandleResponse(resp *http.Response) (DataContainersClientCreateOrUpdateResponse, error) {
 	result := DataContainersClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataContainerData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataContainer); err != nil {
 		return DataContainersClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
@@ -119,7 +119,7 @@ func (client *DataContainersClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Delete container.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name.
@@ -163,7 +163,7 @@ func (client *DataContainersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -171,7 +171,7 @@ func (client *DataContainersClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Get container.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name.
@@ -215,7 +215,7 @@ func (client *DataContainersClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -224,7 +224,7 @@ func (client *DataContainersClient) getCreateRequest(ctx context.Context, resour
 // getHandleResponse handles the Get response.
 func (client *DataContainersClient) getHandleResponse(resp *http.Response) (DataContainersClientGetResponse, error) {
 	result := DataContainersClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataContainerData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataContainer); err != nil {
 		return DataContainersClientGetResponse{}, err
 	}
 	return result, nil
@@ -232,7 +232,7 @@ func (client *DataContainersClient) getHandleResponse(resp *http.Response) (Data
 
 // NewListPager - List data containers.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - DataContainersClientListOptions contains the optional parameters for the DataContainersClient.List method.
@@ -284,7 +284,7 @@ func (client *DataContainersClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}

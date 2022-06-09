@@ -57,7 +57,7 @@ func NewComponentVersionsClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name.
@@ -65,7 +65,7 @@ func NewComponentVersionsClient(subscriptionID string, credential azcore.TokenCr
 // body - Version entity to create or update.
 // options - ComponentVersionsClientCreateOrUpdateOptions contains the optional parameters for the ComponentVersionsClient.CreateOrUpdate
 // method.
-func (client *ComponentVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body ComponentVersionData, options *ComponentVersionsClientCreateOrUpdateOptions) (ComponentVersionsClientCreateOrUpdateResponse, error) {
+func (client *ComponentVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body ComponentVersion, options *ComponentVersionsClientCreateOrUpdateOptions) (ComponentVersionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, name, version, body, options)
 	if err != nil {
 		return ComponentVersionsClientCreateOrUpdateResponse{}, err
@@ -81,7 +81,7 @@ func (client *ComponentVersionsClient) CreateOrUpdate(ctx context.Context, resou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ComponentVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body ComponentVersionData, options *ComponentVersionsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ComponentVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body ComponentVersion, options *ComponentVersionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/components/{name}/versions/{version}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -108,7 +108,7 @@ func (client *ComponentVersionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -117,7 +117,7 @@ func (client *ComponentVersionsClient) createOrUpdateCreateRequest(ctx context.C
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ComponentVersionsClient) createOrUpdateHandleResponse(resp *http.Response) (ComponentVersionsClientCreateOrUpdateResponse, error) {
 	result := ComponentVersionsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentVersionData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentVersion); err != nil {
 		return ComponentVersionsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
@@ -125,7 +125,7 @@ func (client *ComponentVersionsClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name.
@@ -175,7 +175,7 @@ func (client *ComponentVersionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *ComponentVersionsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Get version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name.
@@ -232,7 +232,7 @@ func (client *ComponentVersionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *ComponentVersionsClient) getCreateRequest(ctx context.Context, res
 // getHandleResponse handles the Get response.
 func (client *ComponentVersionsClient) getHandleResponse(resp *http.Response) (ComponentVersionsClientGetResponse, error) {
 	result := ComponentVersionsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentVersionData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentVersion); err != nil {
 		return ComponentVersionsClientGetResponse{}, err
 	}
 	return result, nil
@@ -249,7 +249,7 @@ func (client *ComponentVersionsClient) getHandleResponse(resp *http.Response) (C
 
 // NewListPager - List component versions.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Component name.
@@ -306,7 +306,7 @@ func (client *ComponentVersionsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.OrderBy != nil {
 		reqQP.Set("$orderBy", *options.OrderBy)
 	}

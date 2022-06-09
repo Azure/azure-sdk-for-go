@@ -57,7 +57,7 @@ func NewEnvironmentVersionsClient(subscriptionID string, credential azcore.Token
 
 // CreateOrUpdate - Creates or updates an EnvironmentVersion.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Name of EnvironmentVersion. This is case-sensitive.
@@ -65,7 +65,7 @@ func NewEnvironmentVersionsClient(subscriptionID string, credential azcore.Token
 // body - Definition of EnvironmentVersion.
 // options - EnvironmentVersionsClientCreateOrUpdateOptions contains the optional parameters for the EnvironmentVersionsClient.CreateOrUpdate
 // method.
-func (client *EnvironmentVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body EnvironmentVersionData, options *EnvironmentVersionsClientCreateOrUpdateOptions) (EnvironmentVersionsClientCreateOrUpdateResponse, error) {
+func (client *EnvironmentVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body EnvironmentVersion, options *EnvironmentVersionsClientCreateOrUpdateOptions) (EnvironmentVersionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, name, version, body, options)
 	if err != nil {
 		return EnvironmentVersionsClientCreateOrUpdateResponse{}, err
@@ -81,7 +81,7 @@ func (client *EnvironmentVersionsClient) CreateOrUpdate(ctx context.Context, res
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EnvironmentVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body EnvironmentVersionData, options *EnvironmentVersionsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *EnvironmentVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body EnvironmentVersion, options *EnvironmentVersionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/environments/{name}/versions/{version}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -108,7 +108,7 @@ func (client *EnvironmentVersionsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -117,7 +117,7 @@ func (client *EnvironmentVersionsClient) createOrUpdateCreateRequest(ctx context
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *EnvironmentVersionsClient) createOrUpdateHandleResponse(resp *http.Response) (EnvironmentVersionsClientCreateOrUpdateResponse, error) {
 	result := EnvironmentVersionsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentVersionData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentVersion); err != nil {
 		return EnvironmentVersionsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
@@ -125,7 +125,7 @@ func (client *EnvironmentVersionsClient) createOrUpdateHandleResponse(resp *http
 
 // Delete - Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name. This is case-sensitive.
@@ -175,7 +175,7 @@ func (client *EnvironmentVersionsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *EnvironmentVersionsClient) deleteCreateRequest(ctx context.Context
 
 // Get - Get version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name. This is case-sensitive.
@@ -232,7 +232,7 @@ func (client *EnvironmentVersionsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,7 +241,7 @@ func (client *EnvironmentVersionsClient) getCreateRequest(ctx context.Context, r
 // getHandleResponse handles the Get response.
 func (client *EnvironmentVersionsClient) getHandleResponse(resp *http.Response) (EnvironmentVersionsClientGetResponse, error) {
 	result := EnvironmentVersionsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentVersionData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentVersion); err != nil {
 		return EnvironmentVersionsClientGetResponse{}, err
 	}
 	return result, nil
@@ -249,7 +249,7 @@ func (client *EnvironmentVersionsClient) getHandleResponse(resp *http.Response) 
 
 // NewListPager - List versions.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name. This is case-sensitive.
@@ -307,7 +307,7 @@ func (client *EnvironmentVersionsClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.OrderBy != nil {
 		reqQP.Set("$orderBy", *options.OrderBy)
 	}

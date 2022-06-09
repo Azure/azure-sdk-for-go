@@ -19,7 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
@@ -55,30 +54,47 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	return client, nil
 }
 
-// Cancel - Cancels a Job.
+// BeginCancel - Cancels a Job (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // id - The name and identifier for the Job. This is case-sensitive.
-// options - JobsClientCancelOptions contains the optional parameters for the JobsClient.Cancel method.
-func (client *JobsClient) Cancel(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientCancelOptions) (JobsClientCancelResponse, error) {
+// options - JobsClientBeginCancelOptions contains the optional parameters for the JobsClient.BeginCancel method.
+func (client *JobsClient) BeginCancel(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientBeginCancelOptions) (*runtime.Poller[JobsClientCancelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.cancel(ctx, resourceGroupName, workspaceName, id, options)
+		if err != nil {
+			return nil, err
+		}
+		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[JobsClientCancelResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
+	} else {
+		return runtime.NewPollerFromResumeToken[JobsClientCancelResponse](options.ResumeToken, client.pl, nil)
+	}
+}
+
+// Cancel - Cancels a Job (asynchronous).
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-05-01
+func (client *JobsClient) cancel(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientBeginCancelOptions) (*http.Response, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, workspaceName, id, options)
 	if err != nil {
-		return JobsClientCancelResponse{}, err
+		return nil, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return JobsClientCancelResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return JobsClientCancelResponse{}, runtime.NewResponseError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(resp)
 	}
-	return JobsClientCancelResponse{}, nil
+	return resp, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *JobsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientCancelOptions) (*policy.Request, error) {
+func (client *JobsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -101,7 +117,7 @@ func (client *JobsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,13 +125,13 @@ func (client *JobsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 
 // CreateOrUpdate - Creates and executes a Job.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // id - The name and identifier for the Job. This is case-sensitive.
 // body - Job definition object.
 // options - JobsClientCreateOrUpdateOptions contains the optional parameters for the JobsClient.CreateOrUpdate method.
-func (client *JobsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, id string, body JobBaseData, options *JobsClientCreateOrUpdateOptions) (JobsClientCreateOrUpdateResponse, error) {
+func (client *JobsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, id string, body JobBase, options *JobsClientCreateOrUpdateOptions) (JobsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, id, body, options)
 	if err != nil {
 		return JobsClientCreateOrUpdateResponse{}, err
@@ -131,7 +147,7 @@ func (client *JobsClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, id string, body JobBaseData, options *JobsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, id string, body JobBase, options *JobsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/jobs/{id}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -154,7 +170,7 @@ func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -163,7 +179,7 @@ func (client *JobsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *JobsClient) createOrUpdateHandleResponse(resp *http.Response) (JobsClientCreateOrUpdateResponse, error) {
 	result := JobsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.JobBaseData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobBase); err != nil {
 		return JobsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
@@ -171,7 +187,7 @@ func (client *JobsClient) createOrUpdateHandleResponse(resp *http.Response) (Job
 
 // BeginDelete - Deletes a Job (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // id - The name and identifier for the Job. This is case-sensitive.
@@ -190,7 +206,7 @@ func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName str
 
 // Delete - Deletes a Job (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 func (client *JobsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, id, options)
 	if err != nil {
@@ -230,7 +246,7 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,7 +254,7 @@ func (client *JobsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 
 // Get - Gets a Job by name/id.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // id - The name and identifier for the Job. This is case-sensitive.
@@ -282,7 +298,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,7 +307,7 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 // getHandleResponse handles the Get response.
 func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetResponse, error) {
 	result := JobsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.JobBaseData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobBase); err != nil {
 		return JobsClientGetResponse{}, err
 	}
 	return result, nil
@@ -299,7 +315,7 @@ func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetR
 
 // NewListPager - Lists Jobs in the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - JobsClientListOptions contains the optional parameters for the JobsClient.List method.
@@ -351,7 +367,7 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
@@ -363,12 +379,6 @@ func (client *JobsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 	}
 	if options != nil && options.ListViewType != nil {
 		reqQP.Set("listViewType", string(*options.ListViewType))
-	}
-	if options != nil && options.Scheduled != nil {
-		reqQP.Set("scheduled", strconv.FormatBool(*options.Scheduled))
-	}
-	if options != nil && options.ScheduleID != nil {
-		reqQP.Set("scheduleId", *options.ScheduleID)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

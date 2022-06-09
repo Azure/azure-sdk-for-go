@@ -10,7 +10,7 @@ package armmachinelearning
 
 // BatchDeploymentsClientCreateOrUpdateResponse contains the response from method BatchDeploymentsClient.CreateOrUpdate.
 type BatchDeploymentsClientCreateOrUpdateResponse struct {
-	BatchDeploymentData
+	BatchDeployment
 }
 
 // BatchDeploymentsClientDeleteResponse contains the response from method BatchDeploymentsClient.Delete.
@@ -20,7 +20,7 @@ type BatchDeploymentsClientDeleteResponse struct {
 
 // BatchDeploymentsClientGetResponse contains the response from method BatchDeploymentsClient.Get.
 type BatchDeploymentsClientGetResponse struct {
-	BatchDeploymentData
+	BatchDeployment
 }
 
 // BatchDeploymentsClientListResponse contains the response from method BatchDeploymentsClient.List.
@@ -30,12 +30,12 @@ type BatchDeploymentsClientListResponse struct {
 
 // BatchDeploymentsClientUpdateResponse contains the response from method BatchDeploymentsClient.Update.
 type BatchDeploymentsClientUpdateResponse struct {
-	BatchDeploymentData
+	BatchDeployment
 }
 
 // BatchEndpointsClientCreateOrUpdateResponse contains the response from method BatchEndpointsClient.CreateOrUpdate.
 type BatchEndpointsClientCreateOrUpdateResponse struct {
-	BatchEndpointData
+	BatchEndpoint
 }
 
 // BatchEndpointsClientDeleteResponse contains the response from method BatchEndpointsClient.Delete.
@@ -45,7 +45,7 @@ type BatchEndpointsClientDeleteResponse struct {
 
 // BatchEndpointsClientGetResponse contains the response from method BatchEndpointsClient.Get.
 type BatchEndpointsClientGetResponse struct {
-	BatchEndpointData
+	BatchEndpoint
 }
 
 // BatchEndpointsClientListKeysResponse contains the response from method BatchEndpointsClient.ListKeys.
@@ -60,12 +60,12 @@ type BatchEndpointsClientListResponse struct {
 
 // BatchEndpointsClientUpdateResponse contains the response from method BatchEndpointsClient.Update.
 type BatchEndpointsClientUpdateResponse struct {
-	BatchEndpointData
+	BatchEndpoint
 }
 
 // CodeContainersClientCreateOrUpdateResponse contains the response from method CodeContainersClient.CreateOrUpdate.
 type CodeContainersClientCreateOrUpdateResponse struct {
-	CodeContainerData
+	CodeContainer
 }
 
 // CodeContainersClientDeleteResponse contains the response from method CodeContainersClient.Delete.
@@ -75,7 +75,7 @@ type CodeContainersClientDeleteResponse struct {
 
 // CodeContainersClientGetResponse contains the response from method CodeContainersClient.Get.
 type CodeContainersClientGetResponse struct {
-	CodeContainerData
+	CodeContainer
 }
 
 // CodeContainersClientListResponse contains the response from method CodeContainersClient.List.
@@ -85,7 +85,7 @@ type CodeContainersClientListResponse struct {
 
 // CodeVersionsClientCreateOrUpdateResponse contains the response from method CodeVersionsClient.CreateOrUpdate.
 type CodeVersionsClientCreateOrUpdateResponse struct {
-	CodeVersionData
+	CodeVersion
 }
 
 // CodeVersionsClientDeleteResponse contains the response from method CodeVersionsClient.Delete.
@@ -95,7 +95,7 @@ type CodeVersionsClientDeleteResponse struct {
 
 // CodeVersionsClientGetResponse contains the response from method CodeVersionsClient.Get.
 type CodeVersionsClientGetResponse struct {
-	CodeVersionData
+	CodeVersion
 }
 
 // CodeVersionsClientListResponse contains the response from method CodeVersionsClient.List.
@@ -105,7 +105,7 @@ type CodeVersionsClientListResponse struct {
 
 // ComponentContainersClientCreateOrUpdateResponse contains the response from method ComponentContainersClient.CreateOrUpdate.
 type ComponentContainersClientCreateOrUpdateResponse struct {
-	ComponentContainerData
+	ComponentContainer
 }
 
 // ComponentContainersClientDeleteResponse contains the response from method ComponentContainersClient.Delete.
@@ -115,7 +115,7 @@ type ComponentContainersClientDeleteResponse struct {
 
 // ComponentContainersClientGetResponse contains the response from method ComponentContainersClient.Get.
 type ComponentContainersClientGetResponse struct {
-	ComponentContainerData
+	ComponentContainer
 }
 
 // ComponentContainersClientListResponse contains the response from method ComponentContainersClient.List.
@@ -125,7 +125,7 @@ type ComponentContainersClientListResponse struct {
 
 // ComponentVersionsClientCreateOrUpdateResponse contains the response from method ComponentVersionsClient.CreateOrUpdate.
 type ComponentVersionsClientCreateOrUpdateResponse struct {
-	ComponentVersionData
+	ComponentVersion
 }
 
 // ComponentVersionsClientDeleteResponse contains the response from method ComponentVersionsClient.Delete.
@@ -135,7 +135,7 @@ type ComponentVersionsClientDeleteResponse struct {
 
 // ComponentVersionsClientGetResponse contains the response from method ComponentVersionsClient.Get.
 type ComponentVersionsClientGetResponse struct {
-	ComponentVersionData
+	ComponentVersion
 }
 
 // ComponentVersionsClientListResponse contains the response from method ComponentVersionsClient.List.
@@ -205,7 +205,7 @@ type ComputeClientUpdateResponse struct {
 
 // DataContainersClientCreateOrUpdateResponse contains the response from method DataContainersClient.CreateOrUpdate.
 type DataContainersClientCreateOrUpdateResponse struct {
-	DataContainerData
+	DataContainer
 }
 
 // DataContainersClientDeleteResponse contains the response from method DataContainersClient.Delete.
@@ -215,7 +215,7 @@ type DataContainersClientDeleteResponse struct {
 
 // DataContainersClientGetResponse contains the response from method DataContainersClient.Get.
 type DataContainersClientGetResponse struct {
-	DataContainerData
+	DataContainer
 }
 
 // DataContainersClientListResponse contains the response from method DataContainersClient.List.
@@ -225,7 +225,7 @@ type DataContainersClientListResponse struct {
 
 // DataVersionsClientCreateOrUpdateResponse contains the response from method DataVersionsClient.CreateOrUpdate.
 type DataVersionsClientCreateOrUpdateResponse struct {
-	DataVersionBaseData
+	DataVersionBase
 }
 
 // DataVersionsClientDeleteResponse contains the response from method DataVersionsClient.Delete.
@@ -235,7 +235,7 @@ type DataVersionsClientDeleteResponse struct {
 
 // DataVersionsClientGetResponse contains the response from method DataVersionsClient.Get.
 type DataVersionsClientGetResponse struct {
-	DataVersionBaseData
+	DataVersionBase
 }
 
 // DataVersionsClientListResponse contains the response from method DataVersionsClient.List.
@@ -245,7 +245,7 @@ type DataVersionsClientListResponse struct {
 
 // DatastoresClientCreateOrUpdateResponse contains the response from method DatastoresClient.CreateOrUpdate.
 type DatastoresClientCreateOrUpdateResponse struct {
-	DatastoreData
+	Datastore
 }
 
 // DatastoresClientDeleteResponse contains the response from method DatastoresClient.Delete.
@@ -255,7 +255,7 @@ type DatastoresClientDeleteResponse struct {
 
 // DatastoresClientGetResponse contains the response from method DatastoresClient.Get.
 type DatastoresClientGetResponse struct {
-	DatastoreData
+	Datastore
 }
 
 // DatastoresClientListResponse contains the response from method DatastoresClient.List.
@@ -280,7 +280,7 @@ func (d *DatastoresClientListSecretsResponse) UnmarshalJSON(data []byte) error {
 
 // EnvironmentContainersClientCreateOrUpdateResponse contains the response from method EnvironmentContainersClient.CreateOrUpdate.
 type EnvironmentContainersClientCreateOrUpdateResponse struct {
-	EnvironmentContainerData
+	EnvironmentContainer
 }
 
 // EnvironmentContainersClientDeleteResponse contains the response from method EnvironmentContainersClient.Delete.
@@ -290,7 +290,7 @@ type EnvironmentContainersClientDeleteResponse struct {
 
 // EnvironmentContainersClientGetResponse contains the response from method EnvironmentContainersClient.Get.
 type EnvironmentContainersClientGetResponse struct {
-	EnvironmentContainerData
+	EnvironmentContainer
 }
 
 // EnvironmentContainersClientListResponse contains the response from method EnvironmentContainersClient.List.
@@ -300,7 +300,7 @@ type EnvironmentContainersClientListResponse struct {
 
 // EnvironmentVersionsClientCreateOrUpdateResponse contains the response from method EnvironmentVersionsClient.CreateOrUpdate.
 type EnvironmentVersionsClientCreateOrUpdateResponse struct {
-	EnvironmentVersionData
+	EnvironmentVersion
 }
 
 // EnvironmentVersionsClientDeleteResponse contains the response from method EnvironmentVersionsClient.Delete.
@@ -310,7 +310,7 @@ type EnvironmentVersionsClientDeleteResponse struct {
 
 // EnvironmentVersionsClientGetResponse contains the response from method EnvironmentVersionsClient.Get.
 type EnvironmentVersionsClientGetResponse struct {
-	EnvironmentVersionData
+	EnvironmentVersion
 }
 
 // EnvironmentVersionsClientListResponse contains the response from method EnvironmentVersionsClient.List.
@@ -325,7 +325,7 @@ type JobsClientCancelResponse struct {
 
 // JobsClientCreateOrUpdateResponse contains the response from method JobsClient.CreateOrUpdate.
 type JobsClientCreateOrUpdateResponse struct {
-	JobBaseData
+	JobBase
 }
 
 // JobsClientDeleteResponse contains the response from method JobsClient.Delete.
@@ -335,7 +335,7 @@ type JobsClientDeleteResponse struct {
 
 // JobsClientGetResponse contains the response from method JobsClient.Get.
 type JobsClientGetResponse struct {
-	JobBaseData
+	JobBase
 }
 
 // JobsClientListResponse contains the response from method JobsClient.List.
@@ -345,7 +345,7 @@ type JobsClientListResponse struct {
 
 // ModelContainersClientCreateOrUpdateResponse contains the response from method ModelContainersClient.CreateOrUpdate.
 type ModelContainersClientCreateOrUpdateResponse struct {
-	ModelContainerData
+	ModelContainer
 }
 
 // ModelContainersClientDeleteResponse contains the response from method ModelContainersClient.Delete.
@@ -355,7 +355,7 @@ type ModelContainersClientDeleteResponse struct {
 
 // ModelContainersClientGetResponse contains the response from method ModelContainersClient.Get.
 type ModelContainersClientGetResponse struct {
-	ModelContainerData
+	ModelContainer
 }
 
 // ModelContainersClientListResponse contains the response from method ModelContainersClient.List.
@@ -365,7 +365,7 @@ type ModelContainersClientListResponse struct {
 
 // ModelVersionsClientCreateOrUpdateResponse contains the response from method ModelVersionsClient.CreateOrUpdate.
 type ModelVersionsClientCreateOrUpdateResponse struct {
-	ModelVersionData
+	ModelVersion
 }
 
 // ModelVersionsClientDeleteResponse contains the response from method ModelVersionsClient.Delete.
@@ -375,7 +375,7 @@ type ModelVersionsClientDeleteResponse struct {
 
 // ModelVersionsClientGetResponse contains the response from method ModelVersionsClient.Get.
 type ModelVersionsClientGetResponse struct {
-	ModelVersionData
+	ModelVersion
 }
 
 // ModelVersionsClientListResponse contains the response from method ModelVersionsClient.List.
@@ -385,7 +385,7 @@ type ModelVersionsClientListResponse struct {
 
 // OnlineDeploymentsClientCreateOrUpdateResponse contains the response from method OnlineDeploymentsClient.CreateOrUpdate.
 type OnlineDeploymentsClientCreateOrUpdateResponse struct {
-	OnlineDeploymentData
+	OnlineDeployment
 }
 
 // OnlineDeploymentsClientDeleteResponse contains the response from method OnlineDeploymentsClient.Delete.
@@ -400,7 +400,7 @@ type OnlineDeploymentsClientGetLogsResponse struct {
 
 // OnlineDeploymentsClientGetResponse contains the response from method OnlineDeploymentsClient.Get.
 type OnlineDeploymentsClientGetResponse struct {
-	OnlineDeploymentData
+	OnlineDeployment
 }
 
 // OnlineDeploymentsClientListResponse contains the response from method OnlineDeploymentsClient.List.
@@ -415,12 +415,12 @@ type OnlineDeploymentsClientListSKUsResponse struct {
 
 // OnlineDeploymentsClientUpdateResponse contains the response from method OnlineDeploymentsClient.Update.
 type OnlineDeploymentsClientUpdateResponse struct {
-	OnlineDeploymentData
+	OnlineDeployment
 }
 
 // OnlineEndpointsClientCreateOrUpdateResponse contains the response from method OnlineEndpointsClient.CreateOrUpdate.
 type OnlineEndpointsClientCreateOrUpdateResponse struct {
-	OnlineEndpointData
+	OnlineEndpoint
 }
 
 // OnlineEndpointsClientDeleteResponse contains the response from method OnlineEndpointsClient.Delete.
@@ -430,7 +430,7 @@ type OnlineEndpointsClientDeleteResponse struct {
 
 // OnlineEndpointsClientGetResponse contains the response from method OnlineEndpointsClient.Get.
 type OnlineEndpointsClientGetResponse struct {
-	OnlineEndpointData
+	OnlineEndpoint
 }
 
 // OnlineEndpointsClientGetTokenResponse contains the response from method OnlineEndpointsClient.GetToken.
@@ -455,7 +455,7 @@ type OnlineEndpointsClientRegenerateKeysResponse struct {
 
 // OnlineEndpointsClientUpdateResponse contains the response from method OnlineEndpointsClient.Update.
 type OnlineEndpointsClientUpdateResponse struct {
-	OnlineEndpointData
+	OnlineEndpoint
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.
@@ -510,7 +510,7 @@ type VirtualMachineSizesClientListResponse struct {
 
 // WorkspaceConnectionsClientCreateResponse contains the response from method WorkspaceConnectionsClient.Create.
 type WorkspaceConnectionsClientCreateResponse struct {
-	WorkspaceConnection
+	WorkspaceConnectionPropertiesV2BasicResource
 }
 
 // WorkspaceConnectionsClientDeleteResponse contains the response from method WorkspaceConnectionsClient.Delete.
@@ -520,12 +520,12 @@ type WorkspaceConnectionsClientDeleteResponse struct {
 
 // WorkspaceConnectionsClientGetResponse contains the response from method WorkspaceConnectionsClient.Get.
 type WorkspaceConnectionsClientGetResponse struct {
-	WorkspaceConnection
+	WorkspaceConnectionPropertiesV2BasicResource
 }
 
 // WorkspaceConnectionsClientListResponse contains the response from method WorkspaceConnectionsClient.List.
 type WorkspaceConnectionsClientListResponse struct {
-	PaginatedWorkspaceConnectionsList
+	WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult
 }
 
 // WorkspaceFeaturesClientListResponse contains the response from method WorkspaceFeaturesClient.List.

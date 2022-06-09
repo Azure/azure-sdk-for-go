@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchDeployment/list.json
 func ExampleBatchDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleBatchDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchDeployment/delete.json
 func ExampleBatchDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleBatchDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchDeployment/get.json
 func ExampleBatchDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleBatchDeploymentsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchDeployment/update.json
 func ExampleBatchDeploymentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,50 +113,9 @@ func ExampleBatchDeploymentsClient_BeginUpdate() {
 		"my-aml-workspace",
 		"testEndpointName",
 		"testDeploymentName",
-		armmachinelearning.PartialBatchDeploymentPartialTrackedResource{
-			Identity: &armmachinelearning.PartialManagedServiceIdentity{
-				Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-				UserAssignedIdentities: map[string]interface{}{
-					"string": map[string]interface{}{},
-				},
-			},
-			Kind:     to.Ptr("string"),
-			Location: to.Ptr("string"),
+		armmachinelearning.PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties{
 			Properties: &armmachinelearning.PartialBatchDeployment{
 				Description: to.Ptr("string"),
-				CodeConfiguration: &armmachinelearning.PartialCodeConfiguration{
-					CodeID:        to.Ptr("string"),
-					ScoringScript: to.Ptr("string"),
-				},
-				Compute:       to.Ptr("string"),
-				EnvironmentID: to.Ptr("string"),
-				EnvironmentVariables: map[string]*string{
-					"string": to.Ptr("string"),
-				},
-				ErrorThreshold:            to.Ptr[int32](1),
-				LoggingLevel:              to.Ptr(armmachinelearning.BatchLoggingLevelInfo),
-				MaxConcurrencyPerInstance: to.Ptr[int32](1),
-				MiniBatchSize:             to.Ptr[int64](1),
-				Model: &armmachinelearning.PartialIDAssetReference{
-					ReferenceType: to.Ptr(armmachinelearning.ReferenceTypeID),
-					AssetID:       to.Ptr("string"),
-				},
-				OutputAction:   to.Ptr(armmachinelearning.BatchOutputActionSummaryOnly),
-				OutputFileName: to.Ptr("string"),
-				Properties: map[string]*string{
-					"string": to.Ptr("string"),
-				},
-				RetrySettings: &armmachinelearning.PartialBatchRetrySettings{
-					MaxRetries: to.Ptr[int32](1),
-					Timeout:    to.Ptr("PT5M"),
-				},
-			},
-			SKU: &armmachinelearning.PartialSKU{
-				Name:     to.Ptr("string"),
-				Capacity: to.Ptr[int32](1),
-				Family:   to.Ptr("string"),
-				Size:     to.Ptr("string"),
-				Tier:     to.Ptr(armmachinelearning.SKUTierFree),
 			},
 			Tags: map[string]*string{},
 		},
@@ -172,7 +131,7 @@ func ExampleBatchDeploymentsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchDeployment/createOrUpdate.json
 func ExampleBatchDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +147,7 @@ func ExampleBatchDeploymentsClient_BeginCreateOrUpdate() {
 		"my-aml-workspace",
 		"testEndpointName",
 		"testDeploymentName",
-		armmachinelearning.BatchDeploymentData{
+		armmachinelearning.BatchDeployment{
 			Location: to.Ptr("string"),
 			Tags:     map[string]*string{},
 			Identity: &armmachinelearning.ManagedServiceIdentity{
@@ -198,7 +157,7 @@ func ExampleBatchDeploymentsClient_BeginCreateOrUpdate() {
 				},
 			},
 			Kind: to.Ptr("string"),
-			Properties: &armmachinelearning.BatchDeploymentDetails{
+			Properties: &armmachinelearning.BatchDeploymentProperties{
 				Description: to.Ptr("string"),
 				CodeConfiguration: &armmachinelearning.CodeConfiguration{
 					CodeID:        to.Ptr("string"),

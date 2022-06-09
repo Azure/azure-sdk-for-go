@@ -128,7 +128,7 @@ func ExampleReceiver_DeadLetterMessage() {
 }
 
 func ExampleReceiver_GetDeadLetterMessage() {
-	// Create a dead letter reciever
+	// Create a dead letter receiver
 	deadLetterReceiver, err := client.NewReceiverForQueue(
 		"myqueue",
 		&azservicebus.ReceiverOptions{

@@ -362,7 +362,10 @@ func (c *conn) Start() error {
 func (c *conn) Close() error {
 	c.closeMuxOnce.Do(func() { close(c.closeMux) })
 	err := c.Err()
-	if err == ErrConnClosed {
+	var connErr *ConnectionError
+	if errors.As(err, &connErr) && connErr.inner == nil {
+		// an empty ConnectionError means the connection was closed by the caller
+		// or as requested by the peer and no error was provided in the close frame.
 		return nil
 	}
 	return err
@@ -388,6 +391,7 @@ func (c *conn) close() {
 	err := c.net.Close()
 	switch {
 	// conn.err already set
+	// TODO: err info is lost, log it?
 	case c.err != nil:
 
 	// conn.err not set and c.net.Close() returned a non-nil error
@@ -396,7 +400,6 @@ func (c *conn) close() {
 
 	// no errors
 	default:
-		c.err = ErrConnClosed
 	}
 
 	// check rxDone after closing net, otherwise may block
@@ -409,7 +412,7 @@ func (c *conn) close() {
 func (c *conn) Err() error {
 	c.errMu.Lock()
 	defer c.errMu.Unlock()
-	return c.err
+	return &ConnectionError{inner: c.err}
 }
 
 // mux is started in it's own goroutine after initial connection establishment.
@@ -456,8 +459,6 @@ func (c *conn) mux() {
 			case *frames.PerformClose:
 				if body.Error != nil {
 					c.err = body.Error
-				} else {
-					c.err = ErrConnClosed
 				}
 				return
 
@@ -481,7 +482,7 @@ func (c *conn) mux() {
 			case *frames.PerformEnd:
 				session, ok = sessionsByRemoteChannel[fr.Channel]
 				if !ok {
-					c.err = fmt.Errorf("%T: didn't find channel %d in sessionsByRemoteChannel", fr.Body, fr.Channel)
+					c.err = fmt.Errorf("%T: didn't find channel %d in sessionsByRemoteChannel (PerformEnd)", fr.Body, fr.Channel)
 					break
 				}
 				// we MUST remove the remote channel from our map as soon as we receive
@@ -657,7 +658,7 @@ func (c *conn) connReader() {
 		// parse the frame
 		b, ok := buf.Next(bodySize)
 		if !ok {
-			c.connErr <- io.EOF
+			c.connErr <- fmt.Errorf("buffer EOF; requested bytes: %d, actual size: %d", bodySize, buf.Len())
 			return
 		}
 
@@ -703,6 +704,7 @@ func (c *conn) connWriter() {
 	var err error
 	for {
 		if err != nil {
+			debug(1, "connWriter error: %v", err)
 			c.connErr <- err
 			return
 		}
@@ -868,7 +870,7 @@ func (c *conn) readProtoHeader() (protoHeader, error) {
 	case fr := <-c.rxFrame:
 		return p, fmt.Errorf("readProtoHeader: unexpected frame %#v", fr)
 	case <-deadline:
-		return p, ErrTimeout
+		return p, errors.New("amqp: timeout waiting for response")
 	}
 }
 
@@ -1037,7 +1039,7 @@ func (c *conn) readFrame() (frames.Frame, error) {
 	case p := <-c.rxProto:
 		return fr, fmt.Errorf("unexpected protocol header %#v", p)
 	case <-deadline:
-		return fr, ErrTimeout
+		return fr, errors.New("amqp: timeout waiting for response")
 	}
 }
 

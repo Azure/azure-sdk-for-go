@@ -102,6 +102,24 @@ func LinkTargetAddress(addr string) LinkOption {
 	}
 }
 
+// LinkTargetCapabilities sets the target capabilities.
+func LinkTargetCapabilities(capabilities ...string) LinkOption {
+	return func(l *link) error {
+		if l.Target == nil {
+			l.Target = new(frames.Target)
+		}
+
+		// Convert string to symbol
+		symbolCapabilities := make([]encoding.Symbol, len(capabilities))
+		for i, v := range capabilities {
+			symbolCapabilities[i] = encoding.Symbol(v)
+		}
+
+		l.Target.Capabilities = append(l.Target.Capabilities, symbolCapabilities...)
+		return nil
+	}
+}
+
 // LinkAddressDynamic requests a dynamically created address from the server.
 func LinkAddressDynamic() LinkOption {
 	return func(l *link) error {

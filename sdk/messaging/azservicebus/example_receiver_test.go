@@ -89,12 +89,6 @@ func ExampleReceiver_ReceiveMessages() {
 }
 
 func ExampleReceiver_DeadLetterMessage() {
-	// Create a sender client
-	sender, err := client.NewSender("myqueue", nil)
-	if err != nil {
-		panic(err)
-	}
-	defer sender.Close(context.TODO())
 	// Send a message to a queue
 	sbMessage := &azservicebus.Message{
 		Body: []byte("body of message"),

@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Avoid polling when a RELO LRO synchronously terminates.
 
 ### Other Changes
 

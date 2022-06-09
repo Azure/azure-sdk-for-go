@@ -91,6 +91,26 @@ type ComponentFeatureCapabilitiesClientGetResponse struct {
 	ComponentFeatureCapabilities
 }
 
+// ComponentLinkedStorageAccountsClientCreateAndUpdateResponse contains the response from method ComponentLinkedStorageAccountsClient.CreateAndUpdate.
+type ComponentLinkedStorageAccountsClientCreateAndUpdateResponse struct {
+	ComponentLinkedStorageAccounts
+}
+
+// ComponentLinkedStorageAccountsClientDeleteResponse contains the response from method ComponentLinkedStorageAccountsClient.Delete.
+type ComponentLinkedStorageAccountsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ComponentLinkedStorageAccountsClientGetResponse contains the response from method ComponentLinkedStorageAccountsClient.Get.
+type ComponentLinkedStorageAccountsClientGetResponse struct {
+	ComponentLinkedStorageAccounts
+}
+
+// ComponentLinkedStorageAccountsClientUpdateResponse contains the response from method ComponentLinkedStorageAccountsClient.Update.
+type ComponentLinkedStorageAccountsClientUpdateResponse struct {
+	ComponentLinkedStorageAccounts
+}
+
 // ComponentQuotaStatusClientGetResponse contains the response from method ComponentQuotaStatusClient.Get.
 type ComponentQuotaStatusClientGetResponse struct {
 	ComponentQuotaStatus
@@ -187,6 +207,11 @@ type FavoritesClientListResponse struct {
 // FavoritesClientUpdateResponse contains the response from method FavoritesClient.Update.
 type FavoritesClientUpdateResponse struct {
 	ComponentFavorite
+}
+
+// LiveTokenClientGetResponse contains the response from method LiveTokenClient.Get.
+type LiveTokenClientGetResponse struct {
+	LiveTokenResponse
 }
 
 // MyWorkbooksClientCreateOrUpdateResponse contains the response from method MyWorkbooksClient.CreateOrUpdate.
@@ -305,6 +330,31 @@ type WorkItemConfigurationsClientUpdateItemResponse struct {
 	WorkItemConfiguration
 }
 
+// WorkbookTemplatesClientCreateOrUpdateResponse contains the response from method WorkbookTemplatesClient.CreateOrUpdate.
+type WorkbookTemplatesClientCreateOrUpdateResponse struct {
+	WorkbookTemplate
+}
+
+// WorkbookTemplatesClientDeleteResponse contains the response from method WorkbookTemplatesClient.Delete.
+type WorkbookTemplatesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// WorkbookTemplatesClientGetResponse contains the response from method WorkbookTemplatesClient.Get.
+type WorkbookTemplatesClientGetResponse struct {
+	WorkbookTemplate
+}
+
+// WorkbookTemplatesClientListByResourceGroupResponse contains the response from method WorkbookTemplatesClient.ListByResourceGroup.
+type WorkbookTemplatesClientListByResourceGroupResponse struct {
+	WorkbookTemplatesListResult
+}
+
+// WorkbookTemplatesClientUpdateResponse contains the response from method WorkbookTemplatesClient.Update.
+type WorkbookTemplatesClientUpdateResponse struct {
+	WorkbookTemplate
+}
+
 // WorkbooksClientCreateOrUpdateResponse contains the response from method WorkbooksClient.CreateOrUpdate.
 type WorkbooksClientCreateOrUpdateResponse struct {
 	Workbook
@@ -322,6 +372,21 @@ type WorkbooksClientGetResponse struct {
 
 // WorkbooksClientListByResourceGroupResponse contains the response from method WorkbooksClient.ListByResourceGroup.
 type WorkbooksClientListByResourceGroupResponse struct {
+	WorkbooksListResult
+}
+
+// WorkbooksClientListBySubscriptionResponse contains the response from method WorkbooksClient.ListBySubscription.
+type WorkbooksClientListBySubscriptionResponse struct {
+	WorkbooksListResult
+}
+
+// WorkbooksClientRevisionGetResponse contains the response from method WorkbooksClient.RevisionGet.
+type WorkbooksClientRevisionGetResponse struct {
+	Workbook
+}
+
+// WorkbooksClientRevisionsListResponse contains the response from method WorkbooksClient.RevisionsList.
+type WorkbooksClientRevisionsListResponse struct {
 	WorkbooksListResult
 }
 

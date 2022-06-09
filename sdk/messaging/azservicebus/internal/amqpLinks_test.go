@@ -33,19 +33,22 @@ func (pe fakeNetError) Timeout() bool   { return pe.timeout }
 func (pe fakeNetError) Temporary() bool { return pe.temp }
 func (pe fakeNetError) Error() string   { return "Fake but very permanent error" }
 
-func assertFailedLinks(t *testing.T, lwid *LinksWithID, expectedErr error, expectedRPCError error) {
+func assertFailedLinks[T error, T2 error](t *testing.T, lwid *LinksWithID, expectedErr T, expectedRPCError T2) {
 	err := lwid.Sender.Send(context.TODO(), &amqp.Message{
 		Data: [][]byte{
 			{0},
 		},
 	})
+
+	require.True(t, errors.Is(err, expectedErr) || errors.As(err, &expectedErr))
 	require.ErrorIs(t, err, expectedErr)
 
 	_, err = PeekMessages(context.TODO(), lwid.RPC, lwid.Receiver.LinkName(), 0, 1)
-	require.ErrorIs(t, err, expectedRPCError)
+	require.True(t, errors.Is(err, expectedRPCError) || errors.As(err, &expectedRPCError))
 
 	msg, err := lwid.Receiver.Receive(context.TODO())
 	require.ErrorIs(t, err, expectedErr)
+	require.True(t, errors.Is(err, expectedErr) || errors.As(err, &expectedErr))
 	require.Nil(t, msg)
 
 }
@@ -343,7 +346,8 @@ func TestAMQPLinksRetry(t *testing.T) {
 		MaxRetryDelay: time.Millisecond,
 	})
 
-	require.ErrorIs(t, err, &amqp.ConnectionError{})
+	var connErr *amqp.ConnectionError
+	require.ErrorAs(t, err, &connErr)
 	require.EqualValues(t, 3, createLinksCalled)
 }
 

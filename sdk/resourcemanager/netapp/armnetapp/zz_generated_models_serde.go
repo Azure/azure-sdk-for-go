@@ -381,6 +381,18 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type TrackedResource.
+func (t TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", t.ID)
+	populate(objectMap, "location", t.Location)
+	populate(objectMap, "name", t.Name)
+	populate(objectMap, "systemData", t.SystemData)
+	populate(objectMap, "tags", t.Tags)
+	populate(objectMap, "type", t.Type)
+	return json.Marshal(objectMap)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Volume.
 func (v Volume) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -392,18 +404,7 @@ func (v Volume) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "systemData", v.SystemData)
 	populate(objectMap, "tags", v.Tags)
 	populate(objectMap, "type", v.Type)
-	return json.Marshal(objectMap)
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VolumeGroupDetails.
-func (v VolumeGroupDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", v.ID)
-	populate(objectMap, "location", v.Location)
-	populate(objectMap, "name", v.Name)
-	populate(objectMap, "properties", v.Properties)
-	populate(objectMap, "tags", v.Tags)
-	populate(objectMap, "type", v.Type)
+	populate(objectMap, "zones", v.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -473,6 +474,7 @@ func (v VolumeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "defaultGroupQuotaInKiBs", v.DefaultGroupQuotaInKiBs)
 	populate(objectMap, "defaultUserQuotaInKiBs", v.DefaultUserQuotaInKiBs)
 	populate(objectMap, "enableSubvolumes", v.EnableSubvolumes)
+	populate(objectMap, "encrypted", v.Encrypted)
 	populate(objectMap, "encryptionKeySource", v.EncryptionKeySource)
 	populate(objectMap, "exportPolicy", v.ExportPolicy)
 	populate(objectMap, "fileSystemId", v.FileSystemID)
@@ -510,6 +512,26 @@ func (v VolumeProperties) MarshalJSON() ([]byte, error) {
 func (v VolumePropertiesExportPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "rules", v.Rules)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VolumeQuotaRule.
+func (v VolumeQuotaRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "location", v.Location)
+	populate(objectMap, "name", v.Name)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "systemData", v.SystemData)
+	populate(objectMap, "tags", v.Tags)
+	populate(objectMap, "type", v.Type)
+	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VolumeQuotaRulePatch.
+func (v VolumeQuotaRulePatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", v.Properties)
 	return json.Marshal(objectMap)
 }
 

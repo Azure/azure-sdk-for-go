@@ -283,6 +283,31 @@ type VolumeGroupsClientListByNetAppAccountResponse struct {
 	VolumeGroupList
 }
 
+// VolumeQuotaRulesClientCreateResponse contains the response from method VolumeQuotaRulesClient.Create.
+type VolumeQuotaRulesClientCreateResponse struct {
+	VolumeQuotaRule
+}
+
+// VolumeQuotaRulesClientDeleteResponse contains the response from method VolumeQuotaRulesClient.Delete.
+type VolumeQuotaRulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VolumeQuotaRulesClientGetResponse contains the response from method VolumeQuotaRulesClient.Get.
+type VolumeQuotaRulesClientGetResponse struct {
+	VolumeQuotaRule
+}
+
+// VolumeQuotaRulesClientListByVolumeResponse contains the response from method VolumeQuotaRulesClient.ListByVolume.
+type VolumeQuotaRulesClientListByVolumeResponse struct {
+	VolumeQuotaRulesList
+}
+
+// VolumeQuotaRulesClientUpdateResponse contains the response from method VolumeQuotaRulesClient.Update.
+type VolumeQuotaRulesClientUpdateResponse struct {
+	VolumeQuotaRule
+}
+
 // VolumesClientAuthorizeReplicationResponse contains the response from method VolumesClient.AuthorizeReplication.
 type VolumesClientAuthorizeReplicationResponse struct {
 	// placeholder for future response values
@@ -308,9 +333,19 @@ type VolumesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// VolumesClientFinalizeRelocationResponse contains the response from method VolumesClient.FinalizeRelocation.
+type VolumesClientFinalizeRelocationResponse struct {
+	// placeholder for future response values
+}
+
 // VolumesClientGetResponse contains the response from method VolumesClient.Get.
 type VolumesClientGetResponse struct {
 	Volume
+}
+
+// VolumesClientListReplicationsResponse contains the response from method VolumesClient.ListReplications.
+type VolumesClientListReplicationsResponse struct {
+	ListReplications
 }
 
 // VolumesClientListResponse contains the response from method VolumesClient.List.
@@ -328,13 +363,28 @@ type VolumesClientReInitializeReplicationResponse struct {
 	// placeholder for future response values
 }
 
+// VolumesClientRelocateResponse contains the response from method VolumesClient.Relocate.
+type VolumesClientRelocateResponse struct {
+	// placeholder for future response values
+}
+
 // VolumesClientReplicationStatusResponse contains the response from method VolumesClient.ReplicationStatus.
 type VolumesClientReplicationStatusResponse struct {
 	ReplicationStatus
 }
 
+// VolumesClientResetCifsPasswordResponse contains the response from method VolumesClient.ResetCifsPassword.
+type VolumesClientResetCifsPasswordResponse struct {
+	// placeholder for future response values
+}
+
 // VolumesClientResyncReplicationResponse contains the response from method VolumesClient.ResyncReplication.
 type VolumesClientResyncReplicationResponse struct {
+	// placeholder for future response values
+}
+
+// VolumesClientRevertRelocationResponse contains the response from method VolumesClient.RevertRelocation.
+type VolumesClientRevertRelocationResponse struct {
 	// placeholder for future response values
 }
 

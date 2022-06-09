@@ -17,19 +17,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/BackupPolicies_List.json
-func ExampleBackupPoliciesClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/VolumeQuotaRules_List.json
+func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myRG",
-		"account1",
+	pager := client.NewListByVolumePager("myRG",
+		"account-9957",
+		"pool-5210",
+		"volume-6387",
 		nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -43,21 +45,23 @@ func ExampleBackupPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/BackupPolicies_Get.json
-func ExampleBackupPoliciesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/VolumeQuotaRules_Get.json
+func ExampleVolumeQuotaRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
 		"myRG",
-		"account1",
-		"backupPolicyName",
+		"account-9957",
+		"pool-5210",
+		"volume-6387",
+		"rule-0004",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -66,28 +70,29 @@ func ExampleBackupPoliciesClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/BackupPolicies_Create.json
-func ExampleBackupPoliciesClient_BeginCreate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/VolumeQuotaRules_Create.json
+func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreate(ctx,
 		"myRG",
-		"account1",
-		"backupPolicyName",
-		armnetapp.BackupPolicy{
+		"account-9957",
+		"pool-5210",
+		"volume-6387",
+		"rule-0004",
+		armnetapp.VolumeQuotaRule{
 			Location: to.Ptr("westus"),
-			Properties: &armnetapp.BackupPolicyProperties{
-				DailyBackupsToKeep:   to.Ptr[int32](10),
-				Enabled:              to.Ptr(true),
-				MonthlyBackupsToKeep: to.Ptr[int32](10),
-				WeeklyBackupsToKeep:  to.Ptr[int32](10),
+			Properties: &armnetapp.VolumeQuotaRulesProperties{
+				QuotaSizeInKiBs: to.Ptr[int64](100005),
+				QuotaTarget:     to.Ptr("1821"),
+				QuotaType:       to.Ptr(armnetapp.TypeIndividualUserQuota),
 			},
 		},
 		nil)
@@ -102,28 +107,26 @@ func ExampleBackupPoliciesClient_BeginCreate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/BackupPolicies_Update.json
-func ExampleBackupPoliciesClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/VolumeQuotaRules_Update.json
+func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
 		"myRG",
-		"account1",
-		"backupPolicyName",
-		armnetapp.BackupPolicyPatch{
-			Location: to.Ptr("westus"),
-			Properties: &armnetapp.BackupPolicyProperties{
-				DailyBackupsToKeep:   to.Ptr[int32](5),
-				Enabled:              to.Ptr(false),
-				MonthlyBackupsToKeep: to.Ptr[int32](10),
-				WeeklyBackupsToKeep:  to.Ptr[int32](10),
+		"account-9957",
+		"pool-5210",
+		"volume-6387",
+		"rule-0004",
+		armnetapp.VolumeQuotaRulePatch{
+			Properties: &armnetapp.VolumeQuotaRulesProperties{
+				QuotaSizeInKiBs: to.Ptr[int64](100009),
 			},
 		},
 		nil)
@@ -138,21 +141,23 @@ func ExampleBackupPoliciesClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/BackupPolicies_Delete.json
-func ExampleBackupPoliciesClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-01-01/examples/VolumeQuotaRules_Delete.json
+func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetapp.NewBackupPoliciesClient("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
+	client, err := armnetapp.NewVolumeQuotaRulesClient("5275316f-a498-48d6-b324-2cbfdc4311b9", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
-		"resourceGroup",
-		"accountName",
-		"backupPolicyName",
+		"myRG",
+		"account-9957",
+		"pool-5210",
+		"volume-6387",
+		"rule-0004",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

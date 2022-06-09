@@ -10,7 +10,7 @@ package armnetapp
 
 const (
 	moduleName    = "armnetapp"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0"
 )
 
 // ActiveDirectoryStatus - Status of the Active Directory
@@ -186,6 +186,21 @@ func PossibleEnableSubvolumesValues() []EnableSubvolumes {
 	}
 }
 
+// EncryptionKeySource - Source of key used to encrypt data in volume. Possible values (case-insensitive) are: 'Microsoft.NetApp'
+type EncryptionKeySource string
+
+const (
+	// EncryptionKeySourceMicrosoftNetApp - Microsoft-managed key encryption
+	EncryptionKeySourceMicrosoftNetApp EncryptionKeySource = "Microsoft.NetApp"
+)
+
+// PossibleEncryptionKeySourceValues returns the possible values for the EncryptionKeySource const type.
+func PossibleEncryptionKeySourceValues() []EncryptionKeySource {
+	return []EncryptionKeySource{
+		EncryptionKeySourceMicrosoftNetApp,
+	}
+}
+
 // EncryptionType - Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes
 // in it. This value can only be set when creating new pool.
 type EncryptionType string
@@ -287,6 +302,32 @@ func PossibleNetworkFeaturesValues() []NetworkFeatures {
 	}
 }
 
+// ProvisioningState - Gets the status of the VolumeQuotaRule at the time the operation was called.
+type ProvisioningState string
+
+const (
+	ProvisioningStateAccepted  ProvisioningState = "Accepted"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
+	ProvisioningStatePatching  ProvisioningState = "Patching"
+	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateMoving    ProvisioningState = "Moving"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateAccepted,
+		ProvisioningStateCreating,
+		ProvisioningStatePatching,
+		ProvisioningStateDeleting,
+		ProvisioningStateMoving,
+		ProvisioningStateFailed,
+		ProvisioningStateSucceeded,
+	}
+}
+
 // QosType - The qos type of the pool
 type QosType string
 
@@ -376,6 +417,30 @@ func PossibleServiceLevelValues() []ServiceLevel {
 		ServiceLevelStandard,
 		ServiceLevelStandardZRS,
 		ServiceLevelUltra,
+	}
+}
+
+// Type - Type of quota
+type Type string
+
+const (
+	// TypeDefaultGroupQuota - Default group quota
+	TypeDefaultGroupQuota Type = "DefaultGroupQuota"
+	// TypeDefaultUserQuota - Default user quota
+	TypeDefaultUserQuota Type = "DefaultUserQuota"
+	// TypeIndividualGroupQuota - Individual group quota
+	TypeIndividualGroupQuota Type = "IndividualGroupQuota"
+	// TypeIndividualUserQuota - Individual user quota
+	TypeIndividualUserQuota Type = "IndividualUserQuota"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeDefaultGroupQuota,
+		TypeDefaultUserQuota,
+		TypeIndividualGroupQuota,
+		TypeIndividualUserQuota,
 	}
 }
 

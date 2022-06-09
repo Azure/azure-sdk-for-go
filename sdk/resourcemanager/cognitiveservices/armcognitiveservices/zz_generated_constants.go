@@ -10,7 +10,7 @@ package armcognitiveservices
 
 const (
 	moduleName    = "armcognitiveservices"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -75,13 +75,15 @@ func PossibleDeploymentProvisioningStateValues() []DeploymentProvisioningState {
 type DeploymentScaleType string
 
 const (
-	DeploymentScaleTypeManual DeploymentScaleType = "Manual"
+	DeploymentScaleTypeManual   DeploymentScaleType = "Manual"
+	DeploymentScaleTypeStandard DeploymentScaleType = "Standard"
 )
 
 // PossibleDeploymentScaleTypeValues returns the possible values for the DeploymentScaleType const type.
 func PossibleDeploymentScaleTypeValues() []DeploymentScaleType {
 	return []DeploymentScaleType{
 		DeploymentScaleTypeManual,
+		DeploymentScaleTypeStandard,
 	}
 }
 

@@ -8,7 +8,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"io"
 	"math"
 	"net"
 	"net/url"

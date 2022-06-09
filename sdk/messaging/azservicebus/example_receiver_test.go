@@ -132,7 +132,7 @@ func ExampleReceiver_GetDeadLetterMessage() {
 	if err != nil {
 		panic(err)
 	}
-	defer receiver.Close(context.TODO())
+	defer deadLetterReceiver.Close(context.TODO())
 	// Get messages from the dead letter queue
 	deadLettermessages, err := deadLetterReceiver.ReceiveMessages(context.TODO(), 1, nil)
 	if err != nil {

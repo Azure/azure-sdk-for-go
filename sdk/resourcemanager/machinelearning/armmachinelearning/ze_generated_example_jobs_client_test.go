@@ -147,8 +147,8 @@ func ExampleJobsClient_CreateOrUpdate() {
 				EnvironmentVariables: map[string]*string{
 					"string": to.Ptr("string"),
 				},
-				Inputs: map[string]armmachinelearning.JobInput{
-					"string": armmachinelearning.LiteralJobInput{
+				Inputs: map[string]armmachinelearning.JobInputClassification{
+					"string": &armmachinelearning.LiteralJobInput{
 						Description:  to.Ptr("string"),
 						JobInputType: to.Ptr(armmachinelearning.JobInputTypeLiteral),
 						Value:        to.Ptr("string"),
@@ -158,8 +158,8 @@ func ExampleJobsClient_CreateOrUpdate() {
 					JobLimitsType: to.Ptr(armmachinelearning.JobLimitsTypeCommand),
 					Timeout:       to.Ptr("PT5M"),
 				},
-				Outputs: map[string]armmachinelearning.JobOutput{
-					"string": armmachinelearning.URIFileJobOutput{
+				Outputs: map[string]armmachinelearning.JobOutputClassification{
+					"string": &armmachinelearning.URIFileJobOutput{
 						Mode:          to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
 						URI:           to.Ptr("string"),
 						Description:   to.Ptr("string"),

@@ -304,16 +304,18 @@ func (client TicketsClient) GetResponder(resp *http.Response) (result TicketDeta
 	return
 }
 
-// List lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_ or
-// _CreatedDate_ using the $filter parameter. Output will be a paged result with _nextLink_, using which you can
-// retrieve the next set of support tickets. <br/><br/>Support ticket data is available for 18 months after ticket
-// creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
+// List lists all the support tickets for an Azure subscription. You can also filter the support tickets by _Status_,
+// _CreatedDate_, _ServiceId_, and _ProblemClassificationId_ using the $filter parameter. Output will be a paged result
+// with _nextLink_, using which you can retrieve the next set of support tickets. <br/><br/>Support ticket data is
+// available for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data
+// might cause an error.
 // Parameters:
 // top - the number of values to return in the collection. Default is 25 and max is 100.
 // filter - the filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-// more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_ filter can only be used
-// with Equals ('eq') operator. For _CreatedDate_ filter, the supported operators are Greater Than ('gt') and
-// Greater Than or Equals ('ge'). When using both filters, combine them using the logical 'AND'.
+// more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+// _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter,
+// the supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
+// combine them using the logical 'AND'.
 func (client TicketsClient) List(ctx context.Context, top *int32, filter string) (result TicketsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TicketsClient.List")

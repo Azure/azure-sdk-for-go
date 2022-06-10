@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "e7bcafa885ef773c6309d6a8f3a65c5019df413d",
   "readme": "/_/azure-rest-api-specs/specification/labservices/resource-manager/readme.md",
   "tag": "package-2018-10",
   "use": "@microsoft.azure/autorest.go@2.1.187",

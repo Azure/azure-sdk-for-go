@@ -10,7 +10,7 @@ package armstorsimple1200series
 
 const (
 	moduleName    = "armstorsimple1200series"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AlertEmailNotificationStatus - Value indicating whether user/admins will receive emails when an alert condition occurs

@@ -10,7 +10,7 @@ package armdatamigration
 
 const (
 	moduleName    = "armdatamigration"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AuthenticationType - An enumeration of possible authentication types when connecting

@@ -53,8 +53,7 @@ func (client EnterprisePoliciesClient) CreateOrUpdate(ctx context.Context, enter
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("powerplatform.EnterprisePoliciesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -139,8 +138,7 @@ func (client EnterprisePoliciesClient) Delete(ctx context.Context, resourceGroup
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("powerplatform.EnterprisePoliciesClient", "Delete", err.Error())
@@ -226,8 +224,7 @@ func (client EnterprisePoliciesClient) Get(ctx context.Context, enterprisePolicy
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("powerplatform.EnterprisePoliciesClient", "Get", err.Error())
 	}
 
@@ -295,13 +292,13 @@ func (client EnterprisePoliciesClient) GetResponder(resp *http.Response) (result
 // ListByResourceGroup retrieve a list of EnterprisePolicies within a given resource group
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-func (client EnterprisePoliciesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result EnterprisePolicyList, err error) {
+func (client EnterprisePoliciesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result EnterprisePolicyListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EnterprisePoliciesClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.epl.Response.Response != nil {
+				sc = result.epl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -311,11 +308,11 @@ func (client EnterprisePoliciesClient) ListByResourceGroup(ctx context.Context, 
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("powerplatform.EnterprisePoliciesClient", "ListByResourceGroup", err.Error())
 	}
 
+	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -324,14 +321,18 @@ func (client EnterprisePoliciesClient) ListByResourceGroup(ctx context.Context, 
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.epl.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByResourceGroupResponder(resp)
+	result.epl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "ListByResourceGroup", resp, "Failure responding to request")
+		return
+	}
+	if result.epl.hasNextLink() && result.epl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 		return
 	}
 
@@ -376,14 +377,51 @@ func (client EnterprisePoliciesClient) ListByResourceGroupResponder(resp *http.R
 	return
 }
 
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client EnterprisePoliciesClient) listByResourceGroupNextResults(ctx context.Context, lastResults EnterprisePolicyList) (result EnterprisePolicyList, err error) {
+	req, err := lastResults.enterprisePolicyListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client EnterprisePoliciesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result EnterprisePolicyListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterprisePoliciesClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	return
+}
+
 // ListBySubscription retrieve a list of EnterprisePolicies within a subscription
-func (client EnterprisePoliciesClient) ListBySubscription(ctx context.Context) (result EnterprisePolicyList, err error) {
+func (client EnterprisePoliciesClient) ListBySubscription(ctx context.Context) (result EnterprisePolicyListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EnterprisePoliciesClient.ListBySubscription")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.epl.Response.Response != nil {
+				sc = result.epl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -394,6 +432,7 @@ func (client EnterprisePoliciesClient) ListBySubscription(ctx context.Context) (
 		return result, validation.NewError("powerplatform.EnterprisePoliciesClient", "ListBySubscription", err.Error())
 	}
 
+	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "ListBySubscription", nil, "Failure preparing request")
@@ -402,14 +441,18 @@ func (client EnterprisePoliciesClient) ListBySubscription(ctx context.Context) (
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.epl.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "ListBySubscription", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListBySubscriptionResponder(resp)
+	result.epl, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "ListBySubscription", resp, "Failure responding to request")
+		return
+	}
+	if result.epl.hasNextLink() && result.epl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 		return
 	}
 
@@ -453,12 +496,49 @@ func (client EnterprisePoliciesClient) ListBySubscriptionResponder(resp *http.Re
 	return
 }
 
+// listBySubscriptionNextResults retrieves the next set of results, if any.
+func (client EnterprisePoliciesClient) listBySubscriptionNextResults(ctx context.Context, lastResults EnterprisePolicyList) (result EnterprisePolicyList, err error) {
+	req, err := lastResults.enterprisePolicyListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListBySubscriptionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListBySubscriptionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "powerplatform.EnterprisePoliciesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
+func (client EnterprisePoliciesClient) ListBySubscriptionComplete(ctx context.Context) (result EnterprisePolicyListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterprisePoliciesClient.ListBySubscription")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListBySubscription(ctx)
+	return
+}
+
 // Update updates an EnterprisePolicy
 // Parameters:
 // enterprisePolicyName - name of the EnterprisePolicy.
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // parameters - parameters supplied to update EnterprisePolicy.
-func (client EnterprisePoliciesClient) Update(ctx context.Context, enterprisePolicyName string, resourceGroupName string, parameters EnterprisePolicy) (result EnterprisePolicy, err error) {
+func (client EnterprisePoliciesClient) Update(ctx context.Context, enterprisePolicyName string, resourceGroupName string, parameters PatchEnterprisePolicy) (result EnterprisePolicy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EnterprisePoliciesClient.Update")
 		defer func() {
@@ -474,8 +554,7 @@ func (client EnterprisePoliciesClient) Update(ctx context.Context, enterprisePol
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("powerplatform.EnterprisePoliciesClient", "Update", err.Error())
 	}
 
@@ -502,7 +581,7 @@ func (client EnterprisePoliciesClient) Update(ctx context.Context, enterprisePol
 }
 
 // UpdatePreparer prepares the Update request.
-func (client EnterprisePoliciesClient) UpdatePreparer(ctx context.Context, enterprisePolicyName string, resourceGroupName string, parameters EnterprisePolicy) (*http.Request, error) {
+func (client EnterprisePoliciesClient) UpdatePreparer(ctx context.Context, enterprisePolicyName string, resourceGroupName string, parameters PatchEnterprisePolicy) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"enterprisePolicyName": autorest.Encode("path", enterprisePolicyName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),

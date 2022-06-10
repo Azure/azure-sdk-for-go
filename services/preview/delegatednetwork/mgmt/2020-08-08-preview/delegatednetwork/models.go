@@ -105,12 +105,6 @@ type ControllerDetails struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// ControllerDetailsModel controller details
-type ControllerDetailsModel struct {
-	// ID - controller arm resource id
-	ID *string `json:"id,omitempty"`
-}
-
 // ControllerResource represents an instance of a resource.
 type ControllerResource struct {
 	// ID - READ-ONLY; An identifier that represents the resource.
@@ -542,10 +536,10 @@ type DelegatedSubnetProperties struct {
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - READ-ONLY; The current state of dnc delegated subnet resource. Possible values include: 'DelegatedSubnetStateDeleting', 'DelegatedSubnetStateSucceeded', 'DelegatedSubnetStateFailed', 'DelegatedSubnetStateProvisioning'
 	ProvisioningState DelegatedSubnetState `json:"provisioningState,omitempty"`
-	// SubnetDetails - orchestrator details
+	// SubnetDetails - subnet details
 	SubnetDetails *SubnetDetails `json:"subnetDetails,omitempty"`
-	// ControllerDetails - controller details
-	ControllerDetails *ControllerDetailsModel `json:"controllerDetails,omitempty"`
+	// ControllerDetails - Properties of the controller.
+	ControllerDetails *ControllerDetails `json:"controllerDetails,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DelegatedSubnetProperties.
@@ -877,94 +871,101 @@ func NewDelegatedSubnetsPage(cur DelegatedSubnets, getNextPage func(context.Cont
 	}
 }
 
-// ErrorDefinition error definition.
-type ErrorDefinition struct {
-	// Code - READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
-	Code *string `json:"code,omitempty"`
-	// Message - READ-ONLY; Description of the error.
-	Message *string `json:"message,omitempty"`
-	// Details - READ-ONLY; Internal error details.
-	Details *[]ErrorDefinition `json:"details,omitempty"`
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ErrorDefinition.
-func (ed ErrorDefinition) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 
-// ErrorResponse error response.
-type ErrorResponse struct {
-	// Error - Error description
-	Error *ErrorDefinition `json:"error,omitempty"`
+// ErrorDetail the error detail.
+type ErrorDetail struct {
+	// Code - READ-ONLY; The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; The error message.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorDetail `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
-// Operation microsoft.DelegatedNetwork REST API operation definition
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// Error - The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+// Operation details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
+	// Name - READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty"`
-	// Origin - Origin of the operation
-	Origin *string `json:"origin,omitempty"`
-	// IsDataAction - Gets or sets a value indicating whether the operation is a data action or not.
+	// IsDataAction - READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
 	IsDataAction *bool `json:"isDataAction,omitempty"`
-	// Display - Operation properties display
+	// Display - Localized display information for this particular operation.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Properties - Properties of the operation
-	Properties interface{} `json:"properties,omitempty"`
+	// Origin - READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system". Possible values include: 'User', 'System', 'Usersystem'
+	Origin Origin `json:"origin,omitempty"`
+	// ActionType - READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs. Possible values include: 'Internal'
+	ActionType ActionType `json:"actionType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Operation.
 func (o Operation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if o.Origin != nil {
-		objectMap["origin"] = o.Origin
-	}
-	if o.IsDataAction != nil {
-		objectMap["isDataAction"] = o.IsDataAction
-	}
 	if o.Display != nil {
 		objectMap["display"] = o.Display
-	}
-	if o.Properties != nil {
-		objectMap["properties"] = o.Properties
 	}
 	return json.Marshal(objectMap)
 }
 
-// OperationDisplay the object that represents the operation.
+// OperationDisplay localized display information for this particular operation.
 type OperationDisplay struct {
-	// Provider - READ-ONLY; Service provider: Microsoft.DelegatedNetwork.
+	// Provider - READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
 	Provider *string `json:"provider,omitempty"`
-	// Resource - READ-ONLY; Resource on which the operation is performed: controller, etc.
+	// Resource - READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
 	Resource *string `json:"resource,omitempty"`
-	// Operation - READ-ONLY; Operation type: create, get, delete, etc.
+	// Operation - READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual Machine".
 	Operation *string `json:"operation,omitempty"`
-	// Description - READ-ONLY; Friendly description for the operation,
+	// Description - READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string `json:"description,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for OperationDisplay.
-func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 
-// OperationListResult result of request to list controller operations.It contains a list of operations and
-// a URL link to get the next set of results
+// OperationListResult a list of REST API operations supported by an Azure Resource Provider. It contains
+// an URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - READ-ONLY; List of operations supported by the Microsoft.DelegatedNetwork resource provider.
+	// Value - READ-ONLY; List of operations supported by the resource provider
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for OperationListResult.
 func (olr OperationListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if olr.NextLink != nil {
-		objectMap["nextLink"] = olr.NextLink
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -1396,7 +1397,7 @@ type OrchestratorResourceProperties struct {
 	ClusterRootCA *string `json:"clusterRootCA,omitempty"`
 	// APIServerEndpoint - K8s APIServer url
 	APIServerEndpoint *string `json:"apiServerEndpoint,omitempty"`
-	// ControllerDetails - controller details
+	// ControllerDetails - Properties of the controller.
 	ControllerDetails *ControllerDetails `json:"controllerDetails,omitempty"`
 }
 

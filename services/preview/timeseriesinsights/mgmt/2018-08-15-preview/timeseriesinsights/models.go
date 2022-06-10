@@ -2181,6 +2181,12 @@ func (lter *LongTermEnvironmentResource) UnmarshalJSON(body []byte) error {
 
 // LongTermEnvironmentResourceProperties properties of the long-term environment.
 type LongTermEnvironmentResourceProperties struct {
+	// TimeSeriesIDProperties - The list of event properties which will be used to define the environment's time series id.
+	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
+	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
+	StorageConfiguration *LongTermStorageConfigurationOutput `json:"storageConfiguration,omitempty"`
+	// WarmStoreConfiguration - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	WarmStoreConfiguration *WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
 	// DataAccessID - READ-ONLY; An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
 	DataAccessID *uuid.UUID `json:"dataAccessId,omitempty"`
 	// DataAccessFqdn - READ-ONLY; The fully qualified domain name used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
@@ -2191,23 +2197,11 @@ type LongTermEnvironmentResourceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// TimeSeriesIDProperties - The list of event properties which will be used to define the environment's time series id.
-	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
-	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
-	StorageConfiguration *LongTermStorageConfigurationOutput `json:"storageConfiguration,omitempty"`
-	// WarmStoreConfiguration - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
-	WarmStoreConfiguration *WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LongTermEnvironmentResourceProperties.
 func (lterp LongTermEnvironmentResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if lterp.Status != nil {
-		objectMap["status"] = lterp.Status
-	}
-	if lterp.ProvisioningState != "" {
-		objectMap["provisioningState"] = lterp.ProvisioningState
-	}
 	if lterp.TimeSeriesIDProperties != nil {
 		objectMap["timeSeriesIdProperties"] = lterp.TimeSeriesIDProperties
 	}
@@ -2216,6 +2210,12 @@ func (lterp LongTermEnvironmentResourceProperties) MarshalJSON() ([]byte, error)
 	}
 	if lterp.WarmStoreConfiguration != nil {
 		objectMap["warmStoreConfiguration"] = lterp.WarmStoreConfiguration
+	}
+	if lterp.Status != nil {
+		objectMap["status"] = lterp.Status
+	}
+	if lterp.ProvisioningState != "" {
+		objectMap["provisioningState"] = lterp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -3073,10 +3073,6 @@ type StandardEnvironmentResourceProperties struct {
 	DataAccessFqdn *string `json:"dataAccessFqdn,omitempty"`
 	// Status - An object that represents the status of the environment, and its internal state in the Time Series Insights service.
 	Status *EnvironmentStatus `json:"status,omitempty"`
-	// ProvisioningState - Provisioning state of the resource. Possible values include: 'Accepted', 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
-	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// CreationTime - READ-ONLY; The time the resource was created.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for StandardEnvironmentResourceProperties.
@@ -3093,9 +3089,6 @@ func (serp StandardEnvironmentResourceProperties) MarshalJSON() ([]byte, error) 
 	}
 	if serp.Status != nil {
 		objectMap["status"] = serp.Status
-	}
-	if serp.ProvisioningState != "" {
-		objectMap["provisioningState"] = serp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }

@@ -366,8 +366,8 @@ func NewDelegatedControllersPage(cur DelegatedControllers, getNextPage func(cont
 // DelegatedSubnet represents an instance of a orchestrator.
 type DelegatedSubnet struct {
 	autorest.Response `json:"-"`
-	// Properties - Properties of the provision operation request.
-	Properties *DelegatedSubnetProperties `json:"properties,omitempty"`
+	// DelegatedSubnetProperties - Properties of the provision operation request.
+	*DelegatedSubnetProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; An identifier that represents the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource.
@@ -383,8 +383,8 @@ type DelegatedSubnet struct {
 // MarshalJSON is the custom marshaler for DelegatedSubnet.
 func (ds DelegatedSubnet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ds.Properties != nil {
-		objectMap["properties"] = ds.Properties
+	if ds.DelegatedSubnetProperties != nil {
+		objectMap["properties"] = ds.DelegatedSubnetProperties
 	}
 	if ds.Location != nil {
 		objectMap["location"] = ds.Location
@@ -393,6 +393,75 @@ func (ds DelegatedSubnet) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = ds.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DelegatedSubnet struct.
+func (ds *DelegatedSubnet) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var delegatedSubnetProperties DelegatedSubnetProperties
+				err = json.Unmarshal(*v, &delegatedSubnetProperties)
+				if err != nil {
+					return err
+				}
+				ds.DelegatedSubnetProperties = &delegatedSubnetProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ds.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ds.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ds.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ds.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ds.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // DelegatedSubnetProperties properties of delegated subnet

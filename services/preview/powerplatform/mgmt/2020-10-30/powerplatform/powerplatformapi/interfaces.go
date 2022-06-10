@@ -12,21 +12,38 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// AccountsClientAPI contains the set of methods on the AccountsClient type.
+type AccountsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, accountName string, resourceGroupName string, parameters powerplatform.Account) (result powerplatform.Account, err error)
+	Delete(ctx context.Context, accountName string, resourceGroupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, accountName string, resourceGroupName string) (result powerplatform.Account, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result powerplatform.AccountListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result powerplatform.AccountListIterator, err error)
+	ListBySubscription(ctx context.Context) (result powerplatform.AccountListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result powerplatform.AccountListIterator, err error)
+	Update(ctx context.Context, accountName string, resourceGroupName string, parameters powerplatform.PatchAccount) (result powerplatform.Account, err error)
+}
+
+var _ AccountsClientAPI = (*powerplatform.AccountsClient)(nil)
+
 // EnterprisePoliciesClientAPI contains the set of methods on the EnterprisePoliciesClient type.
 type EnterprisePoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, enterprisePolicyName string, resourceGroupName string, parameters powerplatform.EnterprisePolicy) (result powerplatform.EnterprisePolicy, err error)
 	Delete(ctx context.Context, resourceGroupName string, enterprisePolicyName string) (result autorest.Response, err error)
 	Get(ctx context.Context, enterprisePolicyName string, resourceGroupName string) (result powerplatform.EnterprisePolicy, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result powerplatform.EnterprisePolicyList, err error)
-	ListBySubscription(ctx context.Context) (result powerplatform.EnterprisePolicyList, err error)
-	Update(ctx context.Context, enterprisePolicyName string, resourceGroupName string, parameters powerplatform.EnterprisePolicy) (result powerplatform.EnterprisePolicy, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result powerplatform.EnterprisePolicyListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result powerplatform.EnterprisePolicyListIterator, err error)
+	ListBySubscription(ctx context.Context) (result powerplatform.EnterprisePolicyListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result powerplatform.EnterprisePolicyListIterator, err error)
+	Update(ctx context.Context, enterprisePolicyName string, resourceGroupName string, parameters powerplatform.PatchEnterprisePolicy) (result powerplatform.EnterprisePolicy, err error)
 }
 
 var _ EnterprisePoliciesClientAPI = (*powerplatform.EnterprisePoliciesClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
-	List(ctx context.Context) (result powerplatform.OperationList, err error)
+	List(ctx context.Context) (result powerplatform.OperationListResultPage, err error)
+	ListComplete(ctx context.Context) (result powerplatform.OperationListResultIterator, err error)
 }
 
 var _ OperationsClientAPI = (*powerplatform.OperationsClient)(nil)
@@ -48,12 +65,3 @@ type PrivateLinkResourcesClientAPI interface {
 }
 
 var _ PrivateLinkResourcesClientAPI = (*powerplatform.PrivateLinkResourcesClient)(nil)
-
-// SubnetsClientAPI contains the set of methods on the SubnetsClient type.
-type SubnetsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, enterprisePolicyName string, subnetName string) (result powerplatform.Subnet, err error)
-	Get(ctx context.Context, resourceGroupName string, enterprisePolicyName string, subnetName string) (result powerplatform.Subnet, err error)
-	ListByEnterprisePolicy(ctx context.Context, resourceGroupName string, enterprisePolicyName string) (result powerplatform.SubnetListResult, err error)
-}
-
-var _ SubnetsClientAPI = (*powerplatform.SubnetsClient)(nil)

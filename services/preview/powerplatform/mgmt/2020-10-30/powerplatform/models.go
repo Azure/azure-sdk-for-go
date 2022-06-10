@@ -12,28 +12,332 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/powerplatform/mgmt/2020-10-30/powerplatform"
 
+// Account definition of the account.
+type Account struct {
+	autorest.Response `json:"-"`
+	// AccountProperties - The properties that define configuration for the account.
+	*AccountProperties `json:"properties,omitempty"`
+	// SystemData - Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Account.
+func (a Account) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.AccountProperties != nil {
+		objectMap["properties"] = a.AccountProperties
+	}
+	if a.SystemData != nil {
+		objectMap["systemData"] = a.SystemData
+	}
+	if a.Tags != nil {
+		objectMap["tags"] = a.Tags
+	}
+	if a.Location != nil {
+		objectMap["location"] = a.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Account struct.
+func (a *Account) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var accountProperties AccountProperties
+				err = json.Unmarshal(*v, &accountProperties)
+				if err != nil {
+					return err
+				}
+				a.AccountProperties = &accountProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				a.SystemData = &systemData
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				a.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				a.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AccountList the response of the list accounts operation.
+type AccountList struct {
+	autorest.Response `json:"-"`
+	// Value - Result of the list accounts operation.
+	Value *[]Account `json:"value,omitempty"`
+	// NextLink - Next page link if any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AccountListIterator provides access to a complete listing of Account values.
+type AccountListIterator struct {
+	i    int
+	page AccountListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AccountListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AccountListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AccountListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AccountListIterator) Response() AccountList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AccountListIterator) Value() Account {
+	if !iter.page.NotDone() {
+		return Account{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AccountListIterator type.
+func NewAccountListIterator(page AccountListPage) AccountListIterator {
+	return AccountListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (al AccountList) IsEmpty() bool {
+	return al.Value == nil || len(*al.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (al AccountList) hasNextLink() bool {
+	return al.NextLink != nil && len(*al.NextLink) != 0
+}
+
+// accountListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (al AccountList) accountListPreparer(ctx context.Context) (*http.Request, error) {
+	if !al.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(al.NextLink)))
+}
+
+// AccountListPage contains a page of Account values.
+type AccountListPage struct {
+	fn func(context.Context, AccountList) (AccountList, error)
+	al AccountList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AccountListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.al)
+		if err != nil {
+			return err
+		}
+		page.al = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AccountListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AccountListPage) NotDone() bool {
+	return !page.al.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AccountListPage) Response() AccountList {
+	return page.al
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AccountListPage) Values() []Account {
+	if page.al.IsEmpty() {
+		return nil
+	}
+	return *page.al.Value
+}
+
+// Creates a new instance of the AccountListPage type.
+func NewAccountListPage(cur AccountList, getNextPage func(context.Context, AccountList) (AccountList, error)) AccountListPage {
+	return AccountListPage{
+		fn: getNextPage,
+		al: cur,
+	}
+}
+
+// AccountProperties the properties that define configuration for the account.
+type AccountProperties struct {
+	// Description - The description of the account.
+	Description *string `json:"description,omitempty"`
+}
+
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
+type AzureEntityResource struct {
+	// Etag - READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // EnterprisePolicy definition of the EnterprisePolicy.
 type EnterprisePolicy struct {
 	autorest.Response `json:"-"`
 	// Identity - The identity of the EnterprisePolicy.
 	Identity *EnterprisePolicyIdentity `json:"identity,omitempty"`
+	// Kind - The kind (type) of Enterprise Policy. Possible values include: 'EnterprisePolicyKindLockbox', 'EnterprisePolicyKindPrivateEndpoint', 'EnterprisePolicyKindEncryption', 'EnterprisePolicyKindNetworkInjection'
+	Kind EnterprisePolicyKind `json:"kind,omitempty"`
 	// Properties - The properties that define configuration for the enterprise policy
 	*Properties `json:"properties,omitempty"`
+	// SystemData - Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; ARM resource id of the EnterprisePolicy.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the EnterprisePolicy.
-	Name *string `json:"name,omitempty"`
-	// Location - READ-ONLY; Region where the EnterprisePolicy is located.
+	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -43,11 +347,20 @@ func (ep EnterprisePolicy) MarshalJSON() ([]byte, error) {
 	if ep.Identity != nil {
 		objectMap["identity"] = ep.Identity
 	}
+	if ep.Kind != "" {
+		objectMap["kind"] = ep.Kind
+	}
 	if ep.Properties != nil {
 		objectMap["properties"] = ep.Properties
 	}
+	if ep.SystemData != nil {
+		objectMap["systemData"] = ep.SystemData
+	}
 	if ep.Tags != nil {
 		objectMap["tags"] = ep.Tags
+	}
+	if ep.Location != nil {
+		objectMap["location"] = ep.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -70,6 +383,15 @@ func (ep *EnterprisePolicy) UnmarshalJSON(body []byte) error {
 				}
 				ep.Identity = &identity
 			}
+		case "kind":
+			if v != nil {
+				var kind EnterprisePolicyKind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ep.Kind = kind
+			}
 		case "properties":
 			if v != nil {
 				var properties Properties
@@ -79,6 +401,15 @@ func (ep *EnterprisePolicy) UnmarshalJSON(body []byte) error {
 				}
 				ep.Properties = &properties
 			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				ep.SystemData = &systemData
+			}
 		case "tags":
 			if v != nil {
 				var tags map[string]*string
@@ -87,6 +418,15 @@ func (ep *EnterprisePolicy) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ep.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ep.Location = &location
 			}
 		case "id":
 			if v != nil {
@@ -105,15 +445,6 @@ func (ep *EnterprisePolicy) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ep.Name = &name
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				ep.Location = &location
 			}
 		case "type":
 			if v != nil {
@@ -154,22 +485,199 @@ type EnterprisePolicyList struct {
 	autorest.Response `json:"-"`
 	// Value - Result of the list EnterprisePolicy operation.
 	Value *[]EnterprisePolicy `json:"value,omitempty"`
+	// NextLink - Next page link if any.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ErrorResponse ARM error response body.
-type ErrorResponse struct {
-	// Error - Details about the error.
-	Error *ErrorResponseBody `json:"error,omitempty"`
+// EnterprisePolicyListIterator provides access to a complete listing of EnterprisePolicy values.
+type EnterprisePolicyListIterator struct {
+	i    int
+	page EnterprisePolicyListPage
 }
 
-// ErrorResponseBody an error response from the PowerPlatform service.
-type ErrorResponseBody struct {
-	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *EnterprisePolicyListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterprisePolicyListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *EnterprisePolicyListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter EnterprisePolicyListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter EnterprisePolicyListIterator) Response() EnterprisePolicyList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter EnterprisePolicyListIterator) Value() EnterprisePolicy {
+	if !iter.page.NotDone() {
+		return EnterprisePolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the EnterprisePolicyListIterator type.
+func NewEnterprisePolicyListIterator(page EnterprisePolicyListPage) EnterprisePolicyListIterator {
+	return EnterprisePolicyListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (epl EnterprisePolicyList) IsEmpty() bool {
+	return epl.Value == nil || len(*epl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (epl EnterprisePolicyList) hasNextLink() bool {
+	return epl.NextLink != nil && len(*epl.NextLink) != 0
+}
+
+// enterprisePolicyListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (epl EnterprisePolicyList) enterprisePolicyListPreparer(ctx context.Context) (*http.Request, error) {
+	if !epl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(epl.NextLink)))
+}
+
+// EnterprisePolicyListPage contains a page of EnterprisePolicy values.
+type EnterprisePolicyListPage struct {
+	fn  func(context.Context, EnterprisePolicyList) (EnterprisePolicyList, error)
+	epl EnterprisePolicyList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *EnterprisePolicyListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EnterprisePolicyListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.epl)
+		if err != nil {
+			return err
+		}
+		page.epl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *EnterprisePolicyListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page EnterprisePolicyListPage) NotDone() bool {
+	return !page.epl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page EnterprisePolicyListPage) Response() EnterprisePolicyList {
+	return page.epl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page EnterprisePolicyListPage) Values() []EnterprisePolicy {
+	if page.epl.IsEmpty() {
+		return nil
+	}
+	return *page.epl.Value
+}
+
+// Creates a new instance of the EnterprisePolicyListPage type.
+func NewEnterprisePolicyListPage(cur EnterprisePolicyList, getNextPage func(context.Context, EnterprisePolicyList) (EnterprisePolicyList, error)) EnterprisePolicyListPage {
+	return EnterprisePolicyListPage{
+		fn:  getNextPage,
+		epl: cur,
+	}
+}
+
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorDetail the error detail.
+type ErrorDetail struct {
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error. For example, the name of the property in error.
+	// Target - READ-ONLY; The error target.
 	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorDetail `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// Error - The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // KeyProperties url and version of the KeyVault Secret
@@ -186,42 +694,253 @@ type KeyVaultProperties struct {
 	ID *string `json:"id,omitempty"`
 	// Key - Identity of the secret that includes name and version.
 	Key *KeyProperties `json:"key,omitempty"`
-	// Status - The state of onboarding, which only appears in the response. Possible values include: 'Enabled', 'Disabled', 'NotConfigured'
-	Status Status `json:"status,omitempty"`
 }
 
-// Operation powerPlatform REST API operation
+// Operation details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Name - Operation name: For ex. providers/Microsoft.PowerPlatform/enterprisePolicies/write or read
+	// Name - READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty"`
-	// IsDataAction - Indicates whether the operation is a data action
-	IsDataAction *string `json:"isDataAction,omitempty"`
-	// Display - Provider, Resource, Operation and description values.
+	// IsDataAction - READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+	// Display - Localized display information for this particular operation.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// OperationProperties - Provider, Resource, Operation and description values.
-	*OperationProperties `json:"properties,omitempty"`
+	// Origin - READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system". Possible values include: 'OriginUser', 'OriginSystem', 'OriginUsersystem'
+	Origin Origin `json:"origin,omitempty"`
+	// ActionType - READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs. Possible values include: 'Internal'
+	ActionType ActionType `json:"actionType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Operation.
 func (o Operation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if o.Name != nil {
-		objectMap["name"] = o.Name
-	}
-	if o.IsDataAction != nil {
-		objectMap["isDataAction"] = o.IsDataAction
-	}
 	if o.Display != nil {
 		objectMap["display"] = o.Display
-	}
-	if o.OperationProperties != nil {
-		objectMap["properties"] = o.OperationProperties
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for Operation struct.
-func (o *Operation) UnmarshalJSON(body []byte) error {
+// OperationDisplay localized display information for this particular operation.
+type OperationDisplay struct {
+	// Provider - READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+	Provider *string `json:"provider,omitempty"`
+	// Resource - READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+	Resource *string `json:"resource,omitempty"`
+	// Operation - READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual Machine".
+	Operation *string `json:"operation,omitempty"`
+	// Description - READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// OperationListResult a list of REST API operations supported by an Azure Resource Provider. It contains
+// an URL link to get the next set of results.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of operations supported by the resource provider
+	Value *[]Operation `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// OperationListResultIterator provides access to a complete listing of Operation values.
+type OperationListResultIterator struct {
+	i    int
+	page OperationListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter OperationListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter OperationListResultIterator) Response() OperationListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter OperationListResultIterator) Value() Operation {
+	if !iter.page.NotDone() {
+		return Operation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (olr OperationListResult) IsEmpty() bool {
+	return olr.Value == nil || len(*olr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
+// operationListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !olr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(olr.NextLink)))
+}
+
+// OperationListResultPage contains a page of Operation values.
+type OperationListResultPage struct {
+	fn  func(context.Context, OperationListResult) (OperationListResult, error)
+	olr OperationListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page OperationListResultPage) NotDone() bool {
+	return !page.olr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page OperationListResultPage) Response() OperationListResult {
+	return page.olr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page OperationListResultPage) Values() []Operation {
+	if page.olr.IsEmpty() {
+		return nil
+	}
+	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
+}
+
+// PatchAccount definition of the account.
+type PatchAccount struct {
+	// AccountProperties - The properties that define configuration for the account.
+	*AccountProperties `json:"properties,omitempty"`
+	// SystemData - Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PatchAccount.
+func (pa PatchAccount) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pa.AccountProperties != nil {
+		objectMap["properties"] = pa.AccountProperties
+	}
+	if pa.SystemData != nil {
+		objectMap["systemData"] = pa.SystemData
+	}
+	if pa.Tags != nil {
+		objectMap["tags"] = pa.Tags
+	}
+	if pa.Location != nil {
+		objectMap["location"] = pa.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PatchAccount struct.
+func (pa *PatchAccount) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -229,6 +948,51 @@ func (o *Operation) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "properties":
+			if v != nil {
+				var accountProperties AccountProperties
+				err = json.Unmarshal(*v, &accountProperties)
+				if err != nil {
+					return err
+				}
+				pa.AccountProperties = &accountProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pa.SystemData = &systemData
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				pa.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				pa.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pa.ID = &ID
+			}
 		case "name":
 			if v != nil {
 				var name string
@@ -236,34 +1000,16 @@ func (o *Operation) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				o.Name = &name
+				pa.Name = &name
 			}
-		case "isDataAction":
+		case "type":
 			if v != nil {
-				var isDataAction string
-				err = json.Unmarshal(*v, &isDataAction)
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
 				}
-				o.IsDataAction = &isDataAction
-			}
-		case "display":
-			if v != nil {
-				var display OperationDisplay
-				err = json.Unmarshal(*v, &display)
-				if err != nil {
-					return err
-				}
-				o.Display = &display
-			}
-		case "properties":
-			if v != nil {
-				var operationProperties OperationProperties
-				err = json.Unmarshal(*v, &operationProperties)
-				if err != nil {
-					return err
-				}
-				o.OperationProperties = &operationProperties
+				pa.Type = &typeVar
 			}
 		}
 	}
@@ -271,29 +1017,173 @@ func (o *Operation) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// OperationDisplay provider, Resource, Operation and description values.
-type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.PowerPlatform
-	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
-	// Description - Description about operation.
-	Description *string `json:"description,omitempty"`
+// PatchEnterprisePolicy definition of the EnterprisePolicy.
+type PatchEnterprisePolicy struct {
+	// Identity - The identity of the EnterprisePolicy.
+	Identity *EnterprisePolicyIdentity `json:"identity,omitempty"`
+	// Kind - The kind (type) of Enterprise Policy. Possible values include: 'EnterprisePolicyKindLockbox', 'EnterprisePolicyKindPrivateEndpoint', 'EnterprisePolicyKindEncryption', 'EnterprisePolicyKindNetworkInjection'
+	Kind EnterprisePolicyKind `json:"kind,omitempty"`
+	// Properties - The properties that define configuration for the enterprise policy
+	*Properties `json:"properties,omitempty"`
+	// SystemData - Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
 }
 
-// OperationList the response model for the list of PowerPlatform operations
-type OperationList struct {
-	autorest.Response `json:"-"`
-	// Value - List of PowerPlatform operations supported by the PowerPlatform resource provider.
-	Value *[]Operation `json:"value,omitempty"`
+// MarshalJSON is the custom marshaler for PatchEnterprisePolicy.
+func (pep PatchEnterprisePolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pep.Identity != nil {
+		objectMap["identity"] = pep.Identity
+	}
+	if pep.Kind != "" {
+		objectMap["kind"] = pep.Kind
+	}
+	if pep.Properties != nil {
+		objectMap["properties"] = pep.Properties
+	}
+	if pep.SystemData != nil {
+		objectMap["systemData"] = pep.SystemData
+	}
+	if pep.Tags != nil {
+		objectMap["tags"] = pep.Tags
+	}
+	if pep.Location != nil {
+		objectMap["location"] = pep.Location
+	}
+	return json.Marshal(objectMap)
 }
 
-// OperationProperties provider, Resource, Operation and description values.
-type OperationProperties struct {
-	// StatusCode - Service provider: Microsoft.PowerPlatform
-	StatusCode *string `json:"statusCode,omitempty"`
+// UnmarshalJSON is the custom unmarshaler for PatchEnterprisePolicy struct.
+func (pep *PatchEnterprisePolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity EnterprisePolicyIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				pep.Identity = &identity
+			}
+		case "kind":
+			if v != nil {
+				var kind EnterprisePolicyKind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				pep.Kind = kind
+			}
+		case "properties":
+			if v != nil {
+				var properties Properties
+				err = json.Unmarshal(*v, &properties)
+				if err != nil {
+					return err
+				}
+				pep.Properties = &properties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pep.SystemData = &systemData
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				pep.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				pep.Location = &location
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pep.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pep.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pep.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PatchTrackedResource the resource model definition for an Azure Resource Manager tracked top level
+// resource which has 'tags' and a 'location'
+type PatchTrackedResource struct {
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PatchTrackedResource.
+func (ptr PatchTrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ptr.Tags != nil {
+		objectMap["tags"] = ptr.Tags
+	}
+	if ptr.Location != nil {
+		objectMap["location"] = ptr.Location
+	}
+	return json.Marshal(objectMap)
 }
 
 // PrivateEndpoint the Private Endpoint resource.
@@ -313,13 +1203,13 @@ type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
 	// PrivateEndpointConnectionProperties - Resource properties.
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; ARM resource id of the EnterprisePolicy.
+	// SystemData - Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the EnterprisePolicy.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Location - READ-ONLY; Region where the EnterprisePolicy is located.
-	Location *string `json:"location,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -328,6 +1218,9 @@ func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if pec.PrivateEndpointConnectionProperties != nil {
 		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	if pec.SystemData != nil {
+		objectMap["systemData"] = pec.SystemData
 	}
 	return json.Marshal(objectMap)
 }
@@ -350,6 +1243,15 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 				}
 				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
 			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pec.SystemData = &systemData
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -367,15 +1269,6 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pec.Name = &name
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				pec.Location = &location
 			}
 		case "type":
 			if v != nil {
@@ -494,13 +1387,11 @@ type PrivateLinkResource struct {
 	autorest.Response `json:"-"`
 	// PrivateLinkResourceProperties - Resource properties.
 	*PrivateLinkResourceProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; ARM resource id of the EnterprisePolicy.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the EnterprisePolicy.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Location - READ-ONLY; Region where the EnterprisePolicy is located.
-	Location *string `json:"location,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -549,15 +1440,6 @@ func (plr *PrivateLinkResource) UnmarshalJSON(body []byte) error {
 				}
 				plr.Name = &name
 			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				plr.Location = &location
-			}
 		case "type":
 			if v != nil {
 				var typeVar string
@@ -586,15 +1468,15 @@ type PrivateLinkResourceProperties struct {
 	GroupID *string `json:"groupId,omitempty"`
 	// RequiredMembers - READ-ONLY; The private link resource required member names.
 	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
-	// SystemData - Metadata for the private link resource.
-	SystemData *SystemData `json:"systemData,omitempty"`
+	// RequiredZoneNames - The private link resource Private link DNS zone name.
+	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
 func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if plrp.SystemData != nil {
-		objectMap["systemData"] = plrp.SystemData
+	if plrp.RequiredZoneNames != nil {
+		objectMap["requiredZoneNames"] = plrp.RequiredZoneNames
 	}
 	return json.Marshal(objectMap)
 }
@@ -616,31 +1498,38 @@ type Properties struct {
 	Lockbox *PropertiesLockbox `json:"lockbox,omitempty"`
 	// Encryption - The encryption settings for a configuration store.
 	Encryption *PropertiesEncryption `json:"encryption,omitempty"`
-	// SystemData - Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty"`
+	// NetworkInjection - Settings concerning network injection.
+	NetworkInjection *PropertiesNetworkInjection `json:"networkInjection,omitempty"`
 }
 
 // PropertiesEncryption the encryption settings for a configuration store.
 type PropertiesEncryption struct {
-	// KeyVaultProperties - Key vault properties.
-	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	// KeyVault - Key vault properties.
+	KeyVault *KeyVaultProperties `json:"keyVault,omitempty"`
+	// State - The state of onboarding, which only appears in the response. Possible values include: 'Enabled', 'Disabled', 'NotConfigured'
+	State State `json:"state,omitempty"`
 }
 
 // PropertiesLockbox settings concerning lockbox.
 type PropertiesLockbox struct {
-	// Status - lockbox configuration. Possible values include: 'Enabled', 'Disabled', 'NotConfigured'
-	Status Status `json:"status,omitempty"`
+	// State - lockbox configuration. Possible values include: 'Enabled', 'Disabled', 'NotConfigured'
+	State State `json:"state,omitempty"`
 }
 
-// ProxyResource ARM proxy resource.
+// PropertiesNetworkInjection settings concerning network injection.
+type PropertiesNetworkInjection struct {
+	// VirtualNetworks - Network injection configuration
+	VirtualNetworks *VirtualNetworkPropertiesList `json:"virtualNetworks,omitempty"`
+}
+
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
-	// ID - READ-ONLY; ARM resource id of the EnterprisePolicy.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the EnterprisePolicy.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Location - READ-ONLY; Region where the EnterprisePolicy is located.
-	Location *string `json:"location,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -650,15 +1539,13 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Resource the core properties of ARM resources
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; ARM resource id of the EnterprisePolicy.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the EnterprisePolicy.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Location - READ-ONLY; Region where the EnterprisePolicy is located.
-	Location *string `json:"location,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -668,111 +1555,10 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Subnet a subnet
-type Subnet struct {
-	autorest.Response `json:"-"`
-	// SubnetProperties - Resource properties.
-	*SubnetProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; ARM resource id of the EnterprisePolicy.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the EnterprisePolicy.
-	Name *string `json:"name,omitempty"`
-	// Location - READ-ONLY; Region where the EnterprisePolicy is located.
-	Location *string `json:"location,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Subnet.
-func (s Subnet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if s.SubnetProperties != nil {
-		objectMap["properties"] = s.SubnetProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for Subnet struct.
-func (s *Subnet) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var subnetProperties SubnetProperties
-				err = json.Unmarshal(*v, &subnetProperties)
-				if err != nil {
-					return err
-				}
-				s.SubnetProperties = &subnetProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				s.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				s.Name = &name
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				s.Location = &location
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				s.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// SubnetEndpointProperty endpoint of the subnet.
-type SubnetEndpointProperty struct {
-	// ID - Resource id of the subnet.
-	ID *string `json:"id,omitempty"`
-}
-
-// SubnetListResult a list of subnets
-type SubnetListResult struct {
-	autorest.Response `json:"-"`
-	// Value - Array of subnets
-	Value *[]Subnet `json:"value,omitempty"`
-}
-
 // SubnetProperties properties of a subnet.
 type SubnetProperties struct {
-	// Subnet - Endpoint of the subnet.
-	Subnet *SubnetEndpointProperty `json:"subnet,omitempty"`
-	// Status - Connection State of the subnet. Possible values include: 'Enabled', 'Disabled', 'NotConfigured'
-	Status Status `json:"status,omitempty"`
-	// SystemData - Metadata for the subnet.
-	SystemData *SystemData `json:"systemData,omitempty"`
+	// Name - Subnet name.
+	Name *string `json:"name,omitempty"`
 }
 
 // SystemData metadata pertaining to creation and last modification of the resource.
@@ -787,21 +1573,22 @@ type SystemData struct {
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
-	// LastModifiedAt - The type of identity that last modified the resource.
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; ARM resource id of the EnterprisePolicy.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the EnterprisePolicy.
-	Name *string `json:"name,omitempty"`
-	// Location - READ-ONLY; Region where the EnterprisePolicy is located.
+	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -811,5 +1598,24 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
 	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
 	return json.Marshal(objectMap)
+}
+
+// VirtualNetworkProperties settings concerning the virtual network.
+type VirtualNetworkProperties struct {
+	// ID - Uri of the virtual network.
+	ID *string `json:"id,omitempty"`
+	// Subnet - Properties of a subnet.
+	Subnet *SubnetProperties `json:"subnet,omitempty"`
+}
+
+// VirtualNetworkPropertiesList a list of private link resources
+type VirtualNetworkPropertiesList struct {
+	// Value - Array of virtual networks.
+	Value *[]VirtualNetworkProperties `json:"value,omitempty"`
+	// NextLink - Next page link if any.
+	NextLink *string `json:"nextLink,omitempty"`
 }

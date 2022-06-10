@@ -646,7 +646,7 @@ func (client *VolumesClient) listHandleResponse(resp *http.Response) (VolumesCli
 	return result, nil
 }
 
-// ListReplications - List all replications for a specified volume
+// NewListReplicationsPager - List all replications for a specified volume
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2022-01-01
 // resourceGroupName - The name of the resource group.
@@ -655,19 +655,26 @@ func (client *VolumesClient) listHandleResponse(resp *http.Response) (VolumesCli
 // volumeName - The name of the volume
 // options - VolumesClientListReplicationsOptions contains the optional parameters for the VolumesClient.ListReplications
 // method.
-func (client *VolumesClient) ListReplications(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientListReplicationsOptions) (VolumesClientListReplicationsResponse, error) {
-	req, err := client.listReplicationsCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-	if err != nil {
-		return VolumesClientListReplicationsResponse{}, err
-	}
-	resp, err := client.pl.Do(req)
-	if err != nil {
-		return VolumesClientListReplicationsResponse{}, err
-	}
-	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VolumesClientListReplicationsResponse{}, runtime.NewResponseError(resp)
-	}
-	return client.listReplicationsHandleResponse(resp)
+func (client *VolumesClient) NewListReplicationsPager(resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientListReplicationsOptions) *runtime.Pager[VolumesClientListReplicationsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VolumesClientListReplicationsResponse]{
+		More: func(page VolumesClientListReplicationsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *VolumesClientListReplicationsResponse) (VolumesClientListReplicationsResponse, error) {
+			req, err := client.listReplicationsCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
+			if err != nil {
+				return VolumesClientListReplicationsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return VolumesClientListReplicationsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return VolumesClientListReplicationsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listReplicationsHandleResponse(resp)
+		},
+	})
 }
 
 // listReplicationsCreateRequest creates the ListReplications request.

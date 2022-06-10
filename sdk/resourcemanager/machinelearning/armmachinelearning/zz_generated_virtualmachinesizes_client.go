@@ -56,7 +56,7 @@ func NewVirtualMachineSizesClient(subscriptionID string, credential azcore.Token
 
 // List - Returns supported VM Sizes in a location
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // location - The location upon which virtual-machine-sizes is queried.
 // options - VirtualMachineSizesClientListOptions contains the optional parameters for the VirtualMachineSizesClient.List
 // method.
@@ -91,7 +91,7 @@ func (client *VirtualMachineSizesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

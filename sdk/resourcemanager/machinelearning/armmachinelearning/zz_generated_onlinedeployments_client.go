@@ -57,7 +57,7 @@ func NewOnlineDeploymentsClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrUpdate - Create or update Inference Endpoint Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // endpointName - Inference endpoint name.
@@ -65,7 +65,7 @@ func NewOnlineDeploymentsClient(subscriptionID string, credential azcore.TokenCr
 // body - Inference Endpoint entity to apply during operation.
 // options - OnlineDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the OnlineDeploymentsClient.BeginCreateOrUpdate
 // method.
-func (client *OnlineDeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body OnlineDeploymentData, options *OnlineDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[OnlineDeploymentsClientCreateOrUpdateResponse], error) {
+func (client *OnlineDeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body OnlineDeployment, options *OnlineDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[OnlineDeploymentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, endpointName, deploymentName, body, options)
 		if err != nil {
@@ -79,8 +79,8 @@ func (client *OnlineDeploymentsClient) BeginCreateOrUpdate(ctx context.Context, 
 
 // CreateOrUpdate - Create or update Inference Endpoint Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
-func (client *OnlineDeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body OnlineDeploymentData, options *OnlineDeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+// Generated from API version 2022-05-01
+func (client *OnlineDeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body OnlineDeployment, options *OnlineDeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, deploymentName, body, options)
 	if err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (client *OnlineDeploymentsClient) createOrUpdate(ctx context.Context, resou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *OnlineDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body OnlineDeploymentData, options *OnlineDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *OnlineDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body OnlineDeployment, options *OnlineDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/deployments/{deploymentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -123,7 +123,7 @@ func (client *OnlineDeploymentsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -131,7 +131,7 @@ func (client *OnlineDeploymentsClient) createOrUpdateCreateRequest(ctx context.C
 
 // BeginDelete - Delete Inference Endpoint Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // endpointName - Inference endpoint name.
@@ -152,7 +152,7 @@ func (client *OnlineDeploymentsClient) BeginDelete(ctx context.Context, resource
 
 // Delete - Delete Inference Endpoint Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 func (client *OnlineDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *OnlineDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, deploymentName, options)
 	if err != nil {
@@ -196,7 +196,7 @@ func (client *OnlineDeploymentsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -204,7 +204,7 @@ func (client *OnlineDeploymentsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Get Inference Deployment Deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // endpointName - Inference endpoint name.
@@ -253,7 +253,7 @@ func (client *OnlineDeploymentsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +262,7 @@ func (client *OnlineDeploymentsClient) getCreateRequest(ctx context.Context, res
 // getHandleResponse handles the Get response.
 func (client *OnlineDeploymentsClient) getHandleResponse(resp *http.Response) (OnlineDeploymentsClientGetResponse, error) {
 	result := OnlineDeploymentsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OnlineDeploymentData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.OnlineDeployment); err != nil {
 		return OnlineDeploymentsClientGetResponse{}, err
 	}
 	return result, nil
@@ -270,7 +270,7 @@ func (client *OnlineDeploymentsClient) getHandleResponse(resp *http.Response) (O
 
 // GetLogs - Polls an Endpoint operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // endpointName - Inference endpoint name.
@@ -321,7 +321,7 @@ func (client *OnlineDeploymentsClient) getLogsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -338,7 +338,7 @@ func (client *OnlineDeploymentsClient) getLogsHandleResponse(resp *http.Response
 
 // NewListPager - List Inference Endpoint Deployments.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // endpointName - Inference endpoint name.
@@ -395,7 +395,7 @@ func (client *OnlineDeploymentsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.OrderBy != nil {
 		reqQP.Set("$orderBy", *options.OrderBy)
 	}
@@ -421,7 +421,7 @@ func (client *OnlineDeploymentsClient) listHandleResponse(resp *http.Response) (
 
 // NewListSKUsPager - List Inference Endpoint Deployment Skus.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // endpointName - Inference endpoint name.
@@ -484,7 +484,7 @@ func (client *OnlineDeploymentsClient) listSKUsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
 	}
@@ -507,7 +507,7 @@ func (client *OnlineDeploymentsClient) listSKUsHandleResponse(resp *http.Respons
 
 // BeginUpdate - Update Online Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // endpointName - Online Endpoint name.
@@ -515,7 +515,7 @@ func (client *OnlineDeploymentsClient) listSKUsHandleResponse(resp *http.Respons
 // body - Online Endpoint entity to apply during operation.
 // options - OnlineDeploymentsClientBeginUpdateOptions contains the optional parameters for the OnlineDeploymentsClient.BeginUpdate
 // method.
-func (client *OnlineDeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body PartialOnlineDeploymentPartialTrackedResource, options *OnlineDeploymentsClientBeginUpdateOptions) (*runtime.Poller[OnlineDeploymentsClientUpdateResponse], error) {
+func (client *OnlineDeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body PartialMinimalTrackedResourceWithSKU, options *OnlineDeploymentsClientBeginUpdateOptions) (*runtime.Poller[OnlineDeploymentsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, workspaceName, endpointName, deploymentName, body, options)
 		if err != nil {
@@ -529,8 +529,8 @@ func (client *OnlineDeploymentsClient) BeginUpdate(ctx context.Context, resource
 
 // Update - Update Online Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
-func (client *OnlineDeploymentsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body PartialOnlineDeploymentPartialTrackedResource, options *OnlineDeploymentsClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2022-05-01
+func (client *OnlineDeploymentsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body PartialMinimalTrackedResourceWithSKU, options *OnlineDeploymentsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, deploymentName, body, options)
 	if err != nil {
 		return nil, err
@@ -546,7 +546,7 @@ func (client *OnlineDeploymentsClient) update(ctx context.Context, resourceGroup
 }
 
 // updateCreateRequest creates the Update request.
-func (client *OnlineDeploymentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body PartialOnlineDeploymentPartialTrackedResource, options *OnlineDeploymentsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *OnlineDeploymentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body PartialMinimalTrackedResourceWithSKU, options *OnlineDeploymentsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/onlineEndpoints/{endpointName}/deployments/{deploymentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -573,7 +573,7 @@ func (client *OnlineDeploymentsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

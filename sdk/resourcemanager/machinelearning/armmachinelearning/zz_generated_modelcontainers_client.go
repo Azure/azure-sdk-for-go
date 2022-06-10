@@ -57,14 +57,14 @@ func NewModelContainersClient(subscriptionID string, credential azcore.TokenCred
 
 // CreateOrUpdate - Create or update container.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name. This is case-sensitive.
 // body - Container entity to create or update.
 // options - ModelContainersClientCreateOrUpdateOptions contains the optional parameters for the ModelContainersClient.CreateOrUpdate
 // method.
-func (client *ModelContainersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, body ModelContainerData, options *ModelContainersClientCreateOrUpdateOptions) (ModelContainersClientCreateOrUpdateResponse, error) {
+func (client *ModelContainersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, body ModelContainer, options *ModelContainersClientCreateOrUpdateOptions) (ModelContainersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, name, body, options)
 	if err != nil {
 		return ModelContainersClientCreateOrUpdateResponse{}, err
@@ -80,7 +80,7 @@ func (client *ModelContainersClient) CreateOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ModelContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body ModelContainerData, options *ModelContainersClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ModelContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body ModelContainer, options *ModelContainersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/models/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -103,7 +103,7 @@ func (client *ModelContainersClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -112,7 +112,7 @@ func (client *ModelContainersClient) createOrUpdateCreateRequest(ctx context.Con
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ModelContainersClient) createOrUpdateHandleResponse(resp *http.Response) (ModelContainersClientCreateOrUpdateResponse, error) {
 	result := ModelContainersClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ModelContainerData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ModelContainer); err != nil {
 		return ModelContainersClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
@@ -120,7 +120,7 @@ func (client *ModelContainersClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete container.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name. This is case-sensitive.
@@ -164,7 +164,7 @@ func (client *ModelContainersClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,7 +172,7 @@ func (client *ModelContainersClient) deleteCreateRequest(ctx context.Context, re
 
 // Get - Get container.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name. This is case-sensitive.
@@ -216,7 +216,7 @@ func (client *ModelContainersClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -225,7 +225,7 @@ func (client *ModelContainersClient) getCreateRequest(ctx context.Context, resou
 // getHandleResponse handles the Get response.
 func (client *ModelContainersClient) getHandleResponse(resp *http.Response) (ModelContainersClientGetResponse, error) {
 	result := ModelContainersClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ModelContainerData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ModelContainer); err != nil {
 		return ModelContainersClientGetResponse{}, err
 	}
 	return result, nil
@@ -233,7 +233,7 @@ func (client *ModelContainersClient) getHandleResponse(resp *http.Response) (Mod
 
 // NewListPager - List model containers.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - ModelContainersClientListOptions contains the optional parameters for the ModelContainersClient.List method.
@@ -285,7 +285,7 @@ func (client *ModelContainersClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}

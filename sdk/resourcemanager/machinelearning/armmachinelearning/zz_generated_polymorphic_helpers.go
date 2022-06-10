@@ -32,42 +32,6 @@ func unmarshalAssetReferenceBaseClassification(rawMsg json.RawMessage) (AssetRef
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalAutoMLVerticalClassification(rawMsg json.RawMessage) (AutoMLVerticalClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b AutoMLVerticalClassification
-	switch m["taskType"] {
-	case string(TaskTypeClassification):
-		b = &Classification{}
-	case string(TaskTypeForecasting):
-		b = &Forecasting{}
-	case string(TaskTypeImageClassification):
-		b = &ImageClassification{}
-	case string(TaskTypeImageClassificationMultilabel):
-		b = &ImageClassificationMultilabel{}
-	case string(TaskTypeImageInstanceSegmentation):
-		b = &ImageInstanceSegmentation{}
-	case string(TaskTypeImageObjectDetection):
-		b = &ImageObjectDetection{}
-	case string(TaskTypeRegression):
-		b = &Regression{}
-	case string(TaskTypeTextClassification):
-		b = &TextClassification{}
-	case string(TaskTypeTextClassificationMultilabel):
-		b = &TextClassificationMultilabel{}
-	case string(TaskTypeTextNER):
-		b = &TextNer{}
-	default:
-		b = &AutoMLVertical{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
 func unmarshalComputeClassification(rawMsg json.RawMessage) (ComputeClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -126,7 +90,7 @@ func unmarshalComputeSecretsClassification(rawMsg json.RawMessage) (ComputeSecre
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalDataVersionBaseDetailsClassification(rawMsg json.RawMessage) (DataVersionBaseDetailsClassification, error) {
+func unmarshalDataVersionBasePropertiesClassification(rawMsg json.RawMessage) (DataVersionBasePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -134,16 +98,16 @@ func unmarshalDataVersionBaseDetailsClassification(rawMsg json.RawMessage) (Data
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b DataVersionBaseDetailsClassification
+	var b DataVersionBasePropertiesClassification
 	switch m["dataType"] {
-	case string(DataTypeMLTable):
+	case string(DataTypeMltable):
 		b = &MLTableData{}
 	case string(DataTypeURIFile):
 		b = &URIFileDataVersion{}
 	case string(DataTypeURIFolder):
 		b = &URIFolderDataVersion{}
 	default:
-		b = &DataVersionBaseDetails{}
+		b = &DataVersionBaseProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
@@ -162,10 +126,6 @@ func unmarshalDatastoreCredentialsClassification(rawMsg json.RawMessage) (Datast
 		b = &AccountKeyDatastoreCredentials{}
 	case string(CredentialsTypeCertificate):
 		b = &CertificateDatastoreCredentials{}
-	case string(CredentialsTypeKerberosKeytab):
-		b = &KerberosKeytabCredentials{}
-	case string(CredentialsTypeKerberosPassword):
-		b = &KerberosPasswordCredentials{}
 	case string(CredentialsTypeNone):
 		b = &NoneDatastoreCredentials{}
 	case string(CredentialsTypeSas):
@@ -178,7 +138,7 @@ func unmarshalDatastoreCredentialsClassification(rawMsg json.RawMessage) (Datast
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalDatastoreDetailsClassification(rawMsg json.RawMessage) (DatastoreDetailsClassification, error) {
+func unmarshalDatastorePropertiesClassification(rawMsg json.RawMessage) (DatastorePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -186,7 +146,7 @@ func unmarshalDatastoreDetailsClassification(rawMsg json.RawMessage) (DatastoreD
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b DatastoreDetailsClassification
+	var b DatastorePropertiesClassification
 	switch m["datastoreType"] {
 	case string(DatastoreTypeAzureBlob):
 		b = &AzureBlobDatastore{}
@@ -196,10 +156,8 @@ func unmarshalDatastoreDetailsClassification(rawMsg json.RawMessage) (DatastoreD
 		b = &AzureDataLakeGen2Datastore{}
 	case string(DatastoreTypeAzureFile):
 		b = &AzureFileDatastore{}
-	case string(DatastoreTypeHdfs):
-		b = &HdfsDatastore{}
 	default:
-		b = &DatastoreDetails{}
+		b = &DatastoreProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
@@ -218,10 +176,6 @@ func unmarshalDatastoreSecretsClassification(rawMsg json.RawMessage) (DatastoreS
 		b = &AccountKeyDatastoreSecrets{}
 	case string(SecretsTypeCertificate):
 		b = &CertificateDatastoreSecrets{}
-	case string(SecretsTypeKerberosKeytab):
-		b = &KerberosKeytabSecrets{}
-	case string(SecretsTypeKerberosPassword):
-		b = &KerberosPasswordSecrets{}
 	case string(SecretsTypeSas):
 		b = &SasDatastoreSecrets{}
 	case string(SecretsTypeServicePrincipal):
@@ -276,26 +230,6 @@ func unmarshalEarlyTerminationPolicyClassification(rawMsg json.RawMessage) (Earl
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalForecastHorizonClassification(rawMsg json.RawMessage) (ForecastHorizonClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b ForecastHorizonClassification
-	switch m["mode"] {
-	case string(ForecastHorizonModeAuto):
-		b = &AutoForecastHorizon{}
-	case string(ForecastHorizonModeCustom):
-		b = &CustomForecastHorizon{}
-	default:
-		b = &ForecastHorizon{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
 func unmarshalIdentityConfigurationClassification(rawMsg json.RawMessage) (IdentityConfigurationClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -318,7 +252,7 @@ func unmarshalIdentityConfigurationClassification(rawMsg json.RawMessage) (Ident
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalJobBaseDetailsClassification(rawMsg json.RawMessage) (JobBaseDetailsClassification, error) {
+func unmarshalJobBasePropertiesClassification(rawMsg json.RawMessage) (JobBasePropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -326,10 +260,8 @@ func unmarshalJobBaseDetailsClassification(rawMsg json.RawMessage) (JobBaseDetai
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b JobBaseDetailsClassification
+	var b JobBasePropertiesClassification
 	switch m["jobType"] {
-	case string(JobTypeAutoML):
-		b = &AutoMLJob{}
 	case string(JobTypeCommand):
 		b = &CommandJob{}
 	case string(JobTypePipeline):
@@ -337,7 +269,7 @@ func unmarshalJobBaseDetailsClassification(rawMsg json.RawMessage) (JobBaseDetai
 	case string(JobTypeSweep):
 		b = &SweepJob{}
 	default:
-		b = &JobBaseDetails{}
+		b = &JobBaseProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
@@ -356,9 +288,9 @@ func unmarshalJobInputClassification(rawMsg json.RawMessage) (JobInputClassifica
 		b = &CustomModelJobInput{}
 	case string(JobInputTypeLiteral):
 		b = &LiteralJobInput{}
-	case string(JobInputTypeMLFlowModel):
+	case string(JobInputTypeMlflowModel):
 		b = &MLFlowModelJobInput{}
-	case string(JobInputTypeMLTable):
+	case string(JobInputTypeMltable):
 		b = &MLTableJobInput{}
 	case string(JobInputTypeTritonModel):
 		b = &TritonModelJobInput{}
@@ -403,9 +335,9 @@ func unmarshalJobOutputClassification(rawMsg json.RawMessage) (JobOutputClassifi
 	switch m["jobOutputType"] {
 	case string(JobOutputTypeCustomModel):
 		b = &CustomModelJobOutput{}
-	case string(JobOutputTypeMLFlowModel):
+	case string(JobOutputTypeMlflowModel):
 		b = &MLFlowModelJobOutput{}
-	case string(JobOutputTypeMLTable):
+	case string(JobOutputTypeMltable):
 		b = &MLTableJobOutput{}
 	case string(JobOutputTypeTritonModel):
 		b = &TritonModelJobOutput{}
@@ -438,7 +370,7 @@ func unmarshalJobOutputClassificationMap(rawMsg json.RawMessage) (map[string]Job
 	return fMap, nil
 }
 
-func unmarshalNCrossValidationsClassification(rawMsg json.RawMessage) (NCrossValidationsClassification, error) {
+func unmarshalOnlineDeploymentPropertiesClassification(rawMsg json.RawMessage) (OnlineDeploymentPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -446,34 +378,14 @@ func unmarshalNCrossValidationsClassification(rawMsg json.RawMessage) (NCrossVal
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b NCrossValidationsClassification
-	switch m["mode"] {
-	case string(NCrossValidationsModeAuto):
-		b = &AutoNCrossValidations{}
-	case string(NCrossValidationsModeCustom):
-		b = &CustomNCrossValidations{}
-	default:
-		b = &NCrossValidations{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalOnlineDeploymentDetailsClassification(rawMsg json.RawMessage) (OnlineDeploymentDetailsClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b OnlineDeploymentDetailsClassification
+	var b OnlineDeploymentPropertiesClassification
 	switch m["endpointComputeType"] {
 	case string(EndpointComputeTypeKubernetes):
 		b = &KubernetesOnlineDeployment{}
 	case string(EndpointComputeTypeManaged):
 		b = &ManagedOnlineDeployment{}
 	default:
-		b = &OnlineDeploymentDetails{}
+		b = &OnlineDeploymentProperties{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
@@ -494,48 +406,6 @@ func unmarshalOnlineScaleSettingsClassification(rawMsg json.RawMessage) (OnlineS
 		b = &TargetUtilizationScaleSettings{}
 	default:
 		b = &OnlineScaleSettings{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalPartialAssetReferenceBaseClassification(rawMsg json.RawMessage) (PartialAssetReferenceBaseClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b PartialAssetReferenceBaseClassification
-	switch m["referenceType"] {
-	case string(ReferenceTypeDataPath):
-		b = &PartialDataPathAssetReference{}
-	case string(ReferenceTypeID):
-		b = &PartialIDAssetReference{}
-	case string(ReferenceTypeOutputPath):
-		b = &PartialOutputPathAssetReference{}
-	default:
-		b = &PartialAssetReferenceBase{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalPartialOnlineDeploymentClassification(rawMsg json.RawMessage) (PartialOnlineDeploymentClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b PartialOnlineDeploymentClassification
-	switch m["endpointComputeType"] {
-	case string(EndpointComputeTypeKubernetes):
-		b = &PartialKubernetesOnlineDeployment{}
-	case string(EndpointComputeTypeManaged):
-		b = &PartialManagedOnlineDeployment{}
-	default:
-		b = &PartialOnlineDeployment{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }
@@ -562,7 +432,7 @@ func unmarshalSamplingAlgorithmClassification(rawMsg json.RawMessage) (SamplingA
 	return b, json.Unmarshal(rawMsg, b)
 }
 
-func unmarshalScheduleBaseClassification(rawMsg json.RawMessage) (ScheduleBaseClassification, error) {
+func unmarshalWorkspaceConnectionPropertiesV2Classification(rawMsg json.RawMessage) (WorkspaceConnectionPropertiesV2Classification, error) {
 	if rawMsg == nil {
 		return nil, nil
 	}
@@ -570,74 +440,20 @@ func unmarshalScheduleBaseClassification(rawMsg json.RawMessage) (ScheduleBaseCl
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
-	var b ScheduleBaseClassification
-	switch m["scheduleType"] {
-	case string(ScheduleTypeCron):
-		b = &CronSchedule{}
-	case string(ScheduleTypeRecurrence):
-		b = &RecurrenceSchedule{}
+	var b WorkspaceConnectionPropertiesV2Classification
+	switch m["authType"] {
+	case string(ConnectionAuthTypeManagedIdentity):
+		b = &ManagedIdentityAuthTypeWorkspaceConnectionProperties{}
+	case string(ConnectionAuthTypeNone):
+		b = &NoneAuthTypeWorkspaceConnectionProperties{}
+	case string(ConnectionAuthTypePAT):
+		b = &PATAuthTypeWorkspaceConnectionProperties{}
+	case string(ConnectionAuthTypeSAS):
+		b = &SASAuthTypeWorkspaceConnectionProperties{}
+	case string(ConnectionAuthTypeUsernamePassword):
+		b = &UsernamePasswordAuthTypeWorkspaceConnectionProperties{}
 	default:
-		b = &ScheduleBase{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalSeasonalityClassification(rawMsg json.RawMessage) (SeasonalityClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b SeasonalityClassification
-	switch m["mode"] {
-	case string(SeasonalityModeAuto):
-		b = &AutoSeasonality{}
-	case string(SeasonalityModeCustom):
-		b = &CustomSeasonality{}
-	default:
-		b = &Seasonality{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalTargetLagsClassification(rawMsg json.RawMessage) (TargetLagsClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b TargetLagsClassification
-	switch m["mode"] {
-	case string(TargetLagsModeAuto):
-		b = &AutoTargetLags{}
-	case string(TargetLagsModeCustom):
-		b = &CustomTargetLags{}
-	default:
-		b = &TargetLags{}
-	}
-	return b, json.Unmarshal(rawMsg, b)
-}
-
-func unmarshalTargetRollingWindowSizeClassification(rawMsg json.RawMessage) (TargetRollingWindowSizeClassification, error) {
-	if rawMsg == nil {
-		return nil, nil
-	}
-	var m map[string]interface{}
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b TargetRollingWindowSizeClassification
-	switch m["mode"] {
-	case string(TargetRollingWindowSizeModeAuto):
-		b = &AutoTargetRollingWindowSize{}
-	case string(TargetRollingWindowSizeModeCustom):
-		b = &CustomTargetRollingWindowSize{}
-	default:
-		b = &TargetRollingWindowSize{}
+		b = &WorkspaceConnectionPropertiesV2{}
 	}
 	return b, json.Unmarshal(rawMsg, b)
 }

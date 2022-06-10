@@ -10,7 +10,7 @@ package armmigrate
 
 const (
 	moduleName    = "armmigrate"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AssessmentSizingCriterion - Assessment sizing criterion.

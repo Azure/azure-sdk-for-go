@@ -10,7 +10,7 @@ package armcustomerinsights
 
 const (
 	moduleName    = "armcustomerinsights"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // CalculationWindowTypes - The calculation window.

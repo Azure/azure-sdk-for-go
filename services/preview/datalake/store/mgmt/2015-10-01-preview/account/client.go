@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package account implements the Azure ARM Account service API version 2015-10-01-preview.
 //
 // DataLake Store Client

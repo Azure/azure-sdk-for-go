@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/digitaltwins/armdigitaltwins. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package digitaltwins implements the Azure ARM Digitaltwins service API version 2020-12-01.
 //
 // Azure Digital Twins Client for managing DigitalTwinsInstance

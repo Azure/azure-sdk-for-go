@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package sqlvirtualmachine implements the Azure ARM Sqlvirtualmachine service API version 2021-11-01-preview.
 //
 // The SQL virtual machine management API provides a RESTful set of web APIs that interact with Azure Compute, Network

@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package botservice implements the Azure ARM Botservice service API version 2017-12-01.
 //
 // Azure Bot Service is a platform for creating smart conversational agents.

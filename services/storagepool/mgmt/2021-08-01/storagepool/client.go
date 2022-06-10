@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagepool/armstoragepool. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package storagepool implements the Azure ARM Storagepool service API version 2021-08-01.
 //
 //

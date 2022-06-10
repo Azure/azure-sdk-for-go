@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysqlflexibleservers. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package mysqlflexibleservers implements the Azure ARM Mysqlflexibleservers service API version 2020-07-01-preview.
 //
 // The Microsoft Azure management API provides create, read, update, and delete functionality for Azure MySQL resources

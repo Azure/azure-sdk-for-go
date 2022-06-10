@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package healthbot implements the Azure ARM Healthbot service API version 2020-12-08.
 //
 // Microsoft Healthcare Bot is a cloud platform that empowers developers in Healthcare organizations to build and

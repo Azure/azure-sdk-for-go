@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azuredata/armazuredata. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package azuredata implements the Azure ARM Azuredata service API version 2019-07-24-preview.
 //
 // The AzureData management API provides a RESTful set of web APIs to manage Azure Data Resources.

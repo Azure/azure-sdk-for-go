@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package sql implements the Azure ARM Sql service API version 2014-04-01.
 //
 // The Azure SQL Database management API provides a RESTful set of web services that interact with Azure SQL Database

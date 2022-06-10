@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package policy implements the Azure ARM Policy service API version 2016-12-01.
 //
 // To manage and control access to your resources, you can define customized policies and assign them at a scope.

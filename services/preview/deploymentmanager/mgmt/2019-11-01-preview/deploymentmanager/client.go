@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package deploymentmanager implements the Azure ARM Deploymentmanager service API version 2019-11-01-preview.
 //
 // REST APIs for orchestrating deployments using the Azure Deployment Manager (ADM). See

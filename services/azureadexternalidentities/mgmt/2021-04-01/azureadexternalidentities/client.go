@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azureadexternalidentities/armazureadexternalidentities. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package azureadexternalidentities implements the Azure ARM Azureadexternalidentities service API version 2021-04-01.
 //
 // External Identities Configuration Client

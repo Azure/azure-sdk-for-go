@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package subscriptions implements the Azure ARM Subscriptions service API version 2019-06-01.
 //
 // All resource groups and resources exist within subscriptions. These operation enable you get information about your

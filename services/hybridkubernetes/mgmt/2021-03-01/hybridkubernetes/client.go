@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridkubernetes/armhybridkubernetes. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package hybridkubernetes implements the Azure ARM Hybridkubernetes service API version 2021-03-01.
 //
 // Azure Connected Cluster Resource Provider API for adopting any Kubernetes Cluster

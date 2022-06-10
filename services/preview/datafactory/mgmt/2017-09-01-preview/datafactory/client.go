@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package datafactory implements the Azure ARM Datafactory service API version 2017-09-01-preview.
 //
 // The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data

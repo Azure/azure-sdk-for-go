@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package analysisservices implements the Azure ARM Analysisservices service API version 2017-07-14.
 //
 // The Azure Analysis Services Web API provides a RESTful set of web services that enables users to create, retrieve,

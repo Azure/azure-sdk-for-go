@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/powerbidedicated/armpowerbidedicated. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package powerbidedicated implements the Azure ARM Powerbidedicated service API version 2021-01-01.
 //
 // PowerBI Dedicated Web API provides a RESTful set of web services that enables users to create, retrieve, update, and

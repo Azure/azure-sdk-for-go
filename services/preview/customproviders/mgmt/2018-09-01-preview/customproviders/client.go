@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customproviders/armcustomproviders. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package customproviders implements the Azure ARM Customproviders service API version 2018-09-01-preview.
 //
 // Allows extension of ARM control plane with custom resource providers.

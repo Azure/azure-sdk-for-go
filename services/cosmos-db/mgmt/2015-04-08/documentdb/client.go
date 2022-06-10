@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package documentdb implements the Azure ARM Documentdb service API version 2015-04-08.
 //
 // Azure Cosmos DB Database Service Resource Provider REST API

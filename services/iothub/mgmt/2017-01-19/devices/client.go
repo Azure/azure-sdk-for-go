@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package devices implements the Azure ARM Devices service API version 2017-01-19.
 //
 // Use this API to manage the IoT hubs in your Azure subscription.

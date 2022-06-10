@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package windowsiot implements the Azure ARM Windowsiot service API version 2019-06-01.
 //
 // Use this API to manage the Windows IoT device services in your Azure subscription.

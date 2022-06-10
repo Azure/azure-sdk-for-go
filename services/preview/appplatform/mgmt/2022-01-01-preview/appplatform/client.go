@@ -1,3 +1,5 @@
+// Deprecated: Please note, this package has been deprecated. A replacement package is available github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform. We strongly encourage you to upgrade to continue receiving updates. See Migration Guide for guidance on upgrading. Refer to our deprecation policy for more details.
+//
 // Package appplatform implements the Azure ARM Appplatform service API version 2022-01-01-preview.
 //
 // REST API for Azure Spring Cloud

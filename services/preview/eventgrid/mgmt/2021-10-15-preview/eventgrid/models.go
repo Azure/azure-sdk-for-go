@@ -12679,7 +12679,7 @@ type TopicTypeProperties struct {
 	// SourceResourceFormat - Source resource format.
 	SourceResourceFormat *string `json:"sourceResourceFormat,omitempty"`
 	// SupportedScopesForSource - Supported source scopes.
-	SupportedScopesForSource *[]string `json:"supportedScopesForSource,omitempty"`
+	SupportedScopesForSource *[]TopicTypeSourceScope `json:"supportedScopesForSource,omitempty"`
 }
 
 // TopicTypesListResult result of the List Topic Types operation

@@ -87,7 +87,7 @@ type TopicsClientAPI interface {
 	ListBySubscriptionComplete(ctx context.Context, filter string, top *int32) (result eventgrid.TopicsListResultIterator, err error)
 	ListEventTypes(ctx context.Context, resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string) (result eventgrid.EventTypesListResult, err error)
 	ListSharedAccessKeys(ctx context.Context, resourceGroupName string, topicName string) (result eventgrid.TopicSharedAccessKeys, err error)
-	RegenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest eventgrid.TopicRegenerateKeyRequest) (result eventgrid.TopicSharedAccessKeys, err error)
+	RegenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest eventgrid.TopicRegenerateKeyRequest) (result eventgrid.TopicsRegenerateKeyFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters eventgrid.TopicUpdateParameters) (result eventgrid.TopicsUpdateFuture, err error)
 }
 

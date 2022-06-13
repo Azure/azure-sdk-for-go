@@ -802,6 +802,25 @@ func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
 	return []TopicTypeProvisioningState{TopicTypeProvisioningStateCanceled, TopicTypeProvisioningStateCreating, TopicTypeProvisioningStateDeleting, TopicTypeProvisioningStateFailed, TopicTypeProvisioningStateSucceeded, TopicTypeProvisioningStateUpdating}
 }
 
+// TopicTypeSourceScope enumerates the values for topic type source scope.
+type TopicTypeSourceScope string
+
+const (
+	// TopicTypeSourceScopeAzureSubscription ...
+	TopicTypeSourceScopeAzureSubscription TopicTypeSourceScope = "AzureSubscription"
+	// TopicTypeSourceScopeManagementGroup ...
+	TopicTypeSourceScopeManagementGroup TopicTypeSourceScope = "ManagementGroup"
+	// TopicTypeSourceScopeResource ...
+	TopicTypeSourceScopeResource TopicTypeSourceScope = "Resource"
+	// TopicTypeSourceScopeResourceGroup ...
+	TopicTypeSourceScopeResourceGroup TopicTypeSourceScope = "ResourceGroup"
+)
+
+// PossibleTopicTypeSourceScopeValues returns an array of possible values for the TopicTypeSourceScope const type.
+func PossibleTopicTypeSourceScopeValues() []TopicTypeSourceScope {
+	return []TopicTypeSourceScope{TopicTypeSourceScopeAzureSubscription, TopicTypeSourceScopeManagementGroup, TopicTypeSourceScopeResource, TopicTypeSourceScopeResourceGroup}
+}
+
 // Type enumerates the values for type.
 type Type string
 

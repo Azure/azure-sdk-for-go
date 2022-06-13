@@ -32,7 +32,7 @@ var (
 	v2BeginRegex             = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
 	v2EndRegex               = regexp.MustCompile("^\\s*```\\s*$")
 	newClientMethodNameRegex = regexp.MustCompile("^New.*Client$")
-	versionLineRegex         = regexp.MustCompile(`moduleVersion\s*=\s*\".*v\d+\.\d+\.\d+\"`)
+	versionLineRegex         = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
 	changelogVersionRegex    = regexp.MustCompile(`##\s*(?P<version>\d+\.\d+\.\d+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
 	packageConfigRegex       = regexp.MustCompile(`\$\((package-.+)\)`)
 )

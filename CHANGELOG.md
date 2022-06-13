@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v66.1.0`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2022-01-01-preview/securityinsight` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/securityinsight/mgmt/2022-01-01-preview/securityinsight/CHANGELOG.md) |
+
 ## `v66.0.0`
 
 ### Others

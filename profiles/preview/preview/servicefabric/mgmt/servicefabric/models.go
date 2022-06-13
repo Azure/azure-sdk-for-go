@@ -12,25 +12,11 @@ package servicefabric
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2019-03-01-preview/servicefabric"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type ArmServicePackageActivationMode = original.ArmServicePackageActivationMode
-
-const (
-	ExclusiveProcess ArmServicePackageActivationMode = original.ExclusiveProcess
-	SharedProcess    ArmServicePackageActivationMode = original.SharedProcess
-)
-
-type ArmUpgradeFailureAction = original.ArmUpgradeFailureAction
-
-const (
-	Manual   ArmUpgradeFailureAction = original.Manual
-	Rollback ArmUpgradeFailureAction = original.Rollback
 )
 
 type ClusterState = original.ClusterState
@@ -48,6 +34,15 @@ const (
 	WaitingForNodes           ClusterState = original.WaitingForNodes
 )
 
+type DefaultMoveCost = original.DefaultMoveCost
+
+const (
+	High   DefaultMoveCost = original.High
+	Low    DefaultMoveCost = original.Low
+	Medium DefaultMoveCost = original.Medium
+	Zero   DefaultMoveCost = original.Zero
+)
+
 type DurabilityLevel = original.DurabilityLevel
 
 const (
@@ -63,31 +58,13 @@ const (
 	Windows Environment = original.Windows
 )
 
-type MoveCost = original.MoveCost
-
-const (
-	High   MoveCost = original.High
-	Low    MoveCost = original.Low
-	Medium MoveCost = original.Medium
-	Zero   MoveCost = original.Zero
-)
-
 type PartitionScheme = original.PartitionScheme
 
 const (
-	Invalid           PartitionScheme = original.Invalid
-	Named             PartitionScheme = original.Named
-	Singleton         PartitionScheme = original.Singleton
-	UniformInt64Range PartitionScheme = original.UniformInt64Range
-)
-
-type PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeBasicPartitionSchemeDescription
-
-const (
-	PartitionSchemeNamed                      PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeNamed
-	PartitionSchemePartitionSchemeDescription PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemePartitionSchemeDescription
-	PartitionSchemeSingleton                  PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeSingleton
-	PartitionSchemeUniformInt64Range          PartitionSchemeBasicPartitionSchemeDescription = original.PartitionSchemeUniformInt64Range
+	PartitionSchemeNamed                      PartitionScheme = original.PartitionSchemeNamed
+	PartitionSchemePartitionSchemeDescription PartitionScheme = original.PartitionSchemePartitionSchemeDescription
+	PartitionSchemeSingleton                  PartitionScheme = original.PartitionSchemeSingleton
+	PartitionSchemeUniformInt64Range          PartitionScheme = original.PartitionSchemeUniformInt64Range
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -112,64 +89,34 @@ const (
 type ReliabilityLevel1 = original.ReliabilityLevel1
 
 const (
-	ReliabilityLevel1Bronze   ReliabilityLevel1 = original.ReliabilityLevel1Bronze
-	ReliabilityLevel1Gold     ReliabilityLevel1 = original.ReliabilityLevel1Gold
-	ReliabilityLevel1None     ReliabilityLevel1 = original.ReliabilityLevel1None
-	ReliabilityLevel1Platinum ReliabilityLevel1 = original.ReliabilityLevel1Platinum
-	ReliabilityLevel1Silver   ReliabilityLevel1 = original.ReliabilityLevel1Silver
+	ReliabilityLevel1Bronze ReliabilityLevel1 = original.ReliabilityLevel1Bronze
+	ReliabilityLevel1Gold   ReliabilityLevel1 = original.ReliabilityLevel1Gold
+	ReliabilityLevel1Silver ReliabilityLevel1 = original.ReliabilityLevel1Silver
 )
 
-type ServiceCorrelationScheme = original.ServiceCorrelationScheme
+type Scheme = original.Scheme
 
 const (
-	ServiceCorrelationSchemeAffinity           ServiceCorrelationScheme = original.ServiceCorrelationSchemeAffinity
-	ServiceCorrelationSchemeAlignedAffinity    ServiceCorrelationScheme = original.ServiceCorrelationSchemeAlignedAffinity
-	ServiceCorrelationSchemeInvalid            ServiceCorrelationScheme = original.ServiceCorrelationSchemeInvalid
-	ServiceCorrelationSchemeNonAlignedAffinity ServiceCorrelationScheme = original.ServiceCorrelationSchemeNonAlignedAffinity
+	Affinity           Scheme = original.Affinity
+	AlignedAffinity    Scheme = original.AlignedAffinity
+	Invalid            Scheme = original.Invalid
+	NonAlignedAffinity Scheme = original.NonAlignedAffinity
 )
 
 type ServiceKind = original.ServiceKind
 
 const (
-	ServiceKindInvalid   ServiceKind = original.ServiceKindInvalid
-	ServiceKindStateful  ServiceKind = original.ServiceKindStateful
-	ServiceKindStateless ServiceKind = original.ServiceKindStateless
+	ServiceKindServiceProperties ServiceKind = original.ServiceKindServiceProperties
+	ServiceKindStateful          ServiceKind = original.ServiceKindStateful
+	ServiceKindStateless         ServiceKind = original.ServiceKindStateless
 )
 
-type ServiceKindBasicServiceResourceProperties = original.ServiceKindBasicServiceResourceProperties
+type ServiceKindBasicServiceUpdateProperties = original.ServiceKindBasicServiceUpdateProperties
 
 const (
-	ServiceKindServiceResourceProperties ServiceKindBasicServiceResourceProperties = original.ServiceKindServiceResourceProperties
-	ServiceKindStateful1                 ServiceKindBasicServiceResourceProperties = original.ServiceKindStateful1
-	ServiceKindStateless1                ServiceKindBasicServiceResourceProperties = original.ServiceKindStateless1
-)
-
-type ServiceKindBasicServiceResourceUpdateProperties = original.ServiceKindBasicServiceResourceUpdateProperties
-
-const (
-	ServiceKindBasicServiceResourceUpdatePropertiesServiceKindServiceResourceUpdateProperties ServiceKindBasicServiceResourceUpdateProperties = original.ServiceKindBasicServiceResourceUpdatePropertiesServiceKindServiceResourceUpdateProperties
-	ServiceKindBasicServiceResourceUpdatePropertiesServiceKindStateful                        ServiceKindBasicServiceResourceUpdateProperties = original.ServiceKindBasicServiceResourceUpdatePropertiesServiceKindStateful
-	ServiceKindBasicServiceResourceUpdatePropertiesServiceKindStateless                       ServiceKindBasicServiceResourceUpdateProperties = original.ServiceKindBasicServiceResourceUpdatePropertiesServiceKindStateless
-)
-
-type ServiceLoadMetricWeight = original.ServiceLoadMetricWeight
-
-const (
-	ServiceLoadMetricWeightHigh   ServiceLoadMetricWeight = original.ServiceLoadMetricWeightHigh
-	ServiceLoadMetricWeightLow    ServiceLoadMetricWeight = original.ServiceLoadMetricWeightLow
-	ServiceLoadMetricWeightMedium ServiceLoadMetricWeight = original.ServiceLoadMetricWeightMedium
-	ServiceLoadMetricWeightZero   ServiceLoadMetricWeight = original.ServiceLoadMetricWeightZero
-)
-
-type ServicePlacementPolicyType = original.ServicePlacementPolicyType
-
-const (
-	ServicePlacementPolicyTypeInvalid                    ServicePlacementPolicyType = original.ServicePlacementPolicyTypeInvalid
-	ServicePlacementPolicyTypeInvalidDomain              ServicePlacementPolicyType = original.ServicePlacementPolicyTypeInvalidDomain
-	ServicePlacementPolicyTypeNonPartiallyPlaceService   ServicePlacementPolicyType = original.ServicePlacementPolicyTypeNonPartiallyPlaceService
-	ServicePlacementPolicyTypePreferredPrimaryDomain     ServicePlacementPolicyType = original.ServicePlacementPolicyTypePreferredPrimaryDomain
-	ServicePlacementPolicyTypeRequiredDomain             ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequiredDomain
-	ServicePlacementPolicyTypeRequiredDomainDistribution ServicePlacementPolicyType = original.ServicePlacementPolicyTypeRequiredDomainDistribution
+	ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties ServiceKindBasicServiceUpdateProperties = original.ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties
+	ServiceKindBasicServiceUpdatePropertiesServiceKindStateful                ServiceKindBasicServiceUpdateProperties = original.ServiceKindBasicServiceUpdatePropertiesServiceKindStateful
+	ServiceKindBasicServiceUpdatePropertiesServiceKindStateless               ServiceKindBasicServiceUpdateProperties = original.ServiceKindBasicServiceUpdatePropertiesServiceKindStateless
 )
 
 type Type = original.Type
@@ -181,8 +128,8 @@ const (
 type UpgradeMode = original.UpgradeMode
 
 const (
-	UpgradeModeAutomatic UpgradeMode = original.UpgradeModeAutomatic
-	UpgradeModeManual    UpgradeMode = original.UpgradeModeManual
+	Automatic UpgradeMode = original.Automatic
+	Manual    UpgradeMode = original.Manual
 )
 
 type UpgradeMode1 = original.UpgradeMode1
@@ -190,6 +137,15 @@ type UpgradeMode1 = original.UpgradeMode1
 const (
 	UpgradeMode1Automatic UpgradeMode1 = original.UpgradeMode1Automatic
 	UpgradeMode1Manual    UpgradeMode1 = original.UpgradeMode1Manual
+)
+
+type Weight = original.Weight
+
+const (
+	WeightHigh   Weight = original.WeightHigh
+	WeightLow    Weight = original.WeightLow
+	WeightMedium Weight = original.WeightMedium
+	WeightZero   Weight = original.WeightZero
 )
 
 type X509StoreName = original.X509StoreName
@@ -205,53 +161,25 @@ const (
 	TrustedPublisher     X509StoreName = original.TrustedPublisher
 )
 
-type X509StoreName1 = original.X509StoreName1
-
-const (
-	X509StoreName1AddressBook          X509StoreName1 = original.X509StoreName1AddressBook
-	X509StoreName1AuthRoot             X509StoreName1 = original.X509StoreName1AuthRoot
-	X509StoreName1CertificateAuthority X509StoreName1 = original.X509StoreName1CertificateAuthority
-	X509StoreName1Disallowed           X509StoreName1 = original.X509StoreName1Disallowed
-	X509StoreName1My                   X509StoreName1 = original.X509StoreName1My
-	X509StoreName1Root                 X509StoreName1 = original.X509StoreName1Root
-	X509StoreName1TrustedPeople        X509StoreName1 = original.X509StoreName1TrustedPeople
-	X509StoreName1TrustedPublisher     X509StoreName1 = original.X509StoreName1TrustedPublisher
-)
-
-type ApplicationDeltaHealthPolicy = original.ApplicationDeltaHealthPolicy
 type ApplicationHealthPolicy = original.ApplicationHealthPolicy
 type ApplicationMetricDescription = original.ApplicationMetricDescription
+type ApplicationParameter = original.ApplicationParameter
+type ApplicationProperties = original.ApplicationProperties
 type ApplicationResource = original.ApplicationResource
 type ApplicationResourceList = original.ApplicationResourceList
-type ApplicationResourceProperties = original.ApplicationResourceProperties
 type ApplicationResourceUpdate = original.ApplicationResourceUpdate
-type ApplicationResourceUpdateProperties = original.ApplicationResourceUpdateProperties
+type ApplicationTypeProperties = original.ApplicationTypeProperties
 type ApplicationTypeResource = original.ApplicationTypeResource
 type ApplicationTypeResourceList = original.ApplicationTypeResourceList
-type ApplicationTypeResourceProperties = original.ApplicationTypeResourceProperties
-type ApplicationTypeVersionResource = original.ApplicationTypeVersionResource
-type ApplicationTypeVersionResourceList = original.ApplicationTypeVersionResourceList
-type ApplicationTypeVersionResourceProperties = original.ApplicationTypeVersionResourceProperties
-type ApplicationTypeVersionsClient = original.ApplicationTypeVersionsClient
-type ApplicationTypeVersionsCreateFuture = original.ApplicationTypeVersionsCreateFuture
-type ApplicationTypeVersionsDeleteFuture = original.ApplicationTypeVersionsDeleteFuture
-type ApplicationTypesClient = original.ApplicationTypesClient
-type ApplicationTypesDeleteFuture = original.ApplicationTypesDeleteFuture
+type ApplicationUpdateProperties = original.ApplicationUpdateProperties
 type ApplicationUpgradePolicy = original.ApplicationUpgradePolicy
-type ApplicationsClient = original.ApplicationsClient
-type ApplicationsCreateFuture = original.ApplicationsCreateFuture
-type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
-type ApplicationsUpdateFuture = original.ApplicationsUpdateFuture
-type ArmApplicationHealthPolicy = original.ArmApplicationHealthPolicy
-type ArmRollingUpgradeMonitoringPolicy = original.ArmRollingUpgradeMonitoringPolicy
-type ArmServiceTypeHealthPolicy = original.ArmServiceTypeHealthPolicy
 type AvailableOperationDisplay = original.AvailableOperationDisplay
 type AzureActiveDirectory = original.AzureActiveDirectory
 type BaseClient = original.BaseClient
 type BasicPartitionSchemeDescription = original.BasicPartitionSchemeDescription
 type BasicServicePlacementPolicyDescription = original.BasicServicePlacementPolicyDescription
-type BasicServiceResourceProperties = original.BasicServiceResourceProperties
-type BasicServiceResourceUpdateProperties = original.BasicServiceResourceUpdateProperties
+type BasicServiceProperties = original.BasicServiceProperties
+type BasicServiceUpdateProperties = original.BasicServiceUpdateProperties
 type CertificateDescription = original.CertificateDescription
 type ClientCertificateCommonName = original.ClientCertificateCommonName
 type ClientCertificateThumbprint = original.ClientCertificateThumbprint
@@ -273,7 +201,6 @@ type ClustersUpdateFuture = original.ClustersUpdateFuture
 type DiagnosticsStorageAccountConfig = original.DiagnosticsStorageAccountConfig
 type EndpointRangeDescription = original.EndpointRangeDescription
 type ErrorModel = original.ErrorModel
-type ErrorModelError = original.ErrorModelError
 type NamedPartitionSchemeDescription = original.NamedPartitionSchemeDescription
 type NodeTypeDescription = original.NodeTypeDescription
 type OperationListResult = original.OperationListResult
@@ -284,23 +211,19 @@ type OperationsClient = original.OperationsClient
 type PartitionSchemeDescription = original.PartitionSchemeDescription
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
-type ServerCertificateCommonName = original.ServerCertificateCommonName
-type ServerCertificateCommonNames = original.ServerCertificateCommonNames
+type RollingUpgradeMonitoringPolicy = original.RollingUpgradeMonitoringPolicy
 type ServiceCorrelationDescription = original.ServiceCorrelationDescription
 type ServiceLoadMetricDescription = original.ServiceLoadMetricDescription
 type ServicePlacementPolicyDescription = original.ServicePlacementPolicyDescription
+type ServiceProperties = original.ServiceProperties
+type ServicePropertiesBase = original.ServicePropertiesBase
 type ServiceResource = original.ServiceResource
 type ServiceResourceList = original.ServiceResourceList
-type ServiceResourceProperties = original.ServiceResourceProperties
-type ServiceResourcePropertiesBase = original.ServiceResourcePropertiesBase
 type ServiceResourceUpdate = original.ServiceResourceUpdate
-type ServiceResourceUpdateProperties = original.ServiceResourceUpdateProperties
 type ServiceTypeDeltaHealthPolicy = original.ServiceTypeDeltaHealthPolicy
 type ServiceTypeHealthPolicy = original.ServiceTypeHealthPolicy
-type ServicesClient = original.ServicesClient
-type ServicesCreateFuture = original.ServicesCreateFuture
-type ServicesDeleteFuture = original.ServicesDeleteFuture
-type ServicesUpdateFuture = original.ServicesUpdateFuture
+type ServiceTypeHealthPolicyMapItem = original.ServiceTypeHealthPolicyMapItem
+type ServiceUpdateProperties = original.ServiceUpdateProperties
 type SettingsParameterDescription = original.SettingsParameterDescription
 type SettingsSectionDescription = original.SettingsSectionDescription
 type SingletonPartitionSchemeDescription = original.SingletonPartitionSchemeDescription
@@ -309,39 +232,24 @@ type StatefulServiceUpdateProperties = original.StatefulServiceUpdateProperties
 type StatelessServiceProperties = original.StatelessServiceProperties
 type StatelessServiceUpdateProperties = original.StatelessServiceUpdateProperties
 type UniformInt64RangePartitionSchemeDescription = original.UniformInt64RangePartitionSchemeDescription
+type VersionProperties = original.VersionProperties
+type VersionResource = original.VersionResource
+type VersionResourceList = original.VersionResourceList
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New() BaseClient {
+	return original.New()
 }
-func NewApplicationTypeVersionsClient(subscriptionID string) ApplicationTypeVersionsClient {
-	return original.NewApplicationTypeVersionsClient(subscriptionID)
+func NewClusterVersionsClient() ClusterVersionsClient {
+	return original.NewClusterVersionsClient()
 }
-func NewApplicationTypeVersionsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationTypeVersionsClient {
-	return original.NewApplicationTypeVersionsClientWithBaseURI(baseURI, subscriptionID)
+func NewClusterVersionsClientWithBaseURI(baseURI string) ClusterVersionsClient {
+	return original.NewClusterVersionsClientWithBaseURI(baseURI)
 }
-func NewApplicationTypesClient(subscriptionID string) ApplicationTypesClient {
-	return original.NewApplicationTypesClient(subscriptionID)
+func NewClustersClient() ClustersClient {
+	return original.NewClustersClient()
 }
-func NewApplicationTypesClientWithBaseURI(baseURI string, subscriptionID string) ApplicationTypesClient {
-	return original.NewApplicationTypesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewApplicationsClient(subscriptionID string) ApplicationsClient {
-	return original.NewApplicationsClient(subscriptionID)
-}
-func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
-	return original.NewApplicationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewClusterVersionsClient(subscriptionID string) ClusterVersionsClient {
-	return original.NewClusterVersionsClient(subscriptionID)
-}
-func NewClusterVersionsClientWithBaseURI(baseURI string, subscriptionID string) ClusterVersionsClient {
-	return original.NewClusterVersionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewClustersClient(subscriptionID string) ClustersClient {
-	return original.NewClustersClient(subscriptionID)
-}
-func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
-	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
+func NewClustersClientWithBaseURI(baseURI string) ClustersClient {
+	return original.NewClustersClientWithBaseURI(baseURI)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -349,41 +257,26 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(cur, getNextPage)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient() OperationsClient {
+	return original.NewOperationsClient()
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return original.NewServicesClient(subscriptionID)
-}
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleArmServicePackageActivationModeValues() []ArmServicePackageActivationMode {
-	return original.PossibleArmServicePackageActivationModeValues()
-}
-func PossibleArmUpgradeFailureActionValues() []ArmUpgradeFailureAction {
-	return original.PossibleArmUpgradeFailureActionValues()
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
 func PossibleClusterStateValues() []ClusterState {
 	return original.PossibleClusterStateValues()
+}
+func PossibleDefaultMoveCostValues() []DefaultMoveCost {
+	return original.PossibleDefaultMoveCostValues()
 }
 func PossibleDurabilityLevelValues() []DurabilityLevel {
 	return original.PossibleDurabilityLevelValues()
 }
 func PossibleEnvironmentValues() []Environment {
 	return original.PossibleEnvironmentValues()
-}
-func PossibleMoveCostValues() []MoveCost {
-	return original.PossibleMoveCostValues()
-}
-func PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues() []PartitionSchemeBasicPartitionSchemeDescription {
-	return original.PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues()
 }
 func PossiblePartitionSchemeValues() []PartitionScheme {
 	return original.PossiblePartitionSchemeValues()
@@ -397,23 +290,14 @@ func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
 func PossibleReliabilityLevelValues() []ReliabilityLevel {
 	return original.PossibleReliabilityLevelValues()
 }
-func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
-	return original.PossibleServiceCorrelationSchemeValues()
+func PossibleSchemeValues() []Scheme {
+	return original.PossibleSchemeValues()
 }
-func PossibleServiceKindBasicServiceResourcePropertiesValues() []ServiceKindBasicServiceResourceProperties {
-	return original.PossibleServiceKindBasicServiceResourcePropertiesValues()
-}
-func PossibleServiceKindBasicServiceResourceUpdatePropertiesValues() []ServiceKindBasicServiceResourceUpdateProperties {
-	return original.PossibleServiceKindBasicServiceResourceUpdatePropertiesValues()
+func PossibleServiceKindBasicServiceUpdatePropertiesValues() []ServiceKindBasicServiceUpdateProperties {
+	return original.PossibleServiceKindBasicServiceUpdatePropertiesValues()
 }
 func PossibleServiceKindValues() []ServiceKind {
 	return original.PossibleServiceKindValues()
-}
-func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
-	return original.PossibleServiceLoadMetricWeightValues()
-}
-func PossibleServicePlacementPolicyTypeValues() []ServicePlacementPolicyType {
-	return original.PossibleServicePlacementPolicyTypeValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
@@ -424,8 +308,8 @@ func PossibleUpgradeMode1Values() []UpgradeMode1 {
 func PossibleUpgradeModeValues() []UpgradeMode {
 	return original.PossibleUpgradeModeValues()
 }
-func PossibleX509StoreName1Values() []X509StoreName1 {
-	return original.PossibleX509StoreName1Values()
+func PossibleWeightValues() []Weight {
+	return original.PossibleWeightValues()
 }
 func PossibleX509StoreNameValues() []X509StoreName {
 	return original.PossibleX509StoreNameValues()

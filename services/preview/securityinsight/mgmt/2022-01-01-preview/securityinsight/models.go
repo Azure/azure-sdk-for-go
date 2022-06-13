@@ -23347,8 +23347,8 @@ func NewSourceControlListPage(cur SourceControlList, getNextPage func(context.Co
 type SourceControlProperties struct {
 	// ID - The id (a Guid) of the source control
 	ID *string `json:"id,omitempty"`
-	// Version - The version number associated with the source control. Possible values include: 'VersionV1', 'VersionV2'
-	Version Version `json:"version,omitempty"`
+	// Version - The version number associated with the source control. Possible values include: 'VersionTypeV1', 'VersionTypeV2'
+	Version VersionType `json:"version,omitempty"`
 	// DisplayName - The display name of the source control
 	DisplayName *string `json:"displayName,omitempty"`
 	// Description - A description of the source control

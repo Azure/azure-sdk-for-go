@@ -29,12 +29,13 @@ const (
 )
 
 var (
-	v2BeginRegex             = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
-	v2EndRegex               = regexp.MustCompile("^\\s*```\\s*$")
-	newClientMethodNameRegex = regexp.MustCompile("^New.*Client$")
-	versionLineRegex         = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
-	changelogVersionRegex    = regexp.MustCompile(`##\s*(?P<version>\d+\.\d+\.\d+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
-	packageConfigRegex       = regexp.MustCompile(`\$\((package-.+)\)`)
+	v2BeginRegex                    = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
+	v2EndRegex                      = regexp.MustCompile("^\\s*```\\s*$")
+	newClientMethodNameRegex        = regexp.MustCompile("^New.*Client$")
+	versionLineRegex                = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
+	changelogPosWithPreviewRegex    = regexp.MustCompile(`##\s*(?P<version>.+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
+	changelogPosWithoutPreviewRegex = regexp.MustCompile(`##\s*(?P<version>\d+\.\d+\.\d+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
+	packageConfigRegex              = regexp.MustCompile(`\$\((package-.+)\)`)
 )
 
 type PackageInfo struct {
@@ -195,27 +196,6 @@ func GetSpecRpName(packageRootPath string) (string, error) {
 	return "", fmt.Errorf("cannot get sepc rp name from config")
 }
 
-// get latest version from changelog file according to first line with: `## 0.2.1 (2021-11-22)`
-func GetLatestVersion(packageRootPath string) (*semver.Version, error) {
-	path := filepath.Join(packageRootPath, common.ChangelogFilename)
-	b, err := ioutil.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("cannot parse version from changelog")
-	}
-
-	lines := strings.Split(string(b), "\n")
-	for _, line := range lines {
-		matchResults := changelogVersionRegex.FindAllStringSubmatch(line, -1)
-		for _, matchResult := range matchResults {
-			if matchResult[2] != "Unreleased" {
-				return semver.NewVersion(matchResult[1])
-			}
-		}
-	}
-
-	return nil, fmt.Errorf("cannot parse version from changelog")
-}
-
 // replace version: use `module-version: ` prefix to locate version in autorest.md file, use version = "v*.*.*" regrex to locate version in constants.go file
 func ReplaceVersion(packageRootPath string, newVersion string) error {
 	path := filepath.Join(packageRootPath, "autorest.md")
@@ -313,23 +293,20 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 	}
 
 	oldChangelog := string(b)
-	newChangelog := ""
-	matchResults := changelogVersionRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
+	newChangelog := "# Release History\n\n"
+	var matchResults [][]int
+	if version.Prerelease() == "" {
+		matchResults = changelogPosWithoutPreviewRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
+	} else {
+		matchResults = changelogPosWithPreviewRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
+	}
 	additionalChangelog := changelog.ToCompactMarkdown()
 	if releaseDate == "" {
 		releaseDate = time.Now().Format("2006-01-02")
 	}
 
 	for _, matchResult := range matchResults {
-		if oldChangelog[matchResult[4]:matchResult[5]] == "Unreleased" {
-			newChangelog = newChangelog + oldChangelog[0:matchResult[0]]
-		} else {
-			if newChangelog == "" {
-				newChangelog = newChangelog + oldChangelog[0:matchResult[0]]
-			}
-			newChangelog = newChangelog + "## " + version.String() + " (" + releaseDate + ")\r\n" + additionalChangelog + "\r\n\r\n" + oldChangelog[matchResult[0]:]
-			break
-		}
+		newChangelog = newChangelog + "## " + version.String() + " (" + releaseDate + ")\r\n" + additionalChangelog + "\r\n\r\n" + oldChangelog[matchResult[0]:]
 	}
 
 	err = ioutil.WriteFile(path, []byte(newChangelog), 0644)

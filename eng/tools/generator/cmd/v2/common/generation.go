@@ -90,6 +90,19 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 
 	onBoard := false
+
+	version, err := semver.NewVersion("0.1.0")
+	if err != nil {
+		return nil, err
+	}
+	if generateParam.SpecficVersion != "" {
+		log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
+		version, err = semver.NewVersion(generateParam.SpecficVersion)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		onBoard = true
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
@@ -106,6 +119,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			Commit:        ctx.SpecCommitHash,
 			PackageConfig: generateParam.NamespaceConfig,
 			GoVersion:     generateParam.GoVersion,
+			Version:       version.String(),
 		}); err != nil {
 			return nil, err
 		}
@@ -182,12 +196,6 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		version := "0.1.0"
-		if generateParam.SpecficVersion != "" {
-			log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
-			version = generateParam.SpecficVersion
-		}
-
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")
 			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
@@ -196,7 +204,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		}
 
 		return &GenerateResult{
-			Version:        version,
+			Version:        version.String(),
 			RPName:         generateParam.RPName,
 			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
@@ -205,15 +213,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
-		var version *semver.Version
 		if generateParam.SpecficVersion == "" {
 			version, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
-			version, err = semver.NewVersion(generateParam.SpecficVersion)
 			if err != nil {
 				return nil, err
 			}

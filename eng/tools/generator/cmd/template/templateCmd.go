@@ -85,6 +85,7 @@ type Flags struct {
 	ReleaseDate   string
 	PackageConfig string
 	GoVersion     string
+	Version       string
 }
 
 // GeneratePackageByTemplate creates a new set of files based on the things in template directory
@@ -105,7 +106,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	}
 
 	// build the replaceMap
-	buildReplaceMap(rpName, packageName, flags.PackageConfig, flags.PackageTitle, flags.Commit, flags.ReleaseDate, flags.GoVersion)
+	buildReplaceMap(rpName, packageName, flags.PackageConfig, flags.PackageTitle, flags.Commit, flags.ReleaseDate, flags.GoVersion, flags.Version)
 
 	// copy everything to destination directory
 	for _, file := range fileList {
@@ -129,7 +130,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	return nil
 }
 
-func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID, releaseDate, goVersion string) {
+func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID, releaseDate, goVersion, version string) {
 	replaceMap = make(map[string]string)
 
 	replaceMap[RPNameKey] = rpName
@@ -143,6 +144,7 @@ func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID,
 		replaceMap[ReleaseDate] = releaseDate
 	}
 	replaceMap[GoVersion] = goVersion
+	replaceMap[Version] = version
 }
 
 func readAndReplace(path string) (string, error) {
@@ -186,4 +188,5 @@ const (
 	ReleaseDate      = "{{releaseDate}}"
 	PackageConfigKey = "{{packageConfig}}"
 	GoVersion        = "{{goVersion}}"
+	Version          = "{{version}}"
 )

@@ -113,13 +113,13 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
-			SDKRoot:       ctx.SDKPath,
-			TemplatePath:  "eng/tools/generator/template/rpName/packageName",
-			PackageTitle:  generateParam.SpecficPackageTitle,
-			Commit:        ctx.SpecCommitHash,
-			PackageConfig: generateParam.NamespaceConfig,
-			GoVersion:     generateParam.GoVersion,
-			Version:       version.String(),
+			SDKRoot:        ctx.SDKPath,
+			TemplatePath:   "eng/tools/generator/template/rpName/packageName",
+			PackageTitle:   generateParam.SpecficPackageTitle,
+			Commit:         ctx.SpecCommitHash,
+			PackageConfig:  generateParam.NamespaceConfig,
+			GoVersion:      generateParam.GoVersion,
+			PackageVersion: version.String(),
 		}); err != nil {
 			return nil, err
 		}

@@ -56,7 +56,7 @@ func NewEndpointClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create or update DigitalTwinsInstance endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-30-preview
+// Generated from API version 2022-05-31
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // endpointName - Name of Endpoint Resource.
@@ -77,7 +77,7 @@ func (client *EndpointClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create or update DigitalTwinsInstance endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-30-preview
+// Generated from API version 2022-05-31
 func (client *EndpointClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, endpointDescription EndpointResource, options *EndpointClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, endpointName, endpointDescription, options)
 	if err != nil {
@@ -117,7 +117,7 @@ func (client *EndpointClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-30-preview")
+	reqQP.Set("api-version", "2022-05-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, endpointDescription)
@@ -125,7 +125,7 @@ func (client *EndpointClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete a DigitalTwinsInstance endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-30-preview
+// Generated from API version 2022-05-31
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // endpointName - Name of Endpoint Resource.
@@ -144,7 +144,7 @@ func (client *EndpointClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Delete a DigitalTwinsInstance endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-30-preview
+// Generated from API version 2022-05-31
 func (client *EndpointClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, endpointName string, options *EndpointClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, endpointName, options)
 	if err != nil {
@@ -184,7 +184,7 @@ func (client *EndpointClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-30-preview")
+	reqQP.Set("api-version", "2022-05-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -192,7 +192,7 @@ func (client *EndpointClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Get DigitalTwinsInstances Endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-30-preview
+// Generated from API version 2022-05-31
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // endpointName - Name of Endpoint Resource.
@@ -236,7 +236,7 @@ func (client *EndpointClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-30-preview")
+	reqQP.Set("api-version", "2022-05-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,7 +253,7 @@ func (client *EndpointClient) getHandleResponse(resp *http.Response) (EndpointCl
 
 // NewListPager - Get DigitalTwinsInstance Endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-30-preview
+// Generated from API version 2022-05-31
 // resourceGroupName - The name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - The name of the DigitalTwinsInstance.
 // options - EndpointClientListOptions contains the optional parameters for the EndpointClient.List method.
@@ -305,7 +305,7 @@ func (client *EndpointClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-30-preview")
+	reqQP.Set("api-version", "2022-05-31")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -2,6 +2,20 @@
 
 ## `v66.0.0`
 
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2022-01-01-preview/securityinsight` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/securityinsight/mgmt/2022-01-01-preview/securityinsight/CHANGELOG.md) |
+
+### Others
+Deprecate all old management plane packages. We strongly encourage you to upgrade to continue receiving updates. See [Migration Guide]( https://aka.ms/azsdk/golang/t2/migration) for guidance on upgrading. Refer to our [deprecation policy](https://azure.github.io/azure-sdk/policies_support.html) for more details.
+
+### Revert package removal
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights`
+
 ### Removed Packages
 
 - `github.com/Azure/azure-sdk-for-go/services/maps/mgmt/2017-01-01-preview/maps`
@@ -36,7 +50,6 @@
 - `github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2021-03-01-preview/network`
 - `github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-08-01-preview/peering`
 - `github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-09-01-preview/peering`
-- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2015-10-01-preview/policy`
 - `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2016-09-01-preview/managedapplications`
 - `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-06-01-preview/policy`
 - `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/managementgroups`

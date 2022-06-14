@@ -1918,17 +1918,17 @@ func PossibleUebaDataSourcesValues() []UebaDataSources {
 	return []UebaDataSources{UebaDataSourcesAuditLogs, UebaDataSourcesAzureActivity, UebaDataSourcesSecurityEvent, UebaDataSourcesSigninLogs}
 }
 
-// Version enumerates the values for version.
-type Version string
+// VersionType enumerates the values for version type.
+type VersionType string
 
 const (
-	// VersionV1 ...
-	VersionV1 Version = "V1"
-	// VersionV2 ...
-	VersionV2 Version = "V2"
+	// VersionTypeV1 ...
+	VersionTypeV1 VersionType = "V1"
+	// VersionTypeV2 ...
+	VersionTypeV2 VersionType = "V2"
 )
 
-// PossibleVersionValues returns an array of possible values for the Version const type.
-func PossibleVersionValues() []Version {
-	return []Version{VersionV1, VersionV2}
+// PossibleVersionTypeValues returns an array of possible values for the VersionType const type.
+func PossibleVersionTypeValues() []VersionType {
+	return []VersionType{VersionTypeV1, VersionTypeV2}
 }

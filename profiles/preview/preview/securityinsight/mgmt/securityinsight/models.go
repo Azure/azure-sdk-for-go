@@ -903,11 +903,11 @@ const (
 	UebaDataSourcesSigninLogs    UebaDataSources = original.UebaDataSourcesSigninLogs
 )
 
-type Version = original.Version
+type VersionType = original.VersionType
 
 const (
-	VersionV1 Version = original.VersionV1
-	VersionV2 Version = original.VersionV2
+	VersionTypeV1 VersionType = original.VersionTypeV1
+	VersionTypeV2 VersionType = original.VersionTypeV2
 )
 
 type AADCheckRequirements = original.AADCheckRequirements
@@ -1971,8 +1971,8 @@ func PossibleTriggersWhenValues() []TriggersWhen {
 func PossibleUebaDataSourcesValues() []UebaDataSources {
 	return original.PossibleUebaDataSourcesValues()
 }
-func PossibleVersionValues() []Version {
-	return original.PossibleVersionValues()
+func PossibleVersionTypeValues() []VersionType {
+	return original.PossibleVersionTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

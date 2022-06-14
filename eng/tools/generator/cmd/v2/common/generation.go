@@ -90,6 +90,19 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 
 	onBoard := false
+
+	version, err := semver.NewVersion("0.1.0")
+	if err != nil {
+		return nil, err
+	}
+	if generateParam.SpecficVersion != "" {
+		log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
+		version, err = semver.NewVersion(generateParam.SpecficVersion)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		onBoard = true
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
@@ -100,19 +113,20 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
-			SDKRoot:       ctx.SDKPath,
-			TemplatePath:  "eng/tools/generator/template/rpName/packageName",
-			PackageTitle:  generateParam.SpecficPackageTitle,
-			Commit:        ctx.SpecCommitHash,
-			PackageConfig: generateParam.NamespaceConfig,
-			GoVersion:     generateParam.GoVersion,
+			SDKRoot:        ctx.SDKPath,
+			TemplatePath:   "eng/tools/generator/template/rpName/packageName",
+			PackageTitle:   generateParam.SpecficPackageTitle,
+			Commit:         ctx.SpecCommitHash,
+			PackageConfig:  generateParam.NamespaceConfig,
+			GoVersion:      generateParam.GoVersion,
+			PackageVersion: version.String(),
 		}); err != nil {
 			return nil, err
 		}
 	} else {
 		log.Printf("Package '%s' existed, do update process", packagePath)
 
-		log.Printf("Remove all the files that start with `zz_generated_`...")
+		log.Printf("Remove all the generated files ...")
 		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
 			return nil, err
 		}
@@ -182,12 +196,6 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 			return nil, err
 		}
 
-		version := "0.1.0"
-		if generateParam.SpecficVersion != "" {
-			log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
-			version = generateParam.SpecficVersion
-		}
-
 		if !generateParam.SkipGenerateExample {
 			log.Printf("Generate examples...")
 			if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName)); err != nil {
@@ -196,7 +204,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		}
 
 		return &GenerateResult{
-			Version:        version,
+			Version:        version.String(),
 			RPName:         generateParam.RPName,
 			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
@@ -205,15 +213,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		}, nil
 	} else {
 		log.Printf("Calculate new version...")
-		var version *semver.Version
 		if generateParam.SpecficVersion == "" {
 			version, err = CalculateNewVersion(changelog, previousVersion, isCurrentPreview)
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
-			version, err = semver.NewVersion(generateParam.SpecficVersion)
 			if err != nil {
 				return nil, err
 			}

@@ -31178,13 +31178,18 @@ func (r RestServiceLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "authHeaders", &r.AuthHeaders)
 	populate(objectMap, "authenticationType", r.AuthenticationType)
 	populate(objectMap, "azureCloudType", &r.AzureCloudType)
+	populate(objectMap, "clientId", &r.ClientID)
+	populate(objectMap, "clientSecret", r.ClientSecret)
 	populate(objectMap, "credential", r.Credential)
 	populate(objectMap, "enableServerCertificateValidation", &r.EnableServerCertificateValidation)
 	populate(objectMap, "encryptedCredential", &r.EncryptedCredential)
 	populate(objectMap, "password", r.Password)
+	populate(objectMap, "resource", &r.Resource)
+	populate(objectMap, "scope", &r.Scope)
 	populate(objectMap, "servicePrincipalId", &r.ServicePrincipalID)
 	populate(objectMap, "servicePrincipalKey", r.ServicePrincipalKey)
 	populate(objectMap, "tenant", &r.Tenant)
+	populate(objectMap, "tokenEndpoint", &r.TokenEndpoint)
 	populate(objectMap, "url", &r.URL)
 	populate(objectMap, "userName", &r.UserName)
 	return json.Marshal(objectMap)
@@ -31211,6 +31216,12 @@ func (r *RestServiceLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 		case "azureCloudType":
 			err = unpopulate(val, "AzureCloudType", &r.AzureCloudType)
 			delete(rawMsg, key)
+		case "clientId":
+			err = unpopulate(val, "ClientID", &r.ClientID)
+			delete(rawMsg, key)
+		case "clientSecret":
+			r.ClientSecret, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
 		case "credential":
 			err = unpopulate(val, "Credential", &r.Credential)
 			delete(rawMsg, key)
@@ -31223,6 +31234,12 @@ func (r *RestServiceLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 		case "password":
 			r.Password, err = unmarshalSecretBaseClassification(val)
 			delete(rawMsg, key)
+		case "resource":
+			err = unpopulate(val, "Resource", &r.Resource)
+			delete(rawMsg, key)
+		case "scope":
+			err = unpopulate(val, "Scope", &r.Scope)
+			delete(rawMsg, key)
 		case "servicePrincipalId":
 			err = unpopulate(val, "ServicePrincipalID", &r.ServicePrincipalID)
 			delete(rawMsg, key)
@@ -31231,6 +31248,9 @@ func (r *RestServiceLinkedServiceTypeProperties) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "tenant":
 			err = unpopulate(val, "Tenant", &r.Tenant)
+			delete(rawMsg, key)
+		case "tokenEndpoint":
+			err = unpopulate(val, "TokenEndpoint", &r.TokenEndpoint)
 			delete(rawMsg, key)
 		case "url":
 			err = unpopulate(val, "URL", &r.URL)
@@ -34606,6 +34626,319 @@ func (s *SapHanaTableDataset) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "typeProperties":
 			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		default:
+			if s.AdditionalProperties == nil {
+				s.AdditionalProperties = map[string]interface{}{}
+			}
+			if val != nil {
+				var aux interface{}
+				err = json.Unmarshal(val, &aux)
+				s.AdditionalProperties[key] = aux
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SapOdpLinkedService.
+func (s SapOdpLinkedService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "annotations", s.Annotations)
+	populate(objectMap, "connectVia", s.ConnectVia)
+	populate(objectMap, "description", s.Description)
+	populate(objectMap, "parameters", s.Parameters)
+	objectMap["type"] = "SapOdp"
+	populate(objectMap, "typeProperties", s.TypeProperties)
+	if s.AdditionalProperties != nil {
+		for key, val := range s.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SapOdpLinkedService.
+func (s *SapOdpLinkedService) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "annotations":
+			err = unpopulate(val, "Annotations", &s.Annotations)
+			delete(rawMsg, key)
+		case "connectVia":
+			err = unpopulate(val, "ConnectVia", &s.ConnectVia)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, "Description", &s.Description)
+			delete(rawMsg, key)
+		case "parameters":
+			err = unpopulate(val, "Parameters", &s.Parameters)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &s.Type)
+			delete(rawMsg, key)
+		case "typeProperties":
+			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		default:
+			if s.AdditionalProperties == nil {
+				s.AdditionalProperties = map[string]interface{}{}
+			}
+			if val != nil {
+				var aux interface{}
+				err = json.Unmarshal(val, &aux)
+				s.AdditionalProperties[key] = aux
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SapOdpLinkedServiceTypeProperties.
+func (s SapOdpLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "clientId", &s.ClientID)
+	populate(objectMap, "encryptedCredential", &s.EncryptedCredential)
+	populate(objectMap, "language", &s.Language)
+	populate(objectMap, "logonGroup", &s.LogonGroup)
+	populate(objectMap, "messageServer", &s.MessageServer)
+	populate(objectMap, "messageServerService", &s.MessageServerService)
+	populate(objectMap, "password", s.Password)
+	populate(objectMap, "server", &s.Server)
+	populate(objectMap, "sncLibraryPath", &s.SncLibraryPath)
+	populate(objectMap, "sncMode", &s.SncMode)
+	populate(objectMap, "sncMyName", &s.SncMyName)
+	populate(objectMap, "sncPartnerName", &s.SncPartnerName)
+	populate(objectMap, "sncQop", &s.SncQop)
+	populate(objectMap, "subscriberName", &s.SubscriberName)
+	populate(objectMap, "systemId", &s.SystemID)
+	populate(objectMap, "systemNumber", &s.SystemNumber)
+	populate(objectMap, "userName", &s.UserName)
+	populate(objectMap, "x509CertificatePath", &s.X509CertificatePath)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SapOdpLinkedServiceTypeProperties.
+func (s *SapOdpLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "clientId":
+			err = unpopulate(val, "ClientID", &s.ClientID)
+			delete(rawMsg, key)
+		case "encryptedCredential":
+			err = unpopulate(val, "EncryptedCredential", &s.EncryptedCredential)
+			delete(rawMsg, key)
+		case "language":
+			err = unpopulate(val, "Language", &s.Language)
+			delete(rawMsg, key)
+		case "logonGroup":
+			err = unpopulate(val, "LogonGroup", &s.LogonGroup)
+			delete(rawMsg, key)
+		case "messageServer":
+			err = unpopulate(val, "MessageServer", &s.MessageServer)
+			delete(rawMsg, key)
+		case "messageServerService":
+			err = unpopulate(val, "MessageServerService", &s.MessageServerService)
+			delete(rawMsg, key)
+		case "password":
+			s.Password, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "server":
+			err = unpopulate(val, "Server", &s.Server)
+			delete(rawMsg, key)
+		case "sncLibraryPath":
+			err = unpopulate(val, "SncLibraryPath", &s.SncLibraryPath)
+			delete(rawMsg, key)
+		case "sncMode":
+			err = unpopulate(val, "SncMode", &s.SncMode)
+			delete(rawMsg, key)
+		case "sncMyName":
+			err = unpopulate(val, "SncMyName", &s.SncMyName)
+			delete(rawMsg, key)
+		case "sncPartnerName":
+			err = unpopulate(val, "SncPartnerName", &s.SncPartnerName)
+			delete(rawMsg, key)
+		case "sncQop":
+			err = unpopulate(val, "SncQop", &s.SncQop)
+			delete(rawMsg, key)
+		case "subscriberName":
+			err = unpopulate(val, "SubscriberName", &s.SubscriberName)
+			delete(rawMsg, key)
+		case "systemId":
+			err = unpopulate(val, "SystemID", &s.SystemID)
+			delete(rawMsg, key)
+		case "systemNumber":
+			err = unpopulate(val, "SystemNumber", &s.SystemNumber)
+			delete(rawMsg, key)
+		case "userName":
+			err = unpopulate(val, "UserName", &s.UserName)
+			delete(rawMsg, key)
+		case "x509CertificatePath":
+			err = unpopulate(val, "X509CertificatePath", &s.X509CertificatePath)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SapOdpResourceDataset.
+func (s SapOdpResourceDataset) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "annotations", s.Annotations)
+	populate(objectMap, "description", s.Description)
+	populate(objectMap, "folder", s.Folder)
+	populate(objectMap, "linkedServiceName", s.LinkedServiceName)
+	populate(objectMap, "parameters", s.Parameters)
+	populate(objectMap, "schema", &s.Schema)
+	populate(objectMap, "structure", &s.Structure)
+	objectMap["type"] = "SapOdpResource"
+	populate(objectMap, "typeProperties", s.TypeProperties)
+	if s.AdditionalProperties != nil {
+		for key, val := range s.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SapOdpResourceDataset.
+func (s *SapOdpResourceDataset) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "annotations":
+			err = unpopulate(val, "Annotations", &s.Annotations)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, "Description", &s.Description)
+			delete(rawMsg, key)
+		case "folder":
+			err = unpopulate(val, "Folder", &s.Folder)
+			delete(rawMsg, key)
+		case "linkedServiceName":
+			err = unpopulate(val, "LinkedServiceName", &s.LinkedServiceName)
+			delete(rawMsg, key)
+		case "parameters":
+			err = unpopulate(val, "Parameters", &s.Parameters)
+			delete(rawMsg, key)
+		case "schema":
+			err = unpopulate(val, "Schema", &s.Schema)
+			delete(rawMsg, key)
+		case "structure":
+			err = unpopulate(val, "Structure", &s.Structure)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &s.Type)
+			delete(rawMsg, key)
+		case "typeProperties":
+			err = unpopulate(val, "TypeProperties", &s.TypeProperties)
+			delete(rawMsg, key)
+		default:
+			if s.AdditionalProperties == nil {
+				s.AdditionalProperties = map[string]interface{}{}
+			}
+			if val != nil {
+				var aux interface{}
+				err = json.Unmarshal(val, &aux)
+				s.AdditionalProperties[key] = aux
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SapOdpSource.
+func (s SapOdpSource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "additionalColumns", &s.AdditionalColumns)
+	populate(objectMap, "disableMetricsCollection", &s.DisableMetricsCollection)
+	populate(objectMap, "extractionMode", &s.ExtractionMode)
+	populate(objectMap, "maxConcurrentConnections", &s.MaxConcurrentConnections)
+	populate(objectMap, "projection", &s.Projection)
+	populate(objectMap, "queryTimeout", &s.QueryTimeout)
+	populate(objectMap, "selection", &s.Selection)
+	populate(objectMap, "sourceRetryCount", &s.SourceRetryCount)
+	populate(objectMap, "sourceRetryWait", &s.SourceRetryWait)
+	populate(objectMap, "subscriberProcess", &s.SubscriberProcess)
+	objectMap["type"] = "SapOdpSource"
+	if s.AdditionalProperties != nil {
+		for key, val := range s.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SapOdpSource.
+func (s *SapOdpSource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "additionalColumns":
+			err = unpopulate(val, "AdditionalColumns", &s.AdditionalColumns)
+			delete(rawMsg, key)
+		case "disableMetricsCollection":
+			err = unpopulate(val, "DisableMetricsCollection", &s.DisableMetricsCollection)
+			delete(rawMsg, key)
+		case "extractionMode":
+			err = unpopulate(val, "ExtractionMode", &s.ExtractionMode)
+			delete(rawMsg, key)
+		case "maxConcurrentConnections":
+			err = unpopulate(val, "MaxConcurrentConnections", &s.MaxConcurrentConnections)
+			delete(rawMsg, key)
+		case "projection":
+			err = unpopulate(val, "Projection", &s.Projection)
+			delete(rawMsg, key)
+		case "queryTimeout":
+			err = unpopulate(val, "QueryTimeout", &s.QueryTimeout)
+			delete(rawMsg, key)
+		case "selection":
+			err = unpopulate(val, "Selection", &s.Selection)
+			delete(rawMsg, key)
+		case "sourceRetryCount":
+			err = unpopulate(val, "SourceRetryCount", &s.SourceRetryCount)
+			delete(rawMsg, key)
+		case "sourceRetryWait":
+			err = unpopulate(val, "SourceRetryWait", &s.SourceRetryWait)
+			delete(rawMsg, key)
+		case "subscriberProcess":
+			err = unpopulate(val, "SubscriberProcess", &s.SubscriberProcess)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &s.Type)
 			delete(rawMsg, key)
 		default:
 			if s.AdditionalProperties == nil {

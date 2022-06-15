@@ -6,6 +6,9 @@ Param(
 
 $sdks = Get-AllPackageInfoFromRepo
 
+## Use local git to fetch tags without GitHub token
+$existingTags = git tag
+
 ## Create depcheck module
 $workingPath = Join-Path $RepoRoot "sdk" "depcheck"
 if (Test-Path -Path $workingPath)
@@ -48,7 +51,7 @@ foreach ($sdk in $sdks)
     $parsedSemver = [AzureEngSemanticVersion]::ParseVersionString($sdk.Version)
 
     
-    if ($sdk.Name -eq $PackageDirectory)
+    if ($sdk.Name -eq $PackageDirectory -or $existingTags -notcontains "$($sdk.Name)/v$($sdk.Version)")
     {
         ## Add replace for new package
         $modPath = Join-Path $RepoRoot "sdk" "depcheck" "go.mod"

@@ -103,7 +103,7 @@ func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, sche
 	return scheduleMessages(ctx, s.links, s.retryOptions, messages, scheduledEnqueueTime)
 }
 
-// ScheduleMessagesOptions contains optional parameters for the ScheduleMessages function.
+// ScheduleAMQPMessagesOptions contains optional parameters for the ScheduleAMQPMessages function.
 type ScheduleAMQPMessagesOptions struct {
 	// For future expansion
 }

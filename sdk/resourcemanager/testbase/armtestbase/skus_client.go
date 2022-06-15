@@ -56,7 +56,7 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // NewListPager - Lists the available SKUs of Test Base Account in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // options - SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
 func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SKUsClientListResponse]{
@@ -98,7 +98,7 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsCl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

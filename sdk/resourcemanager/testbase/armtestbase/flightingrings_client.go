@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// AvailableOSClient contains the methods for the AvailableOS group.
-// Don't use this type directly, use NewAvailableOSClient() instead.
-type AvailableOSClient struct {
+// FlightingRingsClient contains the methods for the FlightingRings group.
+// Don't use this type directly, use NewFlightingRingsClient() instead.
+type FlightingRingsClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewAvailableOSClient creates a new instance of AvailableOSClient with the specified values.
+// NewFlightingRingsClient creates a new instance of FlightingRingsClient with the specified values.
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewAvailableOSClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableOSClient, error) {
+func NewFlightingRingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FlightingRingsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewAvailableOSClient(subscriptionID string, credential azcore.TokenCredenti
 	if err != nil {
 		return nil, err
 	}
-	client := &AvailableOSClient{
+	client := &FlightingRingsClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -54,31 +54,31 @@ func NewAvailableOSClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// Get - Gets an available OS to run a package under a Test Base Account.
+// Get - Gets a flighting ring of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
-// availableOSResourceName - The resource name of an Available OS.
-// options - AvailableOSClientGetOptions contains the optional parameters for the AvailableOSClient.Get method.
-func (client *AvailableOSClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, availableOSResourceName string, options *AvailableOSClientGetOptions) (AvailableOSClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, availableOSResourceName, options)
+// flightingRingResourceName - The resource name of a flighting ring.
+// options - FlightingRingsClientGetOptions contains the optional parameters for the FlightingRingsClient.Get method.
+func (client *FlightingRingsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, flightingRingResourceName string, options *FlightingRingsClientGetOptions) (FlightingRingsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, flightingRingResourceName, options)
 	if err != nil {
-		return AvailableOSClientGetResponse{}, err
+		return FlightingRingsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AvailableOSClientGetResponse{}, err
+		return FlightingRingsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return AvailableOSClientGetResponse{}, runtime.NewResponseError(resp)
+		return FlightingRingsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AvailableOSClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, availableOSResourceName string, options *AvailableOSClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/availableOSs/{availableOSResourceName}"
+func (client *FlightingRingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, flightingRingResourceName string, options *FlightingRingsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/flightingRings/{flightingRingResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -91,59 +91,58 @@ func (client *AvailableOSClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter testBaseAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
-	if availableOSResourceName == "" {
-		return nil, errors.New("parameter availableOSResourceName cannot be empty")
+	if flightingRingResourceName == "" {
+		return nil, errors.New("parameter flightingRingResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{availableOSResourceName}", url.PathEscape(availableOSResourceName))
+	urlPath = strings.ReplaceAll(urlPath, "{flightingRingResourceName}", url.PathEscape(flightingRingResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AvailableOSClient) getHandleResponse(resp *http.Response) (AvailableOSClientGetResponse, error) {
-	result := AvailableOSClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableOSResource); err != nil {
-		return AvailableOSClientGetResponse{}, err
+func (client *FlightingRingsClient) getHandleResponse(resp *http.Response) (FlightingRingsClientGetResponse, error) {
+	result := FlightingRingsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FlightingRingResource); err != nil {
+		return FlightingRingsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists all the available OSs to run a package under a Test Base Account.
+// NewListPager - Lists all the flighting rings of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
-// osUpdateType - The type of the OS Update.
-// options - AvailableOSClientListOptions contains the optional parameters for the AvailableOSClient.List method.
-func (client *AvailableOSClient) NewListPager(resourceGroupName string, testBaseAccountName string, osUpdateType OsUpdateType, options *AvailableOSClientListOptions) *runtime.Pager[AvailableOSClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AvailableOSClientListResponse]{
-		More: func(page AvailableOSClientListResponse) bool {
+// options - FlightingRingsClientListOptions contains the optional parameters for the FlightingRingsClient.List method.
+func (client *FlightingRingsClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *FlightingRingsClientListOptions) *runtime.Pager[FlightingRingsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[FlightingRingsClientListResponse]{
+		More: func(page FlightingRingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AvailableOSClientListResponse) (AvailableOSClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *FlightingRingsClientListResponse) (FlightingRingsClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, osUpdateType, options)
+				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return AvailableOSClientListResponse{}, err
+				return FlightingRingsClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return AvailableOSClientListResponse{}, err
+				return FlightingRingsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return AvailableOSClientListResponse{}, runtime.NewResponseError(resp)
+				return FlightingRingsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -151,8 +150,8 @@ func (client *AvailableOSClient) NewListPager(resourceGroupName string, testBase
 }
 
 // listCreateRequest creates the List request.
-func (client *AvailableOSClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, osUpdateType OsUpdateType, options *AvailableOSClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/availableOSs"
+func (client *FlightingRingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *FlightingRingsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/flightingRings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -170,18 +169,17 @@ func (client *AvailableOSClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("osUpdateType", string(osUpdateType))
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AvailableOSClient) listHandleResponse(resp *http.Response) (AvailableOSClientListResponse, error) {
-	result := AvailableOSClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableOSListResult); err != nil {
-		return AvailableOSClientListResponse{}, err
+func (client *FlightingRingsClient) listHandleResponse(resp *http.Response) (FlightingRingsClientListResponse, error) {
+	result := FlightingRingsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FlightingRingListResult); err != nil {
+		return FlightingRingsClientListResponse{}, err
 	}
 	return result, nil
 }

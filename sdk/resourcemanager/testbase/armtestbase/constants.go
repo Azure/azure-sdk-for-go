@@ -10,7 +10,7 @@ package armtestbase
 
 const (
 	moduleName    = "armtestbase"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.5.1"
 )
 
 // Action - The action of the command.
@@ -220,6 +220,7 @@ func PossibleGradeValues() []Grade {
 	}
 }
 
+// OsUpdateType - Specifies the OS update type to test against.
 type OsUpdateType string
 
 const (

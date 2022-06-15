@@ -57,7 +57,7 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CheckPackageNameAvailability - Checks that the Test Base Package name and version is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // parameters - Parameters supplied to the Test Base Package CheckNameAvailability operation.
@@ -98,7 +98,7 @@ func (client *AccountsClient) checkPackageNameAvailabilityCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -115,7 +115,7 @@ func (client *AccountsClient) checkPackageNameAvailabilityHandleResponse(resp *h
 
 // BeginCreate - Create or replace (overwrite/recreate, with potential downtime) a Test Base Account in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // parameters - Parameters supplied to create a Test Base Account.
@@ -136,7 +136,7 @@ func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName
 
 // Create - Create or replace (overwrite/recreate, with potential downtime) a Test Base Account in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 func (client *AccountsClient) create(ctx context.Context, resourceGroupName string, testBaseAccountName string, parameters AccountResource, options *AccountsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, testBaseAccountName, parameters, options)
 	if err != nil {
@@ -175,7 +175,7 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 	if options != nil && options.Restore != nil {
 		reqQP.Set("restore", strconv.FormatBool(*options.Restore))
 	}
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -183,7 +183,7 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 
 // BeginDelete - Deletes a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
@@ -203,7 +203,7 @@ func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Deletes a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
 	if err != nil {
@@ -239,7 +239,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,7 +247,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
@@ -286,7 +286,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -303,7 +303,7 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 
 // GetFileUploadURL - Gets the file upload URL of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - AccountsClientGetFileUploadURLOptions contains the optional parameters for the AccountsClient.GetFileUploadURL
@@ -343,7 +343,7 @@ func (client *AccountsClient) getFileUploadURLCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -363,7 +363,7 @@ func (client *AccountsClient) getFileUploadURLHandleResponse(resp *http.Response
 
 // NewListByResourceGroupPager - Lists all the Test Base Accounts in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
 // method.
@@ -414,7 +414,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	if options != nil && options.GetDeleted != nil {
 		reqQP.Set("getDeleted", strconv.FormatBool(*options.GetDeleted))
 	}
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -431,7 +431,7 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // NewListBySubscriptionPager - Lists all the Test Base Accounts in a subscription. This API is required by ARM guidelines.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription
 // method.
 func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
@@ -477,7 +477,7 @@ func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Contex
 	if options != nil && options.GetDeleted != nil {
 		reqQP.Set("getDeleted", strconv.FormatBool(*options.GetDeleted))
 	}
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -494,7 +494,7 @@ func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // BeginOffboard - Offboard a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - AccountsClientBeginOffboardOptions contains the optional parameters for the AccountsClient.BeginOffboard method.
@@ -514,7 +514,7 @@ func (client *AccountsClient) BeginOffboard(ctx context.Context, resourceGroupNa
 
 // Offboard - Offboard a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 func (client *AccountsClient) offboard(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *AccountsClientBeginOffboardOptions) (*http.Response, error) {
 	req, err := client.offboardCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
 	if err != nil {
@@ -550,7 +550,7 @@ func (client *AccountsClient) offboardCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -558,7 +558,7 @@ func (client *AccountsClient) offboardCreateRequest(ctx context.Context, resourc
 
 // BeginUpdate - Update an existing Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // parameters - Parameters supplied to update a Test Base Account.
@@ -579,7 +579,7 @@ func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - Update an existing Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, testBaseAccountName string, parameters AccountUpdateParameters, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, testBaseAccountName, parameters, options)
 	if err != nil {
@@ -615,7 +615,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

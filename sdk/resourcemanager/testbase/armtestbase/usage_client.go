@@ -56,7 +56,7 @@ func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // NewListPager - Lists the usage data of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - UsageClientListOptions contains the optional parameters for the UsageClient.List method.
@@ -111,7 +111,7 @@ func (client *UsageClient) listCreateRequest(ctx context.Context, resourceGroupN
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

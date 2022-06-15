@@ -91,6 +91,183 @@ func (a *AnalysisResultSingletonResource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingHubExecutionUsageDetail.
+func (b *BillingHubExecutionUsageDetail) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", b, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "applicationName":
+			err = unpopulate(val, "ApplicationName", &b.ApplicationName)
+			delete(rawMsg, key)
+		case "applicationVersion":
+			err = unpopulate(val, "ApplicationVersion", &b.ApplicationVersion)
+			delete(rawMsg, key)
+		case "billedCharges":
+			err = unpopulate(val, "BilledCharges", &b.BilledCharges)
+			delete(rawMsg, key)
+		case "endTimeStamp":
+			err = unpopulateTimeRFC3339(val, "EndTimeStamp", &b.EndTimeStamp)
+			delete(rawMsg, key)
+		case "executionRequestId":
+			err = unpopulate(val, "ExecutionRequestID", &b.ExecutionRequestID)
+			delete(rawMsg, key)
+		case "meterId":
+			err = unpopulate(val, "MeterID", &b.MeterID)
+			delete(rawMsg, key)
+		case "osBuild":
+			err = unpopulate(val, "OSBuild", &b.OSBuild)
+			delete(rawMsg, key)
+		case "release":
+			err = unpopulate(val, "Release", &b.Release)
+			delete(rawMsg, key)
+		case "sku":
+			err = unpopulate(val, "SKU", &b.SKU)
+			delete(rawMsg, key)
+		case "startTimeStamp":
+			err = unpopulateTimeRFC3339(val, "StartTimeStamp", &b.StartTimeStamp)
+			delete(rawMsg, key)
+		case "testType":
+			err = unpopulate(val, "TestType", &b.TestType)
+			delete(rawMsg, key)
+		case "updateType":
+			err = unpopulate(val, "UpdateType", &b.UpdateType)
+			delete(rawMsg, key)
+		case "usedBillableHours":
+			err = unpopulate(val, "UsedBillableHours", &b.UsedBillableHours)
+			delete(rawMsg, key)
+		case "usedFreeHours":
+			err = unpopulate(val, "UsedFreeHours", &b.UsedFreeHours)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", b, err)
+		}
+	}
+	return nil
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingHubFreeHourIncrementEntry.
+func (b *BillingHubFreeHourIncrementEntry) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", b, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createTimeStamp":
+			err = unpopulateTimeRFC3339(val, "CreateTimeStamp", &b.CreateTimeStamp)
+			delete(rawMsg, key)
+		case "expirationTimeStamp":
+			err = unpopulateTimeRFC3339(val, "ExpirationTimeStamp", &b.ExpirationTimeStamp)
+			delete(rawMsg, key)
+		case "incrementalFreeHours":
+			err = unpopulate(val, "IncrementalFreeHours", &b.IncrementalFreeHours)
+			delete(rawMsg, key)
+		case "remainingFreeHours":
+			err = unpopulate(val, "RemainingFreeHours", &b.RemainingFreeHours)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", b, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BillingHubGetUsageRequest.
+func (b BillingHubGetUsageRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "endTimeStamp", b.EndTimeStamp)
+	populate(objectMap, "pageIndex", b.PageIndex)
+	populate(objectMap, "pageSize", b.PageSize)
+	populateTimeRFC3339(objectMap, "startTimeStamp", b.StartTimeStamp)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingHubGetUsageRequest.
+func (b *BillingHubGetUsageRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", b, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "endTimeStamp":
+			err = unpopulateTimeRFC3339(val, "EndTimeStamp", &b.EndTimeStamp)
+			delete(rawMsg, key)
+		case "pageIndex":
+			err = unpopulate(val, "PageIndex", &b.PageIndex)
+			delete(rawMsg, key)
+		case "pageSize":
+			err = unpopulate(val, "PageSize", &b.PageSize)
+			delete(rawMsg, key)
+		case "startTimeStamp":
+			err = unpopulateTimeRFC3339(val, "StartTimeStamp", &b.StartTimeStamp)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", b, err)
+		}
+	}
+	return nil
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BillingHubUsageGroup.
+func (b *BillingHubUsageGroup) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", b, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "executionUsageDetails":
+			err = unpopulate(val, "ExecutionUsageDetails", &b.ExecutionUsageDetails)
+			delete(rawMsg, key)
+		case "osBuild":
+			err = unpopulate(val, "OSBuild", &b.OSBuild)
+			delete(rawMsg, key)
+		case "productFamily":
+			err = unpopulate(val, "ProductFamily", &b.ProductFamily)
+			delete(rawMsg, key)
+		case "release":
+			err = unpopulate(val, "Release", &b.Release)
+			delete(rawMsg, key)
+		case "releaseBuildDate":
+			err = unpopulateTimeRFC3339(val, "ReleaseBuildDate", &b.ReleaseBuildDate)
+			delete(rawMsg, key)
+		case "releaseBuildNumber":
+			err = unpopulate(val, "ReleaseBuildNumber", &b.ReleaseBuildNumber)
+			delete(rawMsg, key)
+		case "releaseBuildRevision":
+			err = unpopulate(val, "ReleaseBuildRevision", &b.ReleaseBuildRevision)
+			delete(rawMsg, key)
+		case "testType":
+			err = unpopulate(val, "TestType", &b.TestType)
+			delete(rawMsg, key)
+		case "totalCharges":
+			err = unpopulate(val, "TotalCharges", &b.TotalCharges)
+			delete(rawMsg, key)
+		case "totalUsedBillableHours":
+			err = unpopulate(val, "TotalUsedBillableHours", &b.TotalUsedBillableHours)
+			delete(rawMsg, key)
+		case "totalUsedFreeHours":
+			err = unpopulate(val, "TotalUsedFreeHours", &b.TotalUsedFreeHours)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", b, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type CPURegressionResultSingletonResourceProperties.
 func (c CPURegressionResultSingletonResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
@@ -553,6 +730,8 @@ func (s ScriptExecutionResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "exitCode", s.ExitCode)
 	populate(objectMap, "scriptName", s.ScriptName)
 	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
+	populate(objectMap, "stderrLogFileName", s.StderrLogFileName)
+	populate(objectMap, "stdoutLogFileName", s.StdoutLogFileName)
 	populate(objectMap, "timedOut", s.TimedOut)
 	return json.Marshal(objectMap)
 }
@@ -577,6 +756,12 @@ func (s *ScriptExecutionResult) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "startTime":
 			err = unpopulateTimeRFC3339(val, "StartTime", &s.StartTime)
+			delete(rawMsg, key)
+		case "stderrLogFileName":
+			err = unpopulate(val, "StderrLogFileName", &s.StderrLogFileName)
+			delete(rawMsg, key)
+		case "stdoutLogFileName":
+			err = unpopulate(val, "StdoutLogFileName", &s.StdoutLogFileName)
 			delete(rawMsg, key)
 		case "timedOut":
 			err = unpopulate(val, "TimedOut", &s.TimedOut)
@@ -674,6 +859,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TargetOSInfo.
 func (t TargetOSInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "baselineOSs", t.BaselineOSs)
 	populate(objectMap, "osUpdateType", t.OSUpdateType)
 	populate(objectMap, "targetOSs", t.TargetOSs)
 	return json.Marshal(objectMap)
@@ -685,6 +871,7 @@ func (t Test) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "commands", t.Commands)
 	populate(objectMap, "isActive", t.IsActive)
 	populate(objectMap, "testType", t.TestType)
+	populate(objectMap, "validationResultId", t.ValidationResultID)
 	populate(objectMap, "validationRunStatus", t.ValidationRunStatus)
 	return json.Marshal(objectMap)
 }
@@ -745,6 +932,8 @@ func (t TestResultProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "executionStatus", t.ExecutionStatus)
 	populate(objectMap, "flightingRing", t.FlightingRing)
 	populate(objectMap, "grade", t.Grade)
+	populate(objectMap, "interopMediaType", t.InteropMediaType)
+	populate(objectMap, "interopMediaVersion", t.InteropMediaVersion)
 	populate(objectMap, "isDownloadDataAvailable", t.IsDownloadDataAvailable)
 	populate(objectMap, "isVideoAvailable", t.IsVideoAvailable)
 	populate(objectMap, "kbNumber", t.KbNumber)
@@ -795,6 +984,12 @@ func (t *TestResultProperties) UnmarshalJSON(data []byte) error {
 		case "grade":
 			err = unpopulate(val, "Grade", &t.Grade)
 			delete(rawMsg, key)
+		case "interopMediaType":
+			err = unpopulate(val, "InteropMediaType", &t.InteropMediaType)
+			delete(rawMsg, key)
+		case "interopMediaVersion":
+			err = unpopulate(val, "InteropMediaVersion", &t.InteropMediaVersion)
+			delete(rawMsg, key)
 		case "isDownloadDataAvailable":
 			err = unpopulate(val, "IsDownloadDataAvailable", &t.IsDownloadDataAvailable)
 			delete(rawMsg, key)
@@ -834,6 +1029,23 @@ func (t *TestResultProperties) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TestSummaryProperties.
+func (t TestSummaryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "applicationName", t.ApplicationName)
+	populate(objectMap, "applicationVersion", t.ApplicationVersion)
+	populate(objectMap, "executionStatus", t.ExecutionStatus)
+	populate(objectMap, "featureUpdatesTestSummary", t.FeatureUpdatesTestSummary)
+	populate(objectMap, "grade", t.Grade)
+	populate(objectMap, "packageId", t.PackageID)
+	populate(objectMap, "packageTags", t.PackageTags)
+	populate(objectMap, "securityUpdatesTestSummary", t.SecurityUpdatesTestSummary)
+	populate(objectMap, "testRunTime", t.TestRunTime)
+	populate(objectMap, "testStatus", t.TestStatus)
+	populate(objectMap, "testSummaryId", t.TestSummaryID)
+	return json.Marshal(objectMap)
 }
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.

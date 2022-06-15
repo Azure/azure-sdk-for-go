@@ -322,6 +322,106 @@ type AvailableOSResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+type BillingHubExecutionUsageDetail struct {
+	ApplicationName    *string    `json:"applicationName,omitempty"`
+	ApplicationVersion *string    `json:"applicationVersion,omitempty"`
+	BilledCharges      *float64   `json:"billedCharges,omitempty"`
+	EndTimeStamp       *time.Time `json:"endTimeStamp,omitempty"`
+	ExecutionRequestID *string    `json:"executionRequestId,omitempty"`
+	MeterID            *string    `json:"meterId,omitempty"`
+	OSBuild            *string    `json:"osBuild,omitempty"`
+	Release            *string    `json:"release,omitempty"`
+	SKU                *string    `json:"sku,omitempty"`
+	StartTimeStamp     *time.Time `json:"startTimeStamp,omitempty"`
+	TestType           *string    `json:"testType,omitempty"`
+	UpdateType         *string    `json:"updateType,omitempty"`
+	UsedBillableHours  *float64   `json:"usedBillableHours,omitempty"`
+	UsedFreeHours      *float64   `json:"usedFreeHours,omitempty"`
+}
+
+type BillingHubFreeHourIncrementEntry struct {
+	CreateTimeStamp      *time.Time `json:"createTimeStamp,omitempty"`
+	ExpirationTimeStamp  *time.Time `json:"expirationTimeStamp,omitempty"`
+	IncrementalFreeHours *float64   `json:"incrementalFreeHours,omitempty"`
+	RemainingFreeHours   *float64   `json:"remainingFreeHours,omitempty"`
+}
+
+type BillingHubGetFreeHourBalanceResponse struct {
+	IncrementEntries        []*BillingHubFreeHourIncrementEntry `json:"incrementEntries,omitempty"`
+	TotalRemainingFreeHours *float64                            `json:"totalRemainingFreeHours,omitempty"`
+}
+
+type BillingHubGetUsageRequest struct {
+	// REQUIRED
+	EndTimeStamp *time.Time `json:"endTimeStamp,omitempty"`
+
+	// REQUIRED
+	StartTimeStamp *time.Time `json:"startTimeStamp,omitempty"`
+	PageIndex      *int32     `json:"pageIndex,omitempty"`
+	PageSize       *int32     `json:"pageSize,omitempty"`
+}
+
+type BillingHubGetUsageResponse struct {
+	NextRequest            *BillingHubGetUsageRequest `json:"nextRequest,omitempty"`
+	PackageUsageEntries    []*BillingHubPackageUsage  `json:"packageUsageEntries,omitempty"`
+	TotalCharges           *float64                   `json:"totalCharges,omitempty"`
+	TotalUsedBillableHours *float64                   `json:"totalUsedBillableHours,omitempty"`
+	TotalUsedFreeHours     *float64                   `json:"totalUsedFreeHours,omitempty"`
+}
+
+type BillingHubPackageUsage struct {
+	ApplicationName                 *string                               `json:"applicationName,omitempty"`
+	ApplicationVersion              *string                               `json:"applicationVersion,omitempty"`
+	AzureResourceURI                *string                               `json:"azureResourceUri,omitempty"`
+	TotalCharges                    *float64                              `json:"totalCharges,omitempty"`
+	TotalUsedBillableHours          *float64                              `json:"totalUsedBillableHours,omitempty"`
+	TotalUsedFreeHours              *float64                              `json:"totalUsedFreeHours,omitempty"`
+	UsageEntriesGroupedByUpdateType []*BillingHubUsageGroupedByUpdateType `json:"usageEntriesGroupedByUpdateType,omitempty"`
+}
+
+// BillingHubServiceClientGetFreeHourBalanceOptions contains the optional parameters for the BillingHubServiceClient.GetFreeHourBalance
+// method.
+type BillingHubServiceClientGetFreeHourBalanceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BillingHubServiceClientGetUsageOptions contains the optional parameters for the BillingHubServiceClient.GetUsage method.
+type BillingHubServiceClientGetUsageOptions struct {
+	GetUsageRequest *BillingHubGetUsageRequest
+}
+
+type BillingHubUsage struct {
+	ApplicationName        *string                 `json:"applicationName,omitempty"`
+	ApplicationVersion     *string                 `json:"applicationVersion,omitempty"`
+	AzureResourceURI       *string                 `json:"azureResourceUri,omitempty"`
+	TotalCharges           *float64                `json:"totalCharges,omitempty"`
+	TotalUsedBillableHours *float64                `json:"totalUsedBillableHours,omitempty"`
+	TotalUsedFreeHours     *float64                `json:"totalUsedFreeHours,omitempty"`
+	UsageGroups            []*BillingHubUsageGroup `json:"usageGroups,omitempty"`
+}
+
+type BillingHubUsageGroup struct {
+	ExecutionUsageDetails  []*BillingHubExecutionUsageDetail `json:"executionUsageDetails,omitempty"`
+	OSBuild                *string                           `json:"osBuild,omitempty"`
+	ProductFamily          *string                           `json:"productFamily,omitempty"`
+	Release                *string                           `json:"release,omitempty"`
+	ReleaseBuildDate       *time.Time                        `json:"releaseBuildDate,omitempty"`
+	ReleaseBuildNumber     *int64                            `json:"releaseBuildNumber,omitempty"`
+	ReleaseBuildRevision   *int64                            `json:"releaseBuildRevision,omitempty"`
+	TestType               *string                           `json:"testType,omitempty"`
+	TotalCharges           *float64                          `json:"totalCharges,omitempty"`
+	TotalUsedBillableHours *float64                          `json:"totalUsedBillableHours,omitempty"`
+	TotalUsedFreeHours     *float64                          `json:"totalUsedFreeHours,omitempty"`
+}
+
+type BillingHubUsageGroupedByUpdateType struct {
+	TotalCharges           *float64                `json:"totalCharges,omitempty"`
+	TotalUsedBillableHours *float64                `json:"totalUsedBillableHours,omitempty"`
+	TotalUsedFreeHours     *float64                `json:"totalUsedFreeHours,omitempty"`
+	UpdateType             *string                 `json:"updateType,omitempty"`
+	UsageGroups            []*BillingHubUsageGroup `json:"usageGroups,omitempty"`
+}
+
 // CPURegressionResultSingletonResourceProperties - The properties of CPU Regression Result.
 type CPURegressionResultSingletonResourceProperties struct {
 	// REQUIRED; Type of the Analysis Result.
@@ -913,11 +1013,11 @@ type PackageCheckNameAvailabilityParameters struct {
 	// REQUIRED; Resource name to verify.
 	Name *string `json:"name,omitempty"`
 
-	// REQUIRED; fully qualified resource type which includes provider namespace.
-	Type *string `json:"type,omitempty"`
-
 	// REQUIRED; Version name to verify.
 	Version *string `json:"version,omitempty"`
+
+	// fully qualified resource type which includes provider namespace.
+	Type *string `json:"type,omitempty"`
 }
 
 // PackageListResult - A list of Test Base Packages.
@@ -993,6 +1093,24 @@ type PackageResource struct {
 
 	// READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PackageRunTestParameters - The parameters supplied to the Test Base Package to start a Test Run.
+type PackageRunTestParameters struct {
+	// REQUIRED; The operating system name. e.g. Windows 10 1809.
+	OSName *string `json:"osName,omitempty"`
+
+	// REQUIRED; The type of the test.
+	TestType *TestType `json:"testType,omitempty"`
+
+	// The flighting ring, only for release of feature updates.
+	FlightingRing *string `json:"flightingRing,omitempty"`
+
+	// Specifies the OS update type to test against.
+	OSUpdateType *OsUpdateType `json:"osUpdateType,omitempty"`
+
+	// The name of the tested release (OS update).
+	ReleaseName *string `json:"releaseName,omitempty"`
 }
 
 // PackageUpdateParameterProperties - Parameters supplied to update a Test Base Package.
@@ -1072,6 +1190,12 @@ type PackagesClientGetOptions struct {
 // method.
 type PackagesClientListByTestBaseAccountOptions struct {
 	// placeholder for future optional parameters
+}
+
+// PackagesClientRunTestOptions contains the optional parameters for the PackagesClient.RunTest method.
+type PackagesClientRunTestOptions struct {
+	// The parameters supplied to the Test Base Package to start a Test Run.
+	Parameters *PackageRunTestParameters
 }
 
 // ProxyResource - The resource model definition for an ARM proxy resource. It will have everything other than required location
@@ -1196,6 +1320,12 @@ type ScriptExecutionResult struct {
 	// Start time of script execution.
 	StartTime *time.Time `json:"startTime,omitempty"`
 
+	// The stderr log file name.
+	StderrLogFileName *string `json:"stderrLogFileName,omitempty"`
+
+	// The stdout log file name.
+	StdoutLogFileName *string `json:"stdoutLogFileName,omitempty"`
+
 	// Whether the script execution is timed out.
 	TimedOut *bool `json:"timedOut,omitempty"`
 }
@@ -1261,6 +1391,9 @@ type TargetOSInfo struct {
 
 	// REQUIRED; Specifies the target OSs to be tested.
 	TargetOSs []*string `json:"targetOSs,omitempty"`
+
+	// Specifies the baseline OSs to be tested.
+	BaselineOSs []*string `json:"baselineOSs,omitempty"`
 }
 
 // Test - The definition of a Test.
@@ -1273,6 +1406,9 @@ type Test struct {
 
 	// Indicates if this test is active.It doesn't schedule test for not active Test.
 	IsActive *bool `json:"isActive,omitempty"`
+
+	// READ-ONLY; Resource identifier of the validation test result.
+	ValidationResultID *string `json:"validationResultId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The status of the validation run of the package.
 	ValidationRunStatus *ValidationRunStatus `json:"validationRunStatus,omitempty" azure:"ro"`
@@ -1323,6 +1459,13 @@ type TestResultAnalysisSummary struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// TestResultConsoleLogDownloadURLParameters - Parameters body to pass for getting the download URL of the test execution
+// console log file.
+type TestResultConsoleLogDownloadURLParameters struct {
+	// REQUIRED; The log file name corresponding to the download URL.
+	LogFileName *string `json:"logFileName,omitempty"`
+}
+
 // TestResultListResult - A list of Test Results.
 type TestResultListResult struct {
 	// The list of Test Results.
@@ -1360,6 +1503,12 @@ type TestResultProperties struct {
 
 	// The grade of the test.
 	Grade *Grade `json:"grade,omitempty"`
+
+	// Interop media type.
+	InteropMediaType *string `json:"interopMediaType,omitempty"`
+
+	// Interop media version.
+	InteropMediaVersion *string `json:"interopMediaVersion,omitempty"`
 
 	// Whether download data is available.
 	IsDownloadDataAvailable *bool `json:"isDownloadDataAvailable,omitempty"`
@@ -1411,6 +1560,12 @@ type TestResultResource struct {
 
 	// READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// TestResultsClientGetConsoleLogDownloadURLOptions contains the optional parameters for the TestResultsClient.GetConsoleLogDownloadURL
+// method.
+type TestResultsClientGetConsoleLogDownloadURLOptions struct {
+	// placeholder for future optional parameters
 }
 
 // TestResultsClientGetDownloadURLOptions contains the optional parameters for the TestResultsClient.GetDownloadURL method.
@@ -1473,6 +1628,9 @@ type TestSummaryProperties struct {
 
 	// The Azure resource Id of package.
 	PackageID *string `json:"packageId,omitempty"`
+
+	// The tags of Package resource that are associated with the testSummary
+	PackageTags map[string]*string `json:"packageTags,omitempty"`
 
 	// The result summary of tests triggered by security updates
 	SecurityUpdatesTestSummary *OSUpdatesTestSummary `json:"securityUpdatesTestSummary,omitempty"`

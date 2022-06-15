@@ -56,11 +56,11 @@ func NewAnalysisResultsClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Gets an Analysis Result of a Test Result by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
-// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// testResultName - The Test Result Name. It equals to TestResult-{TestResultId} string.
 // analysisResultName - The name of the Analysis Result of a Test Result.
 // options - AnalysisResultsClientGetOptions contains the optional parameters for the AnalysisResultsClient.Get method.
 func (client *AnalysisResultsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultName AnalysisResultName, options *AnalysisResultsClientGetOptions) (AnalysisResultsClientGetResponse, error) {
@@ -110,7 +110,7 @@ func (client *AnalysisResultsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -128,11 +128,11 @@ func (client *AnalysisResultsClient) getHandleResponse(resp *http.Response) (Ana
 // NewListPager - Lists the Analysis Results of a Test Result. The result collection will only contain one element as all
 // the data will be nested in a singleton object.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
-// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// testResultName - The Test Result Name. It equals to TestResult-{TestResultId} string.
 // analysisResultType - The type of the Analysis Result of a Test Result.
 // options - AnalysisResultsClientListOptions contains the optional parameters for the AnalysisResultsClient.List method.
 func (client *AnalysisResultsClient) NewListPager(resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, analysisResultType AnalysisResultType, options *AnalysisResultsClientListOptions) *runtime.Pager[AnalysisResultsClientListResponse] {
@@ -186,7 +186,7 @@ func (client *AnalysisResultsClient) listCreateRequest(ctx context.Context, reso
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("analysisResultType", string(analysisResultType))
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// TestSummariesClient contains the methods for the TestSummaries group.
-// Don't use this type directly, use NewTestSummariesClient() instead.
-type TestSummariesClient struct {
+// TestTypesClient contains the methods for the TestTypes group.
+// Don't use this type directly, use NewTestTypesClient() instead.
+type TestTypesClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewTestSummariesClient creates a new instance of TestSummariesClient with the specified values.
+// NewTestTypesClient creates a new instance of TestTypesClient with the specified values.
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewTestSummariesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TestSummariesClient, error) {
+func NewTestTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TestTypesClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewTestSummariesClient(subscriptionID string, credential azcore.TokenCreden
 	if err != nil {
 		return nil, err
 	}
-	client := &TestSummariesClient{
+	client := &TestTypesClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -54,31 +54,31 @@ func NewTestSummariesClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// Get - Gets a Test Summary with specific name from all the Test Summaries of all the packages under a Test Base Account.
+// Get - Gets a test type of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
-// testSummaryName - The name of the Test Summary.
-// options - TestSummariesClientGetOptions contains the optional parameters for the TestSummariesClient.Get method.
-func (client *TestSummariesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, testSummaryName string, options *TestSummariesClientGetOptions) (TestSummariesClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, testSummaryName, options)
+// testTypeResourceName - The resource name of a test type.
+// options - TestTypesClientGetOptions contains the optional parameters for the TestTypesClient.Get method.
+func (client *TestTypesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, testTypeResourceName string, options *TestTypesClientGetOptions) (TestTypesClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, testTypeResourceName, options)
 	if err != nil {
-		return TestSummariesClientGetResponse{}, err
+		return TestTypesClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TestSummariesClientGetResponse{}, err
+		return TestTypesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return TestSummariesClientGetResponse{}, runtime.NewResponseError(resp)
+		return TestTypesClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TestSummariesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, testSummaryName string, options *TestSummariesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/testSummaries/{testSummaryName}"
+func (client *TestTypesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, testTypeResourceName string, options *TestTypesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/testTypes/{testTypeResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -91,42 +91,42 @@ func (client *TestSummariesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter testBaseAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
-	if testSummaryName == "" {
-		return nil, errors.New("parameter testSummaryName cannot be empty")
+	if testTypeResourceName == "" {
+		return nil, errors.New("parameter testTypeResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{testSummaryName}", url.PathEscape(testSummaryName))
+	urlPath = strings.ReplaceAll(urlPath, "{testTypeResourceName}", url.PathEscape(testTypeResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TestSummariesClient) getHandleResponse(resp *http.Response) (TestSummariesClientGetResponse, error) {
-	result := TestSummariesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TestSummaryResource); err != nil {
-		return TestSummariesClientGetResponse{}, err
+func (client *TestTypesClient) getHandleResponse(resp *http.Response) (TestTypesClientGetResponse, error) {
+	result := TestTypesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TestTypeResource); err != nil {
+		return TestTypesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists the Test Summaries of all the packages under a Test Base Account.
+// NewListPager - Lists all the test types of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
-// options - TestSummariesClientListOptions contains the optional parameters for the TestSummariesClient.List method.
-func (client *TestSummariesClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *TestSummariesClientListOptions) *runtime.Pager[TestSummariesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[TestSummariesClientListResponse]{
-		More: func(page TestSummariesClientListResponse) bool {
+// options - TestTypesClientListOptions contains the optional parameters for the TestTypesClient.List method.
+func (client *TestTypesClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *TestTypesClientListOptions) *runtime.Pager[TestTypesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[TestTypesClientListResponse]{
+		More: func(page TestTypesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *TestSummariesClientListResponse) (TestSummariesClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *TestTypesClientListResponse) (TestTypesClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -135,14 +135,14 @@ func (client *TestSummariesClient) NewListPager(resourceGroupName string, testBa
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return TestSummariesClientListResponse{}, err
+				return TestTypesClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return TestSummariesClientListResponse{}, err
+				return TestTypesClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return TestSummariesClientListResponse{}, runtime.NewResponseError(resp)
+				return TestTypesClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -150,8 +150,8 @@ func (client *TestSummariesClient) NewListPager(resourceGroupName string, testBa
 }
 
 // listCreateRequest creates the List request.
-func (client *TestSummariesClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *TestSummariesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/testSummaries"
+func (client *TestTypesClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *TestTypesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/testTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -169,17 +169,17 @@ func (client *TestSummariesClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TestSummariesClient) listHandleResponse(resp *http.Response) (TestSummariesClientListResponse, error) {
-	result := TestSummariesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TestSummaryListResult); err != nil {
-		return TestSummariesClientListResponse{}, err
+func (client *TestTypesClient) listHandleResponse(resp *http.Response) (TestTypesClientListResponse, error) {
+	result := TestTypesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TestTypeListResult); err != nil {
+		return TestTypesClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -56,7 +56,7 @@ func NewPackagesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreate - Create or replace (overwrite/recreate, with potential downtime) a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -78,7 +78,7 @@ func (client *PackagesClient) BeginCreate(ctx context.Context, resourceGroupName
 
 // Create - Create or replace (overwrite/recreate, with potential downtime) a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 func (client *PackagesClient) create(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageResource, options *PackagesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, parameters, options)
 	if err != nil {
@@ -118,7 +118,7 @@ func (client *PackagesClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -126,7 +126,7 @@ func (client *PackagesClient) createCreateRequest(ctx context.Context, resourceG
 
 // BeginDelete - Deletes a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -147,7 +147,7 @@ func (client *PackagesClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Deletes a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 func (client *PackagesClient) deleteOperation(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
 	if err != nil {
@@ -187,7 +187,7 @@ func (client *PackagesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -195,7 +195,7 @@ func (client *PackagesClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -239,7 +239,7 @@ func (client *PackagesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,7 +256,7 @@ func (client *PackagesClient) getHandleResponse(resp *http.Response) (PackagesCl
 
 // GetDownloadURL - Gets the download URL of a package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -300,7 +300,7 @@ func (client *PackagesClient) getDownloadURLCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -317,7 +317,7 @@ func (client *PackagesClient) getDownloadURLHandleResponse(resp *http.Response) 
 
 // BeginHardDelete - Hard Delete a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -339,7 +339,7 @@ func (client *PackagesClient) BeginHardDelete(ctx context.Context, resourceGroup
 
 // HardDelete - Hard Delete a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 func (client *PackagesClient) hardDelete(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientBeginHardDeleteOptions) (*http.Response, error) {
 	req, err := client.hardDeleteCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
 	if err != nil {
@@ -379,7 +379,7 @@ func (client *PackagesClient) hardDeleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -387,7 +387,7 @@ func (client *PackagesClient) hardDeleteCreateRequest(ctx context.Context, resou
 
 // NewListByTestBaseAccountPager - Lists all the packages under a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // options - PackagesClientListByTestBaseAccountOptions contains the optional parameters for the PackagesClient.ListByTestBaseAccount
@@ -440,7 +440,7 @@ func (client *PackagesClient) listByTestBaseAccountCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -455,9 +455,76 @@ func (client *PackagesClient) listByTestBaseAccountHandleResponse(resp *http.Res
 	return result, nil
 }
 
+// RunTest - Trigger a test run on the package.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// options - PackagesClientRunTestOptions contains the optional parameters for the PackagesClient.RunTest method.
+func (client *PackagesClient) RunTest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientRunTestOptions) (PackagesClientRunTestResponse, error) {
+	req, err := client.runTestCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, options)
+	if err != nil {
+		return PackagesClientRunTestResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return PackagesClientRunTestResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return PackagesClientRunTestResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.runTestHandleResponse(resp)
+}
+
+// runTestCreateRequest creates the RunTest request.
+func (client *PackagesClient) runTestCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, options *PackagesClientRunTestOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/runTest"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if testBaseAccountName == "" {
+		return nil, errors.New("parameter testBaseAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
+	if packageName == "" {
+		return nil, errors.New("parameter packageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Parameters != nil {
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
+	}
+	return req, nil
+}
+
+// runTestHandleResponse handles the RunTest response.
+func (client *PackagesClient) runTestHandleResponse(resp *http.Response) (PackagesClientRunTestResponse, error) {
+	result := PackagesClientRunTestResponse{}
+	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
+		result.AzureAsyncOperation = &val
+	}
+	if val := resp.Header.Get("Location"); val != "" {
+		result.Location = &val
+	}
+	return result, nil
+}
+
 // BeginUpdate - Update an existing Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -479,7 +546,7 @@ func (client *PackagesClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - Update an existing Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 func (client *PackagesClient) update(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, parameters PackageUpdateParameters, options *PackagesClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, parameters, options)
 	if err != nil {
@@ -519,7 +586,7 @@ func (client *PackagesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

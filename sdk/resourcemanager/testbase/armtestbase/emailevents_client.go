@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// OSUpdatesClient contains the methods for the OSUpdates group.
-// Don't use this type directly, use NewOSUpdatesClient() instead.
-type OSUpdatesClient struct {
+// EmailEventsClient contains the methods for the EmailEvents group.
+// Don't use this type directly, use NewEmailEventsClient() instead.
+type EmailEventsClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewOSUpdatesClient creates a new instance of OSUpdatesClient with the specified values.
+// NewEmailEventsClient creates a new instance of EmailEventsClient with the specified values.
 // subscriptionID - The Azure subscription ID. This is a GUID-formatted string.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewOSUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OSUpdatesClient, error) {
+func NewEmailEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EmailEventsClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewOSUpdatesClient(subscriptionID string, credential azcore.TokenCredential
 	if err != nil {
 		return nil, err
 	}
-	client := &OSUpdatesClient{
+	client := &EmailEventsClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -54,32 +54,31 @@ func NewOSUpdatesClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// Get - Gets an OS Update by name in which the package was tested before.
+// Get - Gets a email event of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
-// packageName - The resource name of the Test Base Package.
-// osUpdateResourceName - The resource name of an OS Update.
-// options - OSUpdatesClientGetOptions contains the optional parameters for the OSUpdatesClient.Get method.
-func (client *OSUpdatesClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateResourceName string, options *OSUpdatesClientGetOptions) (OSUpdatesClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, osUpdateResourceName, options)
+// emailEventResourceName - The resource name of an email event.
+// options - EmailEventsClientGetOptions contains the optional parameters for the EmailEventsClient.Get method.
+func (client *EmailEventsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, emailEventResourceName string, options *EmailEventsClientGetOptions) (EmailEventsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, emailEventResourceName, options)
 	if err != nil {
-		return OSUpdatesClientGetResponse{}, err
+		return EmailEventsClientGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return OSUpdatesClientGetResponse{}, err
+		return EmailEventsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return OSUpdatesClientGetResponse{}, runtime.NewResponseError(resp)
+		return EmailEventsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OSUpdatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateResourceName string, options *OSUpdatesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/osUpdates/{osUpdateResourceName}"
+func (client *EmailEventsClient) getCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, emailEventResourceName string, options *EmailEventsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/emailEvents/{emailEventResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -92,64 +91,58 @@ func (client *OSUpdatesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter testBaseAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
-	if packageName == "" {
-		return nil, errors.New("parameter packageName cannot be empty")
+	if emailEventResourceName == "" {
+		return nil, errors.New("parameter emailEventResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
-	if osUpdateResourceName == "" {
-		return nil, errors.New("parameter osUpdateResourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{osUpdateResourceName}", url.PathEscape(osUpdateResourceName))
+	urlPath = strings.ReplaceAll(urlPath, "{emailEventResourceName}", url.PathEscape(emailEventResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *OSUpdatesClient) getHandleResponse(resp *http.Response) (OSUpdatesClientGetResponse, error) {
-	result := OSUpdatesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OSUpdateResource); err != nil {
-		return OSUpdatesClientGetResponse{}, err
+func (client *EmailEventsClient) getHandleResponse(resp *http.Response) (EmailEventsClientGetResponse, error) {
+	result := EmailEventsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EmailEventResource); err != nil {
+		return EmailEventsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists the OS Updates in which the package were tested before.
+// NewListPager - Lists all the email events of a Test Base Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
-// packageName - The resource name of the Test Base Package.
-// osUpdateType - The type of the OS Update.
-// options - OSUpdatesClientListOptions contains the optional parameters for the OSUpdatesClient.List method.
-func (client *OSUpdatesClient) NewListPager(resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesClientListOptions) *runtime.Pager[OSUpdatesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[OSUpdatesClientListResponse]{
-		More: func(page OSUpdatesClientListResponse) bool {
+// options - EmailEventsClientListOptions contains the optional parameters for the EmailEventsClient.List method.
+func (client *EmailEventsClient) NewListPager(resourceGroupName string, testBaseAccountName string, options *EmailEventsClientListOptions) *runtime.Pager[EmailEventsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[EmailEventsClientListResponse]{
+		More: func(page EmailEventsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *OSUpdatesClientListResponse) (OSUpdatesClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *EmailEventsClientListResponse) (EmailEventsClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, osUpdateType, options)
+				req, err = client.listCreateRequest(ctx, resourceGroupName, testBaseAccountName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return OSUpdatesClientListResponse{}, err
+				return EmailEventsClientListResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return OSUpdatesClientListResponse{}, err
+				return EmailEventsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return OSUpdatesClientListResponse{}, runtime.NewResponseError(resp)
+				return EmailEventsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -157,8 +150,8 @@ func (client *OSUpdatesClient) NewListPager(resourceGroupName string, testBaseAc
 }
 
 // listCreateRequest creates the List request.
-func (client *OSUpdatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, osUpdateType OsUpdateType, options *OSUpdatesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/osUpdates"
+func (client *EmailEventsClient) listCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, options *EmailEventsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/emailEvents"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -171,27 +164,22 @@ func (client *OSUpdatesClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter testBaseAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
-	if packageName == "" {
-		return nil, errors.New("parameter packageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("osUpdateType", string(osUpdateType))
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OSUpdatesClient) listHandleResponse(resp *http.Response) (OSUpdatesClientListResponse, error) {
-	result := OSUpdatesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OSUpdateListResult); err != nil {
-		return OSUpdatesClientListResponse{}, err
+func (client *EmailEventsClient) listHandleResponse(resp *http.Response) (EmailEventsClientListResponse, error) {
+	result := EmailEventsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EmailEventListResult); err != nil {
+		return EmailEventsClientListResponse{}, err
 	}
 	return result, nil
 }

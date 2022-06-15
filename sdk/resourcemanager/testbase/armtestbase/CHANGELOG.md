@@ -1,5 +1,9 @@
 # Release History
 
+## 0.5.1 (2022-06-15)
+### Other Changes
+
+
 ## 0.5.0 (2022-05-18)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/testbase/armtestbase` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 0.5.0, which contains breaking changes.

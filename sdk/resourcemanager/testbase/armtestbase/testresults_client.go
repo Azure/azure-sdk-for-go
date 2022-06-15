@@ -56,11 +56,11 @@ func NewTestResultsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Get - Get the Test Result by Id with specified OS Update type for a Test Base Package.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
-// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// testResultName - The Test Result Name. It equals to TestResult-{TestResultId} string.
 // options - TestResultsClientGetOptions contains the optional parameters for the TestResultsClient.Get method.
 func (client *TestResultsClient) Get(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsClientGetOptions) (TestResultsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, testResultName, options)
@@ -105,7 +105,7 @@ func (client *TestResultsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -120,13 +120,81 @@ func (client *TestResultsClient) getHandleResponse(resp *http.Response) (TestRes
 	return result, nil
 }
 
-// GetDownloadURL - Gets the download URL of the test result.
+// GetConsoleLogDownloadURL - Gets the download URL of the test execution console log file.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
-// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// testResultName - The Test Result Name. It equals to TestResult-{TestResultId} string.
+// parameters - Parameters supplied to the Test Result GetConsoleLogDownloadUrl operation.
+// options - TestResultsClientGetConsoleLogDownloadURLOptions contains the optional parameters for the TestResultsClient.GetConsoleLogDownloadURL
+// method.
+func (client *TestResultsClient) GetConsoleLogDownloadURL(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, parameters TestResultConsoleLogDownloadURLParameters, options *TestResultsClientGetConsoleLogDownloadURLOptions) (TestResultsClientGetConsoleLogDownloadURLResponse, error) {
+	req, err := client.getConsoleLogDownloadURLCreateRequest(ctx, resourceGroupName, testBaseAccountName, packageName, testResultName, parameters, options)
+	if err != nil {
+		return TestResultsClientGetConsoleLogDownloadURLResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return TestResultsClientGetConsoleLogDownloadURLResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return TestResultsClientGetConsoleLogDownloadURLResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.getConsoleLogDownloadURLHandleResponse(resp)
+}
+
+// getConsoleLogDownloadURLCreateRequest creates the GetConsoleLogDownloadURL request.
+func (client *TestResultsClient) getConsoleLogDownloadURLCreateRequest(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, parameters TestResultConsoleLogDownloadURLParameters, options *TestResultsClientGetConsoleLogDownloadURLOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TestBase/testBaseAccounts/{testBaseAccountName}/packages/{packageName}/testResults/{testResultName}/getConsoleLogDownloadUrl"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if testBaseAccountName == "" {
+		return nil, errors.New("parameter testBaseAccountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{testBaseAccountName}", url.PathEscape(testBaseAccountName))
+	if packageName == "" {
+		return nil, errors.New("parameter packageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{packageName}", url.PathEscape(packageName))
+	if testResultName == "" {
+		return nil, errors.New("parameter testResultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{testResultName}", url.PathEscape(testResultName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, runtime.MarshalAsJSON(req, parameters)
+}
+
+// getConsoleLogDownloadURLHandleResponse handles the GetConsoleLogDownloadURL response.
+func (client *TestResultsClient) getConsoleLogDownloadURLHandleResponse(resp *http.Response) (TestResultsClientGetConsoleLogDownloadURLResponse, error) {
+	result := TestResultsClientGetConsoleLogDownloadURLResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DownloadURLResponse); err != nil {
+		return TestResultsClientGetConsoleLogDownloadURLResponse{}, err
+	}
+	return result, nil
+}
+
+// GetDownloadURL - Gets the download URL of the test result.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-04-01-preview
+// resourceGroupName - The name of the resource group that contains the resource.
+// testBaseAccountName - The resource name of the Test Base Account.
+// packageName - The resource name of the Test Base Package.
+// testResultName - The Test Result Name. It equals to TestResult-{TestResultId} string.
 // options - TestResultsClientGetDownloadURLOptions contains the optional parameters for the TestResultsClient.GetDownloadURL
 // method.
 func (client *TestResultsClient) GetDownloadURL(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsClientGetDownloadURLOptions) (TestResultsClientGetDownloadURLResponse, error) {
@@ -172,7 +240,7 @@ func (client *TestResultsClient) getDownloadURLCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -189,11 +257,11 @@ func (client *TestResultsClient) getDownloadURLHandleResponse(resp *http.Respons
 
 // GetVideoDownloadURL - Gets the download URL of the test execution screen recording.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
-// testResultName - The Test Result Name. It equals to {osName}-{TestResultId} string.
+// testResultName - The Test Result Name. It equals to TestResult-{TestResultId} string.
 // options - TestResultsClientGetVideoDownloadURLOptions contains the optional parameters for the TestResultsClient.GetVideoDownloadURL
 // method.
 func (client *TestResultsClient) GetVideoDownloadURL(ctx context.Context, resourceGroupName string, testBaseAccountName string, packageName string, testResultName string, options *TestResultsClientGetVideoDownloadURLOptions) (TestResultsClientGetVideoDownloadURLResponse, error) {
@@ -239,7 +307,7 @@ func (client *TestResultsClient) getVideoDownloadURLCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,7 +325,7 @@ func (client *TestResultsClient) getVideoDownloadURLHandleResponse(resp *http.Re
 // NewListPager - Lists all the Test Results with specified OS Update type for a Test Base Package. Can be filtered by osName,
 // releaseName, flightingRing, buildVersion, buildRevision.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2020-12-16-preview
+// Generated from API version 2022-04-01-preview
 // resourceGroupName - The name of the resource group that contains the resource.
 // testBaseAccountName - The resource name of the Test Base Account.
 // packageName - The resource name of the Test Base Package.
@@ -319,7 +387,7 @@ func (client *TestResultsClient) listCreateRequest(ctx context.Context, resource
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2020-12-16-preview")
+	reqQP.Set("api-version", "2022-04-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

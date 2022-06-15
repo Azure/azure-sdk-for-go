@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Full access to all AMQP message properties. Send AMQP messages using the new `AMQPMessage` type and `Sender.SendAMQPMessage()`. Access the full set of AMQP message properties using the new `ReceivedMessage.RawAMQPMessage` property. (#TBD)
+- Full access to all AMQP message properties. Send AMQP messages using the new `AMQPMessage` type and `Sender.SendAMQPMessage()`. Access the full set of AMQP message properties using the new `ReceivedMessage.RawAMQPMessage` property. (#18413)
 
 ### Breaking Changes
 

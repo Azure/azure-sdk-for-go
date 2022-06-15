@@ -40,6 +40,9 @@ func ExampleSender_SendMessage_messageBatch() {
 	// messages in a single send.
 	err = batch.AddMessage(&azservicebus.Message{Body: []byte("hello world")}, nil)
 
+	// We also support adding AMQPMessages directly to a batch as well
+	// batch.AddAMQPMessage(&azservicebus.AMQPMessage{})
+
 	if err != nil {
 		switch err {
 		case azservicebus.ErrMessageTooLarge:

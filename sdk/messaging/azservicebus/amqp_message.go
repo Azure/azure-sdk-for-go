@@ -29,7 +29,7 @@ type AMQPMessage struct {
 	ApplicationProperties map[string]any
 
 	// Body represents the body of an AMQP message.
-	Body AMQPBody
+	Body AMQPMessageBody
 
 	// DeliveryAnnotations corresponds to the "delivery-annotations" section in an AMQP message.
 	//
@@ -64,92 +64,55 @@ type AMQPMessage struct {
 	inner *amqp.Message
 }
 
+// AMQPMessageProperties represents the properties of an AMQP message.
+// See here for more details:
+// http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-properties
 type AMQPMessageProperties struct {
-	// An absolute time when this message is considered to be expired.
+	// AbsoluteExpiryTime corresponds to the 'absolute-expiry-time' property.
 	AbsoluteExpiryTime *time.Time
 
-	// The content-encoding property is used as a modifier to the content-type.
-	// When present, its value indicates what additional content encodings have been
-	// applied to the application-data, and thus what decoding mechanisms need to be
-	// applied in order to obtain the media-type referenced by the content-type header
-	// field.
-	//
-	// Content-encoding is primarily used to allow a document to be compressed without
-	// losing the identity of its underlying content type.
-	//
-	// Content-encodings are to be interpreted as per section 3.5 of RFC 2616 [RFC2616].
-	// Valid content-encodings are registered at IANA [IANAHTTPPARAMS].
-	//
-	// The content-encoding MUST NOT be set when the application-data section is other
-	// than data. The binary representation of all other application-data section types
-	// is defined completely in terms of the AMQP type system.
-	//
-	// Implementations MUST NOT use the identity encoding. Instead, implementations
-	// SHOULD NOT set this property. Implementations SHOULD NOT use the compress encoding,
-	// except as to remain compatible with messages originally sent with other protocols,
-	// e.g. HTTP or SMTP.
-	//
-	// Implementations SHOULD NOT specify multiple content-encoding values except as to
-	// be compatible with messages originally sent with other protocols, e.g. HTTP or SMTP.
+	// ContentEncoding corresponds to the 'content-encoding' property.
 	ContentEncoding *string
 
-	// The RFC-2046 [RFC2046] MIME type for the message's application-data section
-	// (body). As per RFC-2046 [RFC2046] this can contain a charset parameter defining
-	// the character encoding used: e.g., 'text/plain; charset="utf-8"'.
-	//
-	// For clarity, as per section 7.2.1 of RFC-2616 [RFC2616], where the content type
-	// is unknown the content-type SHOULD NOT be set. This allows the recipient the
-	// opportunity to determine the actual type. Where the section is known to be truly
-	// opaque binary data, the content-type SHOULD be set to application/octet-stream.
-	//
-	// When using an application-data section with a section code other than data,
-	// content-type SHOULD NOT be set.
+	// ContentType corresponds to the 'content-type' property
 	ContentType *string
 
-	// This is a client-specific id that can be used to mark or identify messages
-	// between clients.
+	// CorrelationID corresponds to the 'correlation-id' property.
 	// The type of CorrelationID can be a uint64, UUID, []byte, or a string
 	CorrelationID any
 
-	// An absolute time when this message was created.
+	// CreationTime corresponds to the 'creation-time' property.
 	CreationTime *time.Time
 
-	// Identifies the group the message belongs to.
+	// GroupID corresponds to the 'group-id' property.
 	GroupID *string
 
-	// The relative position of this message within its group.
-	// RFC-1982 sequence number
+	// GroupSequence corresponds to the 'group-sequence' property.
 	GroupSequence *uint32
 
-	// Message-id, if set, uniquely identifies a message within the message system.
-	// The message producer is usually responsible for setting the message-id in
-	// such a way that it is assured to be globally unique. A broker MAY discard a
-	// message as a duplicate if the value of the message-id matches that of a
-	// previously received message sent to the same node.
-	MessageID any // uint64, UUID, []byte, or string
+	// MessageID corresponds to the 'message-id' property.
+	// The type of MessageID can be a uint64, UUID, []byte, or string
+	MessageID any
 
-	// The address of the node to send replies to.
+	// ReplyTo corresponds to the 'reply-to' property.
 	ReplyTo *string
 
-	// This is a client-specific id that is used so that client can send replies to this
-	// message to a specific group.
+	// ReplyToGroupID corresponds to the 'reply-to-group-id' property.
 	ReplyToGroupID *string
 
-	// A common field for summary information about the message content and purpose.
+	// Subject corresponds to the 'subject' property.
 	Subject *string
 
-	// The to field identifies the node that is the intended destination of the message.
-	// On any given transfer this might not be the node at the receiving end of the link.
+	// To corresponds to the 'to' property.
 	To *string
 
-	// The identity of the user responsible for producing the message.
-	// The client sets this value, and it MAY be authenticated by intermediaries.
+	// UserID corresponds to the 'user-id' property.
 	UserID []byte
 }
 
-// AMQPBody represents the body of an AMQP message.
+// AMQPMessageBody represents the body of an AMQP message.
 // Only one of these fields can be used a a time. They are mutually exclusive.
-type AMQPBody struct {
+type AMQPMessageBody struct {
 	// Data is encoded/decoded as multiple data sections in the body.
 	Data [][]byte
 
@@ -292,7 +255,7 @@ func newAMQPMessage(goAMQPMessage *amqp.Message) *AMQPMessage {
 	return &AMQPMessage{
 		MessageAnnotations:    map[any]any(goAMQPMessage.Annotations),
 		ApplicationProperties: goAMQPMessage.ApplicationProperties,
-		Body: AMQPBody{
+		Body: AMQPMessageBody{
 			Data:     goAMQPMessage.Data,
 			Sequence: goAMQPMessage.Sequence,
 			Value:    goAMQPMessage.Value,

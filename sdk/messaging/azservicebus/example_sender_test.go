@@ -95,9 +95,9 @@ func ExampleSender_SendAMQPMessage() {
 	// exposed via the azservicebus.ReceivedMessage type.
 
 	message := &azservicebus.AMQPMessage{
-		Body: azservicebus.AMQPBody{
+		Body: azservicebus.AMQPMessageBody{
 			// there are three kinds of different body encodings
-			// Data, Value and Sequence. See the azservicebus.AMQPBody
+			// Data, Value and Sequence. See the azservicebus.AMQPMessageBody
 			// documentation for more details.
 			Value: "hello",
 		},

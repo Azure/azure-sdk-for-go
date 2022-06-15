@@ -72,7 +72,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	require.NoError(t, err)
 
 	err = batch.AddAMQPMessage(&AMQPMessage{
-		Body: AMQPBody{
+		Body: AMQPMessageBody{
 			Data: [][]byte{
 				[]byte("[1] message in batch"),
 			},
@@ -272,8 +272,8 @@ func Test_Sender_ScheduleAMQPMessages(t *testing.T) {
 	// `Scheduled`
 	sequenceNumbers, err := sender.ScheduleAMQPMessages(ctx,
 		[]*AMQPMessage{
-			{Body: AMQPBody{Data: [][]byte{[]byte("To the future (that will be cancelled!)")}}},
-			{Body: AMQPBody{Data: [][]byte{[]byte("To the future (not cancelled)")}}},
+			{Body: AMQPMessageBody{Data: [][]byte{[]byte("To the future (that will be cancelled!)")}}},
+			{Body: AMQPMessageBody{Data: [][]byte{[]byte("To the future (not cancelled)")}}},
 		},
 		nearFuture, nil)
 
@@ -291,7 +291,7 @@ func Test_Sender_ScheduleAMQPMessages(t *testing.T) {
 	// rather than using the simpler ScheduleAMQPMessages
 	err = sender.SendAMQPMessage(ctx,
 		&AMQPMessage{
-			Body: AMQPBody{
+			Body: AMQPMessageBody{
 				Data: [][]byte{[]byte("To the future (scheduled using the field)")},
 			},
 			MessageAnnotations: map[any]any{
@@ -496,7 +496,7 @@ func TestSender_SendAMQPMessage(t *testing.T) {
 	require.NoError(t, err)
 
 	err = sender.SendAMQPMessage(context.Background(), &AMQPMessage{
-		Body: AMQPBody{
+		Body: AMQPMessageBody{
 			Data: [][]byte{
 				[]byte("Hello World"),
 			},
@@ -546,7 +546,7 @@ func TestSender_SendAMQPMessageWithMultipleByteSlicesInData(t *testing.T) {
 			Priority: 100,
 			Durable:  true,
 		},
-		Body: AMQPBody{
+		Body: AMQPMessageBody{
 			Data: [][]byte{
 				// the defacto azservicebus.Message doesn't allow you to send multiple bytes in
 				// the .Data section.
@@ -598,7 +598,7 @@ func TestSender_SendAMQPMessageWithMultipleByteSlicesInData(t *testing.T) {
 		Properties: &AMQPMessageProperties{
 			MessageID: m.RawAMQPMessage.Properties.MessageID,
 		},
-		Body: AMQPBody{Data: [][]byte{
+		Body: AMQPMessageBody{Data: [][]byte{
 			[]byte("Hello World"),
 			[]byte("And another message!"),
 		}},
@@ -631,7 +631,7 @@ func TestSender_SendAMQPMessageWithValue(t *testing.T) {
 
 	for i, value := range values {
 		err = sender.SendAMQPMessage(context.Background(), &AMQPMessage{
-			Body: AMQPBody{Value: value},
+			Body: AMQPMessageBody{Value: value},
 			ApplicationProperties: map[string]interface{}{
 				"index": i,
 			},
@@ -673,7 +673,7 @@ func TestSender_SendAMQPMessageWithSequence(t *testing.T) {
 		require.NoError(t, err)
 
 		err = sender.SendAMQPMessage(context.Background(), &AMQPMessage{
-			Body: AMQPBody{Sequence: seq},
+			Body: AMQPMessageBody{Sequence: seq},
 			ApplicationProperties: map[string]interface{}{
 				"index": i,
 			},

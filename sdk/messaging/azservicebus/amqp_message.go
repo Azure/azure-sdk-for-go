@@ -134,12 +134,20 @@ type AMQPMessageBody struct {
 // for more details.
 type AMQPMessageHeader struct {
 	// DeliveryCount is the number of unsuccessful previous attempts to deliver this message.
+	// It corresponds to the 'delivery-count' property.
 	DeliveryCount uint32
 
-	Durable       bool
+	// Durable corresponds to the 'durable' property.
+	Durable bool
+
+	// FirstAcquirer corresponds to the 'first-acquirer' property.
 	FirstAcquirer bool
-	Priority      uint8
-	TTL           time.Duration // from milliseconds
+
+	// Priority corresponds to the 'priority' property.
+	Priority uint8
+
+	// TTL corresponds to the 'ttl' property.
+	TTL time.Duration
 }
 
 // toAMQPMessage converts between our (azservicebus) AMQP message

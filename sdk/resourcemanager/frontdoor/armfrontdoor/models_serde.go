@@ -582,6 +582,13 @@ func (r RulesEngineUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// MarshalJSON implements the json.Marshaller interface for type TagsObject.
+func (t TagsObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "tags", t.Tags)
+	return json.Marshal(objectMap)
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Timeseries.
 func (t Timeseries) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

@@ -870,7 +870,7 @@ type ManagedRuleSet struct {
 	// Defines the rule group overrides to apply to the rule set.
 	RuleGroupOverrides []*ManagedRuleGroupOverride `json:"ruleGroupOverrides,omitempty"`
 
-	// Defines the action to take when a managed rule set score threshold is met.
+	// Defines the rule set action.
 	RuleSetAction *ManagedRuleSetActionType `json:"ruleSetAction,omitempty"`
 }
 
@@ -1012,6 +1012,12 @@ type PoliciesClientBeginCreateOrUpdateOptions struct {
 
 // PoliciesClientBeginDeleteOptions contains the optional parameters for the PoliciesClient.BeginDelete method.
 type PoliciesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// PoliciesClientBeginUpdateOptions contains the optional parameters for the PoliciesClient.BeginUpdate method.
+type PoliciesClientBeginUpdateOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }

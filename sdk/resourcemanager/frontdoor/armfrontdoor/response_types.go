@@ -153,6 +153,11 @@ type PoliciesClientListResponse struct {
 	WebApplicationFirewallPolicyList
 }
 
+// PoliciesClientUpdateResponse contains the response from method PoliciesClient.Update.
+type PoliciesClientUpdateResponse struct {
+	WebApplicationFirewallPolicy
+}
+
 // PreconfiguredEndpointsClientListResponse contains the response from method PreconfiguredEndpointsClient.List.
 type PreconfiguredEndpointsClientListResponse struct {
 	PreconfiguredEndpointList

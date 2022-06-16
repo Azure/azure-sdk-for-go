@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Accept empty `rowKey` parameter.
 
 ### Other Changes
 

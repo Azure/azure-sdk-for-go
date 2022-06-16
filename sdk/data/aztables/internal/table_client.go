@@ -12,15 +12,14 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TableClient contains the methods for the Table group.
@@ -49,6 +48,7 @@ func NewTableClient(endpoint string, version Enum0, options *azcore.ClientOption
 
 // Create - Creates a new table under the given account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // dataServiceVersion - Specifies the data service version.
 // tableProperties - The Table properties.
 // options - TableClientCreateOptions contains the optional parameters for the TableClient.Create method.
@@ -122,6 +122,7 @@ func (client *TableClient) createHandleResponse(resp *http.Response) (TableClien
 
 // Delete - Operation permanently deletes the specified table.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // table - The name of the table.
 // options - TableClientDeleteOptions contains the optional parameters for the TableClient.Delete method.
 func (client *TableClient) Delete(ctx context.Context, table string, options *TableClientDeleteOptions) (TableClientDeleteResponse, error) {
@@ -182,6 +183,7 @@ func (client *TableClient) deleteHandleResponse(resp *http.Response) (TableClien
 
 // DeleteEntity - Deletes the specified entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // dataServiceVersion - Specifies the data service version.
 // table - The name of the table.
 // partitionKey - The partition key of the entity.
@@ -216,7 +218,6 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, dataSe
 		return nil, errors.New("parameter partitionKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partitionKey}", url.PathEscape(partitionKey))
-	// rowKey is allowed to be empty
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -265,6 +266,7 @@ func (client *TableClient) deleteEntityHandleResponse(resp *http.Response) (Tabl
 // GetAccessPolicy - Retrieves details about any stored access policies specified on the table that may be used with Shared
 // Access Signatures.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // table - The name of the table.
 // comp - Required query string to handle stored access policies for the table that may be used with Shared Access Signatures.
 // options - TableClientGetAccessPolicyOptions contains the optional parameters for the TableClient.GetAccessPolicy method.
@@ -335,6 +337,7 @@ func (client *TableClient) getAccessPolicyHandleResponse(resp *http.Response) (T
 
 // InsertEntity - Insert entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // dataServiceVersion - Specifies the data service version.
 // table - The name of the table.
 // options - TableClientInsertEntityOptions contains the optional parameters for the TableClient.InsertEntity method.
@@ -424,6 +427,7 @@ func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (Tabl
 
 // MergeEntity - Merge entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // dataServiceVersion - Specifies the data service version.
 // table - The name of the table.
 // partitionKey - The partition key of the entity.
@@ -456,7 +460,6 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, dataSer
 		return nil, errors.New("parameter partitionKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partitionKey}", url.PathEscape(partitionKey))
-	// rowKey is allowed to be empty
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -512,6 +515,7 @@ func (client *TableClient) mergeEntityHandleResponse(resp *http.Response) (Table
 
 // Query - Queries tables under the given account.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // dataServiceVersion - Specifies the data service version.
 // options - TableClientQueryOptions contains the optional parameters for the TableClient.Query method.
 // QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
@@ -593,6 +597,7 @@ func (client *TableClient) queryHandleResponse(resp *http.Response) (TableClient
 
 // QueryEntities - Queries entities in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // dataServiceVersion - Specifies the data service version.
 // table - The name of the table.
 // options - TableClientQueryEntitiesOptions contains the optional parameters for the TableClient.QueryEntities method.
@@ -688,6 +693,7 @@ func (client *TableClient) queryEntitiesHandleResponse(resp *http.Response) (Tab
 
 // QueryEntityWithPartitionAndRowKey - Queries a single entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // dataServiceVersion - Specifies the data service version.
 // table - The name of the table.
 // partitionKey - The partition key of the entity.
@@ -721,7 +727,6 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		return nil, errors.New("parameter partitionKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partitionKey}", url.PathEscape(partitionKey))
-	// rowKey is allowed to be empty
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -786,6 +791,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleResponse(resp 
 
 // SetAccessPolicy - Sets stored access policies for the table that may be used with Shared Access Signatures.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // table - The name of the table.
 // comp - Required query string to handle stored access policies for the table that may be used with Shared Access Signatures.
 // options - TableClientSetAccessPolicyOptions contains the optional parameters for the TableClient.SetAccessPolicy method.
@@ -860,6 +866,7 @@ func (client *TableClient) setAccessPolicyHandleResponse(resp *http.Response) (T
 
 // UpdateEntity - Update entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2019-02-02
 // dataServiceVersion - Specifies the data service version.
 // table - The name of the table.
 // partitionKey - The partition key of the entity.
@@ -892,7 +899,6 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, dataSe
 		return nil, errors.New("parameter partitionKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partitionKey}", url.PathEscape(partitionKey))
-	// rowKey is allowed to be empty
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {

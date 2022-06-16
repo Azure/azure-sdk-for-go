@@ -12,14 +12,15 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TableClient contains the methods for the Table group.
@@ -215,9 +216,7 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, dataSe
 		return nil, errors.New("parameter partitionKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partitionKey}", url.PathEscape(partitionKey))
-	if rowKey == "" {
-		return nil, errors.New("parameter rowKey cannot be empty")
-	}
+	// rowKey is allowed to be empty
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -457,9 +456,7 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, dataSer
 		return nil, errors.New("parameter partitionKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partitionKey}", url.PathEscape(partitionKey))
-	if rowKey == "" {
-		return nil, errors.New("parameter rowKey cannot be empty")
-	}
+	// rowKey is allowed to be empty
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -724,9 +721,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		return nil, errors.New("parameter partitionKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partitionKey}", url.PathEscape(partitionKey))
-	if rowKey == "" {
-		return nil, errors.New("parameter rowKey cannot be empty")
-	}
+	// rowKey is allowed to be empty
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -897,9 +892,7 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, dataSe
 		return nil, errors.New("parameter partitionKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partitionKey}", url.PathEscape(partitionKey))
-	if rowKey == "" {
-		return nil, errors.New("parameter rowKey cannot be empty")
-	}
+	// rowKey is allowed to be empty
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {

@@ -11,8 +11,8 @@ clear-output-folder: false
 output-folder: internal
 tag: package-2019-02
 credential-scope: none
-use: "@autorest/go@4.0.0-preview.39"
-module-version: 0.8.0
+use: "@autorest/go@4.0.0-preview.40"
+module-version: 1.0.1
 security: "AADToken"
 security-scopes: "https://storage.azure.com/.default"
 modelerfour:
@@ -31,7 +31,8 @@ directive:
         replace(/= client\.deleteEntityCreateRequest\(/, `= client.DeleteEntityCreateRequest(`).
         replace(/= client\.insertEntityCreateRequest\(/, `= client.InsertEntityCreateRequest(`).
         replace(/= client\.mergeEntityCreateRequest\(/, `= client.MergeEntityCreateRequest(`).
-        replace(/= client\.updateEntityCreateRequest\(/, `= client.UpdateEntityCreateRequest(`);
+        replace(/= client\.updateEntityCreateRequest\(/, `= client.UpdateEntityCreateRequest(`).
+        replace(/if rowKey == "" \{\s*.*\s*\}\s*/g, ``);
 ```
 
 ### Go multi-api

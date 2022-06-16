@@ -5,8 +5,10 @@ package azservicebus
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
@@ -16,16 +18,46 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func createClientOptionsForTest(t *testing.T) (*ClientOptions, func()) {
+	// Setting this variable will cause the SB client to dump out (in TESTS ONLY)
+	// the pre-master-key for your AMQP connection. This allows you decrypt a packet
+	// capture from wireshark.
+	//
+	// If you want to do this just set SSLKEYLOGFILE_TEST env var to a path on disk and
+	// Go will write out the key.
+	keyLogFile := os.Getenv("SSLKEYLOGFILE_TEST")
+
+	clientOptions := &ClientOptions{}
+
+	if keyLogFile != "" {
+		writer, err := os.Create(keyLogFile)
+
+		if err != nil {
+			require.Fail(t, fmt.Sprintf("SSLKEYLOGFILE_TEST was set but we failed to create a keylog file at %s: %s", keyLogFile, err))
+		}
+
+		clientOptions.TLSConfig = &tls.Config{
+			KeyLogWriter: writer,
+		}
+
+		return clientOptions, func() { _ = writer.Close() }
+	}
+
+	return clientOptions, func() {}
+}
+
 func setupLiveTest(t *testing.T, props *admin.QueueProperties) (*Client, func(), string) {
 	cs := test.GetConnectionString(t)
 
-	serviceBusClient, err := NewClientFromConnectionString(cs, nil)
+	clientOptions, flushKeyFn := createClientOptionsForTest(t)
+	serviceBusClient, err := NewClientFromConnectionString(cs, clientOptions)
 	require.NoError(t, err)
 
 	queueName, cleanupQueue := createQueue(t, cs, props)
 
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))
+		flushKeyFn()
 		cleanupQueue()
 
 		// just a simple sanity check that closing twice doesn't cause errors.

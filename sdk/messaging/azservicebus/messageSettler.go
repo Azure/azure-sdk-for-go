@@ -36,7 +36,7 @@ func newMessageSettler(links internal.AMQPLinks, retryOptions RetryOptions) sett
 func (s *messageSettler) useManagementLink(m *ReceivedMessage, receiver internal.AMQPReceiver) bool {
 	return s.onlyDoBackupSettlement ||
 		m.deferred ||
-		m.rawAMQPMessage.LinkName() != receiver.LinkName()
+		m.RawAMQPMessage.linkName != receiver.LinkName()
 }
 
 func (s *messageSettler) settleWithRetries(ctx context.Context, message *ReceivedMessage, settleFn func(receiver internal.AMQPReceiver, rpcLink internal.RPCLink) error) error {
@@ -66,7 +66,7 @@ func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedM
 		if s.useManagementLink(message, receiver) {
 			return internal.SendDisposition(ctx, rpcLink, receiver.LinkName(), bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition}, nil)
 		} else {
-			return receiver.AcceptMessage(ctx, message.rawAMQPMessage)
+			return receiver.AcceptMessage(ctx, message.RawAMQPMessage.inner)
 		}
 	})
 }
@@ -102,7 +102,7 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 			annotations = newAnnotations(options.PropertiesToModify)
 		}
 
-		return receiver.ModifyMessage(ctx, message.rawAMQPMessage, false, false, annotations)
+		return receiver.ModifyMessage(ctx, message.RawAMQPMessage.inner, false, false, annotations)
 	})
 }
 
@@ -136,7 +136,7 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 			annotations = newAnnotations(options.PropertiesToModify)
 		}
 
-		return receiver.ModifyMessage(ctx, message.rawAMQPMessage, false, true, annotations)
+		return receiver.ModifyMessage(ctx, message.RawAMQPMessage.inner, false, true, annotations)
 	})
 }
 
@@ -203,7 +203,7 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 			Info:      info,
 		}
 
-		return receiver.RejectMessage(ctx, message.rawAMQPMessage, &amqpErr)
+		return receiver.RejectMessage(ctx, message.RawAMQPMessage.inner, &amqpErr)
 	})
 }
 

@@ -116,3 +116,41 @@ func ExampleReceiver_ReceiveMessages() {
 		fmt.Printf("Received and completed the message\n")
 	}
 }
+
+func ExampleReceiver_ReceiveMessages_amqpMessage() {
+	// AMQP is the underlying protocol for all interaction with Service Bus.
+	// You can, if needed, send and receive messages that have a 1:1 correspondence
+	// with an AMQP message. This gives you full control over details that are not
+	// exposed via the azservicebus.ReceivedMessage type.
+
+	messages, err := receiver.ReceiveMessages(context.TODO(), 1, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// NOTE: For this example we'll assume we received at least one message.
+
+	// Every received message carries a RawAMQPMessage.
+	rawAMQPMessage := messages[0].RawAMQPMessage
+
+	// All the various body encodings available for AMQP messages are exposed via Body
+	_ = rawAMQPMessage.Body.Data
+	_ = rawAMQPMessage.Body.Value
+	_ = rawAMQPMessage.Body.Sequence
+
+	// delivery and message annotations
+	_ = rawAMQPMessage.DeliveryAnnotations
+	_ = rawAMQPMessage.MessageAnnotations
+
+	// headers and footers
+	_ = rawAMQPMessage.Header
+	_ = rawAMQPMessage.Footer
+
+	// Settlement (if in azservicebus.ReceiveModePeekLockMode) stil works on the ReceivedMessage.
+	err = receiver.CompleteMessage(context.TODO(), messages[0], nil)
+
+	if err != nil {
+		panic(err)
+	}
+}

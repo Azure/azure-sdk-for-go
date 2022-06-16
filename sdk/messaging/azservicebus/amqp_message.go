@@ -9,7 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
 
-// AMQPMessage represents the AMQP message, as received from Service Bus.
+// AMQPAnnotatedMessage represents the AMQP message, as received from Service Bus.
 // For details about these properties, refer to the AMQP specification:
 //   https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format
 //
@@ -22,18 +22,18 @@ import (
 // - string
 // - bool
 // - time.Time
-type AMQPMessage struct {
+type AMQPAnnotatedMessage struct {
 	// ApplicationProperties corresponds to the "application-properties" section of an AMQP message.
 	//
-	// The values of the map are restricted to AMQP simple types, as listed in the comment for AMQPMessage.
+	// The values of the map are restricted to AMQP simple types, as listed in the comment for AMQPAnnotatedMessage.
 	ApplicationProperties map[string]any
 
 	// Body represents the body of an AMQP message.
-	Body AMQPMessageBody
+	Body AMQPAnnotatedMessageBody
 
 	// DeliveryAnnotations corresponds to the "delivery-annotations" section in an AMQP message.
 	//
-	// The values of the map are restricted to AMQP simple types, as listed in the comment for AMQPMessage.
+	// The values of the map are restricted to AMQP simple types, as listed in the comment for AMQPAnnotatedMessage.
 	DeliveryAnnotations map[any]any
 
 	// DeliveryTag corresponds to the delivery-tag property of the TRANSFER frame
@@ -42,19 +42,19 @@ type AMQPMessage struct {
 
 	// Footer is the transport footers for this AMQP message.
 	//
-	// The values of the map are restricted to AMQP simple types, as listed in the comment for AMQPMessage.
+	// The values of the map are restricted to AMQP simple types, as listed in the comment for AMQPAnnotatedMessage.
 	Footer map[any]any
 
 	// Header is the transport headers for this AMQP message.
-	Header *AMQPMessageHeader
+	Header *AMQPAnnotatedMessageHeader
 
 	// MessageAnnotations corresponds to the message-annotations section of an AMQP message.
 	//
-	// The values of the map are restricted to AMQP simple types, as listed in the comment for AMQPMessage.
+	// The values of the map are restricted to AMQP simple types, as listed in the comment for AMQPAnnotatedMessage.
 	MessageAnnotations map[any]any
 
 	// Properties corresponds to the properties section of an AMQP message.
-	Properties *AMQPMessageProperties
+	Properties *AMQPAnnotatedMessageProperties
 
 	linkName string
 
@@ -64,10 +64,10 @@ type AMQPMessage struct {
 	inner *amqp.Message
 }
 
-// AMQPMessageProperties represents the properties of an AMQP message.
+// AMQPAnnotatedMessageProperties represents the properties of an AMQP message.
 // See here for more details:
 // http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-properties
-type AMQPMessageProperties struct {
+type AMQPAnnotatedMessageProperties struct {
 	// AbsoluteExpiryTime corresponds to the 'absolute-expiry-time' property.
 	AbsoluteExpiryTime *time.Time
 
@@ -110,29 +110,29 @@ type AMQPMessageProperties struct {
 	UserID []byte
 }
 
-// AMQPMessageBody represents the body of an AMQP message.
+// AMQPAnnotatedMessageBody represents the body of an AMQP message.
 // Only one of these fields can be used a a time. They are mutually exclusive.
-type AMQPMessageBody struct {
+type AMQPAnnotatedMessageBody struct {
 	// Data is encoded/decoded as multiple data sections in the body.
 	Data [][]byte
 
 	// Sequence is encoded/decoded as one or more amqp-sequence sections in the body.
 	//
-	// The values of the slices are are restricted to AMQP simple types, as listed in the comment for AMQPMessage.
+	// The values of the slices are are restricted to AMQP simple types, as listed in the comment for AMQPAnnotatedMessage.
 	Sequence [][]any
 
 	// Value is encoded/decoded as the amqp-value section in the body.
 	//
-	// The type of Value can be any of the AMQP simple types, as listed in the comment for AMQPMessage,
+	// The type of Value can be any of the AMQP simple types, as listed in the comment for AMQPAnnotatedMessage,
 	// as well as slices or maps of AMQP simple types.
 	Value any
 }
 
-// AMQPMessageHeader carries standard delivery details about the transfer
+// AMQPAnnotatedMessageHeader carries standard delivery details about the transfer
 // of a message.
 // See https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-header
 // for more details.
-type AMQPMessageHeader struct {
+type AMQPAnnotatedMessageHeader struct {
 	// DeliveryCount is the number of unsuccessful previous attempts to deliver this message.
 	// It corresponds to the 'delivery-count' property.
 	DeliveryCount uint32
@@ -152,7 +152,7 @@ type AMQPMessageHeader struct {
 
 // toAMQPMessage converts between our (azservicebus) AMQP message
 // to the underlying message used by go-amqp.
-func (am *AMQPMessage) toAMQPMessage() *amqp.Message {
+func (am *AMQPAnnotatedMessage) toAMQPMessage() *amqp.Message {
 	var header *amqp.MessageHeader
 
 	if am.Header != nil {
@@ -221,11 +221,11 @@ func copyAnnotations(src map[any]any) amqp.Annotations {
 	return dest
 }
 
-func newAMQPMessage(goAMQPMessage *amqp.Message) *AMQPMessage {
-	var header *AMQPMessageHeader
+func newAMQPAnnotatedMessage(goAMQPMessage *amqp.Message) *AMQPAnnotatedMessage {
+	var header *AMQPAnnotatedMessageHeader
 
 	if goAMQPMessage.Header != nil {
-		header = &AMQPMessageHeader{
+		header = &AMQPAnnotatedMessageHeader{
 			DeliveryCount: goAMQPMessage.Header.DeliveryCount,
 			Durable:       goAMQPMessage.Header.Durable,
 			FirstAcquirer: goAMQPMessage.Header.FirstAcquirer,
@@ -234,10 +234,10 @@ func newAMQPMessage(goAMQPMessage *amqp.Message) *AMQPMessage {
 		}
 	}
 
-	var properties *AMQPMessageProperties
+	var properties *AMQPAnnotatedMessageProperties
 
 	if goAMQPMessage.Properties != nil {
-		properties = &AMQPMessageProperties{
+		properties = &AMQPAnnotatedMessageProperties{
 			AbsoluteExpiryTime: goAMQPMessage.Properties.AbsoluteExpiryTime,
 			ContentEncoding:    goAMQPMessage.Properties.ContentEncoding,
 			ContentType:        goAMQPMessage.Properties.ContentType,
@@ -260,10 +260,10 @@ func newAMQPMessage(goAMQPMessage *amqp.Message) *AMQPMessage {
 		footer = (map[any]any)(goAMQPMessage.Footer)
 	}
 
-	return &AMQPMessage{
+	return &AMQPAnnotatedMessage{
 		MessageAnnotations:    map[any]any(goAMQPMessage.Annotations),
 		ApplicationProperties: goAMQPMessage.ApplicationProperties,
-		Body: AMQPMessageBody{
+		Body: AMQPAnnotatedMessageBody{
 			Data:     goAMQPMessage.Data,
 			Sequence: goAMQPMessage.Sequence,
 			Value:    goAMQPMessage.Value,

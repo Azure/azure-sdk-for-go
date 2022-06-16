@@ -63,15 +63,20 @@ type SendMessageOptions struct {
 // SendMessage sends a Message to a queue or topic.
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (s *Sender) SendMessage(ctx context.Context, message *Message, options *SendMessageOptions) error {
-	return s.sendMessage(ctx, message, options)
+	return s.sendMessage(ctx, message)
 }
 
-// SendAMQPMessage sends an AMQPMessage to a queue or topic.
+// SendAMQPAnnotatedMessageOptions contains optional parameters for the SendAMQPAnnotatedMessage function.
+type SendAMQPAnnotatedMessageOptions struct {
+	// For future expansion
+}
+
+// SendAMQPAnnotatedMessage sends an AMQPMessage to a queue or topic.
 // Using an AMQPMessage allows for advanced use cases, like payload encoding, as well as better
 // interoperability with pure AMQP clients.
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
-func (s *Sender) SendAMQPMessage(ctx context.Context, message *AMQPMessage, options *SendMessageOptions) error {
-	return s.sendMessage(ctx, message, options)
+func (s *Sender) SendAMQPAnnotatedMessage(ctx context.Context, message *AMQPAnnotatedMessage, options *SendAMQPAnnotatedMessageOptions) error {
+	return s.sendMessage(ctx, message)
 }
 
 // SendMessageBatchOptions contains optional parameters for the SendMessageBatch function.
@@ -103,16 +108,16 @@ func (s *Sender) ScheduleMessages(ctx context.Context, messages []*Message, sche
 	return scheduleMessages(ctx, s.links, s.retryOptions, messages, scheduledEnqueueTime)
 }
 
-// ScheduleAMQPMessagesOptions contains optional parameters for the ScheduleAMQPMessages function.
-type ScheduleAMQPMessagesOptions struct {
+// ScheduleAMQPAnnotatedMessagesOptions contains optional parameters for the ScheduleAMQPAnnotatedMessages function.
+type ScheduleAMQPAnnotatedMessagesOptions struct {
 	// For future expansion
 }
 
-// ScheduleAMQPMessages schedules a slice of Messages to appear on Service Bus Queue/Subscription at a later time.
+// ScheduleAMQPAnnotatedMessages schedules a slice of Messages to appear on Service Bus Queue/Subscription at a later time.
 // Returns the sequence numbers of the messages that were scheduled.  Messages that haven't been
 // delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
-func (s *Sender) ScheduleAMQPMessages(ctx context.Context, messages []*AMQPMessage, scheduledEnqueueTime time.Time, options *ScheduleAMQPMessagesOptions) ([]int64, error) {
+func (s *Sender) ScheduleAMQPAnnotatedMessages(ctx context.Context, messages []*AMQPAnnotatedMessage, scheduledEnqueueTime time.Time, options *ScheduleAMQPAnnotatedMessagesOptions) ([]int64, error) {
 	return scheduleMessages(ctx, s.links, s.retryOptions, messages, scheduledEnqueueTime)
 }
 
@@ -161,7 +166,7 @@ func (s *Sender) Close(ctx context.Context) error {
 	return s.links.Close(ctx, true)
 }
 
-func (s *Sender) sendMessage(ctx context.Context, message amqpCompatibleMessage, options *SendMessageOptions) error {
+func (s *Sender) sendMessage(ctx context.Context, message amqpCompatibleMessage) error {
 	err := s.links.Retry(ctx, EventSender, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		return lwid.Sender.Send(ctx, message.toAMQPMessage())
 	}, RetryOptions(s.retryOptions))

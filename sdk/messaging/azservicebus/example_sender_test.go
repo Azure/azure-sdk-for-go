@@ -91,14 +91,14 @@ func ExampleSender_ScheduleMessages() {
 	exitOnError("Failed to schedule messages using SendMessage", err)
 }
 
-func ExampleSender_SendAMQPMessage() {
+func ExampleSender_SendAMQPAnnotatedMessage() {
 	// AMQP is the underlying protocol for all interaction with Service Bus.
 	// You can, if needed, send and receive messages that have a 1:1 correspondence
 	// with an AMQP message. This gives you full control over details that are not
 	// exposed via the azservicebus.ReceivedMessage type.
 
-	message := &azservicebus.AMQPMessage{
-		Body: azservicebus.AMQPMessageBody{
+	message := &azservicebus.AMQPAnnotatedMessage{
+		Body: azservicebus.AMQPAnnotatedMessageBody{
 			// there are three kinds of different body encodings
 			// Data, Value and Sequence. See the azservicebus.AMQPMessageBody
 			// documentation for more details.
@@ -114,7 +114,7 @@ func ExampleSender_SendAMQPMessage() {
 		},
 	}
 
-	err := sender.SendAMQPMessage(context.TODO(), message, nil)
+	err := sender.SendAMQPAnnotatedMessage(context.TODO(), message, nil)
 
 	if err != nil {
 		panic(err)

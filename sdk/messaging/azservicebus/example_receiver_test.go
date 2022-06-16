@@ -132,7 +132,7 @@ func ExampleReceiver_ReceiveMessages_amqpMessage() {
 	// NOTE: For this example we'll assume we received at least one message.
 
 	// Every received message carries a RawAMQPMessage.
-	rawAMQPMessage := messages[0].RawAMQPMessage
+	var rawAMQPMessage *azservicebus.AMQPAnnotatedMessage = messages[0].RawAMQPMessage
 
 	// All the various body encodings available for AMQP messages are exposed via Body
 	_ = rawAMQPMessage.Body.Data

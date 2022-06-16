@@ -54,17 +54,17 @@ func (mb *MessageBatch) AddMessage(m *Message, options *AddMessageOptions) error
 	return mb.addAMQPMessage(m)
 }
 
-// AddAMQPMessageOptions contains optional parameters for the AddAMQPMessage function.
-type AddAMQPMessageOptions struct {
+// AddAMQPAnnotatedMessageOptions contains optional parameters for the AddAMQPAnnotatedMessage function.
+type AddAMQPAnnotatedMessageOptions struct {
 	// For future expansion
 }
 
-// AddAMQPMessage adds a message to the batch if the message will not exceed the max size of the batch
+// AddAMQPAnnotatedMessage adds a message to the batch if the message will not exceed the max size of the batch
 // Returns:
 // - ErrMessageTooLarge if the message cannot fit
 // - a non-nil error for other failures
 // - nil, otherwise
-func (mb *MessageBatch) AddAMQPMessage(m *AMQPMessage, options *AddAMQPMessageOptions) error {
+func (mb *MessageBatch) AddAMQPAnnotatedMessage(m *AMQPAnnotatedMessage, options *AddAMQPAnnotatedMessageOptions) error {
 	return mb.addAMQPMessage(m)
 }
 

@@ -18,6 +18,11 @@ type BackupsClientListByServerResponse struct {
 	ServerBackupListResult
 }
 
+// BackupsClientPutResponse contains the response from method BackupsClient.Put.
+type BackupsClientPutResponse struct {
+	ServerBackup
+}
+
 // CheckNameAvailabilityClientExecuteResponse contains the response from method CheckNameAvailabilityClient.Execute.
 type CheckNameAvailabilityClientExecuteResponse struct {
 	NameAvailability
@@ -96,6 +101,11 @@ type GetPrivateDNSZoneSuffixClientExecuteResponse struct {
 // LocationBasedCapabilitiesClientListResponse contains the response from method LocationBasedCapabilitiesClient.List.
 type LocationBasedCapabilitiesClientListResponse struct {
 	CapabilitiesListResult
+}
+
+// LogFilesClientListByServerResponse contains the response from method LogFilesClient.ListByServer.
+type LogFilesClientListByServerResponse struct {
+	LogFileListResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.

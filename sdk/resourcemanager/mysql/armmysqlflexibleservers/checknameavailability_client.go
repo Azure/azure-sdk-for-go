@@ -22,19 +22,19 @@ import (
 	"strings"
 )
 
-// CheckVirtualNetworkSubnetUsageClient contains the methods for the CheckVirtualNetworkSubnetUsage group.
-// Don't use this type directly, use NewCheckVirtualNetworkSubnetUsageClient() instead.
-type CheckVirtualNetworkSubnetUsageClient struct {
+// CheckNameAvailabilityClient contains the methods for the CheckNameAvailability group.
+// Don't use this type directly, use NewCheckNameAvailabilityClient() instead.
+type CheckNameAvailabilityClient struct {
 	host           string
 	subscriptionID string
 	pl             runtime.Pipeline
 }
 
-// NewCheckVirtualNetworkSubnetUsageClient creates a new instance of CheckVirtualNetworkSubnetUsageClient with the specified values.
+// NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient with the specified values.
 // subscriptionID - The ID of the target subscription.
 // credential - used to authorize requests. Usually a credential from azidentity.
 // options - pass nil to accept the default values.
-func NewCheckVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckVirtualNetworkSubnetUsageClient, error) {
+func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckNameAvailabilityClient, error) {
 	if options == nil {
 		options = &arm.ClientOptions{}
 	}
@@ -46,7 +46,7 @@ func NewCheckVirtualNetworkSubnetUsageClient(subscriptionID string, credential a
 	if err != nil {
 		return nil, err
 	}
-	client := &CheckVirtualNetworkSubnetUsageClient{
+	client := &CheckNameAvailabilityClient{
 		subscriptionID: subscriptionID,
 		host:           ep,
 		pl:             pl,
@@ -54,31 +54,31 @@ func NewCheckVirtualNetworkSubnetUsageClient(subscriptionID string, credential a
 	return client, nil
 }
 
-// Execute - Get virtual network subnet usage for a given vNet resource id.
+// Execute - Check the availability of name for server
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2021-12-01-preview
 // locationName - The name of the location.
-// parameters - The required parameters for creating or updating a server.
-// options - CheckVirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the CheckVirtualNetworkSubnetUsageClient.Execute
+// nameAvailabilityRequest - The required parameters for checking if server name is available.
+// options - CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
 // method.
-func (client *CheckVirtualNetworkSubnetUsageClient) Execute(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *CheckVirtualNetworkSubnetUsageClientExecuteOptions) (CheckVirtualNetworkSubnetUsageClientExecuteResponse, error) {
-	req, err := client.executeCreateRequest(ctx, locationName, parameters, options)
+func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, locationName string, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (CheckNameAvailabilityClientExecuteResponse, error) {
+	req, err := client.executeCreateRequest(ctx, locationName, nameAvailabilityRequest, options)
 	if err != nil {
-		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
+		return CheckNameAvailabilityClientExecuteResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
+		return CheckNameAvailabilityClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, runtime.NewResponseError(resp)
+		return CheckNameAvailabilityClientExecuteResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.executeHandleResponse(resp)
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *CheckVirtualNetworkSubnetUsageClientExecuteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/checkVirtualNetworkSubnetUsage"
+func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Context, locationName string, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityClientExecuteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/locations/{locationName}/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -92,17 +92,17 @@ func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, runtime.MarshalAsJSON(req, parameters)
+	return req, runtime.MarshalAsJSON(req, nameAvailabilityRequest)
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckVirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response) (CheckVirtualNetworkSubnetUsageClientExecuteResponse, error) {
-	result := CheckVirtualNetworkSubnetUsageClientExecuteResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkSubnetUsageResult); err != nil {
-		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
+func (client *CheckNameAvailabilityClient) executeHandleResponse(resp *http.Response) (CheckNameAvailabilityClientExecuteResponse, error) {
+	result := CheckNameAvailabilityClientExecuteResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
+		return CheckNameAvailabilityClientExecuteResponse{}, err
 	}
 	return result, nil
 }

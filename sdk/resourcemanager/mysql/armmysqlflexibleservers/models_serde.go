@@ -64,6 +64,7 @@ func (c Configuration) MarshalJSON() ([]byte, error) {
 // MarshalJSON implements the json.Marshaller interface for type ConfigurationListForBatchUpdate.
 func (c ConfigurationListForBatchUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "resetAllToDefault", c.ResetAllToDefault)
 	populate(objectMap, "value", c.Value)
 	return json.Marshal(objectMap)
 }
@@ -76,6 +77,49 @@ func (i Identity) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "type", i.Type)
 	populate(objectMap, "userAssignedIdentities", i.UserAssignedIdentities)
 	return json.Marshal(objectMap)
+}
+
+// MarshalJSON implements the json.Marshaller interface for type LogFileProperties.
+func (l LogFileProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateTimeRFC3339(objectMap, "createdTime", l.CreatedTime)
+	populateTimeRFC3339(objectMap, "lastModifiedTime", l.LastModifiedTime)
+	populate(objectMap, "sizeInKB", l.SizeInKB)
+	populate(objectMap, "type", l.Type)
+	populate(objectMap, "url", l.URL)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type LogFileProperties.
+func (l *LogFileProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", l, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createdTime":
+			err = unpopulateTimeRFC3339(val, "CreatedTime", &l.CreatedTime)
+			delete(rawMsg, key)
+		case "lastModifiedTime":
+			err = unpopulateTimeRFC3339(val, "LastModifiedTime", &l.LastModifiedTime)
+			delete(rawMsg, key)
+		case "sizeInKB":
+			err = unpopulate(val, "SizeInKB", &l.SizeInKB)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &l.Type)
+			delete(rawMsg, key)
+		case "url":
+			err = unpopulate(val, "URL", &l.URL)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", l, err)
+		}
+	}
+	return nil
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Server.

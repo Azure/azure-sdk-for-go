@@ -56,7 +56,7 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewListByServerPager - List all the replicas for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // serverName - The name of the server.
 // options - ReplicasClientListByServerOptions contains the optional parameters for the ReplicasClient.ListByServer method.
@@ -108,7 +108,7 @@ func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

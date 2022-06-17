@@ -32,6 +32,11 @@ type BackupsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BackupsClientPutOptions contains the optional parameters for the BackupsClient.Put method.
+type BackupsClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CapabilitiesListResult - location capability
 type CapabilitiesListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
@@ -112,6 +117,9 @@ type ConfigurationForBatchUpdateProperties struct {
 
 // ConfigurationListForBatchUpdate - A list of server configurations to update.
 type ConfigurationListForBatchUpdate struct {
+	// Whether to reset all server parameters to default.
+	ResetAllToDefault *ResetAllToDefault `json:"resetAllToDefault,omitempty"`
+
 	// The list of server configurations.
 	Value []*ConfigurationForBatchUpdate `json:"value,omitempty"`
 }
@@ -175,7 +183,14 @@ type ConfigurationsClientGetOptions struct {
 
 // ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.ListByServer method.
 type ConfigurationsClientListByServerOptions struct {
-	// placeholder for future optional parameters
+	// The keyword of the server configuration.
+	Keyword *string
+	// The page of the server configuration.
+	Page *int32
+	// The pageSize of the server configuration.
+	PageSize *int32
+	// The tags of the server configuration.
+	Tags *string
 }
 
 // DataEncryption - The date encryption for cmk.
@@ -393,6 +408,56 @@ type Identity struct {
 // LocationBasedCapabilitiesClientListOptions contains the optional parameters for the LocationBasedCapabilitiesClient.List
 // method.
 type LocationBasedCapabilitiesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogFile - Represents a logFile.
+type LogFile struct {
+	// The properties of a logFile.
+	Properties *LogFileProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The system metadata relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// LogFileListResult - A List of logFiles.
+type LogFileListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of logFiles in a server
+	Value []*LogFile `json:"value,omitempty"`
+}
+
+// LogFileProperties - The properties of a logFile.
+type LogFileProperties struct {
+	// Creation timestamp of the log file.
+	CreatedTime *time.Time `json:"createdTime,omitempty"`
+
+	// Last modified timestamp of the log file.
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+
+	// The size in kb of the logFile.
+	SizeInKB *int64 `json:"sizeInKB,omitempty"`
+
+	// Type of the log file.
+	Type *string `json:"type,omitempty"`
+
+	// The url to download the log file from.
+	URL *string `json:"url,omitempty"`
+}
+
+// LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.ListByServer method.
+type LogFilesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -724,6 +789,9 @@ type ServerPropertiesForUpdate struct {
 
 	// Storage related properties of a server.
 	Storage *Storage `json:"storage,omitempty"`
+
+	// Server version.
+	Version *ServerVersion `json:"version,omitempty"`
 }
 
 // ServerRestartParameter - Server restart parameters.

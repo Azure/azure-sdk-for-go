@@ -10,7 +10,7 @@ package armmysqlflexibleservers
 
 const (
 	moduleName    = "armmysqlflexibleservers"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.0.1-beta.1"
 )
 
 // ConfigurationSource - Source of the configuration.
@@ -204,6 +204,22 @@ func PossibleReplicationRoleValues() []ReplicationRole {
 		ReplicationRoleNone,
 		ReplicationRoleReplica,
 		ReplicationRoleSource,
+	}
+}
+
+// ResetAllToDefault - Whether to reset all server parameters to default.
+type ResetAllToDefault string
+
+const (
+	ResetAllToDefaultFalse ResetAllToDefault = "False"
+	ResetAllToDefaultTrue  ResetAllToDefault = "True"
+)
+
+// PossibleResetAllToDefaultValues returns the possible values for the ResetAllToDefault const type.
+func PossibleResetAllToDefaultValues() []ResetAllToDefault {
+	return []ResetAllToDefault{
+		ResetAllToDefaultFalse,
+		ResetAllToDefaultTrue,
 	}
 }
 

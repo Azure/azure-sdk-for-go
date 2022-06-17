@@ -124,7 +124,7 @@ type ReceivedMessage struct {
 	// to properties that are not exposed by ReceivedMessage such as payloads encoded into the
 	// Value or Sequence section, payloads sent as multiple Data sections, as well as Footer
 	// and Header fields.
-	RawAMQPMessage *AMQPMessage
+	RawAMQPMessage *AMQPAnnotatedMessage
 
 	// deferred indicates we received it using ReceiveDeferredMessages. These messages
 	// will still go through the normal Receiver.Settle functions but internally will
@@ -314,7 +314,7 @@ func (m *Message) toAMQPMessage() *amqp.Message {
 // serialized byte array in the Data section of the messsage.
 func newReceivedMessage(amqpMsg *amqp.Message) *ReceivedMessage {
 	msg := &ReceivedMessage{
-		RawAMQPMessage: newAMQPMessage(amqpMsg),
+		RawAMQPMessage: newAMQPAnnotatedMessage(amqpMsg),
 		State:          MessageStateActive,
 	}
 

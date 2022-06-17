@@ -5,7 +5,9 @@
 ### Features Added
 
 - Full access to send and receive all AMQP message properties. (#18413) 
-  - Send AMQP messages using the new `AMQPMessage` type and `Sender.SendAMQPMessage()` (AMQP messages can be added to MessageBatch's as well using MessageBatch.AddAMQPMessage()). 
+  - Send AMQP messages using the new `AMQPAnnotatedMessage` type and `Sender.SendAMQPAnnotatedMessage()`.
+  - AMQP messages can be added to MessageBatch's as well using `MessageBatch.AddAMQPAnnotatedMessage()`.
+  - AMQP messages can be scheduled using `Sender.ScheduleAMQPAnnotatedMessages`.
   - Access the full set of AMQP message properties when receiving using the `ReceivedMessage.RawAMQPMessage` property. 
 
 ### Breaking Changes

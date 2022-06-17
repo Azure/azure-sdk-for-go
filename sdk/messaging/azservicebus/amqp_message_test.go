@@ -9,9 +9,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestAMQPMessageUnitTest(t *testing.T) {
+func TestAMQPAnnotatedMessageUnitTest(t *testing.T) {
 	t.Run("Default", func(t *testing.T) {
-		msg := &AMQPMessage{}
+		msg := &AMQPAnnotatedMessage{}
 		amqpMessage := msg.toAMQPMessage()
 
 		// we duplicate/inflate these since we modify them

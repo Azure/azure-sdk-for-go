@@ -10,7 +10,7 @@ package armdatafactory
 
 const (
 	moduleName    = "armdatafactory"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.0"
 )
 
 type AmazonRdsForOraclePartitionOption string
@@ -1259,6 +1259,7 @@ const (
 	RestServiceAuthenticationTypeAnonymous              RestServiceAuthenticationType = "Anonymous"
 	RestServiceAuthenticationTypeBasic                  RestServiceAuthenticationType = "Basic"
 	RestServiceAuthenticationTypeManagedServiceIdentity RestServiceAuthenticationType = "ManagedServiceIdentity"
+	RestServiceAuthenticationTypeOAuth2ClientCredential RestServiceAuthenticationType = "OAuth2ClientCredential"
 )
 
 // PossibleRestServiceAuthenticationTypeValues returns the possible values for the RestServiceAuthenticationType const type.
@@ -1268,6 +1269,7 @@ func PossibleRestServiceAuthenticationTypeValues() []RestServiceAuthenticationTy
 		RestServiceAuthenticationTypeAnonymous,
 		RestServiceAuthenticationTypeBasic,
 		RestServiceAuthenticationTypeManagedServiceIdentity,
+		RestServiceAuthenticationTypeOAuth2ClientCredential,
 	}
 }
 

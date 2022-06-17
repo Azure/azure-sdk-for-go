@@ -7069,9 +7069,9 @@ func (c *CopySink) GetCopySink() *CopySink { return c }
 // - *ODataSource, *OdbcSource, *Office365Source, *OracleServiceCloudSource, *OracleSource, *OrcSource, *ParquetSource, *PaypalSource,
 // - *PhoenixSource, *PostgreSQLSource, *PrestoSource, *QuickBooksSource, *RelationalSource, *ResponsysSource, *RestSource,
 // - *SQLDWSource, *SQLMISource, *SQLServerSource, *SQLSource, *SalesforceMarketingCloudSource, *SalesforceServiceCloudSource,
-// - *SalesforceSource, *SapBwSource, *SapCloudForCustomerSource, *SapEccSource, *SapHanaSource, *SapOpenHubSource, *SapTableSource,
-// - *ServiceNowSource, *SharePointOnlineListSource, *ShopifySource, *SnowflakeSource, *SparkSource, *SquareSource, *SybaseSource,
-// - *TabularSource, *TeradataSource, *VerticaSource, *WebSource, *XMLSource, *XeroSource, *ZohoSource
+// - *SalesforceSource, *SapBwSource, *SapCloudForCustomerSource, *SapEccSource, *SapHanaSource, *SapOdpSource, *SapOpenHubSource,
+// - *SapTableSource, *ServiceNowSource, *SharePointOnlineListSource, *ShopifySource, *SnowflakeSource, *SparkSource, *SquareSource,
+// - *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource, *WebSource, *XMLSource, *XeroSource, *ZohoSource
 type CopySourceClassification interface {
 	// GetCopySource returns the CopySource content of the underlying type.
 	GetCopySource() *CopySource
@@ -8722,10 +8722,10 @@ type DatabricksSparkPythonActivityTypeProperties struct {
 // - *ParquetDataset, *PaypalObjectDataset, *PhoenixObjectDataset, *PostgreSQLTableDataset, *PrestoObjectDataset, *QuickBooksObjectDataset,
 // - *RelationalTableDataset, *ResponsysObjectDataset, *RestResourceDataset, *SQLServerTableDataset, *SalesforceMarketingCloudObjectDataset,
 // - *SalesforceObjectDataset, *SalesforceServiceCloudObjectDataset, *SapBwCubeDataset, *SapCloudForCustomerResourceDataset,
-// - *SapEccResourceDataset, *SapHanaTableDataset, *SapOpenHubTableDataset, *SapTableResourceDataset, *ServiceNowObjectDataset,
-// - *SharePointOnlineListResourceDataset, *ShopifyObjectDataset, *SnowflakeDataset, *SparkObjectDataset, *SquareObjectDataset,
-// - *SybaseTableDataset, *TeradataTableDataset, *VerticaTableDataset, *WebTableDataset, *XMLDataset, *XeroObjectDataset,
-// - *ZohoObjectDataset
+// - *SapEccResourceDataset, *SapHanaTableDataset, *SapOdpResourceDataset, *SapOpenHubTableDataset, *SapTableResourceDataset,
+// - *ServiceNowObjectDataset, *SharePointOnlineListResourceDataset, *ShopifyObjectDataset, *SnowflakeDataset, *SparkObjectDataset,
+// - *SquareObjectDataset, *SybaseTableDataset, *TeradataTableDataset, *VerticaTableDataset, *WebTableDataset, *XMLDataset,
+// - *XeroObjectDataset, *ZohoObjectDataset
 type DatasetClassification interface {
 	// GetDataset returns the Dataset content of the underlying type.
 	GetDataset() *Dataset
@@ -16376,11 +16376,11 @@ func (l *LinkedIntegrationRuntimeType) GetLinkedIntegrationRuntimeType() *Linked
 // - *OracleLinkedService, *OracleServiceCloudLinkedService, *PaypalLinkedService, *PhoenixLinkedService, *PostgreSQLLinkedService,
 // - *PrestoLinkedService, *QuickBooksLinkedService, *QuickbaseLinkedService, *ResponsysLinkedService, *RestServiceLinkedService,
 // - *SQLServerLinkedService, *SalesforceLinkedService, *SalesforceMarketingCloudLinkedService, *SalesforceServiceCloudLinkedService,
-// - *SapBWLinkedService, *SapCloudForCustomerLinkedService, *SapEccLinkedService, *SapHanaLinkedService, *SapOpenHubLinkedService,
-// - *SapTableLinkedService, *ServiceNowLinkedService, *SftpServerLinkedService, *SharePointOnlineListLinkedService, *ShopifyLinkedService,
-// - *SmartsheetLinkedService, *SnowflakeLinkedService, *SparkLinkedService, *SquareLinkedService, *SybaseLinkedService, *TeamDeskLinkedService,
-// - *TeradataLinkedService, *TwilioLinkedService, *VerticaLinkedService, *WebLinkedService, *XeroLinkedService, *ZendeskLinkedService,
-// - *ZohoLinkedService
+// - *SapBWLinkedService, *SapCloudForCustomerLinkedService, *SapEccLinkedService, *SapHanaLinkedService, *SapOdpLinkedService,
+// - *SapOpenHubLinkedService, *SapTableLinkedService, *ServiceNowLinkedService, *SftpServerLinkedService, *SharePointOnlineListLinkedService,
+// - *ShopifyLinkedService, *SmartsheetLinkedService, *SnowflakeLinkedService, *SparkLinkedService, *SquareLinkedService,
+// - *SybaseLinkedService, *TeamDeskLinkedService, *TeradataLinkedService, *TwilioLinkedService, *VerticaLinkedService, *WebLinkedService,
+// - *XeroLinkedService, *ZendeskLinkedService, *ZohoLinkedService
 type LinkedServiceClassification interface {
 	// GetLinkedService returns the LinkedService content of the underlying type.
 	GetLinkedService() *LinkedService
@@ -22242,6 +22242,12 @@ type RestServiceLinkedServiceTypeProperties struct {
 	// string (or Expression with resultType string).
 	AzureCloudType interface{} `json:"azureCloudType,omitempty"`
 
+	// The client ID associated with your application. Type: string (or Expression with resultType string).
+	ClientID interface{} `json:"clientId,omitempty"`
+
+	// The client secret associated with your application.
+	ClientSecret SecretBaseClassification `json:"clientSecret,omitempty"`
+
 	// The credential reference containing authentication information.
 	Credential *CredentialReference `json:"credential,omitempty"`
 
@@ -22256,6 +22262,13 @@ type RestServiceLinkedServiceTypeProperties struct {
 	// The password used in Basic authentication type.
 	Password SecretBaseClassification `json:"password,omitempty"`
 
+	// The target service or resource to which the access will be requested. Type: string (or Expression with resultType string).
+	Resource interface{} `json:"resource,omitempty"`
+
+	// The scope of the access required. It describes what kind of access will be requested. Type: string (or Expression with
+	// resultType string).
+	Scope interface{} `json:"scope,omitempty"`
+
 	// The application's client ID used in AadServicePrincipal authentication type.
 	ServicePrincipalID interface{} `json:"servicePrincipalId,omitempty"`
 
@@ -22265,6 +22278,9 @@ type RestServiceLinkedServiceTypeProperties struct {
 	// The tenant information (domain name or tenant ID) used in AadServicePrincipal authentication type under which your application
 	// resides.
 	Tenant interface{} `json:"tenant,omitempty"`
+
+	// The token endpoint of the authorization server to acquire access token. Type: string (or Expression with resultType string).
+	TokenEndpoint interface{} `json:"tokenEndpoint,omitempty"`
 
 	// The user name used in Basic authentication type.
 	UserName interface{} `json:"userName,omitempty"`
@@ -24725,6 +24741,233 @@ type SapHanaTableDatasetTypeProperties struct {
 
 	// The table name of SAP HANA. Type: string (or Expression with resultType string).
 	Table interface{} `json:"table,omitempty"`
+}
+
+// SapOdpLinkedService - SAP ODP Linked Service.
+type SapOdpLinkedService struct {
+	// REQUIRED; Type of linked service.
+	Type *string `json:"type,omitempty"`
+
+	// REQUIRED; Properties specific to SAP ODP linked service type.
+	TypeProperties *SapOdpLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// List of tags that can be used for describing the linked service.
+	Annotations []interface{} `json:"annotations,omitempty"`
+
+	// The integration runtime reference.
+	ConnectVia *IntegrationRuntimeReference `json:"connectVia,omitempty"`
+
+	// Linked service description.
+	Description *string `json:"description,omitempty"`
+
+	// Parameters for linked service.
+	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+}
+
+// GetLinkedService implements the LinkedServiceClassification interface for type SapOdpLinkedService.
+func (s *SapOdpLinkedService) GetLinkedService() *LinkedService {
+	return &LinkedService{
+		Type:                 s.Type,
+		ConnectVia:           s.ConnectVia,
+		Description:          s.Description,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
+// SapOdpLinkedServiceTypeProperties - Properties specific to this linked service type.
+type SapOdpLinkedServiceTypeProperties struct {
+	// Client ID of the client on the SAP system where the table is located. (Usually a three-digit decimal number represented
+	// as a string) Type: string (or Expression with resultType string).
+	ClientID interface{} `json:"clientId,omitempty"`
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
+	// Type: string (or Expression with resultType string).
+	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
+
+	// Language of the SAP system where the table is located. The default value is EN. Type: string (or Expression with resultType
+	// string).
+	Language interface{} `json:"language,omitempty"`
+
+	// The Logon Group for the SAP System. Type: string (or Expression with resultType string).
+	LogonGroup interface{} `json:"logonGroup,omitempty"`
+
+	// The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
+	MessageServer interface{} `json:"messageServer,omitempty"`
+
+	// The service name or port number of the Message Server. Type: string (or Expression with resultType string).
+	MessageServerService interface{} `json:"messageServerService,omitempty"`
+
+	// Password to access the SAP server where the table is located.
+	Password SecretBaseClassification `json:"password,omitempty"`
+
+	// Host name of the SAP instance where the table is located. Type: string (or Expression with resultType string).
+	Server interface{} `json:"server,omitempty"`
+
+	// External security product's library to access the SAP server where the table is located. Type: string (or Expression with
+	// resultType string).
+	SncLibraryPath interface{} `json:"sncLibraryPath,omitempty"`
+
+	// SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on). Type: string
+	// (or Expression with resultType string).
+	SncMode interface{} `json:"sncMode,omitempty"`
+
+	// Initiator's SNC name to access the SAP server where the table is located. Type: string (or Expression with resultType string).
+	SncMyName interface{} `json:"sncMyName,omitempty"`
+
+	// Communication partner's SNC name to access the SAP server where the table is located. Type: string (or Expression with
+	// resultType string).
+	SncPartnerName interface{} `json:"sncPartnerName,omitempty"`
+
+	// SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or Expression with resultType string).
+	SncQop interface{} `json:"sncQop,omitempty"`
+
+	// The subscriber name. Type: string (or Expression with resultType string).
+	SubscriberName interface{} `json:"subscriberName,omitempty"`
+
+	// SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
+	SystemID interface{} `json:"systemId,omitempty"`
+
+	// System number of the SAP system where the table is located. (Usually a two-digit decimal number represented as a string.)
+	// Type: string (or Expression with resultType string).
+	SystemNumber interface{} `json:"systemNumber,omitempty"`
+
+	// Username to access the SAP server where the table is located. Type: string (or Expression with resultType string).
+	UserName interface{} `json:"userName,omitempty"`
+
+	// SNC X509 certificate file path. Type: string (or Expression with resultType string).
+	X509CertificatePath interface{} `json:"x509CertificatePath,omitempty"`
+}
+
+// SapOdpResourceDataset - SAP ODP Resource properties.
+type SapOdpResourceDataset struct {
+	// REQUIRED; Linked service reference.
+	LinkedServiceName *LinkedServiceReference `json:"linkedServiceName,omitempty"`
+
+	// REQUIRED; Type of dataset.
+	Type *string `json:"type,omitempty"`
+
+	// REQUIRED; SAP ODP Resource properties.
+	TypeProperties *SapOdpResourceDatasetTypeProperties `json:"typeProperties,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// List of tags that can be used for describing the Dataset.
+	Annotations []interface{} `json:"annotations,omitempty"`
+
+	// Dataset description.
+	Description *string `json:"description,omitempty"`
+
+	// The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
+	Folder *DatasetFolder `json:"folder,omitempty"`
+
+	// Parameters for dataset.
+	Parameters map[string]*ParameterSpecification `json:"parameters,omitempty"`
+
+	// Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType:
+	// DatasetSchemaDataElement.
+	Schema interface{} `json:"schema,omitempty"`
+
+	// Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
+	Structure interface{} `json:"structure,omitempty"`
+}
+
+// GetDataset implements the DatasetClassification interface for type SapOdpResourceDataset.
+func (s *SapOdpResourceDataset) GetDataset() *Dataset {
+	return &Dataset{
+		Type:                 s.Type,
+		Description:          s.Description,
+		Structure:            s.Structure,
+		Schema:               s.Schema,
+		LinkedServiceName:    s.LinkedServiceName,
+		Parameters:           s.Parameters,
+		Annotations:          s.Annotations,
+		Folder:               s.Folder,
+		AdditionalProperties: s.AdditionalProperties,
+	}
+}
+
+// SapOdpResourceDatasetTypeProperties - SAP ODP Resource properties.
+type SapOdpResourceDatasetTypeProperties struct {
+	// REQUIRED; The context of the SAP ODP Object. Type: string (or Expression with resultType string).
+	Context interface{} `json:"context,omitempty"`
+
+	// REQUIRED; The name of the SAP ODP Object. Type: string (or Expression with resultType string).
+	ObjectName interface{} `json:"objectName,omitempty"`
+}
+
+// SapOdpSource - A copy activity source for SAP ODP source.
+type SapOdpSource struct {
+	// REQUIRED; Copy source type.
+	Type *string `json:"type,omitempty"`
+
+	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with
+	// resultType array of objects).
+	AdditionalColumns interface{} `json:"additionalColumns,omitempty"`
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]interface{}
+
+	// If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
+	DisableMetricsCollection interface{} `json:"disableMetricsCollection,omitempty"`
+
+	// The extraction mode. Allowed value include: Full, Delta and Recovery. The default value is Full. Type: string (or Expression
+	// with resultType string).
+	ExtractionMode interface{} `json:"extractionMode,omitempty"`
+
+	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+	MaxConcurrentConnections interface{} `json:"maxConcurrentConnections,omitempty"`
+
+	// Specifies the columns to be selected from source data. Type: array of objects(projection) (or Expression with resultType
+	// array of objects).
+	Projection interface{} `json:"projection,omitempty"`
+
+	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	QueryTimeout interface{} `json:"queryTimeout,omitempty"`
+
+	// Specifies the selection conditions from source data. Type: array of objects(selection) (or Expression with resultType array
+	// of objects).
+	Selection interface{} `json:"selection,omitempty"`
+
+	// Source retry count. Type: integer (or Expression with resultType integer).
+	SourceRetryCount interface{} `json:"sourceRetryCount,omitempty"`
+
+	// Source retry wait. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	SourceRetryWait interface{} `json:"sourceRetryWait,omitempty"`
+
+	// The subscriber process to manage the delta process. Type: string (or Expression with resultType string).
+	SubscriberProcess interface{} `json:"subscriberProcess,omitempty"`
+}
+
+// GetCopySource implements the CopySourceClassification interface for type SapOdpSource.
+func (s *SapOdpSource) GetCopySource() *CopySource {
+	return &CopySource{
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
+}
+
+// GetTabularSource implements the TabularSourceClassification interface for type SapOdpSource.
+func (s *SapOdpSource) GetTabularSource() *TabularSource {
+	return &TabularSource{
+		QueryTimeout:             s.QueryTimeout,
+		AdditionalColumns:        s.AdditionalColumns,
+		Type:                     s.Type,
+		SourceRetryCount:         s.SourceRetryCount,
+		SourceRetryWait:          s.SourceRetryWait,
+		MaxConcurrentConnections: s.MaxConcurrentConnections,
+		DisableMetricsCollection: s.DisableMetricsCollection,
+		AdditionalProperties:     s.AdditionalProperties,
+	}
 }
 
 // SapOpenHubLinkedService - SAP Business Warehouse Open Hub Destination Linked Service.
@@ -27714,9 +27957,9 @@ type SybaseTableDatasetTypeProperties struct {
 // - *ImpalaSource, *InformixSource, *JiraSource, *MagentoSource, *MariaDBSource, *MarketoSource, *MySQLSource, *NetezzaSource,
 // - *OdbcSource, *OracleServiceCloudSource, *PaypalSource, *PhoenixSource, *PostgreSQLSource, *PrestoSource, *QuickBooksSource,
 // - *ResponsysSource, *SQLDWSource, *SQLMISource, *SQLServerSource, *SQLSource, *SalesforceMarketingCloudSource, *SalesforceSource,
-// - *SapBwSource, *SapCloudForCustomerSource, *SapEccSource, *SapHanaSource, *SapOpenHubSource, *SapTableSource, *ServiceNowSource,
-// - *ShopifySource, *SparkSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource, *XeroSource,
-// - *ZohoSource
+// - *SapBwSource, *SapCloudForCustomerSource, *SapEccSource, *SapHanaSource, *SapOdpSource, *SapOpenHubSource, *SapTableSource,
+// - *ServiceNowSource, *ShopifySource, *SparkSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource,
+// - *XeroSource, *ZohoSource
 type TabularSourceClassification interface {
 	CopySourceClassification
 	// GetTabularSource returns the TabularSource content of the underlying type.

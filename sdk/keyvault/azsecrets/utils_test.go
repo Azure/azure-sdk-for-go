@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azsecrets
+package azsecrets_test
 
 import (
 	"context"
@@ -12,39 +12,45 @@ import (
 	"hash/fnv"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 	"github.com/stretchr/testify/require"
 )
 
-const (
-	fakeVaultURL  = "https://fakekvurl.vault.azure.net"
-	pathToPackage = "sdk/keyvault/azsecrets/testdata"
-)
+const fakeVaultURL = "https://fakevault"
 
-var liveVaultURL string
+var vaultURL string
+
+var secretsToPurge = struct {
+	mut   sync.Mutex
+	names []string
+}{sync.Mutex{}, []string{}}
 
 func TestMain(m *testing.M) {
-	liveVaultURL = strings.TrimSuffix(os.Getenv("AZURE_KEYVAULT_URL"), "/")
-	if liveVaultURL == "" && recording.GetRecordMode() != recording.PlaybackMode {
-		panic("no value for AZURE_KEYVAULT_URL")
+	vaultURL = strings.TrimSuffix(os.Getenv("AZURE_KEYVAULT_URL"), "/")
+	if vaultURL == "" {
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			panic("no value for AZURE_KEYVAULT_URL")
+		}
+		vaultURL = fakeVaultURL
 	}
 	err := recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)
 	}
 	if recording.GetRecordMode() == recording.RecordingMode {
-		err := recording.AddURISanitizer(fakeVaultURL, liveVaultURL, nil)
+		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
 		if err != nil {
 			panic(err)
 		}
-		err = recording.AddBodyRegexSanitizer(fakeVaultURL, liveVaultURL, nil)
+		err = recording.AddBodyRegexSanitizer(fakeVaultURL, vaultURL, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -55,22 +61,55 @@ func TestMain(m *testing.M) {
 			}
 		}()
 	}
-	os.Exit(m.Run())
+	code := m.Run()
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		// Purge test secrets using a client whose requests aren't recorded. This
+		// will be fast because the tests which created these secrets requested their
+		// deletion. Now, at the end of the run, Key Vault will have finished deleting
+		// most of them...
+		cred, err := getCredential()
+		if err != nil {
+			fmt.Println("unable to purge test secrets:", err.Error())
+		}
+		client := azsecrets.NewClient(vaultURL, cred, nil)
+		for _, name := range secretsToPurge.names {
+			// ...but we need a retry loop for the others. Note this wouldn't benefit
+			// from client-side parallelization because Key Vault's delete operations
+			// are running in parallel. When the client waits on one deletion, it
+			// effectively waits on all of them.
+			for i := 0; i < 12; i++ {
+				_, err := client.PurgeDeletedSecret(context.Background(), name, nil)
+				if err == nil {
+					break
+				}
+				if i < 11 {
+					recording.Sleep(10 * time.Second)
+				}
+			}
+		}
+	}
+	os.Exit(code)
 }
 
-func startTest(t *testing.T) func() {
-	err := recording.Start(t, pathToPackage, nil)
+func startTest(t *testing.T) *azsecrets.Client {
+	err := recording.Start(t, "sdk/keyvault/azsecrets/testdata", nil)
 	require.NoError(t, err)
-	return func() {
+	t.Cleanup(func() {
 		err := recording.Stop(t, nil)
 		require.NoError(t, err)
-	}
+	})
+	transport, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	cred, err := getCredential()
+	require.NoError(t, err)
+	return azsecrets.NewClient(vaultURL, cred, &azcore.ClientOptions{Transport: transport})
 }
 
-func createRandomName(t *testing.T, prefix string) (string, error) {
+func createRandomName(t *testing.T, prefix string) string {
 	h := fnv.New32a()
 	_, err := h.Write([]byte(t.Name()))
-	return prefix + fmt.Sprint(h.Sum32()), err
+	require.NoError(t, err)
+	return prefix + fmt.Sprint(h.Sum32())
 }
 
 func lookupEnvVar(s string) string {
@@ -81,59 +120,30 @@ func lookupEnvVar(s string) string {
 	return ret
 }
 
-func createClient(t *testing.T) (*Client, error) {
-	vaultURL := liveVaultURL
-	if vaultURL == "" {
-		vaultURL = fakeVaultURL
+func getCredential() (azcore.TokenCredential, error) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return &FakeCredential{}, nil
 	}
+	tenantId := lookupEnvVar("AZSECRETS_TENANT_ID")
+	clientId := lookupEnvVar("AZSECRETS_CLIENT_ID")
+	clientSecret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")
+	return azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
+}
 
-	client, err := recording.NewRecordingHTTPClient(t, nil)
-	require.NoError(t, err)
-
-	options := &ClientOptions{
-		azcore.ClientOptions{
-			Transport: client,
-		},
+func cleanUpSecret(t *testing.T, client *azsecrets.Client, name string) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return
 	}
-
-	var cred azcore.TokenCredential
-	if recording.GetRecordMode() != "playback" {
-		tenantId := lookupEnvVar("AZSECRETS_TENANT_ID")
-		clientId := lookupEnvVar("AZSECRETS_CLIENT_ID")
-		clientSecret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")
-		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
-		require.NoError(t, err)
+	if _, err := client.DeleteSecret(context.Background(), name, nil); err == nil {
+		secretsToPurge.mut.Lock()
+		defer secretsToPurge.mut.Unlock()
+		secretsToPurge.names = append(secretsToPurge.names, name)
 	} else {
-		cred = NewFakeCredential()
+		t.Logf(`cleanUpSecret failed for "%s": %v`, name, err)
 	}
-
-	return NewClient(vaultURL, cred, options)
-}
-
-func getPollingOptions() *runtime.PollUntilDoneOptions {
-	freq := time.Second
-	if recording.GetRecordMode() == recording.RecordingMode {
-		freq = time.Minute
-	}
-	return &runtime.PollUntilDoneOptions{Frequency: freq}
-}
-
-func cleanUpSecret(t *testing.T, client *Client, secret string) {
-	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-
-	_, err = resp.PollUntilDone(context.Background(), getPollingOptions())
-	require.NoError(t, err)
-
-	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
 }
 
 type FakeCredential struct{}
-
-func NewFakeCredential() *FakeCredential {
-	return &FakeCredential{}
-}
 
 func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	return azcore.AccessToken{Token: "faketoken", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil

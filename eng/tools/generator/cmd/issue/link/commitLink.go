@@ -6,12 +6,12 @@ package link
 import (
 	"context"
 	"fmt"
+	"github.com/ahmetb/go-linq/v3"
 	"regexp"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
-	"github.com/ahmetb/go-linq/v3"
-	"github.com/google/go-github/v32/github"
+	"github.com/google/go-github/v45/github"
 )
 
 var (
@@ -47,7 +47,7 @@ func (l commitLink) Resolve() (ResolveResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	commit, _, err := l.client.Repositories.GetCommit(l.ctx, SpecOwner, SpecRepo, hash)
+	commit, _, err := l.client.Repositories.GetCommit(l.ctx, SpecOwner, SpecRepo, hash, nil)
 	if err != nil {
 		return nil, err
 	}

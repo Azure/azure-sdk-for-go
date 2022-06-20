@@ -5,7 +5,6 @@ package config
 
 import (
 	"encoding/json"
-
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
 )
 

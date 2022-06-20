@@ -18,4 +18,6 @@ const (
 	FilePrefix = "blob/"
 	// CommitPrefix ...
 	CommitPrefix = "commit/"
+	// SDKRepo ...
+	SDKRepo = "azure-sdk-for-go"
 )

@@ -16,6 +16,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/stretchr/testify/require"
 )
@@ -29,6 +30,7 @@ func initialResponse() *http.Response {
 	return &http.Response{
 		Header:     http.Header{},
 		StatusCode: http.StatusAccepted,
+		Body:       http.NoBody,
 	}
 }
 
@@ -160,4 +162,15 @@ func TestUpdateFailedWithProvisioningState(t *testing.T) {
 	err = poller.Result(context.Background(), nil)
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
+}
+
+func TestSynchronousCompletion(t *testing.T) {
+	resp := initialResponse()
+	resp.Body = io.NopCloser(strings.NewReader(`{ "properties": { "provisioningState": "Succeeded" } }`))
+	resp.Header.Set(shared.HeaderLocation, fakeLocationURL)
+	poller, err := New[struct{}](exported.Pipeline{}, resp)
+	require.NoError(t, err)
+	require.Equal(t, fakeLocationURL, poller.PollURL)
+	require.Equal(t, pollers.StatusSucceeded, poller.CurState)
+	require.True(t, poller.Done())
 }

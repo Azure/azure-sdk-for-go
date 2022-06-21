@@ -51,7 +51,21 @@ type AddMessageOptions struct {
 // - a non-nil error for other failures
 // - nil, otherwise
 func (mb *MessageBatch) AddMessage(m *Message, options *AddMessageOptions) error {
-	return mb.addAMQPMessage(m.toAMQPMessage())
+	return mb.addAMQPMessage(m)
+}
+
+// AddAMQPAnnotatedMessageOptions contains optional parameters for the AddAMQPAnnotatedMessage function.
+type AddAMQPAnnotatedMessageOptions struct {
+	// For future expansion
+}
+
+// AddAMQPAnnotatedMessage adds a message to the batch if the message will not exceed the max size of the batch
+// Returns:
+// - ErrMessageTooLarge if the message cannot fit
+// - a non-nil error for other failures
+// - nil, otherwise
+func (mb *MessageBatch) AddAMQPAnnotatedMessage(m *AMQPAnnotatedMessage, options *AddAMQPAnnotatedMessageOptions) error {
+	return mb.addAMQPMessage(m)
 }
 
 // NumBytes is the number of bytes in the message batch
@@ -84,7 +98,9 @@ func (mb *MessageBatch) toAMQPMessage() *amqp.Message {
 	return mb.batchEnvelope
 }
 
-func (mb *MessageBatch) addAMQPMessage(msg *amqp.Message) error {
+func (mb *MessageBatch) addAMQPMessage(tempMsg amqpCompatibleMessage) error {
+	msg := tempMsg.toAMQPMessage()
+
 	if msg.Properties.MessageID == nil || msg.Properties.MessageID == "" {
 		uid, err := uuid.New()
 		if err != nil {

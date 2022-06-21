@@ -1353,7 +1353,7 @@ func (si *SASLInit) frameBody() {}
 func (si *SASLInit) Marshal(wr *buffer.Buffer) error {
 	return encoding.MarshalComposite(wr, encoding.TypeCodeSASLInit, []encoding.MarshalField{
 		{Value: &si.Mechanism, Omit: false},
-		{Value: &si.InitialResponse, Omit: len(si.InitialResponse) == 0},
+		{Value: &si.InitialResponse, Omit: false},
 		{Value: &si.Hostname, Omit: len(si.Hostname) == 0},
 	})
 }

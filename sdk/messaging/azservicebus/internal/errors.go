@@ -173,7 +173,9 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindLink
 	}
 
-	if errors.Is(err, amqp.ErrConnClosed) ||
+	var connErr *amqp.ConnectionError
+
+	if errors.As(err, &connErr) ||
 		// session closures appear to leak through when the connection itself is going down.
 		errors.Is(err, amqp.ErrSessionClosed) {
 		return RecoveryKindConn

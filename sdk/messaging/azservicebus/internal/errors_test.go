@@ -115,7 +115,7 @@ func Test_recoveryKind(t *testing.T) {
 		}
 
 		t.Run("sentinel errors", func(t *testing.T) {
-			rk := GetRecoveryKind(amqp.ErrConnClosed)
+			rk := GetRecoveryKind(&amqp.ConnectionError{})
 			require.EqualValues(t, RecoveryKindConn, rk)
 		})
 	})
@@ -188,7 +188,7 @@ func Test_ServiceBusError_ConnectionRecoveryNeeded(t *testing.T) {
 	var connErrors = []error{
 		&amqp.Error{Condition: amqp.ErrorConnectionForced},
 		&amqp.Error{Condition: amqp.ErrorInternalError},
-		amqp.ErrConnClosed,
+		&amqp.ConnectionError{},
 		amqp.ErrSessionClosed,
 		io.EOF,
 		fakeNetError{temp: true},
@@ -274,7 +274,7 @@ func Test_TransformError(t *testing.T) {
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.CodeConnectionLost, asExportedErr.Code)
 
-	err = TransformError(amqp.ErrConnClosed)
+	err = TransformError(&amqp.ConnectionError{})
 	require.ErrorAs(t, err, &asExportedErr)
 	require.Equal(t, exported.CodeConnectionLost, asExportedErr.Code)
 

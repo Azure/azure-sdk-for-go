@@ -17,7 +17,7 @@ import (
 
 func TestSessionReceiverUserFacingErrors(t *testing.T) {
 	fakeAMQPLinks := &internal.FakeAMQPLinks{
-		Err: amqp.ErrConnClosed,
+		Err: &amqp.ConnectionError{},
 	}
 
 	receiver, err := newSessionReceiver(context.Background(), newSessionReceiverArgs{
@@ -80,7 +80,7 @@ func TestSessionReceiverUserFacingErrors(t *testing.T) {
 
 	// there's an init() method that's a little harder to trigger, so we'll do that here.
 	// Unlike the others above it doesn't rely on the management$ link.
-	fakeAMQPLinks.Err = amqp.ErrConnClosed
+	fakeAMQPLinks.Err = &amqp.ConnectionError{}
 	err = receiver.init(context.Background())
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)

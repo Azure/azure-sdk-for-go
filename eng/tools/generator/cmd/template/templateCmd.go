@@ -61,30 +61,33 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
 	flagSet.String("package-config", "", "Additional config for package")
 	flagSet.String("go-version", "1.18", "Go version")
+	flagSet.String("package-version", "", "Specify the version number of this release")
 }
 
 // ParseFlags parses the flags to a Flags struct
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		SDKRoot:       flags.GetString(flagSet, "go-sdk-folder"),
-		TemplatePath:  flags.GetString(flagSet, "template-path"),
-		PackageTitle:  flags.GetString(flagSet, "package-title"),
-		Commit:        flags.GetString(flagSet, "commit"),
-		ReleaseDate:   flags.GetString(flagSet, "release-date"),
-		PackageConfig: flags.GetString(flagSet, "package-config"),
-		GoVersion:     flags.GetString(flagSet, "go-version"),
+		SDKRoot:        flags.GetString(flagSet, "go-sdk-folder"),
+		TemplatePath:   flags.GetString(flagSet, "template-path"),
+		PackageTitle:   flags.GetString(flagSet, "package-title"),
+		Commit:         flags.GetString(flagSet, "commit"),
+		ReleaseDate:    flags.GetString(flagSet, "release-date"),
+		PackageConfig:  flags.GetString(flagSet, "package-config"),
+		GoVersion:      flags.GetString(flagSet, "go-version"),
+		PackageVersion: flags.GetString(flagSet, "package-version"),
 	}
 }
 
 // Flags ...
 type Flags struct {
-	SDKRoot       string
-	TemplatePath  string
-	PackageTitle  string
-	Commit        string
-	ReleaseDate   string
-	PackageConfig string
-	GoVersion     string
+	SDKRoot        string
+	TemplatePath   string
+	PackageTitle   string
+	Commit         string
+	ReleaseDate    string
+	PackageConfig  string
+	GoVersion      string
+	PackageVersion string
 }
 
 // GeneratePackageByTemplate creates a new set of files based on the things in template directory
@@ -105,7 +108,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	}
 
 	// build the replaceMap
-	buildReplaceMap(rpName, packageName, flags.PackageConfig, flags.PackageTitle, flags.Commit, flags.ReleaseDate, flags.GoVersion)
+	buildReplaceMap(rpName, packageName, flags.PackageConfig, flags.PackageTitle, flags.Commit, flags.ReleaseDate, flags.GoVersion, flags.PackageVersion)
 
 	// copy everything to destination directory
 	for _, file := range fileList {
@@ -129,7 +132,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	return nil
 }
 
-func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID, releaseDate, goVersion string) {
+func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID, releaseDate, goVersion, packageVersion string) {
 	replaceMap = make(map[string]string)
 
 	replaceMap[RPNameKey] = rpName
@@ -143,6 +146,7 @@ func buildReplaceMap(rpName, packageName, packageConfig, packageTitle, commitID,
 		replaceMap[ReleaseDate] = releaseDate
 	}
 	replaceMap[GoVersion] = goVersion
+	replaceMap[PackageVersion] = packageVersion
 }
 
 func readAndReplace(path string) (string, error) {
@@ -180,10 +184,11 @@ var (
 const (
 	RPNameKey        = "{{rpName}}"
 	PackageNameKey   = "{{packageName}}"
-	PackageTitleKey  = "{{PackageTitle}}"
+	PackageTitleKey  = "{{packageTitle}}"
 	CommitIDKey      = "{{commitID}}"
 	FilenameSuffix   = ".tpl"
 	ReleaseDate      = "{{releaseDate}}"
 	PackageConfigKey = "{{packageConfig}}"
 	GoVersion        = "{{goVersion}}"
+	PackageVersion   = "{{packageVersion}}"
 )

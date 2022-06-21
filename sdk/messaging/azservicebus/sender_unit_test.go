@@ -30,7 +30,7 @@ func TestSender_UserFacingError(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	fakeAMQPLinks.Err = amqp.ErrConnClosed
+	fakeAMQPLinks.Err = &amqp.ConnectionError{}
 
 	var asSBError *Error
 

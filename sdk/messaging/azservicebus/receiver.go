@@ -289,7 +289,7 @@ type RenewMessageLockOptions struct {
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
+		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.RawAMQPMessage.linkName, []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
 		})
 

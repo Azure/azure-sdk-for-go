@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineDeployment/list.json
 func ExampleOnlineDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleOnlineDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineDeployment/delete.json
 func ExampleOnlineDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleOnlineDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/KubernetesOnlineDeployment/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineDeployment/KubernetesOnlineDeployment/get.json
 func ExampleOnlineDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleOnlineDeploymentsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/KubernetesOnlineDeployment/update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineDeployment/KubernetesOnlineDeployment/update.json
 func ExampleOnlineDeploymentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,18 +113,8 @@ func ExampleOnlineDeploymentsClient_BeginUpdate() {
 		"my-aml-workspace",
 		"testEndpointName",
 		"testDeploymentName",
-		armmachinelearning.PartialOnlineDeploymentPartialTrackedResource{
-			Identity: &armmachinelearning.PartialManagedServiceIdentity{
-				Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-				UserAssignedIdentities: map[string]interface{}{
-					"string": map[string]interface{}{},
-				},
-			},
-			Kind:     to.Ptr("string"),
-			Location: to.Ptr("string"),
-			Properties: &armmachinelearning.PartialKubernetesOnlineDeployment{
-				EndpointComputeType: to.Ptr(armmachinelearning.EndpointComputeTypeKubernetes),
-			},
+		armmachinelearning.PartialMinimalTrackedResourceWithSKU{
+			Tags: map[string]*string{},
 			SKU: &armmachinelearning.PartialSKU{
 				Name:     to.Ptr("string"),
 				Capacity: to.Ptr[int32](1),
@@ -132,7 +122,6 @@ func ExampleOnlineDeploymentsClient_BeginUpdate() {
 				Size:     to.Ptr("string"),
 				Tier:     to.Ptr(armmachinelearning.SKUTierFree),
 			},
-			Tags: map[string]*string{},
 		},
 		nil)
 	if err != nil {
@@ -146,7 +135,7 @@ func ExampleOnlineDeploymentsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
 func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +151,7 @@ func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate() {
 		"my-aml-workspace",
 		"testEndpointName",
 		"testDeploymentName",
-		armmachinelearning.OnlineDeploymentData{
+		armmachinelearning.OnlineDeployment{
 			Location: to.Ptr("string"),
 			Tags:     map[string]*string{},
 			Identity: &armmachinelearning.ManagedServiceIdentity{
@@ -238,7 +227,7 @@ func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/getLogs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineDeployment/getLogs.json
 func ExampleOnlineDeploymentsClient_GetLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

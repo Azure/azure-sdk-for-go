@@ -54,16 +54,16 @@ func NewWorkspaceConnectionsClient(subscriptionID string, credential azcore.Toke
 	return client, nil
 }
 
-// Create - Add a new workspace connection.
+// Create -
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // connectionName - Friendly name of the workspace connection
 // parameters - The object for creating or updating a new workspace connection
 // options - WorkspaceConnectionsClientCreateOptions contains the optional parameters for the WorkspaceConnectionsClient.Create
 // method.
-func (client *WorkspaceConnectionsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, parameters WorkspaceConnection, options *WorkspaceConnectionsClientCreateOptions) (WorkspaceConnectionsClientCreateResponse, error) {
+func (client *WorkspaceConnectionsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, parameters WorkspaceConnectionPropertiesV2BasicResource, options *WorkspaceConnectionsClientCreateOptions) (WorkspaceConnectionsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, workspaceName, connectionName, parameters, options)
 	if err != nil {
 		return WorkspaceConnectionsClientCreateResponse{}, err
@@ -79,7 +79,7 @@ func (client *WorkspaceConnectionsClient) Create(ctx context.Context, resourceGr
 }
 
 // createCreateRequest creates the Create request.
-func (client *WorkspaceConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, parameters WorkspaceConnection, options *WorkspaceConnectionsClientCreateOptions) (*policy.Request, error) {
+func (client *WorkspaceConnectionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, parameters WorkspaceConnectionPropertiesV2BasicResource, options *WorkspaceConnectionsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,7 +102,7 @@ func (client *WorkspaceConnectionsClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -111,15 +111,15 @@ func (client *WorkspaceConnectionsClient) createCreateRequest(ctx context.Contex
 // createHandleResponse handles the Create response.
 func (client *WorkspaceConnectionsClient) createHandleResponse(resp *http.Response) (WorkspaceConnectionsClientCreateResponse, error) {
 	result := WorkspaceConnectionsClientCreateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnection); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResource); err != nil {
 		return WorkspaceConnectionsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Delete a workspace connection.
+// Delete -
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // connectionName - Friendly name of the workspace connection
@@ -164,15 +164,15 @@ func (client *WorkspaceConnectionsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Get the detail of a workspace connection.
+// Get -
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // connectionName - Friendly name of the workspace connection
@@ -217,7 +217,7 @@ func (client *WorkspaceConnectionsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -226,15 +226,15 @@ func (client *WorkspaceConnectionsClient) getCreateRequest(ctx context.Context, 
 // getHandleResponse handles the Get response.
 func (client *WorkspaceConnectionsClient) getHandleResponse(resp *http.Response) (WorkspaceConnectionsClientGetResponse, error) {
 	result := WorkspaceConnectionsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnection); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResource); err != nil {
 		return WorkspaceConnectionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - List all connections under a AML workspace.
+// NewListPager -
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - WorkspaceConnectionsClientListOptions contains the optional parameters for the WorkspaceConnectionsClient.List
@@ -242,10 +242,16 @@ func (client *WorkspaceConnectionsClient) getHandleResponse(resp *http.Response)
 func (client *WorkspaceConnectionsClient) NewListPager(resourceGroupName string, workspaceName string, options *WorkspaceConnectionsClientListOptions) *runtime.Pager[WorkspaceConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkspaceConnectionsClientListResponse]{
 		More: func(page WorkspaceConnectionsClientListResponse) bool {
-			return false
+			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *WorkspaceConnectionsClientListResponse) (WorkspaceConnectionsClientListResponse, error) {
-			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
 			if err != nil {
 				return WorkspaceConnectionsClientListResponse{}, err
 			}
@@ -281,13 +287,13 @@ func (client *WorkspaceConnectionsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
 	if options != nil && options.Target != nil {
 		reqQP.Set("target", *options.Target)
 	}
 	if options != nil && options.Category != nil {
 		reqQP.Set("category", *options.Category)
 	}
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -296,7 +302,7 @@ func (client *WorkspaceConnectionsClient) listCreateRequest(ctx context.Context,
 // listHandleResponse handles the List response.
 func (client *WorkspaceConnectionsClient) listHandleResponse(resp *http.Response) (WorkspaceConnectionsClientListResponse, error) {
 	result := WorkspaceConnectionsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PaginatedWorkspaceConnectionsList); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult); err != nil {
 		return WorkspaceConnectionsClientListResponse{}, err
 	}
 	return result, nil

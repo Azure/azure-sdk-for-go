@@ -244,3 +244,15 @@ func TestPollFailedError(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, resp)
 }
+
+func TestSynchronousCompletion(t *testing.T) {
+	resp := initialResponse(http.MethodPut, io.NopCloser(strings.NewReader(`{ "properties": { "provisioningState": "Succeeded" } }`)))
+	resp.Header.Set(shared.HeaderAzureAsync, fakePollingURL)
+	resp.Header.Set(shared.HeaderLocation, fakeResourceURL)
+	poller, err := New[struct{}](exported.Pipeline{}, resp, "")
+	require.NoError(t, err)
+	require.Equal(t, fakePollingURL, poller.AsyncURL)
+	require.Equal(t, fakeResourceURL, poller.LocURL)
+	require.Equal(t, pollers.StatusSucceeded, poller.CurState)
+	require.True(t, poller.Done())
+}

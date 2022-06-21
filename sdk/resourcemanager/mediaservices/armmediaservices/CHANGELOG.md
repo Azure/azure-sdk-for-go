@@ -1,5 +1,19 @@
 # Release History
 
+## 2.0.0 (2022-06-21)
+### Breaking Changes
+
+- Function `*Client.Update` has been removed
+- Function `*Client.CreateOrUpdate` has been removed
+- Struct `ClientCreateOrUpdateOptions` has been removed
+- Struct `ClientUpdateOptions` has been removed
+
+### Features Added
+
+- New field `ProvisioningState` in struct `MediaServiceProperties`
+- New field `PrivateEndpointConnections` in struct `MediaServiceProperties`
+
+
 ## 1.0.0 (2022-05-18)
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mediaservices/armmediaservices` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html) since version 1.0.0, which contains breaking changes.

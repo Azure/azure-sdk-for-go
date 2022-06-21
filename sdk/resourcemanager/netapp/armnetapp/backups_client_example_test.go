@@ -170,7 +170,8 @@ func ExampleBackupsClient_BeginUpdate() {
 		"pool1",
 		"volume1",
 		"backup1",
-		&armnetapp.BackupsClientBeginUpdateOptions{Body: &armnetapp.BackupPatch{}})
+		armnetapp.BackupPatch{},
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -57,14 +57,14 @@ func NewDatastoresClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CreateOrUpdate - Create or update datastore.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Datastore name.
 // body - Datastore entity to create or update.
 // options - DatastoresClientCreateOrUpdateOptions contains the optional parameters for the DatastoresClient.CreateOrUpdate
 // method.
-func (client *DatastoresClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, body DatastoreData, options *DatastoresClientCreateOrUpdateOptions) (DatastoresClientCreateOrUpdateResponse, error) {
+func (client *DatastoresClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, body Datastore, options *DatastoresClientCreateOrUpdateOptions) (DatastoresClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, name, body, options)
 	if err != nil {
 		return DatastoresClientCreateOrUpdateResponse{}, err
@@ -80,7 +80,7 @@ func (client *DatastoresClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body DatastoreData, options *DatastoresClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, body Datastore, options *DatastoresClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -103,7 +103,7 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.SkipValidation != nil {
 		reqQP.Set("skipValidation", strconv.FormatBool(*options.SkipValidation))
 	}
@@ -115,7 +115,7 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DatastoresClient) createOrUpdateHandleResponse(resp *http.Response) (DatastoresClientCreateOrUpdateResponse, error) {
 	result := DatastoresClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DatastoreData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Datastore); err != nil {
 		return DatastoresClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
@@ -123,7 +123,7 @@ func (client *DatastoresClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Delete datastore.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Datastore name.
@@ -167,7 +167,7 @@ func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -175,7 +175,7 @@ func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Get datastore.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Datastore name.
@@ -219,7 +219,7 @@ func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -228,7 +228,7 @@ func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGr
 // getHandleResponse handles the Get response.
 func (client *DatastoresClient) getHandleResponse(resp *http.Response) (DatastoresClientGetResponse, error) {
 	result := DatastoresClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DatastoreData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Datastore); err != nil {
 		return DatastoresClientGetResponse{}, err
 	}
 	return result, nil
@@ -236,7 +236,7 @@ func (client *DatastoresClient) getHandleResponse(resp *http.Response) (Datastor
 
 // NewListPager - List datastores.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // options - DatastoresClientListOptions contains the optional parameters for the DatastoresClient.List method.
@@ -288,7 +288,7 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
@@ -326,7 +326,7 @@ func (client *DatastoresClient) listHandleResponse(resp *http.Response) (Datasto
 
 // ListSecrets - Get datastore secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Datastore name.
@@ -370,7 +370,7 @@ func (client *DatastoresClient) listSecretsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

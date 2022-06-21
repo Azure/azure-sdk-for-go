@@ -109,6 +109,31 @@ type AutomationRulesClientListResponse struct {
 	AutomationRulesList
 }
 
+// BookmarkClientExpandResponse contains the response from method BookmarkClient.Expand.
+type BookmarkClientExpandResponse struct {
+	BookmarkExpandResponse
+}
+
+// BookmarkRelationsClientCreateOrUpdateResponse contains the response from method BookmarkRelationsClient.CreateOrUpdate.
+type BookmarkRelationsClientCreateOrUpdateResponse struct {
+	Relation
+}
+
+// BookmarkRelationsClientDeleteResponse contains the response from method BookmarkRelationsClient.Delete.
+type BookmarkRelationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// BookmarkRelationsClientGetResponse contains the response from method BookmarkRelationsClient.Get.
+type BookmarkRelationsClientGetResponse struct {
+	Relation
+}
+
+// BookmarkRelationsClientListResponse contains the response from method BookmarkRelationsClient.List.
+type BookmarkRelationsClientListResponse struct {
+	RelationList
+}
+
 // BookmarksClientCreateOrUpdateResponse contains the response from method BookmarksClient.CreateOrUpdate.
 type BookmarksClientCreateOrUpdateResponse struct {
 	Bookmark
@@ -127,6 +152,16 @@ type BookmarksClientGetResponse struct {
 // BookmarksClientListResponse contains the response from method BookmarksClient.List.
 type BookmarksClientListResponse struct {
 	BookmarkList
+}
+
+// DataConnectorsCheckRequirementsClientPostResponse contains the response from method DataConnectorsCheckRequirementsClient.Post.
+type DataConnectorsCheckRequirementsClientPostResponse struct {
+	DataConnectorRequirementsState
+}
+
+// DataConnectorsClientConnectResponse contains the response from method DataConnectorsClient.Connect.
+type DataConnectorsClientConnectResponse struct {
+	// placeholder for future response values
 }
 
 // DataConnectorsClientCreateOrUpdateResponse contains the response from method DataConnectorsClient.CreateOrUpdate.
@@ -149,6 +184,11 @@ type DataConnectorsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// DataConnectorsClientDisconnectResponse contains the response from method DataConnectorsClient.Disconnect.
+type DataConnectorsClientDisconnectResponse struct {
+	// placeholder for future response values
+}
+
 // DataConnectorsClientGetResponse contains the response from method DataConnectorsClient.Get.
 type DataConnectorsClientGetResponse struct {
 	DataConnectorClassification
@@ -167,6 +207,126 @@ func (d *DataConnectorsClientGetResponse) UnmarshalJSON(data []byte) error {
 // DataConnectorsClientListResponse contains the response from method DataConnectorsClient.List.
 type DataConnectorsClientListResponse struct {
 	DataConnectorList
+}
+
+// DomainWhoisClientGetResponse contains the response from method DomainWhoisClient.Get.
+type DomainWhoisClientGetResponse struct {
+	EnrichmentDomainWhois
+}
+
+// EntitiesClientExpandResponse contains the response from method EntitiesClient.Expand.
+type EntitiesClientExpandResponse struct {
+	EntityExpandResponse
+}
+
+// EntitiesClientGetInsightsResponse contains the response from method EntitiesClient.GetInsights.
+type EntitiesClientGetInsightsResponse struct {
+	EntityGetInsightsResponse
+}
+
+// EntitiesClientGetResponse contains the response from method EntitiesClient.Get.
+type EntitiesClientGetResponse struct {
+	EntityClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntitiesClientGetResponse.
+func (e *EntitiesClientGetResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalEntityClassification(data)
+	if err != nil {
+		return err
+	}
+	e.EntityClassification = res
+	return nil
+}
+
+// EntitiesClientListResponse contains the response from method EntitiesClient.List.
+type EntitiesClientListResponse struct {
+	EntityList
+}
+
+// EntitiesClientQueriesResponse contains the response from method EntitiesClient.Queries.
+type EntitiesClientQueriesResponse struct {
+	GetQueriesResponse
+}
+
+// EntitiesGetTimelineClientListResponse contains the response from method EntitiesGetTimelineClient.List.
+type EntitiesGetTimelineClientListResponse struct {
+	EntityTimelineResponse
+}
+
+// EntitiesRelationsClientListResponse contains the response from method EntitiesRelationsClient.List.
+type EntitiesRelationsClientListResponse struct {
+	RelationList
+}
+
+// EntityQueriesClientCreateOrUpdateResponse contains the response from method EntityQueriesClient.CreateOrUpdate.
+type EntityQueriesClientCreateOrUpdateResponse struct {
+	EntityQueryClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueriesClientCreateOrUpdateResponse.
+func (e *EntityQueriesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalEntityQueryClassification(data)
+	if err != nil {
+		return err
+	}
+	e.EntityQueryClassification = res
+	return nil
+}
+
+// EntityQueriesClientDeleteResponse contains the response from method EntityQueriesClient.Delete.
+type EntityQueriesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// EntityQueriesClientGetResponse contains the response from method EntityQueriesClient.Get.
+type EntityQueriesClientGetResponse struct {
+	EntityQueryClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueriesClientGetResponse.
+func (e *EntityQueriesClientGetResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalEntityQueryClassification(data)
+	if err != nil {
+		return err
+	}
+	e.EntityQueryClassification = res
+	return nil
+}
+
+// EntityQueriesClientListResponse contains the response from method EntityQueriesClient.List.
+type EntityQueriesClientListResponse struct {
+	EntityQueryList
+}
+
+// EntityQueryTemplatesClientGetResponse contains the response from method EntityQueryTemplatesClient.Get.
+type EntityQueryTemplatesClientGetResponse struct {
+	EntityQueryTemplateClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntityQueryTemplatesClientGetResponse.
+func (e *EntityQueryTemplatesClientGetResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalEntityQueryTemplateClassification(data)
+	if err != nil {
+		return err
+	}
+	e.EntityQueryTemplateClassification = res
+	return nil
+}
+
+// EntityQueryTemplatesClientListResponse contains the response from method EntityQueryTemplatesClient.List.
+type EntityQueryTemplatesClientListResponse struct {
+	EntityQueryTemplateList
+}
+
+// EntityRelationsClientGetRelationResponse contains the response from method EntityRelationsClient.GetRelation.
+type EntityRelationsClientGetRelationResponse struct {
+	Relation
+}
+
+// IPGeodataClientGetResponse contains the response from method IPGeodataClient.Get.
+type IPGeodataClientGetResponse struct {
+	EnrichmentIPGeodata
 }
 
 // IncidentCommentsClientCreateOrUpdateResponse contains the response from method IncidentCommentsClient.CreateOrUpdate.
@@ -214,6 +374,11 @@ type IncidentsClientCreateOrUpdateResponse struct {
 	Incident
 }
 
+// IncidentsClientCreateTeamResponse contains the response from method IncidentsClient.CreateTeam.
+type IncidentsClientCreateTeamResponse struct {
+	TeamInformation
+}
+
 // IncidentsClientDeleteResponse contains the response from method IncidentsClient.Delete.
 type IncidentsClientDeleteResponse struct {
 	// placeholder for future response values
@@ -244,9 +409,135 @@ type IncidentsClientListResponse struct {
 	IncidentList
 }
 
+// IncidentsClientRunPlaybookResponse contains the response from method IncidentsClient.RunPlaybook.
+type IncidentsClientRunPlaybookResponse struct {
+	// Anything
+	Interface interface{}
+}
+
+// MetadataClientCreateResponse contains the response from method MetadataClient.Create.
+type MetadataClientCreateResponse struct {
+	MetadataModel
+}
+
+// MetadataClientDeleteResponse contains the response from method MetadataClient.Delete.
+type MetadataClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MetadataClientGetResponse contains the response from method MetadataClient.Get.
+type MetadataClientGetResponse struct {
+	MetadataModel
+}
+
+// MetadataClientListResponse contains the response from method MetadataClient.List.
+type MetadataClientListResponse struct {
+	MetadataList
+}
+
+// MetadataClientUpdateResponse contains the response from method MetadataClient.Update.
+type MetadataClientUpdateResponse struct {
+	MetadataModel
+}
+
+// OfficeConsentsClientDeleteResponse contains the response from method OfficeConsentsClient.Delete.
+type OfficeConsentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// OfficeConsentsClientGetResponse contains the response from method OfficeConsentsClient.Get.
+type OfficeConsentsClientGetResponse struct {
+	OfficeConsent
+}
+
+// OfficeConsentsClientListResponse contains the response from method OfficeConsentsClient.List.
+type OfficeConsentsClientListResponse struct {
+	OfficeConsentList
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.List.
 type OperationsClientListResponse struct {
 	OperationsList
+}
+
+// ProductSettingsClientDeleteResponse contains the response from method ProductSettingsClient.Delete.
+type ProductSettingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ProductSettingsClientGetResponse contains the response from method ProductSettingsClient.Get.
+type ProductSettingsClientGetResponse struct {
+	SettingsClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ProductSettingsClientGetResponse.
+func (p *ProductSettingsClientGetResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalSettingsClassification(data)
+	if err != nil {
+		return err
+	}
+	p.SettingsClassification = res
+	return nil
+}
+
+// ProductSettingsClientListResponse contains the response from method ProductSettingsClient.List.
+type ProductSettingsClientListResponse struct {
+	SettingList
+}
+
+// ProductSettingsClientUpdateResponse contains the response from method ProductSettingsClient.Update.
+type ProductSettingsClientUpdateResponse struct {
+	SettingsClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ProductSettingsClientUpdateResponse.
+func (p *ProductSettingsClientUpdateResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalSettingsClassification(data)
+	if err != nil {
+		return err
+	}
+	p.SettingsClassification = res
+	return nil
+}
+
+// SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse contains the response from method SecurityMLAnalyticsSettingsClient.CreateOrUpdate.
+type SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse struct {
+	SecurityMLAnalyticsSettingClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse.
+func (s *SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalSecurityMLAnalyticsSettingClassification(data)
+	if err != nil {
+		return err
+	}
+	s.SecurityMLAnalyticsSettingClassification = res
+	return nil
+}
+
+// SecurityMLAnalyticsSettingsClientDeleteResponse contains the response from method SecurityMLAnalyticsSettingsClient.Delete.
+type SecurityMLAnalyticsSettingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SecurityMLAnalyticsSettingsClientGetResponse contains the response from method SecurityMLAnalyticsSettingsClient.Get.
+type SecurityMLAnalyticsSettingsClientGetResponse struct {
+	SecurityMLAnalyticsSettingClassification
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SecurityMLAnalyticsSettingsClientGetResponse.
+func (s *SecurityMLAnalyticsSettingsClientGetResponse) UnmarshalJSON(data []byte) error {
+	res, err := unmarshalSecurityMLAnalyticsSettingClassification(data)
+	if err != nil {
+		return err
+	}
+	s.SecurityMLAnalyticsSettingClassification = res
+	return nil
+}
+
+// SecurityMLAnalyticsSettingsClientListResponse contains the response from method SecurityMLAnalyticsSettingsClient.List.
+type SecurityMLAnalyticsSettingsClientListResponse struct {
+	SecurityMLAnalyticsSettingsList
 }
 
 // SentinelOnboardingStatesClientCreateResponse contains the response from method SentinelOnboardingStatesClient.Create.
@@ -267,6 +558,31 @@ type SentinelOnboardingStatesClientGetResponse struct {
 // SentinelOnboardingStatesClientListResponse contains the response from method SentinelOnboardingStatesClient.List.
 type SentinelOnboardingStatesClientListResponse struct {
 	SentinelOnboardingStatesList
+}
+
+// SourceControlClientListRepositoriesResponse contains the response from method SourceControlClient.ListRepositories.
+type SourceControlClientListRepositoriesResponse struct {
+	RepoList
+}
+
+// SourceControlsClientCreateResponse contains the response from method SourceControlsClient.Create.
+type SourceControlsClientCreateResponse struct {
+	SourceControl
+}
+
+// SourceControlsClientDeleteResponse contains the response from method SourceControlsClient.Delete.
+type SourceControlsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SourceControlsClientGetResponse contains the response from method SourceControlsClient.Get.
+type SourceControlsClientGetResponse struct {
+	SourceControl
+}
+
+// SourceControlsClientListResponse contains the response from method SourceControlsClient.List.
+type SourceControlsClientListResponse struct {
+	SourceControlList
 }
 
 // ThreatIntelligenceIndicatorClientAppendTagsResponse contains the response from method ThreatIntelligenceIndicatorClient.AppendTags.
@@ -377,11 +693,14 @@ type WatchlistItemsClientListResponse struct {
 // WatchlistsClientCreateOrUpdateResponse contains the response from method WatchlistsClient.CreateOrUpdate.
 type WatchlistsClientCreateOrUpdateResponse struct {
 	Watchlist
+	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
+	AzureAsyncOperation *string
 }
 
 // WatchlistsClientDeleteResponse contains the response from method WatchlistsClient.Delete.
 type WatchlistsClientDeleteResponse struct {
-	// placeholder for future response values
+	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
+	AzureAsyncOperation *string
 }
 
 // WatchlistsClientGetResponse contains the response from method WatchlistsClient.Get.

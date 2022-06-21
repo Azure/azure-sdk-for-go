@@ -85,25 +85,25 @@ func (c *Client) NewCryptoClient(keyName string, keyVersion *string) *crypto.Cli
 // CreateKeyOptions contains optional parameters for CreateKey.
 type CreateKeyOptions struct {
 	// Curve is the elliptic curve name. For valid values, see PossibleCurveNameValues.
-	Curve *CurveName `json:"crv,omitempty"`
+	Curve *CurveName
 
 	// Properties is the key's management properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Operations are the operations Key Vault will allow for the key.
-	Operations []*Operation `json:"key_ops,omitempty"`
+	Operations []*Operation
 
 	// ReleasePolicy specifies conditions under which the key can be exported.
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy
 
 	// Size is the key size in bits. For example: 2048, 3072, or 4096 for RSA.
-	Size *int32 `json:"key_size,omitempty"`
+	Size *int32
 
 	// PublicExponent is the public exponent of an RSA key.
-	PublicExponent *int32 `json:"public_exponent,omitempty"`
+	PublicExponent *int32
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // convert CreateKeyOptions to *generated.KeyVaultClientCreateKeyOptions
@@ -148,7 +148,7 @@ func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse)
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -175,22 +175,22 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 // CreateECKeyOptions contains optional parameters for CreateECKey
 type CreateECKeyOptions struct {
 	// Curve is the elliptic curve name. For valid values, see PossibleCurveNameValues.
-	Curve *CurveName `json:"crv,omitempty"`
+	Curve *CurveName
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// HardwareProtected determines whether the key is is created in a hardware security module (HSM).
 	HardwareProtected *bool
 
 	// Properties is the key's management properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Operations are the operations Key Vault will allow for the key.
-	Operations []*Operation `json:"key_ops,omitempty"`
+	Operations []*Operation
 
 	// ReleasePolicy specifies conditions under which the key can be exported
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy
 }
 
 // convert CreateECKeyOptions to generated.KeyCreateParameters
@@ -222,7 +222,7 @@ func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespons
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateECKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -256,19 +256,19 @@ type CreateOctKeyOptions struct {
 	HardwareProtected *bool
 
 	// Size is the key size in bits. For example: 128, 192 or 256.
-	Size *int32 `json:"key_size,omitempty"`
+	Size *int32
 
 	// Properties is the key's management properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Operations are the operations Key Vault will allow for the key.
-	Operations []*Operation `json:"key_ops,omitempty"`
+	Operations []*Operation
 
 	// ReleasePolicy specifies conditions under which the key can be exported
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // conver the CreateOctKeyOptions to generated.KeyCreateParameters
@@ -300,7 +300,7 @@ func createOctKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespon
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateOctKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -332,22 +332,22 @@ type CreateRSAKeyOptions struct {
 	HardwareProtected *bool
 
 	// Size is the key size in bits. For example: 2048, 3072, or 4096.
-	Size *int32 `json:"key_size,omitempty"`
+	Size *int32
 
 	// PublicExponent is the key's public exponent.
-	PublicExponent *int32 `json:"public_exponent,omitempty"`
+	PublicExponent *int32
 
 	// Tags is application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Properties is the key's management properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Operations are the operations Key Vault will allow for the key.
-	Operations []*Operation `json:"key_ops,omitempty"`
+	Operations []*Operation
 
 	// ReleasePolicy specifies conditions under which the key can be exported
-	ReleasePolicy *ReleasePolicy `json:"release_policy,omitempty"`
+	ReleasePolicy *ReleasePolicy
 }
 
 // convert CreateRSAKeyOptions to generated.KeyCreateParameters
@@ -380,7 +380,7 @@ func createRSAKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyRespon
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return CreateRSAKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -418,10 +418,10 @@ type ListPropertiesOfKeysOptions struct {
 // ListPropertiesOfKeysResponse contains a page of key properties.
 type ListPropertiesOfKeysResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// Keys is the page's content.
-	Keys []*KeyItem `json:"value,omitempty" azure:"ro"`
+	Keys []*KeyItem
 }
 
 // convert internal Response to ListKeysPage
@@ -487,7 +487,7 @@ func getKeyResponseFromGenerated(g generated.KeyVaultClientGetKeyResponse) GetKe
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return GetKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -531,7 +531,7 @@ func getDeletedKeyResponseFromGenerated(g generated.KeyVaultClientGetDeletedKeyR
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return GetDeletedKeyResponse{
 		DeletedKey: DeletedKey{
-			Properties:         keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties:         keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			Key:                jsonWebKeyFromGenerated(g.Key),
 			RecoveryID:         g.RecoveryID,
 			DeletedOn:          g.DeletedDate,
@@ -645,7 +645,7 @@ func (b BackupKeyOptions) toGenerated() *generated.KeyVaultClientBackupKeyOption
 // BackupKeyResponse contains the response from the Client.BackupKey method
 type BackupKeyResponse struct {
 	// READ-ONLY; The backup blob containing the backed up key.
-	Value []byte `json:"value,omitempty" azure:"ro"`
+	Value []byte
 }
 
 // convert internal reponse to BackupKeyResponse
@@ -694,7 +694,7 @@ func recoverDeletedKeyResponseFromGenerated(g generated.KeyVaultClientRecoverDel
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return RecoverDeletedKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -737,7 +737,8 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, name string, option
 
 // UpdateKeyPropertiesOptions contains optional parameters for UpdateKeyProperties
 type UpdateKeyPropertiesOptions struct {
-	// placeholder for future optional parameters
+	// Operations are the operations Key Vault will allow for the key.
+	Operations []*Operation
 }
 
 // UpdateKeyPropertiesResponse is returned by UpdateKeyProperties.
@@ -750,7 +751,7 @@ func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyRespons
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return UpdateKeyPropertiesResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -760,22 +761,29 @@ func updateKeyPropertiesFromGenerated(g generated.KeyVaultClientUpdateKeyRespons
 
 // UpdateKeyProperties updates the management properties of a key, but not its cryptographic material.
 // Pass nil for options to accept default values.
-func (c *Client) UpdateKeyProperties(ctx context.Context, key Key, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
+func (c *Client) UpdateKeyProperties(ctx context.Context, properties Properties, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
+	if options == nil {
+		options = &UpdateKeyPropertiesOptions{}
+	}
 	name, version := "", ""
-	if key.Properties != nil && key.Properties.Name != nil {
-		name = *key.Properties.Name
+	if properties.Name != nil {
+		name = *properties.Name
 	}
-	if key.Properties != nil && key.Properties.Version != nil {
-		version = *key.Properties.Version
+	if properties.Version != nil {
+		version = *properties.Version
 	}
-	resp, err := c.kvClient.UpdateKey(
-		ctx,
-		c.vaultURL,
-		name,
-		version,
-		key.toKeyUpdateParameters(),
-		&generated.KeyVaultClientUpdateKeyOptions{},
-	)
+	params := generated.KeyUpdateParameters{
+		KeyAttributes: properties.toGenerated(),
+		ReleasePolicy: properties.ReleasePolicy.toGenerated(),
+		Tags:          properties.Tags,
+	}
+	if options.Operations != nil {
+		params.KeyOps = make([]*generated.JSONWebKeyOperation, len(options.Operations))
+		for i, op := range options.Operations {
+			params.KeyOps[i] = (*generated.JSONWebKeyOperation)(op)
+		}
+	}
+	resp, err := c.kvClient.UpdateKey(ctx, c.vaultURL, name, version, params, nil)
 	if err != nil {
 		return UpdateKeyPropertiesResponse{}, err
 	}
@@ -786,10 +794,10 @@ func (c *Client) UpdateKeyProperties(ctx context.Context, key Key, options *Upda
 // ListDeletedKeysResponse holds the data for a single page.
 type ListDeletedKeysResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// DeletedKeys is the page's content.
-	DeletedKeys []*DeletedKeyItem `json:"value,omitempty" azure:"ro"`
+	DeletedKeys []*DeletedKeyItem
 }
 
 // ListDeletedKeysOptions contains optional parameters for NewListDeletedKeysPager.
@@ -860,10 +868,10 @@ func (l *ListPropertiesOfKeyVersionsOptions) toGenerated() *generated.KeyVaultCl
 // ListPropertiesOfKeyVersionsResponse contains a page of key versions.
 type ListPropertiesOfKeyVersionsResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// Keys is the page's content.
-	Keys []*KeyItem `json:"value,omitempty" azure:"ro"`
+	Keys []*KeyItem
 }
 
 // create ListKeysPage from generated pager
@@ -932,7 +940,7 @@ func restoreKeyBackupResponseFromGenerated(g generated.KeyVaultClientRestoreKeyR
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return RestoreKeyBackupResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -958,10 +966,10 @@ func (c *Client) RestoreKeyBackup(ctx context.Context, keyBackup []byte, options
 // ImportKeyOptions contains optional parameters for ImportKeyOptions.
 type ImportKeyOptions struct {
 	// HardwareProtected determines whether Key Vault protects the imported key with an HSM.
-	HardwareProtected *bool `json:"Hsm,omitempty"`
+	HardwareProtected *bool
 
 	// Properties is the properties of the key.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 }
 
 func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
@@ -986,7 +994,7 @@ func importKeyResponseFromGenerated(g generated.KeyVaultClientImportKeyResponse)
 	vaultURL, name, version := shared.ParseID(g.Key.Kid)
 	return ImportKeyResponse{
 		Key: Key{
-			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags),
+			Properties: keyPropertiesFromGenerated(g.Attributes, g.Key.Kid, name, version, g.Managed, vaultURL, g.Tags, g.ReleasePolicy),
 			JSONWebKey: jsonWebKeyFromGenerated(g.Key),
 			ID:         g.Key.Kid,
 			Name:       name,
@@ -1020,7 +1028,7 @@ func (g GetRandomBytesOptions) toGenerated() *generated.KeyVaultClientGetRandomB
 // GetRandomBytesResponse is returned by GetRandomBytes.
 type GetRandomBytesResponse struct {
 	// Value is the random bytes.
-	Value []byte `json:"value,omitempty"`
+	Value []byte
 }
 
 // GetRandomBytes gets the requested number of random bytes from Azure Managed HSM. Pass nil for options to accept default values.
@@ -1078,11 +1086,10 @@ func (c *Client) RotateKey(ctx context.Context, keyName string, options *RotateK
 	vaultURL, name, version := shared.ParseID(resp.Key.Kid)
 	return RotateKeyResponse{
 		Key: Key{
-			Properties:    keyPropertiesFromGenerated(resp.Attributes, resp.Key.Kid, name, version, resp.Managed, vaultURL, resp.Tags),
-			JSONWebKey:    jsonWebKeyFromGenerated(resp.Key),
-			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
-			ID:            resp.Key.Kid,
-			Name:          name,
+			Properties: keyPropertiesFromGenerated(resp.Attributes, resp.Key.Kid, name, version, resp.Managed, vaultURL, resp.Tags, resp.ReleasePolicy),
+			JSONWebKey: jsonWebKeyFromGenerated(resp.Key),
+			ID:         resp.Key.Kid,
+			Name:       name,
 		},
 	}, nil
 }
@@ -1148,16 +1155,16 @@ type ReleaseKeyOptions struct {
 	Version *string
 
 	// Algorithm is the encryption algorithm used to protected exported key material.
-	Algorithm *ExportEncryptionAlg `json:"algorithm,omitempty"`
+	Algorithm *ExportEncryptionAlg
 
 	// Nonce is client-provided nonce for freshness.
-	Nonce *string `json:"nonce,omitempty"`
+	Nonce *string
 }
 
 // ReleaseKeyResponse is returned by ReleaseKey.
 type ReleaseKeyResponse struct {
 	// Value is a signed token containing the released key.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // ReleaseKey is applicable to all key types. The target key must be exportable. Pass nil for options to accept default values.

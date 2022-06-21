@@ -57,7 +57,7 @@ func NewVendorSKUsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service
 // behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // parameters - Parameters supplied to the create or update sku operation.
@@ -80,7 +80,7 @@ func (client *VendorSKUsClient) BeginCreateOrUpdate(ctx context.Context, vendorN
 // CreateOrUpdate - Creates or updates a sku. This operation can take up to 2 hours to complete. This is expected service
 // behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 func (client *VendorSKUsClient) createOrUpdate(ctx context.Context, vendorName string, skuName string, parameters VendorSKU, options *VendorSKUsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, vendorName, skuName, parameters, options)
 	if err != nil {
@@ -116,7 +116,7 @@ func (client *VendorSKUsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,7 +124,7 @@ func (client *VendorSKUsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Deletes the specified sku. This operation can take up to 2 hours to complete. This is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // options - VendorSKUsClientBeginDeleteOptions contains the optional parameters for the VendorSKUsClient.BeginDelete method.
@@ -144,7 +144,7 @@ func (client *VendorSKUsClient) BeginDelete(ctx context.Context, vendorName stri
 
 // Delete - Deletes the specified sku. This operation can take up to 2 hours to complete. This is expected service behavior.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 func (client *VendorSKUsClient) deleteOperation(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, vendorName, skuName, options)
 	if err != nil {
@@ -180,7 +180,7 @@ func (client *VendorSKUsClient) deleteCreateRequest(ctx context.Context, vendorN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *VendorSKUsClient) deleteCreateRequest(ctx context.Context, vendorN
 
 // Get - Gets information about the specified sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // options - VendorSKUsClientGetOptions contains the optional parameters for the VendorSKUsClient.Get method.
@@ -227,7 +227,7 @@ func (client *VendorSKUsClient) getCreateRequest(ctx context.Context, vendorName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -244,7 +244,7 @@ func (client *VendorSKUsClient) getHandleResponse(resp *http.Response) (VendorSK
 
 // NewListPager - Lists all the skus of a vendor.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // options - VendorSKUsClientListOptions contains the optional parameters for the VendorSKUsClient.List method.
 func (client *VendorSKUsClient) NewListPager(vendorName string, options *VendorSKUsClientListOptions) *runtime.Pager[VendorSKUsClientListResponse] {
@@ -291,7 +291,7 @@ func (client *VendorSKUsClient) listCreateRequest(ctx context.Context, vendorNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -302,6 +302,63 @@ func (client *VendorSKUsClient) listHandleResponse(resp *http.Response) (VendorS
 	result := VendorSKUsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VendorSKUListResult); err != nil {
 		return VendorSKUsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// ListCredential - Generate credentials for publishing SKU images.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 2022-01-01-preview
+// vendorName - The name of the vendor.
+// skuName - The name of the sku.
+// options - VendorSKUsClientListCredentialOptions contains the optional parameters for the VendorSKUsClient.ListCredential
+// method.
+func (client *VendorSKUsClient) ListCredential(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientListCredentialOptions) (VendorSKUsClientListCredentialResponse, error) {
+	req, err := client.listCredentialCreateRequest(ctx, vendorName, skuName, options)
+	if err != nil {
+		return VendorSKUsClientListCredentialResponse{}, err
+	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return VendorSKUsClientListCredentialResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VendorSKUsClientListCredentialResponse{}, runtime.NewResponseError(resp)
+	}
+	return client.listCredentialHandleResponse(resp)
+}
+
+// listCredentialCreateRequest creates the ListCredential request.
+func (client *VendorSKUsClient) listCredentialCreateRequest(ctx context.Context, vendorName string, skuName string, options *VendorSKUsClientListCredentialOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridNetwork/vendors/{vendorName}/vendorSkus/{skuName}/listCredential"
+	if vendorName == "" {
+		return nil, errors.New("parameter vendorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vendorName}", url.PathEscape(vendorName))
+	if skuName == "" {
+		return nil, errors.New("parameter skuName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{skuName}", url.PathEscape(skuName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2022-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCredentialHandleResponse handles the ListCredential response.
+func (client *VendorSKUsClient) listCredentialHandleResponse(resp *http.Response) (VendorSKUsClientListCredentialResponse, error) {
+	result := VendorSKUsClientListCredentialResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUCredential); err != nil {
+		return VendorSKUsClientListCredentialResponse{}, err
 	}
 	return result, nil
 }

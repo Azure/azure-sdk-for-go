@@ -62,7 +62,7 @@ func (r *Receiver) Prefetched(ctx context.Context) (*Message, error) {
 	case msg := <-r.link.Messages:
 		debug(3, "Receive() non blocking %d", msg.deliveryID)
 		msg.link = r.link
-		return acceptIfModeFirst(ctx, r, &msg)
+		return &msg, nil
 	case <-ctx.Done():
 		return nil, ctx.Err()
 	default:
@@ -89,25 +89,12 @@ func (r *Receiver) Receive(ctx context.Context) (*Message, error) {
 	case msg := <-r.link.Messages:
 		debug(3, "Receive() blocking %d", msg.deliveryID)
 		msg.link = r.link
-		return acceptIfModeFirst(ctx, r, &msg)
+		return &msg, nil
 	case <-r.link.Detached:
 		return nil, r.link.err
 	case <-ctx.Done():
 		return nil, ctx.Err()
 	}
-}
-
-// acceptIfModeFirst auto-accepts a message if we are in mode first, otherwise it no-ops.
-func acceptIfModeFirst(ctx context.Context, r *Receiver, msg *Message) (*Message, error) {
-	// for ModeFirst, auto-accept the message
-	if receiverSettleModeValue(r.link.ReceiverSettleMode) == ModeSecond {
-		return msg, nil
-	}
-	if err := r.AcceptMessage(ctx, msg); err != nil {
-		return nil, err
-	}
-	return msg, nil
-
 }
 
 // Accept notifies the server that the message has been

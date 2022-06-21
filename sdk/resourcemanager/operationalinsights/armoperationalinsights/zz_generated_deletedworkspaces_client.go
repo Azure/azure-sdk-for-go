@@ -56,7 +56,7 @@ func NewDeletedWorkspacesClient(subscriptionID string, credential azcore.TokenCr
 
 // NewListPager - Gets recently deleted workspaces in a subscription, available for recovery.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2021-12-01-preview
 // options - DeletedWorkspacesClientListOptions contains the optional parameters for the DeletedWorkspacesClient.List method.
 func (client *DeletedWorkspacesClient) NewListPager(options *DeletedWorkspacesClientListOptions) *runtime.Pager[DeletedWorkspacesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeletedWorkspacesClientListResponse]{
@@ -92,7 +92,7 @@ func (client *DeletedWorkspacesClient) listCreateRequest(ctx context.Context, op
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *DeletedWorkspacesClient) listHandleResponse(resp *http.Response) (
 
 // NewListByResourceGroupPager - Gets recently deleted workspaces in a resource group, available for recovery.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
+// Generated from API version 2021-12-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - DeletedWorkspacesClientListByResourceGroupOptions contains the optional parameters for the DeletedWorkspacesClient.ListByResourceGroup
 // method.
@@ -151,7 +151,7 @@ func (client *DeletedWorkspacesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-12-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

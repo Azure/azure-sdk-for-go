@@ -7,7 +7,9 @@
 [Source code][key_client_src] | [Package (pkg.go.dev)][goget_azkeys] | [Product documentation][keyvault_docs] | [Samples][keys_samples]
 
 ## Getting started
+
 ### Install packages
+
 Install `azkeys` and `azidentity` with `go get`:
 ```Bash
 go get github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
@@ -16,6 +18,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azidentity][azure_identity] is used for Azure Active Directory authentication as demonstrated below.
 
 ### Prerequisites
+
 * An [Azure subscription][azure_sub]
 * Go version 1.18 or higher
 * A Key Vault. If you need to create one, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with these commands (replace `"my-resource-group"` and `"my-key-vault"` with your own, unique
@@ -31,7 +34,6 @@ names):
   az keyvault create --resource-group my-resource-group --name my-key-vault
   ```
 
-  Output:
   ```json
   {
       "id": "...",
@@ -56,13 +58,15 @@ names):
   }
   ```
 
-  > The `"vaultUri"` property is the `vault_url` used by [KeyClient][key_client_docs]
+  > The `"vaultUri"` property is the ``vaultURL` argument for [NewClient][key_client_docs]
 
 ### Authenticate the client
+
 This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate as a service principal. However, [Client][key_client_docs] accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credentials.
 
 #### Create a service principal (optional)
-This [Azure Cloud Shell][azure_cloud_shell] snippet shows how to create a new service principal. Before using it, replace "your-application-name" with a more appropriate name for your service principal.
+
+This [Azure Cloud Shell][azure_cloud_shell] snippet shows how to create a new service principal. Before using it, replace "my-application" with an appropriate name for your application.
 
 Create a service principal:
 ```Bash
@@ -98,85 +102,86 @@ az keyvault set-policy --name my-key-vault --spn $AZURE_CLIENT_ID --key-permissi
 > - Cryptographic operations: decrypt, encrypt, unwrapKey, wrapKey, verify, sign
 
 If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Crypto Officer" in our [RBAC guide][rbac_guide].
-If you are managing your keys using Managed HSM, read about its [access control][access_control] that supports different built-in roles isolated from Azure Resource Manager (ARM).
+If you are managing your keys using Managed HSM, read about its [access control][mhsm_access_control], which supports different roles isolated from Azure Resource Manager (ARM).
 
 #### Create a client
 Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables are set, [DefaultAzureCredential][default_cred_ref] will be able to authenticate the [Client][key_client_docs].
 
-Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal. In the Azure Portal, this URL is the vault's "DNS Name".
+Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal.
 
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 func main() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 }
 ```
 
 ## Key concepts
+
 ### Keys
+
 Azure Key Vault can create and store RSA and elliptic curve keys. Both can optionally be protected by hardware security modules (HSMs). Azure Key Vault can also perform cryptographic operations with them. For more information about keys and supported operations and algorithms, see the [Key Vault documentation](https://docs.microsoft.com/azure/key-vault/keys/about-keys).
 
-[Client][key_client_docs] can create keys in the vault, get existing keys from the vault, update key metadata, and delete keys, as shown in the [examples](#examples "examples") below.
+[Client][key_client_docs] can create keys in the vault, get existing keys from the vault, update key metadata, and delete keys, as shown in the examples below.
 
 ## Examples
+
 This section contains code snippets covering common tasks:
-* [Create a key](#create-a-key "Create a key")
-* [Retrieve a key](#retrieve-a-key "Retrieve a key")
-* [Update an existing key](#update-an-existing-key "Update an existing key")
-* [Delete a key](#delete-a-key "Delete a key")
-<!-- * [Configure automatic key rotation](#configure-automatic-key-rotation "Configure automatic key rotation") -->
-* [List keys](#list-keys "List keys")
-<!-- * [Perform cryptographic operations](#cryptographic-operations) -->
+* [Configure automatic key rotation](#configure-automatic-key-rotation)
+* [Create a key](#create-a-key)
+* [Delete a key](#delete-a-key)
+* [List keys](#list-keys)
+* [Retrieve a key](#retrieve-a-key)
+* [Update an existing key](#update-an-existing-key)
 
 ### Create a key
+
 [`CreateRSAKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.CreateRSAKey) and
 [`CreateECKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.CreateECKey) create RSA and elliptic curve keys in the vault, respectively. If a key with the same name already exists, a new version of that key is created.
 
 ```go
 import (
-    "fmt"
+	"fmt"
 
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 func main() {
-    vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-    cred, err := azidentity.NewDefaultAzureCredential(nil)
-    if err != nil {
-        panic(err)
-    }
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		// TODO: handle error
+	}
 
-    client, err := azkeys.NewClient(vaultUrl, cred, nil)
-    if err != nil {
-        panic(err)
-    }
+	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+	if err != nil {
+		// TODO: handle error
+	}
 
-    // Create RSA Key
+	// Create RSA Key
 	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))})
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 	fmt.Println(*resp.Key.JSONWebKey.ID)
 	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 
-    // Create EC Key
+	// Create EC Key
 	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 	fmt.Println(*resp.Key.JSONWebKey.ID)
 	fmt.Println(*resp.Key.JSONWebKey.KeyType)
@@ -184,131 +189,145 @@ func main() {
 ```
 
 ### Retrieve a key
+
 [`GetKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.GetKey) retrieves a key previously stored in the Vault.
+
 ```go
 import (
-    "fmt"
+	"fmt"
 
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
 func main() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	resp, err := client.GetKey(context.TODO(), "key-to-retrieve", nil)
+	resp, err := client.GetKey(context.TODO(), "key-name", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 	fmt.Println(*resp.Key.JSONWebKey.ID)
 }
 ```
 
 ### Update an existing key
+
 [`UpdateKeyProperties`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.UpdateKeyProperties)
 updates the properties of a key previously stored in the Key Vault.
+
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"context"
+	"fmt"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
 func main() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	resp, err := client.GetKey(context.TODO(), "key-to-update", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	resp.Key.Properties.Tags = map[string]string{"Tag1": "val1"}
+	resp.Key.Properties.Tags = map[string]*string{"Tag1": to.Ptr("val1")}
 	resp.Key.Properties.Enabled = to.Ptr(true)
 
 	updateResp, err := client.UpdateKeyProperties(context.TODO(), resp.Key, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
-	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, updateResp.Key.Properties.Tags["Tag1"])
+	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, *updateResp.Key.Properties.Tags["Tag1"])
 }
 ```
 
 ### Delete a key
-[`BeginDeleteKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.BeginDeleteKey) requests Key Vault delete a key, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the key as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteKey` itself is permanent.
+
+[`BeginDeleteKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.BeginDeleteKey) requests Key Vault delete a key, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when you want to purge (permanently delete) the key as soon as possible.
 
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
 func main() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	resp, err := client.BeginDeleteKey(context.TODO(), "key-to-delete", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 	pollResp, err := resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
 }
 ```
 
 ### Configure automatic key rotation
+
 `UpdateKeyRotationPolicy` allows you to configure automatic key rotation for a key by specifying a rotation policy.
 In addition, `RotateKey` allows you to rotate a key on-demand by creating a new version of the given key.
 
 ```go
 import (
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"context"
+	"fmt"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
 func main() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	getResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-to-update", nil)
+	getResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-name", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	getResp.Attributes.ExpiresIn = to.Ptr("P90D")
@@ -323,50 +342,48 @@ func main() {
 		},
 	}
 
-	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", getResp.RotationPolicy, nil)
+	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-name", getResp.RotationPolicy, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 	fmt.Println("Updated key rotation policy for: ", *resp.ID)
 
-	_, err = client.RotateKey(context.TODO(), "key-to-rotate", nil)
+	_, err = client.RotateKey(context.TODO(), "key-name", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 }
 ```
 
 ### List keys
+
 [`NewListPropertiesOfKeysPager`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.NewListPropertiesOfKeysPager) creates a pager that lists the properties of all of the keys in the client's vault.
 
 ```go
 import (
-    "os"
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 
-    "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-    "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
-
 func main() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	pager := client.NewListPropertiesOfKeysPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		if err != nil {
-			panic(err)
+			// TODO: handle error
 		}
 		for _, key := range resp.Keys {
 			fmt.Println(*key.ID)
@@ -379,56 +396,60 @@ func main() {
 
 ### Error Handling
 
-All I/O operations will return an `error` that can be investigated to discover more information about the error. In addition, you can investigate the raw response of any response object:
-```golang
-resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
+All methods which send HTTP requests return `*azcore.ResponseError` when these requests fail. `ResponseError` has error details and the raw response from Key Vault.
+
+```go
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+
+resp, err := client.GetKey(context.Background(), "keyName", nil)
 if err != nil {
-    var httpErr azcore.ResponseError
+    var httpErr *azcore.ResponseError
     if errors.As(err, &httpErr) {
-        // investigate httpErr.RawResponse
+        // TODO: investigate httpErr
     } else {
-        // not an HTTP error
+        // TODO: not an HTTP error
     }
 }
 ```
 
 ### Logging
 
-This module uses the classification based logging implementation in `azcore`. To turn on logging for all Azure SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. By default the logger writes to stderr. Use the `azcore/log` package to control log output. For example, logging only HTTP request and response events, and printing them to stdout:
+This module uses the logging implementation in `azcore`. To turn on logging for all Azure SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. By default the logger writes to stderr. Use the `azcore/log` package to control log output. For example, logging only HTTP request and response events, and printing them to stdout:
 
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-// Set log to output to the console
-log.SetListener(func(cls log.Classification, msg string) {
-	fmt.Println(msg) // printing log out to the console
+
+// Print log events to stdout
+azlog.SetListener(func(cls azlog.Event, msg string) {
+	fmt.Println(msg)
 })
 
 // Includes only requests and responses in credential logs
-log.SetClassifications(log.Request, log.Response)
+azlog.SetEvents(azlog.EventRequest, azlog.EventResponse)
 ```
 
 ### Accessing `http.Response`
-You can access the raw `*http.Response` returned by the service using the `runtime.WithCaptureResponse` method and a context passed to any client method.
+
+You can access the raw `*http.Response` returned by Key Vault using the `runtime.WithCaptureResponse` method and a context passed to any client method.
 
 ```go
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 
-func main() {
-    var respFromCtx *http.Response
-    ctx := runtime.WithCaptureResponse(context.Background(), &respFromCtx)
-    _, err = client.GetKey(ctx, "myKeyName", nil)
-    if err != nil {
-        panic(err)
-    }
-    // Do something with *http.Response
-    fmt.Println(respFromCtx.StatusCode)
+var response *http.Response
+ctx := runtime.WithCaptureResponse(context.TODO(), &response)
+_, err = client.GetKey(ctx, "keyName", nil)
+if err != nil {
+    // TODO: handle error
 }
+// TODO: do something with response
 ```
 
 ###  Additional Documentation
+
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][reference_docs].
 
 ## Contributing
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
@@ -436,7 +457,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
 
 
-[access_control]: https://docs.microsoft.com/azure/key-vault/managed-hsm/access-control
+[mhsm_access_control]: https://docs.microsoft.com/azure/key-vault/managed-hsm/access-control
 [azure_cloud_shell]: https://shell.azure.com/bash
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
@@ -447,7 +468,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-keys/docs
 [key_client_docs]: https://aka.ms/azsdk/go/keyvault-keys/docs#Client
 [key_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/client.go
-[soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 [keys_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/example_test.go
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fkeyvault%2Fazkeys%2FREADME.png)

@@ -56,7 +56,7 @@ func NewStartMenuItemsClient(subscriptionID string, credential azcore.TokenCrede
 
 // NewListPager - List start menu items in the given application group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationGroupName - The name of the application group
 // options - StartMenuItemsClientListOptions contains the optional parameters for the StartMenuItemsClient.List method.
@@ -108,7 +108,7 @@ func (client *StartMenuItemsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

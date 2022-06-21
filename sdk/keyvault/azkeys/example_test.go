@@ -111,7 +111,7 @@ func ExampleClient_UpdateKeyProperties() {
 	resp.Key.Properties.Tags = map[string]*string{"Tag1": to.Ptr("val1")}
 	resp.Key.Properties.Enabled = to.Ptr(true)
 
-	updateResp, err := client.UpdateKeyProperties(context.TODO(), resp.Key, nil)
+	updateResp, err := client.UpdateKeyProperties(context.TODO(), *resp.Key.Properties, nil)
 	if err != nil {
 		panic(err)
 	}

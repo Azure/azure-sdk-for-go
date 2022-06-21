@@ -214,6 +214,38 @@ func (n NetworkInterfaceIPConfiguration) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON implements the json.Unmarshaller interface for type SKUCredential.
+func (s *SKUCredential) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "acrServerUrl":
+			err = unpopulate(val, "AcrServerURL", &s.AcrServerURL)
+			delete(rawMsg, key)
+		case "acrToken":
+			err = unpopulate(val, "AcrToken", &s.AcrToken)
+			delete(rawMsg, key)
+		case "expiry":
+			err = unpopulateTimeRFC3339(val, "Expiry", &s.Expiry)
+			delete(rawMsg, key)
+		case "repositories":
+			err = unpopulate(val, "Repositories", &s.Repositories)
+			delete(rawMsg, key)
+		case "username":
+			err = unpopulate(val, "Username", &s.Username)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SSHConfiguration.
 func (s SSHConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})

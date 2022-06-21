@@ -19,42 +19,42 @@ import (
 // AdministratorContact - Details of the organization administrator of the certificate issuer.
 type AdministratorContact struct {
 	// Email address.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// First name.
-	FirstName *string `json:"first_name,omitempty"`
+	FirstName *string
 
 	// Last name.
-	LastName *string `json:"last_name,omitempty"`
+	LastName *string
 
 	// Phone number.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 }
 
 // Properties - The certificate management properties.
 type Properties struct {
 	// READ-ONLY; Creation time in UTC.
-	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 
 	// Determines whether the object is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Expiry date in UTC.
-	ExpiresOn *time.Time `json:"exp,omitempty"`
+	ExpiresOn *time.Time
 
 	// Not before date in UTC.
-	NotBefore *time.Time `json:"nbf,omitempty"`
+	NotBefore *time.Time
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
-	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
+	RecoverableDays *int32
 
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
 	// 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise,
 	// only the system can purge the certificate, at the end of the retention interval.
-	RecoveryLevel *string `json:"recoveryLevel,omitempty" azure:"ro"`
+	RecoveryLevel *string
 
 	// READ-ONLY; Last updated time in UTC.
-	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time
 
 	// READ-ONLY; The ID of the certificate
 	ID *string
@@ -63,7 +63,7 @@ type Properties struct {
 	Name *string
 
 	// Application specific metadata in the form of key-value pairs
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The vault URL for the certificate
 	VaultURL *string
@@ -72,7 +72,7 @@ type Properties struct {
 	Version *string
 
 	// Thumbprint of the certificate.
-	X509Thumbprint []byte `json:"x5t,omitempty"`
+	X509Thumbprint []byte
 }
 
 func (c *Properties) toGenerated() *generated.CertificateAttributes {
@@ -118,46 +118,46 @@ func propertiesFromGenerated(g *generated.CertificateAttributes, tags map[string
 // Certificate - A certificate bundle consists of a certificate (X509) plus its properties.
 type Certificate struct {
 	// The certificate attributes.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// CER contents of x509 certificate.
-	CER []byte `json:"cer,omitempty"`
+	CER []byte
 
 	// READ-ONLY; The certificate id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the certificate
 	Name *string
 
 	// READ-ONLY; The key ID.
-	KeyID *string `json:"kid,omitempty" azure:"ro"`
+	KeyID *string
 
 	// READ-ONLY; The secret ID.
-	SecretID *string `json:"sid,omitempty" azure:"ro"`
+	SecretID *string
 }
 
 // CertificateWithPolicy - A certificate bundle consists of a certificate (X509) with a policy, and its properties.
 type CertificateWithPolicy struct {
 	// The certificate attributes.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// CER contents of x509 certificate.
-	CER []byte `json:"cer,omitempty"`
+	CER []byte
 
 	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// READ-ONLY; The certificate id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The key ID.
-	KeyID *string `json:"kid,omitempty" azure:"ro"`
+	KeyID *string
 
 	// READ-ONLY; The management policy.
-	Policy *Policy `json:"policy,omitempty" azure:"ro"`
+	Policy *Policy
 
 	// READ-ONLY; The secret ID.
-	SecretID *string `json:"sid,omitempty" azure:"ro"`
+	SecretID *string
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface for the CertificateWithPolicy type.
@@ -196,7 +196,7 @@ func certificateFromGenerated(g *generated.CertificateBundle) Certificate {
 // CertificateOperationError - The key vault server error.
 type CertificateOperationError struct {
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The key vault server error.
 	innerError *CertificateOperationError
@@ -232,10 +232,10 @@ func certificateErrorFromGenerated(g *generated.Error) *CertificateOperationErro
 // IssuerItem - The certificate issuer item containing certificate issuer metadata.
 type IssuerItem struct {
 	// Certificate Identifier.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The issuer provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 }
 
 func certificateIssuerItemFromGenerated(g *generated.CertificateIssuerItem) *IssuerItem {
@@ -249,40 +249,40 @@ func certificateIssuerItemFromGenerated(g *generated.CertificateIssuerItem) *Iss
 // CertificateItem - The certificate item containing certificate metadata.
 type CertificateItem struct {
 	// The certificate management attributes.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Certificate identifier.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // Operation - A certificate operation is returned in case of asynchronous requests.
 type Operation struct {
 	// Indicates if cancellation was requested on the certificate operation.
-	CancellationRequested *bool `json:"cancellation_requested,omitempty"`
+	CancellationRequested *bool
 
 	// The certificate signing request (CSR) that is being used in the certificate operation.
-	CSR []byte `json:"csr,omitempty"`
+	CSR []byte
 
 	// Error encountered, if any, during the certificate operation.
-	Error *CertificateOperationError `json:"error,omitempty"`
+	Error *CertificateOperationError
 
 	// Parameters for the issuer of the X509 component of a certificate.
-	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
+	IssuerParameters *IssuerParameters
 
 	// Identifier for the certificate operation.
-	RequestID *string `json:"request_id,omitempty"`
+	RequestID *string
 
 	// Status of the certificate operation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The status details of the certificate operation.
-	StatusDetails *string `json:"status_details,omitempty"`
+	StatusDetails *string
 
 	// Location which contains the result of the certificate operation.
-	Target *string `json:"target,omitempty"`
+	Target *string
 
 	// READ-ONLY; The certificate id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 func certificateOperationFromGenerated(g generated.CertificateOperation) Operation {
@@ -302,34 +302,34 @@ func certificateOperationFromGenerated(g generated.CertificateOperation) Operati
 // Policy - Management policy for a certificate.
 type Policy struct {
 	// The certificate properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Parameters for the issuer of the X509 component of a certificate.
-	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
+	IssuerParameters *IssuerParameters
 
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	KeyCurveName *KeyCurveName `json:"crv,omitempty"`
+	KeyCurveName *KeyCurveName
 
 	// Indicates if the private key can be exported.
-	Exportable *bool `json:"exportable,omitempty"`
+	Exportable *bool
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
-	KeySize *int32 `json:"key_size,omitempty"`
+	KeySize *int32
 
 	// The type of key pair to be used for the certificate.
-	KeyType *KeyType `json:"kty,omitempty"`
+	KeyType *KeyType
 
 	// Indicates if the same key pair will be used on certificate renewal.
-	ReuseKey *bool `json:"reuse_key,omitempty"`
+	ReuseKey *bool
 
 	// Actions that will be performed by Key Vault over the lifetime of a certificate.
-	LifetimeActions []*LifetimeAction `json:"lifetime_actions,omitempty"`
+	LifetimeActions []*LifetimeAction
 
 	// ContentType of the downloaded certificate
-	ContentType *CertificateContentType `json:"secret_props,omitempty"`
+	ContentType *CertificateContentType
 
 	// Properties of the X509 component of a certificate.
-	X509Properties *X509CertificateProperties `json:"x509_props,omitempty"`
+	X509Properties *X509CertificateProperties
 }
 
 // NewDefaultCertificatePolicy returns a Policy with IssuerName "Self" and Subject "CN=DefaultPolicy"
@@ -400,13 +400,13 @@ func certificatePolicyFromGenerated(g *generated.CertificatePolicy) *Policy {
 // Contact - The contact information for the vault certificates.
 type Contact struct {
 	// Email address.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// Name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Phone number.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 }
 
 func contactListFromGenerated(g []*generated.Contact) []*Contact {
@@ -424,10 +424,10 @@ func contactListFromGenerated(g []*generated.Contact) []*Contact {
 // Contacts - The contacts for the vault certificates.
 type Contacts struct {
 	// The contact list for the vault certificates.
-	ContactList []*Contact `json:"contacts,omitempty"`
+	ContactList []*Contact
 
 	// READ-ONLY; Identifier for the contacts collection.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 func (c *Contacts) toGenerated() generated.Contacts {
@@ -453,85 +453,85 @@ func (c *Contacts) toGenerated() generated.Contacts {
 // DeletedCertificate consists of its previous id, attributes and its tags, as well as information on when it will be purged.
 type DeletedCertificate struct {
 	// The certificate properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// CER contents of x509 certificate.
-	CER []byte `json:"cer,omitempty"`
+	CER []byte
 
 	// The content type of the secret. eg. 'application/x-pem-file' or 'application/x-pkcs12',
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// The url of the recovery object, used to identify and recover the deleted certificate.
-	RecoveryID *string `json:"recoveryId,omitempty"`
+	RecoveryID *string
 
 	// READ-ONLY; The time when the certificate was deleted, in UTC
-	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time
 
 	// READ-ONLY; The certificate id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the certificate
 	Name *string
 
 	// READ-ONLY; The key ID.
-	KeyID *string `json:"kid,omitempty" azure:"ro"`
+	KeyID *string
 
 	// READ-ONLY; The management policy.
-	Policy *Policy `json:"policy,omitempty" azure:"ro"`
+	Policy *Policy
 
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
-	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+	ScheduledPurgeDate *time.Time
 
 	// READ-ONLY; The secret ID.
-	SecretID *string `json:"sid,omitempty" azure:"ro"`
+	SecretID *string
 }
 
 // DeletedCertificateItem - The deleted certificate item containing metadata about the deleted certificate.
 type DeletedCertificateItem struct {
 	// The certificate management properties.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 
 	// Certificate identifier.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; The name of the certificate
 	Name *string
 
 	// The url of the recovery object, used to identify and recover the deleted certificate.
-	RecoveryID *string `json:"recoveryId,omitempty"`
+	RecoveryID *string
 
 	// READ-ONLY; The time when the certificate was deleted, in UTC
-	DeletedOn *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+	DeletedOn *time.Time
 
 	// READ-ONLY; The time when the certificate is scheduled to be purged, in UTC
-	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+	ScheduledPurgeDate *time.Time
 }
 
 // Issuer - The issuer for Key Vault certificate.
 type Issuer struct {
 	// Determines whether the issuer is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// READ-ONLY; Creation time in UTC.
-	CreatedOn *time.Time `json:"created,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 
 	// READ-ONLY; Last updated time in UTC.
-	UpdatedOn *time.Time `json:"updated,omitempty" azure:"ro"`
+	UpdatedOn *time.Time
 
 	// The credentials to be used for the issuer.
-	Credentials *IssuerCredentials `json:"credentials,omitempty"`
+	Credentials *IssuerCredentials
 
 	// Details of the organization administrator.
-	AdministratorContacts []*AdministratorContact `json:"admin_details,omitempty"`
+	AdministratorContacts []*AdministratorContact
 
 	// Id of the organization.
-	OrganizationID *string `json:"organization_id,omitempty"`
+	OrganizationID *string
 
 	// The issuer provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// READ-ONLY; Identifier for the issuer object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name is the name of the issuer
 	Name *string
@@ -540,10 +540,10 @@ type Issuer struct {
 // IssuerCredentials - The credentials to be used for the certificate issuer.
 type IssuerCredentials struct {
 	// The user name/account name/account id.
-	AccountID *string `json:"account_id,omitempty"`
+	AccountID *string
 
 	// The password/secret/account key.
-	Password *string `json:"pwd,omitempty"`
+	Password *string
 }
 
 func issuerCredentialsFromGenerated(g *generated.IssuerCredentials) *IssuerCredentials {
@@ -568,13 +568,13 @@ func (i *IssuerCredentials) toGenerated() *generated.IssuerCredentials {
 // IssuerParameters - Parameters for the issuer of the X509 component of a certificate.
 type IssuerParameters struct {
 	// Indicates if the certificates generated under this policy should be published to certificate transparency logs.
-	CertificateTransparency *bool `json:"cert_transparency,omitempty"`
+	CertificateTransparency *bool
 
 	// Certificate type as supported by the provider (optional); for example 'OV-SSL', 'EV-SSL'
-	CertificateType *string `json:"cty,omitempty"`
+	CertificateType *string
 
 	// IssuerName of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.
-	IssuerName *string `json:"name,omitempty"`
+	IssuerName *string
 }
 
 func (i *IssuerParameters) toGenerated() *generated.IssuerParameters {
@@ -604,13 +604,13 @@ func issuerParametersFromGenerated(g *generated.IssuerParameters) *IssuerParamet
 // LifetimeAction - Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 type LifetimeAction struct {
 	// The action that will be executed.
-	Action *PolicyAction `json:"action,omitempty"`
+	Action *PolicyAction
 	// Days before expiry to attempt renewal. Value should be between 1 and validityinmonths multiplied by 27. If validityinmonths is 36, then value should
 	// be between 1 and 972 (36 * 27).
-	DaysBeforeExpiry *int32 `json:"days_before_expiry,omitempty"`
+	DaysBeforeExpiry *int32
 
 	// Percentage of lifetime at which to trigger. Value should be between 1 and 99.
-	LifetimePercentage *int32 `json:"lifetime_percentage,omitempty"`
+	LifetimePercentage *int32
 }
 
 func (l LifetimeAction) toGenerated() *generated.LifetimeAction {
@@ -640,13 +640,13 @@ func lifetimeActionFromGenerated(g *generated.LifetimeAction) *LifetimeAction {
 // SubjectAlternativeNames - The subject alternate names of a X509 object.
 type SubjectAlternativeNames struct {
 	// Domain names.
-	DNSNames []*string `json:"dns_names,omitempty"`
+	DNSNames []*string
 
 	// Email addresses.
-	Emails []*string `json:"emails,omitempty"`
+	Emails []*string
 
 	// User principal names.
-	UserPrincipalNames []*string `json:"upns,omitempty"`
+	UserPrincipalNames []*string
 }
 
 func (s *SubjectAlternativeNames) toGenerated() *generated.SubjectAlternativeNames {
@@ -676,19 +676,19 @@ func subjectAlternativeNamesFromGenerated(g *generated.SubjectAlternativeNames) 
 // X509CertificateProperties - Properties of the X509 component of a certificate.
 type X509CertificateProperties struct {
 	// The enhanced key usage.
-	EnhancedKeyUsages []*string `json:"ekus,omitempty"`
+	EnhancedKeyUsages []*string
 
 	// List of key usages.
-	KeyUsages []*KeyUsage `json:"key_usage,omitempty"`
+	KeyUsages []*KeyUsage
 
 	// The subject name. Should be a valid X509 distinguished Name.
-	Subject *string `json:"subject,omitempty"`
+	Subject *string
 
 	// The subject alternative names.
-	SubjectAlternativeNames *SubjectAlternativeNames `json:"sans,omitempty"`
+	SubjectAlternativeNames *SubjectAlternativeNames
 
 	// The duration that the certificate is valid in months.
-	ValidityInMonths *int32 `json:"validity_months,omitempty"`
+	ValidityInMonths *int32
 }
 
 func (x *X509CertificateProperties) toGenerated() *generated.X509CertificateProperties {

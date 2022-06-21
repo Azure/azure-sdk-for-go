@@ -70,6 +70,21 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// AzureResourceProperties - An Azure resource QueryPack-Query object
+type AzureResourceProperties struct {
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Read only system data
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
 // CapacityReservationProperties - The Capacity Reservation properties.
 type CapacityReservationProperties struct {
 	// READ-ONLY; The last time Sku was updated.
@@ -215,6 +230,30 @@ type ClustersClientListByResourceGroupOptions struct {
 // ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
 type ClustersClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// Column - Table column.
+type Column struct {
+	// Column data type logical hint.
+	DataTypeHint *ColumnDataTypeHintEnum `json:"dataTypeHint,omitempty"`
+
+	// Column description.
+	Description *string `json:"description,omitempty"`
+
+	// Column display name.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Column name.
+	Name *string `json:"name,omitempty"`
+
+	// Column data type.
+	Type *ColumnTypeEnum `json:"type,omitempty"`
+
+	// READ-ONLY; Is displayed by default.
+	IsDefaultDisplay *bool `json:"isDefaultDisplay,omitempty" azure:"ro"`
+
+	// READ-ONLY; Is column hidden.
+	IsHidden *bool `json:"isHidden,omitempty" azure:"ro"`
 }
 
 // CoreSummary - The core summary of a search.
@@ -589,6 +628,148 @@ type LinkedStorageAccountsResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// LogAnalyticsQueryPack - An Log Analytics QueryPack definition.
+type LogAnalyticsQueryPack struct {
+	// REQUIRED; Resource location
+	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; Properties that define a Log Analytics QueryPack resource.
+	Properties *LogAnalyticsQueryPackProperties `json:"properties,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// LogAnalyticsQueryPackListResult - Describes the list of Log Analytics QueryPack resources.
+type LogAnalyticsQueryPackListResult struct {
+	// REQUIRED; List of Log Analytics QueryPack definitions.
+	Value []*LogAnalyticsQueryPack `json:"value,omitempty"`
+
+	// The URI to get the next set of Log Analytics QueryPack definitions if too many QueryPacks where returned in the result
+	// set.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// LogAnalyticsQueryPackProperties - Properties that define a Log Analytics QueryPack resource.
+type LogAnalyticsQueryPackProperties struct {
+	// READ-ONLY; Current state of this QueryPack: whether or not is has been provisioned within the resource group it is defined.
+	// Users cannot change this value but are able to read from it. Values will include
+	// Succeeded, Deploying, Canceled, and Failed.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The unique ID of your application. This field cannot be changed.
+	QueryPackID *string `json:"queryPackId,omitempty" azure:"ro"`
+
+	// READ-ONLY; Creation Date for the Log Analytics QueryPack, in ISO 8601 format.
+	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last modified date of the Log Analytics QueryPack, in ISO 8601 format.
+	TimeModified *time.Time `json:"timeModified,omitempty" azure:"ro"`
+}
+
+// LogAnalyticsQueryPackQuery - A Log Analytics QueryPack-Query definition.
+type LogAnalyticsQueryPackQuery struct {
+	// Properties that define an Log Analytics QueryPack-Query resource.
+	Properties *LogAnalyticsQueryPackQueryProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Read only system data
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// LogAnalyticsQueryPackQueryListResult - Describes the list of Log Analytics QueryPack-Query resources.
+type LogAnalyticsQueryPackQueryListResult struct {
+	// REQUIRED; List of Log Analytics QueryPack Query definitions.
+	Value []*LogAnalyticsQueryPackQuery `json:"value,omitempty"`
+
+	// The URI to get the next set of Log Analytics QueryPack definitions if too many QueryPack-Queries where returned in the
+	// result set.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// LogAnalyticsQueryPackQueryProperties - Properties that define an Log Analytics QueryPack-Query resource.
+type LogAnalyticsQueryPackQueryProperties struct {
+	// REQUIRED; Body of the query.
+	Body *string `json:"body,omitempty"`
+
+	// REQUIRED; Unique display name for your query within the Query Pack.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Description of the query.
+	Description *string `json:"description,omitempty"`
+
+	// Additional properties that can be set for the query.
+	Properties interface{} `json:"properties,omitempty"`
+
+	// The related metadata items for the function.
+	Related *LogAnalyticsQueryPackQueryPropertiesRelated `json:"related,omitempty"`
+
+	// Tags associated with the query.
+	Tags map[string][]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Object Id of user creating the query.
+	Author *string `json:"author,omitempty" azure:"ro"`
+
+	// READ-ONLY; The unique ID of your application. This field cannot be changed.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Creation Date for the Log Analytics Query, in ISO 8601 format.
+	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last modified date of the Log Analytics Query, in ISO 8601 format.
+	TimeModified *time.Time `json:"timeModified,omitempty" azure:"ro"`
+}
+
+// LogAnalyticsQueryPackQueryPropertiesRelated - The related metadata items for the function.
+type LogAnalyticsQueryPackQueryPropertiesRelated struct {
+	// The related categories for the function.
+	Categories []*string `json:"categories,omitempty"`
+
+	// The related resource types for the function.
+	ResourceTypes []*string `json:"resourceTypes,omitempty"`
+
+	// The related Log Analytics solutions for the function.
+	Solutions []*string `json:"solutions,omitempty"`
+}
+
+// LogAnalyticsQueryPackQuerySearchProperties - Properties that define an Log Analytics QueryPack-Query search properties.
+type LogAnalyticsQueryPackQuerySearchProperties struct {
+	// The related metadata items for the function.
+	Related *LogAnalyticsQueryPackQuerySearchPropertiesRelated `json:"related,omitempty"`
+
+	// Tags associated with the query.
+	Tags map[string][]*string `json:"tags,omitempty"`
+}
+
+// LogAnalyticsQueryPackQuerySearchPropertiesRelated - The related metadata items for the function.
+type LogAnalyticsQueryPackQuerySearchPropertiesRelated struct {
+	// The related categories for the function.
+	Categories []*string `json:"categories,omitempty"`
+
+	// The related resource types for the function.
+	ResourceTypes []*string `json:"resourceTypes,omitempty"`
+
+	// The related Log Analytics solutions for the function.
+	Solutions []*string `json:"solutions,omitempty"`
+}
+
 // ManagementGroup - A management group that is connected to a workspace
 type ManagementGroup struct {
 	// The properties of the management group.
@@ -722,6 +903,95 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// QueriesClientDeleteOptions contains the optional parameters for the QueriesClient.Delete method.
+type QueriesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueriesClientGetOptions contains the optional parameters for the QueriesClient.Get method.
+type QueriesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueriesClientListOptions contains the optional parameters for the QueriesClient.List method.
+type QueriesClientListOptions struct {
+	// Flag indicating whether or not to return the body of each applicable query. If false, only return the query information.
+	IncludeBody *bool
+	// Base64 encoded token used to fetch the next page of items. Default is null.
+	SkipToken *string
+	// Maximum items returned in page.
+	Top *int64
+}
+
+// QueriesClientPutOptions contains the optional parameters for the QueriesClient.Put method.
+type QueriesClientPutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueriesClientSearchOptions contains the optional parameters for the QueriesClient.Search method.
+type QueriesClientSearchOptions struct {
+	// Flag indicating whether or not to return the body of each applicable query. If false, only return the query information.
+	IncludeBody *bool
+	// Base64 encoded token used to fetch the next page of items. Default is null.
+	SkipToken *string
+	// Maximum items returned in page.
+	Top *int64
+}
+
+// QueriesClientUpdateOptions contains the optional parameters for the QueriesClient.Update method.
+type QueriesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientCreateOrUpdateOptions contains the optional parameters for the QueryPacksClient.CreateOrUpdate method.
+type QueryPacksClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientDeleteOptions contains the optional parameters for the QueryPacksClient.Delete method.
+type QueryPacksClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientGetOptions contains the optional parameters for the QueryPacksClient.Get method.
+type QueryPacksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientListByResourceGroupOptions contains the optional parameters for the QueryPacksClient.ListByResourceGroup
+// method.
+type QueryPacksClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientListOptions contains the optional parameters for the QueryPacksClient.List method.
+type QueryPacksClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksClientUpdateTagsOptions contains the optional parameters for the QueryPacksClient.UpdateTags method.
+type QueryPacksClientUpdateTagsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueryPacksResource - An azure resource object
+type QueryPacksResource struct {
+	// REQUIRED; Resource location
+	Location *string `json:"location,omitempty"`
+
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -732,6 +1002,27 @@ type Resource struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RestoredLogs - Restore parameters.
+type RestoredLogs struct {
+	// The timestamp to end the restore by (UTC).
+	EndRestoreTime *time.Time `json:"endRestoreTime,omitempty"`
+
+	// The table to restore data from.
+	SourceTable *string `json:"sourceTable,omitempty"`
+
+	// The timestamp to start the restore from (UTC).
+	StartRestoreTime *time.Time `json:"startRestoreTime,omitempty"`
+}
+
+// ResultStatistics - Search job execution statistics.
+type ResultStatistics struct {
+	// READ-ONLY; The number of rows that were returned by the search job.
+	IngestedRecords *int32 `json:"ingestedRecords,omitempty" azure:"ro"`
+
+	// READ-ONLY; Search job completion percentage.
+	Progress *float32 `json:"progress,omitempty" azure:"ro"`
 }
 
 // SavedSearch - Value object for saved search results.
@@ -803,6 +1094,49 @@ type SavedSearchesClientListByWorkspaceOptions struct {
 type SavedSearchesListResult struct {
 	// The array of result values.
 	Value []*SavedSearch `json:"value,omitempty"`
+}
+
+// Schema - Table's schema.
+type Schema struct {
+	// A list of table custom columns.
+	Columns []*Column `json:"columns,omitempty"`
+
+	// Table description.
+	Description *string `json:"description,omitempty"`
+
+	// Table display name.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// Table name.
+	Name *string `json:"name,omitempty"`
+
+	// READ-ONLY; Table category.
+	Categories []*string `json:"categories,omitempty" azure:"ro"`
+
+	// READ-ONLY; Table labels.
+	Labels []*string `json:"labels,omitempty" azure:"ro"`
+
+	// READ-ONLY; Parameters of the restore operation that initiated this table.
+	RestoredLogs *RestoredLogs `json:"restoredLogs,omitempty" azure:"ro"`
+
+	// READ-ONLY; Parameters of the search job that initiated this table.
+	SearchResults *SearchResults `json:"searchResults,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of solutions the table is affiliated with
+	Solutions []*string `json:"solutions,omitempty" azure:"ro"`
+
+	// READ-ONLY; Table's creator.
+	Source *SourceEnum `json:"source,omitempty" azure:"ro"`
+
+	// READ-ONLY; A list of table standard columns.
+	StandardColumns []*Column `json:"standardColumns,omitempty" azure:"ro"`
+
+	// READ-ONLY; The subtype describes what APIs can be used to interact with the table, and what features are available against
+	// it.
+	TableSubType *TableSubTypeEnum `json:"tableSubType,omitempty" azure:"ro"`
+
+	// READ-ONLY; Table's creator.
+	TableType *TableTypeEnum `json:"tableType,omitempty" azure:"ro"`
 }
 
 // SchemaClientGetOptions contains the optional parameters for the SchemaClient.Get method.
@@ -880,6 +1214,27 @@ type SearchMetadataSchema struct {
 
 	// The version of the metadata schema.
 	Version *int32 `json:"version,omitempty"`
+}
+
+// SearchResults - Parameters of the search job that initiated this table.
+type SearchResults struct {
+	// Search job Description.
+	Description *string `json:"description,omitempty"`
+
+	// The timestamp to end the search by (UTC)
+	EndSearchTime *time.Time `json:"endSearchTime,omitempty"`
+
+	// Limit the search job to return up to specified number of rows.
+	Limit *int32 `json:"limit,omitempty"`
+
+	// Search job query.
+	Query *string `json:"query,omitempty"`
+
+	// The timestamp to start the search from (UTC)
+	StartSearchTime *time.Time `json:"startSearchTime,omitempty"`
+
+	// READ-ONLY; The table used in the search job.
+	SourceTable *string `json:"sourceTable,omitempty" azure:"ro"`
 }
 
 // SearchSchemaValue - Value object for schema results.
@@ -1019,9 +1374,51 @@ type StorageInsightStatus struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// SystemData - Read only system data
+type SystemData struct {
+	// The timestamp of resource creation (UTC)
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// An identifier for the identity that created the resource
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource
+	CreatedByType *IdentityType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// An identifier for the identity that last modified the resource
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource
+	LastModifiedByType *IdentityType `json:"lastModifiedByType,omitempty"`
+}
+
+// SystemDataAutoGenerated - Metadata pertaining to creation and last modification of the resource.
+type SystemDataAutoGenerated struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
 // Table - Workspace data table definition.
 type Table struct {
-	// Table properties.
+	// Table's properties.
 	Properties *TableProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1030,15 +1427,63 @@ type Table struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemDataAutoGenerated `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // TableProperties - Table properties.
 type TableProperties struct {
-	// The data table data retention in days, between 30 and 730. Setting this property to null will default to the workspace
-	// retention.
+	// Instruct the system how to handle and charge the logs ingested to this table.
+	Plan *TablePlanEnum `json:"plan,omitempty"`
+
+	// Parameters of the restore operation that initiated this table.
+	RestoredLogs *RestoredLogs `json:"restoredLogs,omitempty"`
+
+	// Search job execution statistics.
+	ResultStatistics *ResultStatistics `json:"resultStatistics,omitempty"`
+
+	// The table retention in days, between 4 and 730. Setting this property to -1 will default to the workspace retention.
 	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
+
+	// Table schema.
+	Schema *Schema `json:"schema,omitempty"`
+
+	// Parameters of the search job that initiated this table.
+	SearchResults *SearchResults `json:"searchResults,omitempty"`
+
+	// The table total retention in days, between 4 and 2555. Setting this property to -1 will default to table retention.
+	TotalRetentionInDays *int32 `json:"totalRetentionInDays,omitempty"`
+
+	// READ-ONLY; The table data archive retention in days. Calculated as (totalRetentionInDays-retentionInDays)
+	ArchiveRetentionInDays *int32 `json:"archiveRetentionInDays,omitempty" azure:"ro"`
+
+	// READ-ONLY; The timestamp that table plan was last modified (UTC).
+	LastPlanModifiedDate *string `json:"lastPlanModifiedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; Table's current provisioning state. If set to 'updating', indicates a resource lock due to ongoing operation,
+	// forbidding any update to the table until the ongoing operation is concluded.
+	ProvisioningState *ProvisioningStateEnum `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// TablesClientBeginCreateOrUpdateOptions contains the optional parameters for the TablesClient.BeginCreateOrUpdate method.
+type TablesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TablesClientBeginDeleteOptions contains the optional parameters for the TablesClient.BeginDelete method.
+type TablesClientBeginDeleteOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// TablesClientBeginUpdateOptions contains the optional parameters for the TablesClient.BeginUpdate method.
+type TablesClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // TablesClientGetOptions contains the optional parameters for the TablesClient.Get method.
@@ -1051,8 +1496,8 @@ type TablesClientListByWorkspaceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TablesClientUpdateOptions contains the optional parameters for the TablesClient.Update method.
-type TablesClientUpdateOptions struct {
+// TablesClientMigrateOptions contains the optional parameters for the TablesClient.Migrate method.
+type TablesClientMigrateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1069,6 +1514,12 @@ type Tag struct {
 
 	// REQUIRED; The tag value.
 	Value *string `json:"value,omitempty"`
+}
+
+// TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a QueryPack instance.
+type TagsResource struct {
+	// Resource tags
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
@@ -1130,8 +1581,8 @@ type Workspace struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
-	// The etag of the workspace.
-	Etag *string `json:"etag,omitempty"`
+	// The ETag of the workspace.
+	ETag *string `json:"eTag,omitempty"`
 
 	// Workspace properties.
 	Properties *WorkspaceProperties `json:"properties,omitempty"`
@@ -1144,6 +1595,9 @@ type Workspace struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemDataAutoGenerated `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1223,14 +1677,15 @@ type WorkspacePatch struct {
 
 // WorkspaceProperties - Workspace properties.
 type WorkspaceProperties struct {
+	// The resource ID of the default Data Collection Rule to use for this workspace. Expected format is -
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
+	DefaultDataCollectionRuleResourceID *string `json:"defaultDataCollectionRuleResourceId,omitempty"`
+
 	// Workspace features.
 	Features *WorkspaceFeatures `json:"features,omitempty"`
 
 	// Indicates whether customer managed storage is mandatory for query management.
 	ForceCmkForQuery *bool `json:"forceCmkForQuery,omitempty"`
-
-	// The provisioning state of the workspace.
-	ProvisioningState *WorkspaceEntityStatus `json:"provisioningState,omitempty"`
 
 	// The network access type for accessing Log Analytics ingestion.
 	PublicNetworkAccessForIngestion *PublicNetworkAccessType `json:"publicNetworkAccessForIngestion,omitempty"`
@@ -1258,6 +1713,9 @@ type WorkspaceProperties struct {
 
 	// READ-ONLY; List of linked private link scope resources.
 	PrivateLinkScopedResources []*PrivateLinkScopedResource `json:"privateLinkScopedResources,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the workspace.
+	ProvisioningState *WorkspaceEntityStatus `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // WorkspacePurgeBody - Describes the body of a purge request for an App Insights Workspace

@@ -122,10 +122,10 @@ func ExampleClient_UpdateCertificateProperties() {
 	if err != nil {
 		panic(err)
 	}
+
 	getResp.Properties.Enabled = to.Ptr(false)
 	getResp.Properties.Tags["Tag1"] = to.Ptr("Val1")
-
-	resp, err := client.UpdateCertificateProperties(context.TODO(), "myCertName", *getResp.Properties, nil)
+	resp, err := client.UpdateCertificateProperties(context.TODO(), *getResp.Properties, nil)
 	if err != nil {
 		panic(err)
 	}

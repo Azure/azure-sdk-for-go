@@ -10,7 +10,7 @@ package armsql
 
 const (
 	moduleName    = "armsql"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v1.0.0"
 )
 
 type AdministratorName string
@@ -37,6 +37,38 @@ const (
 func PossibleAdministratorTypeValues() []AdministratorType {
 	return []AdministratorType{
 		AdministratorTypeActiveDirectory,
+	}
+}
+
+type AdvancedThreatProtectionName string
+
+const (
+	AdvancedThreatProtectionNameDefault AdvancedThreatProtectionName = "Default"
+)
+
+// PossibleAdvancedThreatProtectionNameValues returns the possible values for the AdvancedThreatProtectionName const type.
+func PossibleAdvancedThreatProtectionNameValues() []AdvancedThreatProtectionName {
+	return []AdvancedThreatProtectionName{
+		AdvancedThreatProtectionNameDefault,
+	}
+}
+
+// AdvancedThreatProtectionState - Specifies the state of the Advanced Threat Protection, whether it is enabled or disabled
+// or a state has not been applied yet on the specific database or server.
+type AdvancedThreatProtectionState string
+
+const (
+	AdvancedThreatProtectionStateNew      AdvancedThreatProtectionState = "New"
+	AdvancedThreatProtectionStateEnabled  AdvancedThreatProtectionState = "Enabled"
+	AdvancedThreatProtectionStateDisabled AdvancedThreatProtectionState = "Disabled"
+)
+
+// PossibleAdvancedThreatProtectionStateValues returns the possible values for the AdvancedThreatProtectionState const type.
+func PossibleAdvancedThreatProtectionStateValues() []AdvancedThreatProtectionState {
+	return []AdvancedThreatProtectionState{
+		AdvancedThreatProtectionStateNew,
+		AdvancedThreatProtectionStateEnabled,
+		AdvancedThreatProtectionStateDisabled,
 	}
 }
 

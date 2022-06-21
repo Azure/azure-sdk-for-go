@@ -209,7 +209,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 	var receivedMessages []*ReceivedMessage
 
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveDeferredMessages", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		amqpMessages, err := internal.ReceiveDeferred(ctx, lwid.RPC, r.receiveMode, sequenceNumbers)
+		amqpMessages, err := internal.ReceiveDeferred(ctx, lwid.RPC, lwid.Receiver.LinkName(), r.receiveMode, sequenceNumbers)
 
 		if err != nil {
 			return err
@@ -257,7 +257,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 			updateInternalSequenceNumber = false
 		}
 
-		messages, err := internal.PeekMessages(ctx, links.RPC, sequenceNumber, int32(maxMessageCount))
+		messages, err := internal.PeekMessages(ctx, links.RPC, links.Receiver.LinkName(), sequenceNumber, int32(maxMessageCount))
 
 		if err != nil {
 			return err
@@ -289,7 +289,7 @@ type RenewMessageLockOptions struct {
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, options *RenewMessageLockOptions) error {
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "renewMessageLock", func(ctx context.Context, linksWithVersion *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
+		newExpirationTime, err := internal.RenewLocks(ctx, linksWithVersion.RPC, msg.RawAMQPMessage.linkName, []amqp.UUID{
 			(amqp.UUID)(msg.LockToken),
 		})
 

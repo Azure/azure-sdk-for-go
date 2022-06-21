@@ -12,10 +12,10 @@ import (
 	"crypto/rsa"
 	"crypto/sha1"
 	"crypto/x509"
-
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -71,6 +71,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	o := []confidential.Option{
 		confidential.WithAuthority(runtime.JoinPaths(authorityHost, tenantID)),
 		confidential.WithHTTPClient(newPipelineAdapter(&options.ClientOptions)),
+		confidential.WithAzureRegion(os.Getenv(azureRegionalAuthorityName)),
 	}
 	if options.SendCertificateChain {
 		o = append(o, confidential.WithX5C())

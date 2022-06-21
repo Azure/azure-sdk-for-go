@@ -102,8 +102,10 @@ func (s SBNamespaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "disableLocalAuth", s.DisableLocalAuth)
 	populate(objectMap, "encryption", s.Encryption)
 	populate(objectMap, "metricId", s.MetricID)
+	populate(objectMap, "minimumTlsVersion", s.MinimumTLSVersion)
 	populate(objectMap, "privateEndpointConnections", s.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
+	populate(objectMap, "publicNetworkAccess", s.PublicNetworkAccess)
 	populate(objectMap, "serviceBusEndpoint", s.ServiceBusEndpoint)
 	populate(objectMap, "status", s.Status)
 	populateTimeRFC3339(objectMap, "updatedAt", s.UpdatedAt)
@@ -135,11 +137,17 @@ func (s *SBNamespaceProperties) UnmarshalJSON(data []byte) error {
 		case "metricId":
 			err = unpopulate(val, "MetricID", &s.MetricID)
 			delete(rawMsg, key)
+		case "minimumTlsVersion":
+			err = unpopulate(val, "MinimumTLSVersion", &s.MinimumTLSVersion)
+			delete(rawMsg, key)
 		case "privateEndpointConnections":
 			err = unpopulate(val, "PrivateEndpointConnections", &s.PrivateEndpointConnections)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &s.ProvisioningState)
+			delete(rawMsg, key)
+		case "publicNetworkAccess":
+			err = unpopulate(val, "PublicNetworkAccess", &s.PublicNetworkAccess)
 			delete(rawMsg, key)
 		case "serviceBusEndpoint":
 			err = unpopulate(val, "ServiceBusEndpoint", &s.ServiceBusEndpoint)

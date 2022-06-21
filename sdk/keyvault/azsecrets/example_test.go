@@ -245,7 +245,7 @@ func ExampleClient_UpdateSecretProperties() {
 		Name:    getResp.Secret.Properties.Name,
 		Version: getResp.Secret.Properties.Version,
 	}
-	resp, err := client.UpdateSecretProperties(context.Background(), getResp.Secret, nil)
+	resp, err := client.UpdateSecretProperties(context.Background(), *getResp.Secret.Properties, nil)
 	if err != nil {
 		panic(err)
 	}

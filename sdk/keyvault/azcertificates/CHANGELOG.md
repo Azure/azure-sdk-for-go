@@ -14,6 +14,8 @@
   * `ListCertificatesOptions` to `ListPropertiesOfCertificatesOptions`
   * `ListCertificateVersionsOptions` to `ListPropertiesOfCertificateVersionsOptions`
 * Renamed `ListDeletedCertificatesResponse.Certificates` to `.DeletedCertificates`
+* `UpdateCertificateProperties()` has a `Properties` parameter instead of a `string` parameter
+* Removed JSON tags from models
 
 ### Bugs Fixed
 * LROs now correctly exit the polling loop in `PollUntilDone()` when the operations reach a terminal state.

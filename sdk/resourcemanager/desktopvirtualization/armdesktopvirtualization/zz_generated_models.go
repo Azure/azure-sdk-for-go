@@ -10,6 +10,46 @@ package armdesktopvirtualization
 
 import "time"
 
+// AgentUpdatePatchProperties - The preferred settings for updating the agent components (RDAgent, Geneva Monitoring agent,
+// and side-by-side stack) on session hosts.
+type AgentUpdatePatchProperties struct {
+	// The time zone for updating the agent components. Valid time zones can be found here: https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0.
+	// A time zone
+	// must be specified if useSessionHostLocalTime is false.
+	MaintenanceWindowTimeZone *string `json:"maintenanceWindowTimeZone,omitempty"`
+
+	// The maintenance windows (day and time) for updating the agent components. At least 1 window must be specified. Optionally,
+	// a 2nd window can be specified.
+	MaintenanceWindows []*MaintenanceWindowPatchProperties `json:"maintenanceWindows,omitempty"`
+
+	// The preferred mechanism for updating the agent components. This is either Scheduled or Default.
+	Type *SessionHostComponentUpdateType `json:"type,omitempty"`
+
+	// Boolean indicating whether to update the agent components in the local time zone of each session host in the host pool.
+	// By default, this is false.
+	UseSessionHostLocalTime *bool `json:"useSessionHostLocalTime,omitempty"`
+}
+
+// AgentUpdateProperties - The preferred settings for updating the agent components (RDAgent, Geneva Monitoring agent, and
+// side-by-side stack) on session hosts.
+type AgentUpdateProperties struct {
+	// The time zone for updating the agent components. Valid time zones can be found here: https://docs.microsoft.com/en-us/dotnet/api/system.timezoneinfo.findsystemtimezonebyid?view=net-5.0.
+	// A time zone
+	// must be specified if useSessionHostLocalTime is false.
+	MaintenanceWindowTimeZone *string `json:"maintenanceWindowTimeZone,omitempty"`
+
+	// The maintenance windows (day and time) for updating the agent components. At least 1 window must be specified. Optionally,
+	// a 2nd window can be specified.
+	MaintenanceWindows []*MaintenanceWindowProperties `json:"maintenanceWindows,omitempty"`
+
+	// The preferred mechanism for updating the agent components. This is either Scheduled or Default.
+	Type *SessionHostComponentUpdateType `json:"type,omitempty"`
+
+	// Boolean indicating whether to update the agent components in the local time zone of each session host in the host pool.
+	// By default, this is false.
+	UseSessionHostLocalTime *bool `json:"useSessionHostLocalTime,omitempty"`
+}
+
 // Application - Schema for Application properties.
 type Application struct {
 	// REQUIRED; Detailed properties for Application
@@ -20,6 +60,9 @@ type Application struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -60,6 +103,9 @@ type ApplicationGroup struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -291,10 +337,13 @@ type ApplicationsClientUpdateOptions struct {
 	Application *ApplicationPatch
 }
 
+// CloudError - Cloud error object.
 type CloudError struct {
+	// Cloud error object properties.
 	Error *CloudErrorProperties `json:"error,omitempty"`
 }
 
+// CloudErrorProperties - Cloud error object properties.
 type CloudErrorProperties struct {
 	// Error code
 	Code *string `json:"code,omitempty"`
@@ -313,6 +362,9 @@ type Desktop struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -481,6 +533,9 @@ type HostPool struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -514,6 +569,10 @@ type HostPoolPatch struct {
 
 // HostPoolPatchProperties - Properties of HostPool.
 type HostPoolPatchProperties struct {
+	// The preferred settings for updating the agent components (RDAgent, Geneva Monitoring agent, and side-by-side stack) on
+	// session hosts.
+	AgentUpdate *AgentUpdatePatchProperties `json:"agentUpdate,omitempty"`
+
 	// Custom rdp property of HostPool.
 	CustomRdpProperty *string `json:"customRdpProperty,omitempty"`
 
@@ -534,6 +593,9 @@ type HostPoolPatchProperties struct {
 
 	// The type of preferred application group type, default to Desktop Application Group
 	PreferredAppGroupType *PreferredAppGroupType `json:"preferredAppGroupType,omitempty"`
+
+	// Enabled to allow this resource to be access from the public network
+	PublicNetworkAccess *HostpoolPublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
 	// The registration info of HostPool.
 	RegistrationInfo *RegistrationInfoPatch `json:"registrationInfo,omitempty"`
@@ -574,6 +636,10 @@ type HostPoolProperties struct {
 	// REQUIRED; The type of preferred application group type, default to Desktop Application Group
 	PreferredAppGroupType *PreferredAppGroupType `json:"preferredAppGroupType,omitempty"`
 
+	// The preferred settings for updating the agent components (RDAgent, Geneva Monitoring agent, and side-by-side stack) on
+	// session hosts.
+	AgentUpdate *AgentUpdateProperties `json:"agentUpdate,omitempty"`
+
 	// Custom rdp property of HostPool.
 	CustomRdpProperty *string `json:"customRdpProperty,omitempty"`
 
@@ -591,6 +657,10 @@ type HostPoolProperties struct {
 
 	// PersonalDesktopAssignment type for HostPool.
 	PersonalDesktopAssignmentType *PersonalDesktopAssignmentType `json:"personalDesktopAssignmentType,omitempty"`
+
+	// Enabled allows this resource to be accessed from both public and private networks, Disabled allows this resource to only
+	// be accessed via private endpoints
+	PublicNetworkAccess *HostpoolPublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 
 	// The registration info of HostPool.
 	RegistrationInfo *RegistrationInfo `json:"registrationInfo,omitempty"`
@@ -627,6 +697,9 @@ type HostPoolProperties struct {
 
 	// READ-ONLY; ObjectId of HostPool. (internal use)
 	ObjectID *string `json:"objectId,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of private endpoint connection associated with the specified resource
+	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
 }
 
 // HostPoolsClientCreateOrUpdateOptions contains the optional parameters for the HostPoolsClient.CreateOrUpdate method.
@@ -708,6 +781,9 @@ type MSIXPackage struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -811,6 +887,26 @@ type MSIXPackagesClientUpdateOptions struct {
 	MsixPackage *MSIXPackagePatch
 }
 
+// MaintenanceWindowPatchProperties - Maintenance window starting hour and day of week.
+type MaintenanceWindowPatchProperties struct {
+	// The day of the week (Monday-Sunday).
+	DayOfWeek *DayOfWeek `json:"dayOfWeek,omitempty"`
+
+	// The starting hour of the maintenance window (0-23). Note that maintenance windows are 2 hours long. This means that updates
+	// can be applied anytime from the specified start hour to 2 hours after.
+	Hour *int32 `json:"hour,omitempty"`
+}
+
+// MaintenanceWindowProperties - Maintenance window starting hour and day of week.
+type MaintenanceWindowProperties struct {
+	// The day of the week (Monday-Sunday).
+	DayOfWeek *DayOfWeek `json:"dayOfWeek,omitempty"`
+
+	// The starting hour of the maintenance window (0-23). Note that maintenance windows are 2 hours long. This means that updates
+	// can be applied anytime from the specified start hour to 2 hours after.
+	Hour *int32 `json:"hour,omitempty"`
+}
+
 // MigrationRequestProperties - Properties for arm migration.
 type MigrationRequestProperties struct {
 	// The path to the legacy object to migrate.
@@ -889,6 +985,176 @@ type Plan struct {
 
 	// The version of the desired product/artifact.
 	Version *string `json:"version,omitempty"`
+}
+
+// PrivateEndpoint - The Private Endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The ARM identifier for Private Endpoint
+	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+// PrivateEndpointConnection - The Private Endpoint Connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PrivateEndpointConnectionListResultWithSystemData - List of private endpoint connection associated with the specified storage
+// account
+type PrivateEndpointConnectionListResultWithSystemData struct {
+	// Array of private endpoint connections
+	Value []*PrivateEndpointConnectionWithSystemData `json:"value,omitempty"`
+
+	// READ-ONLY; Link to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+
+	// The resource of private end point.
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+
+	// The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// PrivateEndpointConnectionWithSystemData - The Private Endpoint Connection resource.
+type PrivateEndpointConnectionWithSystemData struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PrivateEndpointConnectionsClientDeleteByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.DeleteByHostPool
+// method.
+type PrivateEndpointConnectionsClientDeleteByHostPoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientDeleteByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.DeleteByWorkspace
+// method.
+type PrivateEndpointConnectionsClientDeleteByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientGetByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.GetByHostPool
+// method.
+type PrivateEndpointConnectionsClientGetByHostPoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientGetByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.GetByWorkspace
+// method.
+type PrivateEndpointConnectionsClientGetByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByHostPool
+// method.
+type PrivateEndpointConnectionsClientListByHostPoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByWorkspace
+// method.
+type PrivateEndpointConnectionsClientListByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientUpdateByHostPoolOptions contains the optional parameters for the PrivateEndpointConnectionsClient.UpdateByHostPool
+// method.
+type PrivateEndpointConnectionsClientUpdateByHostPoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientUpdateByWorkspaceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.UpdateByWorkspace
+// method.
+type PrivateEndpointConnectionsClientUpdateByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResource - A private link resource
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// PrivateLinkResourceListResult - A list of private link resources
+type PrivateLinkResourceListResult struct {
+	// Array of private link resources
+	Value []*PrivateLinkResource `json:"value,omitempty"`
+
+	// READ-ONLY; Link to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource Private link DNS zone name.
+	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+}
+
+// PrivateLinkResourcesClientListByHostPoolOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByHostPool
+// method.
+type PrivateLinkResourcesClientListByHostPoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientListByWorkspaceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByWorkspace
+// method.
+type PrivateLinkResourcesClientListByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+
+	// The reason for approval/rejection of the connection.
+	Description *string `json:"description,omitempty"`
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
 // RegistrationInfo - Represents a RegistrationInfo definition.
@@ -1045,6 +1311,9 @@ type ResourceProviderOperationDisplay struct {
 type ResourceProviderOperationList struct {
 	// List of operations supported by this resource provider.
 	Value []*ResourceProviderOperation `json:"value,omitempty"`
+
+	// READ-ONLY; Link to the next page of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 }
 
 // SKU - The resource model definition representing SKU
@@ -1113,6 +1382,9 @@ type ScalingPlan struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -1149,9 +1421,6 @@ type ScalingPlanPatchProperties struct {
 	// List of ScalingHostPoolReference definitions.
 	HostPoolReferences []*ScalingHostPoolReference `json:"hostPoolReferences,omitempty"`
 
-	// HostPool type for desktop.
-	HostPoolType *HostPoolType `json:"hostPoolType,omitempty"`
-
 	// List of ScalingSchedule definitions.
 	Schedules []*ScalingSchedule `json:"schedules,omitempty"`
 
@@ -1174,7 +1443,7 @@ type ScalingPlanProperties struct {
 	HostPoolReferences []*ScalingHostPoolReference `json:"hostPoolReferences,omitempty"`
 
 	// HostPool type for desktop.
-	HostPoolType *HostPoolType `json:"hostPoolType,omitempty"`
+	HostPoolType *ScalingHostPoolType `json:"hostPoolType,omitempty"`
 
 	// List of ScalingSchedule definitions.
 	Schedules []*ScalingSchedule `json:"schedules,omitempty"`
@@ -1236,13 +1505,13 @@ type ScalingSchedule struct {
 	OffPeakLoadBalancingAlgorithm *SessionHostLoadBalancingAlgorithm `json:"offPeakLoadBalancingAlgorithm,omitempty"`
 
 	// Starting time for off-peak period.
-	OffPeakStartTime *time.Time `json:"offPeakStartTime,omitempty"`
+	OffPeakStartTime *Time `json:"offPeakStartTime,omitempty"`
 
 	// Load balancing algorithm for peak period.
 	PeakLoadBalancingAlgorithm *SessionHostLoadBalancingAlgorithm `json:"peakLoadBalancingAlgorithm,omitempty"`
 
 	// Starting time for peak period.
-	PeakStartTime *time.Time `json:"peakStartTime,omitempty"`
+	PeakStartTime *Time `json:"peakStartTime,omitempty"`
 
 	// Capacity threshold for ramp down period.
 	RampDownCapacityThresholdPct *int32 `json:"rampDownCapacityThresholdPct,omitempty"`
@@ -1260,7 +1529,7 @@ type ScalingSchedule struct {
 	RampDownNotificationMessage *string `json:"rampDownNotificationMessage,omitempty"`
 
 	// Starting time for ramp down period.
-	RampDownStartTime *time.Time `json:"rampDownStartTime,omitempty"`
+	RampDownStartTime *Time `json:"rampDownStartTime,omitempty"`
 
 	// Specifies when to stop hosts during ramp down period.
 	RampDownStopHostsWhen *StopHostsWhen `json:"rampDownStopHostsWhen,omitempty"`
@@ -1278,7 +1547,7 @@ type ScalingSchedule struct {
 	RampUpMinimumHostsPct *int32 `json:"rampUpMinimumHostsPct,omitempty"`
 
 	// Starting time for ramp up period.
-	RampUpStartTime *time.Time `json:"rampUpStartTime,omitempty"`
+	RampUpStartTime *Time `json:"rampUpStartTime,omitempty"`
 }
 
 // SendMessage - Represents message sent to a UserSession.
@@ -1306,6 +1575,9 @@ type SessionHost struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1366,6 +1638,9 @@ type SessionHostPatchProperties struct {
 
 	// User assigned to SessionHost.
 	AssignedUser *string `json:"assignedUser,omitempty"`
+
+	// Friendly name of SessionHost
+	FriendlyName *string `json:"friendlyName,omitempty"`
 }
 
 // SessionHostProperties - Schema for SessionHost properties.
@@ -1378,6 +1653,9 @@ type SessionHostProperties struct {
 
 	// User assigned to SessionHost.
 	AssignedUser *string `json:"assignedUser,omitempty"`
+
+	// Friendly name of SessionHost
+	FriendlyName *string `json:"friendlyName,omitempty"`
 
 	// Last heart beat from SessionHost.
 	LastHeartBeat *time.Time `json:"lastHeartBeat,omitempty"`
@@ -1437,6 +1715,8 @@ type SessionHostsClientListOptions struct {
 
 // SessionHostsClientUpdateOptions contains the optional parameters for the SessionHostsClient.Update method.
 type SessionHostsClientUpdateOptions struct {
+	// Force flag to update assign, unassign or reassign personal desktop.
+	Force *bool
 	// Object containing SessionHost definitions.
 	SessionHost *SessionHostPatch
 }
@@ -1488,6 +1768,36 @@ type StartMenuItemsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// Time - The time for a scaling action to occur.
+type Time struct {
+	// REQUIRED; The hour.
+	Hour *int32 `json:"hour,omitempty"`
+
+	// REQUIRED; The minute.
+	Minute *int32 `json:"minute,omitempty"`
+}
+
 // UserSession - Represents a UserSession definition.
 type UserSession struct {
 	// Detailed properties for UserSession
@@ -1498,6 +1808,9 @@ type UserSession struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1603,6 +1916,9 @@ type Workspace struct {
 	// READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty" azure:"ro"`
 
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
@@ -1635,6 +1951,9 @@ type WorkspacePatchProperties struct {
 
 	// Friendly name of Workspace.
 	FriendlyName *string `json:"friendlyName,omitempty"`
+
+	// Enabled to allow this resource to be access from the public network
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
 // WorkspaceProperties - Schema for Workspace properties.
@@ -1648,11 +1967,18 @@ type WorkspaceProperties struct {
 	// Friendly name of Workspace.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 
+	// Enabled allows this resource to be accessed from both public and private networks, Disabled allows this resource to only
+	// be accessed via private endpoints
+	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+
 	// READ-ONLY; Is cloud pc resource.
 	CloudPcResource *bool `json:"cloudPcResource,omitempty" azure:"ro"`
 
 	// READ-ONLY; ObjectId of Workspace. (internal use)
 	ObjectID *string `json:"objectId,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of private endpoint connection associated with the specified resource
+	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
 }
 
 // WorkspacesClientCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.CreateOrUpdate method.

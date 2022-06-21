@@ -56,7 +56,7 @@ func NewVendorSKUPreviewClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Creates or updates preview information of a vendor sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the vendor sku.
 // previewSubscription - Preview subscription ID.
@@ -79,7 +79,7 @@ func (client *VendorSKUPreviewClient) BeginCreateOrUpdate(ctx context.Context, v
 
 // CreateOrUpdate - Creates or updates preview information of a vendor sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 func (client *VendorSKUPreviewClient) createOrUpdate(ctx context.Context, vendorName string, skuName string, previewSubscription string, parameters PreviewSubscription, options *VendorSKUPreviewClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, vendorName, skuName, previewSubscription, parameters, options)
 	if err != nil {
@@ -119,7 +119,7 @@ func (client *VendorSKUPreviewClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -127,7 +127,7 @@ func (client *VendorSKUPreviewClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Deletes the preview information of a vendor sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the vendor sku.
 // previewSubscription - Preview subscription ID.
@@ -149,7 +149,7 @@ func (client *VendorSKUPreviewClient) BeginDelete(ctx context.Context, vendorNam
 
 // Delete - Deletes the preview information of a vendor sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 func (client *VendorSKUPreviewClient) deleteOperation(ctx context.Context, vendorName string, skuName string, previewSubscription string, options *VendorSKUPreviewClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, vendorName, skuName, previewSubscription, options)
 	if err != nil {
@@ -189,7 +189,7 @@ func (client *VendorSKUPreviewClient) deleteCreateRequest(ctx context.Context, v
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +197,7 @@ func (client *VendorSKUPreviewClient) deleteCreateRequest(ctx context.Context, v
 
 // Get - Gets the preview information of a vendor sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the vendor sku.
 // previewSubscription - Preview subscription ID.
@@ -241,7 +241,7 @@ func (client *VendorSKUPreviewClient) getCreateRequest(ctx context.Context, vend
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,7 +258,7 @@ func (client *VendorSKUPreviewClient) getHandleResponse(resp *http.Response) (Ve
 
 // NewListPager - Lists all the preview information of a vendor sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-05-01
+// Generated from API version 2022-01-01-preview
 // vendorName - The name of the vendor.
 // skuName - The name of the sku.
 // options - VendorSKUPreviewClientListOptions contains the optional parameters for the VendorSKUPreviewClient.List method.
@@ -310,7 +310,7 @@ func (client *VendorSKUPreviewClient) listCreateRequest(ctx context.Context, ven
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-05-01")
+	reqQP.Set("api-version", "2022-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

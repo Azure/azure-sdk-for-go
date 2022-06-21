@@ -10,7 +10,7 @@ package armdigitaltwins
 
 const (
 	moduleName    = "armdigitaltwins"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v1.0.0"
 )
 
 // AuthenticationType - Specifies the authentication type being used for connecting to the endpoint. Defaults to 'KeyBased'.
@@ -115,6 +115,7 @@ const (
 	EndpointProvisioningStateRestoring    EndpointProvisioningState = "Restoring"
 	EndpointProvisioningStateSucceeded    EndpointProvisioningState = "Succeeded"
 	EndpointProvisioningStateSuspending   EndpointProvisioningState = "Suspending"
+	EndpointProvisioningStateUpdating     EndpointProvisioningState = "Updating"
 	EndpointProvisioningStateWarning      EndpointProvisioningState = "Warning"
 )
 
@@ -131,6 +132,7 @@ func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
 		EndpointProvisioningStateRestoring,
 		EndpointProvisioningStateSucceeded,
 		EndpointProvisioningStateSuspending,
+		EndpointProvisioningStateUpdating,
 		EndpointProvisioningStateWarning,
 	}
 }
@@ -253,6 +255,7 @@ const (
 	TimeSeriesDatabaseConnectionStateRestoring    TimeSeriesDatabaseConnectionState = "Restoring"
 	TimeSeriesDatabaseConnectionStateSucceeded    TimeSeriesDatabaseConnectionState = "Succeeded"
 	TimeSeriesDatabaseConnectionStateSuspending   TimeSeriesDatabaseConnectionState = "Suspending"
+	TimeSeriesDatabaseConnectionStateUpdating     TimeSeriesDatabaseConnectionState = "Updating"
 	TimeSeriesDatabaseConnectionStateWarning      TimeSeriesDatabaseConnectionState = "Warning"
 )
 
@@ -269,6 +272,7 @@ func PossibleTimeSeriesDatabaseConnectionStateValues() []TimeSeriesDatabaseConne
 		TimeSeriesDatabaseConnectionStateRestoring,
 		TimeSeriesDatabaseConnectionStateSucceeded,
 		TimeSeriesDatabaseConnectionStateSuspending,
+		TimeSeriesDatabaseConnectionStateUpdating,
 		TimeSeriesDatabaseConnectionStateWarning,
 	}
 }

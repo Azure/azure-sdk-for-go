@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/list.json
 func ExampleOnlineEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleOnlineEndpointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/delete.json
 func ExampleOnlineEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleOnlineEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/get.json
 func ExampleOnlineEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleOnlineEndpointsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/update.json
 func ExampleOnlineEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,28 +113,14 @@ func ExampleOnlineEndpointsClient_BeginUpdate() {
 		"test-rg",
 		"my-aml-workspace",
 		"testEndpointName",
-		armmachinelearning.PartialOnlineEndpointPartialTrackedResource{
+		armmachinelearning.PartialMinimalTrackedResourceWithIdentity{
+			Tags: map[string]*string{},
 			Identity: &armmachinelearning.PartialManagedServiceIdentity{
 				Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
 				UserAssignedIdentities: map[string]interface{}{
 					"string": map[string]interface{}{},
 				},
 			},
-			Kind:     to.Ptr("string"),
-			Location: to.Ptr("string"),
-			Properties: &armmachinelearning.PartialOnlineEndpoint{
-				Traffic: map[string]*int32{
-					"string": to.Ptr[int32](1),
-				},
-			},
-			SKU: &armmachinelearning.PartialSKU{
-				Name:     to.Ptr("string"),
-				Capacity: to.Ptr[int32](1),
-				Family:   to.Ptr("string"),
-				Size:     to.Ptr("string"),
-				Tier:     to.Ptr(armmachinelearning.SKUTierFree),
-			},
-			Tags: map[string]*string{},
 		},
 		nil)
 	if err != nil {
@@ -148,7 +134,7 @@ func ExampleOnlineEndpointsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/createOrUpdate.json
 func ExampleOnlineEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +149,7 @@ func ExampleOnlineEndpointsClient_BeginCreateOrUpdate() {
 		"test-rg",
 		"my-aml-workspace",
 		"testEndpointName",
-		armmachinelearning.OnlineEndpointData{
+		armmachinelearning.OnlineEndpoint{
 			Location: to.Ptr("string"),
 			Tags:     map[string]*string{},
 			Identity: &armmachinelearning.ManagedServiceIdentity{
@@ -173,7 +159,7 @@ func ExampleOnlineEndpointsClient_BeginCreateOrUpdate() {
 				},
 			},
 			Kind: to.Ptr("string"),
-			Properties: &armmachinelearning.OnlineEndpointDetails{
+			Properties: &armmachinelearning.OnlineEndpointProperties{
 				Description: to.Ptr("string"),
 				AuthMode:    to.Ptr(armmachinelearning.EndpointAuthModeAMLToken),
 				Properties: map[string]*string{
@@ -204,7 +190,7 @@ func ExampleOnlineEndpointsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/listKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/listKeys.json
 func ExampleOnlineEndpointsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +213,7 @@ func ExampleOnlineEndpointsClient_ListKeys() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/regenerateKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/regenerateKeys.json
 func ExampleOnlineEndpointsClient_BeginRegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +242,7 @@ func ExampleOnlineEndpointsClient_BeginRegenerateKeys() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineEndpoint/getToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/OnlineEndpoint/getToken.json
 func ExampleOnlineEndpointsClient_GetToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

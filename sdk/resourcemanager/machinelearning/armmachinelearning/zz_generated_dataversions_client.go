@@ -57,7 +57,7 @@ func NewDataVersionsClient(subscriptionID string, credential azcore.TokenCredent
 
 // CreateOrUpdate - Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name.
@@ -65,7 +65,7 @@ func NewDataVersionsClient(subscriptionID string, credential azcore.TokenCredent
 // body - Version entity to create or update.
 // options - DataVersionsClientCreateOrUpdateOptions contains the optional parameters for the DataVersionsClient.CreateOrUpdate
 // method.
-func (client *DataVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DataVersionBaseData, options *DataVersionsClientCreateOrUpdateOptions) (DataVersionsClientCreateOrUpdateResponse, error) {
+func (client *DataVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DataVersionBase, options *DataVersionsClientCreateOrUpdateOptions) (DataVersionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, name, version, body, options)
 	if err != nil {
 		return DataVersionsClientCreateOrUpdateResponse{}, err
@@ -81,7 +81,7 @@ func (client *DataVersionsClient) CreateOrUpdate(ctx context.Context, resourceGr
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DataVersionBaseData, options *DataVersionsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DataVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DataVersionBase, options *DataVersionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/data/{name}/versions/{version}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -108,7 +108,7 @@ func (client *DataVersionsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -117,7 +117,7 @@ func (client *DataVersionsClient) createOrUpdateCreateRequest(ctx context.Contex
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *DataVersionsClient) createOrUpdateHandleResponse(resp *http.Response) (DataVersionsClientCreateOrUpdateResponse, error) {
 	result := DataVersionsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataVersionBaseData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataVersionBase); err != nil {
 		return DataVersionsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
@@ -125,7 +125,7 @@ func (client *DataVersionsClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name.
@@ -174,7 +174,7 @@ func (client *DataVersionsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -182,7 +182,7 @@ func (client *DataVersionsClient) deleteCreateRequest(ctx context.Context, resou
 
 // Get - Get version.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Container name.
@@ -231,7 +231,7 @@ func (client *DataVersionsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -240,7 +240,7 @@ func (client *DataVersionsClient) getCreateRequest(ctx context.Context, resource
 // getHandleResponse handles the Get response.
 func (client *DataVersionsClient) getHandleResponse(resp *http.Response) (DataVersionsClientGetResponse, error) {
 	result := DataVersionsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DataVersionBaseData); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataVersionBase); err != nil {
 		return DataVersionsClientGetResponse{}, err
 	}
 	return result, nil
@@ -248,7 +248,7 @@ func (client *DataVersionsClient) getHandleResponse(resp *http.Response) (DataVe
 
 // NewListPager - List data versions in the data container
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-02-01-preview
+// Generated from API version 2022-05-01
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - Name of Azure Machine Learning workspace.
 // name - Data container's name
@@ -305,7 +305,7 @@ func (client *DataVersionsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-02-01-preview")
+	reqQP.Set("api-version", "2022-05-01")
 	if options != nil && options.OrderBy != nil {
 		reqQP.Set("$orderBy", *options.OrderBy)
 	}

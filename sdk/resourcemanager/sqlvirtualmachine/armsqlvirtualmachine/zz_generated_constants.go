@@ -10,8 +10,59 @@ package armsqlvirtualmachine
 
 const (
 	moduleName    = "armsqlvirtualmachine"
-	moduleVersion = "v0.5.0"
+	moduleVersion = "v0.6.0"
 )
+
+// AssessmentDayOfWeek - Day of the week to run assessment.
+type AssessmentDayOfWeek string
+
+const (
+	AssessmentDayOfWeekMonday    AssessmentDayOfWeek = "Monday"
+	AssessmentDayOfWeekTuesday   AssessmentDayOfWeek = "Tuesday"
+	AssessmentDayOfWeekWednesday AssessmentDayOfWeek = "Wednesday"
+	AssessmentDayOfWeekThursday  AssessmentDayOfWeek = "Thursday"
+	AssessmentDayOfWeekFriday    AssessmentDayOfWeek = "Friday"
+	AssessmentDayOfWeekSaturday  AssessmentDayOfWeek = "Saturday"
+	AssessmentDayOfWeekSunday    AssessmentDayOfWeek = "Sunday"
+)
+
+// PossibleAssessmentDayOfWeekValues returns the possible values for the AssessmentDayOfWeek const type.
+func PossibleAssessmentDayOfWeekValues() []AssessmentDayOfWeek {
+	return []AssessmentDayOfWeek{
+		AssessmentDayOfWeekMonday,
+		AssessmentDayOfWeekTuesday,
+		AssessmentDayOfWeekWednesday,
+		AssessmentDayOfWeekThursday,
+		AssessmentDayOfWeekFriday,
+		AssessmentDayOfWeekSaturday,
+		AssessmentDayOfWeekSunday,
+	}
+}
+
+type AutoBackupDaysOfWeek string
+
+const (
+	AutoBackupDaysOfWeekFriday    AutoBackupDaysOfWeek = "Friday"
+	AutoBackupDaysOfWeekMonday    AutoBackupDaysOfWeek = "Monday"
+	AutoBackupDaysOfWeekSaturday  AutoBackupDaysOfWeek = "Saturday"
+	AutoBackupDaysOfWeekSunday    AutoBackupDaysOfWeek = "Sunday"
+	AutoBackupDaysOfWeekThursday  AutoBackupDaysOfWeek = "Thursday"
+	AutoBackupDaysOfWeekTuesday   AutoBackupDaysOfWeek = "Tuesday"
+	AutoBackupDaysOfWeekWednesday AutoBackupDaysOfWeek = "Wednesday"
+)
+
+// PossibleAutoBackupDaysOfWeekValues returns the possible values for the AutoBackupDaysOfWeek const type.
+func PossibleAutoBackupDaysOfWeekValues() []AutoBackupDaysOfWeek {
+	return []AutoBackupDaysOfWeek{
+		AutoBackupDaysOfWeekFriday,
+		AutoBackupDaysOfWeekMonday,
+		AutoBackupDaysOfWeekSaturday,
+		AutoBackupDaysOfWeekSunday,
+		AutoBackupDaysOfWeekThursday,
+		AutoBackupDaysOfWeekTuesday,
+		AutoBackupDaysOfWeekWednesday,
+	}
+}
 
 // BackupScheduleType - Backup schedule type.
 type BackupScheduleType string
@@ -116,6 +167,7 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type DayOfWeek string
 
 const (
+	DayOfWeekEveryday  DayOfWeek = "Everyday"
 	DayOfWeekMonday    DayOfWeek = "Monday"
 	DayOfWeekTuesday   DayOfWeek = "Tuesday"
 	DayOfWeekWednesday DayOfWeek = "Wednesday"
@@ -128,6 +180,7 @@ const (
 // PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return []DayOfWeek{
+		DayOfWeekEveryday,
 		DayOfWeekMonday,
 		DayOfWeekTuesday,
 		DayOfWeekWednesday,
@@ -135,31 +188,6 @@ func PossibleDayOfWeekValues() []DayOfWeek {
 		DayOfWeekFriday,
 		DayOfWeekSaturday,
 		DayOfWeekSunday,
-	}
-}
-
-type DaysOfWeek string
-
-const (
-	DaysOfWeekFriday    DaysOfWeek = "Friday"
-	DaysOfWeekMonday    DaysOfWeek = "Monday"
-	DaysOfWeekSaturday  DaysOfWeek = "Saturday"
-	DaysOfWeekSunday    DaysOfWeek = "Sunday"
-	DaysOfWeekThursday  DaysOfWeek = "Thursday"
-	DaysOfWeekTuesday   DaysOfWeek = "Tuesday"
-	DaysOfWeekWednesday DaysOfWeek = "Wednesday"
-)
-
-// PossibleDaysOfWeekValues returns the possible values for the DaysOfWeek const type.
-func PossibleDaysOfWeekValues() []DaysOfWeek {
-	return []DaysOfWeek{
-		DaysOfWeekFriday,
-		DaysOfWeekMonday,
-		DaysOfWeekSaturday,
-		DaysOfWeekSunday,
-		DaysOfWeekThursday,
-		DaysOfWeekTuesday,
-		DaysOfWeekWednesday,
 	}
 }
 

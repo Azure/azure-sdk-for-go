@@ -438,13 +438,13 @@ func TestReceiver_UserFacingErrors(t *testing.T) {
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
-	fakeAMQPLinks.Err = amqp.ErrConnClosed
+	fakeAMQPLinks.Err = &amqp.ConnectionError{}
 	messages, err = receiver.ReceiveDeferredMessages(context.Background(), []int64{1}, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)
 	require.Equal(t, CodeConnectionLost, asSBError.Code)
 
-	fakeAMQPLinks.Err = amqp.ErrConnClosed
+	fakeAMQPLinks.Err = &amqp.ConnectionError{}
 	messages, err = receiver.ReceiveMessages(context.Background(), 1, nil)
 	require.Empty(t, messages)
 	require.ErrorAs(t, err, &asSBError)

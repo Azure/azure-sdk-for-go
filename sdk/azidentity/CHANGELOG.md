@@ -1,12 +1,30 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.2.0-beta.1 (2022-06-07)
+
+### Features Added
+* `EnvironmentCredential` reads certificate passwords from `AZURE_CLIENT_CERTIFICATE_PASSWORD`
+  ([#17099](https://github.com/Azure/azure-sdk-for-go/pull/17099))
+
+## 1.1.0 (2022-06-07)
+
+### Features Added
+* `ClientCertificateCredential` and `ClientSecretCredential` support ESTS-R. First-party
+  applications can set environment variable `AZURE_REGIONAL_AUTHORITY_NAME` with a
+  region name.
+  ([#15605](https://github.com/Azure/azure-sdk-for-go/issues/15605))
+
+## 1.0.1 (2022-06-07)
 
 ### Other Changes
 * Upgrade `microsoft-authentication-library-for-go` requirement to v0.5.1

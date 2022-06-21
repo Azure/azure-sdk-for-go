@@ -54,9 +54,9 @@ func NewAutomationRulesClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// CreateOrUpdate - Creates or updates the automation rule
+// CreateOrUpdate - Creates or updates the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2022-05-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // automationRuleID - Automation rule ID
@@ -101,7 +101,7 @@ func (client *AutomationRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.AutomationRuleToUpsert != nil {
@@ -119,9 +119,9 @@ func (client *AutomationRulesClient) createOrUpdateHandleResponse(resp *http.Res
 	return result, nil
 }
 
-// Delete - Delete the automation rule
+// Delete - Delete the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2022-05-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // automationRuleID - Automation rule ID
@@ -165,7 +165,7 @@ func (client *AutomationRulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,9 +180,9 @@ func (client *AutomationRulesClient) deleteHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// Get - Gets the automation rule
+// Get - Gets the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2022-05-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // automationRuleID - Automation rule ID
@@ -226,7 +226,7 @@ func (client *AutomationRulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -241,9 +241,9 @@ func (client *AutomationRulesClient) getHandleResponse(resp *http.Response) (Aut
 	return result, nil
 }
 
-// NewListPager - Gets all automation rules
+// NewListPager - Gets all automation rules.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-10-01
+// Generated from API version 2022-05-01-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // workspaceName - The name of the workspace.
 // options - AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.List method.
@@ -295,7 +295,7 @@ func (client *AutomationRulesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-10-01")
+	reqQP.Set("api-version", "2022-05-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

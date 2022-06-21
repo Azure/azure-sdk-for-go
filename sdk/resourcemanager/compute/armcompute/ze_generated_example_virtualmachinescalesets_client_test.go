@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/compute/resource-manager/Microsoft.Compute/stable/2022-03-01/ComputeRP/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ListBySubscription_ByLocation.json
@@ -163,7 +163,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdate() {
 			},
 			Identity: &armcompute.VirtualMachineScaleSetIdentity{
 				Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssigned),
-				UserAssignedIdentities: map[string]*armcompute.VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue{
+				UserAssignedIdentities: map[string]*armcompute.UserAssignedIdentitiesValue{
 					"key3951": {},
 				},
 			},

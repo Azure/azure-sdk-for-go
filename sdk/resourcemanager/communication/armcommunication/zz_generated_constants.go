@@ -10,7 +10,7 @@ package armcommunication
 
 const (
 	moduleName    = "armcommunication"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -24,6 +24,52 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// CheckNameAvailabilityReason - The reason why the given name is not available.
+type CheckNameAvailabilityReason string
+
+const (
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{
+		CheckNameAvailabilityReasonAlreadyExists,
+		CheckNameAvailabilityReasonInvalid,
+	}
+}
+
+// CommunicationServicesProvisioningState - Provisioning state of the resource.
+type CommunicationServicesProvisioningState string
+
+const (
+	CommunicationServicesProvisioningStateCanceled  CommunicationServicesProvisioningState = "Canceled"
+	CommunicationServicesProvisioningStateCreating  CommunicationServicesProvisioningState = "Creating"
+	CommunicationServicesProvisioningStateDeleting  CommunicationServicesProvisioningState = "Deleting"
+	CommunicationServicesProvisioningStateFailed    CommunicationServicesProvisioningState = "Failed"
+	CommunicationServicesProvisioningStateMoving    CommunicationServicesProvisioningState = "Moving"
+	CommunicationServicesProvisioningStateRunning   CommunicationServicesProvisioningState = "Running"
+	CommunicationServicesProvisioningStateSucceeded CommunicationServicesProvisioningState = "Succeeded"
+	CommunicationServicesProvisioningStateUnknown   CommunicationServicesProvisioningState = "Unknown"
+	CommunicationServicesProvisioningStateUpdating  CommunicationServicesProvisioningState = "Updating"
+)
+
+// PossibleCommunicationServicesProvisioningStateValues returns the possible values for the CommunicationServicesProvisioningState const type.
+func PossibleCommunicationServicesProvisioningStateValues() []CommunicationServicesProvisioningState {
+	return []CommunicationServicesProvisioningState{
+		CommunicationServicesProvisioningStateCanceled,
+		CommunicationServicesProvisioningStateCreating,
+		CommunicationServicesProvisioningStateDeleting,
+		CommunicationServicesProvisioningStateFailed,
+		CommunicationServicesProvisioningStateMoving,
+		CommunicationServicesProvisioningStateRunning,
+		CommunicationServicesProvisioningStateSucceeded,
+		CommunicationServicesProvisioningStateUnknown,
+		CommunicationServicesProvisioningStateUpdating,
 	}
 }
 
@@ -44,6 +90,84 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// DomainManagement - Describes how a Domains resource is being managed.
+type DomainManagement string
+
+const (
+	DomainManagementAzureManaged                    DomainManagement = "AzureManaged"
+	DomainManagementCustomerManaged                 DomainManagement = "CustomerManaged"
+	DomainManagementCustomerManagedInExchangeOnline DomainManagement = "CustomerManagedInExchangeOnline"
+)
+
+// PossibleDomainManagementValues returns the possible values for the DomainManagement const type.
+func PossibleDomainManagementValues() []DomainManagement {
+	return []DomainManagement{
+		DomainManagementAzureManaged,
+		DomainManagementCustomerManaged,
+		DomainManagementCustomerManagedInExchangeOnline,
+	}
+}
+
+// DomainsProvisioningState - Provisioning state of the resource.
+type DomainsProvisioningState string
+
+const (
+	DomainsProvisioningStateCanceled  DomainsProvisioningState = "Canceled"
+	DomainsProvisioningStateCreating  DomainsProvisioningState = "Creating"
+	DomainsProvisioningStateDeleting  DomainsProvisioningState = "Deleting"
+	DomainsProvisioningStateFailed    DomainsProvisioningState = "Failed"
+	DomainsProvisioningStateMoving    DomainsProvisioningState = "Moving"
+	DomainsProvisioningStateRunning   DomainsProvisioningState = "Running"
+	DomainsProvisioningStateSucceeded DomainsProvisioningState = "Succeeded"
+	DomainsProvisioningStateUnknown   DomainsProvisioningState = "Unknown"
+	DomainsProvisioningStateUpdating  DomainsProvisioningState = "Updating"
+)
+
+// PossibleDomainsProvisioningStateValues returns the possible values for the DomainsProvisioningState const type.
+func PossibleDomainsProvisioningStateValues() []DomainsProvisioningState {
+	return []DomainsProvisioningState{
+		DomainsProvisioningStateCanceled,
+		DomainsProvisioningStateCreating,
+		DomainsProvisioningStateDeleting,
+		DomainsProvisioningStateFailed,
+		DomainsProvisioningStateMoving,
+		DomainsProvisioningStateRunning,
+		DomainsProvisioningStateSucceeded,
+		DomainsProvisioningStateUnknown,
+		DomainsProvisioningStateUpdating,
+	}
+}
+
+// EmailServicesProvisioningState - Provisioning state of the resource.
+type EmailServicesProvisioningState string
+
+const (
+	EmailServicesProvisioningStateCanceled  EmailServicesProvisioningState = "Canceled"
+	EmailServicesProvisioningStateCreating  EmailServicesProvisioningState = "Creating"
+	EmailServicesProvisioningStateDeleting  EmailServicesProvisioningState = "Deleting"
+	EmailServicesProvisioningStateFailed    EmailServicesProvisioningState = "Failed"
+	EmailServicesProvisioningStateMoving    EmailServicesProvisioningState = "Moving"
+	EmailServicesProvisioningStateRunning   EmailServicesProvisioningState = "Running"
+	EmailServicesProvisioningStateSucceeded EmailServicesProvisioningState = "Succeeded"
+	EmailServicesProvisioningStateUnknown   EmailServicesProvisioningState = "Unknown"
+	EmailServicesProvisioningStateUpdating  EmailServicesProvisioningState = "Updating"
+)
+
+// PossibleEmailServicesProvisioningStateValues returns the possible values for the EmailServicesProvisioningState const type.
+func PossibleEmailServicesProvisioningStateValues() []EmailServicesProvisioningState {
+	return []EmailServicesProvisioningState{
+		EmailServicesProvisioningStateCanceled,
+		EmailServicesProvisioningStateCreating,
+		EmailServicesProvisioningStateDeleting,
+		EmailServicesProvisioningStateFailed,
+		EmailServicesProvisioningStateMoving,
+		EmailServicesProvisioningStateRunning,
+		EmailServicesProvisioningStateSucceeded,
+		EmailServicesProvisioningStateUnknown,
+		EmailServicesProvisioningStateUpdating,
 	}
 }
 
@@ -82,32 +206,64 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// ProvisioningState - Provisioning state of the resource.
-type ProvisioningState string
+// UserEngagementTracking - Describes whether user engagement tracking is enabled or disabled.
+type UserEngagementTracking string
 
 const (
-	ProvisioningStateCanceled  ProvisioningState = "Canceled"
-	ProvisioningStateCreating  ProvisioningState = "Creating"
-	ProvisioningStateDeleting  ProvisioningState = "Deleting"
-	ProvisioningStateFailed    ProvisioningState = "Failed"
-	ProvisioningStateMoving    ProvisioningState = "Moving"
-	ProvisioningStateRunning   ProvisioningState = "Running"
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	ProvisioningStateUnknown   ProvisioningState = "Unknown"
-	ProvisioningStateUpdating  ProvisioningState = "Updating"
+	UserEngagementTrackingDisabled UserEngagementTracking = "Disabled"
+	UserEngagementTrackingEnabled  UserEngagementTracking = "Enabled"
 )
 
-// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
-		ProvisioningStateCanceled,
-		ProvisioningStateCreating,
-		ProvisioningStateDeleting,
-		ProvisioningStateFailed,
-		ProvisioningStateMoving,
-		ProvisioningStateRunning,
-		ProvisioningStateSucceeded,
-		ProvisioningStateUnknown,
-		ProvisioningStateUpdating,
+// PossibleUserEngagementTrackingValues returns the possible values for the UserEngagementTracking const type.
+func PossibleUserEngagementTrackingValues() []UserEngagementTracking {
+	return []UserEngagementTracking{
+		UserEngagementTrackingDisabled,
+		UserEngagementTrackingEnabled,
+	}
+}
+
+// VerificationStatus - Status of the verification operation.
+type VerificationStatus string
+
+const (
+	VerificationStatusCancellationRequested  VerificationStatus = "CancellationRequested"
+	VerificationStatusNotStarted             VerificationStatus = "NotStarted"
+	VerificationStatusVerificationFailed     VerificationStatus = "VerificationFailed"
+	VerificationStatusVerificationInProgress VerificationStatus = "VerificationInProgress"
+	VerificationStatusVerificationRequested  VerificationStatus = "VerificationRequested"
+	VerificationStatusVerified               VerificationStatus = "Verified"
+)
+
+// PossibleVerificationStatusValues returns the possible values for the VerificationStatus const type.
+func PossibleVerificationStatusValues() []VerificationStatus {
+	return []VerificationStatus{
+		VerificationStatusCancellationRequested,
+		VerificationStatusNotStarted,
+		VerificationStatusVerificationFailed,
+		VerificationStatusVerificationInProgress,
+		VerificationStatusVerificationRequested,
+		VerificationStatusVerified,
+	}
+}
+
+// VerificationType - Type of verification.
+type VerificationType string
+
+const (
+	VerificationTypeDKIM   VerificationType = "DKIM"
+	VerificationTypeDKIM2  VerificationType = "DKIM2"
+	VerificationTypeDMARC  VerificationType = "DMARC"
+	VerificationTypeDomain VerificationType = "Domain"
+	VerificationTypeSPF    VerificationType = "SPF"
+)
+
+// PossibleVerificationTypeValues returns the possible values for the VerificationType const type.
+func PossibleVerificationTypeValues() []VerificationType {
+	return []VerificationType{
+		VerificationTypeDKIM,
+		VerificationTypeDKIM2,
+		VerificationTypeDMARC,
+		VerificationTypeDomain,
+		VerificationTypeSPF,
 	}
 }

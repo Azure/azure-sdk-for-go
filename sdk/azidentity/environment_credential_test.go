@@ -9,8 +9,10 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -113,6 +115,36 @@ func TestEnvironmentCredential_ClientCertificatePathSet(t *testing.T) {
 	}
 	if _, ok := cred.cred.(*ClientCertificateCredential); !ok {
 		t.Fatalf("Did not receive the right credential type. Expected *azidentity.ClientCertificateCredential, Received: %t", cred)
+	}
+}
+
+func TestEnvironmentCredential_ClientCertificatePassword(t *testing.T) {
+	for key, value := range map[string]string{
+		"AZURE_TENANT_ID":               fakeTenantID,
+		azureClientID:                   fakeClientID,
+		"AZURE_CLIENT_CERTIFICATE_PATH": "testdata/certificate_encrypted_key.pfx",
+	} {
+		t.Setenv(key, value)
+	}
+	for _, correctPassword := range []bool{true, false} {
+		t.Run(fmt.Sprintf("%v", correctPassword), func(t *testing.T) {
+			password := "wrong password"
+			if correctPassword {
+				password = "password"
+			}
+			t.Setenv("AZURE_CLIENT_CERTIFICATE_PASSWORD", password)
+			cred, err := NewEnvironmentCredential(nil)
+			if correctPassword {
+				if err != nil {
+					t.Fatal(err)
+				}
+				if _, ok := cred.cred.(*ClientCertificateCredential); !ok {
+					t.Fatalf("expected *azidentity.ClientCertificateCredential, got %t", cred)
+				}
+			} else if err == nil || !strings.Contains(err.Error(), "password") {
+				t.Fatal("expected an error about the password")
+			}
+		})
 	}
 }
 

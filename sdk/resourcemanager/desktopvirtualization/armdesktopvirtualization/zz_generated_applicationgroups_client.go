@@ -56,7 +56,7 @@ func NewApplicationGroupsClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Create or update an applicationGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationGroupName - The name of the application group
 // applicationGroup - Object containing ApplicationGroup definitions.
@@ -97,7 +97,7 @@ func (client *ApplicationGroupsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, applicationGroup)
@@ -114,7 +114,7 @@ func (client *ApplicationGroupsClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Remove an applicationGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationGroupName - The name of the application group
 // options - ApplicationGroupsClientDeleteOptions contains the optional parameters for the ApplicationGroupsClient.Delete
@@ -154,7 +154,7 @@ func (client *ApplicationGroupsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -162,7 +162,7 @@ func (client *ApplicationGroupsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Get an application group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationGroupName - The name of the application group
 // options - ApplicationGroupsClientGetOptions contains the optional parameters for the ApplicationGroupsClient.Get method.
@@ -201,7 +201,7 @@ func (client *ApplicationGroupsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -218,7 +218,7 @@ func (client *ApplicationGroupsClient) getHandleResponse(resp *http.Response) (A
 
 // NewListByResourceGroupPager - List applicationGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // options - ApplicationGroupsClientListByResourceGroupOptions contains the optional parameters for the ApplicationGroupsClient.ListByResourceGroup
 // method.
@@ -266,7 +266,7 @@ func (client *ApplicationGroupsClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -286,7 +286,7 @@ func (client *ApplicationGroupsClient) listByResourceGroupHandleResponse(resp *h
 
 // NewListBySubscriptionPager - List applicationGroups in subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // options - ApplicationGroupsClientListBySubscriptionOptions contains the optional parameters for the ApplicationGroupsClient.ListBySubscription
 // method.
 func (client *ApplicationGroupsClient) NewListBySubscriptionPager(options *ApplicationGroupsClientListBySubscriptionOptions) *runtime.Pager[ApplicationGroupsClientListBySubscriptionResponse] {
@@ -329,7 +329,7 @@ func (client *ApplicationGroupsClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -349,7 +349,7 @@ func (client *ApplicationGroupsClient) listBySubscriptionHandleResponse(resp *ht
 
 // Update - Update an applicationGroup.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-07-12
+// Generated from API version 2022-02-10-preview
 // resourceGroupName - The name of the resource group. The name is case insensitive.
 // applicationGroupName - The name of the application group
 // options - ApplicationGroupsClientUpdateOptions contains the optional parameters for the ApplicationGroupsClient.Update
@@ -389,7 +389,7 @@ func (client *ApplicationGroupsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-12")
+	reqQP.Set("api-version", "2022-02-10-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ApplicationGroup != nil {

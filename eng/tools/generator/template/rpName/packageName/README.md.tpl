@@ -1,8 +1,8 @@
-# Azure {{PackageTitle}} Module for Go
+# Azure {{packageTitle}} Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packageName}})](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packageName}})
 
-The `{{packageName}}` module provides operations for working with Azure {{PackageTitle}}.
+The `{{packageName}}` module provides operations for working with Azure {{packageTitle}}.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/{{rpName}}/{{packageName}})
 
@@ -17,7 +17,7 @@ The `{{packageName}}` module provides operations for working with Azure {{Packag
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure {{PackageTitle}} module:
+Install the Azure {{packageTitle}} module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packageName}}
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packag
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure {{PackageTitle}}.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure {{packageTitle}}.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,7 +35,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Clients
 
-Azure {{PackageTitle}} modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
+Azure {{packageTitle}} modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
 client, err := {{packageName}}.{{NewClientName}}(<subscription ID>, cred, nil)
@@ -55,7 +55,7 @@ client, err := {{packageName}}.{{NewClientName}}(<subscription ID>, cred, &optio
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `{{PackageTitle}}` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `{{packageTitle}}` label.
 
 # Contributing
 

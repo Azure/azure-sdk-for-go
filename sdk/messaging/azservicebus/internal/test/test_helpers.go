@@ -47,6 +47,16 @@ func GetConnectionString(t *testing.T) string {
 	return cs
 }
 
+func GetConnectionStringForPremiumSB(t *testing.T) string {
+	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_PREMIUM")
+
+	if cs == "" {
+		t.Skip()
+	}
+
+	return cs
+}
+
 func GetConnectionStringWithoutManagePerms(t *testing.T) string {
 	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING_NO_MANAGE")
 

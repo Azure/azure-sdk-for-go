@@ -10,7 +10,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0"
 )
 
 type AccessLevel string
@@ -209,6 +209,23 @@ func PossibleConsistencyModeTypesValues() []ConsistencyModeTypes {
 		ConsistencyModeTypesApplicationConsistent,
 		ConsistencyModeTypesCrashConsistent,
 		ConsistencyModeTypesFileSystemConsistent,
+	}
+}
+
+// CopyCompletionErrorReason - Indicates the error code if the background copy of a resource created via the CopyStart operation
+// fails.
+type CopyCompletionErrorReason string
+
+const (
+	// CopyCompletionErrorReasonCopySourceNotFound - Indicates that the source snapshot was deleted while the background copy
+	// of the resource created via CopyStart operation was in progress.
+	CopyCompletionErrorReasonCopySourceNotFound CopyCompletionErrorReason = "CopySourceNotFound"
+)
+
+// PossibleCopyCompletionErrorReasonValues returns the possible values for the CopyCompletionErrorReason const type.
+func PossibleCopyCompletionErrorReasonValues() []CopyCompletionErrorReason {
+	return []CopyCompletionErrorReason{
+		CopyCompletionErrorReasonCopySourceNotFound,
 	}
 }
 
@@ -423,8 +440,10 @@ func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
 type DiskEncryptionSetIdentityType string
 
 const (
-	DiskEncryptionSetIdentityTypeNone           DiskEncryptionSetIdentityType = "None"
-	DiskEncryptionSetIdentityTypeSystemAssigned DiskEncryptionSetIdentityType = "SystemAssigned"
+	DiskEncryptionSetIdentityTypeNone                       DiskEncryptionSetIdentityType = "None"
+	DiskEncryptionSetIdentityTypeSystemAssigned             DiskEncryptionSetIdentityType = "SystemAssigned"
+	DiskEncryptionSetIdentityTypeSystemAssignedUserAssigned DiskEncryptionSetIdentityType = "SystemAssigned, UserAssigned"
+	DiskEncryptionSetIdentityTypeUserAssigned               DiskEncryptionSetIdentityType = "UserAssigned"
 )
 
 // PossibleDiskEncryptionSetIdentityTypeValues returns the possible values for the DiskEncryptionSetIdentityType const type.
@@ -432,6 +451,8 @@ func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityTy
 	return []DiskEncryptionSetIdentityType{
 		DiskEncryptionSetIdentityTypeNone,
 		DiskEncryptionSetIdentityTypeSystemAssigned,
+		DiskEncryptionSetIdentityTypeSystemAssignedUserAssigned,
+		DiskEncryptionSetIdentityTypeUserAssigned,
 	}
 }
 
@@ -530,6 +551,9 @@ const (
 	// DiskStorageAccountTypesPremiumLRS - Premium SSD locally redundant storage. Best for production and performance sensitive
 	// workloads.
 	DiskStorageAccountTypesPremiumLRS DiskStorageAccountTypes = "Premium_LRS"
+	// DiskStorageAccountTypesPremiumV2LRS - Premium SSD v2 locally redundant storage. Best for production and performance-sensitive
+	// workloads that consistently require low latency and high IOPS and throughput.
+	DiskStorageAccountTypesPremiumV2LRS DiskStorageAccountTypes = "PremiumV2_LRS"
 	// DiskStorageAccountTypesPremiumZRS - Premium SSD zone redundant storage. Best for the production workloads that need storage
 	// resiliency against zone failures.
 	DiskStorageAccountTypesPremiumZRS DiskStorageAccountTypes = "Premium_ZRS"
@@ -551,6 +575,7 @@ const (
 func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 	return []DiskStorageAccountTypes{
 		DiskStorageAccountTypesPremiumLRS,
+		DiskStorageAccountTypesPremiumV2LRS,
 		DiskStorageAccountTypesPremiumZRS,
 		DiskStorageAccountTypesStandardLRS,
 		DiskStorageAccountTypesStandardSSDLRS,
@@ -665,30 +690,6 @@ func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	}
 }
 
-// GalleryApplicationVersionPropertiesProvisioningState - The provisioning state, which only appears in the response.
-type GalleryApplicationVersionPropertiesProvisioningState string
-
-const (
-	GalleryApplicationVersionPropertiesProvisioningStateCreating  GalleryApplicationVersionPropertiesProvisioningState = "Creating"
-	GalleryApplicationVersionPropertiesProvisioningStateDeleting  GalleryApplicationVersionPropertiesProvisioningState = "Deleting"
-	GalleryApplicationVersionPropertiesProvisioningStateFailed    GalleryApplicationVersionPropertiesProvisioningState = "Failed"
-	GalleryApplicationVersionPropertiesProvisioningStateMigrating GalleryApplicationVersionPropertiesProvisioningState = "Migrating"
-	GalleryApplicationVersionPropertiesProvisioningStateSucceeded GalleryApplicationVersionPropertiesProvisioningState = "Succeeded"
-	GalleryApplicationVersionPropertiesProvisioningStateUpdating  GalleryApplicationVersionPropertiesProvisioningState = "Updating"
-)
-
-// PossibleGalleryApplicationVersionPropertiesProvisioningStateValues returns the possible values for the GalleryApplicationVersionPropertiesProvisioningState const type.
-func PossibleGalleryApplicationVersionPropertiesProvisioningStateValues() []GalleryApplicationVersionPropertiesProvisioningState {
-	return []GalleryApplicationVersionPropertiesProvisioningState{
-		GalleryApplicationVersionPropertiesProvisioningStateCreating,
-		GalleryApplicationVersionPropertiesProvisioningStateDeleting,
-		GalleryApplicationVersionPropertiesProvisioningStateFailed,
-		GalleryApplicationVersionPropertiesProvisioningStateMigrating,
-		GalleryApplicationVersionPropertiesProvisioningStateSucceeded,
-		GalleryApplicationVersionPropertiesProvisioningStateUpdating,
-	}
-}
-
 type GalleryExpandParams string
 
 const (
@@ -718,75 +719,27 @@ func PossibleGalleryExtendedLocationTypeValues() []GalleryExtendedLocationType {
 	}
 }
 
-// GalleryImagePropertiesProvisioningState - The provisioning state, which only appears in the response.
-type GalleryImagePropertiesProvisioningState string
+// GalleryProvisioningState - The provisioning state, which only appears in the response.
+type GalleryProvisioningState string
 
 const (
-	GalleryImagePropertiesProvisioningStateCreating  GalleryImagePropertiesProvisioningState = "Creating"
-	GalleryImagePropertiesProvisioningStateDeleting  GalleryImagePropertiesProvisioningState = "Deleting"
-	GalleryImagePropertiesProvisioningStateFailed    GalleryImagePropertiesProvisioningState = "Failed"
-	GalleryImagePropertiesProvisioningStateMigrating GalleryImagePropertiesProvisioningState = "Migrating"
-	GalleryImagePropertiesProvisioningStateSucceeded GalleryImagePropertiesProvisioningState = "Succeeded"
-	GalleryImagePropertiesProvisioningStateUpdating  GalleryImagePropertiesProvisioningState = "Updating"
+	GalleryProvisioningStateCreating  GalleryProvisioningState = "Creating"
+	GalleryProvisioningStateDeleting  GalleryProvisioningState = "Deleting"
+	GalleryProvisioningStateFailed    GalleryProvisioningState = "Failed"
+	GalleryProvisioningStateMigrating GalleryProvisioningState = "Migrating"
+	GalleryProvisioningStateSucceeded GalleryProvisioningState = "Succeeded"
+	GalleryProvisioningStateUpdating  GalleryProvisioningState = "Updating"
 )
 
-// PossibleGalleryImagePropertiesProvisioningStateValues returns the possible values for the GalleryImagePropertiesProvisioningState const type.
-func PossibleGalleryImagePropertiesProvisioningStateValues() []GalleryImagePropertiesProvisioningState {
-	return []GalleryImagePropertiesProvisioningState{
-		GalleryImagePropertiesProvisioningStateCreating,
-		GalleryImagePropertiesProvisioningStateDeleting,
-		GalleryImagePropertiesProvisioningStateFailed,
-		GalleryImagePropertiesProvisioningStateMigrating,
-		GalleryImagePropertiesProvisioningStateSucceeded,
-		GalleryImagePropertiesProvisioningStateUpdating,
-	}
-}
-
-// GalleryImageVersionPropertiesProvisioningState - The provisioning state, which only appears in the response.
-type GalleryImageVersionPropertiesProvisioningState string
-
-const (
-	GalleryImageVersionPropertiesProvisioningStateCreating  GalleryImageVersionPropertiesProvisioningState = "Creating"
-	GalleryImageVersionPropertiesProvisioningStateDeleting  GalleryImageVersionPropertiesProvisioningState = "Deleting"
-	GalleryImageVersionPropertiesProvisioningStateFailed    GalleryImageVersionPropertiesProvisioningState = "Failed"
-	GalleryImageVersionPropertiesProvisioningStateMigrating GalleryImageVersionPropertiesProvisioningState = "Migrating"
-	GalleryImageVersionPropertiesProvisioningStateSucceeded GalleryImageVersionPropertiesProvisioningState = "Succeeded"
-	GalleryImageVersionPropertiesProvisioningStateUpdating  GalleryImageVersionPropertiesProvisioningState = "Updating"
-)
-
-// PossibleGalleryImageVersionPropertiesProvisioningStateValues returns the possible values for the GalleryImageVersionPropertiesProvisioningState const type.
-func PossibleGalleryImageVersionPropertiesProvisioningStateValues() []GalleryImageVersionPropertiesProvisioningState {
-	return []GalleryImageVersionPropertiesProvisioningState{
-		GalleryImageVersionPropertiesProvisioningStateCreating,
-		GalleryImageVersionPropertiesProvisioningStateDeleting,
-		GalleryImageVersionPropertiesProvisioningStateFailed,
-		GalleryImageVersionPropertiesProvisioningStateMigrating,
-		GalleryImageVersionPropertiesProvisioningStateSucceeded,
-		GalleryImageVersionPropertiesProvisioningStateUpdating,
-	}
-}
-
-// GalleryPropertiesProvisioningState - The provisioning state, which only appears in the response.
-type GalleryPropertiesProvisioningState string
-
-const (
-	GalleryPropertiesProvisioningStateCreating  GalleryPropertiesProvisioningState = "Creating"
-	GalleryPropertiesProvisioningStateDeleting  GalleryPropertiesProvisioningState = "Deleting"
-	GalleryPropertiesProvisioningStateFailed    GalleryPropertiesProvisioningState = "Failed"
-	GalleryPropertiesProvisioningStateMigrating GalleryPropertiesProvisioningState = "Migrating"
-	GalleryPropertiesProvisioningStateSucceeded GalleryPropertiesProvisioningState = "Succeeded"
-	GalleryPropertiesProvisioningStateUpdating  GalleryPropertiesProvisioningState = "Updating"
-)
-
-// PossibleGalleryPropertiesProvisioningStateValues returns the possible values for the GalleryPropertiesProvisioningState const type.
-func PossibleGalleryPropertiesProvisioningStateValues() []GalleryPropertiesProvisioningState {
-	return []GalleryPropertiesProvisioningState{
-		GalleryPropertiesProvisioningStateCreating,
-		GalleryPropertiesProvisioningStateDeleting,
-		GalleryPropertiesProvisioningStateFailed,
-		GalleryPropertiesProvisioningStateMigrating,
-		GalleryPropertiesProvisioningStateSucceeded,
-		GalleryPropertiesProvisioningStateUpdating,
+// PossibleGalleryProvisioningStateValues returns the possible values for the GalleryProvisioningState const type.
+func PossibleGalleryProvisioningStateValues() []GalleryProvisioningState {
+	return []GalleryProvisioningState{
+		GalleryProvisioningStateCreating,
+		GalleryProvisioningStateDeleting,
+		GalleryProvisioningStateFailed,
+		GalleryProvisioningStateMigrating,
+		GalleryProvisioningStateSucceeded,
+		GalleryProvisioningStateUpdating,
 	}
 }
 
@@ -794,16 +747,19 @@ func PossibleGalleryPropertiesProvisioningStateValues() []GalleryPropertiesProvi
 // Possible values are:
 // Private
 // Groups
+// Community
 type GallerySharingPermissionTypes string
 
 const (
-	GallerySharingPermissionTypesGroups  GallerySharingPermissionTypes = "Groups"
-	GallerySharingPermissionTypesPrivate GallerySharingPermissionTypes = "Private"
+	GallerySharingPermissionTypesCommunity GallerySharingPermissionTypes = "Community"
+	GallerySharingPermissionTypesGroups    GallerySharingPermissionTypes = "Groups"
+	GallerySharingPermissionTypesPrivate   GallerySharingPermissionTypes = "Private"
 )
 
 // PossibleGallerySharingPermissionTypesValues returns the possible values for the GallerySharingPermissionTypes const type.
 func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTypes {
 	return []GallerySharingPermissionTypes{
+		GallerySharingPermissionTypesCommunity,
 		GallerySharingPermissionTypesGroups,
 		GallerySharingPermissionTypesPrivate,
 	}
@@ -1094,8 +1050,7 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 	}
 }
 
-// OperatingSystemTypes - This property allows you to specify the type of the OS that is included in the disk when creating
-// a VM from a managed image.
+// OperatingSystemTypes - This property allows you to specify the supported type of the OS that application is built for.
 // Possible values are:
 // Windows
 // Linux
@@ -1656,6 +1611,24 @@ func PossibleSettingNamesValues() []SettingNames {
 	}
 }
 
+// SharedGalleryHostCaching - The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
+type SharedGalleryHostCaching string
+
+const (
+	SharedGalleryHostCachingNone      SharedGalleryHostCaching = "None"
+	SharedGalleryHostCachingReadOnly  SharedGalleryHostCaching = "ReadOnly"
+	SharedGalleryHostCachingReadWrite SharedGalleryHostCaching = "ReadWrite"
+)
+
+// PossibleSharedGalleryHostCachingValues returns the possible values for the SharedGalleryHostCaching const type.
+func PossibleSharedGalleryHostCachingValues() []SharedGalleryHostCaching {
+	return []SharedGalleryHostCaching{
+		SharedGalleryHostCachingNone,
+		SharedGalleryHostCachingReadOnly,
+		SharedGalleryHostCachingReadWrite,
+	}
+}
+
 type SharedToValues string
 
 const (
@@ -1673,12 +1646,10 @@ func PossibleSharedToValuesValues() []SharedToValues {
 // Possible values are:
 // Subscriptions
 // AADTenants
-// Community
 type SharingProfileGroupTypes string
 
 const (
 	SharingProfileGroupTypesAADTenants    SharingProfileGroupTypes = "AADTenants"
-	SharingProfileGroupTypesCommunity     SharingProfileGroupTypes = "Community"
 	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = "Subscriptions"
 )
 
@@ -1686,7 +1657,6 @@ const (
 func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
 	return []SharingProfileGroupTypes{
 		SharingProfileGroupTypesAADTenants,
-		SharingProfileGroupTypesCommunity,
 		SharingProfileGroupTypesSubscriptions,
 	}
 }

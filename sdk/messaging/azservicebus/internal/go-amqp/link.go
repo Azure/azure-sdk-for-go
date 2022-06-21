@@ -237,7 +237,9 @@ func attachLink(s *Session, r *Receiver, opts []LinkOption) (*link, error) {
 		l.Messages = make(chan Message, l.receiver.maxCredit)
 		l.unsettledMessages = map[string]struct{}{}
 		// copy the received filter values
-		l.Source.Filter = resp.Source.Filter
+		if resp.Source != nil {
+			l.Source.Filter = resp.Source.Filter
+		}
 	} else {
 		if l.Target == nil {
 			l.Target = new(frames.Target)
@@ -681,7 +683,7 @@ func (l *link) muxHandleFrame(fr frames.FrameBody) error {
 		if !fr.Echo {
 			// if the 'drain' flag has been set in the frame sent to the _receiver_ then
 			// we signal whomever is waiting (the service has seen and acknowledged our drain)
-			if fr.Drain && l.receiver.manualCreditor != nil {
+			if fr.Drain && l.receiver != nil && l.receiver.manualCreditor != nil {
 				l.linkCredit = 0 // we have no active credits at this point.
 				l.receiver.manualCreditor.EndDrain()
 			}

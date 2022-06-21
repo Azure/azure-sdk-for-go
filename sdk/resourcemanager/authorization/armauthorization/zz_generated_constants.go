@@ -10,7 +10,7 @@ package armauthorization
 
 const (
 	moduleName    = "armauthorization"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v2.0.0-beta.1"
 )
 
 // AccessRecommendationType - The feature- generated recommendation shown to the reviewer.

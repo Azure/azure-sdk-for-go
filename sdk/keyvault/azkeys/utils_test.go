@@ -121,20 +121,16 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-func startTest(t *testing.T) func() {
-	err := recording.Start(t, pathToPackage, nil)
-	require.NoError(t, err)
-	return func() {
-		err := recording.Stop(t, nil)
-		require.NoError(t, err)
-	}
-}
-
-// skipHSM skips live MHSM tests when AZURE_MANAGEDHSM_URL has no value
-func skipHSM(t *testing.T, testType string) {
+func startTest(t *testing.T, testType string) {
 	if recording.GetRecordMode() != recording.PlaybackMode && testType == HSMTEST && !enableHSM {
 		t.Skip("set AZURE_MANAGEDHSM_URL to run this test")
 	}
+	err := recording.Start(t, pathToPackage, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		err := recording.Stop(t, nil)
+		require.NoError(t, err)
+	})
 }
 
 func createRandomName(t *testing.T, prefix string) (string, error) {

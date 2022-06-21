@@ -95,10 +95,10 @@ func (c *Client) GetSecret(ctx context.Context, name string, options *GetSecretO
 // SetSecretOptions contains optional parameters for SetSecret.
 type SetSecretOptions struct {
 	// Type of the secret value such as a password.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// The secret management attributes.
-	Properties *Properties `json:"attributes,omitempty"`
+	Properties *Properties
 }
 
 // Convert the exposed struct to the generated code version
@@ -277,22 +277,25 @@ func updateSecretPropertiesResponseFromGenerated(i generated.KeyVaultClientUpdat
 
 // UpdateSecretProperties updates a secret's properties, such as whether it's enabled. See the Properties type for a complete list.
 // nil fields will keep their current values. This method can't change the secret's value; use SetSecret to do that.
-func (c *Client) UpdateSecretProperties(ctx context.Context, secret Secret, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
+func (c *Client) UpdateSecretProperties(ctx context.Context, properties Properties, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	name, version := "", ""
-	if secret.Properties != nil && secret.Properties.Name != nil {
-		name = *secret.Properties.Name
+	if properties.Name != nil {
+		name = *properties.Name
 	}
-	if secret.Properties != nil && secret.Properties.Version != nil {
-		version = *secret.Properties.Version
+	if properties.Version != nil {
+		version = *properties.Version
 	}
-
 	resp, err := c.kvClient.UpdateSecret(
 		ctx,
 		c.vaultUrl,
 		name,
 		version,
-		secret.toGeneratedProperties(),
-		&generated.KeyVaultClientUpdateSecretOptions{},
+		generated.SecretUpdateParameters{
+			ContentType:      properties.ContentType,
+			SecretAttributes: properties.toGenerated(),
+			Tags:             properties.Tags,
+		},
+		nil,
 	)
 	if err != nil {
 		return UpdateSecretPropertiesResponse{}, err
@@ -313,7 +316,7 @@ func (b *BackupSecretOptions) toGenerated() *generated.KeyVaultClientBackupSecre
 // BackupSecretResponse is returned by BackupSecret.
 type BackupSecretResponse struct {
 	// READ-ONLY; The backup blob containing the backed up secret.
-	Value []byte `json:"value,omitempty" azure:"ro"`
+	Value []byte
 }
 
 // convert generated response to the publicly exposed version.
@@ -472,10 +475,10 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, name string, opt
 // ListDeletedSecretsResponse contains a page of deleted secrets.
 type ListDeletedSecretsResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// DeletedSecrets is the page's content.
-	DeletedSecrets []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
+	DeletedSecrets []*DeletedSecretItem
 }
 
 func listDeletedSecretsPageFromGenerated(g generated.KeyVaultClientGetDeletedSecretsResponse) ListDeletedSecretsResponse {
@@ -536,10 +539,10 @@ type ListPropertiesOfSecretVersionsOptions struct {
 // ListPropertiesOfSecretVersionsResponse contains a page of secret versions.
 type ListPropertiesOfSecretVersionsResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// Secrets is the page's content.
-	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem
 }
 
 // create ListSecretsPage from generated pager
@@ -595,10 +598,10 @@ type ListPropertiesOfSecretsOptions struct {
 // ListPropertiesOfSecretsResponse contains a page of secret properties.
 type ListPropertiesOfSecretsResponse struct {
 	// NextLink is the URL to get the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// Secrets is the page's content.
-	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem
 }
 
 // create a ListSecretsPage from a generated code response

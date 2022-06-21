@@ -196,6 +196,15 @@ type ErrorResponse struct {
 	Error *ErrorDetail `json:"error,omitempty"`
 }
 
+// ExecuteRequestParameters - Payload for execute request post call.
+type ExecuteRequestParameters struct {
+	// REQUIRED; The request metadata.
+	RequestMetadata *RequestMetadata `json:"requestMetadata,omitempty"`
+
+	// REQUIRED; The endpoint of service to call.
+	ServiceEndpoint *string `json:"serviceEndpoint,omitempty"`
+}
+
 // ImageReference - The image reference properties.
 type ImageReference struct {
 	// Specifies in decimal numbers, the exact version of image used to create the virtual machine.
@@ -465,6 +474,13 @@ type NetworkFunctionsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// NetworkFunctionsClientBeginExecuteRequestOptions contains the optional parameters for the NetworkFunctionsClient.BeginExecuteRequest
+// method.
+type NetworkFunctionsClientBeginExecuteRequestOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
 // NetworkFunctionsClientGetOptions contains the optional parameters for the NetworkFunctionsClient.Get method.
 type NetworkFunctionsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -523,36 +539,52 @@ type NetworkInterfaceIPConfiguration struct {
 	Subnet *string `json:"subnet,omitempty"`
 }
 
-// Operation - Object that describes a single Microsoft.HybridNetwork operation.
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// READ-ONLY; The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	// Localized display information for this particular operation.
+	Display *OperationDisplay `json:"display,omitempty"`
 
-	// READ-ONLY; Operation name: {provider}/{resource}/{operation}.
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
+	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin `json:"origin,omitempty" azure:"ro"`
 }
 
-// OperationDisplay - The object that represents the operation.
+// OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
-	// Description of the operation.
-	Description *string `json:"description,omitempty"`
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	Description *string `json:"description,omitempty" azure:"ro"`
 
-	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
+	Operation *string `json:"operation,omitempty" azure:"ro"`
 
-	// Service provider: Microsoft.HybridNetwork.
-	Provider *string `json:"provider,omitempty"`
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
+	Provider *string `json:"provider,omitempty" azure:"ro"`
 
-	// Resource on which the operation is performed: Registration definition, registration assignment, etc.
-	Resource *string `json:"resource,omitempty"`
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
+	Resource *string `json:"resource,omitempty" azure:"ro"`
 }
 
-// OperationList - A list of the operations.
-type OperationList struct {
-	// READ-ONLY; The URL to get the next set of results.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
+type OperationListResult struct {
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; A list of Microsoft.HybridNetwork operations.
+	// READ-ONLY; List of operations supported by the resource provider
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
@@ -663,6 +695,21 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// RequestMetadata - Request metadata of execute request post call payload.
+type RequestMetadata struct {
+	// REQUIRED; The http method of the request.
+	HTTPMethod *HTTPMethod `json:"httpMethod,omitempty"`
+
+	// REQUIRED; The relative path of the request.
+	RelativePath *string `json:"relativePath,omitempty"`
+
+	// REQUIRED; The serialized body of the request.
+	SerializedBody *string `json:"serializedBody,omitempty"`
+
+	// The api version of the request.
+	APIVersion *string `json:"apiVersion,omitempty"`
+}
+
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -728,6 +775,24 @@ type RoleInstancesClientGetOptions struct {
 // RoleInstancesClientListOptions contains the optional parameters for the RoleInstancesClient.List method.
 type RoleInstancesClientListOptions struct {
 	// placeholder for future optional parameters
+}
+
+// SKUCredential - The Sku credential definition.
+type SKUCredential struct {
+	// The Acr server url
+	AcrServerURL *string `json:"acrServerUrl,omitempty"`
+
+	// The credential value.
+	AcrToken *string `json:"acrToken,omitempty"`
+
+	// The UTC time when credential will expire.
+	Expiry *time.Time `json:"expiry,omitempty"`
+
+	// The repositories that could be accessed using the current credential.
+	Repositories []*string `json:"repositories,omitempty"`
+
+	// The username of the sku credential.
+	Username *string `json:"username,omitempty"`
 }
 
 // SKUOverview - The network function sku overview.
@@ -1023,6 +1088,11 @@ type VendorSKUsClientBeginDeleteOptions struct {
 
 // VendorSKUsClientGetOptions contains the optional parameters for the VendorSKUsClient.Get method.
 type VendorSKUsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VendorSKUsClientListCredentialOptions contains the optional parameters for the VendorSKUsClient.ListCredential method.
+type VendorSKUsClientListCredentialOptions struct {
 	// placeholder for future optional parameters
 }
 

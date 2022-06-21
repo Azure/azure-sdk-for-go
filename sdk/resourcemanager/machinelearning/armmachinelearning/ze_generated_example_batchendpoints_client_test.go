@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchEndpoint/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchEndpoint/list.json
 func ExampleBatchEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleBatchEndpointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchEndpoint/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchEndpoint/delete.json
 func ExampleBatchEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleBatchEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchEndpoint/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchEndpoint/get.json
 func ExampleBatchEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleBatchEndpointsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchEndpoint/update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchEndpoint/update.json
 func ExampleBatchEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,28 +108,14 @@ func ExampleBatchEndpointsClient_BeginUpdate() {
 		"test-rg",
 		"my-aml-workspace",
 		"testEndpointName",
-		armmachinelearning.PartialBatchEndpointPartialTrackedResource{
+		armmachinelearning.PartialMinimalTrackedResourceWithIdentity{
+			Tags: map[string]*string{},
 			Identity: &armmachinelearning.PartialManagedServiceIdentity{
 				Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
 				UserAssignedIdentities: map[string]interface{}{
 					"string": map[string]interface{}{},
 				},
 			},
-			Kind:     to.Ptr("string"),
-			Location: to.Ptr("string"),
-			Properties: &armmachinelearning.PartialBatchEndpoint{
-				Defaults: &armmachinelearning.BatchEndpointDefaults{
-					DeploymentName: to.Ptr("string"),
-				},
-			},
-			SKU: &armmachinelearning.PartialSKU{
-				Name:     to.Ptr("string"),
-				Capacity: to.Ptr[int32](1),
-				Family:   to.Ptr("string"),
-				Size:     to.Ptr("string"),
-				Tier:     to.Ptr(armmachinelearning.SKUTierFree),
-			},
-			Tags: map[string]*string{},
 		},
 		nil)
 	if err != nil {
@@ -143,7 +129,7 @@ func ExampleBatchEndpointsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchEndpoint/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchEndpoint/createOrUpdate.json
 func ExampleBatchEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +144,7 @@ func ExampleBatchEndpointsClient_BeginCreateOrUpdate() {
 		"test-rg",
 		"my-aml-workspace",
 		"testEndpointName",
-		armmachinelearning.BatchEndpointData{
+		armmachinelearning.BatchEndpoint{
 			Location: to.Ptr("string"),
 			Tags:     map[string]*string{},
 			Identity: &armmachinelearning.ManagedServiceIdentity{
@@ -168,7 +154,7 @@ func ExampleBatchEndpointsClient_BeginCreateOrUpdate() {
 				},
 			},
 			Kind: to.Ptr("string"),
-			Properties: &armmachinelearning.BatchEndpointDetails{
+			Properties: &armmachinelearning.BatchEndpointProperties{
 				Description: to.Ptr("string"),
 				AuthMode:    to.Ptr(armmachinelearning.EndpointAuthModeAMLToken),
 				Properties: map[string]*string{
@@ -198,7 +184,7 @@ func ExampleBatchEndpointsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchEndpoint/listKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-05-01/examples/BatchEndpoint/listKeys.json
 func ExampleBatchEndpointsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

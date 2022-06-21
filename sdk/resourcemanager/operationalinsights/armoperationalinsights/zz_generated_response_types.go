@@ -170,6 +170,66 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// QueriesClientDeleteResponse contains the response from method QueriesClient.Delete.
+type QueriesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// QueriesClientGetResponse contains the response from method QueriesClient.Get.
+type QueriesClientGetResponse struct {
+	LogAnalyticsQueryPackQuery
+}
+
+// QueriesClientListResponse contains the response from method QueriesClient.List.
+type QueriesClientListResponse struct {
+	LogAnalyticsQueryPackQueryListResult
+}
+
+// QueriesClientPutResponse contains the response from method QueriesClient.Put.
+type QueriesClientPutResponse struct {
+	LogAnalyticsQueryPackQuery
+}
+
+// QueriesClientSearchResponse contains the response from method QueriesClient.Search.
+type QueriesClientSearchResponse struct {
+	LogAnalyticsQueryPackQueryListResult
+}
+
+// QueriesClientUpdateResponse contains the response from method QueriesClient.Update.
+type QueriesClientUpdateResponse struct {
+	LogAnalyticsQueryPackQuery
+}
+
+// QueryPacksClientCreateOrUpdateResponse contains the response from method QueryPacksClient.CreateOrUpdate.
+type QueryPacksClientCreateOrUpdateResponse struct {
+	LogAnalyticsQueryPack
+}
+
+// QueryPacksClientDeleteResponse contains the response from method QueryPacksClient.Delete.
+type QueryPacksClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// QueryPacksClientGetResponse contains the response from method QueryPacksClient.Get.
+type QueryPacksClientGetResponse struct {
+	LogAnalyticsQueryPack
+}
+
+// QueryPacksClientListByResourceGroupResponse contains the response from method QueryPacksClient.ListByResourceGroup.
+type QueryPacksClientListByResourceGroupResponse struct {
+	LogAnalyticsQueryPackListResult
+}
+
+// QueryPacksClientListResponse contains the response from method QueryPacksClient.List.
+type QueryPacksClientListResponse struct {
+	LogAnalyticsQueryPackListResult
+}
+
+// QueryPacksClientUpdateTagsResponse contains the response from method QueryPacksClient.UpdateTags.
+type QueryPacksClientUpdateTagsResponse struct {
+	LogAnalyticsQueryPack
+}
+
 // SavedSearchesClientCreateOrUpdateResponse contains the response from method SavedSearchesClient.CreateOrUpdate.
 type SavedSearchesClientCreateOrUpdateResponse struct {
 	SavedSearch
@@ -225,6 +285,16 @@ type StorageInsightConfigsClientListByWorkspaceResponse struct {
 	StorageInsightListResult
 }
 
+// TablesClientCreateOrUpdateResponse contains the response from method TablesClient.CreateOrUpdate.
+type TablesClientCreateOrUpdateResponse struct {
+	Table
+}
+
+// TablesClientDeleteResponse contains the response from method TablesClient.Delete.
+type TablesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
 // TablesClientGetResponse contains the response from method TablesClient.Get.
 type TablesClientGetResponse struct {
 	Table
@@ -233,6 +303,11 @@ type TablesClientGetResponse struct {
 // TablesClientListByWorkspaceResponse contains the response from method TablesClient.ListByWorkspace.
 type TablesClientListByWorkspaceResponse struct {
 	TablesListResult
+}
+
+// TablesClientMigrateResponse contains the response from method TablesClient.Migrate.
+type TablesClientMigrateResponse struct {
+	// placeholder for future response values
 }
 
 // TablesClientUpdateResponse contains the response from method TablesClient.Update.

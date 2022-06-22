@@ -1,6 +1,6 @@
 # Azure IoT Central Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iotcentral/armiotcentral/v2)
 
 The `armiotcentral` module provides operations for working with Azure IoT Central.
 

@@ -20,4 +20,6 @@ const (
 	CommitPrefix = "commit/"
 	// SDKRepo ...
 	SDKRepo = "azure-sdk-for-go"
+	// ReleaseIssueRepo SDK Release Request Repo ...
+	ReleaseIssueRepo = "sdk-release-request"
 )

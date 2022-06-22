@@ -17,6 +17,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
@@ -230,7 +231,9 @@ Please verify the following before submitting your PR, thank you!
 [CHANGELOG.md]: https://github.com/Azure/azure-sdk-for-go/blob/main/CHANGELOG.md
 `
 
-func CreatePullRequest(ctx context.Context, client *github.Client, repo, owner, fork, branch, body string) (*github.PullRequest, *github.Response, error) {
+var IssueComment = "Please confirm the SDK package change: %s."
+
+func CreatePullRequest(ctx context.Context, client *github.Client, owner, repo, fork, branch, body string) (*github.PullRequest, *github.Response, error) {
 	if branch == "" {
 		return nil, nil, errors.New("branch name is nil")
 	}
@@ -284,7 +287,7 @@ func GitPush(path, remoteName, branchName string) (string, error) {
 	return "", nil
 }
 
-// https://github.com/804873052/azure-sdk-for-go
+// https://github.com/githubName/azure-sdk-for-go
 func GetRemoteUserName(remote *git.Remote) string {
 	if len(remote.Config().URLs) == 0 {
 		return ""
@@ -314,4 +317,20 @@ func GetForkRemote(repo WorkTree) (forkRemote *git.Remote, err error) {
 		return nil, fmt.Errorf("under %s not set remote fork", link.SDKRepo)
 	}
 	return
+}
+
+func AddComment(ctx context.Context, client *github.Client, owner, repo, issue, body string) (*github.IssueComment, error) {
+	s := strings.Split(issue, "/")
+	prNumber, err := strconv.Atoi(s[len(s)-1])
+	if err != nil {
+		return nil, fmt.Errorf("issue link invalid format: %v", err)
+	}
+	comment := &github.IssueComment{
+		Body: github.String(body),
+	}
+	issueComment, _, err := client.Issues.CreateComment(ctx, owner, repo, prNumber, comment)
+	if err != nil {
+		return nil, err
+	}
+	return issueComment, nil
 }

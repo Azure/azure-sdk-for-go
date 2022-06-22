@@ -43,7 +43,7 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 		RunE: func(cmd *cobra.Command, args []string) error {
 			rpName := ""
 			namespaceName := ""
-			flags := ParseFlags(cmd.Flags())
+			parseFlags := ParseFlags(cmd.Flags())
 			if len(args) != 2 {
 				rpName = args[2]
 				namespaceName = "arm" + rpName
@@ -51,8 +51,8 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 					namespaceName = args[3]
 				}
 			} else {
-				if flags.ReleaseRequest == "" {
-					return errors.New("missing --release-request parameter")
+				if parseFlags.ReleaseRequest == "" {
+					return errors.New("missing --release-request flag")
 				}
 			}
 			sdkPath := args[0]
@@ -65,7 +65,7 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 				CommandContext: baseContext,
 				rpName:         rpName,
 				namespaceName:  namespaceName,
-				flags:          ParseFlags(cmd.Flags()),
+				flags:          parseFlags,
 			}
 			return ctx.execute(sdkPath, specPath)
 		},
@@ -145,6 +145,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	if c.flags.ReleaseRequest != "" {
 		ctx := context.Background()
 		var pullRequestUrls = make(map[string]string)
+		var pushBranch = make(map[string]string)
 		var info = query.Info{
 			UserInfo: query.UserInfo{Username: "", Password: ""},
 			Token:    c.flags.Token,
@@ -175,7 +176,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 				return err
 			}
 
-			// run generator release-v2
+			// run generator
 			c.rpName = arm[0]
 			c.namespaceName = arm[1]
 			c.flags.SpecRPName = arm[2]
@@ -189,101 +190,59 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 			if err != nil {
 				return err
 			}
-
-			branchName := generateHead.Name().Short()
-			pullRequestUrls[branchName] = ""
-			// git push fork
-			if c.flags.Token != "" {
-				log.Printf("git push fork %s\n", branchName)
-				_, err = repo.GitPush(c.SDK().Root(), forkRemote.Config().Name, branchName)
-				if err != nil {
-					return fmt.Errorf("git push fork error:%v", err)
-				}
-
-				// create pull request
-				log.Printf("%s:create pull request", link.SDKRepo)
-				log.Println(cfg.Track2Requests[readme][0])
-				githubUserName := repo.GetRemoteUserName(forkRemote)
-				if githubUserName == "" {
-					return errors.New("github user name not exist")
-				}
-				pullRequests, _, err := repo.CreatePullRequest(ctx, githubClient.Client, link.SDKRepo, link.SpecOwner, githubUserName, branchName, cfg.Track2Requests[readme][0].RequestLink)
-				if err != nil {
-					return err
-				}
-				pullRequestUrls[branchName] = *pullRequests.URL
-
-				// add comment to sdk-release-request
-			}
+			pushBranch[generateHead.Name().Short()] = cfg.Track2Requests[readme][0].RequestLink
 
 			// git checkout main
-			if err := c.SDK().Checkout(&repo.CheckoutOptions{
+			log.Printf("git checkout %v", originalHead.Name().Short())
+			if err := sdkRepo.Checkout(&repo.CheckoutOptions{
 				Branch: plumbing.ReferenceName(originalHead.Name().Short()),
 				Force:  true,
 			}); err != nil {
 				return err
 			}
 		}
-		log.Println("Fixes:\nBranch\t\t\t\t\t\tPull request")
-		for branch, url := range pullRequestUrls {
-			log.Printf("%s : %s", branch, url)
+
+		for branch, _ := range pushBranch {
+			log.Printf("Fixes: %s\n", branch)
+		}
+
+		if c.flags.Token != "" {
+			for branchName, issue := range pushBranch {
+				log.Printf("git push fork %s\n", branchName)
+				_, err = repo.GitPush(c.SDK().Root(), forkRemote.Config().Name, branchName)
+				if err != nil {
+					return fmt.Errorf("git push fork error:%v", err)
+				}
+
+				log.Printf("%s: create pull request...\n", branchName)
+				githubUserName := repo.GetRemoteUserName(forkRemote)
+				if githubUserName == "" {
+					return errors.New("github user name not exist")
+				}
+				pullRequests, _, err := repo.CreatePullRequest(ctx, githubClient.Client, link.SpecOwner, link.SDKRepo, githubUserName, branchName, issue)
+				if err != nil {
+					return err
+				}
+				pullRequestUrls[branchName] = *pullRequests.HTMLURL
+
+				log.Printf("Leave a comment in %s...\n", link.ReleaseIssueRepo)
+				_, err = repo.AddComment(ctx, githubClient.Client, link.SpecOwner, link.ReleaseIssueRepo, issue, fmt.Sprintf(repo.IssueComment, *pullRequests.HTMLURL))
+				if err != nil {
+					return err
+				}
+			}
+		}
+
+		if len(pullRequestUrls) != 0 {
+			log.Println("Fixes:\nBranch : Pull request")
+			for branch, url := range pullRequestUrls {
+				log.Printf("%s : %s", branch, url)
+			}
 		}
 	} else {
 		return c.generate(sdkRepo, specCommitHash)
 	}
 
-	//sdkRepo, err := common.GetSDKRepo(sdkRepoParam, c.flags.SDKRepo)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//specCommitHash, err := common.GetSpecCommit(specRepoParam)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//log.Printf("Release generation for rp: %s, namespace: %s", c.rpName, c.namespaceName)
-	//generateCtx := common.GenerateContext{
-	//	SDKPath:        sdkRepo.Root(),
-	//	SDKRepo:        &sdkRepo,
-	//	SpecCommitHash: specCommitHash,
-	//	SpecRepoURL:    c.flags.SwaggerRepo,
-	//}
-	//
-	//if c.flags.SpecRPName == "" {
-	//	c.flags.SpecRPName = c.rpName
-	//}
-	//result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
-	//	RPName:              c.rpName,
-	//	NamespaceName:       c.namespaceName,
-	//	NamespaceConfig:     c.flags.PackageConfig,
-	//	SpecficPackageTitle: c.flags.PackageTitle,
-	//	SpecficVersion:      c.flags.VersionNumber,
-	//	SpecRPName:          c.flags.SpecRPName,
-	//	ReleaseDate:         c.flags.ReleaseDate,
-	//	SkipGenerateExample: c.flags.SkipGenerateExample,
-	//	GoVersion:           c.flags.GoVersion,
-	//})
-	//if err != nil {
-	//	return fmt.Errorf("failed to finish release generation process: %+v", err)
-	//}
-	//// print generation result
-	//log.Printf("Generation result: %s", result)
-	//
-	//if !c.flags.SkipCreateBranch {
-	//	log.Printf("Create new branch for release")
-	//	releaseBranchName := fmt.Sprintf(releaseBranchNamePattern, c.rpName, c.namespaceName, result.Version, time.Now().Unix())
-	//	if err := sdkRepo.CreateReleaseBranch(releaseBranchName); err != nil {
-	//		return fmt.Errorf("failed to create release branch: %+v", err)
-	//	}
-	//
-	//	log.Printf("Include the packages that is about to release in this release and do release commit...")
-	//	// append a time in long to avoid collision of branch names
-	//	if err := sdkRepo.AddReleaseCommit(c.rpName, c.namespaceName, generateCtx.SpecCommitHash, result.Version); err != nil {
-	//		return fmt.Errorf("failed to add release package or do release commit: %+v", err)
-	//	}
-	//}
-	//
 	return nil
 }
 

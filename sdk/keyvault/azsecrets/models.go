@@ -153,24 +153,6 @@ type DeletedSecretListResult struct {
 	Value []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
 }
 
-// Error - The key vault server error.
-type Error struct {
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The key vault server error.
-	InnerError *Error `json:"innererror,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
-// KeyVaultError - The key vault error exception.
-type KeyVaultError struct {
-	// READ-ONLY; The key vault server error.
-	Error *Error `json:"error,omitempty" azure:"ro"`
-}
-
 // RestoreSecretParameters - The secret restore parameters.
 type RestoreSecretParameters struct {
 	// REQUIRED; The backup blob associated with a secret bundle.

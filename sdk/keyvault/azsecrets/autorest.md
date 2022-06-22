@@ -46,6 +46,11 @@ directive:
       from: GetSecretVersions
       to: ListSecretVersions
 
+  # delete unused error models
+  - from: models.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+type (?:Error|KeyVaultError).+\{(?:\s.+\s)+\}\s/g, "");
+
   # delete the Attributes model defined in common.json (it's used only with allOf)
   - from: models.go
     where: $

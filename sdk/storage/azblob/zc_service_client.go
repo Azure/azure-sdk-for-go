@@ -97,6 +97,21 @@ func (s *ServiceClient) NewContainerClient(containerName string) *ContainerClien
 	}
 }
 
+//NewServiceClientWithUserDelegationCredential obtains a UserDelegationKey object using the base ServiceURL object.
+//OAuth is required for this call, as well as any role that can delegate access to the storage account.
+func (s *ServiceClient) NewServiceClientWithUserDelegationCredential(ctx context.Context, info KeyInfo, timeout *int32, requestID *string) (UserDelegationCredential, error) {
+	options := serviceClientGetUserDelegationKeyOptions{
+		RequestID: requestID,
+		Timeout:   timeout,
+	}
+	sc := newServiceClient(s.client.endpoint, s.client.pl)
+	udk, err := sc.GetUserDelegationKey(ctx, info, &options)
+	if err != nil {
+		return UserDelegationCredential{}, err
+	}
+	return *NewUserDelegationCredential(strings.Split(s.client.endpoint, ".")[0], udk.serviceClientGetUserDelegationKeyResult.UserDelegationKey), nil
+}
+
 // CreateContainer is a lifecycle method to creates a new container under the specified account.
 // If the container with the same name already exists, a ResourceExistsError will be raised.
 // This method returns a client with which to interact with the newly created container.

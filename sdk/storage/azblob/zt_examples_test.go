@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 	"io/ioutil"
@@ -25,7 +26,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 )
 
@@ -1547,3 +1547,44 @@ func ExampleBlobClient_Download() {
 //		log.Fatal(err)
 //	}
 //}
+
+func ExampleUserDelegationCredential() {
+	// Create Managed Identity (OAuth) Credentials using Client ID
+	clientOptions := azcore.ClientOptions{}
+	optsClientID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ClientID("7cf7db0d-...")}
+	cred, err := azidentity.NewManagedIdentityCredential(&optsClientID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	clientOptionsAzBlob := azblob.ClientOptions{} // Same as azcore.ClientOptions using azblob instead
+	svcClient := azblob.NewServiceClient("svcURL", cred, &clientOptionsAzBlob)
+
+	// Set current and past time
+	// TODO: fix format ?
+	currentTime := time.Now().UTC().Add(-10 * time.Second)
+	pastTime := currentTime.Add(48 * time.Hour)
+	info := azblob.KeyInfo{
+		Start:  currentTime.UTC().Format(azblob.SASTimeFormat),
+		Expiry: pastTime.UTC().Format(azblob.SASTimeFormat),
+	}
+
+	udkResp, err := svcClient.NewServiceClientWithUserDelegationCredential(context.Background(), info, nil, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("User Delegation Key has been created for ", udkResp.AccountName())
+
+	// Create Managed Identity (OAuth) Credentials using Resource ID
+	optsResourceID := azidentity.ManagedIdentityCredentialOptions{ClientOptions: clientOptions, ID: azidentity.ResourceID("/subscriptions/...")}
+	cred, err = azidentity.NewManagedIdentityCredential(&optsResourceID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	svcClient = azblob.NewServiceClient("svcURL", cred, &clientOptionsAzBlob)
+
+	udkResp, err = svcClient.NewServiceClientWithUserDelegationCredential(context.Background(), info, nil, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("User Delegation Key has been created for ", udkResp.AccountName())
+}

@@ -23,23 +23,23 @@ type GetDeletedSecretResponse struct {
 	DeletedSecretBundle
 }
 
-// GetDeletedSecretsResponse contains the response from method Client.GetDeletedSecrets.
-type GetDeletedSecretsResponse struct {
-	DeletedSecretListResult
-}
-
 // GetSecretResponse contains the response from method Client.GetSecret.
 type GetSecretResponse struct {
 	SecretBundle
 }
 
-// GetSecretVersionsResponse contains the response from method Client.GetSecretVersions.
-type GetSecretVersionsResponse struct {
+// ListDeletedSecretsResponse contains the response from method Client.ListDeletedSecrets.
+type ListDeletedSecretsResponse struct {
+	DeletedSecretListResult
+}
+
+// ListSecretVersionsResponse contains the response from method Client.ListSecretVersions.
+type ListSecretVersionsResponse struct {
 	SecretListResult
 }
 
-// GetSecretsResponse contains the response from method Client.GetSecrets.
-type GetSecretsResponse struct {
+// ListSecretsResponse contains the response from method Client.ListSecrets.
+type ListSecretsResponse struct {
 	SecretListResult
 }
 

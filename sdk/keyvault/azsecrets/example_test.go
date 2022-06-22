@@ -60,8 +60,8 @@ func ExampleClient_DeleteSecret() {
 	fmt.Println("deleted secret", resp.ID.Name())
 }
 
-func ExampleClient_NewGetSecretsPager() {
-	pager := client.NewGetSecretsPager(nil)
+func ExampleClient_NewListSecretsPager() {
+	pager := client.NewListSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
@@ -103,7 +103,7 @@ func ExampleClient_RestoreSecret() {
 
 func ExampleClient_PurgeDeletedSecret() {
 	// this loop purges all the deleted secrets in the vault
-	pager := client.NewGetDeletedSecretsPager(nil)
+	pager := client.NewListDeletedSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {

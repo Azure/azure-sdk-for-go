@@ -156,7 +156,7 @@ func TestCRUD(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestGetDeletedSecrets(t *testing.T) {
+func TestListDeletedSecrets(t *testing.T) {
 	client := startTest(t)
 
 	secret1 := createRandomName(t, "secret1")
@@ -189,8 +189,7 @@ func TestGetDeletedSecrets(t *testing.T) {
 	})
 
 	expected := map[string]struct{}{secret1: {}, secret2: {}}
-	// TODO: Get vs. List
-	pager := client.NewGetDeletedSecretsPager(&azsecrets.GetDeletedSecretsOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListDeletedSecretsPager(&azsecrets.ListDeletedSecretsOptions{MaxResults: to.Ptr(int32(1))})
 	for pager.More() && len(expected) > 0 {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -204,7 +203,7 @@ func TestGetDeletedSecrets(t *testing.T) {
 	require.Empty(t, expected, "pager didn't return all expected secrets")
 }
 
-func TestGetSecrets(t *testing.T) {
+func TestListSecrets(t *testing.T) {
 	client := startTest(t)
 
 	count := 4
@@ -216,8 +215,7 @@ func TestGetSecrets(t *testing.T) {
 		defer cleanUpSecret(t, client, name)
 	}
 
-	// TODO: Get vs. List
-	pager := client.NewGetSecretsPager(&azsecrets.GetSecretsOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListSecretsPager(&azsecrets.ListSecretsOptions{MaxResults: to.Ptr(int32(1))})
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
@@ -230,7 +228,7 @@ func TestGetSecrets(t *testing.T) {
 	require.Equal(t, count, 0)
 }
 
-func TestGetSecretVersions(t *testing.T) {
+func TestListSecretVersions(t *testing.T) {
 	client := startTest(t)
 
 	name := createRandomName(t, "listversions")
@@ -252,8 +250,7 @@ func TestGetSecretVersions(t *testing.T) {
 	}
 	defer cleanUpSecret(t, client, name)
 
-	// TODO: Get vs. List
-	pager := client.NewGetSecretVersionsPager(name, &azsecrets.GetSecretVersionsOptions{MaxResults: to.Ptr(int32(1))})
+	pager := client.NewListSecretVersionsPager(name, &azsecrets.ListSecretVersionsOptions{MaxResults: to.Ptr(int32(1))})
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)

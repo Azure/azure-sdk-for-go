@@ -170,65 +170,6 @@ func (client *Client) getDeletedSecretHandleResponse(resp *http.Response) (GetDe
 	return result, nil
 }
 
-// NewGetDeletedSecretsPager - The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled
-// for soft-delete. This operation requires the secrets/list permission.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 7.3
-// options - GetDeletedSecretsOptions contains the optional parameters for the Client.GetDeletedSecrets method.
-func (client *Client) NewGetDeletedSecretsPager(options *GetDeletedSecretsOptions) *runtime.Pager[GetDeletedSecretsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GetDeletedSecretsResponse]{
-		More: func(page GetDeletedSecretsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *GetDeletedSecretsResponse) (GetDeletedSecretsResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.getDeletedSecretsCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
-			}
-			if err != nil {
-				return GetDeletedSecretsResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return GetDeletedSecretsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GetDeletedSecretsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.getDeletedSecretsHandleResponse(resp)
-		},
-	})
-}
-
-// getDeletedSecretsCreateRequest creates the GetDeletedSecrets request.
-func (client *Client) getDeletedSecretsCreateRequest(ctx context.Context, options *GetDeletedSecretsOptions) (*policy.Request, error) {
-	urlPath := "/deletedsecrets"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.MaxResults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
-	}
-	reqQP.Set("api-version", "7.3")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getDeletedSecretsHandleResponse handles the GetDeletedSecrets response.
-func (client *Client) getDeletedSecretsHandleResponse(resp *http.Response) (GetDeletedSecretsResponse, error) {
-	result := GetDeletedSecretsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretListResult); err != nil {
-		return GetDeletedSecretsResponse{}, err
-	}
-	return result, nil
-}
-
 // GetSecret - The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
 // permission.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -280,42 +221,101 @@ func (client *Client) getSecretHandleResponse(resp *http.Response) (GetSecretRes
 	return result, nil
 }
 
-// NewGetSecretVersionsPager - The full secret identifier and attributes are provided in the response. No values are returned
-// for the secrets. This operations requires the secrets/list permission.
+// NewListDeletedSecretsPager - The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled
+// for soft-delete. This operation requires the secrets/list permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.3
-// name - The name of the secret.
-// options - GetSecretVersionsOptions contains the optional parameters for the Client.GetSecretVersions method.
-func (client *Client) NewGetSecretVersionsPager(name string, options *GetSecretVersionsOptions) *runtime.Pager[GetSecretVersionsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GetSecretVersionsResponse]{
-		More: func(page GetSecretVersionsResponse) bool {
+// options - ListDeletedSecretsOptions contains the optional parameters for the Client.ListDeletedSecrets method.
+func (client *Client) NewListDeletedSecretsPager(options *ListDeletedSecretsOptions) *runtime.Pager[ListDeletedSecretsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListDeletedSecretsResponse]{
+		More: func(page ListDeletedSecretsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *GetSecretVersionsResponse) (GetSecretVersionsResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListDeletedSecretsResponse) (ListDeletedSecretsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.getSecretVersionsCreateRequest(ctx, name, options)
+				req, err = client.listDeletedSecretsCreateRequest(ctx, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return GetSecretVersionsResponse{}, err
+				return ListDeletedSecretsResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return GetSecretVersionsResponse{}, err
+				return ListDeletedSecretsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GetSecretVersionsResponse{}, runtime.NewResponseError(resp)
+				return ListDeletedSecretsResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.getSecretVersionsHandleResponse(resp)
+			return client.listDeletedSecretsHandleResponse(resp)
 		},
 	})
 }
 
-// getSecretVersionsCreateRequest creates the GetSecretVersions request.
-func (client *Client) getSecretVersionsCreateRequest(ctx context.Context, name string, options *GetSecretVersionsOptions) (*policy.Request, error) {
+// listDeletedSecretsCreateRequest creates the ListDeletedSecrets request.
+func (client *Client) listDeletedSecretsCreateRequest(ctx context.Context, options *ListDeletedSecretsOptions) (*policy.Request, error) {
+	urlPath := "/deletedsecrets"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.MaxResults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.MaxResults), 10))
+	}
+	reqQP.Set("api-version", "7.3")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listDeletedSecretsHandleResponse handles the ListDeletedSecrets response.
+func (client *Client) listDeletedSecretsHandleResponse(resp *http.Response) (ListDeletedSecretsResponse, error) {
+	result := ListDeletedSecretsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSecretListResult); err != nil {
+		return ListDeletedSecretsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListSecretVersionsPager - The full secret identifier and attributes are provided in the response. No values are returned
+// for the secrets. This operations requires the secrets/list permission.
+// If the operation fails it returns an *azcore.ResponseError type.
+// Generated from API version 7.3
+// name - The name of the secret.
+// options - ListSecretVersionsOptions contains the optional parameters for the Client.ListSecretVersions method.
+func (client *Client) NewListSecretVersionsPager(name string, options *ListSecretVersionsOptions) *runtime.Pager[ListSecretVersionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListSecretVersionsResponse]{
+		More: func(page ListSecretVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListSecretVersionsResponse) (ListSecretVersionsResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = client.listSecretVersionsCreateRequest(ctx, name, options)
+			} else {
+				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
+			}
+			if err != nil {
+				return ListSecretVersionsResponse{}, err
+			}
+			resp, err := client.pl.Do(req)
+			if err != nil {
+				return ListSecretVersionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListSecretVersionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listSecretVersionsHandleResponse(resp)
+		},
+	})
+}
+
+// listSecretVersionsCreateRequest creates the ListSecretVersions request.
+func (client *Client) listSecretVersionsCreateRequest(ctx context.Context, name string, options *ListSecretVersionsOptions) (*policy.Request, error) {
 	urlPath := "/secrets/{secret-name}/versions"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -335,51 +335,51 @@ func (client *Client) getSecretVersionsCreateRequest(ctx context.Context, name s
 	return req, nil
 }
 
-// getSecretVersionsHandleResponse handles the GetSecretVersions response.
-func (client *Client) getSecretVersionsHandleResponse(resp *http.Response) (GetSecretVersionsResponse, error) {
-	result := GetSecretVersionsResponse{}
+// listSecretVersionsHandleResponse handles the ListSecretVersions response.
+func (client *Client) listSecretVersionsHandleResponse(resp *http.Response) (ListSecretVersionsResponse, error) {
+	result := ListSecretVersionsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
-		return GetSecretVersionsResponse{}, err
+		return ListSecretVersionsResponse{}, err
 	}
 	return result, nil
 }
 
-// NewGetSecretsPager - The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier
+// NewListSecretsPager - The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier
 // and its attributes are provided in the response. Individual secret versions are not listed in the
 // response. This operation requires the secrets/list permission.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 7.3
-// options - GetSecretsOptions contains the optional parameters for the Client.GetSecrets method.
-func (client *Client) NewGetSecretsPager(options *GetSecretsOptions) *runtime.Pager[GetSecretsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GetSecretsResponse]{
-		More: func(page GetSecretsResponse) bool {
+// options - ListSecretsOptions contains the optional parameters for the Client.ListSecrets method.
+func (client *Client) NewListSecretsPager(options *ListSecretsOptions) *runtime.Pager[ListSecretsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ListSecretsResponse]{
+		More: func(page ListSecretsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *GetSecretsResponse) (GetSecretsResponse, error) {
+		Fetcher: func(ctx context.Context, page *ListSecretsResponse) (ListSecretsResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.getSecretsCreateRequest(ctx, options)
+				req, err = client.listSecretsCreateRequest(ctx, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return GetSecretsResponse{}, err
+				return ListSecretsResponse{}, err
 			}
 			resp, err := client.pl.Do(req)
 			if err != nil {
-				return GetSecretsResponse{}, err
+				return ListSecretsResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GetSecretsResponse{}, runtime.NewResponseError(resp)
+				return ListSecretsResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.getSecretsHandleResponse(resp)
+			return client.listSecretsHandleResponse(resp)
 		},
 	})
 }
 
-// getSecretsCreateRequest creates the GetSecrets request.
-func (client *Client) getSecretsCreateRequest(ctx context.Context, options *GetSecretsOptions) (*policy.Request, error) {
+// listSecretsCreateRequest creates the ListSecrets request.
+func (client *Client) listSecretsCreateRequest(ctx context.Context, options *ListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/secrets"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
@@ -395,11 +395,11 @@ func (client *Client) getSecretsCreateRequest(ctx context.Context, options *GetS
 	return req, nil
 }
 
-// getSecretsHandleResponse handles the GetSecrets response.
-func (client *Client) getSecretsHandleResponse(resp *http.Response) (GetSecretsResponse, error) {
-	result := GetSecretsResponse{}
+// listSecretsHandleResponse handles the ListSecrets response.
+func (client *Client) listSecretsHandleResponse(resp *http.Response) (ListSecretsResponse, error) {
+	result := ListSecretsResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecretListResult); err != nil {
-		return GetSecretsResponse{}, err
+		return ListSecretsResponse{}, err
 	}
 	return result, nil
 }

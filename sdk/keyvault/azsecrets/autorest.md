@@ -35,6 +35,17 @@ directive:
       from: SecretUpdateParameters
       to: UpdateSecretParameters
 
+  # rename paged operations from Get* to List*
+  - rename-operation:
+      from: GetDeletedSecrets
+      to: ListDeletedSecrets
+  - rename-operation:
+      from: GetSecrets
+      to: ListSecrets
+  - rename-operation:
+      from: GetSecretVersions
+      to: ListSecretVersions
+
   # delete the Attributes model defined in common.json (it's used only with allOf)
   - from: models.go
     where: $

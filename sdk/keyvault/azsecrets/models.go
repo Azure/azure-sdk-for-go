@@ -31,25 +31,25 @@ type GetDeletedSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GetDeletedSecretsOptions contains the optional parameters for the Client.GetDeletedSecrets method.
-type GetDeletedSecretsOptions struct {
-	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	MaxResults *int32
-}
-
 // GetSecretOptions contains the optional parameters for the Client.GetSecret method.
 type GetSecretOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GetSecretVersionsOptions contains the optional parameters for the Client.GetSecretVersions method.
-type GetSecretVersionsOptions struct {
+// ListDeletedSecretsOptions contains the optional parameters for the Client.ListDeletedSecrets method.
+type ListDeletedSecretsOptions struct {
+	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+	MaxResults *int32
+}
+
+// ListSecretVersionsOptions contains the optional parameters for the Client.ListSecretVersions method.
+type ListSecretVersionsOptions struct {
 	// Maximum number of results to return in a page. If not specified, the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// GetSecretsOptions contains the optional parameters for the Client.GetSecrets method.
-type GetSecretsOptions struct {
+// ListSecretsOptions contains the optional parameters for the Client.ListSecrets method.
+type ListSecretsOptions struct {
 	// Maximum number of results to return in a page. If not specified, the service will return up to 25 results.
 	MaxResults *int32
 }

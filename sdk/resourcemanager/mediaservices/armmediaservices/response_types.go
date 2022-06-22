@@ -268,6 +268,24 @@ type LocationsClientCheckNameAvailabilityResponse struct {
 	EntityNameAvailabilityCheckOutput
 }
 
+// MediaServiceOperationResultsClientGetResponse contains the response from method MediaServiceOperationResultsClient.Get.
+type MediaServiceOperationResultsClientGetResponse struct {
+	MediaService
+	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
+	AzureAsyncOperation *string
+
+	// Location contains the information returned from the Location header response.
+	Location *string
+
+	// RetryAfter contains the information returned from the Retry-After header response.
+	RetryAfter *int32
+}
+
+// MediaServiceOperationStatusesClientGetResponse contains the response from method MediaServiceOperationStatusesClient.Get.
+type MediaServiceOperationStatusesClientGetResponse struct {
+	MediaServiceOperationStatus
+}
+
 // OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
 type OperationResultsClientGetResponse struct {
 	AssetTrack

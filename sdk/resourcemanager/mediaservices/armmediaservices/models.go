@@ -674,9 +674,16 @@ type CheckNameAvailabilityInput struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ClientCreateOrUpdateOptions contains the optional parameters for the Client.CreateOrUpdate method.
-type ClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+// ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
+type ClientBeginCreateOrUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
+}
+
+// ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
+type ClientBeginUpdateOptions struct {
+	// Resumes the LRO from the provided token.
+	ResumeToken string
 }
 
 // ClientDeleteOptions contains the optional parameters for the Client.Delete method.
@@ -706,11 +713,6 @@ type ClientListOptions struct {
 
 // ClientSyncStorageKeysOptions contains the optional parameters for the Client.SyncStorageKeys method.
 type ClientSyncStorageKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientUpdateOptions contains the optional parameters for the Client.Update method.
-type ClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3174,6 +3176,39 @@ type MediaServiceIdentity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
+// MediaServiceOperationResultsClientGetOptions contains the optional parameters for the MediaServiceOperationResultsClient.Get
+// method.
+type MediaServiceOperationResultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MediaServiceOperationStatus - Status of media service operation.
+type MediaServiceOperationStatus struct {
+	// REQUIRED; Operation identifier.
+	Name *string `json:"name,omitempty"`
+
+	// REQUIRED; Operation status.
+	Status *string `json:"status,omitempty"`
+
+	// Operation end time.
+	EndTime *time.Time `json:"endTime,omitempty"`
+
+	// The error detail.
+	Error *ErrorDetail `json:"error,omitempty"`
+
+	// Operation resource ID.
+	ID *string `json:"id,omitempty"`
+
+	// Operation start time.
+	StartTime *time.Time `json:"startTime,omitempty"`
+}
+
+// MediaServiceOperationStatusesClientGetOptions contains the optional parameters for the MediaServiceOperationStatusesClient.Get
+// method.
+type MediaServiceOperationStatusesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MediaServiceProperties - Properties of the Media Services account.
 type MediaServiceProperties struct {
 	// The account encryption properties.
@@ -3191,6 +3226,12 @@ type MediaServiceProperties struct {
 
 	// READ-ONLY; The Media Services account ID.
 	MediaServiceID *string `json:"mediaServiceId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The Private Endpoint Connections created for the Media Service account.
+	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+
+	// READ-ONLY; Provisioning state of the Media Services account.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // MediaServiceUpdate - A Media Services account update.

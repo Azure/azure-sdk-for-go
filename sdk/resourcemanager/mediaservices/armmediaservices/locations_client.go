@@ -56,8 +56,8 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CheckNameAvailability - Checks whether the Media Service resource name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2021-06-01
-// locationName - The name of the location
+// Generated from API version 2021-11-01
+// locationName - Location name.
 // parameters - The request parameters
 // options - LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
 // method.
@@ -92,7 +92,7 @@ func (client *LocationsClient) checkNameAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

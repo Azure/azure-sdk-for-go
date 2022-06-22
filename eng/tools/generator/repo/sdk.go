@@ -8,9 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
-	"github.com/go-git/go-git/v5"
-	"github.com/google/go-github/v45/github"
 	"io"
 	"io/ioutil"
 	"log"
@@ -20,12 +17,15 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/packages/track1"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/Masterminds/semver"
+	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/google/go-github/v32/github"
 )
 
 type SDKRepository interface {
@@ -231,7 +231,7 @@ Please verify the following before submitting your PR, thank you!
 [CHANGELOG.md]: https://github.com/Azure/azure-sdk-for-go/blob/main/CHANGELOG.md
 `
 
-var IssueComment = "Please confirm the SDK package change: %s."
+var confirmComment = "@%s Please confirm the SDK package change: %s."
 
 func CreatePullRequest(ctx context.Context, client *github.Client, owner, repo, fork, branch, body string) (*github.PullRequest, *github.Response, error) {
 	if branch == "" {
@@ -248,8 +248,6 @@ func CreatePullRequest(ctx context.Context, client *github.Client, owner, repo, 
 		MaintainerCanModify: github.Bool(true),
 	}
 
-	// owner: Azure
-	// repo: azure-sdk-for-go
 	pr, resp, err := client.PullRequests.Create(ctx, owner, repo, newPR)
 	if err != nil {
 		return nil, resp, fmt.Errorf("create pull request error: %v", err)
@@ -319,18 +317,25 @@ func GetForkRemote(repo WorkTree) (forkRemote *git.Remote, err error) {
 	return
 }
 
-func AddComment(ctx context.Context, client *github.Client, owner, repo, issue, body string) (*github.IssueComment, error) {
+func AddComment(ctx context.Context, client *github.Client, owner, repo, issue, prUrl string) (*github.IssueComment, error) {
 	s := strings.Split(issue, "/")
 	prNumber, err := strconv.Atoi(s[len(s)-1])
 	if err != nil {
 		return nil, fmt.Errorf("issue link invalid format: %v", err)
 	}
+
+	issueInfo, _, err := client.Issues.Get(ctx, owner, repo, prNumber)
+	if err != nil {
+		return nil, err
+	}
+
 	comment := &github.IssueComment{
-		Body: github.String(body),
+		Body: github.String(fmt.Sprintf(confirmComment, *issueInfo.User.Login, prUrl)),
 	}
 	issueComment, _, err := client.Issues.CreateComment(ctx, owner, repo, prNumber, comment)
 	if err != nil {
 		return nil, err
 	}
+
 	return issueComment, nil
 }

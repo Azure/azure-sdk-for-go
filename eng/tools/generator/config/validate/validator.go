@@ -6,8 +6,9 @@ package validate
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/go-multierror"
 	"strings"
+
+	"github.com/hashicorp/go-multierror"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"

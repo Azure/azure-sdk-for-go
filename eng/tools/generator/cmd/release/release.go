@@ -75,8 +75,6 @@ type Flags struct {
 	RefreshAll     bool
 	CompareCommit  string
 	VersionNumber  string
-	Track          string
-	Token          string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -88,8 +86,6 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("refresh-all", false, "Refresh all the packages even if the `refresh` block is not specified in the configuration")
 	flagSet.String("compare-commit", "", "Specify the commit all changelogs need to generate against")
 	flagSet.String("version-number", "", "Specify the version number of this release")
-	flagSet.String("track", "track2", "Different track generation codes used, optional tracks include 'track1' and 'track2', the default is track2")
-	flagSet.StringP("token", "t", "", "Specify the personal access token")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -103,8 +99,6 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		RefreshAll:     flags.GetBool(flagSet, "refresh-all"),
 		CompareCommit:  flags.GetString(flagSet, "compare-commit"),
 		VersionNumber:  flags.GetString(flagSet, "version-number"),
-		Track:          flags.GetString(flagSet, "track"),
-		Token:          flags.GetString(flagSet, "token"),
 	}
 }
 
@@ -274,126 +268,6 @@ func (c *commandContext) execute() error {
 
 	return nil
 }
-
-//func (c *commandContext) executeTrack2() error {
-//	var pullRequestUrls = make(map[string]string)
-//	log.Printf("trac2 parsing the config...")
-//	cfg, err := config.ParseConfig(c.configPath)
-//	if err != nil {
-//		log.Println("parse config err:", err)
-//		return err
-//	}
-//	if !c.flags.SkipValidate {
-//		validator := validate.NewLocalValidator(c.Spec().Root())
-//		if err := validator.ValidateTrack2(*cfg); err != nil {
-//			log.Println("validate track2 err:", err)
-//			return err
-//		}
-//	}
-//	log.Printf("Configuration: %s", cfg.String())
-//
-//	c.sdkRef, err = c.SDK().Head()
-//	if err != nil {
-//		return fmt.Errorf("failed to get HEAD ref of azure-sdk-for-go: %+v", err)
-//	}
-//	log.Printf("The release branch is based on HEAD ref '%s' (commit %s) of azure-sdk-for-go", c.sdkRef.Name(), c.sdkRef.Hash())
-//
-//	c.specRef, err = c.Spec().Head()
-//	if err != nil {
-//		return fmt.Errorf("failed to get HEAD ref of azure-rest-api-specs: %+v", err)
-//	}
-//	log.Printf("The new version is generated from HEAD ref '%s' (commit %s) of azure-rest-api-specs", c.specRef.Name(), c.specRef.Hash())
-//
-//	// 解析sdk-release.json track2 request
-//	armServices, err := validate.ParseTrack2(c.Spec().Root(), cfg.Track2Requests)
-//	if err != nil {
-//		return err
-//	}
-//	ctx := context.Background()
-//	info := query.Info{
-//		UserInfo: query.UserInfo{Username: "", Password: ""},
-//		Token:    c.flags.Token,
-//	}
-//	githubClient := query.Login(ctx, info)
-//	// get local fork name, need with self set: git remote add fork forkRepo
-//	localSDKRemotes, err := c.SDK().Remotes()
-//	if err != nil {
-//		return errors.New("local fork remote not set")
-//	}
-//	// get fork remote
-//	var forkRemote *git.Remote
-//	for _, r := range localSDKRemotes {
-//		if r.Config().Name == "fork" {
-//			forkRemote = r
-//		}
-//	}
-//	if forkRemote == nil {
-//		return fmt.Errorf("under %s not set remote fork", link.SDKRepo)
-//	}
-//
-//	// run release-v2
-//	for readme, arm := range armServices {
-//		if len(arm) == 0 {
-//			continue
-//		}
-//		originalHead, err := c.SDK().Head()
-//		if err != nil {
-//			return err
-//		}
-//		// run generator release-v2
-//		str := []string{c.SDK().Root(), c.Spec().Root()}
-//		str = append(str, arm...)
-//		releaseV2 := release_v2.Command()
-//		releaseV2.SetArgs(str)
-//		log.Println("generator release-v2 ", str)
-//		err = releaseV2.Execute()
-//		if err != nil {
-//			return err
-//		}
-//		// get current branch name
-//		generateHead, err := c.SDK().Head()
-//		if err != nil {
-//			return err
-//		}
-//		branchName := generateHead.Name().Short()
-//		pullRequestUrls[branchName] = ""
-//		// git push fork
-//		if c.flags.Token != "" {
-//			log.Printf("git push fork %s\n", branchName)
-//			_, err = repo.GitPush(c.SDK().Root(), forkRemote.Config().Name, branchName)
-//			if err != nil {
-//				return fmt.Errorf("git push fork error:%v", err)
-//			}
-//
-//			// create pull request
-//			log.Printf("%s:create pull request", link.SDKRepo)
-//			log.Println(cfg.Track2Requests[readme][0])
-//			githubUserName := repo.GetRemoteUserName(forkRemote)
-//			if githubUserName == "" {
-//				return errors.New("github user name not exist")
-//			}
-//			pullRequests, _, err := repo.CreatePullRequest(ctx, githubClient.Client, link.SDKRepo, link.SpecOwner, githubUserName, branchName, cfg.Track2Requests[readme][0].RequestLink)
-//			if err != nil {
-//				return err
-//			}
-//			pullRequestUrls[branchName] = *pullRequests.URL
-//
-//			// add comment to sdk-release-request
-//		}
-//		// git checkout main
-//		if err := c.SDK().Checkout(&repo.CheckoutOptions{
-//			Branch: plumbing.ReferenceName(originalHead.Name().Short()),
-//			Force:  true,
-//		}); err != nil {
-//			return err
-//		}
-//	}
-//	log.Println("Fixes:\nBranch\t\t\t\t\t\tPull request")
-//	for branch, url := range pullRequestUrls {
-//		log.Printf("%s : %s", branch, url)
-//	}
-//	return nil
-//}
 
 func (c *commandContext) getPackagesToRelease(results []GenerateResult) (include []GenerateResult, exclude []GenerateResult) {
 	for _, r := range results {

@@ -60,57 +60,6 @@ func (v *localValidator) Validate(cfg config.Config) error {
 	return errResult
 }
 
-//func (v *localValidator) ValidateTrack2(cfg config.Config) error {
-//	var errResult error
-//	for readme, infoMap := range cfg.Track2Requests {
-//		if err := v.validateReadmeExistence(readme); err != nil {
-//			errResult = multierror.Append(errResult, err)
-//			continue // readme file cannot pass validation, we just skip the validations
-//		}
-//		// get content of the readme
-//		contentOfReadme, err := getReadmeContent(v.specRoot, readme)
-//		if err != nil {
-//			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.md content: %+v", err))
-//			continue
-//		}
-//		// validate the existence of readme.go.md
-//		if err := v.validateReadmeExistence(getReadmeGoFromReadme(readme)); err != nil {
-//			errResult = multierror.Append(errResult, err)
-//			continue // readme.go.md is mandatory
-//		}
-//		// get content of the readme.go.md
-//		contentOfReadmeGo, err := getReadmeContent(v.specRoot, getReadmeGoFromReadme(readme))
-//		if err != nil {
-//			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
-//			continue
-//		}
-//		// get the keys from infoMap, which is the tags
-//		var tags []string
-//		linq.From(infoMap).Select(func(item interface{}) interface{} {
-//			return item.(config.Track2Request).PackageFlag
-//			//return item.(linq.KeyValue).Key
-//		}).ToSlice(&tags)
-//		// check the tags one by one
-//		if err := validateTagsInReadme(contentOfReadme, readme, tags...); err != nil {
-//			errResult = multierror.Append(errResult, err)
-//		}
-//		// check the package flag
-//		//defaultTag := findDefaultTag(contentOfReadme)
-//		for _, tag := range tags {
-//			if !findTagInReadme(contentOfReadme, tag) {
-//				errResult = multierror.Append(errResult, fmt.Errorf("%s:%snot exist in readme.md", readme, tag))
-//			}
-//			//if tag != defaultTag {
-//			//	errResult = multierror.Append(errResult, fmt.Errorf("%s: inconsistent package flag with default tag,(default tag: %s)(package flag: %s)", readme, defaultTag, tag))
-//			//}
-//		}
-//		if !findModuleName(contentOfReadmeGo) {
-//			errResult = multierror.Append(errResult, errors.New("no go sdk track2 configuration"))
-//		}
-//	}
-//	return errResult
-//}
-
 func (v *localValidator) validateReadmeExistence(readme string) error {
 	full := filepath.Join(v.specRoot, readme)
 	if _, err := os.Stat(full); os.IsNotExist(err) {
@@ -153,33 +102,10 @@ func GetModuleName(content []byte) (string, string) {
 	return "", ""
 }
 
-//func ParseTrack2(specRoot string, track2 config.Track2ReleaseRequests) (armServices map[string][]string, errResult error) {
-//	var i int
-//	armServices = make(map[string][]string)
-//	for readme, _ := range track2 {
-//		contentOfReadmeGo, err := getReadmeContent(specRoot, getReadmeGoFromReadme(readme))
-//		if err != nil {
-//			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
-//			continue
-//		}
-//		// 获取specRoot service name --spec-rp-name="sagger service name"
-//		splits := strings.Split(readme, "/")
-//		specRpName := fmt.Sprintf("--spec-rp-name=%s", splits[1])
-//		service, armService := getModuleName(contentOfReadmeGo)
-//		// 得到需要执行release的arm信息
-//		//armServices = append(armServices, []string{})
-//		armServices[readme] = make([]string, 0)
-//		armServices[readme] = append(armServices[readme], service, armService, specRpName)
-//		i++
-//	}
-//	return armServices, errResult
-//}
-
 const (
 	tagDefinedInReadmeRegex = `\$\(tag\)\s*==\s*'%s'`
 	tagInBatchRegex         = `-\s*tag\s*:\s*`
 	readmeFilename          = "readme.md"
 	goReadmeFilename        = "readme.go.md"
 	goReadmeModuleName      = `module-name: \S*`
-	readmeDefaultTag        = `openapi-type: arm\ntag: package\S*`
 )

@@ -7,14 +7,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config/validate"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/go-git/go-git/v5/plumbing"
-	"log"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
@@ -159,8 +160,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 		log.Printf("trac2 parsing the config...")
 		cfg, err := config.ParseConfig(c.flags.ReleaseRequest)
 		if err != nil {
-			log.Println("parse config err:", err)
-			return err
+			return fmt.Errorf("parse config err: %v", err)
 		}
 		log.Printf("Configuration: %s", cfg.String())
 		armServices, err := validate.ParseTrack2(cfg, specRepoParam)
@@ -192,7 +192,6 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 			}
 			pushBranch[generateHead.Name().Short()] = cfg.Track2Requests[readme][0].RequestLink
 
-			// git checkout main
 			log.Printf("git checkout %v", originalHead.Name().Short())
 			if err := sdkRepo.Checkout(&repo.CheckoutOptions{
 				Branch: plumbing.ReferenceName(originalHead.Name().Short()),
@@ -226,7 +225,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 				pullRequestUrls[branchName] = *pullRequests.HTMLURL
 
 				log.Printf("Leave a comment in %s...\n", link.ReleaseIssueRepo)
-				_, err = repo.AddComment(ctx, githubClient.Client, link.SpecOwner, link.ReleaseIssueRepo, issue, fmt.Sprintf(repo.IssueComment, *pullRequests.HTMLURL))
+				_, err = repo.AddComment(ctx, githubClient.Client, link.SpecOwner, link.ReleaseIssueRepo, issue, *pullRequests.HTMLURL)
 				if err != nil {
 					return err
 				}
@@ -247,16 +246,6 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 }
 
 func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash string) error {
-	//sdkRepo, err := common.GetSDKRepo(sdkRepoParam, c.flags.SDKRepo)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//specCommitHash, err := common.GetSpecCommit(specRepoParam)
-	//if err != nil {
-	//	return err
-	//}
-
 	log.Printf("Release generation for rp: %s, namespace: %s", c.rpName, c.namespaceName)
 	generateCtx := common.GenerateContext{
 		SDKPath:        sdkRepo.Root(),

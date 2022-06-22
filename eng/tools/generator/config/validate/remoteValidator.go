@@ -5,14 +5,13 @@ package validate
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 	"github.com/ahmetb/go-linq/v3"
-	"github.com/google/go-github/v45/github"
+	"github.com/google/go-github/v32/github"
 	"github.com/hashicorp/go-multierror"
 )
 
@@ -59,49 +58,6 @@ func (v *remoteValidator) Validate(cfg config.Config) error {
 		}
 		if err := validateTagsInReadmeGo([]byte(contentOfReadmeGo), readme, tags...); err != nil {
 			errResult = multierror.Append(errResult, err)
-		}
-	}
-	return errResult
-}
-
-func (v *remoteValidator) ValidateTrack2(cfg config.Config) error {
-	var errResult error
-	for readme, infoMap := range cfg.Track1Requests {
-		// first we validate whether the readme exists
-		file, err := v.validateReadmeExistence(readme)
-		if err != nil {
-			errResult = multierror.Append(errResult, err)
-			continue // readme file does not exist, we could just skip all of the other steps of validations
-		}
-		// get content of the readme
-		contentOfReadme, err := file.GetContent()
-		if err != nil {
-			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.md content: %+v", err))
-			continue
-		}
-		// validate the existence of readme.go.md
-		fileGo, err := v.validateReadmeExistence(getReadmeGoFromReadme(readme))
-		if err != nil {
-			errResult = multierror.Append(errResult, err)
-			continue // readme.go.md is mandatory
-		}
-		// get content of the readme.go.md
-		contentOfReadmeGo, err := fileGo.GetContent()
-		if err != nil {
-			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
-			continue
-		}
-		// get the keys from infoMap, which is the tags
-		var tags []string
-		linq.From(infoMap).Select(func(item interface{}) interface{} {
-			return item.(linq.KeyValue).Key
-		}).ToSlice(&tags)
-		// check the tags one by one
-		if err := validateTagsInReadme([]byte(contentOfReadme), readme, tags...); err != nil {
-			errResult = multierror.Append(errResult, err)
-		}
-		if !findModuleName([]byte(contentOfReadmeGo)) {
-			errResult = multierror.Append(errResult, errors.New("no go sdk track2 configuration"))
 		}
 	}
 	return errResult

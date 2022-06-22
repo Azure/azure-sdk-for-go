@@ -7,7 +7,7 @@ require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/ahmetb/go-linq/v3 v3.2.0
 	github.com/go-git/go-git/v5 v5.4.2
-	github.com/google/go-github/v45 v45.1.0
+	github.com/google/go-github/v32 v32.1.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/pflag v1.0.5

@@ -285,7 +285,7 @@ func GitPush(path, remoteName, branchName string) (string, error) {
 	return "", nil
 }
 
-// https://github.com/githubName/azure-sdk-for-go
+// GetRemoteUserName https://github.com/githubName/azure-sdk-for-go
 func GetRemoteUserName(remote *git.Remote) string {
 	if len(remote.Config().URLs) == 0 {
 		return ""

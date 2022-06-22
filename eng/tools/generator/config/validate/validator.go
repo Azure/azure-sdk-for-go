@@ -8,10 +8,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/hashicorp/go-multierror"
-
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
+	"github.com/hashicorp/go-multierror"
 )
 
 type Validator interface {
@@ -39,12 +38,9 @@ func ParseTrack2(config *config.Config, specRoot string) (armServices map[string
 			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))
 			continue
 		}
-		// 获取specRoot service name --spec-rp-name="sagger service name"
+		// get spec service name from --spec-rp-name="sagger service name"
 		splits := strings.Split(readme, "/")
-		//specRpName := fmt.Sprintf("--spec-rp-name=%s", splits[1])
 		service, armService := GetModuleName(contentOfReadmeGo)
-		// 得到需要执行release的arm信息
-		//armServices = append(armServices, []string{})
 		armServices[readme] = make([]string, 0)
 		armServices[readme] = append(armServices[readme], service, armService, splits[1])
 		i++

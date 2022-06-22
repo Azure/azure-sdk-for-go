@@ -287,5 +287,6 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			return fmt.Errorf("failed to add release package or do release commit: %+v", err)
 		}
 	}
+
 	return nil
 }

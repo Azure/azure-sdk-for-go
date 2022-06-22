@@ -109,7 +109,7 @@ func (s *ServiceClient) NewServiceClientWithUserDelegationCredential(ctx context
 	if err != nil {
 		return UserDelegationCredential{}, err
 	}
-	return *NewUserDelegationCredential(strings.Split(s.client.endpoint, ".")[0], udk.serviceClientGetUserDelegationKeyResult.UserDelegationKey), nil
+	return *NewUserDelegationCredential(strings.Split(s.client.endpoint, ".")[0], udk.UserDelegationKey), nil
 }
 
 // CreateContainer is a lifecycle method to creates a new container under the specified account.

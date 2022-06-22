@@ -46,6 +46,7 @@ type GenerateParam struct {
 	ReleaseDate         string
 	SkipGenerateExample bool
 	GoVersion           string
+	RemoveTagSet        bool
 }
 
 func (ctx GenerateContext) GenerateForAutomation(readme, repo, goVersion string) ([]GenerateResult, []error) {
@@ -74,6 +75,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo, goVersion string)
 				SkipGenerateExample: true,
 				NamespaceConfig:     packageInfo.Config,
 				GoVersion:           goVersion,
+				RemoveTagSet:        true,
 			})
 			if err != nil {
 				errors = append(errors, err)
@@ -143,6 +145,15 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Change swagger config in `autorest.md` according to repo URL and commit ID...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
 		if err := ChangeConfigWithCommitID(autorestMdPath, ctx.SpecRepoURL, ctx.SpecCommitHash, generateParam.SpecRPName); err != nil {
+			return nil, err
+		}
+	}
+
+	// remove tag set
+	if generateParam.RemoveTagSet {
+		log.Printf("Remove tag set for swagger config in `autorest.md`...")
+		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		if err := RemoveTagSet(autorestMdPath); err != nil {
 			return nil, err
 		}
 	}

@@ -107,6 +107,12 @@ func GetExportsFromTag(sdkRepo repo.SDKRepository, packagePath, tag string) (*ex
 		return nil, err
 	}
 
+	// add package change
+	err = sdkRepo.Add(packagePath)
+	if err != nil {
+		return nil, err
+	}
+
 	// stash current change
 	err = sdkRepo.Stash()
 	if err != nil {

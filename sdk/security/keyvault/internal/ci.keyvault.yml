@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-    - sdk/keyvault/internal
+    - sdk/security/keyvault/internal
 
 pr:
   branches:
@@ -19,10 +19,10 @@ pr:
       - release/*
   paths:
     include:
-    - sdk/keyvault/internal
+    - sdk/security/keyvault/internal
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'keyvault/internal'
+    ServiceDirectory: 'security/keyvault/internal'
     RunLiveTests: false

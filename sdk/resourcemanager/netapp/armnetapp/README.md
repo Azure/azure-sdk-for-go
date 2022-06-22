@@ -1,6 +1,6 @@
 # Azure NetApp Files Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp)
 
 The `armnetapp` module provides operations for working with Azure NetApp Files.
 

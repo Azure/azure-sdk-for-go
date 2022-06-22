@@ -1,6 +1,6 @@
 # Azure Machine Learning Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning)
 
 The `armmachinelearning` module provides operations for working with Azure Machine Learning.
 

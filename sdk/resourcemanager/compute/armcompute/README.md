@@ -55,7 +55,7 @@ client, err := armcompute.NewLogAnalyticsClient(<subscription ID>, cred, &option
 ## More sample code
 
 - [Availability Set](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/availabilityset)
-- [Virtual Machine](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/createVM)
+- [Virtual Machine](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/create_vm)
 - [Dedicated Host](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/dedicated_host)
 - [Disk](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/disk)
 - [Gallery](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/gallery)

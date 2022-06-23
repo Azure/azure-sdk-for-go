@@ -102,6 +102,8 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), setResp.Attributes.NotBefore.Unix())
 	require.Equal(t, setParams.Tags, setResp.Tags)
 	require.Equal(t, setParams.Value, setResp.Value)
+	require.Equal(t, name, setResp.ID.Name())
+	require.NotEmpty(t, setResp.ID.Version())
 
 	getResp, err := client.GetSecret(context.Background(), setResp.ID.Name(), "", nil)
 	require.NoError(t, err)
@@ -127,6 +129,7 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.SecretAttributes.Enabled, updateResp.Attributes.Enabled)
 	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), updateResp.Attributes.NotBefore.Unix())
 	require.Equal(t, setParams.Tags, updateResp.Tags)
+	require.Equal(t, setResp.ID.Version(), updateResp.ID.Version())
 
 	deleteResp, err := client.DeleteSecret(context.Background(), name, nil)
 	require.NoError(t, err)
@@ -136,6 +139,8 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, updateParams.SecretAttributes.Expires.Unix(), deleteResp.Attributes.Expires.Unix())
 	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), deleteResp.Attributes.NotBefore.Unix())
 	require.Equal(t, setParams.Tags, deleteResp.Tags)
+	require.Equal(t, name, deleteResp.ID.Name())
+	require.Equal(t, updateResp.ID.Version(), deleteResp.ID.Version())
 	pollStatus(t, 404, func() error {
 		_, err := client.GetDeletedSecret(context.Background(), name, nil)
 		return err
@@ -148,6 +153,8 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, updateParams.SecretAttributes.Expires.Unix(), getDeletedResp.Attributes.Expires.Unix())
 	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), getDeletedResp.Attributes.NotBefore.Unix())
 	require.Equal(t, setParams.Tags, getDeletedResp.Tags)
+	require.Equal(t, name, getDeletedResp.ID.Name())
+	require.Equal(t, setResp.ID.Version(), getDeletedResp.ID.Version())
 
 	_, err = client.PurgeDeletedSecret(context.Background(), name, nil)
 	require.NoError(t, err)
@@ -251,8 +258,12 @@ func TestListSecretVersions(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
-		for _, secret := range page.Value {
+		for i, secret := range page.Value {
+			if i > 0 {
+				require.NotEqual(t, page.Value[i-1].ID.Version(), secret.ID.Version())
+			}
 			require.NotNil(t, secret.ID)
+			require.Equal(t, name, secret.ID.Name())
 			if strings.HasPrefix(secret.ID.Name(), name) {
 				count--
 				require.Equal(t, commonParams.ContentType, secret.ContentType)

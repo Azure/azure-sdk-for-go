@@ -12,7 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
@@ -27,13 +26,13 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *azco
 type ID string
 
 // Name of the secret.
-func (i ID) Name() string {
-	_, name, _ := internal.ParseID(to.Ptr(string(i)))
+func (i *ID) Name() string {
+	_, name, _ := internal.ParseID((*string)(i))
 	return *name
 }
 
 // Version of the secret.
-func (i ID) Version() string {
-	_, _, version := internal.ParseID(to.Ptr(string(i)))
+func (i *ID) Version() string {
+	_, _, version := internal.ParseID((*string)(i))
 	return *version
 }

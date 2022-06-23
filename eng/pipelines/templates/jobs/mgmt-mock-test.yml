@@ -12,12 +12,11 @@ jobs:
     - script: |
         npm install -g autorest
       displayName: 'Install autorest'
+
     - task: GoTool@0
       inputs:
         version: '1.18.2'
       displayName: "Select Go Version"
-
-    - template: /eng/pipelines/templates/steps/create-go-workspace.yml
 
     - task: Powershell@2
       displayName: 'Create Mock Test'
@@ -58,7 +57,7 @@ jobs:
         rootFolderOrFile: $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/
         includeRootFolder: true
         archiveFile: '$(Build.ArtifactStagingDirectory)/MockTestCodeAndReport.zip'
-        
+
     - task: PublishBuildArtifacts@1
       continueOnError: true
       displayName: 'Publish Code and Report'

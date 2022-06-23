@@ -1,14 +1,9 @@
 # Release History
 
-## 1.0.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.1 (2022-06-23)
 
 ### Other Changes
+* Upgrade `azcore` version and change test `poller` method
 
 ## 1.0.0 (2022-05-16)
 

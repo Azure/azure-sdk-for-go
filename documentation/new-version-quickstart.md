@@ -316,7 +316,7 @@ func main() {
 
 In addition to resource groups, we will also use Virtual Machine as an example and show how to manage how to create a Virtual Machine which involves three Azure services (Resource Group, Network and Compute)
 
-Due to the complexity of this scenario, please [click here](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/createVM) for the complete sample.
+Due to the complexity of this scenario, please [click here](https://aka.ms/azsdk/go/mgmt/samples?path=sdk/resourcemanager/compute/create_vm) for the complete sample.
 
 ## Code Samples
 

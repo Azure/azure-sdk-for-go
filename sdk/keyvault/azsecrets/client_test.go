@@ -86,7 +86,6 @@ func TestCRUD(t *testing.T) {
 	name := createRandomName(t, "secret")
 	value := createRandomName(t, "value")
 
-	// TODO: would be nice to promote value; it's actually required, and Key Vault's error message doesn't say so
 	setParams := azsecrets.SetSecretParameters{
 		ContentType: to.Ptr("big secret"),
 		SecretAttributes: &azsecrets.SecretAttributes{
@@ -99,13 +98,11 @@ func TestCRUD(t *testing.T) {
 	setResp, err := client.SetSecret(context.Background(), name, setParams, nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, setResp.ContentType)
-	// TODO: params has "SecretAttributes" field; response has "Attributes" field of same type
 	require.Equal(t, setParams.SecretAttributes.Enabled, setResp.Attributes.Enabled)
 	require.Equal(t, setParams.SecretAttributes.NotBefore.Unix(), setResp.Attributes.NotBefore.Unix())
 	require.Equal(t, setParams.Tags, setResp.Tags)
 	require.Equal(t, setParams.Value, setResp.Value)
 
-	// TODO: would be nice to demote version
 	getResp, err := client.GetSecret(context.Background(), setResp.ID.Name(), "", nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, getResp.ContentType)

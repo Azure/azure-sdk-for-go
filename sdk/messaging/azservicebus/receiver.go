@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
@@ -549,7 +550,9 @@ func createReceiverLink(ctx context.Context, session amqpwrap.AMQPSession, linkO
 		tmpReceiver, tmpErr := session.NewReceiver(linkOptions...)
 
 		if tmpErr != nil {
-			done <- ret{Err: tmpErr}
+			if ctx.Err() == nil {
+				done <- ret{Err: tmpErr}
+			}
 			return
 		}
 

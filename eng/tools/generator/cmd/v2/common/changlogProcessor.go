@@ -176,7 +176,7 @@ func FilterChangelog(changelog *model.Changelog) {
 		if changelog.Modified.AdditiveChanges != nil {
 			removeMarshalUnmarshalFunc(changelog.Modified.AdditiveChanges.Funcs)
 		}
-		if changelog.Modified.BreakingChanges != nil {
+		if changelog.Modified.BreakingChanges != nil && changelog.Modified.BreakingChanges.Removed != nil {
 			removeMarshalUnmarshalFunc(changelog.Modified.BreakingChanges.Removed.Funcs)
 		}
 	}

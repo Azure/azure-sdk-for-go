@@ -24,7 +24,7 @@ import (
 	"strings"
 )
 
-// OperationResultsClient contains the methods for the OperationResults group.
+// OperationResultsClient contains the methods for the MediaServicesOperationResults group.
 // Don't use this type directly, use NewOperationResultsClient() instead.
 type OperationResultsClient struct {
 	host           string
@@ -56,17 +56,14 @@ func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
-// Get - Get asset track operation result.
+// Get - Get media service operation result.
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2021-11-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// assetName - The Asset name.
-// trackName - The Asset Track name.
+// locationName - Location name.
 // operationID - Operation Id.
 // options - OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
-func (client *OperationResultsClient) Get(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, operationID string, options *OperationResultsClientGetOptions) (OperationResultsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, assetName, trackName, operationID, options)
+func (client *OperationResultsClient) Get(ctx context.Context, locationName string, operationID string, options *OperationResultsClientGetOptions) (OperationResultsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, locationName, operationID, options)
 	if err != nil {
 		return OperationResultsClientGetResponse{}, err
 	}
@@ -74,35 +71,23 @@ func (client *OperationResultsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return OperationResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return OperationResultsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *OperationResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, assetName string, trackName string, operationID string, options *OperationResultsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/tracks/{trackName}/operationResults/{operationId}"
+func (client *OperationResultsClient) getCreateRequest(ctx context.Context, locationName string, operationID string, options *OperationResultsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}/mediaServicesOperationResults/{operationId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	if locationName == "" {
+		return nil, errors.New("parameter locationName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if assetName == "" {
-		return nil, errors.New("parameter assetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	if trackName == "" {
-		return nil, errors.New("parameter trackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{trackName}", url.PathEscape(trackName))
+	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
@@ -135,7 +120,7 @@ func (client *OperationResultsClient) getHandleResponse(resp *http.Response) (Op
 	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
 		result.AzureAsyncOperation = &val
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssetTrack); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.MediaService); err != nil {
 		return OperationResultsClientGetResponse{}, err
 	}
 	return result, nil

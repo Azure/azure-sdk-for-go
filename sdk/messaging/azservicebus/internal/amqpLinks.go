@@ -400,8 +400,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 	// shut down any links we have
 	_ = l.closeWithoutLocking(ctx, false)
 
-	var err error
-	l.cancelAuthRefreshLink, _, err = l.ns.NegotiateClaim(ctx, l.entityPath)
+	tmpCancelAuthRefreshLink, _, err := l.ns.NegotiateClaim(ctx, l.entityPath)
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
@@ -410,7 +409,9 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 		return err
 	}
 
-	l.cancelAuthRefreshMgmtLink, _, err = l.ns.NegotiateClaim(ctx, l.managementPath)
+	l.cancelAuthRefreshLink = tmpCancelAuthRefreshLink
+
+	tmpCancelAuthRefreshMgmtLink, _, err := l.ns.NegotiateClaim(ctx, l.managementPath)
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
@@ -419,7 +420,9 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 		return err
 	}
 
-	sess, cr, err := l.ns.NewAMQPSession(ctx)
+	l.cancelAuthRefreshMgmtLink = tmpCancelAuthRefreshMgmtLink
+
+	tmpSession, cr, err := l.ns.NewAMQPSession(ctx)
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
@@ -428,10 +431,10 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 		return err
 	}
 
-	l.session = sess
+	l.session = tmpSession
 	l.id.Conn = cr
 
-	l.Sender, l.Receiver, err = l.createLink(ctx, l.session)
+	tmpSender, tmpReceiver, err := l.createLink(ctx, l.session)
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
@@ -440,7 +443,9 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 		return err
 	}
 
-	rpcLink, err := l.ns.NewRPCLink(ctx, l.ManagementPath())
+	l.Sender, l.Receiver = tmpSender, tmpReceiver
+
+	tmpRPCLink, err := l.ns.NewRPCLink(ctx, l.ManagementPath())
 
 	if err != nil {
 		if err := l.closeWithoutLocking(ctx, false); err != nil {
@@ -449,7 +454,7 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 		return err
 	}
 
-	l.RPCLink = rpcLink
+	l.RPCLink = tmpRPCLink
 	l.id.Link++
 	return nil
 }
@@ -471,10 +476,12 @@ func (l *AMQPLinksImpl) closeWithoutLocking(ctx context.Context, permanent bool)
 
 	if l.cancelAuthRefreshLink != nil {
 		l.cancelAuthRefreshLink()
+		l.cancelAuthRefreshLink = nil
 	}
 
 	if l.cancelAuthRefreshMgmtLink != nil {
 		l.cancelAuthRefreshMgmtLink()
+		l.cancelAuthRefreshMgmtLink = nil
 	}
 
 	if l.Sender != nil {

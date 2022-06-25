@@ -92,9 +92,21 @@ func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
 }
 
 func (w *AMQPSessionWrapper) NewReceiver(opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
-	return w.Inner.NewReceiver(opts...)
+	receiver, err := w.Inner.NewReceiver(opts...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return receiver, nil
 }
 
 func (w *AMQPSessionWrapper) NewSender(opts ...amqp.LinkOption) (AMQPSenderCloser, error) {
-	return w.Inner.NewSender(opts...)
+	sender, err := w.Inner.NewSender(opts...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return sender, nil
 }

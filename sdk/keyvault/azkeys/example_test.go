@@ -9,199 +9,113 @@ package azkeys_test
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
+var client azkeys.Client
+
 func ExampleNewClient() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+	vaultURL := "https://<TODO: your vault name>.vault.azure.net"
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-	_ = client // do something with client
+	client := azkeys.NewClient(vaultURL, cred, nil)
+	_ = client
 }
 
-func ExampleClient_CreateRSAKey() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
+func ExampleClient_CreateKey_rsa() {
+	params := azkeys.CreateKeyParameters{
+		KeySize: to.Ptr(int32(2048)),
+		Kty:     to.Ptr(azkeys.JSONWebKeyTypeRSA),
 	}
-
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	resp, err := client.CreateKey(context.TODO(), "key-name", params, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
-
-	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(*resp.Key.JSONWebKey.ID)
-	fmt.Println(*resp.Key.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.KID)
 }
 
-func ExampleClient_CreateECKey() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+func ExampleClient_CreateKey_ec() {
+	params := azkeys.CreateKeyParameters{
+		Curve: to.Ptr(azkeys.JSONWebKeyCurveNameP256K),
+		Kty:   to.Ptr(azkeys.JSONWebKeyTypeEC),
+	}
+	resp, err := client.CreateKey(context.TODO(), "key-name", params, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
+	}
+	fmt.Println(*resp.Key.KID)
+}
+
+func ExampleClient_DeleteKey() {
+	// DeleteKey returns when Key Vault has begun deleting the key. That can take several
+	// seconds to complete, so it may be necessary to wait before performing other operations
+	// on the deleted key.
+	resp, err := client.DeleteKey(context.TODO(), "key-name", nil)
+	if err != nil {
+		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
-	if err != nil {
-		panic(err)
-	}
+	// In a soft-delete enabled vault, deleted keys can be recovered until they're purged (permanently deleted).
+	fmt.Printf("Key will be purged at %v", resp.ScheduledPurgeDate)
+}
 
-	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{Curve: to.Ptr(azkeys.CurveNameP256)})
-	if err != nil {
-		panic(err)
+func ExampleClient_PurgeDeletedKey() {
+	// this loop purges all the deleted keys in the vault
+	pager := client.NewListDeletedKeysPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			// TODO: handle error
+		}
+		for _, key := range page.Value {
+			_, err := client.PurgeDeletedKey(context.TODO(), key.KID.Name(), nil)
+			if err != nil {
+				// TODO: handle error
+			}
+		}
 	}
-	fmt.Println(*resp.Key.JSONWebKey.ID)
-	fmt.Println(*resp.Key.JSONWebKey.KeyType)
 }
 
 func ExampleClient_GetKey() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	// passing an empty string for the version parameter gets the latest version of the key
+	resp, err := client.GetKey(context.TODO(), "key-name", "", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
-
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := client.GetKey(context.TODO(), "key-to-retrieve", nil)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.KID)
 }
 
-func ExampleClient_UpdateKeyProperties() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
+func ExampleClient_UpdateKey() {
+	params := azkeys.UpdateKeyParameters{
+		KeyAttributes: &azkeys.KeyAttributes{
+			Expires: to.Ptr(time.Now().Add(48 * time.Hour)),
+		},
+		Tags: map[string]*string{"expiraton-extended": to.Ptr("true")},
 	}
-
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	// passing an empty string for the version parameter updates the latest version of the key
+	updateResp, err := client.UpdateKey(context.TODO(), "key-name", "", params, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
-
-	resp, err := client.GetKey(context.TODO(), "key-to-update", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	resp.Key.Properties.Tags = map[string]*string{"Tag1": to.Ptr("val1")}
-	resp.Key.Properties.Enabled = to.Ptr(true)
-
-	updateResp, err := client.UpdateKeyProperties(context.TODO(), *resp.Key.Properties, nil)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, *updateResp.Key.Properties.Tags["Tag1"])
+	fmt.Printf("Enabled key %s", *updateResp.Key.KID)
 }
 
-func ExampleClient_BeginDeleteKey() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := client.BeginDeleteKey(context.TODO(), "key-to-delete", nil)
-	if err != nil {
-		panic(err)
-	}
-	pollResp, err := resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
-}
-
-func ExampleClient_NewListPropertiesOfKeysPager() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	pager := client.NewListPropertiesOfKeysPager(nil)
+func ExampleClient_NewListKeysPager() {
+	pager := client.NewListKeysPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		if err != nil {
-			panic(err)
+			// TODO: handle error
 		}
-		for _, key := range resp.Keys {
-			fmt.Println(*key.ID)
+		for _, key := range resp.Value {
+			fmt.Println(*key.KID)
 		}
-	}
-}
-
-func ExampleClient_UpdateKeyRotationPolicy() {
-	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azkeys.NewClient(vaultUrl, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	getResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-to-update", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	getResp.Attributes.ExpiresIn = to.Ptr("P90D")
-	getResp.LifetimeActions = []*azkeys.LifetimeActions{
-		{
-			Action: &azkeys.LifetimeActionsType{
-				Type: to.Ptr(azkeys.RotationActionNotify),
-			},
-			Trigger: &azkeys.LifetimeActionsTrigger{
-				TimeBeforeExpiry: to.Ptr("P30D"),
-			},
-		},
-	}
-
-	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-to-update", getResp.RotationPolicy, nil)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("Updated key rotation policy for: ", *resp.ID)
-
-	_, err = client.RotateKey(context.TODO(), "key-to-rotate", nil)
-	if err != nil {
-		panic(err)
 	}
 }

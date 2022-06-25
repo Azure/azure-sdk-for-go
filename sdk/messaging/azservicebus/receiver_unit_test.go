@@ -339,7 +339,11 @@ func TestReceiver_CanCancelLinkCreation(t *testing.T) {
 
 	// also, the receiver we returned should be closed as part of the goroutine
 	// unwinding.
-	<-receiverWasClosedCh
+	select {
+	case <-receiverWasClosedCh:
+	case <-time.After(10 * time.Second):
+		require.Fail(t, "10 seconds and the receiver wasn't closed")
+	}
 }
 
 func TestReceiver_CanCancelLinkCreation_WithError(t *testing.T) {

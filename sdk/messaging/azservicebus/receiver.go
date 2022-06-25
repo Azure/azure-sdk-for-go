@@ -557,7 +557,7 @@ func createReceiverLink(ctx context.Context, session amqpwrap.AMQPSession, linkO
 		go func() {
 			data := <-done
 
-			if data.Err != nil {
+			if data.Err == nil {
 				// `createReceiverLink` will have already returned with a cancellation based error,
 				// so this goroutine just needs to make sure we close this link that nobody is going
 				// to use.

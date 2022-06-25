@@ -1,0 +1,199 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakemhsm/keys/testreleasekey2633194999/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "88730538-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "0"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/testreleasekey2633194999/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "265",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "attributes": {
+          "exportable": true
+        },
+        "crv": "P-256K",
+        "kty": "EC-HSM",
+        "release_policy": {
+          "data": "eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dLCJhdXRob3JpdHkiOiJodHRwczovL2Zha2VhdHRlc3RhdGlvbiJ9XSwidmVyc2lvbiI6IjEuMC4wIn0",
+          "immutable": true
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "713",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "887b842e-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "1441"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1656356481,
+          "enabled": true,
+          "exportable": true,
+          "recoverableDays": 7,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "updated": 1656356481
+        },
+        "key": {
+          "crv": "P-256K",
+          "key_ops": [
+            "verify",
+            "sign"
+          ],
+          "kid": "https://fakemhsm/keys/testreleasekey2633194999/6997cf3d4fab4d5b961b424ecf92e63d",
+          "kty": "EC-HSM",
+          "x": "t2lQW1kR2jC1pIuhLTGfrBaWec7e-bKzl1FFyzUCTcM",
+          "y": "RlW0JH_GBubABJVJpRlUVq-k06huQIl0iOuuqyA6-PQ"
+        },
+        "release_policy": {
+          "contentType": "application/json; charset=utf-8",
+          "data": "eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dLCJhdXRob3JpdHkiOiJodHRwczovL2NobG93ZWF6a2V5c3NpdGUuYXp1cmV3ZWJzaXRlcy5uZXQvIn1dLCJ2ZXJzaW9uIjoiMS4wLjAifQ",
+          "immutable": true
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakeattestation/generate-test-token",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "User-Agent": "Go-http-client/1.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:23 GMT",
+        "ETag": "W/\u0022502-k2UdRMkxcPlX6Gxpk1nGowITyYk\u0022",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "token": "redacted"
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/testreleasekey2633194999//release?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "target": "redacted"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "11166",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "89c3ae92-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "1255"
+      },
+      "ResponseBody": {
+        "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2ODAxY2Y3LWFjZDItNDQyOC0yNzVmLTg3MmNiY2IxOTcwMSIsIng1YyI6WyJNSUlJcFRDQ0JvMmdBd0lCQWdJVE13QkNLQ1F1c25QeE80MGdkd0FBQUVJb0pEQU5CZ2txaGtpRzl3MEJBUXdGQURCWk1Rc3dDUVlEVlFRR0V3SlZVekVlTUJ3R0ExVUVDaE1WVFdsamNtOXpiMlowSUVOdmNuQnZjbUYwYVc5dU1Tb3dLQVlEVlFRREV5Rk5hV055YjNOdlpuUWdRWHAxY21VZ1ZFeFRJRWx6YzNWcGJtY2dRMEVnTURZd0hoY05Nakl3TmpJM01UWTFOVEE1V2hjTk1qTXdOakl5TVRZMU5UQTVXakI3TVFzd0NRWURWUVFHRXdKVlV6RUxNQWtHQTFVRUNCTUNWMEV4RURBT0JnTlZCQWNUQjFKbFpHMXZibVF4SGpBY0JnTlZCQW9URlUxcFkzSnZjMjltZENCRGIzSndiM0poZEdsdmJqRXRNQ3NHQTFVRUF4TWtZMmhzYjNkbFlYcHJaWGx6YUhOdExtMWhibUZuWldSb2MyMHVZWHAxY21VdWJtVjBNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDQVFFQXFvTVhJOVF5NWpxdTZLVkp4UCtZZEpKZW16dmdFRVowVTZabjNlYUREdkN3Q2luam9ranhnOW1RQjJseXRObHhKZzVUZmtkUXBpQnRuN1FHNDBtRHQrcmxZblZ4d1cxV05pZFJId1hXRWUrMFkyUnp4czhDSVhrUjhwZW53UVk3K1F5TXloM3VacTVORWRsdGgxOWJ1R1JwZjVodWJibEFhcmdkaXk3KzVvNnlUWEQ3Y00wanpkWGpOUndHYTVHd1dlMkNOYll4UEgyQUNENWw0dXYzdUVBMkJrUkdKWUdqckFVOGlPeG93cVBESnJKY25LeEZkbHFodWd6SkxCbFNiQk9vd3RSYWJYWm5qLzkxU1NRcWxTeEIxMjRWemdRWmxZeThyVVVHZC9tUFpyL1AraG1KS21mclFMNGFtM3VlSXFmcmdxditwQXBrWVA5SnE4dlJpd0lEQVFBQm80SUVRakNDQkQ0d2dnRitCZ29yQmdFRUFkWjVBZ1FDQklJQmJnU0NBV29CYUFCMkFPZyswTm8rOVFZMU11ZFhLTHlKYThrRDA4dlJFV3ZzNjJuaGQzMXRCcjF1QUFBQmdhWWZ5NlVBQUFRREFFY3dSUUloQU5YanZvWXp0MHBQUVdLTDEvNkFxQWxKb2xuRXhySFBWdkJOdjVJbVFXQ2hBaUFYV0x6SDBKQVpiZTlwemRvd3JDMkNEeXZheU54UWFjWHpsbUorQ2ozdHpnQjJBTE56ZHdmaGhGRDRZNGJXQmFuY0VRbEtlUzJ4Wnd3TGg5endBdzU1TnFXYUFBQUJnYVlmeStJQUFBUURBRWN3UlFJZ1E0cENmdVBzb0N3cUkwOHpMaC9WZVJ6Ym9xQ3RJZCtzQjc5T0tibGlEc2NDSVFESlRCajNPeGhWRm40QTRLWllYUTc4cHAzaFRva0ZBc2RuaW9jZjFZc0JaZ0IyQUszM3Z2cDgveERJaTUwOW5CNCtHR3EwWnlsZHo3RU1KTXFGaGpUcjNJS0tBQUFCZ2FZZnkzUUFBQVFEQUVjd1JRSWdiMTNpazd2SEgwMm13ZzNmV2VRNVpGYnVFUnl3UGhrejlqMVFGblhYREJZQ0lRRE02SVV2K1hZcStza2dhNFhxamo4NHBKY3Nzb0Q0eXBxRnh2dDUrZU82RGpBbkJna3JCZ0VFQVlJM0ZRb0VHakFZTUFvR0NDc0dBUVVGQndNQ01Bb0dDQ3NHQVFVRkJ3TUJNRHdHQ1NzR0FRUUJnamNWQndRdk1DMEdKU3NHQVFRQmdqY1ZDSWU5MXh1QjUrdEdnb0dkTG83UURJZncyaDFkZ29UbGFZTHpwejRDQVdRQ0FTVXdnYTRHQ0NzR0FRVUZCd0VCQklHaE1JR2VNRzBHQ0NzR0FRVUZCekFDaG1Gb2RIUndPaTh2ZDNkM0xtMXBZM0p2YzI5bWRDNWpiMjB2Y0d0cGIzQnpMMk5sY25SekwwMXBZM0p2YzI5bWRDVXlNRUY2ZFhKbEpUSXdWRXhUSlRJd1NYTnpkV2x1WnlVeU1FTkJKVEl3TURZbE1qQXRKVEl3ZUhOcFoyNHVZM0owTUMwR0NDc0dBUVVGQnpBQmhpRm9kSFJ3T2k4dmIyNWxiMk56Y0M1dGFXTnliM052Wm5RdVkyOXRMMjlqYzNBd0hRWURWUjBPQkJZRUZLT05CQkxDZUxtU05VTlVMS0ZNTW1VOUpHVEdNQTRHQTFVZER3RUIvd1FFQXdJRXNEQlhCZ05WSFJFRVVEQk9naVJqYUd4dmQyVmhlbXRsZVhOb2MyMHViV0Z1WVdkbFpHaHpiUzVoZW5WeVpTNXVaWFNDSmlvdVkyaHNiM2RsWVhwclpYbHphSE50TG0xaGJtRm5aV1JvYzIwdVlYcDFjbVV1Ym1WME1Bd0dBMVVkRXdFQi93UUNNQUF3WkFZRFZSMGZCRjB3V3pCWm9GZWdWWVpUYUhSMGNEb3ZMM2QzZHk1dGFXTnliM052Wm5RdVkyOXRMM0JyYVc5d2N5OWpjbXd2VFdsamNtOXpiMlowSlRJd1FYcDFjbVVsTWpCVVRGTWxNakJKYzNOMWFXNW5KVEl3UTBFbE1qQXdOaTVqY213d1pnWURWUjBnQkY4d1hUQlJCZ3dyQmdFRUFZSTNUSU45QVFFd1FUQS9CZ2dyQmdFRkJRY0NBUll6YUhSMGNEb3ZMM2QzZHk1dGFXTnliM052Wm5RdVkyOXRMM0JyYVc5d2N5OUViMk56TDFKbGNHOXphWFJ2Y25rdWFIUnRNQWdHQm1lQkRBRUNBakFmQmdOVkhTTUVHREFXZ0JUVndXYzZ3cU9kOUhkU1cxa1NPQ25tVldpN3BUQWRCZ05WSFNVRUZqQVVCZ2dyQmdFRkJRY0RBZ1lJS3dZQkJRVUhBd0V3RFFZSktvWklodmNOQVFFTUJRQURnZ0lCQUo3NkZHNHN6bU5QU003S0w0WHZ5V3M3a3lvRXdUSjFyR1F0T1poQ2FLcmVzVUpnQ1Y1RmZPOVdEN29ueGMwdTJOZDQrN0dVa1g2YkdJZUN1enl1OTBMQkY5ZFp1VXNOZVRNR0tQbUNyYytZcXBvODFUWkUwdUtPcjlhUWtUSGI4Rkd4QmJtUlV0bzh2bzVINVZOZHdhTHNWY0hQczBXWkdQemluZE41OTlRbmJIQlNPc1FBYzVVRU9IcUQvMHl5WS9tbWtMK1FkYzNKY1gvKzg3Wm5rbHl6K3JLOVBrM1Q2RXFIUU41THRGV2hHNkZzazNkK1lKcjk1UERVenBvK1FCUlhDbG5hTUdjeDhVNHFReGNOOW1zdVJkbTlYTlpNaTJZQk96cFlSQ2o5M3U1ZUxuaHM1SUlsYnVyRWVaY0RDYWp5RzV2U0NaQklrVFRtZGYxbUVNVzVieDNmTWhja01zNC9iUkg2NjVuR2MwL2lBb01IS1ZSc0dsOEQyQnlUQnFjQURtMmZnRjJOQ0xrN2lHUWdCTDdjMm5pcTMrU0tzTDRiTU0vZmpuZ3k0SDU0OU9ETlRtTWdHeklYWnNmMzU3M3FobnlYc1ZTNTAxSVN5QnVSYWVXbk1Pa21NUmZtOHR4K0FqU2xPRVltVXRYSndETmNSWXR4MUdEYUxrSUt2enhNNG5wSU52REpaQkhTWm9naE1IUzRKODgxbytRYTFPR0Z4L29SdVJ3M05kUi9qdjFxQWpUQ2hyWFBWOHdQRFpGY1c0LzFzUTYzdE9OSVlrZWlhMzB1TnhxN1FjS3BwYjJhMkdSYW9VYTUzQTZzbmRsREhsUjRuWitOcTdTS2Q2T1NPQjN0NEY4eVR3aUtqeHE1NDhLZW5lS3ZkNlQzTHBXVlMxZHNpd1pZIiwiTUlJRjh6Q0NCTnVnQXdJQkFnSVFBdWVSY2Z1QUllay80dG1EZzB4UXdEQU5CZ2txaGtpRzl3MEJBUXdGQURCaE1Rc3dDUVlEVlFRR0V3SlZVekVWTUJNR0ExVUVDaE1NUkdsbmFVTmxjblFnU1c1ak1Sa3dGd1lEVlFRTEV4QjNkM2N1WkdsbmFXTmxjblF1WTI5dE1TQXdIZ1lEVlFRREV4ZEVhV2RwUTJWeWRDQkhiRzlpWVd3Z1VtOXZkQ0JITWpBZUZ3MHlNREEzTWpreE1qTXdNREJhRncweU5EQTJNamN5TXpVNU5UbGFNRmt4Q3pBSkJnTlZCQVlUQWxWVE1SNHdIQVlEVlFRS0V4Vk5hV055YjNOdlpuUWdRMjl5Y0c5eVlYUnBiMjR4S2pBb0JnTlZCQU1USVUxcFkzSnZjMjltZENCQmVuVnlaU0JVVEZNZ1NYTnpkV2x1WnlCRFFTQXdOakNDQWlJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dJUEFEQ0NBZ29DZ2dJQkFMVkdBUmw1NmJ4M0tCVVNHdVBjNEg1dW9ORmtGSDRlN3B2VEN4Umk0ai8reitYYndqRXorNUNpcERPcWp4OS9qV2pza0w1ZGs3UGFRa3pJdGlkc0FBbkRDVzFsZVpCT0lpNjhMZmYxYmpUZVpnTVlpd2RSZDNZMzliL2xjR3BpdVAyZDIzVzk1WUhrTU1UOElsV29zWUlYMGY0a1liNjJycGh5Zm5BalliLzRPZDk5VGhuaGxBeEd0ZnZTYlhjQlZJS0NZZlpncVJ2Vis1bFJlVW5kMWFOalJZVnpQT29pZmdTeDJmUnl5MStwTzFVemFNTU5uSU9FNzFiVllXMEExaHIxOXc3a09iMEtrSlhvQUxURERqMXVrVUVEcVF1QmZCeFJlTDVtWGl1MU83V0cwdmx0ZzBWWi9TWnpjdEJzZEJseDFCa21XWUJXMjYxS1pnQml2cnFsNUVMVEtLZDhxZ3RIY0xRQTVmbDZKQjBRZ3M1WERhV2VoTjg2R3BzNUpXOEFyakd0amNXQUlQK1g4Q1FhV2ZhQ251Um02QmsvMDNQUVdoZ2RpODRxd0Ewc3NSZkZKd0hVUFROU25FOEVpR1ZrMmZydDB1OFBHMXB3U1FzRnVOSmZjWUlIRXYxdk96UDd1RU91RHlkc21DamhseHVvSzJuNS8yYVZSM0JNVHUrcDQrZ2w4YWxYb0J5Y3lMbWozSi9QVWdxRDhTTDVmVENVZWdHc2RpYS9TYTYwTjJvVjd2UTE3d2pNTitMWGEycmpqL2I0WmxaZ1hWb2pEbUFqRHdJUmREVXVqUXUwUlZzSnFGTE16U0lIcHAyQ1pwN21Jb0xyeVNheTJZWUJ1N1NpTndMOTVYNkhlMmtTOGVlZkJCSGp6d1cvOUZ4R3FyeTU3aTcxYzJjREFnTUJBQUdqZ2dHdE1JSUJxVEFkQmdOVkhRNEVGZ1FVMWNGbk9zS2puZlIzVWx0WkVqZ3A1bFZvdTZVd0h3WURWUjBqQkJnd0ZvQVVUaUpVSUJpVjV1TnU1Zy82K3JrUzdRWVhqemt3RGdZRFZSMFBBUUgvQkFRREFnR0dNQjBHQTFVZEpRUVdNQlFHQ0NzR0FRVUZCd01CQmdnckJnRUZCUWNEQWpBU0JnTlZIUk1CQWY4RUNEQUdBUUgvQWdFQU1IWUdDQ3NHQVFVRkJ3RUJCR293YURBa0JnZ3JCZ0VGQlFjd0FZWVlhSFIwY0RvdkwyOWpjM0F1WkdsbmFXTmxjblF1WTI5dE1FQUdDQ3NHQVFVRkJ6QUNoalJvZEhSd09pOHZZMkZqWlhKMGN5NWthV2RwWTJWeWRDNWpiMjB2UkdsbmFVTmxjblJIYkc5aVlXeFNiMjkwUnpJdVkzSjBNSHNHQTFVZEh3UjBNSEl3TjZBMW9ET0dNV2gwZEhBNkx5OWpjbXd6TG1ScFoybGpaWEowTG1OdmJTOUVhV2RwUTJWeWRFZHNiMkpoYkZKdmIzUkhNaTVqY213d042QTFvRE9HTVdoMGRIQTZMeTlqY213MExtUnBaMmxqWlhKMExtTnZiUzlFYVdkcFEyVnlkRWRzYjJKaGJGSnZiM1JITWk1amNtd3dIUVlEVlIwZ0JCWXdGREFJQmdabmdRd0JBZ0V3Q0FZR1o0RU1BUUlDTUJBR0NTc0dBUVFCZ2pjVkFRUURBZ0VBTUEwR0NTcUdTSWIzRFFFQkRBVUFBNElCQVFCMm9XYzkzZkI4ZXNjaS84ZXNpeGorK04yMm1laUdEamdGK3JBMkxVSzVJT1FPZ2NVU1RHS1NxRjlsWWZBeFBqcnFQakRDVVBIQ1VSdisyNmFkNVAvQll0WHRibXR4Sld1K2NTNUJoTURQUGVHM29QWndYUkhCSkZBa1k0TzRBRjdSSUFBVVc2RXpEZmxVb0RIS3Y4M3pPaVBmWUdjcEhjOXNreEFJbkNlZGs3UVNnWHZNQVJqak9xZGFrb3IyMURUbU5JVW90eG84a0h2NWh3UmxHaEJKd3BzNmZFVmkxQnQwdHJwTS8zd1l4bHI0NzNXU1BVRlpQZ1AxajUxOWtMcFdPSjh6MDl3eGF5K0JyMjlpclBjQll2MEdNWGxIcVRoeTh5NG0vSHlUUWVJMklNdk1yUW53cVBwWStyTElYeXZpSTJ2TG9JKzR4S0U0Um4zOFpaOG0iLCJNSUlEampDQ0FuYWdBd0lCQWdJUUF6cng1cWNScWFDN0tHU3hIUW42NVRBTkJna3Foa2lHOXcwQkFRc0ZBREJoTVFzd0NRWURWUVFHRXdKVlV6RVZNQk1HQTFVRUNoTU1SR2xuYVVObGNuUWdTVzVqTVJrd0Z3WURWUVFMRXhCM2QzY3VaR2xuYVdObGNuUXVZMjl0TVNBd0hnWURWUVFERXhkRWFXZHBRMlZ5ZENCSGJHOWlZV3dnVW05dmRDQkhNakFlRncweE16QTRNREV4TWpBd01EQmFGdzB6T0RBeE1UVXhNakF3TURCYU1HRXhDekFKQmdOVkJBWVRBbFZUTVJVd0V3WURWUVFLRXd4RWFXZHBRMlZ5ZENCSmJtTXhHVEFYQmdOVkJBc1RFSGQzZHk1a2FXZHBZMlZ5ZEM1amIyMHhJREFlQmdOVkJBTVRGMFJwWjJsRFpYSjBJRWRzYjJKaGJDQlNiMjkwSUVjeU1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBdXpmTk5OeDdhOG15YUpDdFNuWC9Scm9oQ2dpTjlSbFV5ZnVJMi9PdThqcUprVHg2NXFzR0dtdlByQzNvWGdra1JMcGltbjdXbzZoKzRGUjFJQVdzVUxlY1l4cHNNTnphSHhteDF4N2UvZGZneTVTRE42N3NIME5PM1hzczByMHVwUy9rcWJpdE90U1pwTFlsNlp0ckFHQ1NZUDlQSVVrWTkyZVFxMkVHbkkveXV1bTA2Wkl5YTdYelYraGRHODJNSGF1VkJKVko4elV0bHVOSmJkMTM0L3RKUzdTc1ZRZXBqNVd6dENPN1RHMUY4UGFwc3BVd3RQMU1WWXduU2xjVWZJS2R6WE9TMHhaS0JneU1VTkdQSGdtK0Y2SG1JY3I5ZytVUXZJT2xDc1JuS1BaekZCUTlSbmJEaHhTSklUUk5ydzlGREtaSm9icTduTVd4TTRNcGhRSURBUUFCbzBJd1FEQVBCZ05WSFJNQkFmOEVCVEFEQVFIL01BNEdBMVVkRHdFQi93UUVBd0lCaGpBZEJnTlZIUTRFRmdRVVRpSlVJQmlWNXVOdTVnLzYrcmtTN1FZWGp6a3dEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBR0JuS0pSdkRraGo2ekhkNm1jWTFZbDlQTVdMU24vcHZ0c3JGOSt3WDNOM0tqSVRPWUZuUW9RajhrVm5OZXlJdi9pUHNHRU1OS1N1SUV5RXh0djROZUYyMmQrbVFydkhSQWlHZnpaMEpGcmFiQTBVV1RXOThrbmR0aC9Kc3cxSEtqMlpMN3RjdTdYVUlPR1pYMU5HRmR0b20vRHpNTlUrTWVLTmhKN2ppdHJhbGo0MUU2VmY4UGx3VUhCSFFSRlhHVTdBajY0R3hKVVRGeThiSlo5MThyR09tYUZ2RTdGQmNmNklLc2hQRUNCVjEvTVVSZVhnUlBUcWg1VXlrdzcrVTBiNkxKMy9peUs1UzlrSlJhVGVwTGlhV04wYmZWS2ZqbGxEaUlHa25pYlZiNjNkRGNZM2ZlMERraHZsZDE5MjdqeU54RjFXVzZMWlptNnpOVGZsTXJZPSJdLCJ4NXQjUzI1NiI6IloyUjUzamh6MUhNMlZ4dEl4YW5EdDBxTUxzbXNoUU00Tk9jbjI5VDl5MTgifQ.eyJyZXF1ZXN0Ijp7ImFwaS12ZXJzaW9uIjoiNy4zIiwiZW5jIjoiQ0tNX1JTQV9BRVNfS0VZX1dSQVAiLCJraWQiOiJodHRwczovL2NobG93ZWF6a2V5c2hzbS5tYW5hZ2VkaHNtLmF6dXJlLm5ldC9rZXlzL3Rlc3RyZWxlYXNla2V5MjYzMzE5NDk5OSJ9LCJyZXNwb25zZSI6eyJrZXkiOnsiYXR0cmlidXRlcyI6eyJjcmVhdGVkIjoxNjU2MzU2NDgxLCJlbmFibGVkIjp0cnVlLCJleHBvcnRhYmxlIjp0cnVlLCJyZWNvdmVyYWJsZURheXMiOjcsInJlY292ZXJ5TGV2ZWwiOiJDdXN0b21pemVkUmVjb3ZlcmFibGUrUHVyZ2VhYmxlIiwidXBkYXRlZCI6MTY1NjM1NjQ4MX0sImtleSI6eyJjcnYiOiJQLTI1NksiLCJrZXlfaHNtIjoiZXlKamFYQm9aWEowWlhoMElqb2lSVFkzUm05c05XSlpjRGxLWVdjd1VTMW1hVVpQVUdWblFubGpTMnBSWjB4clFWOWllVEJaWTFBM05UYzRNbEpKWVRKT2QzVmZka0ZpVjNaUFNtWnhTR2hZWXpkUFlYQmhjak50ZHpWVVpVRmFjMGQ1YVV0Q2VYRm1WMm96UTFkMmFWSnhUbkJLTmt0Q2RsOWpZakZFUldGbFVEZEpSa3hMYVd4bFRUaEtUVVpMVmxsWE56ZzNkelpQY0ZCcE1qTmZYekJETUc1cmFFOVdWR2x5U3pBelpqUXROVU5JUkhKMWJXSnRiMGxIZWxCWVltMTNSa0p1TVRRNFJrWXdWSHBsTkd3Mk9HTktUbkJMY2psRGFGUjZMV3hTWVVKM09IUXRhRlEyTTFORE0yUjVOVlF5UW1OM1EwTk9Ra3BPUlhsck9YcE9TMHBMTldwUFQzbzRXa2hwZDNGRWFFdDFjSFEwUVVOTlZHeHhabm96YUUxcWNDMDRNVUV5YkVSVk9XWjRVMWwzVUUxYVJWZGxSVlJhZWxaaVpWaDFRV1JqTUhkbVZHUnpSVTFJZUdzNExTMDBSbEJvWjFFdFltUlFUMmhCWDI5S2MwUmplRmhIYmpsaWRrWnlkR2d3VFdSR01tVm9iRUl4T1d3eGNqbEJhMWRvWDNWUlFUWlZTako2VlZGc2FIbHFRelpmYURKZmFFUlRXRjh3YkY5c05IVm5PWEJLYmpKaVl6VldiMXB0VmxGSFUwSlJWVWxvVTI1MFh6Y3lSRTFhZFZadWRYWlZjSGRyZUVkTlQybHRMVVZKUlVsd1YxWm1XRkZ0UW5WZlNGaEJVM1pmTTNCd2RtTlplbGw0YzNwRWVGUmpkVTg1UTFkS1lqUk9PVE00WTNKSFJHVklTMFV0Y21KTE9FWTVRbWxzUmxnMlIwRk5RME0wVEVWbUxYRXRlbnBSSWl3aWFHVmhaR1Z5SWpwN0ltRnNaeUk2SW1ScGNpSXNJbVZ1WXlJNklrTkxUVjlTVTBGZlFVVlRYMHRGV1Y5WFVrRlFJaXdpYTJsa0lqb2labUZyWlMxeVpXeGxZWE5sTFd0bGVTSjlMQ0p6WTJobGJXRmZkbVZ5YzJsdmJpSTZJakV1TUNKOSIsImtleV9vcHMiOlsidmVyaWZ5Iiwic2lnbiJdLCJraWQiOiJodHRwczovL2NobG93ZWF6a2V5c2hzbS5tYW5hZ2VkaHNtLmF6dXJlLm5ldC9rZXlzL3Rlc3RyZWxlYXNla2V5MjYzMzE5NDk5OS82OTk3Y2YzZDRmYWI0ZDViOTYxYjQyNGVjZjkyZTYzZCIsImt0eSI6IkVDIiwieCI6InQybFFXMWtSMmpDMXBJdWhMVEdmckJhV2VjN2UtYkt6bDFGRnl6VUNUY00iLCJ5IjoiUmxXMEpIX0dCdWJBQkpWSnBSbFVWcS1rMDZodVFJbDBpT3V1cXlBNi1QUSJ9LCJyZWxlYXNlX3BvbGljeSI6eyJjb250ZW50VHlwZSI6ImFwcGxpY2F0aW9uL2pzb247IGNoYXJzZXQ9dXRmLTgiLCJkYXRhIjoiZXlKaGJubFBaaUk2VzNzaVlXNTVUMllpT2x0N0ltTnNZV2x0SWpvaWMyUnJMWFJsYzNRaUxDSmxjWFZoYkhNaU9pSjBjblZsSW4xZExDSmhkWFJvYjNKcGRIa2lPaUpvZEhSd2N6b3ZMMk5vYkc5M1pXRjZhMlY1YzNOcGRHVXVZWHAxY21WM1pXSnphWFJsY3k1dVpYUXZJbjFkTENKMlpYSnphVzl1SWpvaU1TNHdMakFpZlEiLCJpbW11dGFibGUiOnRydWV9fX19.cj4KC8tM9Py0i9l7vYCgAhEEx6ufeadHWRzwN_7XtSh988C9q7R8wDpyTZ1qrL5wjIaZFxbqnxeUpThPBGCq0s-sI0xIqWQGgxHFYESPi4-R3yrDjoh38WtzQOMDUim8Ij6JsHMJ3dMQ8oxTwBUp5Q6nD2sWIJfOtD5L2ion99jCxZJssu404r34P8iUNsFX7xtRljKsgWM9ZUiiDW4S_MwBTU2xFhf0VoVRpEaNt1K9jDsGAHsta_rXjuVtakuAUskxfyc0YMukgEgmCKAOKrJImP3AGX1WTuwiMjiY-O0mrfaG593dlKECwWJ2X6wOfU_Xc3FMvyYkJLTmfDECMQ"
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/testreleasekey2633194999?api-version=7.3",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "861",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "8a9cf670-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "74"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1656356481,
+          "enabled": true,
+          "exportable": true,
+          "recoverableDays": 7,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "updated": 1656356481
+        },
+        "deletedDate": 1656356485,
+        "key": {
+          "crv": "P-256K",
+          "key_ops": [
+            "verify",
+            "sign"
+          ],
+          "kid": "https://fakemhsm/keys/testreleasekey2633194999/6997cf3d4fab4d5b961b424ecf92e63d",
+          "kty": "EC-HSM",
+          "x": "t2lQW1kR2jC1pIuhLTGfrBaWec7e-bKzl1FFyzUCTcM",
+          "y": "RlW0JH_GBubABJVJpRlUVq-k06huQIl0iOuuqyA6-PQ"
+        },
+        "recoveryId": "https://fakemhsm/deletedkeys/testreleasekey2633194999",
+        "release_policy": {
+          "contentType": "application/json; charset=utf-8",
+          "data": "eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dLCJhdXRob3JpdHkiOiJodHRwczovL2NobG93ZWF6a2V5c3NpdGUuYXp1cmV3ZWJzaXRlcy5uZXQvIn1dLCJ2ZXJzaW9uIjoiMS4wLjAifQ",
+          "immutable": true
+        },
+        "scheduledPurgeDate": 1656961285
+      }
+    }
+  ],
+  "Variables": {}
+}

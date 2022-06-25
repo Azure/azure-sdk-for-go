@@ -1,0 +1,408 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakevault/keys/key1533221169/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "97",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:00:50 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://vault.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "2a574c13-7730-4c6e-8929-788e825b6e4a"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Unauthorized",
+          "message": "AKV10000: Request is missing a Bearer or PoP token."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/keys/key1533221169/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "12",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "kty": "EC"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "398",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:00:50 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=89;da_age=6533;rd_age=6533;brd_age=23020;ra_notif_age=379;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "fe15bcd4-b994-4286-8d72-7d2328f1e88c"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://fakevault/keys/key1533221169/df4f492173004ebca0b91cc2a4baa32d",
+          "kty": "EC",
+          "key_ops": [
+            "sign",
+            "verify"
+          ],
+          "crv": "P-256",
+          "x": "lvTk4GJey8crDLlPc4fSThom3mDpv9qNEIhc8ivNAOc",
+          "y": "ZykAB0Q7KT3Ke6cOF_zuD6TN0UnG7PwNKjrGX1s3P7k"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1656356451,
+          "updated": 1656356451,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/keys/key1533221169?api-version=7.3",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "530",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:00:51 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=89;da_age=6533;rd_age=6533;brd_age=23021;ra_notif_age=379;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "2bbe5dd4-d13d-40a3-ac0e-8e304753a118"
+      },
+      "ResponseBody": {
+        "recoveryId": "https://fakevault/deletedkeys/key1533221169",
+        "deletedDate": 1656356452,
+        "scheduledPurgeDate": 1656961252,
+        "key": {
+          "kid": "https://fakevault/keys/key1533221169/df4f492173004ebca0b91cc2a4baa32d",
+          "kty": "EC",
+          "key_ops": [
+            "sign",
+            "verify"
+          ],
+          "crv": "P-256",
+          "x": "lvTk4GJey8crDLlPc4fSThom3mDpv9qNEIhc8ivNAOc",
+          "y": "ZykAB0Q7KT3Ke6cOF_zuD6TN0UnG7PwNKjrGX1s3P7k"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1656356451,
+          "updated": 1656356451,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/deletedkeys/key1533221169?api-version=7.3",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "81",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:00:51 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=89;da_age=6534;rd_age=6534;brd_age=23021;ra_notif_age=379;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "ba144383-3d87-4214-a8b3-6f4ca2ed6b51"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key1533221169"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/deletedkeys/key1533221169?api-version=7.3",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "530",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:02 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=99;da_age=6544;rd_age=6544;brd_age=23031;ra_notif_age=389;dec_lev=0;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "11f2e494-5d7d-45e7-b06f-e0bf332b8ebb"
+      },
+      "ResponseBody": {
+        "recoveryId": "https://fakevault/deletedkeys/key1533221169",
+        "deletedDate": 1656356452,
+        "scheduledPurgeDate": 1656961252,
+        "key": {
+          "kid": "https://fakevault/keys/key1533221169/df4f492173004ebca0b91cc2a4baa32d",
+          "kty": "EC",
+          "key_ops": [
+            "sign",
+            "verify"
+          ],
+          "crv": "P-256",
+          "x": "lvTk4GJey8crDLlPc4fSThom3mDpv9qNEIhc8ivNAOc",
+          "y": "ZykAB0Q7KT3Ke6cOF_zuD6TN0UnG7PwNKjrGX1s3P7k"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1656356451,
+          "updated": 1656356451,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/deletedkeys/key1533221169/recover?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "398",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:02 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=100;da_age=6544;rd_age=6544;brd_age=23031;ra_notif_age=390;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "88273b0a-f7d0-467f-9f3c-8ba3a10f8a59"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://fakevault/keys/key1533221169/df4f492173004ebca0b91cc2a4baa32d",
+          "kty": "EC",
+          "key_ops": [
+            "sign",
+            "verify"
+          ],
+          "crv": "P-256",
+          "x": "lvTk4GJey8crDLlPc4fSThom3mDpv9qNEIhc8ivNAOc",
+          "y": "ZykAB0Q7KT3Ke6cOF_zuD6TN0UnG7PwNKjrGX1s3P7k"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1656356451,
+          "updated": 1656356451,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/keys/key1533221169/df4f492173004ebca0b91cc2a4baa32d?api-version=7.3",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "334",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:03 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=100;da_age=6545;rd_age=6545;brd_age=23032;ra_notif_age=390;dec_lev=0;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "f475092c-0a55-4542-97c3-bee9f4a9b328"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "A key with (name/id) key1533221169/df4f492173004ebca0b91cc2a4baa32d was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/keys/key1533221169/df4f492173004ebca0b91cc2a4baa32d?api-version=7.3",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "398",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:13 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=110;da_age=6555;rd_age=6555;brd_age=23042;ra_notif_age=400;dec_lev=0;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "5799b0ba-74cb-4572-8390-cf5c172040fa"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://fakevault/keys/key1533221169/df4f492173004ebca0b91cc2a4baa32d",
+          "kty": "EC",
+          "key_ops": [
+            "sign",
+            "verify"
+          ],
+          "crv": "P-256",
+          "x": "lvTk4GJey8crDLlPc4fSThom3mDpv9qNEIhc8ivNAOc",
+          "y": "ZykAB0Q7KT3Ke6cOF_zuD6TN0UnG7PwNKjrGX1s3P7k"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1656356451,
+          "updated": 1656356451,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/keys/key1533221169?api-version=7.3",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "530",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:13 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=111;da_age=6555;rd_age=6555;brd_age=23042;ra_notif_age=400;dec_lev=0;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "f49853d5-9a97-4e4c-b93d-085ee69f23e9"
+      },
+      "ResponseBody": {
+        "recoveryId": "https://fakevault/deletedkeys/key1533221169",
+        "deletedDate": 1656356473,
+        "scheduledPurgeDate": 1656961273,
+        "key": {
+          "kid": "https://fakevault/keys/key1533221169/df4f492173004ebca0b91cc2a4baa32d",
+          "kty": "EC",
+          "key_ops": [
+            "sign",
+            "verify"
+          ],
+          "crv": "P-256",
+          "x": "lvTk4GJey8crDLlPc4fSThom3mDpv9qNEIhc8ivNAOc",
+          "y": "ZykAB0Q7KT3Ke6cOF_zuD6TN0UnG7PwNKjrGX1s3P7k"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1656356451,
+          "updated": 1656356451,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

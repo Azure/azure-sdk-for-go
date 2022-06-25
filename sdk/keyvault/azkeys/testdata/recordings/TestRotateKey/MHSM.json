@@ -1,0 +1,311 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "8dcd6ffa-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "1"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "16",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "kty": "EC-HSM"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "436",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "8dd6271c-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "292"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1656356490,
+          "enabled": true,
+          "exportable": false,
+          "recoverableDays": 7,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "updated": 1656356490
+        },
+        "key": {
+          "crv": "P-256",
+          "key_ops": [
+            "verify",
+            "sign"
+          ],
+          "kid": "https://fakemhsm/keys/testrotatekey4115012563/e1fb86aec0064940bd138f152792dd1d",
+          "kty": "EC-HSM",
+          "x": "oTxIiZqq35Q4wkEn98ce4fKVyiq3Uy_Xqm1tj7jx_xY",
+          "y": "TbbJ6MGYPLmN3GyZEZ37cUDrGe8gFzen_3g65GNPZPU"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/rotationpolicy?api-version=7.3",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "122",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "attributes": {
+          "expiryTime": "P90D"
+        },
+        "lifetimeActions": [
+          {
+            "action": {
+              "type": "rotate"
+            },
+            "trigger": {
+              "timeAfterCreate": "P30D"
+            }
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "215",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "8e14fe1a-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "183"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1656356490,
+          "expiryTime": "P90D",
+          "updated": 1656356490
+        },
+        "id": "keys/testrotatekey4115012563/rotationpolicy",
+        "lifetimeActions": [
+          {
+            "action": {
+              "type": "rotate"
+            },
+            "trigger": {
+              "timeAfterCreate": "P30D"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/rotationpolicy?api-version=7.3",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "215",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-build-version": "1.0.20220608-2-b6970bb4-1.0.20220513-1-d979721d-develop",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "8e4591e2-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "1"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1656356490,
+          "expiryTime": "P90D",
+          "updated": 1656356490
+        },
+        "id": "keys/testrotatekey4115012563/rotationpolicy",
+        "lifetimeActions": [
+          {
+            "action": {
+              "type": "rotate"
+            },
+            "trigger": {
+              "timeAfterCreate": "P30D"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563/rotate?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "453",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "8e4ea110-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "317"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1656356491,
+          "enabled": true,
+          "exp": 1664132491,
+          "exportable": false,
+          "recoverableDays": 7,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "updated": 1656356491
+        },
+        "key": {
+          "crv": "P-256",
+          "key_ops": [
+            "verify",
+            "sign"
+          ],
+          "kid": "https://fakemhsm/keys/testrotatekey4115012563/201499bbf06a43729fe0e0f243cde2a4",
+          "kty": "EC-HSM",
+          "x": "J1-wCMWcJnjRVGuQA5QtbjJH1Gc2Bbw0s2A6kb8L9TE",
+          "y": "JujMRqmlk2zHZu0uX8E0eik9Jk46IGbRKZCN5qn2jhc"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/keynonexistent/rotate?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "185",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "8e916892-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "16"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Key not found: Key not found: https://fakemhsm/keys/keynonexistent (Activity ID: 8e916892-f64b-11ec-b395-6045bd86d5ca)"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/testrotatekey4115012563?api-version=7.3",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "600",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "8e9d79b6-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "174"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1656356491,
+          "enabled": true,
+          "exp": 1664132491,
+          "exportable": false,
+          "recoverableDays": 7,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "updated": 1656356491
+        },
+        "deletedDate": 1656356491,
+        "key": {
+          "crv": "P-256",
+          "key_ops": [
+            "verify",
+            "sign"
+          ],
+          "kid": "https://fakemhsm/keys/testrotatekey4115012563/201499bbf06a43729fe0e0f243cde2a4",
+          "kty": "EC-HSM",
+          "x": "J1-wCMWcJnjRVGuQA5QtbjJH1Gc2Bbw0s2A6kb8L9TE",
+          "y": "JujMRqmlk2zHZu0uX8E0eik9Jk46IGbRKZCN5qn2jhc"
+        },
+        "recoveryId": "https://fakemhsm/deletedkeys/testrotatekey4115012563",
+        "scheduledPurgeDate": 1656961291
+      }
+    }
+  ],
+  "Variables": {}
+}

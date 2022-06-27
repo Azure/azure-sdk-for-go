@@ -374,6 +374,12 @@ type AssetTrackCollection struct {
 	Value []*AssetTrack `json:"value,omitempty"`
 }
 
+// AssetTrackOperationResultsClientGetOptions contains the optional parameters for the AssetTrackOperationResultsClient.Get
+// method.
+type AssetTrackOperationResultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AssetTrackOperationStatus - Status of asset track operation.
 type AssetTrackOperationStatus struct {
 	// REQUIRED; Operation identifier.
@@ -393,6 +399,12 @@ type AssetTrackOperationStatus struct {
 
 	// Operation start time.
 	StartTime *time.Time `json:"startTime,omitempty"`
+}
+
+// AssetTrackOperationStatusesClientGetOptions contains the optional parameters for the AssetTrackOperationStatusesClient.Get
+// method.
+type AssetTrackOperationStatusesClientGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // AssetTrackProperties - Properties of a video, audio or text track in the asset.
@@ -3177,12 +3189,6 @@ type MediaServiceIdentity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// MediaServiceOperationResultsClientGetOptions contains the optional parameters for the MediaServiceOperationResultsClient.Get
-// method.
-type MediaServiceOperationResultsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
 // MediaServiceOperationStatus - Status of media service operation.
 type MediaServiceOperationStatus struct {
 	// REQUIRED; Operation identifier.
@@ -3202,12 +3208,6 @@ type MediaServiceOperationStatus struct {
 
 	// Operation start time.
 	StartTime *time.Time `json:"startTime,omitempty"`
-}
-
-// MediaServiceOperationStatusesClientGetOptions contains the optional parameters for the MediaServiceOperationStatusesClient.Get
-// method.
-type MediaServiceOperationStatusesClientGetOptions struct {
-	// placeholder for future optional parameters
 }
 
 // MediaServiceProperties - Properties of the Media Services account.

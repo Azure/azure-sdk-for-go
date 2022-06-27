@@ -59,6 +59,24 @@ type AssetFiltersClientUpdateResponse struct {
 	AssetFilter
 }
 
+// AssetTrackOperationResultsClientGetResponse contains the response from method AssetTrackOperationResultsClient.Get.
+type AssetTrackOperationResultsClientGetResponse struct {
+	AssetTrack
+	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
+	AzureAsyncOperation *string
+
+	// Location contains the information returned from the Location header response.
+	Location *string
+
+	// RetryAfter contains the information returned from the Retry-After header response.
+	RetryAfter *int32
+}
+
+// AssetTrackOperationStatusesClientGetResponse contains the response from method AssetTrackOperationStatusesClient.Get.
+type AssetTrackOperationStatusesClientGetResponse struct {
+	AssetTrackOperationStatus
+}
+
 // AssetsClientCreateOrUpdateResponse contains the response from method AssetsClient.CreateOrUpdate.
 type AssetsClientCreateOrUpdateResponse struct {
 	Asset
@@ -269,27 +287,9 @@ type LocationsClientCheckNameAvailabilityResponse struct {
 	EntityNameAvailabilityCheckOutput
 }
 
-// MediaServiceOperationResultsClientGetResponse contains the response from method MediaServiceOperationResultsClient.Get.
-type MediaServiceOperationResultsClientGetResponse struct {
-	MediaService
-	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
-	AzureAsyncOperation *string
-
-	// Location contains the information returned from the Location header response.
-	Location *string
-
-	// RetryAfter contains the information returned from the Retry-After header response.
-	RetryAfter *int32
-}
-
-// MediaServiceOperationStatusesClientGetResponse contains the response from method MediaServiceOperationStatusesClient.Get.
-type MediaServiceOperationStatusesClientGetResponse struct {
-	MediaServiceOperationStatus
-}
-
 // OperationResultsClientGetResponse contains the response from method OperationResultsClient.Get.
 type OperationResultsClientGetResponse struct {
-	AssetTrack
+	MediaService
 	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
 	AzureAsyncOperation *string
 
@@ -302,7 +302,7 @@ type OperationResultsClientGetResponse struct {
 
 // OperationStatusesClientGetResponse contains the response from method OperationStatusesClient.Get.
 type OperationStatusesClientGetResponse struct {
-	AssetTrackOperationStatus
+	MediaServiceOperationStatus
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.List.

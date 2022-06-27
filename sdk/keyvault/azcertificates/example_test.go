@@ -6,6 +6,7 @@
 
 package azcertificates_test
 
+/*
 import (
 	"context"
 	"crypto/rand"
@@ -282,3 +283,4 @@ func ExampleClient_MergeCertificate() {
 	}
 	_ = mergeResp
 }
+*/

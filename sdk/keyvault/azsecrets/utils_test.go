@@ -26,12 +26,15 @@ import (
 
 const fakeVaultURL = "https://fakevault"
 
-var vaultURL string
+var (
+	secretsToPurge = struct {
+		mut   sync.Mutex
+		names []string
+	}{sync.Mutex{}, []string{}}
 
-var secretsToPurge = struct {
-	mut   sync.Mutex
-	names []string
-}{sync.Mutex{}, []string{}}
+	credential azcore.TokenCredential
+	vaultURL   string
+)
 
 func TestMain(m *testing.M) {
 	vaultURL = strings.TrimSuffix(os.Getenv("AZURE_KEYVAULT_URL"), "/")
@@ -44,6 +47,17 @@ func TestMain(m *testing.M) {
 	err := recording.ResetProxy(nil)
 	if err != nil {
 		panic(err)
+	}
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		credential = &FakeCredential{}
+	} else {
+		tenantID := lookupEnvVar("AZSECRETS_TENANT_ID")
+		clientID := lookupEnvVar("AZSECRETS_CLIENT_ID")
+		secret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")
+		credential, err = azidentity.NewClientSecretCredential(tenantID, clientID, secret, nil)
+		if err != nil {
+			panic(err)
+		}
 	}
 	if recording.GetRecordMode() == recording.RecordingMode {
 		err := recording.AddURISanitizer(fakeVaultURL, vaultURL, nil)
@@ -67,11 +81,7 @@ func TestMain(m *testing.M) {
 		// will be fast because the tests which created these secrets requested their
 		// deletion. Now, at the end of the run, Key Vault will have finished deleting
 		// most of them...
-		cred, err := getCredential()
-		if err != nil {
-			fmt.Println("unable to purge test secrets:", err.Error())
-		}
-		client := azsecrets.NewClient(vaultURL, cred, nil)
+		client := azsecrets.NewClient(vaultURL, credential, nil)
 		for _, name := range secretsToPurge.names {
 			// ...but we need a retry loop for the others. Note this wouldn't benefit
 			// from client-side parallelization because Key Vault's delete operations
@@ -100,9 +110,7 @@ func startTest(t *testing.T) *azsecrets.Client {
 	})
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
-	cred, err := getCredential()
-	require.NoError(t, err)
-	return azsecrets.NewClient(vaultURL, cred, &azcore.ClientOptions{Transport: transport})
+	return azsecrets.NewClient(vaultURL, credential, &azcore.ClientOptions{Transport: transport})
 }
 
 func createRandomName(t *testing.T, prefix string) string {
@@ -118,16 +126,6 @@ func lookupEnvVar(s string) string {
 		panic(fmt.Sprintf("Could not find env var: '%s'", s))
 	}
 	return ret
-}
-
-func getCredential() (azcore.TokenCredential, error) {
-	if recording.GetRecordMode() == recording.PlaybackMode {
-		return &FakeCredential{}, nil
-	}
-	tenantId := lookupEnvVar("AZSECRETS_TENANT_ID")
-	clientId := lookupEnvVar("AZSECRETS_CLIENT_ID")
-	clientSecret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")
-	return azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
 }
 
 func cleanUpSecret(t *testing.T, client *azsecrets.Client, name string) {

@@ -52,6 +52,9 @@ func ExampleClient_GetSecret() {
 }
 
 func ExampleClient_DeleteSecret() {
+	// DeleteSecret returns when Key Vault has begun deleting the secret. That can take several
+	// seconds to complete, so it may be necessary to wait before performing other operations
+	// on the deleted secret.
 	resp, err := client.DeleteSecret(context.TODO(), "secretToDelete", nil)
 	if err != nil {
 		// TODO: handle error

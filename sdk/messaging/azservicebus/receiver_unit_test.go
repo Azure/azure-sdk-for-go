@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"testing"
 	"time"
@@ -332,14 +333,47 @@ func TestReceiver_CanCancelLinkCreation(t *testing.T) {
 
 	receiver, err := createReceiverLink(ctx, session, []amqp.LinkOption{})
 	require.Nil(t, receiver)
-	require.NotNil(t, err)
 	require.ErrorIs(t, err, context.Canceled, fmt.Sprintf("%s is context.Cancelled", err.Error()))
 
 	close(done)
 
-	// also, the receiver we returned should be closed as part of the gourtine
+	// also, the receiver we returned should be closed as part of the goroutine
 	// unwinding.
-	<-receiverWasClosedCh
+	select {
+	case <-receiverWasClosedCh:
+	case <-time.After(10 * time.Second):
+		require.Fail(t, "10 seconds and the receiver wasn't closed")
+	}
+}
+
+func TestReceiver_CanCancelLinkCreation_WithError(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	done := make(chan struct{})
+
+	session := &internal.FakeAMQPSession{
+		NewReceiverFn: func(opts ...amqp.LinkOption) (internal.AMQPReceiverCloser, error) {
+			// simulate the client cancelling while we're stuck attempting to get the
+			// session receiver link.
+			cancel()
+
+			// "block" here. Basically what we're trying to simulate is that there's an
+			// active NewReceiver() and then we cancel.
+			select {
+			case <-done:
+			case <-time.After(5 * time.Second):
+				require.Fail(t, "Timed out waiting for the cancellation token to be respected.")
+			}
+
+			return nil, errors.New("an error happened so no receiver was created")
+		},
+	}
+
+	receiver, err := createReceiverLink(ctx, session, []amqp.LinkOption{})
+	require.Nil(t, receiver)
+	require.ErrorIs(t, err, context.Canceled, fmt.Sprintf("%s is context.Cancelled", err.Error()))
+
+	close(done)
 }
 
 func TestReceiverCancellationUnitTests(t *testing.T) {

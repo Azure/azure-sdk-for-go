@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.2 (Unreleased)
+
+### Bugs Fixed
+
+- Cancelling link creation could leak a goroutine or, in rare conditions, a link. (#18479)
+
 ## 1.0.1 (2022-06-07)
 
 ### Features Added

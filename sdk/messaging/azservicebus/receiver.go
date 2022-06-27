@@ -541,34 +541,30 @@ func createReceiverLink(ctx context.Context, session amqpwrap.AMQPSession, linkO
 		Err      error
 	}
 
-	done := make(chan ret)
+	done := make(chan ret, 1)
 
 	go func(ctx context.Context) {
 		defer close(done)
 
 		tmpReceiver, tmpErr := session.NewReceiver(linkOptions...)
-
-		if tmpErr != nil {
-			done <- ret{Err: tmpErr}
-			return
-		}
-
-		select {
-		case <-ctx.Done():
-			// `createReceiverLink` will have already returned with a cancellation based error,
-			// so this goroutine just needs to make sure we close this link that nobody is going
-			// to use.
-			_ = tmpReceiver.Close(context.Background())
-			return
-		default:
-			done <- ret{Receiver: tmpReceiver}
-		}
+		done <- ret{Receiver: tmpReceiver, Err: tmpErr}
 	}(ctx)
 
 	select {
 	case data := <-done:
 		return data.Receiver, data.Err
 	case <-ctx.Done():
+		go func() {
+			data := <-done
+
+			if data.Err == nil {
+				// `createReceiverLink` will have already returned with a cancellation based error,
+				// so this goroutine just needs to make sure we close this link that nobody is going
+				// to use.
+				_ = data.Receiver.Close(context.Background())
+			}
+		}()
+
 		// we'll early exit if cancelled - the goroutine above
 		// will just close the no-longer-needed link if/when it
 		// returns successfully.

@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.0-beta.2 (2022-06-24)
+### Features Added
+
+- New const `DataSourceTypeIngestion`
+
+
 ## 2.0.0-beta.1 (2022-05-24)
 ### Breaking Changes
 

@@ -21,7 +21,7 @@ import (
 func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000)}
 
-	link, err := NewRPCLink(RPCLinkArgs{
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
 			session: tester,
 		},
@@ -72,7 +72,7 @@ LogLoop:
 func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000), Accepted: make(chan *amqp.Message, 1)}
 
-	link, err := NewRPCLink(RPCLinkArgs{
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
 			session: tester,
 		},
@@ -122,7 +122,7 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 func TestRPCLinkNonErrorLockLostDoesNotBreakAnything(t *testing.T) {
 	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000), Accepted: make(chan *amqp.Message, 1)}
 
-	link, err := NewRPCLink(RPCLinkArgs{
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
 		Client: &rpcTesterClient{
 			session: tester,
 		},
@@ -189,17 +189,17 @@ type rpcTesterClient struct {
 	session amqpwrap.AMQPSession
 }
 
-func (c *rpcTesterClient) NewSession(opts ...amqp.SessionOption) (amqpwrap.AMQPSession, error) {
+func (c *rpcTesterClient) NewSession(ctx context.Context, opts *amqp.SessionOptions) (amqpwrap.AMQPSession, error) {
 	return c.session, nil
 }
 
 func (c *rpcTesterClient) Close() error { return nil }
 
-func (tester *rpcTester) NewReceiver(opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
+func (tester *rpcTester) NewReceiver(ctx context.Context, opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
 	return tester, nil
 }
 
-func (tester *rpcTester) NewSender(opts ...amqp.LinkOption) (AMQPSenderCloser, error) {
+func (tester *rpcTester) NewSender(ctx context.Context, opts ...amqp.LinkOption) (AMQPSenderCloser, error) {
 	return tester, nil
 }
 

@@ -99,8 +99,8 @@ type RPCLinkArgs struct {
 }
 
 // NewRPCLink will build a new request response link
-func NewRPCLink(args RPCLinkArgs) (*rpcLink, error) {
-	session, err := args.Client.NewSession()
+func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
+	session, err := args.Client.NewSession(ctx, nil)
 
 	if err != nil {
 		return nil, err
@@ -124,6 +124,7 @@ func NewRPCLink(args RPCLinkArgs) (*rpcLink, error) {
 	}
 
 	sender, err := session.NewSender(
+		ctx,
 		amqp.LinkTargetAddress(args.Address),
 	)
 	if err != nil {
@@ -146,7 +147,7 @@ func NewRPCLink(args RPCLinkArgs) (*rpcLink, error) {
 		}
 	}
 
-	receiver, err := session.NewReceiver(receiverOpts...)
+	receiver, err := session.NewReceiver(ctx, receiverOpts...)
 	if err != nil {
 		// make sure we close the sender
 		clsCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

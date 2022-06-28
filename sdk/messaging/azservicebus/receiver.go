@@ -163,7 +163,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 
 func (r *Receiver) newReceiverLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
 	linkOptions := createLinkOptions(r.receiveMode, r.entityPath)
-	link, err := createReceiverLink(ctx, session, linkOptions)
+	link, err := session.NewReceiver(ctx, linkOptions...)
 	return nil, link, err
 }
 
@@ -483,7 +483,7 @@ func flushPrefetchedMessages(receiver internal.AMQPReceiver, messages *[]*Receiv
 	}()
 
 	for {
-		am, err := receiver.Prefetched(context.Background())
+		am, err := receiver.Prefetched()
 
 		// we've removed any code of consequence from Prefetched.
 		if am == nil || err != nil {
@@ -531,49 +531,6 @@ func (e *entity) SetSubQueue(subQueue SubQueue) error {
 	}
 
 	return fmt.Errorf("unknown SubQueue %d", subQueue)
-}
-
-func createReceiverLink(ctx context.Context, session amqpwrap.AMQPSession, linkOptions []amqp.LinkOption) (internal.AMQPReceiverCloser, error) {
-	// If you're doing an AcceptNextSession it's possible for this call to take a long time before timing out
-	// on its own (it's by design - it's waiting for any empty session to become available).
-	type ret = struct {
-		Receiver internal.AMQPReceiverCloser
-		Err      error
-	}
-
-	done := make(chan ret)
-
-	go func(ctx context.Context) {
-		defer close(done)
-
-		tmpReceiver, tmpErr := session.NewReceiver(linkOptions...)
-
-		if tmpErr != nil {
-			done <- ret{Err: tmpErr}
-			return
-		}
-
-		select {
-		case <-ctx.Done():
-			// `createReceiverLink` will have already returned with a cancellation based error,
-			// so this goroutine just needs to make sure we close this link that nobody is going
-			// to use.
-			_ = tmpReceiver.Close(context.Background())
-			return
-		default:
-			done <- ret{Receiver: tmpReceiver}
-		}
-	}(ctx)
-
-	select {
-	case data := <-done:
-		return data.Receiver, data.Err
-	case <-ctx.Done():
-		// we'll early exit if cancelled - the goroutine above
-		// will just close the no-longer-needed link if/when it
-		// returns successfully.
-		return nil, ctx.Err()
-	}
 }
 
 func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {

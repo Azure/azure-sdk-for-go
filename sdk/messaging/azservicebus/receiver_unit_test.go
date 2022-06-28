@@ -314,7 +314,7 @@ func TestReceiver_CanCancelLinkCreation(t *testing.T) {
 	done := make(chan struct{})
 
 	session := &internal.FakeAMQPSession{
-		NewReceiverFn: func(opts ...amqp.LinkOption) (internal.AMQPReceiverCloser, error) {
+		NewReceiverFn: func(ctx context.Context, opts ...amqp.LinkOption) (internal.AMQPReceiverCloser, error) {
 			// simulate the client cancelling while we're stuck attempting to get the
 			// session receiver link.
 			cancel()
@@ -330,7 +330,7 @@ func TestReceiver_CanCancelLinkCreation(t *testing.T) {
 		},
 	}
 
-	receiver, err := createReceiverLink(ctx, session, []amqp.LinkOption{})
+	receiver, err := session.NewReceiver(ctx)
 	require.Nil(t, receiver)
 	require.NotNil(t, err)
 	require.ErrorIs(t, err, context.Canceled, fmt.Sprintf("%s is context.Cancelled", err.Error()))

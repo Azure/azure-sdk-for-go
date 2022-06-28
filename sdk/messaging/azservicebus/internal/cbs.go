@@ -24,7 +24,7 @@ const (
 
 // NegotiateClaim attempts to put a token to the $cbs management endpoint to negotiate auth for the given audience
 func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
-	link, err := NewRPCLink(RPCLinkArgs{
+	link, err := NewRPCLink(ctx, RPCLinkArgs{
 		Client:   conn,
 		Address:  cbsAddress,
 		LogEvent: exported.EventAuth,

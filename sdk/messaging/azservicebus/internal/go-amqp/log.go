@@ -6,5 +6,5 @@
 package amqp
 
 // dummy functions used when debugging is not enabled
-
+// nolint:deadcode,unused
 func debug(_ int, _ string, _ ...interface{}) {}

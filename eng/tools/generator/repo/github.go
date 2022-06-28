@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-var confirmComment = "@%s Please confirm the SDK package change: %s."
+var confirmComment = "Hi @%s, Please confirm the SDK package change: %s."
 
 func CreatePullRequest(ctx context.Context, client *github.Client, owner, repo, fork, branch, body string) (*github.PullRequest, *github.Response, error) {
 	if branch == "" {

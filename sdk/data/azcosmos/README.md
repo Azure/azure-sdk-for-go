@@ -1,8 +1,8 @@
-# Microsoft Azure Cosmos DB SDK for Go, Golang
+# Azure Cosmos DB SDK for Go
 
 ## Introduction
 
-This client library enables client applications to connect to Azure Cosmos via the SQL API. Azure Cosmos is a globally distributed, multi-model database service.
+This client library enables client applications to connect to Azure Cosmos DB via the SQL API. Azure Cosmos DB is a globally distributed, multi-model database service.
 
 ## Getting Started
 
@@ -14,7 +14,7 @@ This client library enables client applications to connect to Azure Cosmos via t
 Note: If you don't have an Azure subscription, create a free account before you begin.
 You can Try Azure Cosmos DB for free without an Azure subscription, free of charge and commitments, or create an Azure Cosmos DB free tier account, with the first 400 RU/s and 5 GB of storage for free. You can also use the Azure Cosmos DB Emulator with a URI of https://localhost:8081. For the key to use with the emulator, see Authenticating requests.
 
-### Create an Azure Cosmos account
+### Create an Azure Cosmos DB account
 
 You can create an Azure Cosmos account using:
 
@@ -32,17 +32,17 @@ You can create an Azure Cosmos account using:
 
 #### Authenticate the client
 
-In order to interact with the Azure CosmosDB service you'll need to create an instance of the Cosmos client class. To make this possible you will need an URL and key of the Azure CosmosDB service.
+In order to interact with the Azure Cosmos DB service you'll need to create an instance of the Cosmos client class. To make this possible you will need an URL and key of the Azure Cosmos DB service.
 
 ## Examples
 
-The following section provides several code snippets covering some of the most common CosmosDB SQL API tasks, including:
-* [Create Client](#create-cosmos-client "Create Cosmos client")
+The following section provides several code snippets covering some of the most common Cosmos DB SQL API tasks, including:
+* [Create Client](#create-cosmos-db-client "Create Cosmos DB client")
 * [Create Database](#create-database "Create Database")
 * [Create Container](#create-container "Create Container")
 * [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
 
-### Create Cosmos Client
+### Create Cosmos DB Client
 
 The clients support different forms of authentication. The azcosmos library supports authorization via Azure Active Directory or an account key.
 

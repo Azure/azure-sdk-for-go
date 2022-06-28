@@ -5,8 +5,8 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/agrifood/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/agrifood/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/5b336209b5083a44bde12fbde57c460b2104986e/specification/agrifood/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/5b336209b5083a44bde12fbde57c460b2104986e/specification/agrifood/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.6.0
+module-version: 0.6.1
 ```

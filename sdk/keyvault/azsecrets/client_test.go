@@ -160,6 +160,19 @@ func TestCRUD(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestID(t *testing.T) {
+	for _, test := range []struct{ ID, name, version string }{
+		{"https://foo.vault.azure.net/secrets/name/version", "name", "version"},
+		{"https://foo.vault.azure.net/secrets/name", "name", ""},
+	} {
+		t.Run(test.ID, func(t *testing.T) {
+			ID := azsecrets.ID(test.ID)
+			require.Equal(t, test.name, ID.Name())
+			require.Equal(t, test.version, ID.Version())
+		})
+	}
+}
+
 func TestListDeletedSecrets(t *testing.T) {
 	client := startTest(t)
 

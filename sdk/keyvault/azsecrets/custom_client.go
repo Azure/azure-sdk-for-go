@@ -31,8 +31,11 @@ func (i *ID) Name() string {
 	return *name
 }
 
-// Version of the secret.
+// Version of the secret. This returns an empty string when the ID contains no version.
 func (i *ID) Version() string {
 	_, _, version := internal.ParseID((*string)(i))
+	if version == nil {
+		return ""
+	}
 	return *version
 }

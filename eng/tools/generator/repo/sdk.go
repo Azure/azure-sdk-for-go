@@ -4,7 +4,6 @@
 package repo
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -14,7 +13,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strconv"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
@@ -25,7 +23,6 @@ import (
 	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
-	"github.com/google/go-github/v32/github"
 )
 
 type SDKRepository interface {
@@ -213,67 +210,6 @@ func (s *sdkRepository) checkoutBack(ref *plumbing.Reference) error {
 	return s.Checkout(&opt)
 }
 
-var prBody = `
-<!--
-Thank you for contributing to the Azure SDK for Go.
-
-Please verify the following before submitting your PR, thank you!
--->
-
-- [ ] The purpose of this PR is explained in this or a referenced issue.
-- [ ] The PR does not update generated files.
-   - These files are managed by the codegen framework at [Azure/autorest.go][].
-- [ ] Tests are included and/or updated for code changes.
-- [ ] Updates to [CHANGELOG.md][] are included.
-- [ ] MIT license headers are included in each file.
-
-[Azure/autorest.go]: https://github.com/Azure/autorest.go
-[CHANGELOG.md]: https://github.com/Azure/azure-sdk-for-go/blob/main/CHANGELOG.md
-`
-
-var confirmComment = "@%s Please confirm the SDK package change: %s."
-
-func CreatePullRequest(ctx context.Context, client *github.Client, owner, repo, fork, branch, body string) (*github.PullRequest, *github.Response, error) {
-	if branch == "" {
-		return nil, nil, errors.New("branch name is nil")
-	}
-	if body == "" {
-		body = prBody
-	}
-	newPR := &github.NewPullRequest{
-		Title:               github.String(prTitle(branch)),
-		Head:                github.String(fork + ":" + branch),
-		Base:                github.String("main"),
-		Body:                github.String(body),
-		MaintainerCanModify: github.Bool(true),
-	}
-
-	pr, resp, err := client.PullRequests.Create(ctx, owner, repo, newPR)
-	if err != nil {
-		return nil, resp, fmt.Errorf("create pull request error: %v", err)
-	}
-	return pr, resp, nil
-}
-
-func prTitle(branchName string) string {
-	s := strings.Split(branchName, "-")
-
-	inclines := strings.Split(s[0], "/")
-	var t1 string
-	if len(inclines) > 0 {
-		t1 = inclines[len(inclines)-1]
-	} else {
-		t1 = s[0]
-	}
-
-	t1 = strings.Title(t1)
-	title := fmt.Sprintf("[%v] ", t1)
-	t := []string{"sdk", "resourcemanager"}
-	t = append(t, s[1:len(s)-1]...)
-	t2 := strings.Join(t, "/")
-	return title + t2
-}
-
 func GitPush(path, remoteName, branchName string) (string, error) {
 	refName := fmt.Sprintf(branchName + ":" + branchName)
 	push := exec.Command("git", "push", remoteName, refName)
@@ -315,27 +251,4 @@ func GetForkRemote(repo WorkTree) (forkRemote *git.Remote, err error) {
 		return nil, fmt.Errorf("under %s not set remote fork", link.SDKRepo)
 	}
 	return
-}
-
-func AddComment(ctx context.Context, client *github.Client, owner, repo, issue, prUrl string) (*github.IssueComment, error) {
-	s := strings.Split(issue, "/")
-	prNumber, err := strconv.Atoi(s[len(s)-1])
-	if err != nil {
-		return nil, fmt.Errorf("issue link invalid format: %v", err)
-	}
-
-	issueInfo, _, err := client.Issues.Get(ctx, owner, repo, prNumber)
-	if err != nil {
-		return nil, err
-	}
-
-	comment := &github.IssueComment{
-		Body: github.String(fmt.Sprintf(confirmComment, *issueInfo.User.Login, prUrl)),
-	}
-	issueComment, _, err := client.Issues.CreateComment(ctx, owner, repo, prNumber, comment)
-	if err != nil {
-		return nil, err
-	}
-
-	return issueComment, nil
 }

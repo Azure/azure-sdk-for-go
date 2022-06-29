@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/aad/armaad/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azureactivedirectory/resource-manager/Microsoft.Aadiam/stable/2020-03-01/examples/AzureADPrivateLinkPolicyCreate.json
@@ -68,10 +68,10 @@ func ExamplePrivateLinkForAzureAdClient_Update() {
 	res, err := client.Update(ctx,
 		"rg1",
 		"ddb1",
-		&armaad.PrivateLinkForAzureAdClientUpdateOptions{PrivateLinkPolicy: &armaad.PrivateLinkPolicyUpdateParameter{
+		armaad.PrivateLinkPolicyUpdateParameter{
 			Tags: map[string]*string{},
 		},
-		})
+		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

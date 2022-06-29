@@ -1,15 +1,9 @@
 # Release History
 
-## 1.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.1.1 (2022-06-30)
 
 ### Bugs Fixed
 * Avoid polling when a RELO LRO synchronously terminates.
-
-### Other Changes
 
 ## 1.1.0 (2022-06-03)
 

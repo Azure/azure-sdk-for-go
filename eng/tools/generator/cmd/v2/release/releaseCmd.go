@@ -40,7 +40,7 @@ rp-name: name of resource provider to be released, same for the swagger folder n
 namespaceName: name of namespace to be released, default value is arm+rp-name
 
 `,
-		Args: cobra.RangeArgs(2, 4),
+		Args: cobra.RangeArgs(3, 4),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			rpName := args[2]
 			namespaceName := "arm" + rpName

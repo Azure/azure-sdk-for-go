@@ -204,6 +204,9 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		if issue == nil {
 			continue
 		}
+		if request.GetAttention(*issue) {
+			continue
+		}
 		log.Printf("Parsing issue %s (%s)", issue.GetHTMLURL(), issue.GetTitle())
 		req, err := request.ParseIssue(c.ctx, c.client, *issue, request.ParsingOptions{
 			IncludeDataPlaneRequests: c.flags.IncludeDataPlaneRequests,

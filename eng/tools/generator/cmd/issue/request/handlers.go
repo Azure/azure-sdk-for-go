@@ -6,9 +6,11 @@ package request
 import (
 	"context"
 	"log"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
+	"github.com/google/go-github/v32/github"
 )
 
 func handleSuccess(_ context.Context, _ *query.Client, reqIssue ReleaseRequestIssue, result link.ResolveResult) (*Request, error) {
@@ -46,4 +48,14 @@ func getTrack(issue ReleaseRequestIssue) Track {
 	}
 
 	return Track2
+}
+
+func GetAttention(issue github.Issue) bool {
+	flag := false
+	for _, l := range issue.Labels {
+		if strings.Contains(l.GetName(), "attention") {
+			flag = true
+		}
+	}
+	return flag
 }

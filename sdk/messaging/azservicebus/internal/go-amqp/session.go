@@ -6,11 +6,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math"
 	"sync"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/bitmap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/encoding"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/frames"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/log"
+)
+
+// Default session options
+const (
+	defaultWindow = 1000
+)
+
+// Default link options
+const (
+	defaultLinkCredit      = 1
+	defaultLinkBatching    = false
+	defaultLinkBatchMaxAge = 5 * time.Second
 )
 
 // Session is an AMQP session.
@@ -48,13 +63,30 @@ func newSession(c *conn, channel uint16) *Session {
 		rx:               make(chan frames.Frame),
 		tx:               make(chan frames.FrameBody),
 		txTransfer:       make(chan *frames.PerformTransfer),
-		incomingWindow:   DefaultWindow,
-		outgoingWindow:   DefaultWindow,
-		handleMax:        DefaultMaxLinks - 1,
+		incomingWindow:   defaultWindow,
+		outgoingWindow:   defaultWindow,
+		handleMax:        math.MaxUint32,
 		allocateHandle:   make(chan *link),
 		deallocateHandle: make(chan *link),
 		close:            make(chan struct{}),
 		done:             make(chan struct{}),
+	}
+}
+
+func (s *Session) init(opts *SessionOptions) {
+	if opts != nil {
+		if opts.IncomingWindow != 0 {
+			s.incomingWindow = opts.IncomingWindow
+		}
+		if opts.MaxLinks != 0 {
+			// MaxLinks is the number of total links.
+			// handleMax is the max handle ID which starts
+			// at zero.  so we decrement by one
+			s.handleMax = opts.MaxLinks - 1
+		}
+		if opts.OutgoingWindow != 0 {
+			s.outgoingWindow = opts.OutgoingWindow
+		}
 	}
 }
 
@@ -87,14 +119,14 @@ func (s *Session) txFrame(p frames.FrameBody, done chan encoding.DeliveryState) 
 }
 
 // NewReceiver opens a new receiver link on the session.
-func (s *Session) NewReceiver(opts ...LinkOption) (*Receiver, error) {
+func (s *Session) NewReceiver(ctx context.Context, opts ...LinkOption) (*Receiver, error) {
 	r := &Receiver{
-		batching:    DefaultLinkBatching,
-		batchMaxAge: DefaultLinkBatchMaxAge,
-		maxCredit:   DefaultLinkCredit,
+		batching:    defaultLinkBatching,
+		batchMaxAge: defaultLinkBatchMaxAge,
+		maxCredit:   defaultLinkCredit,
 	}
 
-	l, err := attachLink(s, r, opts)
+	l, err := attachLink(ctx, s, r, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -117,8 +149,8 @@ func (s *Session) NewReceiver(opts ...LinkOption) (*Receiver, error) {
 }
 
 // NewSender opens a new sender link on the session.
-func (s *Session) NewSender(opts ...LinkOption) (*Sender, error) {
-	l, err := attachLink(s, nil, opts)
+func (s *Session) NewSender(ctx context.Context, opts ...LinkOption) (*Sender, error) {
+	l, err := attachLink(ctx, s, nil, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +198,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 		txTransfer := s.txTransfer
 		// disable txTransfer if flow control windows have been exceeded
 		if remoteIncomingWindow == 0 || s.outgoingWindow == 0 {
-			debug(1, "TX(Session): Disabling txTransfer - window exceeded. remoteIncomingWindow: %d outgoingWindow:%d",
+			log.Debug(1, "TX(Session): Disabling txTransfer - window exceeded. remoteIncomingWindow: %d outgoingWindow:%d",
 				remoteIncomingWindow,
 				s.outgoingWindow)
 			txTransfer = nil
@@ -231,7 +263,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 
 		// incoming frame for link
 		case fr := <-s.rx:
-			debug(1, "RX(Session): %s", fr.Body)
+			log.Debug(1, "RX(Session): %s", fr.Body)
 
 			switch body := fr.Body.(type) {
 			// Disposition frames can reference transfers from more than one
@@ -250,7 +282,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 
 					handle, ok := handles[deliveryID]
 					if !ok {
-						debug(2, "role %s: didn't find deliveryID %d in handles map", body.Role, deliveryID)
+						log.Debug(2, "role %s: didn't find deliveryID %d in handles map", body.Role, deliveryID)
 						continue
 					}
 					delete(handles, deliveryID)
@@ -308,7 +340,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 				// initial-outgoing-id(endpoint) + incoming-window(flow) - next-outgoing-id(endpoint)"
 				remoteIncomingWindow = body.IncomingWindow - nextOutgoingID
 				remoteIncomingWindow += *body.NextIncomingID
-				debug(3, "RX(Session) Flow - remoteOutgoingWindow: %d remoteIncomingWindow: %d nextOutgoingID: %d", remoteOutgoingWindow, remoteIncomingWindow, nextOutgoingID)
+				log.Debug(3, "RX(Session) Flow - remoteOutgoingWindow: %d remoteIncomingWindow: %d nextOutgoingID: %d", remoteOutgoingWindow, remoteIncomingWindow, nextOutgoingID)
 
 				// Send to link if handle is set
 				if body.Handle != nil {
@@ -329,7 +361,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 						NextOutgoingID: nextOutgoingID,
 						OutgoingWindow: s.outgoingWindow,
 					}
-					debug(1, "TX (session.mux): %s", resp)
+					log.Debug(1, "TX (session.mux): %s", resp)
 					_ = s.txFrame(resp, nil)
 				}
 
@@ -373,11 +405,11 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 
 				// if this message is received unsettled and link rcv-settle-mode == second, add to handlesByRemoteDeliveryID
 				if !body.Settled && body.DeliveryID != nil && link.ReceiverSettleMode != nil && *link.ReceiverSettleMode == ModeSecond {
-					debug(1, "TX(Session): adding handle to handlesByRemoteDeliveryID. delivery ID: %d", *body.DeliveryID)
+					log.Debug(1, "TX(Session): adding handle to handlesByRemoteDeliveryID. delivery ID: %d", *body.DeliveryID)
 					handlesByRemoteDeliveryID[*body.DeliveryID] = body.Handle
 				}
 
-				debug(3, "TX(Session) Flow? remoteOutgoingWindow(%d) < s.incomingWindow(%d)/2\n", remoteOutgoingWindow, s.incomingWindow)
+				log.Debug(3, "TX(Session) Flow? remoteOutgoingWindow(%d) < s.incomingWindow(%d)/2\n", remoteOutgoingWindow, s.incomingWindow)
 				// Update peer's outgoing window if half has been consumed.
 				if remoteOutgoingWindow < s.incomingWindow/2 {
 					nID := nextIncomingID
@@ -387,7 +419,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 						NextOutgoingID: nextOutgoingID,
 						OutgoingWindow: s.outgoingWindow,
 					}
-					debug(1, "TX(Session): %s", flow)
+					log.Debug(1, "TX(Session): %s", flow)
 					_ = s.txFrame(flow, nil)
 				}
 
@@ -405,7 +437,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 
 			default:
 				// TODO: evaluate
-				debug(1, "session mux: unexpected frame: %s\n", body)
+				log.Debug(1, "session mux: unexpected frame: %s\n", body)
 			}
 
 		case fr := <-txTransfer:
@@ -438,7 +470,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 				fr.Done = nil
 			}
 
-			debug(2, "TX(Session) - txtransfer: %s", fr)
+			log.Debug(2, "TX(Session) - txtransfer: %s", fr)
 			_ = s.txFrame(fr, fr.Done)
 
 			// "Upon sending a transfer, the sending endpoint will increment
@@ -458,12 +490,12 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 				fr.IncomingWindow = s.incomingWindow
 				fr.NextOutgoingID = nextOutgoingID
 				fr.OutgoingWindow = s.outgoingWindow
-				debug(1, "TX(Session) - tx: %s", fr)
+				log.Debug(1, "TX(Session) - tx: %s", fr)
 				_ = s.txFrame(fr, nil)
 			case *frames.PerformTransfer:
 				panic("transfer frames must use txTransfer")
 			default:
-				debug(1, "TX(Session) - default: %s", fr)
+				log.Debug(1, "TX(Session) - default: %s", fr)
 				_ = s.txFrame(fr, nil)
 			}
 		}

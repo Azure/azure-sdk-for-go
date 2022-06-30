@@ -7,6 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/encoding"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/frames"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/log"
 )
 
 // SASL Mechanisms
@@ -22,11 +23,14 @@ const (
 	frameTypeSASL = 0x1
 )
 
+// SASLType represents a SASL configuration to use during authentication.
+type SASLType func(c *conn) error
+
 // ConnSASLPlain enables SASL PLAIN authentication for the connection.
 //
 // SASL PLAIN transmits credentials in plain text and should only be used
 // on TLS/SSL enabled connection.
-func ConnSASLPlain(username, password string) ConnOption {
+func SASLTypePlain(username, password string) SASLType {
 	// TODO: how widely used is hostname? should it be supported
 	return func(c *conn) error {
 		// make handlers map if no other mechanism has
@@ -42,7 +46,7 @@ func ConnSASLPlain(username, password string) ConnOption {
 				InitialResponse: []byte("\x00" + username + "\x00" + password),
 				Hostname:        "",
 			}
-			debug(1, "TX (ConnSASLPlain): %s", init)
+			log.Debug(1, "TX (ConnSASLPlain): %s", init)
 			c.err = c.writeFrame(frames.Frame{
 				Type: frameTypeSASL,
 				Body: init,
@@ -59,7 +63,7 @@ func ConnSASLPlain(username, password string) ConnOption {
 }
 
 // ConnSASLAnonymous enables SASL ANONYMOUS authentication for the connection.
-func ConnSASLAnonymous() ConnOption {
+func SASLTypeAnonymous() SASLType {
 	return func(c *conn) error {
 		// make handlers map if no other mechanism has
 		if c.saslHandlers == nil {
@@ -72,7 +76,7 @@ func ConnSASLAnonymous() ConnOption {
 				Mechanism:       saslMechanismANONYMOUS,
 				InitialResponse: []byte("anonymous"),
 			}
-			debug(1, "TX (ConnSASLAnonymous): %s", init)
+			log.Debug(1, "TX (ConnSASLAnonymous): %s", init)
 			c.err = c.writeFrame(frames.Frame{
 				Type: frameTypeSASL,
 				Body: init,
@@ -91,7 +95,7 @@ func ConnSASLAnonymous() ConnOption {
 // ConnSASLExternal enables SASL EXTERNAL authentication for the connection.
 // The value for resp is dependent on the type of authentication (empty string is common for TLS).
 // See https://datatracker.ietf.org/doc/html/rfc4422#appendix-A for additional info.
-func ConnSASLExternal(resp string) ConnOption {
+func SASLTypeExternal(resp string) SASLType {
 	return func(c *conn) error {
 		// make handlers map if no other mechanism has
 		if c.saslHandlers == nil {
@@ -104,7 +108,7 @@ func ConnSASLExternal(resp string) ConnOption {
 				Mechanism:       saslMechanismEXTERNAL,
 				InitialResponse: []byte(resp),
 			}
-			debug(1, "TX (ConnSASLExternal): %s", init)
+			log.Debug(1, "TX (ConnSASLExternal): %s", init)
 			c.err = c.writeFrame(frames.Frame{
 				Type: frameTypeSASL,
 				Body: init,
@@ -130,7 +134,7 @@ func ConnSASLExternal(resp string) ConnOption {
 //
 // SASL XOAUTH2 transmits the bearer in plain text and should only be used
 // on TLS/SSL enabled connection.
-func ConnSASLXOAUTH2(username, bearer string, saslMaxFrameSizeOverride uint32) ConnOption {
+func SASLTypeXOAUTH2(username, bearer string, saslMaxFrameSizeOverride uint32) SASLType {
 	return func(c *conn) error {
 		// make handlers map if no other mechanism has
 		if c.saslHandlers == nil {

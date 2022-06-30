@@ -99,7 +99,7 @@ func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSess
 		linkOptions = append(linkOptions, amqp.LinkSourceFilter(sessionFilterName, code, r.sessionID))
 	}
 
-	link, err := createReceiverLink(ctx, session, linkOptions)
+	link, err := session.NewReceiver(ctx, linkOptions...)
 
 	if err != nil {
 		return nil, nil, err

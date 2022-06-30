@@ -312,15 +312,15 @@ func LinkTargetExpiryPolicy(p ExpiryPolicy) LinkOption {
 	}
 }
 
-// LinkTargetTimeout sets the duration that an expiring target will be retained.
+// LinkTargetTimeout sets the number of seconds that an expiring target will be retained.
 //
 // Default: 0.
-func LinkTargetTimeout(timeout uint32) LinkOption {
+func LinkTargetTimeout(seconds uint32) LinkOption {
 	return func(l *link) error {
 		if l.Target == nil {
 			l.Target = new(frames.Target)
 		}
-		l.Target.Timeout = timeout
+		l.Target.Timeout = seconds
 
 		return nil
 	}

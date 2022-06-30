@@ -3,8 +3,8 @@
 package amqp
 
 import (
+	"context"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"math/rand"
 	"net"
@@ -13,6 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/encoding"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/frames"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/log"
 )
 
 // Client is an AMQP client connection.
@@ -27,8 +28,10 @@ type Client struct {
 //
 // If username and password information is not empty it's used as SASL PLAIN
 // credentials, equal to passing ConnSASLPlain option.
-func Dial(addr string, opts ...ConnOption) (*Client, error) {
-	c, err := dialConn(addr, opts...)
+//
+// opts: pass nil to accept the default values.
+func Dial(addr string, opts *ConnOptions) (*Client, error) {
+	c, err := dialConn(addr, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -40,8 +43,9 @@ func Dial(addr string, opts ...ConnOption) (*Client, error) {
 }
 
 // New establishes an AMQP client connection over conn.
-func New(conn net.Conn, opts ...ConnOption) (*Client, error) {
-	c, err := newConn(conn, opts...)
+// opts: pass nil to accept the default values.
+func New(conn net.Conn, opts *ConnOptions) (*Client, error) {
+	c, err := newConn(conn, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -56,10 +60,13 @@ func (c *Client) Close() error {
 
 // NewSession opens a new AMQP session to the server.
 // Returns ErrConnClosed if the underlying connection has been closed.
-func (c *Client) NewSession(opts ...SessionOption) (*Session, error) {
+// opts: pass nil to accept the default values.
+func (c *Client) NewSession(ctx context.Context, opts *SessionOptions) (*Session, error) {
 	// get a session allocated by Client.mux
 	var sResp newSessionResp
 	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
 	case <-c.conn.Done:
 		return nil, c.conn.Err()
 	case sResp = <-c.conn.NewSession:
@@ -69,16 +76,7 @@ func (c *Client) NewSession(opts ...SessionOption) (*Session, error) {
 		return nil, sResp.err
 	}
 	s := sResp.session
-
-	for _, opt := range opts {
-		err := opt(s)
-		if err != nil {
-			// deallocate session on error.  we can't call
-			// s.Close() as the session mux hasn't started yet.
-			c.conn.DelSession <- s
-			return nil, err
-		}
-	}
+	s.init(opts)
 
 	// send Begin to server
 	begin := &frames.PerformBegin{
@@ -87,17 +85,20 @@ func (c *Client) NewSession(opts ...SessionOption) (*Session, error) {
 		OutgoingWindow: s.outgoingWindow,
 		HandleMax:      s.handleMax,
 	}
-	debug(1, "TX (NewSession): %s", begin)
+	log.Debug(1, "TX (NewSession): %s", begin)
 	_ = s.txFrame(begin, nil)
 
 	// wait for response
 	var fr frames.Frame
 	select {
+	case <-ctx.Done():
+		// TODO: this will leak s
+		return nil, ctx.Err()
 	case <-c.conn.Done:
 		return nil, c.conn.Err()
 	case fr = <-s.rx:
 	}
-	debug(1, "RX (NewSession): %s", fr.Body)
+	log.Debug(1, "RX (NewSession): %s", fr.Body)
 
 	begin, ok := fr.Body.(*frames.PerformBegin)
 	if !ok {
@@ -107,7 +108,12 @@ func (c *Client) NewSession(opts ...SessionOption) (*Session, error) {
 		// either swallow the frame or blow up in some other way, both causing this call to hang.
 		// deallocate session on error.  we can't call
 		// s.Close() as the session mux hasn't started yet.
-		c.conn.DelSession <- s
+		select {
+		case <-ctx.Done():
+			// TODO: this will leak s
+			return nil, ctx.Err()
+		case c.conn.DelSession <- s:
+		}
 		return nil, fmt.Errorf("unexpected begin response: %+v", fr.Body)
 	}
 
@@ -117,50 +123,22 @@ func (c *Client) NewSession(opts ...SessionOption) (*Session, error) {
 	return s, nil
 }
 
-// Default session options
-const (
-	DefaultMaxLinks = 4294967296
-	DefaultWindow   = 1000
-)
+// SessionOption contains the optional settings for configuring an AMQP session.
+type SessionOptions struct {
+	// IncomingWindow sets the maximum number of unacknowledged
+	// transfer frames the server can send.
+	IncomingWindow uint32
 
-// SessionOption is an function for configuring an AMQP session.
-type SessionOption func(*Session) error
+	// OutgoingWindow sets the maximum number of unacknowledged
+	// transfer frames the client can send.
+	OutgoingWindow uint32
 
-// SessionIncomingWindow sets the maximum number of unacknowledged
-// transfer frames the server can send.
-func SessionIncomingWindow(window uint32) SessionOption {
-	return func(s *Session) error {
-		s.incomingWindow = window
-		return nil
-	}
-}
-
-// SessionOutgoingWindow sets the maximum number of unacknowledged
-// transfer frames the client can send.
-func SessionOutgoingWindow(window uint32) SessionOption {
-	return func(s *Session) error {
-		s.outgoingWindow = window
-		return nil
-	}
-}
-
-// SessionMaxLinks sets the maximum number of links (Senders/Receivers)
-// allowed on the session.
-//
-// n must be in the range 1 to 4294967296.
-//
-// Default: 4294967296.
-func SessionMaxLinks(n int) SessionOption {
-	return func(s *Session) error {
-		if n < 1 {
-			return errors.New("max sessions cannot be less than 1")
-		}
-		if int64(n) > 4294967296 {
-			return errors.New("max sessions cannot be greater than 4294967296")
-		}
-		s.handleMax = uint32(n - 1)
-		return nil
-	}
+	// MaxLinks sets the maximum number of links (Senders/Receivers)
+	// allowed on the session.
+	//
+	// Minimum: 1.
+	// Default: 4294967295.
+	MaxLinks uint32
 }
 
 // lockedRand provides a rand source that is safe for concurrent use.

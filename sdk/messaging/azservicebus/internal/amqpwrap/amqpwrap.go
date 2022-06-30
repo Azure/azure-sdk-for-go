@@ -16,13 +16,13 @@ type AMQPReceiver interface {
 	IssueCredit(credit uint32) error
 	DrainCredit(ctx context.Context) error
 	Receive(ctx context.Context) (*amqp.Message, error)
-	Prefetched(ctx context.Context) (*amqp.Message, error)
+	Prefetched() (*amqp.Message, error)
 
 	// settlement functions
 	AcceptMessage(ctx context.Context, msg *amqp.Message) error
 	RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error
 	ReleaseMessage(ctx context.Context, msg *amqp.Message) error
-	ModifyMessage(ctx context.Context, msg *amqp.Message, deliveryFailed, undeliverableHere bool, messageAnnotations amqp.Annotations) error
+	ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error
 
 	LinkName() string
 	LinkSourceFilterValue(name string) interface{}
@@ -51,13 +51,13 @@ type AMQPSenderCloser interface {
 // It exists only so we can return AMQPReceiver/AMQPSender interfaces.
 type AMQPSession interface {
 	Close(ctx context.Context) error
-	NewReceiver(opts ...amqp.LinkOption) (AMQPReceiverCloser, error)
-	NewSender(opts ...amqp.LinkOption) (AMQPSenderCloser, error)
+	NewReceiver(ctx context.Context, opts ...amqp.LinkOption) (AMQPReceiverCloser, error)
+	NewSender(ctx context.Context, opts ...amqp.LinkOption) (AMQPSenderCloser, error)
 }
 
 type AMQPClient interface {
 	Close() error
-	NewSession(opts ...amqp.SessionOption) (AMQPSession, error)
+	NewSession(ctx context.Context, opts *amqp.SessionOptions) (AMQPSession, error)
 }
 
 // AMQPClientWrapper is a simple interface, implemented by *AMQPClientWrapper
@@ -71,8 +71,8 @@ func (w *AMQPClientWrapper) Close() error {
 	return w.Inner.Close()
 }
 
-func (w *AMQPClientWrapper) NewSession(opts ...amqp.SessionOption) (AMQPSession, error) {
-	sess, err := w.Inner.NewSession(opts...)
+func (w *AMQPClientWrapper) NewSession(ctx context.Context, opts *amqp.SessionOptions) (AMQPSession, error) {
+	sess, err := w.Inner.NewSession(ctx, opts)
 
 	if err != nil {
 		return nil, err
@@ -91,10 +91,22 @@ func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
 	return w.Inner.Close(ctx)
 }
 
-func (w *AMQPSessionWrapper) NewReceiver(opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
-	return w.Inner.NewReceiver(opts...)
+func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
+	receiver, err := w.Inner.NewReceiver(ctx, opts...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return receiver, nil
 }
 
-func (w *AMQPSessionWrapper) NewSender(opts ...amqp.LinkOption) (AMQPSenderCloser, error) {
-	return w.Inner.NewSender(opts...)
+func (w *AMQPSessionWrapper) NewSender(ctx context.Context, opts ...amqp.LinkOption) (AMQPSenderCloser, error) {
+	sender, err := w.Inner.NewSender(ctx, opts...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return sender, nil
 }

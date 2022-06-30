@@ -176,6 +176,7 @@ func (s *Sender) sendMessage(ctx context.Context, message amqpCompatibleMessage)
 
 func (sender *Sender) createSenderLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
 	amqpSender, err := session.NewSender(
+		ctx,
 		amqp.LinkSenderSettle(amqp.ModeMixed),
 		amqp.LinkReceiverSettle(amqp.ModeFirst),
 		amqp.LinkTargetAddress(sender.queueOrTopic))

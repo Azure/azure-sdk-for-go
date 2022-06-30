@@ -21,7 +21,7 @@ type StubAMQPReceiver struct {
 	stubDrainCreditCalled           int
 	stubReceive                     func(inner internal.AMQPReceiverCloser, ctx context.Context) (*amqp.Message, error)
 	stubReceiveCalled               int
-	stubPrefetched                  func(inner internal.AMQPReceiverCloser, ctx context.Context) (*amqp.Message, error)
+	stubPrefetched                  func(inner internal.AMQPReceiverCloser) (*amqp.Message, error)
 	stubPrefetchedCalled            int
 	stubAcceptMessage               func(inner internal.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message) error
 	stubAcceptMessageCalled         int
@@ -29,7 +29,7 @@ type StubAMQPReceiver struct {
 	stubRejectMessageCalled         int
 	stubReleaseMessage              func(inner internal.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message) error
 	stubReleaseMessageCalled        int
-	stubModifyMessage               func(inner internal.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message, deliveryFailed, undeliverableHere bool, messageAnnotations amqp.Annotations) error
+	stubModifyMessage               func(inner internal.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error
 	stubModifyMessageCalled         int
 	stubLinkName                    func(inner internal.AMQPReceiverCloser) string
 	stubLinkNameCalled              int
@@ -70,12 +70,12 @@ func (r *StubAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	return r.inner.Receive(ctx)
 }
 
-func (r *StubAMQPReceiver) Prefetched(ctx context.Context) (*amqp.Message, error) {
+func (r *StubAMQPReceiver) Prefetched() (*amqp.Message, error) {
 	r.stubPrefetchedCalled++
 	if r.stubPrefetched != nil {
-		return r.stubPrefetched(r.inner, ctx)
+		return r.stubPrefetched(r.inner)
 	}
-	return r.inner.Prefetched(ctx)
+	return r.inner.Prefetched()
 }
 
 func (r *StubAMQPReceiver) AcceptMessage(ctx context.Context, msg *amqp.Message) error {
@@ -102,12 +102,12 @@ func (r *StubAMQPReceiver) ReleaseMessage(ctx context.Context, msg *amqp.Message
 	return r.inner.ReleaseMessage(ctx, msg)
 }
 
-func (r *StubAMQPReceiver) ModifyMessage(ctx context.Context, msg *amqp.Message, deliveryFailed, undeliverableHere bool, messageAnnotations amqp.Annotations) error {
+func (r *StubAMQPReceiver) ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error {
 	r.stubModifyMessageCalled++
 	if r.stubModifyMessage != nil {
-		return r.stubModifyMessage(r.inner, ctx, msg, deliveryFailed, undeliverableHere, messageAnnotations)
+		return r.stubModifyMessage(r.inner, ctx, msg, options)
 	}
-	return r.inner.ModifyMessage(ctx, msg, deliveryFailed, undeliverableHere, messageAnnotations)
+	return r.inner.ModifyMessage(ctx, msg, options)
 }
 
 func (r *StubAMQPReceiver) LinkName() string {

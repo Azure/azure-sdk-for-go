@@ -102,7 +102,11 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 			annotations = newAnnotations(options.PropertiesToModify)
 		}
 
-		return receiver.ModifyMessage(ctx, message.RawAMQPMessage.inner, false, false, annotations)
+		return receiver.ModifyMessage(ctx, message.RawAMQPMessage.inner, &amqp.ModifyMessageOptions{
+			DeliveryFailed:    false,
+			UndeliverableHere: false,
+			Annotations:       annotations,
+		})
 	})
 }
 
@@ -136,7 +140,12 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 			annotations = newAnnotations(options.PropertiesToModify)
 		}
 
-		return receiver.ModifyMessage(ctx, message.RawAMQPMessage.inner, false, true, annotations)
+		return receiver.ModifyMessage(ctx, message.RawAMQPMessage.inner,
+			&amqp.ModifyMessageOptions{
+				DeliveryFailed:    false,
+				UndeliverableHere: true,
+				Annotations:       annotations,
+			})
 	})
 }
 

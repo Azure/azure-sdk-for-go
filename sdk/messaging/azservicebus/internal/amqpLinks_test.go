@@ -725,13 +725,14 @@ func newLinksForAMQPLinksTest(entityPath string, session amqpwrap.AMQPSession) (
 		amqp.LinkCredit(1000),
 	}
 
-	receiver, err := session.NewReceiver(opts...)
+	receiver, err := session.NewReceiver(context.Background(), opts...)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
 	sender, err := session.NewSender(
+		context.Background(),
 		amqp.LinkSenderSettle(amqp.ModeMixed),
 		amqp.LinkReceiverSettle(amqp.ModeFirst),
 		amqp.LinkTargetAddress(entityPath))

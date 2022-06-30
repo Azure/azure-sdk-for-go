@@ -204,7 +204,7 @@ func (c *commandContext) parseIssues(issues []*github.Issue) ([]request.Request,
 		if issue == nil {
 			continue
 		}
-		if request.GetAttention(*issue) {
+		if request.PRIsReady(*issue) {
 			continue
 		}
 		log.Printf("Parsing issue %s (%s)", issue.GetHTMLURL(), issue.GetTitle())

@@ -50,10 +50,10 @@ func getTrack(issue ReleaseRequestIssue) Track {
 	return Track2
 }
 
-func GetAttention(issue github.Issue) bool {
+func PRIsReady(issue github.Issue) bool {
 	flag := false
 	for _, l := range issue.Labels {
-		if strings.Contains(l.GetName(), "attention") {
+		if strings.Contains(l.GetName(), "PR ready") {
 			flag = true
 		}
 	}

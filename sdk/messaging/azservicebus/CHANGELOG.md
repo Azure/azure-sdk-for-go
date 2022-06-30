@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.2-beta.0 (Unreleased)
+## 1.0.2-beta.0 (2022-07-05)
 
 ### Features Added
 
@@ -9,12 +9,6 @@
   - AMQP messages can be added to MessageBatch's as well using `MessageBatch.AddAMQPAnnotatedMessage()`.
   - AMQP messages can be scheduled using `Sender.ScheduleAMQPAnnotatedMessages`.
   - Access the full set of AMQP message properties when receiving using the `ReceivedMessage.RawAMQPMessage` property. 
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.1 (2022-06-07)
 

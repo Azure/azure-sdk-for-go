@@ -3,6 +3,7 @@
 ## 0.1.1 (2022-06-30)
 ### Other Changes
 
+- Add "Pending" to LabStatus enum
 
 ## 0.1.0 (2022-05-24)
 

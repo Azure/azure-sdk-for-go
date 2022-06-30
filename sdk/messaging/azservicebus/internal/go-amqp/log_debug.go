@@ -1,8 +1,9 @@
+// Copyright (C) 2017 Kale Blankenship
+// Portions Copyright (c) Microsoft Corporation
+
 //go:build debug
 // +build debug
 
-// Copyright (C) 2017 Kale Blankenship
-// Portions Copyright (c) Microsoft Corporation
 package amqp
 
 import "log"

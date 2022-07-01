@@ -111,8 +111,8 @@ Constructing the client also requires your vault's URL, which you can get from t
 
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
 func main() {
@@ -121,10 +121,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 }
 ```
 
@@ -152,10 +149,11 @@ This section contains code snippets covering common tasks:
 
 ```go
 import (
+	"context"
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
 func main() {
@@ -164,10 +162,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
 	// Create RSA Key
 	rsaParams := azkeys.CreateKeyParameters{
@@ -199,6 +194,7 @@ func main() {
 
 ```go
 import (
+	"context"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -211,10 +207,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
 	// passing an empty string for the version parameter gets the latest version of the key
 	version := ""
@@ -228,7 +221,7 @@ func main() {
 
 ### Update an existing key
 
-[`UpdateKeyProperties`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.UpdateKeyProperties)
+[`UpdateKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.UpdateKey)
 updates the properties of a key previously stored in the Key Vault.
 
 ```go
@@ -247,10 +240,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
 	params := azkeys.UpdateKeyParameters{
 		KeyAttributes: &azkeys.KeyAttributes{
@@ -276,9 +266,7 @@ func main() {
 import (
 	"context"
 	"fmt"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
@@ -289,10 +277,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
 	// DeleteKey returns when Key Vault has begun deleting the key. That can take several
 	// seconds to complete, so it may be necessary to wait before performing other operations
@@ -328,10 +313,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
 	// this policy rotates the key every 18 months
 	policy := azkeys.KeyRotationPolicy{
@@ -373,10 +355,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
 	pager := client.NewListKeysPager(nil)
 	for pager.More() {

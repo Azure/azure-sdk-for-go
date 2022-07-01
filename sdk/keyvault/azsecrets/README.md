@@ -119,10 +119,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 }
 ```
 
@@ -162,17 +159,17 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+
+	name := "mySecret"
+	value := "mySecretValue"
+	params := azsecrets.SetSecretParameters{Value: &value}
+	resp, err := client.SetSecret(context.TODO(), name, params, nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	resp, err := client.SetSecret(context.TODO(), "secretName", "secretValue", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	fmt.Printf("Set secret %s", *resp.Secret.ID)
+	fmt.Printf("Set secret %s", resp.ID.Name())
 }
 ```
 
@@ -195,17 +192,16 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+
+	// an empty string gets the latest version of the secret
+	version := ""
+	resp, err := client.GetSecret(context.TODO(), "mySecretName", version, nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	resp, err := client.GetSecret(context.TODO(), "mySecretName", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	fmt.Printf("Secret Name: %s\tSecret Value: %s", *resp.Secret.ID, *resp.Secret.Value)
+	fmt.Printf("Secret Name: %s\tSecret Value: %s", resp.ID.Name(), *resp.Value)
 }
 ```
 
@@ -231,34 +227,22 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
-	getResp, err := client.GetSecret(context.TODO(), "secret-to-update", nil)
+	updateParams := azsecrets.UpdateSecretParameters{
+		SecretAttributes: &azsecrets.SecretAttributes{
+			Expires: to.Ptr(time.Now().Add(48 * time.Hour)),
+		},
+		// Key Vault doesn't interpret tags. The keys and values are up to your application.
+		Tags: map[string]*string{"expiraton-extended": to.Ptr("true")},
+	}
+	// passing an empty string for the version updates the latest version of the secret
+	version := ""
+	resp, err := client.UpdateSecret(context.Background(), "mySecretName", version, updateParams, nil)
 	if err != nil {
 		// TODO: handle error
 	}
-
-	if getResp.Secret.Properties == nil {
-		getResp.Secret.Properties = &azsecrets.Properties{}
-	}
-	getResp.Secret.Properties = &azsecrets.Properties{
-		Enabled:     to.Ptr(true),
-		ExpiresOn:   to.Ptr(time.Now().Add(48 * time.Hour)),
-		NotBefore:   to.Ptr(time.Now().Add(-24 * time.Hour)),
-		ContentType: to.Ptr("password"),
-		Tags:        map[string]string{"Tag1": "Tag1Value"},
-		// Remember to preserve the name and version
-		Name:    getResp.Secret.Properties.Name,
-		Version: getResp.Secret.Properties.Version,
-	}
-	resp, err := client.UpdateSecretProperties(context.TODO(), getResp.Secret, nil)
-	if err != nil {
-		// TODO: handle error
-	}
-	fmt.Printf("Updated secret with ID: %s\n", *resp.Secret.ID)
+	fmt.Println("Updated secret", resp.ID.Name())
 }
 ```
 
@@ -282,22 +266,17 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+
+	// DeleteSecret returns when Key Vault has begun deleting the secret. That can take several
+	// seconds to complete, so it may be necessary to wait before performing other operations
+	// on the deleted secret.
+	resp, err := client.DeleteSecret(context.TODO(), "secretToDelete", nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	resp, err := client.BeginDeleteSecret(context.TODO(), "secretToDelete", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	// If you do not care when the secret is deleted, you do not have to
-	// call resp.PollUntilDone.
-	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		// TODO: handle error
-	}
+	fmt.Println("deleted secret", resp.ID.Name())
 }
 ```
 
@@ -320,19 +299,16 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
-	pager := client.NewListPropertiesOfSecretsPager(nil)
+	pager := client.NewListSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			// TODO: handle error
 		}
-		for _, v := range page.Secrets {
-			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Properties.Tags)
+		for _, secret := range page.Value {
+			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", secret.ID.Name(), secret.Tags)
 		}
 	}
 }

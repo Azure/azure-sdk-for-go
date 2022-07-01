@@ -213,7 +213,6 @@ func main() {
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -253,9 +252,7 @@ func main() {
 ```golang
 import (
 	"context"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )

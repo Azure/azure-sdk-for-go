@@ -207,7 +207,7 @@ func main() {
 
 ### Update Secret metadata
 
-`UpdateSecretProperties` updates a secret's metadata. It cannot change the secret's value; use [SetSecret](#set-a-secret) to set a secret's value.
+`UpdateSecret` updates a secret's metadata. It cannot change the secret's value; use [SetSecret](#set-a-secret) to set a secret's value.
 
 ```golang
 import (
@@ -248,7 +248,7 @@ func main() {
 
 ### Delete a Secret
 
-[BeginDeleteSecret](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.BeginDeleteSecret) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when you want to purge (permanently delete) a secret as soon as possible.
+[DeleteSecret](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.DeleteSecret) requests that Key Vault delete a secret. It returns when Key Vault has begun deleting the secret. Deletion can take several seconds to complete, so it may be necessary to wait before performing other operations on the deleted secret.
 
 ```golang
 import (
@@ -282,7 +282,7 @@ func main() {
 
 ### List secrets
 
-[NewListPropertiesOfSecretsPager](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.NewListPropertiesOfSecretsPager) creates a `Pager` that lists the properties of all of the secrets in the client's vault, not including their secret values.
+[NewListSecretsPager](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.NewListSecretsPager) creates a `Pager` that lists all of the secrets in the client's vault, not including their secret values.
 
 ```golang
 import (

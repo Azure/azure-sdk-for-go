@@ -4,7 +4,7 @@
 clear-output-folder: false
 export-clients: true
 go: true
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/e2ef44b87405b412403ccb005bfb3975411adf60/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/certificates.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/37cd8dfac3c570a24bb645b31c012d12efb760df/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/certificates.json
 license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates
 openapi-type: "data-plane"
@@ -20,10 +20,6 @@ directive:
   - from: swagger-document
     where: $["x-ms-parameterized-host"]
     transform: $.parameters[0]["x-ms-parameter-location"] = "client"
-
-  # add documentation (https://github.com/Azure/azure-rest-api-specs/pull/19642)
-  - where-model: X509CertificateProperties
-    transform: $.properties.key_usage.items.description = "Defines how the certificate's key may be used."
 
   # rename parameter models to match their methods
   - rename-model:

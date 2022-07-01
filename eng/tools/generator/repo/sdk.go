@@ -11,7 +11,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -210,17 +209,6 @@ func (s *sdkRepository) checkoutBack(ref *plumbing.Reference) error {
 	return s.Checkout(&opt)
 }
 
-func GitPush(path, remoteName, branchName string) (string, error) {
-	refName := fmt.Sprintf(branchName + ":" + branchName)
-	push := exec.Command("git", "push", remoteName, refName)
-	push.Dir = path
-	msg, err := push.CombinedOutput()
-	if err != nil {
-		return string(msg), err
-	}
-	return "", nil
-}
-
 // GetRemoteUserName https://github.com/githubName/azure-sdk-for-go
 func GetRemoteUserName(remote *git.Remote) string {
 	if len(remote.Config().URLs) == 0 {
@@ -251,4 +239,23 @@ func GetForkRemote(repo WorkTree) (forkRemote *git.Remote, err error) {
 		return nil, fmt.Errorf("under %s not set remote fork", link.SDKRepo)
 	}
 	return
+}
+
+func ReleaseTitle(branchName string) string {
+	s := strings.Split(branchName, "-")
+
+	inclines := strings.Split(s[0], "/")
+	var t1 string
+	if len(inclines) > 0 {
+		t1 = inclines[len(inclines)-1]
+	} else {
+		t1 = s[0]
+	}
+
+	t1 = strings.Title(t1)
+	title := fmt.Sprintf("[%v] ", t1)
+	t := []string{"sdk", "resourcemanager"}
+	t = append(t, s[1:len(s)-1]...)
+	t2 := strings.Join(t, "/")
+	return title + t2
 }

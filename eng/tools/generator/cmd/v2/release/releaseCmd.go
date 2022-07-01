@@ -4,15 +4,14 @@
 package release
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"log"
 	"path"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/link"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue/query"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config/validate"
@@ -177,14 +176,14 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 }
 
 func (c *commandContext) generate2(sdkRepo repo.SDKRepository, specRepoParam, specCommitHash string) error {
-	ctx := context.Background()
+	//ctx := context.Background()
 	var pullRequestUrls = make(map[string]string)
 	var pushBranch = make(map[string]string)
-	var info = query.Info{
-		UserInfo: query.UserInfo{Username: "", Password: ""},
-		Token:    c.flags.Token,
-	}
-	githubClient := query.Login(ctx, info)
+	//var info = query.Info{
+	//	UserInfo: query.UserInfo{Username: "", Password: ""},
+	//	Token:    c.flags.Token,
+	//}
+	//githubClient := query.Login(ctx, info)
 	forkRemote, err := repo.GetForkRemote(sdkRepo)
 	if err != nil {
 		return err
@@ -241,24 +240,38 @@ func (c *commandContext) generate2(sdkRepo repo.SDKRepository, specRepoParam, sp
 	if c.flags.Token != "" {
 		for branchName, issue := range pushBranch {
 			log.Printf("git push fork %s\n", branchName)
-			_, err = repo.GitPush(sdkRepo.Root(), forkRemote.Config().Name, branchName)
+			_, err = common.ExecuteGitPush(sdkRepo.Root(), forkRemote.Config().Name, branchName)
 			if err != nil {
 				return fmt.Errorf("git push fork error:%v", err)
 			}
 
-			log.Printf("%s: create pull request...\n", branchName)
 			githubUserName := repo.GetRemoteUserName(forkRemote)
 			if githubUserName == "" {
 				return errors.New("github user name not exist")
 			}
-			pullRequests, _, err := repo.CreatePullRequest(ctx, githubClient.Client, link.SpecOwner, link.SDKRepo, githubUserName, branchName, issue)
+			//log.Printf("%s: create pull request...\n", branchName)
+			//pullRequests, _, err := repo.CreatePullRequest(ctx, githubClient.Client, link.SpecOwner, link.SDKRepo, githubUserName, branchName, issue)
+			//if err != nil {
+			//	return err
+			//}
+			//pullRequestUrls[branchName] = *pullRequests.HTMLURL
+			//
+			//log.Printf("Leave a comment in %s...\n", link.ReleaseIssueRepo)
+			//_, err = repo.AddIssueComment(ctx, githubClient.Client, link.SpecOwner, link.ReleaseIssueRepo, issue, *pullRequests.HTMLURL)
+			//if err != nil {
+			//	return err
+			//}
+
+			log.Printf("%s: create pull request...\n", branchName)
+			pullRequestUrl, err := common.ExecuteCreatePullRequest(sdkRepo.Root(), link.SpecOwner, link.SDKRepo, githubUserName, branchName, repo.ReleaseTitle(branchName), issue, c.flags.Token)
 			if err != nil {
 				return err
 			}
-			pullRequestUrls[branchName] = *pullRequests.HTMLURL
+			pullRequestUrls[branchName] = pullRequestUrl
 
-			log.Printf("Leave a comment in %s...\n", link.ReleaseIssueRepo)
-			_, err = repo.AddIssueComment(ctx, githubClient.Client, link.SpecOwner, link.ReleaseIssueRepo, issue, *pullRequests.HTMLURL)
+			log.Printf("Leave a comment in %s...\n", issue)
+			issueNumber := strings.Split(issue, "/")
+			err = common.ExecuteAddIssueComment(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], pullRequestUrl, c.flags.Token)
 			if err != nil {
 				return err
 			}

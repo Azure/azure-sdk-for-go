@@ -17,7 +17,7 @@ func CreatePullRequest(ctx context.Context, client *github.Client, owner, repo, 
 	}
 
 	newPR := &github.NewPullRequest{
-		Title:               github.String(prTitle(branch)),
+		Title:               github.String(ReleaseTitle(branch)),
 		Head:                github.String(fork + ":" + branch),
 		Base:                github.String("main"),
 		Body:                github.String(body),
@@ -52,23 +52,4 @@ func AddIssueComment(ctx context.Context, client *github.Client, owner, repo, is
 	}
 
 	return issueComment, nil
-}
-
-func prTitle(branchName string) string {
-	s := strings.Split(branchName, "-")
-
-	inclines := strings.Split(s[0], "/")
-	var t1 string
-	if len(inclines) > 0 {
-		t1 = inclines[len(inclines)-1]
-	} else {
-		t1 = s[0]
-	}
-
-	t1 = strings.Title(t1)
-	title := fmt.Sprintf("[%v] ", t1)
-	t := []string{"sdk", "resourcemanager"}
-	t = append(t, s[1:len(s)-1]...)
-	t2 := strings.Join(t, "/")
-	return title + t2
 }

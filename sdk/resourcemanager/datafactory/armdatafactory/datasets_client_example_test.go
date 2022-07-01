@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Datasets_ListByFactory.json
@@ -62,7 +62,7 @@ func ExampleDatasetsClient_CreateOrUpdate() {
 			Properties: &armdatafactory.AzureBlobDataset{
 				Type: to.Ptr("AzureBlob"),
 				LinkedServiceName: &armdatafactory.LinkedServiceReference{
-					Type:          to.Ptr(armdatafactory.LinkedServiceReferenceTypeLinkedServiceReference),
+					Type:          to.Ptr(armdatafactory.TypeLinkedServiceReference),
 					ReferenceName: to.Ptr("exampleLinkedService"),
 				},
 				Parameters: map[string]*armdatafactory.ParameterSpecification{

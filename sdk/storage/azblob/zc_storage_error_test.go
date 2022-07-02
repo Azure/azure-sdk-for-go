@@ -7,7 +7,9 @@
 package azblob
 
 import (
+	"context"
 	"encoding/xml"
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -35,6 +37,42 @@ func (s *azblobUnrecordedTestSuite) TestErrorResponseUnmarshal() {
 			_require.Equal("ContainerAlreadyExists", se.details["Code"])
 
 			_require.Equal("The specified container already exists.\nRequestId:73b2473b-c1c8-4162-97bb-dc171bff61c9\nTime:2021-12-13T19:45:40.679Z", se.description)
+		})
+	}
+}
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestInternalErrorWrapping() {
+	t := s.T()
+
+	cases := []struct {
+		name   string
+		err    *InternalError
+		target error
+		result bool
+	}{
+		{
+			"errors.Is reports true if checked against an internal error",
+			&InternalError{errors.New("foo")},
+			&InternalError{errors.New("bar")},
+			true,
+		},
+		{
+			"errors.Is reports true if checked against wrapped error",
+			&InternalError{context.Canceled},
+			context.Canceled,
+			true,
+		},
+		{
+			"errors.Is reports false if no match",
+			&InternalError{context.Canceled},
+			errors.New("foo"),
+			false,
+		},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			assert.Equal(t, c.result, errors.Is(c.err, c.target))
 		})
 	}
 }

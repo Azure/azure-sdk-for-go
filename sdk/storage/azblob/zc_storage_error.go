@@ -37,8 +37,10 @@ func (e *InternalError) Error() string {
 // Is casts err into InternalError
 func (e *InternalError) Is(err error) bool {
 	_, ok := err.(*InternalError)
-
-	return ok
+	if ok {
+		return ok
+	}
+	return errors.Is(e.cause, err)
 }
 
 // As casts target interface into InternalError

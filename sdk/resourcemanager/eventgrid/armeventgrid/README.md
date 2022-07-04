@@ -1,6 +1,6 @@
 # Azure Event Grid Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid)
 
 The `armeventgrid` module provides operations for working with Azure Event Grid.
 

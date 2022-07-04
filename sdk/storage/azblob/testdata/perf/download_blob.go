@@ -8,6 +8,8 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"io"
 	"os"
 
@@ -45,17 +47,16 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Gl
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient := azblob.NewContainerClientFromConnectionString(connStr, d.containerName, nil)
-
-	_, err := containerClient.Create(context.Background(), nil)
+	containerClient, err := container.NewClientFromConnectionString(connStr, d.containerName, nil)
+	if err != nil {
+		return nil, err
+	}
+	_, err = containerClient.Create(context.Background(), nil)
 	if err != nil {
 		return nil, err
 	}
 
 	blobClient := containerClient.NewBlockBlobClient(d.blobName)
-	if err != nil {
-		return nil, err
-	}
 
 	data, err := perf.NewRandomStream(downloadTestOpts.size)
 	if err != nil {
@@ -76,9 +77,12 @@ func (d *downloadTestGlobal) GlobalCleanup(ctx context.Context) error {
 		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient := azblob.NewContainerClientFromConnectionString(connStr, d.containerName, nil)
+	containerClient, err := container.NewClientFromConnectionString(connStr, d.containerName, nil)
+	if err != nil {
+		return err
+	}
 
-	_, err := containerClient.Delete(context.Background(), nil)
+	_, err = containerClient.Delete(context.Background(), nil)
 	return err
 }
 
@@ -86,7 +90,7 @@ type downloadPerfTest struct {
 	*downloadTestGlobal
 	perf.PerfTestOptions
 	data       io.ReadSeekCloser
-	blobClient *azblob.BlockBlobClient
+	blobClient *blockblob.Client
 }
 
 // NewPerfTest is called once per goroutine
@@ -101,12 +105,13 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient := azblob.NewContainerClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &azblob.ClientOptions{
+	containerClient, err := container.NewClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &azblob.ClientOptions{
 		Transport: d.PerfTestOptions.Transporter,
 	})
-
-	bc := containerClient.NewBlockBlobClient(d.blobName)
-	d.blobClient = bc
+	if err != nil {
+		return nil, err
+	}
+	d.blobClient = containerClient.NewBlockBlobClient(d.blobName)
 
 	data, err := perf.NewRandomStream(downloadTestOpts.size)
 	if err != nil {

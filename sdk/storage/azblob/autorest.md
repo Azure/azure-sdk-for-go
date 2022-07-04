@@ -16,20 +16,44 @@ clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
 input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-10-02/blob.json"
-module: "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 credential-scope: "https://storage.azure.com/.default"
-output-folder: internal/
-file-prefix: "zz_generated_"
+output-folder: internal/generated
+file-prefix: "zz_"
 openapi-type: "data-plane"
 verbose: true
 security: AzureKey
-module-version: "0.5.0"
 modelerfour:
   group-parameters: false
   seal-single-value-enum-by-default: true
   lenient-model-deduplication: true
-export-clients: false
-use: "@autorest/go@4.0.0-preview.41"
+export-clients: true
+use: "@autorest/go@4.0.0-preview.42"
+```
+
+### Remove pager methods and export various generated methods in container client
+
+``` yaml
+directive:
+  - from: zz_container_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/func \(client \*ContainerClient\) NewListBlobFlatSegmentPager\(.+\/\/ listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request/s, `// listBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request`).
+        replace(/\(client \*ContainerClient\) listBlobFlatSegmentCreateRequest\(/, `(client *ContainerClient) ListBlobFlatSegmentCreateRequest(`).
+        replace(/\(client \*ContainerClient\) listBlobFlatSegmentHandleResponse\(/, `(client *ContainerClient) ListBlobFlatSegmentHandleResponse(`);
+```
+
+### Remove pager methods and export various generated methods in service client
+
+``` yaml
+directive:
+  - from: zz_service_client.go
+    where: $
+    transform: >-
+      return $.
+        replace(/func \(client \*ServiceClient\) NewListContainersSegmentPager\(.+\/\/ listContainersSegmentCreateRequest creates the ListContainersSegment request/s, `// listContainersSegmentCreateRequest creates the ListContainersSegment request`).
+        replace(/\(client \*ServiceClient\) listContainersSegmentCreateRequest\(/, `(client *ServiceClient) ListContainersSegmentCreateRequest(`).
+        replace(/\(client \*ServiceClient\) listContainersSegmentHandleResponse\(/, `(client *ServiceClient) ListContainersSegmentHandleResponse(`);
 ```
 
 ### Fix BlobMetadata.
@@ -169,6 +193,3 @@ directive:
     $.BlobItemInternal.properties["OrMetadata"] = $.BlobItemInternal.properties["ObjectReplicationMetadata"];
     delete $.BlobItemInternal.properties["ObjectReplicationMetadata"];
 ```
-
-### Note:
-#### 1. Remove ModuleName and ModuleVersion from the generated code and move it to internal/constants.go

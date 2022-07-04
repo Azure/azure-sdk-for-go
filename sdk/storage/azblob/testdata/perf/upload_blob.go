@@ -45,10 +45,12 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient := azblob.NewContainerClientFromConnectionString(connStr, u.containerName, nil)
-
+	containerClient, err := azblob.NewContainerClientFromConnectionString(connStr, u.containerName, nil)
+	if err != nil {
+		return nil, err
+	}
 	u.globalContainerClient = containerClient
-	_, err := u.globalContainerClient.Create(context.Background(), nil)
+	_, err = u.globalContainerClient.Create(context.Background(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -80,14 +82,20 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
 	}
 
-	containerClient := azblob.NewContainerClientFromConnectionString(
+	containerClient, err := azblob.NewContainerClientFromConnectionString(
 		connStr,
 		u.uploadTestGlobal.containerName,
 		&azblob.ClientOptions{
 			Transport: u.PerfTestOptions.Transporter,
 		},
 	)
-	bc := containerClient.NewBlockBlobClient(u.blobName)
+	if err != nil {
+		return nil, err
+	}
+	bc, err := containerClient.NewBlockBlobClient(u.blobName)
+	if err != nil {
+		return nil, err
+	}
 	u.blobClient = bc
 
 	data, err := perf.NewRandomStream(uploadTestOpts.size)

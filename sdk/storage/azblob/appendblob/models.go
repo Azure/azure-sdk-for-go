@@ -9,9 +9,6 @@ package appendblob
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
 // CreateOptions provides set of configurations for Create Append Blob operation
@@ -20,18 +17,18 @@ type CreateOptions struct {
 	ImmutabilityPolicyExpiry *time.Time
 
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *blob.ImmutabilityPolicyMode
 
 	// Specified if a legal hold should be set on the blob.
 	LegalHold *bool
 
-	AccessConditions *AccessConditions
+	AccessConditions *blob.AccessConditions
 
 	HTTPHeaders *blob.HTTPHeaders
 
-	CpkInfo *CpkInfo
+	CpkInfo *blob.CpkInfo
 
-	CpkScopeInfo *CpkScopeInfo
+	CpkScopeInfo *blob.CpkScopeInfo
 
 	// Optional. Used to set blob tags in various blob operations.
 	Tags map[string]string
@@ -43,11 +40,3 @@ type CreateOptions struct {
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
 	Metadata map[string]string
 }
-
-type AccessConditions = exported.BlobAccessConditions
-
-type ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyMode
-
-type CpkInfo = generated.CpkInfo
-
-type CpkScopeInfo = generated.CpkScopeInfo

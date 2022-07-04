@@ -1,9 +1,7 @@
 package azblob
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/runtime"
 	"net"
@@ -145,8 +143,4 @@ func (values caseInsensitiveValues) Get(key string) ([]string, bool) {
 		}
 	}
 	return []string{}, false
-}
-
-func ParseHTTPHeaders(resp blob.GetPropertiesResponse) blob.HTTPHeaders {
-	return generated.ParseHTTPHeaders(resp)
 }

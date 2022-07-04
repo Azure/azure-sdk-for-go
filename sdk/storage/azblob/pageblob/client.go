@@ -8,6 +8,10 @@ package pageblob
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"io"
+	"net/http"
+	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -120,26 +124,10 @@ func (pb *Client) WithVersionID(versionID string) (*Client, error) {
 // Create creates a page blob of the specified length. Call PutPage to upload data to a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
 func (pb *Client) Create(ctx context.Context, size int64, o *CreateOptions) (CreateResponse, error) {
-	var createOptions *generated.PageBlobClientCreateOptions
-	var headers *generated.BlobHTTPHeaders
-	var cpkInfo *generated.CpkInfo
-	var cpkScope *generated.CpkScopeInfo
-	var leaseConditions *generated.LeaseAccessConditions
-	var accessConditions *generated.ModifiedAccessConditions
+	createOptions, HTTPHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions := o.format()
 
-	if o != nil {
-		createOptions = &generated.PageBlobClientCreateOptions{
-			BlobSequenceNumber: o.SequenceNumber,
-			BlobTagsString:     shared.SerializeBlobTagsToStrPtr(o.Tags),
-			Metadata:           o.Metadata,
-			Tier:               o.Tier,
-		}
-		leaseConditions, accessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
-		cpkInfo = o.CpkInfo
-		cpkScope = o.CpkScopeInfo
-	}
-
-	resp, err := pb.generated().Create(ctx, 0, size, createOptions, headers, leaseConditions, cpkInfo, cpkScope, accessConditions)
+	resp, err := pb.generated().Create(ctx, 0, size, createOptions, HTTPHeaders,
+		leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 	return resp, err
 }
 
@@ -147,19 +135,19 @@ func (pb *Client) Create(ctx context.Context, size int64, o *CreateOptions) (Cre
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
-/*func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, options *PageBlobUploadPagesOptions) (PageBlobUploadPagesResponse, error) {
-	count, err := validateSeekableStreamAt0AndGetCount(body)
+func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, options *UploadPagesOptions) (UploadPagesResponse, error) {
+	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
 
 	if err != nil {
-		return PageBlobUploadPagesResponse{}, err
+		return UploadPagesResponse{}, err
 	}
 
 	uploadPagesOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()
 
-	resp, err := pb.client.UploadPages(ctx, count, body, uploadPagesOptions, leaseAccessConditions,
+	resp, err := pb.generated().UploadPages(ctx, count, body, uploadPagesOptions, leaseAccessConditions,
 		cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions)
 
-	return toPageBlobUploadPagesResponse(resp), handleError(err)
+	return resp, err
 }
 
 // UploadPagesFromURL copies 1 or more pages from a source URL to the page blob.
@@ -168,98 +156,115 @@ func (pb *Client) Create(ctx context.Context, size int64, o *CreateOptions) (Cre
 // The count must be a multiple of 512 bytes.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page-from-url.
 func (pb *Client) UploadPagesFromURL(ctx context.Context, source string, sourceOffset, destOffset, count int64,
-	options *PageBlobUploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
+	o *UploadPagesFromURLOptions) (UploadPagesFromURLResponse, error) {
 
-	uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions := options.format()
+	uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sequenceNumberAccessConditions,
+		modifiedAccessConditions, sourceModifiedAccessConditions := o.format()
 
-	resp, err := pb.client.UploadPagesFromURL(ctx, source, rangeToString(sourceOffset, count), 0,
-		rangeToString(destOffset, count), uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions,
+	resp, err := pb.generated().UploadPagesFromURL(ctx, source, shared.RangeToString(sourceOffset, count), 0,
+		shared.RangeToString(destOffset, count), uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions,
 		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
 
-	return toPageBlobUploadPagesFromURLResponse(resp), handleError(err)
+	return resp, err
 }
 
 // ClearPages frees the specified pages from the page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
-func (pb *Client) ClearPages(ctx context.Context, pageRange HttpRange, options *PageBlobClearPagesOptions) (PageBlobClearPagesResponse, error) {
-	clearOptions := &pageBlobClientClearPagesOptions{
-		Range: pageRange.format(),
+func (pb *Client) ClearPages(ctx context.Context, offset, count int64, options *ClearPagesOptions) (ClearPagesResponse, error) {
+	clearOptions := &generated.PageBlobClientClearPagesOptions{
+		Range: shared.HTTPRange{Offset: offset, Count: count}.Format(),
 	}
 
 	leaseAccessConditions, cpkInfo, cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions := options.format()
 
-	resp, err := pb.client.ClearPages(ctx, 0, clearOptions, leaseAccessConditions, cpkInfo,
+	resp, err := pb.generated().ClearPages(ctx, 0, clearOptions, leaseAccessConditions, cpkInfo,
 		cpkScopeInfo, sequenceNumberAccessConditions, modifiedAccessConditions)
 
-	return toPageBlobClearPagesResponse(resp), handleError(err)
+	return resp, err
 }
 
-// GetPageRanges returns the list of valid page ranges for a page blob or snapshot of a page blob.
+// NewGetPageRangesPager returns the list of valid page ranges for a page blob or snapshot of a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb *Client) GetPageRanges(options *PageBlobGetPageRangesOptions) *PageBlobGetPageRangesPager {
-	getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions := options.format()
+func (pb *Client) NewGetPageRangesPager(o *GetPageRangesOptions) *runtime.Pager[GetPageRangesResponse] {
+	opts, leaseAccessConditions, modifiedAccessConditions := o.format()
 
-	pageBlobGetPageRangesPager := pb.client.GetPageRanges(getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
-
-	// Fixing Advancer
-	pageBlobGetPageRangesPager.advancer = func(ctx context.Context, response pageBlobClientGetPageRangesResponse) (*policy.Request, error) {
-		getPageRangesOptions.Marker = response.NextMarker
-		req, err := pb.client.getPageRangesCreateRequest(ctx, getPageRangesOptions, leaseAccessConditions, modifiedAccessConditions)
-		if err != nil {
-			return nil, handleError(err)
-		}
-		queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
-		if err != nil {
-			return nil, handleError(err)
-		}
-		req.Raw().URL.RawQuery = queryValues.Encode()
-		return req, nil
-	}
-
-	return toPageBlobGetPageRangesPager(pageBlobGetPageRangesPager)
+	return runtime.NewPager(runtime.PagingHandler[GetPageRangesResponse]{
+		More: func(page GetPageRangesResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GetPageRangesResponse) (GetPageRangesResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = pb.generated().GetPageRangesCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
+			} else {
+				opts.Marker = page.NextMarker
+				req, err = pb.generated().GetPageRangesCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
+			}
+			if err != nil {
+				return GetPageRangesResponse{}, err
+			}
+			resp, err := pb.generated().Pipeline().Do(req)
+			if err != nil {
+				return GetPageRangesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GetPageRangesResponse{}, runtime.NewResponseError(resp)
+			}
+			return pb.generated().GetPageRangesHandleResponse(resp)
+		},
+	})
 }
 
-// GetPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob.
+// NewGetPageRangesDiffPager gets the collection of page ranges that differ between a specified snapshot and this page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb *Client) GetPageRangesDiff(options *PageBlobGetPageRangesDiffOptions) *PageBlobGetPageRangesDiffPager {
-	getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions := options.format()
+func (pb *Client) NewGetPageRangesDiffPager(o *GetPageRangesDiffOptions) *runtime.Pager[GetPageRangesDiffResponse] {
+	opts, leaseAccessConditions, modifiedAccessConditions := o.format()
 
-	getPageRangesDiffPager := pb.client.GetPageRangesDiff(getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
-
-	// Fixing Advancer
-	getPageRangesDiffPager.advancer = func(ctx context.Context, response pageBlobClientGetPageRangesDiffResponse) (*policy.Request, error) {
-		getPageRangesDiffOptions.Marker = response.NextMarker
-		req, err := pb.client.getPageRangesDiffCreateRequest(ctx, getPageRangesDiffOptions, leaseAccessConditions, modifiedAccessConditions)
-		if err != nil {
-			return nil, handleError(err)
-		}
-		queryValues, err := url.ParseQuery(req.Raw().URL.RawQuery)
-		if err != nil {
-			return nil, handleError(err)
-		}
-		req.Raw().URL.RawQuery = queryValues.Encode()
-		return req, nil
-	}
-
-	return toPageBlobGetPageRangesDiffPager(getPageRangesDiffPager)
+	return runtime.NewPager(runtime.PagingHandler[GetPageRangesDiffResponse]{
+		More: func(page GetPageRangesDiffResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GetPageRangesDiffResponse) (GetPageRangesDiffResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = pb.generated().GetPageRangesDiffCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
+			} else {
+				opts.Marker = page.NextMarker
+				req, err = pb.generated().GetPageRangesDiffCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
+			}
+			if err != nil {
+				return GetPageRangesDiffResponse{}, err
+			}
+			resp, err := pb.generated().Pipeline().Do(req)
+			if err != nil {
+				return GetPageRangesDiffResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GetPageRangesDiffResponse{}, runtime.NewResponseError(resp)
+			}
+			return pb.generated().GetPageRangesDiffHandleResponse(resp)
+		},
+	})
 }
 
 // Resize resizes the page blob to the specified size (which must be a multiple of 512).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
-func (pb *Client) Resize(ctx context.Context, size int64, options *PageBlobResizeOptions) (PageBlobResizeResponse, error) {
+func (pb *Client) Resize(ctx context.Context, size int64, options *ResizeOptions) (ResizeResponse, error) {
 	resizeOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions := options.format()
 
-	resp, err := pb.client.Resize(ctx, size, resizeOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
+	resp, err := pb.generated().Resize(ctx, size, resizeOptions, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
 
-	return toPageBlobResizeResponse(resp), handleError(err)
+	return resp, err
 }
 
 // UpdateSequenceNumber sets the page blob's sequence number.
-func (pb *Client) UpdateSequenceNumber(ctx context.Context, options *PageBlobUpdateSequenceNumberOptions) (PageBlobUpdateSequenceNumberResponse, error) {
+func (pb *Client) UpdateSequenceNumber(ctx context.Context, options *UpdateSequenceNumberOptions) (UpdateSequenceNumberResponse, error) {
 	actionType, updateOptions, lac, mac := options.format()
-	resp, err := pb.client.UpdateSequenceNumber(ctx, *actionType, updateOptions, lac, mac)
+	resp, err := pb.generated().UpdateSequenceNumber(ctx, *actionType, updateOptions, lac, mac)
 
-	return toPageBlobUpdateSequenceNumberResponse(resp), handleError(err)
+	return resp, err
 }
 
 // StartCopyIncremental begins an operation to start an incremental copy from one page blob's snapshot to this page blob.
@@ -267,10 +272,10 @@ func (pb *Client) UpdateSequenceNumber(ctx context.Context, options *PageBlobUpd
 // The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob and
 // https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots.
-func (pb *Client) StartCopyIncremental(ctx context.Context, copySource string, prevSnapshot string, options *PageBlobCopyIncrementalOptions) (PageBlobCopyIncrementalResponse, error) {
+func (pb *Client) StartCopyIncremental(ctx context.Context, copySource string, prevSnapshot string, options *CopyIncrementalOptions) (CopyIncrementalResponse, error) {
 	copySourceURL, err := url.Parse(copySource)
 	if err != nil {
-		return PageBlobCopyIncrementalResponse{}, err
+		return CopyIncrementalResponse{}, err
 	}
 
 	queryParams := copySourceURL.Query()
@@ -278,13 +283,12 @@ func (pb *Client) StartCopyIncremental(ctx context.Context, copySource string, p
 	copySourceURL.RawQuery = queryParams.Encode()
 
 	pageBlobCopyIncrementalOptions, modifiedAccessConditions := options.format()
-	resp, err := pb.client.CopyIncremental(ctx, copySourceURL.String(), pageBlobCopyIncrementalOptions, modifiedAccessConditions)
+	resp, err := pb.generated().CopyIncremental(ctx, copySourceURL.String(), pageBlobCopyIncrementalOptions, modifiedAccessConditions)
 
-	return toPageBlobCopyIncrementalResponse(resp), handleError(err)
+	return resp, err
 }
-*/
 
-// Redeclared APIs ----- Copy over to Append blob and Page blob as well.
+// Redeclared APIs
 
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
@@ -311,7 +315,7 @@ func (pb *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 // bandwidth of the blob. A block blob's tier determines Hot/Cool/Archive storage type. This operation
 // does not update the blob's ETag.
 // For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
-func (pb *Client) SetTier(ctx context.Context, tier AccessTier, o *blob.SetTierOptions) (blob.SetTierResponse, error) {
+func (pb *Client) SetTier(ctx context.Context, tier blob.AccessTier, o *blob.SetTierOptions) (blob.SetTierResponse, error) {
 	return pb.blobClient().SetTier(ctx, tier, o)
 }
 

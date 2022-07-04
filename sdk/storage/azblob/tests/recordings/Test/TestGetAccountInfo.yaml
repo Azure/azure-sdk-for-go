@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Mon, 04 Jul 2022 06:03:34 GMT
+      - Mon, 04 Jul 2022 10:34:59 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/?comp=properties&restype=account
@@ -23,7 +23,7 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 04 Jul 2022 06:03:32 GMT
+      - Mon, 04 Jul 2022 10:34:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Account-Kind:
@@ -31,7 +31,7 @@ interactions:
       X-Ms-Is-Hns-Enabled:
       - "false"
       X-Ms-Request-Id:
-      - 1c12f767-801e-0026-186b-8fc760000000
+      - 32e5e625-701e-001d-7c91-8f82c4000000
       X-Ms-Sku-Name:
       - Standard_RAGRS
       X-Ms-Version:

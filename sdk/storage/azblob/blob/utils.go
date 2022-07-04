@@ -6,7 +6,10 @@
 
 package blob
 
-import "strings"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"strings"
+)
 
 // ObjectReplicationRules struct
 type ObjectReplicationRules struct {
@@ -49,4 +52,8 @@ func deserializeORSPolicies(policies map[string]string) (objectReplicationPolici
 		})
 	}
 	return
+}
+
+func ParseHTTPHeaders(resp GetPropertiesResponse) HTTPHeaders {
+	return generated.ParseHTTPHeaders(resp)
 }

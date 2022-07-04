@@ -67,7 +67,8 @@ The Azure Blob SDK can access an Azure Storage account.
   # Bash
   export AZURE_STORAGE_ACCOUNT_KEY="<mystorageaccountkey>"
   ```
-  > You can obtain your account key from the Azure Portal under the "Access Keys" section on the left-hand pane of your storage account.
+  > You can obtain your account key from the Azure Portal under the "Access Keys" section on the left-hand pane of your
+  storage account.
 
 #### Create account
 

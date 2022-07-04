@@ -7,6 +7,7 @@
 package azblob_test
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/stretchr/testify/require"
 )
@@ -50,7 +51,7 @@ import (
 //	for index, d := range data {
 //		base64BlockIDs[index] = blockIDIntToBase64(index)
 //		io.NopCloser(strings.NewReader("hello world"))
-//		putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
+//		putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
 //		_require.Nil(err)
 //		//_require.Equal(putResp.RawResponse.StatusCode, 201)
 //		_require.Nil(putResp.ContentMD5)
@@ -121,7 +122,7 @@ import (
 //	contentSize := 8 * 1024 // 8 KB
 //	content := make([]byte, contentSize)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //
 //	ctx := context.Background() // Use default Background context
 //	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
@@ -227,7 +228,7 @@ import (
 //	destBlob := containerClient.NewBlockBlobClient("destblob")
 //
 //	// Prepare source bbClient for copy.
-//	_, err = srcBlob.Upload(ctx, internal.NopCloser(body), nil)
+//	_, err = srcBlob.Upload(ctx, NopCloser(body), nil)
 //	_require.Nil(err)
 //	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
@@ -322,7 +323,7 @@ import (
 //
 //	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 //
-//	_, err = bbClient.Upload(ctx, internal.NopCloser(body), nil)
+//	_, err = bbClient.Upload(ctx, NopCloser(body), nil)
 //	_require.Nil(err)
 //	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
@@ -388,7 +389,7 @@ import (
 //	contentSize := 8 * 1024 // 8 KB
 //	content := make([]byte, contentSize)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //	md5Value := md5.Sum(content)
 //	contentMD5 := md5Value[:]
 //
@@ -436,14 +437,14 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &BlockBlobUploadOptions{
+//	_, err = bbClient.Upload(ctx, NopCloser(body), &BlockBlobUploadOptions{
 //		HTTPHeaders: &basicHeaders,
 //	})
 //	_require.Nil(err)
 //
 //	resp, err := bbClient.GetProperties(ctx, nil)
 //	_require.Nil(err)
-//	h := resp.ParseHTTPHeaders()
+//	h := blob.ParseHTTPHeaders(resp)
 //	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
 //	_require.EqualValues(h, basicHeaders)
 //}
@@ -466,7 +467,7 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &BlockBlobUploadOptions{
+//	_, err = bbClient.Upload(ctx, NopCloser(body), &BlockBlobUploadOptions{
 //		Metadata: basicMetadata,
 //	})
 //	_require.Nil(err)
@@ -496,7 +497,7 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //
 //	_, err = bbClient.Upload(ctx, rsc, nil)
 //	_require.Nil(err)
@@ -524,7 +525,7 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //
 //	_, err = bbClient.Upload(ctx, rsc, &BlockBlobUploadOptions{
 //		Metadata: map[string]string{"In valid!": "bar"},
@@ -549,7 +550,7 @@ import (
 //	blockBlobName := generateBlobName(testName)
 //	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 //
-//	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+//	createResp, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 //	_require.Nil(err)
 //	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 //	_require.NotNil(createResp.Date)
@@ -558,7 +559,7 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &BlockBlobUploadOptions{
+//	_, err = bbClient.Upload(ctx, NopCloser(body), &BlockBlobUploadOptions{
 //		BlobAccessConditions: &BlobAccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
@@ -585,7 +586,7 @@ import (
 //	blockBlobName := generateBlobName(testName)
 //	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 //
-//	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+//	createResp, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 //	_require.Nil(err)
 //	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 //	_require.NotNil(createResp.Date)
@@ -594,7 +595,7 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //
 //	uploadBlockBlobOptions := BlockBlobUploadOptions{
 //		BlobAccessConditions: &BlobAccessConditions{
@@ -626,7 +627,7 @@ import (
 //	blockBlobName := generateBlobName(testName)
 //	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 //
-//	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+//	createResp, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 //	_require.Nil(err)
 //	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 //	_require.NotNil(createResp.Date)
@@ -635,7 +636,7 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //
 //	uploadBlockBlobOptions := BlockBlobUploadOptions{
 //		BlobAccessConditions: &BlobAccessConditions{
@@ -666,7 +667,7 @@ import (
 //	blockBlobName := generateBlobName(testName)
 //	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 //
-//	createResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+//	createResp, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 //	_require.Nil(err)
 //	//_require.Equal(createResp.RawResponse.StatusCode, 201)
 //	_require.NotNil(createResp.Date)
@@ -680,7 +681,7 @@ import (
 //			},
 //		},
 //	}
-//	_, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
+//	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader(nil)), &uploadBlockBlobOptions)
 //	_ = err
 //
 //	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
@@ -707,7 +708,7 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //
 //	_, err = bbClient.Upload(ctx, rsc, &BlockBlobUploadOptions{
 //		BlobAccessConditions: &BlobAccessConditions{
@@ -751,7 +752,7 @@ import (
 //			},
 //		},
 //	}
-//	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &uploadBlockBlobOptions)
+//	_, err = bbClient.Upload(ctx, NopCloser(body), &uploadBlockBlobOptions)
 //	_require.NotNil(err)
 //	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
 //}
@@ -777,7 +778,7 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //
 //	ifNoneMatch := "garbage"
 //	uploadBlockBlobOptions := BlockBlobUploadOptions{
@@ -815,7 +816,7 @@ import (
 //
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //
 //	_, err = bbClient.Upload(ctx, rsc, &BlockBlobUploadOptions{
 //		BlobAccessConditions: &BlobAccessConditions{
@@ -848,7 +849,7 @@ import (
 //	bbClient := getBlockBlobClient(blobName, containerClient)
 //
 //	blockIDs := generateBlockIDsList(1)
-//	_, err = bbClient.StageBlock(ctx, blockIDs[0], internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+//	_, err = bbClient.StageBlock(ctx, blockIDs[0], NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 //	_require.Nil(err)
 //	return containerClient, bbClient, blockIDs
 //}
@@ -1064,13 +1065,13 @@ import (
 //	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil)
 //	_require.Nil(err)
 //
-//	_, err = bbClient.StageBlock(ctx, "0001", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
+//	_, err = bbClient.StageBlock(ctx, "0001", NopCloser(bytes.NewReader([]byte("new data"))), nil)
 //	_require.Nil(err)
-//	_, err = bbClient.StageBlock(ctx, "0010", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
+//	_, err = bbClient.StageBlock(ctx, "0010", NopCloser(bytes.NewReader([]byte("new data"))), nil)
 //	_require.Nil(err)
-//	_, err = bbClient.StageBlock(ctx, "0011", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
+//	_, err = bbClient.StageBlock(ctx, "0011", NopCloser(bytes.NewReader([]byte("new data"))), nil)
 //	_require.Nil(err)
-//	_, err = bbClient.StageBlock(ctx, "0100", internal.NopCloser(bytes.NewReader([]byte("new data"))), nil)
+//	_, err = bbClient.StageBlock(ctx, "0100", NopCloser(bytes.NewReader([]byte("new data"))), nil)
 //	_require.Nil(err)
 //
 //	_, err = bbClient.CommitBlockList(ctx, []string{"0001", "0011"}, nil)
@@ -1106,7 +1107,7 @@ import (
 //			HTTPHeaders: &basicHeaders,
 //			Tier:        &tier,
 //		}
-//		_, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
+//		_, err := bbClient.Upload(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
 //		_require.Nil(err)
 //
 //		resp, err := bbClient.GetProperties(ctx, nil)
@@ -1133,7 +1134,7 @@ import (
 //		bbClient := getBlockBlobClient(blobName, containerClient)
 //
 //		blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
-//		_, err := bbClient.StageBlock(ctx, blockID, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+//		_, err := bbClient.StageBlock(ctx, blockID, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 //		_require.Nil(err)
 //
 //		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &BlockBlobCommitBlockListOptions{
@@ -1170,7 +1171,7 @@ import (
 //	srcBlob := containerClient.NewBlockBlobClient(generateBlobName(testName))
 //
 //	tier := AccessTierCool
-//	_, err = srcBlob.Upload(ctx, internal.NopCloser(contentReader), &BlockBlobUploadOptions{Tier: &tier})
+//	_, err = srcBlob.Upload(ctx, NopCloser(contentReader), &BlockBlobUploadOptions{Tier: &tier})
 //	_require.Nil(err)
 //	//_require.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
 //
@@ -1230,7 +1231,7 @@ import (
 //	contentSize := 8 * 1024 // 8 KB
 //	content := make([]byte, contentSize)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //	ctx := context.Background()
 //	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
 //	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
@@ -1467,7 +1468,7 @@ func (s *azblobTestSuite) TestBlobServiceClientDelete() {
 	runTestRequiringServiceProperties(_require, svcClient, string(rune(code)), enableSoftDelete, testBlobServiceClientDeleteImpl, disableSoftDelete)
 }
 
-func setAndCheckBlockBlobTier(_require *require.Assertions, bbClient *blockblob.Client, tier blockblob.AccessTier) {
+func setAndCheckBlockBlobTier(_require *require.Assertions, bbClient *blockblob.Client, tier blob.AccessTier) {
 	_, err := bbClient.SetTier(ctx, tier, nil)
 	_require.Nil(err)
 
@@ -1492,8 +1493,8 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiersOnBlockBlob() {
 	blockBlobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_require, blockBlobName, containerClient)
 
-	setAndCheckBlockBlobTier(_require, bbClient, blockblob.AccessTierHot)
-	setAndCheckBlockBlobTier(_require, bbClient, blockblob.AccessTierCool)
-	setAndCheckBlockBlobTier(_require, bbClient, blockblob.AccessTierArchive)
+	setAndCheckBlockBlobTier(_require, bbClient, blob.AccessTierHot)
+	setAndCheckBlockBlobTier(_require, bbClient, blob.AccessTierCool)
+	setAndCheckBlockBlobTier(_require, bbClient, blob.AccessTierArchive)
 
 }

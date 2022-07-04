@@ -227,7 +227,7 @@ func createNewBlockBlob(_require *require.Assertions, blockBlobName string, cont
 	return bbClient
 }
 
-func createNewBlockBlobWithCPK(_require *require.Assertions, blockBlobName string, containerClient *container.Client, cpkInfo *blockblob.CpkInfo, cpkScopeInfo *blockblob.CpkScopeInfo) (bbClient *blockblob.Client) {
+func createNewBlockBlobWithCPK(_require *require.Assertions, blockBlobName string, containerClient *container.Client, cpkInfo *blob.CpkInfo, cpkScopeInfo *blob.CpkScopeInfo) (bbClient *blockblob.Client) {
 	bbClient = getBlockBlobClient(blockBlobName, containerClient)
 
 	uploadBlockBlobOptions := blockblob.UploadOptions{
@@ -281,7 +281,7 @@ func createNewPageBlobWithSize(_require *require.Assertions, pageBlobName string
 	return pbClient
 }
 
-func createNewPageBlobWithCPK(_require *require.Assertions, pageBlobName string, container *container.Client, sizeInBytes int64, cpkInfo *pageblob.CpkInfo, cpkScopeInfo *pageblob.CpkScopeInfo) (pbClient *pageblob.Client) {
+func createNewPageBlobWithCPK(_require *require.Assertions, pageBlobName string, container *container.Client, sizeInBytes int64, cpkInfo *blob.CpkInfo, cpkScopeInfo *blob.CpkScopeInfo) (pbClient *pageblob.Client) {
 	pbClient = getPageBlobClient(pageBlobName, container)
 
 	_, err := pbClient.Create(ctx, sizeInBytes, &pageblob.CreateOptions{

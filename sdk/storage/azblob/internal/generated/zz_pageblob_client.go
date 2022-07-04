@@ -461,7 +461,7 @@ func (client *PageBlobClient) createHandleResponse(resp *http.Response) (PageBlo
 // of a page blob
 // If the operation fails it returns an *azcore.ResponseError type.
 // Generated from API version 2020-10-02
-// options - PageBlobClientGetPageRangesOptions contains the optional parameters for the PageBlobClient.GetPageRanges method.
+// options - PageBlobClientGetPageRangesOptions contains the optional parameters for the PageBlobClient.NewGetPageRangesPager method.
 // LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
 // ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
 func (client *PageBlobClient) NewGetPageRangesPager(options *PageBlobClientGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) *runtime.Pager[PageBlobClientGetPageRangesResponse] {
@@ -473,7 +473,7 @@ func (client *PageBlobClient) NewGetPageRangesPager(options *PageBlobClientGetPa
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.getPageRangesCreateRequest(ctx, options, leaseAccessConditions, modifiedAccessConditions)
+				req, err = client.GetPageRangesCreateRequest(ctx, options, leaseAccessConditions, modifiedAccessConditions)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
 			}
@@ -487,13 +487,13 @@ func (client *PageBlobClient) NewGetPageRangesPager(options *PageBlobClientGetPa
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
 				return PageBlobClientGetPageRangesResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.getPageRangesHandleResponse(resp)
+			return client.GetPageRangesHandleResponse(resp)
 		},
 	})
 }
 
-// getPageRangesCreateRequest creates the GetPageRanges request.
-func (client *PageBlobClient) getPageRangesCreateRequest(ctx context.Context, options *PageBlobClientGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
+// GetPageRangesCreateRequest creates the NewGetPageRangesPager request.
+func (client *PageBlobClient) GetPageRangesCreateRequest(ctx context.Context, options *PageBlobClientGetPageRangesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -542,8 +542,8 @@ func (client *PageBlobClient) getPageRangesCreateRequest(ctx context.Context, op
 	return req, nil
 }
 
-// getPageRangesHandleResponse handles the GetPageRanges response.
-func (client *PageBlobClient) getPageRangesHandleResponse(resp *http.Response) (PageBlobClientGetPageRangesResponse, error) {
+// GetPageRangesHandleResponse handles the NewGetPageRangesPager response.
+func (client *PageBlobClient) GetPageRangesHandleResponse(resp *http.Response) (PageBlobClientGetPageRangesResponse, error) {
 	result := PageBlobClientGetPageRangesResponse{}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -601,7 +601,7 @@ func (client *PageBlobClient) NewGetPageRangesDiffPager(options *PageBlobClientG
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.getPageRangesDiffCreateRequest(ctx, options, leaseAccessConditions, modifiedAccessConditions)
+				req, err = client.GetPageRangesDiffCreateRequest(ctx, options, leaseAccessConditions, modifiedAccessConditions)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
 			}
@@ -615,13 +615,13 @@ func (client *PageBlobClient) NewGetPageRangesDiffPager(options *PageBlobClientG
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
 				return PageBlobClientGetPageRangesDiffResponse{}, runtime.NewResponseError(resp)
 			}
-			return client.getPageRangesDiffHandleResponse(resp)
+			return client.GetPageRangesDiffHandleResponse(resp)
 		},
 	})
 }
 
-// getPageRangesDiffCreateRequest creates the GetPageRangesDiff request.
-func (client *PageBlobClient) getPageRangesDiffCreateRequest(ctx context.Context, options *PageBlobClientGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
+// GetPageRangesDiffCreateRequest creates the GetPageRangesDiff request.
+func (client *PageBlobClient) GetPageRangesDiffCreateRequest(ctx context.Context, options *PageBlobClientGetPageRangesDiffOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -676,8 +676,8 @@ func (client *PageBlobClient) getPageRangesDiffCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// getPageRangesDiffHandleResponse handles the GetPageRangesDiff response.
-func (client *PageBlobClient) getPageRangesDiffHandleResponse(resp *http.Response) (PageBlobClientGetPageRangesDiffResponse, error) {
+// GetPageRangesDiffHandleResponse handles the GetPageRangesDiff response.
+func (client *PageBlobClient) GetPageRangesDiffHandleResponse(resp *http.Response) (PageBlobClientGetPageRangesDiffResponse, error) {
 	result := PageBlobClientGetPageRangesDiffResponse{}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)

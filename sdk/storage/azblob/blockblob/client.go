@@ -276,7 +276,7 @@ func (bb *Client) Undelete(ctx context.Context, o *blob.UndeleteOptions) (blob.U
 // bandwidth of the blob. A block blob's tier determines Hot/Cool/Archive storage type. This operation
 // does not update the blob's ETag.
 // For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
-func (bb *Client) SetTier(ctx context.Context, tier AccessTier, o *blob.SetTierOptions) (blob.SetTierResponse, error) {
+func (bb *Client) SetTier(ctx context.Context, tier blob.AccessTier, o *blob.SetTierOptions) (blob.SetTierResponse, error) {
 	return bb.blobClient().SetTier(ctx, tier, o)
 }
 

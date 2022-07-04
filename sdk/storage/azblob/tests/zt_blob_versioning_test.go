@@ -144,7 +144,7 @@ package azblob_test
 //	for i := 0; i < len(data); i++ {
 //		blobName := "abc" + string(data[i])
 //		blobClient := containerClient.NewBlockBlobClient(blobName)
-//		resp, err := blobClient.Upload(ctx, internal.NopCloser(strings.NewReader(string(data[i]))), nil)
+//		resp, err := blobClient.Upload(ctx, NopCloser(strings.NewReader(string(data[i]))), nil)
 //		_require.Nil(err)
 //		_require.NotNil(resp.VersionID)
 //
@@ -176,14 +176,14 @@ package azblob_test
 ////	defer deleteContainer(_require, containerClient)
 ////	blobURL := getBlockBlobClient(generateBlobName(testName), containerClient)
 ////
-////	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &BlockBlobUploadOptions{
+////	uploadResp, err := blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &BlockBlobUploadOptions{
 ////		Metadata: basicMetadata,
 ////	})
 ////	_require.Nil(err)
 ////	_require.NotNil(uploadResp.VersionID)
 ////	versionID1 := uploadResp.VersionID
 ////
-////	uploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, &BlockBlobUploadOptions{
+////	uploadResp, err = blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))),, &BlockBlobUploadOptions{
 ////		Metadata: basicMetadata,
 ////	})
 ////	_require.Nil(err)
@@ -238,12 +238,12 @@ package azblob_test
 ////	defer deleteContainer(_require, containerClient)
 ////	blobURL, blobName := getBlockBlobClient(c, containerClient)
 ////
-////	resp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+////	resp, err := blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////	versionId := resp.VersionID
 ////	_assert(versionId, chk.NotNil)
 ////
-////	resp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+////	resp, err = blobURL.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))),, HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 ////	_require.Nil(err)
 ////	_assert(resp.VersionID, chk.NotNil)
 ////
@@ -286,7 +286,7 @@ package azblob_test
 //
 //	versions := make([]string, 0)
 //	for i := 0; i < 5; i++ {
-//		uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &BlockBlobUploadOptions{
+//		uploadResp, err := bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"+strconv.Itoa(i)))), &BlockBlobUploadOptions{
 //			Metadata: basicMetadata,
 //		})
 //		_require.Nil(err)
@@ -487,7 +487,7 @@ package azblob_test
 //
 //	for index, d := range data {
 //		base64BlockIDs[index] = blockIDIntToBase64(index)
-//		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
+//		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
 //		_require.Nil(err)
 //		// _require.Equal(resp.RawResponse.StatusCode, 201)
 //		_require.NotNil(resp.Version)
@@ -525,7 +525,7 @@ package azblob_test
 //	bbClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
 //
 //	// Prepare source blob for copy.
-//	uploadResp, err := bbClient.Upload(ctx, internal.NopCloser(r), nil)
+//	uploadResp, err := bbClient.Upload(ctx, NopCloser(r), nil)
 //	_require.Nil(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //	_require.NotNil(uploadResp.VersionID)

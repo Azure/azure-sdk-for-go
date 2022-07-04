@@ -86,7 +86,7 @@ package azblob_test
 //	appendBlockOptions := AppendBlobAppendBlockOptions{
 //		TransactionalContentMD5: contentMD5,
 //	}
-//	appendResp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
+//	appendResp, err := abClient.AppendBlock(context.Background(), NopCloser(readerToBody), &appendBlockOptions)
 //	_require.Nil(err)
 //	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 //	_require.Equal(*appendResp.BlobAppendOffset, "0")
@@ -107,7 +107,7 @@ package azblob_test
 //	appendBlockOptions = AppendBlobAppendBlockOptions{
 //		TransactionalContentMD5: badMD5,
 //	}
-//	appendResp, err = abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
+//	appendResp, err = abClient.AppendBlock(context.Background(), NopCloser(readerToBody), &appendBlockOptions)
 //	_require.NotNil(err)
 //
 //	validateBlobErrorCode(_require, err, StorageErrorCodeMD5Mismatch)
@@ -138,7 +138,7 @@ package azblob_test
 //	_require.Nil(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
-//	appendResp, err := srcBlob.AppendBlock(context.Background(), internal.NopCloser(r), nil)
+//	appendResp, err := srcBlob.AppendBlock(context.Background(), NopCloser(r), nil)
 //	_require.Nil(err)
 //	_require.Nil(err)
 //	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
@@ -234,7 +234,7 @@ package azblob_test
 //	_require.Nil(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
-//	appendResp, err := srcBlob.AppendBlock(context.Background(), internal.NopCloser(r), nil)
+//	appendResp, err := srcBlob.AppendBlock(context.Background(), NopCloser(r), nil)
 //	_require.Nil(err)
 //	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 //	_require.Equal(*appendResp.BlobAppendOffset, "0")
@@ -416,7 +416,7 @@ package azblob_test
 //
 //	resp, err := abClient.GetProperties(ctx, nil)
 //	_require.Nil(err)
-//	h := resp.ParseHTTPHeaders()
+//	h := blob.ParseHTTPHeaders(resp)
 //	_require.EqualValues(h, basicHeaders)
 //}
 //
@@ -425,7 +425,7 @@ package azblob_test
 //	_require.Nil(err)
 //	_require.NotNil(resp.Metadata)
 //	_require.EqualValues(resp.Metadata, basicMetadata)
-//	_require.EqualValues(resp.ParseHTTPHeaders(), basicHeaders)
+//	_require.EqualValues(blob.ParseHTTPHeaders(resp), basicHeaders)
 //}
 //
 //func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
@@ -726,7 +726,7 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_require, abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(bytes.NewReader(nil)), nil)
+//	_, err = abClient.AppendBlock(ctx, NopCloser(bytes.NewReader(nil)), nil)
 //	_require.NotNil(err)
 //
 //	validateBlobErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
@@ -748,7 +748,7 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_require, abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader("")), nil)
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader("")), nil)
 //	_require.NotNil(err)
 //
 //	validateBlobErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
@@ -770,7 +770,7 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := getAppendBlobClient(abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 //	_require.NotNil(err)
 //
 //	validateBlobErrorCode(_require, err, StorageErrorCodeBlobNotFound)
@@ -812,7 +812,7 @@ package azblob_test
 //			},
 //		},
 //	}
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 //	_require.Nil(err)
 //
 //	validateBlockAppended(_require, abClient, len(blockBlobDefaultData))
@@ -848,7 +848,7 @@ package azblob_test
 //			},
 //		},
 //	}
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 //	_require.NotNil(err)
 //
 //	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
@@ -884,7 +884,7 @@ package azblob_test
 //			},
 //		},
 //	}
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 //	_require.Nil(err)
 //
 //	validateBlockAppended(_require, abClient, len(blockBlobDefaultData))
@@ -920,7 +920,7 @@ package azblob_test
 //			},
 //		},
 //	}
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 //	_require.NotNil(err)
 //
 //	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
@@ -944,7 +944,7 @@ package azblob_test
 //
 //	resp, _ := abClient.GetProperties(ctx, nil)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 //		BlobAccessConditions: &BlobAccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfMatch: resp.ETag,
@@ -972,7 +972,7 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_require, abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 //		BlobAccessConditions: &BlobAccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfMatch: to.Ptr("garbage"),
@@ -999,7 +999,7 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_require, abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 //		BlobAccessConditions: &BlobAccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfNoneMatch: to.Ptr("garbage"),
@@ -1028,7 +1028,7 @@ package azblob_test
 //
 //	resp, _ := abClient.GetProperties(ctx, nil)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 //		BlobAccessConditions: &BlobAccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfNoneMatch: resp.ETag,
@@ -1052,7 +1052,7 @@ package azblob_test
 //////			AppendPosition: &appendPosition,
 //////		},
 //////	}
-//////	_, err := abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions) // This will cause the library to set the value of the header to 0
+//////	_, err := abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions) // This will cause the library to set the value of the header to 0
 //////	_require.NotNil(err)
 //////
 //////	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
@@ -1064,7 +1064,7 @@ package azblob_test
 //////	defer deleteContainer(_require, containerClient)
 //////	abClient, _ := createNewAppendBlob(c, containerClient)
 //////
-//////	_, err := abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil) // The position will not match, but the condition should be ignored
+//////	_, err := abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil) // The position will not match, but the condition should be ignored
 //////	_require.Nil(err)
 //////
 //////	appendPosition := int64(0)
@@ -1073,7 +1073,7 @@ package azblob_test
 //////			AppendPosition: &appendPosition,
 //////		},
 //////	}
-//////	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
+//////	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 //////	_require.Nil(err)
 //////
 //////	validateBlockAppended(c, abClient, 2*len(blockBlobDefaultData))
@@ -1095,10 +1095,10 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_require, abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 //	_require.Nil(err)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 //			AppendPosition: to.Ptr(int64(len(blockBlobDefaultData))),
 //		},
@@ -1124,10 +1124,10 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_require, abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 //	_require.Nil(err)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 //			AppendPosition: to.Ptr[int64](-1),
 //		},
@@ -1152,7 +1152,7 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_require, abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 //			AppendPosition: to.Ptr[int64](12),
 //		},
@@ -1177,7 +1177,7 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_require, abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 //			MaxSize: to.Ptr(int64(len(blockBlobDefaultData) + 1)),
 //		},
@@ -1202,7 +1202,7 @@ package azblob_test
 //	abName := generateBlobName(testName)
 //	abClient := createNewAppendBlob(_require, abName, containerClient)
 //
-//	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
+//	_, err = abClient.AppendBlock(ctx, NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlobAppendBlockOptions{
 //		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 //			MaxSize: to.Ptr(int64(len(blockBlobDefaultData) - 1)),
 //		},

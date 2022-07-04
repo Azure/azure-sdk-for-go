@@ -221,22 +221,6 @@ func PossibleListContainersIncludeTypeValues() []ListContainersIncludeType {
 	}
 }
 
-type PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTier
-
-const (
-	PremiumPageBlobAccessTierP10 PremiumPageBlobAccessTier = "P10"
-	PremiumPageBlobAccessTierP15 PremiumPageBlobAccessTier = "P15"
-	PremiumPageBlobAccessTierP20 PremiumPageBlobAccessTier = "P20"
-	PremiumPageBlobAccessTierP30 PremiumPageBlobAccessTier = "P30"
-	PremiumPageBlobAccessTierP4  PremiumPageBlobAccessTier = "P4"
-	PremiumPageBlobAccessTierP40 PremiumPageBlobAccessTier = "P40"
-	PremiumPageBlobAccessTierP50 PremiumPageBlobAccessTier = "P50"
-	PremiumPageBlobAccessTierP6  PremiumPageBlobAccessTier = "P6"
-	PremiumPageBlobAccessTierP60 PremiumPageBlobAccessTier = "P60"
-	PremiumPageBlobAccessTierP70 PremiumPageBlobAccessTier = "P70"
-	PremiumPageBlobAccessTierP80 PremiumPageBlobAccessTier = "P80"
-)
-
 // PossiblePremiumPageBlobAccessTierValues returns the possible values for the PremiumPageBlobAccessTier const type.
 
 type PublicAccessType = generated.PublicAccessType
@@ -289,22 +273,5 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNameStandardRAGRS,
 		SKUNameStandardZRS,
 		SKUNamePremiumLRS,
-	}
-}
-
-type SequenceNumberActionType = generated.SequenceNumberActionType
-
-const (
-	SequenceNumberActionTypeMax       SequenceNumberActionType = "max"
-	SequenceNumberActionTypeUpdate    SequenceNumberActionType = "update"
-	SequenceNumberActionTypeIncrement SequenceNumberActionType = "increment"
-)
-
-// PossibleSequenceNumberActionTypeValues returns the possible values for the SequenceNumberActionType const type.
-func PossibleSequenceNumberActionTypeValues() []SequenceNumberActionType {
-	return []SequenceNumberActionType{
-		SequenceNumberActionTypeMax,
-		SequenceNumberActionTypeUpdate,
-		SequenceNumberActionTypeIncrement,
 	}
 }

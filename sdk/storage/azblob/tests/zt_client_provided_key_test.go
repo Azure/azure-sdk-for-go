@@ -74,7 +74,7 @@ package azblob_test
 //		stageBlockOptions := BlockBlobStageBlockOptions{
 //			CpkInfo: &testCPKByValue,
 //		}
-//		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(word)), &stageBlockOptions)
+//		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(word)), &stageBlockOptions)
 //		_require.Nil(err)
 //	}
 //
@@ -128,7 +128,7 @@ package azblob_test
 //		stageBlockOptions := BlockBlobStageBlockOptions{
 //			CpkScopeInfo: &testCPKByScope,
 //		}
-//		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(word)), &stageBlockOptions)
+//		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(word)), &stageBlockOptions)
 //		_require.Nil(err)
 //	}
 //
@@ -179,7 +179,7 @@ package azblob_test
 //	contentSize := 8 * 1024 // 8 KB
 //	content := make([]byte, contentSize)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //	ctx := context.Background()
 //	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 //	destBlob := containerClient.NewBlockBlobClient("destblob")
@@ -297,7 +297,7 @@ package azblob_test
 //	contentSize := 8 * 1024 // 8 KB
 //	content := make([]byte, contentSize)
 //	body := bytes.NewReader(content)
-//	rsc := internal.NopCloser(body)
+//	rsc := NopCloser(body)
 //	ctx := context.Background()
 //	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 //	destBlob := containerClient.NewBlockBlobClient("destblob")
@@ -437,7 +437,7 @@ package azblob_test
 //	})
 //	_require.Nil(err)
 //	_require.EqualValues(downloadResp.ContentMD5, md5Val[:])
-//	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 //	_require.EqualValues(downloadResp.EncryptionKeySHA256, testCPKByValue.EncryptionKeySHA256)
@@ -475,7 +475,7 @@ package azblob_test
 //	downloadResp, err := bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
 //	_require.Nil(err)
 //	_require.EqualValues(downloadResp.ContentMD5, md5Val[:])
-//	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
@@ -506,7 +506,7 @@ package azblob_test
 //		appendBlockOptions := AppendBlobAppendBlockOptions{
 //			CpkInfo: &testCPKByValue,
 //		}
-//		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
+//		resp, err := abClient.AppendBlock(context.Background(), NopCloser(strings.NewReader(word)), &appendBlockOptions)
 //		_require.Nil(err)
 //		// _require.Equal(resp.RawResponse.StatusCode, 201)
 //		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
@@ -565,7 +565,7 @@ package azblob_test
 //		appendBlockOptions := AppendBlobAppendBlockOptions{
 //			CpkScopeInfo: &testCPKByScope,
 //		}
-//		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
+//		resp, err := abClient.AppendBlock(context.Background(), NopCloser(strings.NewReader(word)), &appendBlockOptions)
 //		_require.Nil(err)
 //		// _require.Equal(resp.RawResponse.StatusCode, 201)
 //		_require.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
@@ -618,7 +618,7 @@ package azblob_test
 //	_require.Nil(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
-//	resp, err := srcABClient.AppendBlock(context.Background(), internal.NopCloser(r), nil)
+//	resp, err := srcABClient.AppendBlock(context.Background(), NopCloser(r), nil)
 //	_require.Nil(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 201)
 //	_require.Equal(*resp.BlobAppendOffset, "0")
@@ -700,7 +700,7 @@ package azblob_test
 //	_require.Equal(*downloadResp.IsServerEncrypted, true)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 //
-//	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 //}
@@ -728,7 +728,7 @@ package azblob_test
 //	_require.Nil(err)
 //	//_require.Equal(cResp1.RawResponse.StatusCode, 201)
 //
-//	resp, err := srcClient.AppendBlock(context.Background(), internal.NopCloser(r), nil)
+//	resp, err := srcClient.AppendBlock(context.Background(), NopCloser(r), nil)
 //	_require.Nil(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 201)
 //	_require.Equal(*resp.BlobAppendOffset, "0")
@@ -797,7 +797,7 @@ package azblob_test
 //	_require.Equal(*downloadResp.IsServerEncrypted, true)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 //
-//	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 //}
@@ -943,7 +943,7 @@ package azblob_test
 //	uploadPagesOptions := PageBlobUploadPagesOptions{
 //		PageRange: &HttpRange{offset, count},
 //	}
-//	_, err = bbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
+//	_, err = bbClient.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
 //	_require.Nil(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //	srcBlobParts, _ := NewBlobURLParts(bbClient.URL())
@@ -998,7 +998,7 @@ package azblob_test
 //	_require.Nil(err)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 //
-//	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 //}
@@ -1028,7 +1028,7 @@ package azblob_test
 //	uploadPagesOptions := PageBlobUploadPagesOptions{
 //		PageRange: &HttpRange{offset, count},
 //	}
-//	_, err = srcPBClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
+//	_, err = srcPBClient.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
 //	_require.Nil(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //	srcBlobParts, _ := NewBlobURLParts(srcPBClient.URL())
@@ -1074,7 +1074,7 @@ package azblob_test
 //	_require.Nil(err)
 //	_require.EqualValues(*downloadResp.EncryptionScope, *testCPKByScope.EncryptionScope)
 //
-//	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 //}
@@ -1101,7 +1101,7 @@ package azblob_test
 //	uploadPagesOptions := PageBlobUploadPagesOptions{
 //		PageRange: &HttpRange{offset, count},
 //	}
-//	_, err = srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
+//	_, err = srcBlob.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
 //	_require.Nil(err)
 //	// _require.Equal(uploadResp.RawResponse.StatusCode, 201)
 //
@@ -1159,7 +1159,7 @@ package azblob_test
 //	_require.Nil(err)
 //	_require.EqualValues(*downloadResp.EncryptionKeySHA256, *testCPKByValue.EncryptionKeySHA256)
 //
-//	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{CpkInfo: &testCPKByValue}))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{CpkInfo: &testCPKByValue}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, srcData)
 //
@@ -1476,7 +1476,7 @@ package azblob_test
 //	_require.NoError(err)
 //	_require.EqualValues(getPropertiesResp.Metadata, basicMetadata)
 //	_require.Equal(*getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
-//	_require.Equal(getPropertiesResp.ParseHTTPHeaders(), basicHeaders)
+//	_require.Equal(getPropertiesblob.ParseHTTPHeaders(resp), basicHeaders)
 //
 //	getTagsResp, err := bbClient.GetTags(ctx, nil)
 //	_require.NoError(err)
@@ -1541,7 +1541,7 @@ package azblob_test
 //	_require.NoError(err)
 //	_require.EqualValues(getPropertiesResp.Metadata, basicMetadata)
 //	_require.Equal(*getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
-//	_require.Equal(getPropertiesResp.ParseHTTPHeaders(), basicHeaders)
+//	_require.Equal(getPropertiesblob.ParseHTTPHeaders(resp), basicHeaders)
 //
 //	getTagsResp, err := bbClient.GetTags(ctx, nil)
 //	_require.NoError(err)

@@ -2649,7 +2649,7 @@ func (s *azblobTestSuite) TestBlobSetPropertiesBasic() {
 	_require.Nil(err)
 
 	resp, _ := bbClient.GetProperties(ctx, nil)
-	h := azblob.ParseHTTPHeaders(resp)
+	h := blob.ParseHTTPHeaders(resp)
 	_require.EqualValues(h, basicHeaders)
 }
 

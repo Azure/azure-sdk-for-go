@@ -7,82 +7,78 @@
 package azblob_test
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
 	"github.com/stretchr/testify/require"
+	"time"
 )
 
-//
-//import (
-//	"bytes"
-//	"context"
-//	"crypto/md5"
-//	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-//	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-//	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-//	"github.com/stretchr/testify/require"
-//	"io/ioutil"
-//	"time"
-//)
-//
-//func (s *azblobTestSuite) TestPutGetPages() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := createNewPageBlob(_require, blobName, containerClient)
-//
-//	contentSize := 1024
-//	offset, count := int64(0), int64(contentSize)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
-//	reader, _ := generateData(1024)
-//	putResp, err := pbClient.UploadPages(context.Background(), reader, &uploadPagesOptions)
-//	_require.Nil(err)
-//	// _require.Equal(putResp.RawResponse.StatusCode, 201)
-//	_require.NotNil(putResp.LastModified)
-//	_require.Equal((*putResp.LastModified).IsZero(), false)
-//	_require.NotNil(putResp.ETag)
-//	_require.Nil(putResp.ContentMD5)
-//	_require.Equal(*putResp.BlobSequenceNumber, int64(0))
-//	_require.NotNil(*putResp.RequestID)
-//	_require.NotNil(*putResp.Version)
-//	_require.NotNil(putResp.Date)
-//	_require.Equal((*putResp.Date).IsZero(), false)
-//
-//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: &HttpRange{Offset: 0, Count: 1023}})
-//
-//	for pager.More() {
-//		pageListResp, err := pager.NextPage(ctx)
-//		_require.Nil(err)
-//		_require.NotNil(pageListResp.LastModified)
-//		_require.Equal((*pageListResp.LastModified).IsZero(), false)
-//		_require.NotNil(pageListResp.ETag)
-//		_require.Equal(*pageListResp.BlobContentLength, int64(512*10))
-//		_require.NotNil(*pageListResp.RequestID)
-//		_require.NotNil(*pageListResp.Version)
-//		_require.NotNil(pageListResp.Date)
-//		_require.Equal((*pageListResp.Date).IsZero(), false)
-//		_require.NotNil(pageListResp.PageList)
-//		pageRangeResp := pageListResp.PageList.PageRange
-//		_require.Len(pageRangeResp, 1)
-//		rawStart, rawEnd := (pageRangeResp)[0].Raw()
-//		_require.Equal(rawStart, offset)
-//		_require.Equal(rawEnd, count-1)
-//		if err != nil {
-//			break
-//		}
-//	}
-//}
-//
-////nolint
+func (s *azblobTestSuite) TestPutGetPages() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := createNewPageBlob(_require, blobName, containerClient)
+
+	offset, count := int64(0), int64(1024)
+	reader, _ := generateData(1024)
+	putResp, err := pbClient.UploadPages(ctx, reader, &pageblob.UploadPagesOptions{
+		Offset: &offset,
+		Count:  &count,
+	})
+	_require.Nil(err)
+	_require.NotNil(putResp.LastModified)
+	_require.Equal((*putResp.LastModified).IsZero(), false)
+	_require.NotNil(putResp.ETag)
+	_require.Nil(putResp.ContentMD5)
+	_require.Equal(*putResp.BlobSequenceNumber, int64(0))
+	_require.NotNil(*putResp.RequestID)
+	_require.NotNil(*putResp.Version)
+	_require.NotNil(putResp.Date)
+	_require.Equal((*putResp.Date).IsZero(), false)
+
+	pager := pbClient.NewGetPageRangesPager(&pageblob.GetPageRangesOptions{
+		Offset: to.Ptr(int64(0)),
+		Count:  to.Ptr(int64(1023)),
+	})
+
+	for pager.More() {
+		pageListResp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		_require.NotNil(pageListResp.LastModified)
+		_require.Equal((*pageListResp.LastModified).IsZero(), false)
+		_require.NotNil(pageListResp.ETag)
+		_require.Equal(*pageListResp.BlobContentLength, int64(512*10))
+		_require.NotNil(*pageListResp.RequestID)
+		_require.NotNil(*pageListResp.Version)
+		_require.NotNil(pageListResp.Date)
+		_require.Equal((*pageListResp.Date).IsZero(), false)
+		_require.NotNil(pageListResp.PageList)
+		pageRangeResp := pageListResp.PageList.PageRange
+		_require.Len(pageRangeResp, 1)
+		rawStart, rawEnd := (pageRangeResp)[0].Raw()
+		_require.Equal(rawStart, offset)
+		_require.Equal(rawEnd, count-1)
+		if err != nil {
+			break
+		}
+	}
+}
+
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -97,13 +93,14 @@ import (
 //
 //	contentSize := 4 * 1024 * 1024 // 4MB
 //	r, sourceData := getRandomDataAndReader(contentSize)
-//	ctx := context.Background() // Use default Background context
 //	srcBlob := createNewPageBlobWithSize(_require, "srcblob", containerClient, int64(contentSize))
 //	destBlob := createNewPageBlobWithSize(_require, "dstblob", containerClient, int64(contentSize))
 //
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
-//	uploadSrcResp1, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
+//	uploadSrcResp1, err := srcBlob.UploadPages(ctx, NopCloser(r), &pageblob.UploadPagesOptions{
+//		Offset: to.Ptr(offset),
+//		Count: to.Ptr(count),
+//	}
 //	_require.Nil(err)
 //	_require.NotNil(uploadSrcResp1.LastModified)
 //	_require.Equal((*uploadSrcResp1.LastModified).IsZero(), false)
@@ -148,7 +145,7 @@ import (
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //}
@@ -170,14 +167,14 @@ import (
 //	r, sourceData := getRandomDataAndReader(contentSize)
 //	md5Value := md5.Sum(sourceData)
 //	contentMD5 := md5Value[:]
-//	ctx := context.Background() // Use default Background context
+//	ctx := ctx // Use default Background context
 //	srcBlob := createNewPageBlobWithSize(_require, "srcblob", containerClient, int64(contentSize))
 //	destBlob := createNewPageBlobWithSize(_require, "dstblob", containerClient, int64(contentSize))
 //
 //	// Prepare source pbClient for copy.
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
-//	_, err = srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+//	_, err = srcBlob.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
 //	_require.Nil(err)
 //	// _require.Equal(uploadSrcResp1.RawResponse.StatusCode, 201)
 //
@@ -186,7 +183,7 @@ import (
 //	_require.Nil(err)
 //	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
 //
-//	srcBlobParts.SAS, err = BlobSASSignatureValues{
+//	srcBlobParts.SAS, err = azblob.BlobSASSignatureValues{
 //		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
 //		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
 //		ContainerName: srcBlobParts.ContainerName,
@@ -200,7 +197,7 @@ import (
 //	srcBlobURLWithSAS := srcBlobParts.URL()
 //
 //	// Upload page from URL with MD5.
-//	uploadPagesFromURLOptions := PageBlobUploadPagesFromURLOptions{
+//	uploadPagesFromURLOptions := pageblob.UploadPagesFromURLOptions{
 //		SourceContentMD5: contentMD5,
 //	}
 //	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
@@ -219,231 +216,231 @@ import (
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
 //	_require.Nil(err)
-//	destData, err := ioutil.ReadAll(downloadResp.Body(&RetryReaderOptions{}))
+//	destData, err := ioutil.ReadAll(downloadResp.BodyReader(&blob.RetryReaderOptions{}))
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //
 //	// Upload page from URL with bad MD5
 //	_, badMD5 := getRandomDataAndReader(16)
 //	badContentMD5 := badMD5[:]
-//	uploadPagesFromURLOptions = PageBlobUploadPagesFromURLOptions{
+//	uploadPagesFromURLOptions = pageblob.UploadPagesFromURLOptions{
 //		SourceContentMD5: badContentMD5,
 //	}
 //	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeMD5Mismatch)
+//	validateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 //}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := createNewPageBlob(_require, blobName, containerClient)
-//
-//	contentSize := 2 * 1024
-//	r := getReaderToGeneratedBytes(contentSize)
-//	_, err = pbClient.UploadPages(context.Background(), r, &PageBlobUploadPagesOptions{PageRange: NewHttpRange(int64(0), int64(contentSize))})
-//	_require.Nil(err)
-//
-//	snapshotResp, err := pbClient.CreateSnapshot(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	r1 := getReaderToGeneratedBytes(contentSize)
-//	_, err = pbClient.UploadPages(context.Background(), r1, &PageBlobUploadPagesOptions{PageRange: NewHttpRange(int64(contentSize), int64(contentSize))})
-//	_require.Nil(err)
-//
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{PageRange: &HttpRange{Offset: 0, Count: int64(4096)}, PrevSnapshot: snapshotResp.Snapshot})
-//
-//	for pager.More() {
-//		pageListResp, err := pager.NextPage(ctx)
-//		_require.Nil(err)
-//
-//		pageRangeResp := pageListResp.PageList.PageRange
-//		_require.NotNil(pageRangeResp)
-//		_require.Len(pageRangeResp, 1)
-//		rawStart, rawEnd := (pageRangeResp)[0].Raw()
-//		_require.Equal(rawStart, int64(2048))
-//		_require.Equal(rawEnd, int64(4095))
-//		if err != nil {
-//			break
-//		}
-//	}
-//
-//	_, err = pbClient.ClearPages(context.Background(), HttpRange{2048, 2048}, nil)
-//	_require.Nil(err)
-//	// _require.Equal(clearResp.RawResponse.StatusCode, 201)
-//
-//	pager = pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{PageRange: &HttpRange{Offset: 0, Count: int64(4096)}, PrevSnapshot: snapshotResp.Snapshot})
-//
-//	for pager.More() {
-//		pageListResp, err := pager.NextPage(ctx)
-//		_require.Nil(err)
-//		pageRangeResp := pageListResp.PageList.PageRange
-//		_require.Len(pageRangeResp, 0)
-//		if err != nil {
-//			break
-//		}
-//	}
-//}
-//
-////nolint
-//func waitForIncrementalCopy(_require *require.Assertions, copyBlobClient *PageBlobClient, blobCopyResponse *PageBlobCopyIncrementalResponse) *string {
-//	status := *blobCopyResponse.CopyStatus
-//	var getPropertiesAndMetadataResult BlobGetPropertiesResponse
-//	// Wait for the copy to finish
-//	start := time.Now()
-//	for status != CopyStatusTypeSuccess {
-//		getPropertiesAndMetadataResult, _ = copyBlobClient.GetProperties(ctx, nil)
-//		status = *getPropertiesAndMetadataResult.CopyStatus
-//		currentTime := time.Now()
-//		if currentTime.Sub(start) >= time.Minute {
-//			_require.Fail("")
-//		}
-//	}
-//	return getPropertiesAndMetadataResult.DestinationSnapshot
-//}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	accessType := PublicAccessTypeBlob
-//
-//	_, err = containerClient.SetAccessPolicy(context.Background(), &ContainerSetAccessPolicyOptions{Access: &accessType})
-//	_require.Nil(err)
-//
-//	srcBlob := createNewPageBlob(_require, "src"+generateBlobName(testName), containerClient)
-//
-//	contentSize := 1024
-//	r := getReaderToGeneratedBytes(contentSize)
-//	offset, count := int64(0), int64(contentSize)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
-//	_, err = srcBlob.UploadPages(context.Background(), r, &uploadPagesOptions)
-//	_require.Nil(err)
-//
-//	snapshotResp, err := srcBlob.CreateSnapshot(context.Background(), nil)
-//	_require.Nil(err)
-//
-//	dstBlob := containerClient.NewPageBlobClient("dst" + generateBlobName(testName))
-//
-//	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshotResp.Snapshot, nil)
-//	_require.Nil(err)
-//	// _require.Equal(resp.RawResponse.StatusCode, 202)
-//	_require.NotNil(resp.LastModified)
-//	_require.Equal((*resp.LastModified).IsZero(), false)
-//	_require.NotNil(resp.ETag)
-//	_require.NotEqual(*resp.RequestID, "")
-//	_require.NotEqual(*resp.Version, "")
-//	_require.NotNil(resp.Date)
-//	_require.Equal((*resp.Date).IsZero(), false)
-//	_require.NotEqual(*resp.CopyID, "")
-//	_require.Equal(*resp.CopyStatus, CopyStatusTypePending)
-//
-//	waitForIncrementalCopy(_require, dstBlob, &resp)
-//}
-//
-//func (s *azblobTestSuite) TestResizePageBlob() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	var recording *testframework.Recording
-//	if _context != nil {
-//		recording = _context.recording
-//	}
-//	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := createNewPageBlob(_require, blobName, containerClient)
-//
-//	_, err = pbClient.Resize(context.Background(), 2048, nil)
-//	_require.Nil(err)
-//	// _require.Equal(resp.RawResponse.StatusCode,200)
-//
-//	_, err = pbClient.Resize(context.Background(), 8192, nil)
-//	_require.Nil(err)
-//	// _require.Equal(resp.RawResponse.StatusCode,200)
-//
-//	resp2, err := pbClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.Equal(*resp2.ContentLength, int64(8192))
-//}
-//
-//func (s *azblobTestSuite) TestPageSequenceNumbers() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := createNewPageBlob(_require, blobName, containerClient)
-//
-//	sequenceNumber := int64(0)
-//	actionType := SequenceNumberActionTypeIncrement
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		ActionType:         &actionType,
-//	}
-//	_, err = pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
-//	_require.Nil(err)
-//	// _require.Equal(resp.RawResponse.StatusCode,200)
-//
-//	sequenceNumber = int64(7)
-//	actionType = SequenceNumberActionTypeMax
-//	updateSequenceNumberPageBlob = PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		ActionType:         &actionType,
-//	}
-//
-//	_, err = pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
-//	_require.Nil(err)
-//	// _require.Equal(resp.RawResponse.StatusCode,200)
-//
-//	sequenceNumber = int64(11)
-//	actionType = SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob = PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		ActionType:         &actionType,
-//	}
-//
-//	_, err = pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
-//	_require.Nil(err)
-//}
-//
-////nolint
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := createNewPageBlob(_require, blobName, containerClient)
+
+	contentSize := 2 * 1024
+	r := getReaderToGeneratedBytes(contentSize)
+	_, err = pbClient.UploadPages(ctx, r, &pageblob.UploadPagesOptions{
+		Offset: to.Ptr(int64(0)),
+		Count:  to.Ptr(int64(contentSize)),
+	})
+	_require.Nil(err)
+
+	snapshotResp, err := pbClient.CreateSnapshot(ctx, nil)
+	_require.Nil(err)
+
+	r1 := getReaderToGeneratedBytes(contentSize)
+	_, err = pbClient.UploadPages(ctx, r1, &pageblob.UploadPagesOptions{Offset: to.Ptr(int64(contentSize)), Count: to.Ptr(int64(contentSize))})
+	_require.Nil(err)
+
+	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
+		Offset:       to.Ptr(int64(0)),
+		Count:        to.Ptr(int64(4096)),
+		PrevSnapshot: snapshotResp.Snapshot,
+	})
+
+	for pager.More() {
+		pageListResp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+
+		pageRangeResp := pageListResp.PageList.PageRange
+		_require.NotNil(pageRangeResp)
+		_require.Len(pageRangeResp, 1)
+		rawStart, rawEnd := (pageRangeResp)[0].Raw()
+		_require.Equal(rawStart, int64(2048))
+		_require.Equal(rawEnd, int64(4095))
+		if err != nil {
+			break
+		}
+	}
+
+	_, err = pbClient.ClearPages(ctx, int64(2048), int64(2048), nil)
+	_require.Nil(err)
+
+	pager = pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
+		Offset:       to.Ptr(int64(0)),
+		Count:        to.Ptr(int64(4096)),
+		PrevSnapshot: snapshotResp.Snapshot,
+	})
+
+	for pager.More() {
+		pageListResp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		pageRangeResp := pageListResp.PageList.PageRange
+		_require.Len(pageRangeResp, 0)
+		if err != nil {
+			break
+		}
+	}
+}
+
+//nolint
+func waitForIncrementalCopy(_require *require.Assertions, copyBlobClient *pageblob.Client, blobCopyResponse *pageblob.CopyIncrementalResponse) *string {
+	status := *blobCopyResponse.CopyStatus
+	var getPropertiesAndMetadataResult blob.GetPropertiesResponse
+	// Wait for the copy to finish
+	start := time.Now()
+	for status != blob.CopyStatusTypeSuccess {
+		getPropertiesAndMetadataResult, _ = copyBlobClient.GetProperties(ctx, nil)
+		status = *getPropertiesAndMetadataResult.CopyStatus
+		currentTime := time.Now()
+		if currentTime.Sub(start) >= time.Minute {
+			_require.Fail("")
+		}
+	}
+	return getPropertiesAndMetadataResult.DestinationSnapshot
+}
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	_, err = containerClient.SetAccessPolicy(ctx, &container.SetAccessPolicyOptions{Access: to.Ptr(container.PublicAccessTypeBlob)})
+	_require.Nil(err)
+
+	srcBlob := createNewPageBlob(_require, "src"+generateBlobName(testName), containerClient)
+
+	contentSize := 1024
+	r := getReaderToGeneratedBytes(contentSize)
+	offset, count := int64(0), int64(contentSize)
+	_, err = srcBlob.UploadPages(ctx, r, &pageblob.UploadPagesOptions{Offset: to.Ptr(offset), Count: to.Ptr(count)})
+	_require.Nil(err)
+
+	snapshotResp, err := srcBlob.CreateSnapshot(ctx, nil)
+	_require.Nil(err)
+
+	dstBlob := containerClient.NewPageBlobClient("dst" + generateBlobName(testName))
+
+	resp, err := dstBlob.StartCopyIncremental(ctx, srcBlob.URL(), *snapshotResp.Snapshot, nil)
+	_require.Nil(err)
+	_require.NotNil(resp.LastModified)
+	_require.Equal((*resp.LastModified).IsZero(), false)
+	_require.NotNil(resp.ETag)
+	_require.NotEqual(*resp.RequestID, "")
+	_require.NotEqual(*resp.Version, "")
+	_require.NotNil(resp.Date)
+	_require.Equal((*resp.Date).IsZero(), false)
+	_require.NotEqual(*resp.CopyID, "")
+	_require.Equal(*resp.CopyStatus, blob.CopyStatusTypePending)
+
+	waitForIncrementalCopy(_require, dstBlob, &resp)
+}
+
+func (s *azblobTestSuite) TestResizePageBlob() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	var recording *testframework.Recording
+	if _context != nil {
+		recording = _context.recording
+	}
+	svcClient, err := getServiceClient(recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := createNewPageBlob(_require, blobName, containerClient)
+
+	_, err = pbClient.Resize(ctx, 2048, nil)
+	_require.Nil(err)
+
+	_, err = pbClient.Resize(ctx, 8192, nil)
+	_require.Nil(err)
+
+	resp2, err := pbClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.Equal(*resp2.ContentLength, int64(8192))
+}
+
+func (s *azblobTestSuite) TestPageSequenceNumbers() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := createNewPageBlob(_require, blobName, containerClient)
+
+	sequenceNumber := int64(0)
+	actionType := pageblob.SequenceNumberActionTypeIncrement
+	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+		SequenceNumber: &sequenceNumber,
+		ActionType:     &actionType,
+	}
+	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_require.Nil(err)
+
+	sequenceNumber = int64(7)
+	actionType = pageblob.SequenceNumberActionTypeMax
+	updateSequenceNumberPageBlob = pageblob.UpdateSequenceNumberOptions{
+		SequenceNumber: &sequenceNumber,
+		ActionType:     &actionType,
+	}
+
+	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_require.Nil(err)
+
+	updateSequenceNumberPageBlob = pageblob.UpdateSequenceNumberOptions{
+		SequenceNumber: to.Ptr(int64(11)),
+		ActionType:     to.Ptr(pageblob.SequenceNumberActionTypeUpdate),
+	}
+
+	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
+	_require.Nil(err)
+}
+
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -467,8 +464,9 @@ import (
 //	_ = body
 //	contentMD5 := md5Value[:]
 //
-//	putResp, err := pbClient.UploadPages(context.Background(), internal.NopCloser(readerToBody), &PageBlobUploadPagesOptions{
-//		PageRange:               NewHttpRange(offset, count),
+//	putResp, err := pbClient.UploadPages(ctx, NopCloser(readerToBody), &pageblob.UploadPagesOptions{
+//		Offset:                  to.Ptr(offset),
+//		Count:                   to.Ptr(count),
 //		TransactionalContentMD5: contentMD5,
 //	})
 //	_require.Nil(err)
@@ -485,306 +483,307 @@ import (
 //	_require.Equal((*putResp.Date).IsZero(), false)
 //
 //	// put page with bad MD5
-//	readerToBody, body = getRandomDataAndReader(1024)
+//	readerToBody, _ = getRandomDataAndReader(1024)
 //	_, badMD5 := getRandomDataAndReader(16)
 //	basContentMD5 := badMD5[:]
-//	_ = body
-//	putResp, err = pbClient.UploadPages(context.Background(), internal.NopCloser(readerToBody), &PageBlobUploadPagesOptions{
-//		PageRange:               NewHttpRange(offset, count),
+//	putResp, err = pbClient.UploadPages(ctx, NopCloser(readerToBody), &pageblob.UploadPagesOptions{
+//		Offset:                  to.Ptr(offset),
+//		Count:                   to.Ptr(count),
 //		TransactionalContentMD5: basContentMD5,
 //	})
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeMD5Mismatch)
+//	validateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
 //}
-//
-//func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := getPageBlobClient(blobName, containerClient)
-//
-//	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//	}
-//	_, err = pbClient.Create(ctx, 1, &createPageBlobOptions)
-//	_require.NotNil(err)
-//
-//	validateBlobErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
-//}
-//
-//func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := getPageBlobClient(blobName, containerClient)
-//
-//	sequenceNumber := int64(-1)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
-//	_require.NotNil(err)
-//}
-//
-//func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := getPageBlobClient(blobName, containerClient)
-//
-//	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		Metadata:           basicMetadata,
-//	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
-//	_require.Nil(err)
-//
-//	resp, err := pbClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp.Metadata)
-//	_require.EqualValues(resp.Metadata, basicMetadata)
-//}
-//
-//func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := getPageBlobClient(blobName, containerClient)
-//
-//	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		Metadata:           map[string]string{},
-//	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
-//	_require.Nil(err)
-//
-//	resp, err := pbClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.Nil(resp.Metadata)
-//}
-//
-//func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := getPageBlobClient(blobName, containerClient)
-//
-//	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		Metadata:           map[string]string{"In valid1": "bar"},
-//	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
-//	_require.NotNil(err)
-//	_require.Contains(err.Error(), invalidHeaderErrorSubstring)
-//
-//}
-//
-//func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := getPageBlobClient(blobName, containerClient)
-//
-//	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		HTTPHeaders:        &basicHeaders,
-//	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
-//	_require.Nil(err)
-//
-//	resp, err := pbClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	h := resp.ParseHTTPHeaders()
-//	_require.EqualValues(h, basicHeaders)
-//}
-//
-//func validatePageBlobPut(_require *require.Assertions, pbClient *PageBlobClient) {
-//	resp, err := pbClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.NotNil(resp.Metadata)
-//	_require.EqualValues(resp.Metadata, basicMetadata)
-//	_require.EqualValues(resp.ParseHTTPHeaders(), basicHeaders)
-//}
-//
-//func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := getPageBlobClient(blobName, containerClient)
-//
-//	pageBlobCreateResp, err := pbClient.Create(ctx, internal.PageBlobPageBytes, nil)
-//	_require.Nil(err)
-//
-//	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, -10)
-//
-//	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		Metadata:           basicMetadata,
-//		HTTPHeaders:        &basicHeaders,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
-//				IfModifiedSince: &currentTime,
-//			},
-//		},
-//	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
-//	_require.Nil(err)
-//
-//	validatePageBlobPut(_require, pbClient)
-//}
-//
-//func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := getPageBlobClient(blobName, containerClient)
-//
-//	pageBlobCreateResp, err := pbClient.Create(ctx, internal.PageBlobPageBytes, nil)
-//	_require.Nil(err)
-//
-//	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, 10)
-//
-//	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		Metadata:           basicMetadata,
-//		HTTPHeaders:        &basicHeaders,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
-//				IfModifiedSince: &currentTime,
-//			},
-//		},
-//	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
-//	_require.NotNil(err)
-//
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
-//}
-//
-//func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		_require.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_require, containerName, svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	pbClient := getPageBlobClient(blobName, containerClient)
-//
-//	pageBlobCreateResp, err := pbClient.Create(ctx, internal.PageBlobPageBytes, nil)
-//	_require.Nil(err)
-//
-//	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, 10)
-//
-//	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
-//		Metadata:           basicMetadata,
-//		HTTPHeaders:        &basicHeaders,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
-//				IfUnmodifiedSince: &currentTime,
-//			},
-//		},
-//	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
-//	_require.Nil(err)
-//
-//	validatePageBlobPut(_require, pbClient)
-//}
+
+func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := getPageBlobClient(blobName, containerClient)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := pageblob.CreateOptions{
+		SequenceNumber: &sequenceNumber,
+	}
+	_, err = pbClient.Create(ctx, 1, &createPageBlobOptions)
+	_require.NotNil(err)
+
+	validateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
+}
+
+func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := getPageBlobClient(blobName, containerClient)
+
+	sequenceNumber := int64(-1)
+	createPageBlobOptions := pageblob.CreateOptions{
+		SequenceNumber: &sequenceNumber,
+	}
+	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
+	_require.NotNil(err)
+}
+
+func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := getPageBlobClient(blobName, containerClient)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := pageblob.CreateOptions{
+		SequenceNumber: &sequenceNumber,
+		Metadata:       basicMetadata,
+	}
+	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
+	_require.Nil(err)
+
+	resp, err := pbClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.NotNil(resp.Metadata)
+	_require.EqualValues(resp.Metadata, basicMetadata)
+}
+
+func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := getPageBlobClient(blobName, containerClient)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := pageblob.CreateOptions{
+		SequenceNumber: &sequenceNumber,
+		Metadata:       map[string]string{},
+	}
+	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
+	_require.Nil(err)
+
+	resp, err := pbClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.Nil(resp.Metadata)
+}
+
+func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := getPageBlobClient(blobName, containerClient)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := pageblob.CreateOptions{
+		SequenceNumber: &sequenceNumber,
+		Metadata:       map[string]string{"In valid1": "bar"},
+	}
+	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
+	_require.NotNil(err)
+	_require.Contains(err.Error(), invalidHeaderErrorSubstring)
+
+}
+
+func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := getPageBlobClient(blobName, containerClient)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := pageblob.CreateOptions{
+		SequenceNumber: &sequenceNumber,
+		HTTPHeaders:    &basicHeaders,
+	}
+	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
+	_require.Nil(err)
+
+	resp, err := pbClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	h := blob.ParseHTTPHeaders(resp)
+	_require.EqualValues(h, basicHeaders)
+}
+
+func validatePageBlobPut(_require *require.Assertions, pbClient *pageblob.Client) {
+	resp, err := pbClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.NotNil(resp.Metadata)
+	_require.EqualValues(resp.Metadata, basicMetadata)
+	_require.EqualValues(blob.ParseHTTPHeaders(resp), basicHeaders)
+}
+
+func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := getPageBlobClient(blobName, containerClient)
+
+	pageBlobCreateResp, err := pbClient.Create(ctx, pageblob.PageBytes, nil)
+	_require.Nil(err)
+
+	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, -10)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := pageblob.CreateOptions{
+		SequenceNumber: &sequenceNumber,
+		Metadata:       basicMetadata,
+		HTTPHeaders:    &basicHeaders,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
+	_require.Nil(err)
+
+	validatePageBlobPut(_require, pbClient)
+}
+
+func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := getPageBlobClient(blobName, containerClient)
+
+	pageBlobCreateResp, err := pbClient.Create(ctx, pageblob.PageBytes, nil)
+	_require.Nil(err)
+
+	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, 10)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := pageblob.CreateOptions{
+		SequenceNumber: &sequenceNumber,
+		Metadata:       basicMetadata,
+		HTTPHeaders:    &basicHeaders,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfModifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
+	_require.NotNil(err)
+
+	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_require.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_require, containerName, svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	pbClient := getPageBlobClient(blobName, containerClient)
+
+	pageBlobCreateResp, err := pbClient.Create(ctx, pageblob.PageBytes, nil)
+	_require.Nil(err)
+
+	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, 10)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := pageblob.CreateOptions{
+		SequenceNumber: &sequenceNumber,
+		Metadata:       basicMetadata,
+		HTTPHeaders:    &basicHeaders,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfUnmodifiedSince: &currentTime,
+			},
+		},
+	}
+	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
+	_require.Nil(err)
+
+	validatePageBlobPut(_require, pbClient)
+}
+
 //
 //func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 //	_require := require.New(s.T())
@@ -802,26 +801,26 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	pageBlobCreateResp, err := pbClient.Create(ctx, internal.PageBlobPageBytes, nil)
+//	pageBlobCreateResp, err := pbClient.Create(ctx, pageblob.PageBytes, nil)
 //	_require.Nil(err)
 //
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResp.Date, -10)
 //
 //	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	createPageBlobOptions := pageblob.CreateOptions{
+//		SequenceNumber: &sequenceNumber,
 //		Metadata:           basicMetadata,
 //		HTTPHeaders:        &basicHeaders,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
+//	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
@@ -844,17 +843,17 @@ import (
 //	_require.Nil(err)
 //
 //	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	createPageBlobOptions := pageblob.CreateOptions{
+//		SequenceNumber: &sequenceNumber,
 //		Metadata:           basicMetadata,
 //		HTTPHeaders:        &basicHeaders,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: resp.ETag,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
+//	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
 //	_require.Nil(err)
 //
 //	validatePageBlobPut(_require, pbClient)
@@ -878,20 +877,20 @@ import (
 //
 //	sequenceNumber := int64(0)
 //	eTag := "garbage"
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	createPageBlobOptions := pageblob.CreateOptions{
+//		SequenceNumber: &sequenceNumber,
 //		Metadata:           basicMetadata,
 //		HTTPHeaders:        &basicHeaders,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: &eTag,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
+//	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
@@ -912,17 +911,17 @@ import (
 //
 //	sequenceNumber := int64(0)
 //	eTag := "garbage"
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	createPageBlobOptions := pageblob.CreateOptions{
+//		SequenceNumber: &sequenceNumber,
 //		Metadata:           basicMetadata,
 //		HTTPHeaders:        &basicHeaders,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: &eTag,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
+//	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
 //	_require.Nil(err)
 //
 //	validatePageBlobPut(_require, pbClient)
@@ -947,20 +946,20 @@ import (
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
 //	sequenceNumber := int64(0)
-//	createPageBlobOptions := PageBlobCreateOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	createPageBlobOptions := pageblob.CreateOptions{
+//		SequenceNumber: &sequenceNumber,
 //		Metadata:           basicMetadata,
 //		HTTPHeaders:        &basicHeaders,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: resp.ETag,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Create(ctx, internal.PageBlobPageBytes, &createPageBlobOptions)
+//	_, err = pbClient.Create(ctx, pageblob.PageBytes, &createPageBlobOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 ////nolint
@@ -982,7 +981,7 @@ import (
 //	contentSize := 1024
 //	r := getReaderToGeneratedBytes(contentSize)
 //	offset, count := int64(0), int64(contentSize/2)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
+//	uploadPagesOptions := pageblob.UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 //	_require.NotNil(err)
 //}
@@ -1016,8 +1015,8 @@ import (
 //
 //	r := bytes.NewReader([]byte{})
 //	offset, count := int64(0), int64(0)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
-//	_, err = pbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+//	_, err = pbClient.UploadPages(ctx, NopCloser(r), &uploadPagesOptions)
 //	_require.NotNil(err)
 //}
 //
@@ -1037,13 +1036,13 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{PageRange: &HttpRange{offset, count}}
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeBlobNotFound)
+//	validateBlobErrorCode(_require, err, bloberror.BlobNotFound)
 //}
 //
 //func validateUploadPages(_require *require.Assertions, pbClient *PageBlobClient) {
@@ -1056,7 +1055,7 @@ import (
 //		pageListResp, err := pager.NextPage(ctx)
 //		_require.Nil(err)
 //
-//		start, end := int64(0), int64(internal.PageBlobPageBytes-1)
+//		start, end := int64(0), int64(pageblob.PageBytes-1)
 //		rawStart, rawEnd := *(pageListResp.PageList.PageRange[0].Start), *(pageListResp.PageList.PageRange[0].End)
 //		_require.Equal(rawStart, start)
 //		_require.Equal(rawEnd, end)
@@ -1082,19 +1081,19 @@ import (
 //
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	_, err = pbClient.UploadPages(ctx, r, &PageBlobUploadPagesOptions{
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	_, err = pbClient.UploadPages(ctx, r, &pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
 //		},
@@ -1119,26 +1118,26 @@ import (
 //
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	_, err = pbClient.UploadPages(ctx, r, &PageBlobUploadPagesOptions{
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	_, err = pbClient.UploadPages(ctx, r, &pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
 //		},
 //	})
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
@@ -1156,19 +1155,19 @@ import (
 //
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	_, err = pbClient.UploadPages(ctx, r, &PageBlobUploadPagesOptions{
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	_, err = pbClient.UploadPages(ctx, r, &pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
 //		},
@@ -1193,26 +1192,26 @@ import (
 //
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	_, err = pbClient.UploadPages(ctx, r, &PageBlobUploadPagesOptions{
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	_, err = pbClient.UploadPages(ctx, r, &pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
 //		},
 //	})
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
@@ -1230,19 +1229,19 @@ import (
 //
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	_, err = pbClient.UploadPages(ctx, r, &PageBlobUploadPagesOptions{
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	_, err = pbClient.UploadPages(ctx, r, &pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: resp.ETag,
 //			},
 //		},
@@ -1267,18 +1266,18 @@ import (
 //
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	eTag := "garbage"
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: &eTag,
 //			},
 //		},
@@ -1286,7 +1285,7 @@ import (
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
@@ -1304,18 +1303,18 @@ import (
 //
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	eTag := "garbage"
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: &eTag,
 //			},
 //		},
@@ -1341,19 +1340,19 @@ import (
 //
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: resp.ETag,
 //			},
 //		},
@@ -1361,7 +1360,7 @@ import (
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue() {
@@ -1380,10 +1379,10 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := createNewPageBlob(_require, blobName, containerClient)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	ifSequenceNumberLessThan := int64(10)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 //			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
@@ -1413,17 +1412,17 @@ import (
 //
 //	sequenceNumber := int64(10)
 //	actionType := SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.Nil(err)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	ifSequenceNumberLessThan := int64(1)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 //			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
@@ -1432,7 +1431,7 @@ import (
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.SequenceNumberConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
@@ -1451,10 +1450,10 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := createNewPageBlob(_require, blobName, containerClient)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	ifSequenceNumberLessThanOrEqualTo := int64(-1)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 //			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
@@ -1464,7 +1463,7 @@ import (
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeInvalidInput)
+//	validateBlobErrorCode(_require, err, bloberror.InvalidInput)
 //}
 //
 //func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
@@ -1485,17 +1484,17 @@ import (
 //
 //	sequenceNumber := int64(1)
 //	actionType := SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.Nil(err)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	ifSequenceNumberLessThanOrEqualTo := int64(1)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 //			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
@@ -1525,17 +1524,17 @@ import (
 //
 //	sequenceNumber := int64(10)
 //	actionType := SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.Nil(err)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	ifSequenceNumberLessThanOrEqualTo := int64(1)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 //			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
@@ -1544,7 +1543,7 @@ import (
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.SequenceNumberConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne() {
@@ -1563,10 +1562,10 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := createNewPageBlob(_require, blobName, containerClient)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	ifSequenceNumberLessThanOrEqualTo := int64(-1)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 //			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
@@ -1594,17 +1593,17 @@ import (
 //
 //	sequenceNumber := int64(1)
 //	actionType := SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.Nil(err)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	ifSequenceNumberEqualTo := int64(1)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 //			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
@@ -1632,10 +1631,10 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := createNewPageBlob(_require, blobName, containerClient)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
 //	ifSequenceNumberEqualTo := int64(1)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 //			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
@@ -1644,7 +1643,7 @@ import (
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.SequenceNumberConditionNotMet)
 //}
 //
 ////func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne() {
@@ -1666,7 +1665,7 @@ import (
 ////    r, _ := generateData(PageBlobPageBytes)
 ////    offset, count := int64(0), int64(PageBlobPageBytes)
 ////    ifSequenceNumberEqualTo := int64(-1)
-////    uploadPagesOptions := PageBlobUploadPagesOptions{
+////    uploadPagesOptions := pageblob.UploadPagesOptions{
 ////        PageRange: NewHttpRange(offset, count),
 ////        SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 ////            IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
@@ -1689,9 +1688,9 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := createNewPageBlob(_require, blobName, containerClient)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -1719,7 +1718,7 @@ import (
 //	containerClient, pbClient := setupClearPagesTest(_require, testName)
 //	defer deleteContainer(_require, containerClient)
 //
-//	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes + 1}, nil)
+//	_, err := pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes + 1}, nil)
 //	_require.NotNil(err)
 //}
 //
@@ -1734,9 +1733,9 @@ import (
 //
 //	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 //
-//	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &PageBlobClearPagesOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//	_, err = pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &PageBlobClearPagesOptions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
 //		}})
@@ -1755,16 +1754,16 @@ import (
 //
 //	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 //
-//	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &PageBlobClearPagesOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//	_, err = pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &PageBlobClearPagesOptions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
 //		},
 //	})
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
@@ -1778,9 +1777,9 @@ import (
 //
 //	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 //
-//	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &PageBlobClearPagesOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//	_, err = pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &PageBlobClearPagesOptions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
 //		},
@@ -1801,16 +1800,16 @@ import (
 //
 //	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 //
-//	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &PageBlobClearPagesOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//	_, err = pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &PageBlobClearPagesOptions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
 //		},
 //	})
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
@@ -1823,13 +1822,13 @@ import (
 //	_require.Nil(err)
 //
 //	clearPageOptions := PageBlobClearPagesOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: getPropertiesResp.ETag,
 //			},
 //		},
 //	}
-//	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err = pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.Nil(err)
 //
 //	validateClearPagesTest(_require, pbClient)
@@ -1843,16 +1842,16 @@ import (
 //
 //	eTag := "garbage"
 //	clearPageOptions := PageBlobClearPagesOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: &eTag,
 //			},
 //		},
 //	}
-//	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err := pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
@@ -1863,13 +1862,13 @@ import (
 //
 //	eTag := "garbage"
 //	clearPageOptions := PageBlobClearPagesOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: &eTag,
 //			},
 //		},
 //	}
-//	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err := pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.Nil(err)
 //
 //	validateClearPagesTest(_require, pbClient)
@@ -1884,16 +1883,16 @@ import (
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
 //	clearPageOptions := PageBlobClearPagesOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: resp.ETag,
 //			},
 //		},
 //	}
-//	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err := pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
@@ -1908,7 +1907,7 @@ import (
 //			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 //		},
 //	}
-//	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err := pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.Nil(err)
 //
 //	validateClearPagesTest(_require, pbClient)
@@ -1922,8 +1921,8 @@ import (
 //
 //	sequenceNumber := int64(10)
 //	actionType := SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
@@ -1935,10 +1934,10 @@ import (
 //			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 //		},
 //	}
-//	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err = pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.SequenceNumberConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
@@ -1953,10 +1952,10 @@ import (
 //			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 //		},
 //	}
-//	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err := pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeInvalidInput)
+//	validateBlobErrorCode(_require, err, bloberror.InvalidInput)
 //}
 //
 //func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
@@ -1971,7 +1970,7 @@ import (
 //			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 //		},
 //	}
-//	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err := pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.Nil(err)
 //
 //	validateClearPagesTest(_require, pbClient)
@@ -1985,8 +1984,8 @@ import (
 //
 //	sequenceNumber := int64(10)
 //	actionType := SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
@@ -1998,10 +1997,10 @@ import (
 //			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 //		},
 //	}
-//	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err = pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.SequenceNumberConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
@@ -2016,10 +2015,10 @@ import (
 //			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 //		},
 //	}
-//	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
+//	_, err := pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeInvalidInput)
+//	validateBlobErrorCode(_require, err, bloberror.InvalidInput)
 //}
 //
 //func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
@@ -2030,8 +2029,8 @@ import (
 //
 //	sequenceNumber := int64(10)
 //	actionType := SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
@@ -2043,7 +2042,7 @@ import (
 //			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 //		},
 //	}
-//	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err = pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.Nil(err)
 //
 //	validateClearPagesTest(_require, pbClient)
@@ -2057,8 +2056,8 @@ import (
 //
 //	sequenceNumber := int64(10)
 //	actionType := SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
@@ -2070,10 +2069,10 @@ import (
 //			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 //		},
 //	}
-//	_, err = pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions)
+//	_, err = pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeSequenceNumberConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.SequenceNumberConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
@@ -2088,10 +2087,10 @@ import (
 //			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 //		},
 //	}
-//	_, err := pbClient.ClearPages(ctx, HttpRange{0, internal.PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
+//	_, err := pbClient.ClearPages(ctx, HttpRange{0, pageblob.PageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeInvalidInput)
+//	validateBlobErrorCode(_require, err, bloberror.InvalidInput)
 //}
 //
 //func setupGetPageRangesTest(_require *require.Assertions, testName string) (containerClient *ContainerClient, pbClient *PageBlobClient) {
@@ -2107,9 +2106,9 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient = createNewPageBlob(_require, blobName, containerClient)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -2121,7 +2120,7 @@ import (
 //	_require.Nil(err)
 //	_require.NotNil(resp.PageRange)
 //	_require.Len(resp.PageRange, 1)
-//	start, end := int64(0), int64(internal.PageBlobPageBytes-1)
+//	start, end := int64(0), int64(pageblob.PageBytes-1)
 //	rawStart, rawEnd := (resp.PageRange)[0].Raw()
 //	_require.Equal(rawStart, start)
 //	_require.Equal(rawEnd, end)
@@ -2196,9 +2195,9 @@ import (
 //	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
 //	defer deleteContainer(_require, containerClient)
 //
-//	r, _ := generateData(internal.PageBlobPageBytes)
-//	offset, count := int64(2*internal.PageBlobPageBytes), int64(internal.PageBlobPageBytes)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	r, _ := generateData(pageblob.PageBytes)
+//	offset, count := int64(2*pageblob.PageBytes), int64(pageblob.PageBytes)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: NewHttpRange(offset, count),
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -2212,12 +2211,12 @@ import (
 //		_require.NotNil(pageListResp)
 //		_require.Len(pageListResp, 2)
 //
-//		start, end := int64(0), int64(internal.PageBlobPageBytes-1)
+//		start, end := int64(0), int64(pageblob.PageBytes-1)
 //		rawStart, rawEnd := pageListResp[0].Raw()
 //		_require.Equal(rawStart, start)
 //		_require.Equal(rawEnd, end)
 //
-//		start, end = int64(internal.PageBlobPageBytes*2), int64((internal.PageBlobPageBytes*3)-1)
+//		start, end = int64(pageblob.PageBytes*2), int64((pageblob.PageBytes*3)-1)
 //		rawStart, rawEnd = pageListResp[1].Raw()
 //		_require.Equal(rawStart, start)
 //		_require.Equal(rawEnd, end)
@@ -2281,8 +2280,8 @@ import (
 //
 //	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 //
-//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), AccessConditions: &blob.AccessConditions{
+//		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //			IfModifiedSince: &currentTime,
 //		},
 //	}})
@@ -2308,15 +2307,15 @@ import (
 //
 //	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 //
-//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), AccessConditions: &blob.AccessConditions{
+//		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //			IfModifiedSince: &currentTime,
 //		},
 //	}})
 //	for pager.More() {
 //		_, err := pager.NextPage(ctx)
 //		_require.NotNil(err)
-//		validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//		validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //		if err != nil {
 //			break
 //		}
@@ -2335,8 +2334,8 @@ import (
 //
 //	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, 10)
 //
-//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), AccessConditions: &blob.AccessConditions{
+//		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //			IfUnmodifiedSince: &currentTime,
 //		},
 //	}})
@@ -2362,15 +2361,15 @@ import (
 //
 //	currentTime := getRelativeTimeFromAnchor(getPropertiesResp.Date, -10)
 //
-//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), AccessConditions: &blob.AccessConditions{
+//		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //			IfUnmodifiedSince: &currentTime,
 //		},
 //	}})
 //	for pager.More() {
 //		_, err := pager.NextPage(ctx)
 //		_require.NotNil(err)
-//		validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//		validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //		if err != nil {
 //			break
 //		}
@@ -2387,8 +2386,8 @@ import (
 //	resp, err := pbClient.GetProperties(ctx, nil)
 //	_require.Nil(err)
 //
-//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), AccessConditions: &blob.AccessConditions{
+//		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //			IfMatch: resp.ETag,
 //		},
 //	}})
@@ -2408,15 +2407,15 @@ import (
 //	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
 //	defer deleteContainer(_require, containerClient)
 //
-//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), AccessConditions: &blob.AccessConditions{
+//		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //			IfMatch: to.Ptr("garbage"),
 //		},
 //	}})
 //	for pager.More() {
 //		_, err := pager.NextPage(ctx)
 //		_require.NotNil(err)
-//		validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//		validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //		if err != nil {
 //			break
 //		}
@@ -2429,8 +2428,8 @@ import (
 //	containerClient, pbClient := setupGetPageRangesTest(_require, testName)
 //	defer deleteContainer(_require, containerClient)
 //
-//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), AccessConditions: &blob.AccessConditions{
+//		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //			IfNoneMatch: to.Ptr("garbage"),
 //		},
 //	}})
@@ -2452,8 +2451,8 @@ import (
 //
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
-//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), BlobAccessConditions: &BlobAccessConditions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//	pager := pbClient.NewGetPageRangesPager(&PageBlobGetPageRangesOptions{PageRange: NewHttpRange(0, 0), AccessConditions: &blob.AccessConditions{
+//		ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //			IfNoneMatch: resp.ETag,
 //		},
 //	}})
@@ -2487,9 +2486,9 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient = createNewPageBlob(_require, blobName, containerClient)
 //
-//	r := getReaderToGeneratedBytes(internal.PageBlobPageBytes)
-//	offset, count := int64(0), int64(internal.PageBlobPageBytes)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
+//	r := getReaderToGeneratedBytes(pageblob.PageBytes)
+//	offset, count := int64(0), int64(pageblob.PageBytes)
+//	uploadPagesOptions := pageblob.UploadPagesOptions{
 //		PageRange: &HttpRange{Offset: offset, Count: count},
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -2499,9 +2498,9 @@ import (
 //	_require.Nil(err)
 //	snapshot = *resp.Snapshot
 //
-//	r = getReaderToGeneratedBytes(internal.PageBlobPageBytes)
-//	offset, count = int64(0), int64(internal.PageBlobPageBytes)
-//	uploadPagesOptions = PageBlobUploadPagesOptions{
+//	r = getReaderToGeneratedBytes(pageblob.PageBytes)
+//	offset, count = int64(0), int64(pageblob.PageBytes)
+//	uploadPagesOptions = pageblob.UploadPagesOptions{
 //		PageRange: &HttpRange{Offset: offset, Count: count},
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -2516,7 +2515,7 @@ import (
 //	_require.Len(resp.PageRange, 1)
 //	rawStart, rawEnd := resp.PageRange[0].Raw()
 //	_require.EqualValues(rawStart, int64(0))
-//	_require.EqualValues(rawEnd, int64(internal.PageBlobPageBytes-1))
+//	_require.EqualValues(rawEnd, int64(pageblob.PageBytes-1))
 //}
 //
 ////nolint
@@ -2528,13 +2527,13 @@ import (
 //
 //	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
 //	snapshotTime = snapshotTime.Add(time.Minute)
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		PageRange:    NewHttpRange(0, 0),
 //		PrevSnapshot: to.Ptr(snapshotTime.Format(SnapshotTimeFormat))})
 //	for pager.More() {
 //		_, err := pager.NextPage(ctx)
 //		_require.NotNil(err)
-//		validateBlobErrorCode(_require, err, StorageErrorCodePreviousSnapshotNotFound)
+//		validateBlobErrorCode(_require, err, bloberror.PreviousSnapshotNotFound)
 //		if err != nil {
 //			break
 //		}
@@ -2548,7 +2547,7 @@ import (
 //	testName := s.T().Name()
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(_require, testName)
 //	defer deleteContainer(_require, containerClient)
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{PageRange: NewHttpRange(-22, 14), Snapshot: &snapshot})
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{PageRange: NewHttpRange(-22, 14), Snapshot: &snapshot})
 //	for pager.More() {
 //		_, err := pager.NextPage(ctx)
 //		_require.Nil(err)
@@ -2567,11 +2566,11 @@ import (
 //
 //	currentTime := getRelativeTimeGMT(-10)
 //
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		PageRange: NewHttpRange(0, 0),
 //		Snapshot:  to.Ptr(snapshot),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 //	})
 //	for pager.More() {
 //		resp2, err := pager.NextPage(ctx)
@@ -2592,11 +2591,11 @@ import (
 //
 //	currentTime := getRelativeTimeGMT(10)
 //
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		PageRange: NewHttpRange(0, 0),
 //		Snapshot:  to.Ptr(snapshot),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
 //		},
@@ -2604,7 +2603,7 @@ import (
 //	for pager.More() {
 //		_, err := pager.NextPage(ctx)
 //		_require.NotNil(err)
-//		validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//		validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //		if err != nil {
 //			break
 //		}
@@ -2621,11 +2620,11 @@ import (
 //
 //	currentTime := getRelativeTimeGMT(10)
 //
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		PageRange: NewHttpRange(0, 0),
 //		Snapshot:  to.Ptr(snapshot),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 //		},
 //	})
 //	for pager.More() {
@@ -2647,17 +2646,17 @@ import (
 //
 //	currentTime := getRelativeTimeGMT(-10)
 //
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		PageRange: NewHttpRange(0, 0),
 //		Snapshot:  to.Ptr(snapshot),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 //		},
 //	})
 //	for pager.More() {
 //		_, err := pager.NextPage(ctx)
 //		_require.NotNil(err)
-//		validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//		validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //		if err != nil {
 //			break
 //		}
@@ -2675,11 +2674,11 @@ import (
 //	resp, err := pbClient.GetProperties(ctx, nil)
 //	_require.Nil(err)
 //
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		PageRange: NewHttpRange(0, 0),
 //		Snapshot:  to.Ptr(snapshot),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: resp.ETag,
 //			},
 //		},
@@ -2701,11 +2700,11 @@ import (
 //	containerClient, pbClient, snapshotStr := setupDiffPageRangesTest(_require, testName)
 //	defer deleteContainer(_require, containerClient)
 //
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		PageRange: NewHttpRange(0, 0),
 //		Snapshot:  to.Ptr(snapshotStr),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: to.Ptr("garbage"),
 //			},
 //		}})
@@ -2713,7 +2712,7 @@ import (
 //	for pager.More() {
 //		_, err := pager.NextPage(ctx)
 //		_require.NotNil(err)
-//		validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//		validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //		if err != nil {
 //			break
 //		}
@@ -2728,11 +2727,11 @@ import (
 //	containerClient, pbClient, snapshotStr := setupDiffPageRangesTest(_require, testName)
 //	defer deleteContainer(_require, containerClient)
 //
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		PageRange:    NewHttpRange(0, 0),
 //		PrevSnapshot: to.Ptr(snapshotStr),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: to.Ptr("garbage"),
 //			},
 //		}})
@@ -2756,11 +2755,11 @@ import (
 //
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
-//	pager := pbClient.NewGetPageRangesDiffPager(&PageBlobGetPageRangesDiffOptions{
+//	pager := pbClient.NewGetPageRangesDiffPager(&pageblob.GetPageRangesDiffOptions{
 //		PageRange:    NewHttpRange(0, 0),
 //		PrevSnapshot: to.Ptr(snapshot),
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 //		},
 //	})
 //
@@ -2840,7 +2839,7 @@ import (
 //
 //func validateResize(_require *require.Assertions, pbClient *PageBlobClient) {
 //	resp, _ := pbClient.GetProperties(ctx, nil)
-//	_require.Equal(*resp.ContentLength, int64(internal.PageBlobPageBytes))
+//	_require.Equal(*resp.ContentLength, int64(pageblob.PageBytes))
 //}
 //
 //func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
@@ -2859,7 +2858,7 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
@@ -2867,13 +2866,13 @@ import (
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 //
 //	resizePageBlobOptions := PageBlobResizeOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
+//	_, err = pbClient.Resize(ctx, pageblob.PageBytes, &resizePageBlobOptions)
 //	_require.Nil(err)
 //
 //	validateResize(_require, pbClient)
@@ -2895,7 +2894,7 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
@@ -2903,16 +2902,16 @@ import (
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 //
 //	resizePageBlobOptions := PageBlobResizeOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
+//	_, err = pbClient.Resize(ctx, pageblob.PageBytes, &resizePageBlobOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
@@ -2931,7 +2930,7 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
@@ -2939,13 +2938,13 @@ import (
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 //
 //	resizePageBlobOptions := PageBlobResizeOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
+//	_, err = pbClient.Resize(ctx, pageblob.PageBytes, &resizePageBlobOptions)
 //	_require.Nil(err)
 //
 //	validateResize(_require, pbClient)
@@ -2967,7 +2966,7 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
@@ -2975,16 +2974,16 @@ import (
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 //
 //	resizePageBlobOptions := PageBlobResizeOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
+//	_, err = pbClient.Resize(ctx, pageblob.PageBytes, &resizePageBlobOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
@@ -3006,13 +3005,13 @@ import (
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
 //	resizePageBlobOptions := PageBlobResizeOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: resp.ETag,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
+//	_, err = pbClient.Resize(ctx, pageblob.PageBytes, &resizePageBlobOptions)
 //	_require.Nil(err)
 //
 //	validateResize(_require, pbClient)
@@ -3036,16 +3035,16 @@ import (
 //
 //	eTag := "garbage"
 //	resizePageBlobOptions := PageBlobResizeOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: &eTag,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
+//	_, err = pbClient.Resize(ctx, pageblob.PageBytes, &resizePageBlobOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
@@ -3066,13 +3065,13 @@ import (
 //
 //	eTag := "garbage"
 //	resizePageBlobOptions := PageBlobResizeOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: &eTag,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
+//	_, err = pbClient.Resize(ctx, pageblob.PageBytes, &resizePageBlobOptions)
 //	_require.Nil(err)
 //
 //	validateResize(_require, pbClient)
@@ -3097,16 +3096,16 @@ import (
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
 //	resizePageBlobOptions := PageBlobResizeOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: resp.ETag,
 //			},
 //		},
 //	}
-//	_, err = pbClient.Resize(ctx, internal.PageBlobPageBytes, &resizePageBlobOptions)
+//	_, err = pbClient.Resize(ctx, pageblob.PageBytes, &resizePageBlobOptions)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
@@ -3127,14 +3126,14 @@ import (
 //
 //	sequenceNumber := int64(1)
 //	actionType := SequenceNumberActionType("garbage")
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
+//	validateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 //}
 //
 //func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
@@ -3159,15 +3158,15 @@ import (
 //
 //	sequenceNumber := int64(-1)
 //	actionType := SequenceNumberActionTypeUpdate
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
-//		BlobSequenceNumber: &sequenceNumber,
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
+//		SequenceNumber: &sequenceNumber,
 //		ActionType:         &actionType,
 //	}
 //
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeInvalidHeaderValue)
+//	validateBlobErrorCode(_require, err, bloberror.InvalidHeaderValue)
 //}
 //
 //func validateSequenceNumberSet(_require *require.Assertions, pbClient *PageBlobClient) {
@@ -3192,18 +3191,18 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 //
-//	actionType := SequenceNumberActionTypeIncrement
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
+//	actionType := pageblob.SequenceNumberActionTypeIncrement
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 //		ActionType: &actionType,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
 //		},
@@ -3230,18 +3229,18 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 //
-//	actionType := SequenceNumberActionTypeIncrement
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
+//	actionType := pageblob.SequenceNumberActionTypeIncrement
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 //		ActionType: &actionType,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
 //		},
@@ -3249,7 +3248,7 @@ import (
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
@@ -3268,18 +3267,18 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 //
-//	actionType := SequenceNumberActionTypeIncrement
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
+//	actionType := pageblob.SequenceNumberActionTypeIncrement
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 //		ActionType: &actionType,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
 //		},
@@ -3306,18 +3305,18 @@ import (
 //	blobName := generateBlobName(testName)
 //	pbClient := getPageBlobClient(blobName, containerClient)
 //
-//	pageBlobCreateResponse, err := pbClient.Create(ctx, internal.PageBlobPageBytes*10, nil)
+//	pageBlobCreateResponse, err := pbClient.Create(ctx, pageblob.PageBytes*10, nil)
 //	_require.Nil(err)
 //	// _require.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 //	_require.NotNil(pageBlobCreateResponse.Date)
 //
 //	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 //
-//	actionType := SequenceNumberActionTypeIncrement
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
+//	actionType := pageblob.SequenceNumberActionTypeIncrement
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 //		ActionType: &actionType,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
 //		},
@@ -3325,7 +3324,7 @@ import (
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
@@ -3346,11 +3345,11 @@ import (
 //
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
-//	actionType := SequenceNumberActionTypeIncrement
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
+//	actionType := pageblob.SequenceNumberActionTypeIncrement
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 //		ActionType: &actionType,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: resp.ETag,
 //			},
 //		},
@@ -3378,11 +3377,11 @@ import (
 //	pbClient := createNewPageBlob(_require, blobName, containerClient)
 //
 //	eTag := "garbage"
-//	actionType := SequenceNumberActionTypeIncrement
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
+//	actionType := pageblob.SequenceNumberActionTypeIncrement
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 //		ActionType: &actionType,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfMatch: &eTag,
 //			},
 //		},
@@ -3390,7 +3389,7 @@ import (
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
@@ -3410,11 +3409,11 @@ import (
 //	pbClient := createNewPageBlob(_require, "src"+blobName, containerClient)
 //
 //	eTag := "garbage"
-//	actionType := SequenceNumberActionTypeIncrement
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
+//	actionType := pageblob.SequenceNumberActionTypeIncrement
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 //		ActionType: &actionType,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: &eTag,
 //			},
 //		},
@@ -3443,11 +3442,11 @@ import (
 //
 //	resp, _ := pbClient.GetProperties(ctx, nil)
 //
-//	actionType := SequenceNumberActionTypeIncrement
-//	updateSequenceNumberPageBlob := PageBlobUpdateSequenceNumberOptions{
+//	actionType := pageblob.SequenceNumberActionTypeIncrement
+//	updateSequenceNumberPageBlob := pageblob.UpdateSequenceNumberOptions{
 //		ActionType: &actionType,
-//		BlobAccessConditions: &BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{
+//		AccessConditions: &blob.AccessConditions{
+//			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //				IfNoneMatch: resp.ETag,
 //			},
 //		},
@@ -3455,7 +3454,7 @@ import (
 //	_, err = pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 //	_require.NotNil(err)
 //
-//	validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//	validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //}
 //
 //////func setupStartIncrementalCopyTest(_require *require.Assertions, testName string) (containerClient containerClient,
@@ -3478,7 +3477,7 @@ import (
 //////    setAccessPolicyOptions := ContainerSetAccessPolicyOptions{
 //////        ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 //////    }
-//////    _, err = containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
+//////    _, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 //////    _require.Nil(err)
 //////
 //////    pbClient = createNewPageBlob(_require, generateBlobName(testName), containerClient)
@@ -3526,7 +3525,7 @@ import (
 //////    _, err = copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, nil)
 //////    _require.NotNil(err)
 //////
-//////    validateBlobErrorCode(_require, err, StorageErrorCodeCannotVerifyCopySource)
+//////    validateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
 //////}
 ////
 //////func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue() {
@@ -3539,7 +3538,7 @@ import (
 //////    currentTime := getRelativeTimeGMT(-20)
 //////
 //////    copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
-//////        ModifiedAccessConditions: &ModifiedAccessConditions{
+//////        ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //////            IfModifiedSince: &currentTime,
 //////        },
 //////    }
@@ -3559,14 +3558,14 @@ import (
 //////    currentTime := getRelativeTimeGMT(20)
 //////
 //////    copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
-//////        ModifiedAccessConditions: &ModifiedAccessConditions{
+//////        ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //////            IfModifiedSince: &currentTime,
 //////        },
 //////    }
 //////    _, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 //////    _require.NotNil(err)
 //////
-//////    validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//////    validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //////}
 ////
 //////func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue() {
@@ -3579,7 +3578,7 @@ import (
 //////    currentTime := getRelativeTimeGMT(20)
 //////
 //////    copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
-//////        ModifiedAccessConditions: &ModifiedAccessConditions{
+//////        ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //////            IfUnmodifiedSince: &currentTime,
 //////        },
 //////    }
@@ -3599,14 +3598,14 @@ import (
 //////    currentTime := getRelativeTimeGMT(-20)
 //////
 //////    copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
-//////        ModifiedAccessConditions: &ModifiedAccessConditions{
+//////        ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //////            IfUnmodifiedSince: &currentTime,
 //////        },
 //////    }
 //////    _, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 //////    _require.NotNil(err)
 //////
-//////    validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//////    validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //////}
 ////
 //////nolint
@@ -3617,7 +3616,7 @@ import (
 //////    resp, _ := copyPBClient.GetProperties(ctx, nil)
 //////
 //////    copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
-//////        ModifiedAccessConditions: &ModifiedAccessConditions{
+//////        ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //////            IfMatch: resp.ETag,
 //////        },
 //////    }
@@ -3639,14 +3638,14 @@ import (
 //////
 //////    eTag := "garbage"
 //////    copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
-//////        ModifiedAccessConditions: &ModifiedAccessConditions{
+//////        ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //////            IfMatch: &eTag,
 //////        },
 //////    }
 //////    _, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 //////    _require.NotNil(err)
 //////
-//////    validateBlobErrorCode(_require, err, StorageErrorCodeTargetConditionNotMet)
+//////    validateBlobErrorCode(_require, err, bloberror.TargetConditionNotMet)
 //////}
 //////
 ////
@@ -3659,7 +3658,7 @@ import (
 //////
 //////    eTag := "garbage"
 //////    copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
-//////        ModifiedAccessConditions: &ModifiedAccessConditions{
+//////        ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //////            IfNoneMatch: &eTag,
 //////        },
 //////    }
@@ -3680,51 +3679,51 @@ import (
 //////    resp, _ := copyPBClient.GetProperties(ctx, nil)
 //////
 //////    copyIncrementalPageBlobOptions := PageBlobCopyIncrementalOptions{
-//////        ModifiedAccessConditions: &ModifiedAccessConditions{
+//////        ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 //////            IfNoneMatch: resp.ETag,
 //////        },
 //////    }
 //////    _, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 //////    _require.NotNil(err)
 //////
-//////    validateBlobErrorCode(_require, err, StorageErrorCodeConditionNotMet)
+//////    validateBlobErrorCode(_require, err, bloberror.ConditionNotMet)
 //////}
-
-func setAndCheckPageBlobTier(_require *require.Assertions, pbClient *pageblob.Client, tier pageblob.AccessTier) {
-	_, err := pbClient.SetTier(ctx, tier, nil)
-	_require.Nil(err)
-
-	resp, err := pbClient.GetProperties(ctx, nil)
-	_require.Nil(err)
-	_require.Equal(*resp.AccessTier, string(tier))
-}
-
-func (s *azblobTestSuite) TestBlobSetTierAllTiersOnPageBlob() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	premiumServiceClient, err := getServiceClient(_context.recording, testAccountPremium, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	premContainerName := "prem" + generateContainerName(testName)
-	premContainerClient := createNewContainer(_require, premContainerName, premiumServiceClient)
-	defer deleteContainer(_require, premContainerClient)
-
-	pbName := generateBlobName(testName)
-	pbClient := createNewPageBlob(_require, pbName, premContainerClient)
-
-	possibleTiers := []pageblob.AccessTier{
-		pageblob.AccessTierP4,
-		pageblob.AccessTierP6,
-		pageblob.AccessTierP10,
-		pageblob.AccessTierP20,
-		pageblob.AccessTierP30,
-		pageblob.AccessTierP40,
-		pageblob.AccessTierP50,
-	}
-	for _, possibleTier := range possibleTiers {
-		setAndCheckPageBlobTier(_require, pbClient, possibleTier)
-	}
-}
+//
+//func setAndCheckPageBlobTier(_require *require.Assertions, pbClient *pageblob.Client, tier pageblob.AccessTier) {
+//	_, err := pbClient.SetTier(ctx, tier, nil)
+//	_require.Nil(err)
+//
+//	resp, err := pbClient.GetProperties(ctx, nil)
+//	_require.Nil(err)
+//	_require.Equal(*resp.AccessTier, string(tier))
+//}
+//
+//func (s *azblobTestSuite) TestBlobSetTierAllTiersOnPageBlob() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	premiumServiceClient, err := getServiceClient(_context.recording, testAccountPremium, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	premContainerName := "prem" + generateContainerName(testName)
+//	premContainerClient := createNewContainer(_require, premContainerName, premiumServiceClient)
+//	defer deleteContainer(_require, premContainerClient)
+//
+//	pbName := generateBlobName(testName)
+//	pbClient := createNewPageBlob(_require, pbName, premContainerClient)
+//
+//	possibleTiers := []pageblob.AccessTier{
+//		pageblob.AccessTierP4,
+//		pageblob.AccessTierP6,
+//		pageblob.AccessTierP10,
+//		pageblob.AccessTierP20,
+//		pageblob.AccessTierP30,
+//		pageblob.AccessTierP40,
+//		pageblob.AccessTierP50,
+//	}
+//	for _, possibleTier := range possibleTiers {
+//		setAndCheckPageBlobTier(_require, pbClient, possibleTier)
+//	}
+//}

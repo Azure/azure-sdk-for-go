@@ -11,3 +11,19 @@ import (
 )
 
 type CreateResponse = generated.PageBlobClientCreateResponse
+
+type UploadPagesResponse = generated.PageBlobClientUploadPagesResponse
+
+type UploadPagesFromURLResponse = generated.PageBlobClientUploadPagesFromURLResponse
+
+type ClearPagesResponse = generated.PageBlobClientClearPagesResponse
+
+type GetPageRangesResponse = generated.PageBlobClientGetPageRangesResponse
+
+type GetPageRangesDiffResponse = generated.PageBlobClientGetPageRangesDiffResponse
+
+type ResizeResponse = generated.PageBlobClientResizeResponse
+
+type UpdateSequenceNumberResponse = generated.PageBlobClientUpdateSequenceNumberResponse
+
+type CopyIncrementalResponse = generated.PageBlobClientCopyIncrementalResponse

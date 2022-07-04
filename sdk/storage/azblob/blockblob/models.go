@@ -14,11 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 )
 
-type AccessTier = generated.AccessTier
-
-// ImmutabilityPolicyMode enum
-type ImmutabilityPolicyMode = generated.BlobImmutabilityPolicyMode
-
 type UploadOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	Tags map[string]string
@@ -27,21 +22,21 @@ type UploadOptions struct {
 	Metadata map[string]string
 
 	// Optional. Indicates the tier to be set on the blob.
-	Tier *AccessTier
+	Tier *blob.AccessTier
 
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
 	HTTPHeaders      *blob.HTTPHeaders
-	CpkInfo          *CpkInfo
-	CpkScopeInfo     *CpkScopeInfo
-	AccessConditions *AccessConditions
+	CpkInfo          *blob.CpkInfo
+	CpkScopeInfo     *blob.CpkScopeInfo
+	AccessConditions *blob.AccessConditions
 }
 
 type StageBlockOptions struct {
-	CpkInfo *CpkInfo
+	CpkInfo *blob.CpkInfo
 
-	CpkScopeInfo *CpkScopeInfo
+	CpkScopeInfo *blob.CpkScopeInfo
 
 	LeaseAccessConditions *lease.AccessConditions
 
@@ -52,7 +47,7 @@ type StageBlockOptions struct {
 	TransactionalContentMD5 []byte
 }
 
-type SourceModifiedAccessConditions = generated.SourceModifiedAccessConditions
+type SourceModifiedAccessConditions = blob.SourceModifiedAccessConditions
 
 // StageBlockFromURLOptions provides set of configurations for StageBlockFromURL operation
 type StageBlockFromURLOptions struct {
@@ -71,9 +66,9 @@ type StageBlockFromURLOptions struct {
 
 	Count *int64
 
-	CpkInfo *CpkInfo
+	CpkInfo *blob.CpkInfo
 
-	CpkScopeInfo *CpkScopeInfo
+	CpkScopeInfo *blob.CpkScopeInfo
 }
 
 func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBlockFromURLOptions, *generated.CpkInfo, *generated.CpkScopeInfo, *generated.LeaseAccessConditions, *generated.SourceModifiedAccessConditions) {
@@ -95,26 +90,20 @@ type CommitBlockListOptions struct {
 	Tags                      map[string]string
 	Metadata                  map[string]string
 	RequestID                 *string
-	Tier                      *AccessTier
+	Tier                      *blob.AccessTier
 	Timeout                   *int32
 	TransactionalContentCRC64 []byte
 	TransactionalContentMD5   []byte
 	BlobHTTPHeaders           *blob.HTTPHeaders
-	CpkInfo                   *CpkInfo
-	CpkScopeInfo              *CpkScopeInfo
-	BlobAccessConditions      *AccessConditions
+	CpkInfo                   *blob.CpkInfo
+	CpkScopeInfo              *blob.CpkScopeInfo
+	BlobAccessConditions      *blob.AccessConditions
 }
-
-type CpkInfo = generated.CpkInfo
-
-type CpkScopeInfo = generated.CpkScopeInfo
-
-type AccessConditions = exported.BlobAccessConditions
 
 // GetBlockListOptions provides set of configurations for GetBlockList operation
 type GetBlockListOptions struct {
-	Snapshot             *string
-	BlobAccessConditions *AccessConditions
+	Snapshot         *string
+	AccessConditions *blob.AccessConditions
 }
 
 func (o *GetBlockListOptions) format() (*generated.BlockBlobClientGetBlockListOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -122,6 +111,6 @@ func (o *GetBlockListOptions) format() (*generated.BlockBlobClientGetBlockListOp
 		return nil, nil, nil
 	}
 
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.BlobAccessConditions)
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &generated.BlockBlobClientGetBlockListOptions{Snapshot: o.Snapshot}, leaseAccessConditions, modifiedAccessConditions
 }

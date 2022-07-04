@@ -82,12 +82,12 @@ package azblob_test
 //		"Javascript": "Android",
 //	}
 //
-//	blockBlobUploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), nil)
+//	blockBlobUploadResp, err := bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), nil)
 //	_require.Nil(err)
 //	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 //	versionId1 := blockBlobUploadResp.VersionID
 //
-//	blockBlobUploadResp, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))), nil)
+//	blockBlobUploadResp, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))), nil)
 //	_require.Nil(err)
 //	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 //	versionId2 := blockBlobUploadResp.VersionID
@@ -147,7 +147,7 @@ package azblob_test
 //		HTTPHeaders: &basicHeaders,
 //		BlobTags:    blobTagsMap,
 //	}
-//	_, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
+//	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 //	_require.Nil(err)
 //	// TODO: Check for metadata and header
 //	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
@@ -182,7 +182,7 @@ package azblob_test
 //
 //	for index, d := range data {
 //		base64BlockIDs[index] = blockIDIntToBase64(index)
-//		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
+//		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
 //		_require.Nil(err)
 //		// _require.Equal(resp.RawResponse.StatusCode, 201)
 //		_require.NotEqual(*resp.Version, "")
@@ -447,7 +447,7 @@ package azblob_test
 //		HTTPHeaders: &basicHeaders,
 //		Metadata:    basicMetadata,
 //	}
-//	_, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
+//	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 //	_require.Nil(err)
 //	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 //

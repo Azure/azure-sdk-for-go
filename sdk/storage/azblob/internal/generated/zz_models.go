@@ -1382,7 +1382,7 @@ type PageBlobClientGetPageRangesDiffOptions struct {
 	Timeout *int32
 }
 
-// PageBlobClientGetPageRangesOptions contains the optional parameters for the PageBlobClient.GetPageRanges method.
+// PageBlobClientGetPageRangesOptions contains the optional parameters for the PageBlobClient.NewGetPageRangesPager method.
 type PageBlobClientGetPageRangesOptions struct {
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
@@ -1479,6 +1479,17 @@ type PageRange struct {
 
 	// REQUIRED
 	Start *int64 `xml:"Start"`
+}
+
+// Raw converts PageRange into primitive start, end integers of type int64
+func (pr *PageRange) Raw() (start, end int64) {
+	if pr.Start != nil {
+		start = *pr.Start
+	}
+	if pr.End != nil {
+		end = *pr.End
+	}
+	return
 }
 
 type QueryFormat struct {

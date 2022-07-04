@@ -216,3 +216,7 @@ func validateSeekableStreamAt0(body io.ReadSeeker) error {
 	}
 	return nil
 }
+
+func RangeToString(offset, count int64) string {
+	return "bytes=" + strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count-1, 10)
+}

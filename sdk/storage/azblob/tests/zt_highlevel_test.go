@@ -585,7 +585,7 @@ package azblob_test
 //	_require.NoError(err)
 //	_require.EqualValues(getPropertiesResp.Metadata, basicMetadata)
 //	_require.Equal(*getPropertiesResp.TagCount, int64(len(basicBlobTagsMap)))
-//	_require.Equal(getPropertiesResp.ParseHTTPHeaders(), basicHeaders)
+//	_require.Equal(getPropertiesblob.ParseHTTPHeaders(resp), basicHeaders)
 //
 //	getTagsResp, err := bbClient.GetTags(ctx, nil)
 //	_require.NoError(err)

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2022-06-13)
+## 2.0.0 (2022-07-04)
 ### Breaking Changes
 
 - Type of `TopicTypeProperties.SupportedScopesForSource` has been changed from `[]*TopicTypePropertiesSupportedScopesForSourceItem` to `[]*TopicTypeSourceScope`

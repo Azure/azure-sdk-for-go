@@ -1,0 +1,239 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:02:55 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopymetadata?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 04 Jul 2022 06:02:52 GMT
+      Etag:
+      - '"0x8DA5D82D537F399"'
+      Last-Modified:
+      - Mon, 04 Jul 2022 06:02:53 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 1c11f6b7-801e-0026-266b-8fc760000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: GoBlockBlobData
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "15"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:02:55 GMT
+      x-ms-blob-type:
+      - BlockBlob
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopymetadata/gotestblobblobstartcopymetadata
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Content-Md5:
+      - ebncwguMQu9sgPmr0GazhA==
+      Date:
+      - Mon, 04 Jul 2022 06:02:52 GMT
+      Etag:
+      - '"0x8DA5D82D5613F93"'
+      Last-Modified:
+      - Mon, 04 Jul 2022 06:02:53 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Content-Crc64:
+      - +JGsS7CR5kg=
+      X-Ms-Request-Id:
+      - 1c11f858-801e-0026-256b-8fc760000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+      X-Ms-Version-Id:
+      - "2022-07-04T06:02:53.3398419Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:02:55 GMT
+      x-ms-copy-source:
+      - https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopymetadata/gotestblobblobstartcopymetadata
+      x-ms-meta-Bla:
+      - foo
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopymetadata/copygotestblobblobstartcopymetadata
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 04 Jul 2022 06:02:52 GMT
+      Etag:
+      - '"0x8DA5D82D5890CBD"'
+      Last-Modified:
+      - Mon, 04 Jul 2022 06:02:53 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Copy-Id:
+      - 0084cf6b-506f-45e2-a36e-45509d7033a7
+      X-Ms-Copy-Status:
+      - success
+      X-Ms-Request-Id:
+      - 1c11fa03-801e-0026-2c6b-8fc760000000
+      X-Ms-Version:
+      - "2020-10-02"
+      X-Ms-Version-Id:
+      - "2022-07-04T06:02:53.6006845Z"
+    status: 202 Accepted
+    code: 202
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:02:55 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopymetadata/copygotestblobblobstartcopymetadata
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "15"
+      Content-Md5:
+      - ebncwguMQu9sgPmr0GazhA==
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Mon, 04 Jul 2022 06:02:53 GMT
+      Etag:
+      - '"0x8DA5D82D5890CBD"'
+      Last-Modified:
+      - Mon, 04 Jul 2022 06:02:53 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Access-Tier:
+      - Hot
+      X-Ms-Access-Tier-Inferred:
+      - "true"
+      X-Ms-Blob-Type:
+      - BlockBlob
+      X-Ms-Copy-Completion-Time:
+      - Mon, 04 Jul 2022 06:02:53 GMT
+      X-Ms-Copy-Id:
+      - 0084cf6b-506f-45e2-a36e-45509d7033a7
+      X-Ms-Copy-Progress:
+      - 15/15
+      X-Ms-Copy-Source:
+      - https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopymetadata/gotestblobblobstartcopymetadata
+      X-Ms-Copy-Status:
+      - success
+      X-Ms-Creation-Time:
+      - Mon, 04 Jul 2022 06:02:53 GMT
+      X-Ms-Is-Current-Version:
+      - "true"
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Meta-Bla:
+      - foo
+      X-Ms-Request-Id:
+      - 1c11fb9c-801e-0026-1c6b-8fc760000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+      X-Ms-Version-Id:
+      - "2022-07-04T06:02:53.6006845Z"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:02:56 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobstartcopymetadata?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 04 Jul 2022 06:02:53 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 1c11fd78-801e-0026-4d6b-8fc760000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 202 Accepted
+    code: 202
+    duration: ""

@@ -1,0 +1,177 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:01:26 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddatacountzero?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 04 Jul 2022 06:01:23 GMT
+      Etag:
+      - '"0x8DA5D82A0230EF1"'
+      Last-Modified:
+      - Mon, 04 Jul 2022 06:01:24 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 1c0fbc03-801e-0026-026b-8fc760000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: GoBlockBlobData
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "15"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:01:26 GMT
+      x-ms-blob-type:
+      - BlockBlob
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddatacountzero/gotestblobblobdownloaddatacountzero
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Content-Md5:
+      - ebncwguMQu9sgPmr0GazhA==
+      Date:
+      - Mon, 04 Jul 2022 06:01:23 GMT
+      Etag:
+      - '"0x8DA5D82A04D0A37"'
+      Last-Modified:
+      - Mon, 04 Jul 2022 06:01:24 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Content-Crc64:
+      - +JGsS7CR5kg=
+      X-Ms-Request-Id:
+      - 1c0fbe2e-801e-0026-0d6b-8fc760000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+      X-Ms-Version-Id:
+      - "2022-07-04T06:01:24.2881591Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:01:26 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddatacountzero/gotestblobblobdownloaddatacountzero
+    method: GET
+  response:
+    body: GoBlockBlobData
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "15"
+      Content-Md5:
+      - ebncwguMQu9sgPmr0GazhA==
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Mon, 04 Jul 2022 06:01:23 GMT
+      Etag:
+      - '"0x8DA5D82A04D0A37"'
+      Last-Modified:
+      - Mon, 04 Jul 2022 06:01:24 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Type:
+      - BlockBlob
+      X-Ms-Creation-Time:
+      - Mon, 04 Jul 2022 06:01:24 GMT
+      X-Ms-Is-Current-Version:
+      - "true"
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - 1c0fbff0-801e-0026-2e6b-8fc760000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2020-10-02"
+      X-Ms-Version-Id:
+      - "2022-07-04T06:01:24.2881591Z"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:01:26 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddatacountzero?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 04 Jul 2022 06:01:24 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 1c0fc197-801e-0026-336b-8fc760000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 202 Accepted
+    code: 202
+    duration: ""

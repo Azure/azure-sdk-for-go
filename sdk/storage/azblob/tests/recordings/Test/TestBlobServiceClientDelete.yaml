@@ -1,0 +1,79 @@
+---
+version: 1
+interactions:
+- request:
+    body: |-
+      <?xml version="1.0" encoding="UTF-8"?>
+      <StorageServiceProperties><DeleteRetentionPolicy><Enabled>true</Enabled><Days>1</Days></DeleteRetentionPolicy></StorageServiceProperties>
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "176"
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:01:52 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/?comp=properties&restype=service
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 04 Jul 2022 06:01:49 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 1c1070d5-801e-0026-336b-8fc760000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 202 Accepted
+    code: 202
+    duration: ""
+- request:
+    body: |-
+      <?xml version="1.0" encoding="UTF-8"?>
+      <StorageServiceProperties><DeleteRetentionPolicy><Enabled>false</Enabled></DeleteRetentionPolicy></StorageServiceProperties>
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "163"
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
+      X-Ms-Date:
+      - Mon, 04 Jul 2022 06:01:52 GMT
+      x-ms-version:
+      - "2020-10-02"
+    url: https://azureblobstoragecanada.blob.core.windows.net/?comp=properties&restype=service
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 04 Jul 2022 06:01:49 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 1c1072c5-801e-0026-0b6b-8fc760000000
+      X-Ms-Version:
+      - "2020-10-02"
+    status: 202 Accepted
+    code: 202
+    duration: ""

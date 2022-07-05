@@ -8,6 +8,7 @@ package azsecrets_test
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -38,6 +39,18 @@ func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
 	require.NoError(t, err)
 }
 
+type serdeModel interface {
+	json.Marshaler
+	json.Unmarshaler
+}
+
+func testSerde[T serdeModel](t *testing.T, model T) {
+	data, err := model.MarshalJSON()
+	require.NoError(t, err)
+	err = model.UnmarshalJSON(data)
+	require.NoError(t, err)
+}
+
 func TestBackupRestore(t *testing.T) {
 	client := startTest(t)
 
@@ -51,6 +64,7 @@ func TestBackupRestore(t *testing.T) {
 	backupResp, err := client.BackupSecret(context.Background(), name, nil)
 	require.NoError(t, err)
 	require.Greater(t, len(backupResp.Value), 0)
+	testSerde(t, &backupResp.BackupSecretResult)
 
 	_, err = client.DeleteSecret(context.Background(), name, nil)
 	require.NoError(t, err)
@@ -64,20 +78,13 @@ func TestBackupRestore(t *testing.T) {
 
 	var restoreResp azsecrets.RestoreSecretResponse
 	restoreParams := azsecrets.RestoreSecretParameters{backupResp.Value}
+	testSerde(t, &restoreParams)
 	pollStatus(t, 409, func() error {
 		restoreResp, err = client.RestoreSecret(context.Background(), restoreParams, nil)
 		return err
 	})
 	require.Equal(t, restoreResp.ID.Name(), name)
 	require.Equal(t, setResp.ID, restoreResp.ID)
-
-	// exercise otherwise unused unmarshalling code
-	rp := azsecrets.RestoreSecretParameters{}
-	data, err := restoreParams.MarshalJSON()
-	require.NoError(t, err)
-	err = rp.UnmarshalJSON(data)
-	require.NoError(t, err)
-	require.Equal(t, restoreParams, rp)
 }
 
 func TestCRUD(t *testing.T) {
@@ -95,6 +102,7 @@ func TestCRUD(t *testing.T) {
 		Tags:  map[string]*string{"tag": to.Ptr("value")},
 		Value: &value,
 	}
+	testSerde(t, &setParams)
 	setResp, err := client.SetSecret(context.Background(), name, setParams, nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, setResp.ContentType)
@@ -104,6 +112,7 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.Value, setResp.Value)
 	require.Equal(t, name, setResp.ID.Name())
 	require.NotEmpty(t, setResp.ID.Version())
+	testSerde(t, &setResp.SecretBundle)
 
 	getResp, err := client.GetSecret(context.Background(), setResp.ID.Name(), "", nil)
 	require.NoError(t, err)
@@ -122,6 +131,7 @@ func TestCRUD(t *testing.T) {
 			Expires: to.Ptr(time.Date(2040, 1, 1, 1, 1, 1, 0, time.UTC)),
 		},
 	}
+	testSerde(t, &updateParams)
 	updateResp, err := client.UpdateSecret(context.Background(), name, setResp.ID.Version(), updateParams, nil)
 	require.NoError(t, err)
 	require.Equal(t, setParams.ContentType, updateResp.ContentType)
@@ -141,6 +151,7 @@ func TestCRUD(t *testing.T) {
 	require.Equal(t, setParams.Tags, deleteResp.Tags)
 	require.Equal(t, name, deleteResp.ID.Name())
 	require.Equal(t, updateResp.ID.Version(), deleteResp.ID.Version())
+	testSerde(t, &deleteResp.DeletedSecretBundle)
 	pollStatus(t, 404, func() error {
 		_, err := client.GetDeletedSecret(context.Background(), name, nil)
 		return err
@@ -210,7 +221,9 @@ func TestListDeletedSecrets(t *testing.T) {
 	for pager.More() && len(expected) > 0 {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
+		testSerde(t, &page.DeletedSecretListResult)
 		for _, secret := range page.Value {
+			testSerde(t, secret)
 			delete(expected, secret.ID.Name())
 			if len(expected) == 0 {
 				break
@@ -236,7 +249,9 @@ func TestListSecrets(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
+		testSerde(t, &page.SecretListResult)
 		for _, secret := range page.Value {
+			testSerde(t, secret)
 			if strings.HasPrefix(secret.ID.Name(), "listsecrets") {
 				count--
 			}
@@ -271,7 +286,9 @@ func TestListSecretVersions(t *testing.T) {
 	for pager.More() {
 		page, err := pager.NextPage(context.Background())
 		require.NoError(t, err)
+		testSerde(t, &page.SecretListResult)
 		for i, secret := range page.Value {
+			testSerde(t, secret)
 			if i > 0 {
 				require.NotEqual(t, page.Value[i-1].ID.Version(), secret.ID.Version())
 			}

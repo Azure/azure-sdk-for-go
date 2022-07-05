@@ -283,8 +283,8 @@ func (r *Receiver) sendDisposition(first uint32, last *uint32, state encoding.De
 	case <-r.link.Detached:
 		return r.link.err
 	default:
-	log.Debug(1, "TX (sendDisposition): %s", fr)
-	return r.link.Session.txFrame(fr, nil)
+		log.Debug(1, "TX (sendDisposition): %s", fr)
+		return r.link.Session.txFrame(fr, nil)
 	}
 }
 

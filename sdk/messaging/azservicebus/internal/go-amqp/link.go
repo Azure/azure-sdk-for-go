@@ -135,7 +135,7 @@ func newSendingLink(target string, s *Session, opts *SenderOptions) (*link, erro
 	}
 	l.Source.Address = opts.SourceAddress
 	return l, nil
-	}
+}
 
 func newReceivingLink(source string, s *Session, r *Receiver, opts *ReceiverOptions) (*link, error) {
 	l := &link{
@@ -150,8 +150,8 @@ func newReceivingLink(source string, s *Session, r *Receiver, opts *ReceiverOpti
 	}
 
 	if opts == nil {
-	return l, nil
-}
+		return l, nil
+	}
 
 	l.receiver.batching = opts.Batching
 	if opts.BatchMaxAge > 0 {
@@ -173,7 +173,7 @@ func newReceivingLink(source string, s *Session, r *Receiver, opts *ReceiverOpti
 	}
 	if opts.ExpiryPolicy != "" {
 		if err := encoding.ValidateExpiryPolicy(opts.ExpiryPolicy); err != nil {
-		return nil, err
+			return nil, err
 		}
 		l.Target.ExpiryPolicy = opts.ExpiryPolicy
 	}

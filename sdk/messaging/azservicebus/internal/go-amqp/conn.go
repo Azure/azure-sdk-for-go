@@ -308,10 +308,10 @@ func (c *conn) Start() error {
 	for state := c.negotiateProto; state != nil; {
 		var err error
 		state, err = state()
-	// check if err occurred
+		// check if err occurred
 		if err != nil {
-		close(c.txDone) // close here since connWriter hasn't been started yet
-		_ = c.Close()
+			close(c.txDone) // close here since connWriter hasn't been started yet
+			_ = c.Close()
 			return err
 		}
 	}

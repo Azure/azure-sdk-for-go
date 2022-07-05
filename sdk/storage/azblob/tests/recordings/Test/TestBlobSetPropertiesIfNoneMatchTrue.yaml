@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Tue, 05 Jul 2022 06:14:59 GMT
+      - Tue, 05 Jul 2022 09:44:30 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetpropertiesifnonematchtrue?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 05 Jul 2022 06:14:58 GMT
+      - Tue, 05 Jul 2022 09:44:28 GMT
       Etag:
-      - '"0x8DA5E4DB0055CB4"'
+      - '"0x8DA5E6AF4EA907B"'
       Last-Modified:
-      - Tue, 05 Jul 2022 06:14:58 GMT
+      - Tue, 05 Jul 2022 09:44:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 202aa6c3-001e-0017-2c36-902673000000
+      - cdc4a612-c01e-007a-4053-909238000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -52,7 +52,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Tue, 05 Jul 2022 06:14:59 GMT
+      - Tue, 05 Jul 2022 09:44:30 GMT
       x-ms-blob-type:
       - BlockBlob
       x-ms-version:
@@ -67,23 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Tue, 05 Jul 2022 06:14:58 GMT
+      - Tue, 05 Jul 2022 09:44:29 GMT
       Etag:
-      - '"0x8DA5E4DB02B3136"'
+      - '"0x8DA5E6AF518A7C9"'
       Last-Modified:
-      - Tue, 05 Jul 2022 06:14:58 GMT
+      - Tue, 05 Jul 2022 09:44:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 202aa7da-001e-0017-3736-902673000000
+      - cdc4a9d2-c01e-007a-1453-909238000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-07-05T06:14:58.7459894Z"
+      - "2022-07-05T09:44:29.7924553Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -100,7 +100,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Tue, 05 Jul 2022 06:14:59 GMT
+      - Tue, 05 Jul 2022 09:44:30 GMT
       x-ms-blob-content-disposition:
       - my_disposition
       x-ms-version:
@@ -113,15 +113,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 05 Jul 2022 06:14:58 GMT
+      - Tue, 05 Jul 2022 09:44:29 GMT
       Etag:
-      - '"0x8DA5E4DB04F0758"'
+      - '"0x8DA5E6AF546677E"'
       Last-Modified:
-      - Tue, 05 Jul 2022 06:14:58 GMT
+      - Tue, 05 Jul 2022 09:44:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 202aa892-001e-0017-5e36-902673000000
+      - cdc4adc5-c01e-007a-0c53-909238000000
       X-Ms-Version:
       - "2020-10-02"
     status: 200 OK
@@ -138,7 +138,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Tue, 05 Jul 2022 06:15:00 GMT
+      - Tue, 05 Jul 2022 09:44:31 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetpropertiesifnonematchtrue/gotestblobblobsetpropertiesifnonematchtrue
@@ -153,11 +153,11 @@ interactions:
       Content-Length:
       - "15"
       Date:
-      - Tue, 05 Jul 2022 06:14:58 GMT
+      - Tue, 05 Jul 2022 09:44:29 GMT
       Etag:
-      - '"0x8DA5E4DB04F0758"'
+      - '"0x8DA5E6AF546677E"'
       Last-Modified:
-      - Tue, 05 Jul 2022 06:14:58 GMT
+      - Tue, 05 Jul 2022 09:44:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -167,7 +167,7 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 05 Jul 2022 06:14:58 GMT
+      - Tue, 05 Jul 2022 09:44:29 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -175,13 +175,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 202aa96f-001e-0017-2636-902673000000
+      - cdc4b1d7-c01e-007a-0a53-909238000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2020-10-02"
       X-Ms-Version-Id:
-      - "2022-07-05T06:14:58.7459894Z"
+      - "2022-07-05T09:44:29.7924553Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -196,7 +196,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Tue, 05 Jul 2022 06:15:00 GMT
+      - Tue, 05 Jul 2022 09:44:31 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetpropertiesifnonematchtrue?restype=container
@@ -207,11 +207,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 05 Jul 2022 06:14:59 GMT
+      - Tue, 05 Jul 2022 09:44:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 202aaa7f-001e-0017-2536-902673000000
+      - cdc4b56d-c01e-007a-5253-909238000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

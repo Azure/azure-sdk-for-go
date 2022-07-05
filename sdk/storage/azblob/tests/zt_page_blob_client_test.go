@@ -3504,29 +3504,29 @@ func validateIncrementalCopy(_require *require.Assertions, copyPBClient *pageblo
 	_require.Nil(err)
 }
 
-func (s *azblobTestSuite) TestBlobStartIncrementalCopySnapshotNotExist() {
-	_require := require.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		_require.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerName := generateContainerName(testName)
-	containerClient := createNewContainer(_require, containerName, svcClient)
-	defer deleteContainer(_require, containerClient)
-
-	blobName := generateBlobName(testName)
-	pbClient := createNewPageBlob(_require, "src"+blobName, containerClient)
-	copyPBClient := getPageBlobClient("dst"+blobName, containerClient)
-
-	snapshot := time.Now().UTC().Format(blob.SnapshotTimeFormat)
-	_, err = copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, nil)
-	_require.NotNil(err)
-
-	validateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
-}
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopySnapshotNotExist() {
+//	_require := require.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+//	if err != nil {
+//		_require.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	containerName := generateContainerName(testName)
+//	containerClient := createNewContainer(_require, containerName, svcClient)
+//	defer deleteContainer(_require, containerClient)
+//
+//	blobName := generateBlobName(testName)
+//	pbClient := createNewPageBlob(_require, "src"+blobName, containerClient)
+//	copyPBClient := getPageBlobClient("dst"+blobName, containerClient)
+//
+//	snapshot := time.Now().UTC().Format(blob.SnapshotTimeFormat)
+//	_, err = copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), snapshot, nil)
+//	_require.NotNil(err)
+//
+//	validateBlobErrorCode(_require, err, bloberror.CannotVerifyCopySource)
+//}
 
 //func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue() {
 //	_require := require.New(s.T())

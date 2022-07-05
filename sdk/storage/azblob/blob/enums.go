@@ -97,3 +97,18 @@ func PossibleCopyStatusTypeValues() []CopyStatusType {
 		CopyStatusTypeFailed,
 	}
 }
+
+type EncryptionAlgorithmType = generated.EncryptionAlgorithmType
+
+const (
+	EncryptionAlgorithmTypeNone   EncryptionAlgorithmType = "None"
+	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = "AES256"
+)
+
+// PossibleEncryptionAlgorithmTypeValues returns the possible values for the EncryptionAlgorithmType const type.
+func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
+	return []EncryptionAlgorithmType{
+		EncryptionAlgorithmTypeNone,
+		EncryptionAlgorithmTypeAES256,
+	}
+}

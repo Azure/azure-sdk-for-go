@@ -290,8 +290,13 @@ func (r *Receiver) sendDisposition(first uint32, last *uint32, state encoding.De
 		State:   state,
 	}
 
-	debug(1, "TX (sendDisposition): %s", fr)
-	return r.link.Session.txFrame(fr, nil)
+	select {
+	case <-r.link.Detached:
+		return r.link.err
+	default:
+		debug(1, "TX (sendDisposition): %s", fr)
+		return r.link.Session.txFrame(fr, nil)
+	}
 }
 
 func (r *Receiver) messageDisposition(ctx context.Context, msg *Message, state encoding.DeliveryState) error {

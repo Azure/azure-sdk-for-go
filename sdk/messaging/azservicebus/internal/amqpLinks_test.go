@@ -97,6 +97,51 @@ func TestAMQPLinksBasic(t *testing.T) {
 	require.EqualValues(t, entityPath, links.EntityPath())
 }
 
+func TestAMQPLinksSettleOnClosedLink(t *testing.T) {
+	// we're not going to use this client for these tests.
+	entityPath, cleanup := test.CreateExpiringQueue(t, nil)
+	defer cleanup()
+
+	cs := test.GetConnectionString(t)
+	ns, err := NewNamespace(NamespaceWithConnectionString(cs))
+	require.NoError(t, err)
+
+	defer func() { _ = ns.Close(context.Background(), false) }()
+
+	amqpLinks := NewAMQPLinks(NewAMQPLinksArgs{
+		NS:         ns,
+		EntityPath: entityPath,
+		CreateLinkFunc: func(ctx context.Context, session amqpwrap.AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+			return newLinksForAMQPLinksTest(entityPath, session)
+		},
+		GetRecoveryKindFunc: GetRecoveryKind,
+	})
+
+	lwid, err := amqpLinks.Get(context.Background())
+	require.NoError(t, err)
+
+	err = lwid.Sender.Send(context.Background(), &amqp.Message{
+		Data: [][]byte{[]byte("hello world")},
+	})
+	require.NoError(t, err)
+
+	require.NoError(t, lwid.Receiver.IssueCredit(1))
+
+	msg, err := lwid.Receiver.Receive(context.Background())
+	require.NoError(t, err)
+
+	receiverCloser := lwid.Receiver.(amqpwrap.AMQPReceiverCloser)
+
+	err = receiverCloser.Close(context.Background())
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err = lwid.Receiver.AcceptMessage(ctx, msg)
+	require.ErrorIs(t, err, amqp.ErrLinkClosed)
+}
+
 func TestAMQPLinksLive(t *testing.T) {
 	// we're not going to use this client for tehse tests.
 	entityPath, cleanup := test.CreateExpiringQueue(t, nil)

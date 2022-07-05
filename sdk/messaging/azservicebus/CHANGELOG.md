@@ -1,9 +1,10 @@
 # Release History
 
-## 1.0.2 (2022-07-05)
+## 1.0.2 (2022-07-07)
 
 ### Bugs Fixed
 
+- Settlement of a message could hang if the link had been detached/closed. (#18530)
 - Cancelling link creation could leak a goroutine or, in rare conditions, a link. (#18479)
 
 ## 1.0.1 (2022-06-07)

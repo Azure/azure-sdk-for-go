@@ -119,10 +119,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 }
 ```
 
@@ -162,17 +159,17 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+
+	name := "mySecret"
+	value := "mySecretValue"
+	params := azsecrets.SetSecretParameters{Value: &value}
+	resp, err := client.SetSecret(context.TODO(), name, params, nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	resp, err := client.SetSecret(context.TODO(), "secretName", "secretValue", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	fmt.Printf("Set secret %s", *resp.Secret.ID)
+	fmt.Printf("Set secret %s", resp.ID.Name())
 }
 ```
 
@@ -195,29 +192,27 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+
+	// an empty string gets the latest version of the secret
+	version := ""
+	resp, err := client.GetSecret(context.TODO(), "mySecretName", version, nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	resp, err := client.GetSecret(context.TODO(), "mySecretName", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	fmt.Printf("Secret Name: %s\tSecret Value: %s", *resp.Secret.ID, *resp.Secret.Value)
+	fmt.Printf("Secret Name: %s\tSecret Value: %s", resp.ID.Name(), *resp.Value)
 }
 ```
 
 ### Update Secret metadata
 
-`UpdateSecretProperties` updates a secret's metadata. It cannot change the secret's value; use [SetSecret](#set-a-secret) to set a secret's value.
+`UpdateSecret` updates a secret's metadata. It cannot change the secret's value; use [SetSecret](#set-a-secret) to set a secret's value.
 
 ```golang
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -231,47 +226,33 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
-	getResp, err := client.GetSecret(context.TODO(), "secret-to-update", nil)
+	updateParams := azsecrets.UpdateSecretParameters{
+		SecretAttributes: &azsecrets.SecretAttributes{
+			Expires: to.Ptr(time.Now().Add(48 * time.Hour)),
+		},
+		// Key Vault doesn't interpret tags. The keys and values are up to your application.
+		Tags: map[string]*string{"expiraton-extended": to.Ptr("true")},
+	}
+	// passing an empty string for the version updates the latest version of the secret
+	version := ""
+	resp, err := client.UpdateSecret(context.Background(), "mySecretName", version, updateParams, nil)
 	if err != nil {
 		// TODO: handle error
 	}
-
-	if getResp.Secret.Properties == nil {
-		getResp.Secret.Properties = &azsecrets.Properties{}
-	}
-	getResp.Secret.Properties = &azsecrets.Properties{
-		Enabled:     to.Ptr(true),
-		ExpiresOn:   to.Ptr(time.Now().Add(48 * time.Hour)),
-		NotBefore:   to.Ptr(time.Now().Add(-24 * time.Hour)),
-		ContentType: to.Ptr("password"),
-		Tags:        map[string]string{"Tag1": "Tag1Value"},
-		// Remember to preserve the name and version
-		Name:    getResp.Secret.Properties.Name,
-		Version: getResp.Secret.Properties.Version,
-	}
-	resp, err := client.UpdateSecretProperties(context.TODO(), getResp.Secret, nil)
-	if err != nil {
-		// TODO: handle error
-	}
-	fmt.Printf("Updated secret with ID: %s\n", *resp.Secret.ID)
+	fmt.Println("Updated secret", resp.ID.Name())
 }
 ```
 
 ### Delete a Secret
 
-[BeginDeleteSecret](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.BeginDeleteSecret) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when you want to purge (permanently delete) a secret as soon as possible.
+[DeleteSecret](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.DeleteSecret) requests that Key Vault delete a secret. It returns when Key Vault has begun deleting the secret. Deletion can take several seconds to complete, so it may be necessary to wait before performing other operations on the deleted secret.
 
 ```golang
 import (
 	"context"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
@@ -282,28 +263,23 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+
+	// DeleteSecret returns when Key Vault has begun deleting the secret. That can take several
+	// seconds to complete, so it may be necessary to wait before performing other operations
+	// on the deleted secret.
+	resp, err := client.DeleteSecret(context.TODO(), "secretToDelete", nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	resp, err := client.BeginDeleteSecret(context.TODO(), "secretToDelete", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	// If you do not care when the secret is deleted, you do not have to
-	// call resp.PollUntilDone.
-	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		// TODO: handle error
-	}
+	fmt.Println("deleted secret", resp.ID.Name())
 }
 ```
 
 ### List secrets
 
-[NewListPropertiesOfSecretsPager](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.NewListPropertiesOfSecretsPager) creates a `Pager` that lists the properties of all of the secrets in the client's vault, not including their secret values.
+[NewListSecretsPager](https://aka.ms/azsdk/go/keyvault-secrets/docs#Client.NewListSecretsPager) creates a `Pager` that lists all of the secrets in the client's vault, not including their secret values.
 
 ```golang
 import (
@@ -320,19 +296,16 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azsecrets.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
-	pager := client.NewListPropertiesOfSecretsPager(nil)
+	pager := client.NewListSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			// TODO: handle error
 		}
-		for _, v := range page.Secrets {
-			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Properties.Tags)
+		for _, secret := range page.Value {
+			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", secret.ID.Name(), secret.Tags)
 		}
 	}
 }

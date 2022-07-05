@@ -80,7 +80,7 @@ func ExecuteCreatePullRequest(path, repoOwner, repoName, prOwner, prBranch, prTi
 }
 
 func ExecuteAddIssueComment(path, repoOwner, repoName, issueNumber, comment, authToken string) error {
-	cmd := exec.Command("pwsh", "./eng/common/scripts/Add-IssueComment.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-IssueNumber", issueNumber, "-Comment", comment, "-AuthToken", authToken)
+	cmd := exec.Command("pwsh", "./eng/common/scripts/Add-IssueComment.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-IssueNumber", issueNumber, "-Comment", comment, "-AuthToken", authToken, "PR ready")
 	cmd.Dir = path
 	output, err := cmd.CombinedOutput()
 	log.Printf("Result of `pwsh Add-IssueComment` execution: \n%s", string(output))

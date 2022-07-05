@@ -33,12 +33,12 @@ func CreatePullRequest(ctx context.Context, client *github.Client, owner, repo, 
 
 func AddIssueComment(ctx context.Context, client *github.Client, owner, repo, issue, prUrl string) (*github.IssueComment, error) {
 	s := strings.Split(issue, "/")
-	prNumber, err := strconv.Atoi(s[len(s)-1])
+	issueNumber, err := strconv.Atoi(s[len(s)-1])
 	if err != nil {
 		return nil, fmt.Errorf("issue link invalid format: %v", err)
 	}
 
-	issueInfo, _, err := client.Issues.Get(ctx, owner, repo, prNumber)
+	issueInfo, _, err := client.Issues.Get(ctx, owner, repo, issueNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,12 @@ func AddIssueComment(ctx context.Context, client *github.Client, owner, repo, is
 	comment := &github.IssueComment{
 		Body: github.String(fmt.Sprintf(confirmComment, *issueInfo.User.Login, prUrl)),
 	}
-	issueComment, _, err := client.Issues.CreateComment(ctx, owner, repo, prNumber, comment)
+	issueComment, _, err := client.Issues.CreateComment(ctx, owner, repo, issueNumber, comment)
+	if err != nil {
+		return nil, err
+	}
+
+	_, _, err = client.Issues.AddLabelsToIssue(ctx, owner, repo, issueNumber, []string{"PR ready"})
 	if err != nil {
 		return nil, err
 	}

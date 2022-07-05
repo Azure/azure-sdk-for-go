@@ -50,7 +50,10 @@ func New(conn net.Conn, opts *ConnOptions) (*Client, error) {
 		return nil, err
 	}
 	err = c.Start()
-	return &Client{conn: c}, err
+	if err != nil {
+		return nil, err
+	}
+	return &Client{conn: c}, nil
 }
 
 // Close disconnects the connection.

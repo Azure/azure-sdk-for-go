@@ -16,8 +16,9 @@ use: "@autorest/go@4.0.0-preview.43"
 version: "^3.0.0"
 
 directive:
-  # delete unused model
+  # delete unused models
   - remove-model: KeyExportParameters
+  - remove-model: KeyProperties
 
   # make vault URL a parameter of the client constructor
   - from: swagger-document

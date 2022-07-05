@@ -12,7 +12,7 @@ output-folder: ../azkeys
 override-client-name: Client
 security: "AADToken"
 security-scopes:  "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.42"
+use: "@autorest/go@4.0.0-preview.43"
 version: "^3.0.0"
 
 directive:
@@ -89,6 +89,9 @@ directive:
   - from: models.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+type (?:Error|KeyVaultError).+\{(?:\s.+\s)+\}\s/g, "");
+  - from: models_serde.go
+    where: $
+    transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:Error|KeyVaultError)\).*\{\s(?:.+\s)+\}\s/g, "");
 
   # delete the Attributes model defined in common.json (it's used only with allOf)
   - from: models.go

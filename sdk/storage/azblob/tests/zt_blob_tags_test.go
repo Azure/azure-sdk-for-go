@@ -6,229 +6,229 @@
 
 package azblob_test
 
-//
-//import (
-//	"bytes"
-//	"crypto/md5"
-//	"encoding/base64"
-//	"fmt"
-//	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-//	"github.com/stretchr/testify/require"
-//	"io/ioutil"
-//	"strings"
-//	"time"
-//)
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
-//	blobTagsMap := map[string]string{
-//		"azure":    "bbClient",
-//		"bbClient": "sdk",
-//		"sdk":      "go",
-//	}
-//
-//	contentSize := 4 * 1024 * 1024 // 4MB
-//	r, _ := generateData(contentSize)
-//
-//	_, err = bbClient.Upload(ctx, r, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
-//
-//	setTagsBlobOptions := BlobSetTagsOptions{
-//		BlobTags: blobTagsMap,
-//	}
-//	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
-//	_require.Nil(err)
-//	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
-//
-//	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
-//	blobTagsSet := blobGetTagsResponse.BlobTagSet
-//	_require.NotNil(blobTagsSet)
-//	_require.Len(blobTagsSet, 3)
-//	for _, blobTag := range blobTagsSet {
-//		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
-//	}
-//}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
-//	blobTagsMap := map[string]string{
-//		"Go":         "CPlusPlus",
-//		"Python":     "CSharp",
-//		"Javascript": "Android",
-//	}
-//
-//	blockBlobUploadResp, err := bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), nil)
-//	_require.Nil(err)
-//	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
-//	versionId1 := blockBlobUploadResp.VersionID
-//
-//	blockBlobUploadResp, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))), nil)
-//	_require.Nil(err)
-//	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
-//	versionId2 := blockBlobUploadResp.VersionID
-//
-//	setTagsBlobOptions := BlobSetTagsOptions{
-//		BlobTags:  blobTagsMap,
-//		VersionID: versionId1,
-//	}
-//	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
-//	_require.Nil(err)
-//	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
-//
-//	getTagsBlobOptions1 := BlobGetTagsOptions{
-//		VersionID: versionId1,
-//	}
-//	blobGetTagsResponse, err := bbClient.GetTags(ctx, &getTagsBlobOptions1)
-//	_require.Nil(err)
-//	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
-//	_require.NotNil(blobGetTagsResponse.BlobTagSet)
-//	_require.Len(blobGetTagsResponse.BlobTagSet, 3)
-//	for _, blobTag := range blobGetTagsResponse.BlobTagSet {
-//		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
-//	}
-//
-//	getTagsBlobOptions2 := BlobGetTagsOptions{
-//		VersionID: versionId2,
-//	}
-//	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
-//	_require.Nil(err)
-//	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
-//	_require.Nil(blobGetTagsResponse.BlobTagSet)
-//}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	//_context := getTestContext(testName)
-//	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
-//	blobTagsMap := map[string]string{
-//		"+-./:=_ ": "firsttag",
-//		"tag2":     "+-./:=_",
-//		"+-./:=_1": "+-./:=_",
-//	}
-//
-//	uploadBlockBlobOptions := BlockBlobUploadOptions{
-//		Metadata:    basicMetadata,
-//		HTTPHeaders: &basicHeaders,
-//		BlobTags:    blobTagsMap,
-//	}
-//	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
-//	_require.Nil(err)
-//	// TODO: Check for metadata and header
-//	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
-//
-//	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
-//	_require.Len(blobGetTagsResponse.BlobTagSet, 3)
-//	for _, blobTag := range blobGetTagsResponse.BlobTagSet {
-//		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
-//	}
-//}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	//_context := getTestContext(testName)
-//	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
-//
-//	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
-//	base64BlockIDs := make([]string, len(data))
-//
-//	for index, d := range data {
-//		base64BlockIDs[index] = blockIDIntToBase64(index)
-//		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
-//		_require.Nil(err)
-//		// _require.Equal(resp.RawResponse.StatusCode, 201)
-//		_require.NotEqual(*resp.Version, "")
-//	}
-//
-//	blobTagsMap := map[string]string{
-//		"azure":    "bbClient",
-//		"bbClient": "sdk",
-//		"sdk":      "go",
-//	}
-//
-//	commitBlockListOptions := BlockBlobCommitBlockListOptions{
-//		BlobTags: blobTagsMap,
-//	}
-//	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
-//	_require.Nil(err)
-//	_require.NotNil(commitResp.VersionID)
-//	versionId := commitResp.VersionID
-//
-//	contentResp, err := bbClient.Download(ctx, nil)
-//	_require.Nil(err)
-//	contentData, err := ioutil.ReadAll(contentresp.BodyReader(nil))
-//	_require.Nil(err)
-//	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
-//
-//	getTagsBlobOptions := BlobGetTagsOptions{
-//		VersionID: versionId,
-//	}
-//	blobGetTagsResp, err := bbClient.GetTags(ctx, &getTagsBlobOptions)
-//	_require.Nil(err)
-//	_require.NotNil(blobGetTagsResp)
-//	_require.Len(blobGetTagsResp.BlobTagSet, 3)
-//	for _, blobTag := range blobGetTagsResp.BlobTagSet {
-//		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
-//	}
-//
-//	blobGetTagsResp, err = bbClient.GetTags(ctx, nil)
-//	_require.Nil(err)
-//	_require.NotNil(blobGetTagsResp)
-//	_require.Len(blobGetTagsResp.BlobTagSet, 3)
-//	for _, blobTag := range blobGetTagsResp.BlobTagSet {
-//		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
-//	}
-//}
-//
-////nolint
+import (
+	"bytes"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/appendblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/pageblob"
+	"github.com/stretchr/testify/require"
+	"io/ioutil"
+	"strings"
+)
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestSetBlobTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+	blobTagsMap := map[string]string{
+		"azure":    "bbClient",
+		"bbClient": "sdk",
+		"sdk":      "go",
+	}
+
+	contentSize := 4 * 1024 * 1024 // 4MB
+	r, _ := generateData(contentSize)
+
+	_, err = bbClient.Upload(ctx, r, nil)
+	_require.Nil(err)
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+
+	setTagsBlobOptions := blob.SetTagsOptions{
+		Tags: blobTagsMap,
+	}
+	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_require.Nil(err)
+	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
+
+	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
+	_require.Nil(err)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	blobTagsSet := blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, 3)
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+}
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+	blobTagsMap := map[string]string{
+		"Go":         "CPlusPlus",
+		"Python":     "CSharp",
+		"Javascript": "Android",
+	}
+
+	blockBlobUploadResp, err := bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), nil)
+	_require.Nil(err)
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+	versionId1 := blockBlobUploadResp.VersionID
+
+	blockBlobUploadResp, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("updated_data"))), nil)
+	_require.Nil(err)
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+	versionId2 := blockBlobUploadResp.VersionID
+
+	setTagsBlobOptions := blob.SetTagsOptions{
+		Tags:      blobTagsMap,
+		VersionID: versionId1,
+	}
+	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_require.Nil(err)
+	// _require.Equal(blobSetTagsResponse.RawResponse.StatusCode, 204)
+
+	getTagsBlobOptions1 := blob.GetTagsOptions{
+		VersionID: versionId1,
+	}
+	blobGetTagsResponse, err := bbClient.GetTags(ctx, &getTagsBlobOptions1)
+	_require.Nil(err)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	_require.NotNil(blobGetTagsResponse.BlobTagSet)
+	_require.Len(blobGetTagsResponse.BlobTagSet, 3)
+	for _, blobTag := range blobGetTagsResponse.BlobTagSet {
+		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	getTagsBlobOptions2 := blob.GetTagsOptions{
+		VersionID: versionId2,
+	}
+	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
+	_require.Nil(err)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	_require.Nil(blobGetTagsResponse.BlobTagSet)
+}
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	//_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+	blobTagsMap := map[string]string{
+		"+-./:=_ ": "firsttag",
+		"tag2":     "+-./:=_",
+		"+-./:=_1": "+-./:=_",
+	}
+
+	uploadBlockBlobOptions := blockblob.UploadOptions{
+		Metadata:    basicMetadata,
+		HTTPHeaders: &basicHeaders,
+		Tags:        blobTagsMap,
+	}
+	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
+	_require.Nil(err)
+	// TODO: Check for metadata and header
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+
+	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
+	_require.Nil(err)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	_require.Len(blobGetTagsResponse.BlobTagSet, 3)
+	for _, blobTag := range blobGetTagsResponse.BlobTagSet {
+		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+}
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	//_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+
+	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
+	base64BlockIDs := make([]string, len(data))
+
+	for index, d := range data {
+		base64BlockIDs[index] = blockIDIntToBase64(index)
+		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(d)), nil)
+		_require.Nil(err)
+		// _require.Equal(resp.RawResponse.StatusCode, 201)
+		_require.NotEqual(*resp.Version, "")
+	}
+
+	blobTagsMap := map[string]string{
+		"azure":    "bbClient",
+		"bbClient": "sdk",
+		"sdk":      "go",
+	}
+
+	commitBlockListOptions := blockblob.CommitBlockListOptions{
+		Tags: blobTagsMap,
+	}
+	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
+	_require.Nil(err)
+	_require.NotNil(commitResp.VersionID)
+	versionId := commitResp.VersionID
+
+	contentResp, err := bbClient.Download(ctx, nil)
+	_require.Nil(err)
+	contentData, err := ioutil.ReadAll(contentResp.BodyReader(nil))
+	_require.Nil(err)
+	_require.EqualValues(contentData, []uint8(strings.Join(data, "")))
+
+	getTagsBlobOptions := blob.GetTagsOptions{
+		VersionID: versionId,
+	}
+	blobGetTagsResp, err := bbClient.GetTags(ctx, &getTagsBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(blobGetTagsResp)
+	_require.Len(blobGetTagsResp.BlobTagSet, 3)
+	for _, blobTag := range blobGetTagsResp.BlobTagSet {
+		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	blobGetTagsResp, err = bbClient.GetTags(ctx, nil)
+	_require.Nil(err)
+	_require.NotNil(blobGetTagsResp)
+	_require.Len(blobGetTagsResp.BlobTagSet, 3)
+	for _, blobTag := range blobGetTagsResp.BlobTagSet {
+		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+}
+
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestStageBlockFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -256,8 +256,8 @@ package azblob_test
 //		"Javascript": "Android",
 //	}
 //
-//	uploadBlockBlobOptions := BlockBlobUploadOptions{
-//		BlobTags: blobTagsMap,
+//	uploadBlockBlobOptions := blockblob.UploadOptions{
+//		Tags: blobTagsMap,
 //	}
 //	uploadSrcResp, err := srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
 //	_require.Nil(err)
@@ -265,7 +265,7 @@ package azblob_test
 //	uploadDate := uploadSrcResp.Date
 //
 //	// Get source blob url with SAS for StageFromURL.
-//	srcBlobParts, _ := NewBlobURLParts(srcBlob.URL())
+//	srcBlobParts, _ := azblob.ParseBlobURL(srcBlob.URL())
 //
 //	srcBlobParts.SAS, err = BlobSASSignatureValues{
 //		Protocol:      SASProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
@@ -315,8 +315,8 @@ package azblob_test
 //	_require.Nil(blockList.BlockList.CommittedBlocks)
 //	_require.Len(blockList.BlockList.UncommittedBlocks, 2)
 //
-//	commitBlockListOptions := BlockBlobCommitBlockListOptions{
-//		BlobTags: blobTagsMap,
+//	commitBlockListOptions := blockblob.CommitBlockListOptions{
+//		Tags: blobTagsMap,
 //	}
 //	_, err = destBlob.CommitBlockList(ctx, []string{blockID1, blockID2}, &commitBlockListOptions)
 //	_require.Nil(err)
@@ -336,8 +336,8 @@ package azblob_test
 //	_require.Nil(err)
 //	_require.EqualValues(destData, sourceData)
 //}
-//
-////nolint
+
+//nolint
 //func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURLWithTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
@@ -365,8 +365,8 @@ package azblob_test
 //		"Javascript": "Android",
 //	}
 //
-//	uploadBlockBlobOptions := BlockBlobUploadOptions{
-//		BlobTags: blobTagsMap,
+//	uploadBlockBlobOptions := blockblob.UploadOptions{
+//		Tags: blobTagsMap,
 //	}
 //	_, err = srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
 //	_require.Nil(err)
@@ -389,7 +389,7 @@ package azblob_test
 //	srcBlobURLWithSAS := srcBlobParts.URL()
 //	sourceContentMD5 := sourceDataMD5Value[:]
 //	copyBlockBlobFromURLOptions1 := BlockBlobCopyFromURLOptions{
-//		BlobTags:         map[string]string{"foo": "bar"},
+//		Tags:         map[string]string{"foo": "bar"},
 //		SourceContentMD5: sourceContentMD5,
 //	}
 //	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
@@ -412,437 +412,435 @@ package azblob_test
 //
 //	_, badMD5 := getRandomDataAndReader(16)
 //	copyBlockBlobFromURLOptions2 := BlockBlobCopyFromURLOptions{
-//		BlobTags:         blobTagsMap,
+//		Tags:         blobTagsMap,
 //		SourceContentMD5: badMD5,
 //	}
 //	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
 //	_require.NotNil(err)
 //
 //	copyBlockBlobFromURLOptions3 := BlockBlobCopyFromURLOptions{
-//		BlobTags: blobTagsMap,
+//		Tags: blobTagsMap,
 //	}
 //	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions3)
 //	_require.Nil(err)
 //	// _require.Equal(resp.RawResponse.StatusCode, 202)
 //}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	//_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+
+	uploadBlockBlobOptions := blockblob.UploadOptions{
+		Tags:        basicBlobTagsMap,
+		HTTPHeaders: &basicHeaders,
+		Metadata:    basicMetadata,
+	}
+	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
+	_require.Nil(err)
+	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
+
+	getPropertiesResponse, err := bbClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.Equal(*getPropertiesResponse.TagCount, int64(3))
+
+	downloadResp, err := bbClient.Download(ctx, nil)
+	_require.Nil(err)
+	_require.NotNil(downloadResp)
+	_require.Equal(*downloadResp.TagCount, int64(3))
+}
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	// _context := getTestContext(testName)
+	// ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	bbClient := createNewBlockBlob(_require, generateBlobName(testName), containerClient)
+	blobTagsMap := map[string]string{
+		"Microsoft Azure": "Azure Storage",
+		"Storage+SDK":     "SDK/GO",
+		"GO ":             ".Net",
+	}
+	setTagsBlobOptions := blob.SetTagsOptions{
+		Tags: blobTagsMap,
+	}
+	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
+	_require.Nil(err)
+
+	resp, err := bbClient.CreateSnapshot(ctx, nil)
+	_require.Nil(err)
+
+	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
+	resp2, err := snapshotURL.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.Equal(*resp2.TagCount, int64(3))
+}
+
+// TODO: Once new pacer is done.
+//nolint
+func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	//_context := getTestContext(testName)
+	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	blobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_require, blobName, containerClient)
+	blobTagsMap := map[string]string{
+		"+-./:=_ ": "firsttag",
+		"tag2":     "+-./:=_",
+		"+-./:=_1": "+-./:=_",
+	}
+
+	_, err = blobClient.SetTags(ctx, &blob.SetTagsOptions{
+		Tags: blobTagsMap,
+	})
+	_require.Nil(err)
+	// _require.Equal(resp.RawResponse.StatusCode,204)
+
+	include := []container.ListBlobsIncludeItem{container.ListBlobsIncludeItemTags}
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		Include: include,
+	})
+
+	found := make([]*container.BlobItem, 0)
+	for pager.More() {
+		resp, err := pager.NextPage(ctx)
+		_require.Nil(err)
+		found = append(found, resp.Segment.BlobItems...)
+		if err != nil {
+			break
+		}
+	}
+
+	_require.Equal(*(found[0].Name), blobName)
+	_require.Len(found[0].BlobTags.BlobTagSet, 3)
+	for _, blobTag := range found[0].BlobTags.BlobTagSet {
+		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+}
+
+//nolint
+//func (s *azblobUnrecordedTestSuite) TestFindBlobsByTags() {
 //	_require := require.New(s.T())
 //	testName := s.T().Name()
-//	//_context := getTestContext(testName)
-//	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+//	_context := getTestContext(testName)
+//	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
+//	containerClient1 := createNewContainer(_require, generateContainerName(testName) + "1", svcClient)
+//	defer deleteContainer(_require, containerClient1)
 //
-//	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
+//	containerClient2 := createNewContainer(_require, generateContainerName(testName) + "2", svcClient)
+//	defer deleteContainer(_require, containerClient2)
 //
-//	uploadBlockBlobOptions := BlockBlobUploadOptions{
-//		BlobTags:    basicBlobTagsMap,
-//		HTTPHeaders: &basicHeaders,
-//		Metadata:    basicMetadata,
+//	containerClient3 := createNewContainer(_require, generateContainerName(testName) + "3", svcClient)
+//	defer deleteContainer(_require, containerClient3)
+//
+//	blobTagsMap1 := map[string]string{
+//		"tag2": "tagsecond",
+//		"tag3": "tagthird",
 //	}
-//	_, err = bbClient.Upload(ctx, NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
-//	_require.Nil(err)
-//	// _require.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
-//
-//	getPropertiesResponse, err := bbClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.Equal(*getPropertiesResponse.TagCount, int64(3))
-//
-//	downloadResp, err := bbClient.Download(ctx, nil)
-//	_require.Nil(err)
-//	_require.NotNil(downloadResp)
-//	_require.Equal(*downloadResp.TagCount, int64(3))
-//}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestSetBlobTagForSnapshot() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	// _context := getTestContext(testName)
-//	// ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//	blobTagsMap2 := map[string]string{
+//		"tag1": "firsttag",
+//		"tag2": "secondtag",
+//		"tag3": "thirdtag",
 //	}
 //
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	bbClient := createNewBlockBlob(_require, generateBlobName(testName), containerClient)
-//	blobTagsMap := map[string]string{
-//		"Microsoft Azure": "Azure Storage",
-//		"Storage+SDK":     "SDK/GO",
-//		"GO ":             ".Net",
-//	}
-//	setTagsBlobOptions := BlobSetTagsOptions{
-//		BlobTags: blobTagsMap,
-//	}
-//	_, err = bbClient.SetTags(ctx, &setTagsBlobOptions)
-//	_require.Nil(err)
-//
-//	resp, err := bbClient.CreateSnapshot(ctx, nil)
-//	_require.Nil(err)
-//
-//	snapshotURL, _ := bbClient.WithSnapshot(*resp.Snapshot)
-//	resp2, err := snapshotURL.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.Equal(*resp2.TagCount, int64(3))
-//}
-//
-//// TODO: Once new pacer is done.
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestListBlobReturnsTags() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	//_context := getTestContext(testName)
-//	//ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	blobName := generateBlobName(testName)
-//	blobClient := createNewBlockBlob(_require, blobName, containerClient)
-//	blobTagsMap := map[string]string{
-//		"+-./:=_ ": "firsttag",
-//		"tag2":     "+-./:=_",
-//		"+-./:=_1": "+-./:=_",
-//	}
-//
-//	_, err = blobClient.SetTags(ctx, &BlobSetTagsOptions{
-//		BlobTags: blobTagsMap,
+//	blobURL11 := getBlockBlobClient(generateBlobName(testName) + "11", containerClient1)
+//	_, err = blobURL11.Upload(ctx, bytes.NewReader([]byte("random data")), &blockblob.UploadOptions{
+//		Metadata: basicMetadata,
+//		Tags: blobTagsMap1,
 //	})
 //	_require.Nil(err)
-//	// _require.Equal(resp.RawResponse.StatusCode,204)
 //
-//	include := []ListBlobsIncludeItem{ListBlobsIncludeItemTags}
-//	pager := containerClient.NewListBlobsFlatPager(&ContainerListBlobsFlatOptions{
-//		Include: include,
+//	blobURL12 := getBlockBlobClient(generateBlobName(testName) + "12", containerClient1)
+//	_, err = blobURL12.Upload(ctx, bytes.NewReader([]byte("another random data")), &blockblob.UploadOptions{
+//		Metadata: basicMetadata,
+//		Tags: blobTagsMap2,
 //	})
+//	_require.Nil(err)
 //
-//	found := make([]*BlobItemInternal, 0)
-//	for pager.More() {
-//		resp, err := pager.NextPage(ctx)
-//		_require.Nil(err)
-//		found = append(found, resp.Segment.BlobItems...)
-//		if err != nil {
-//			break
-//		}
-//	}
+//	blobURL21 := getBlockBlobClient(generateBlobName(testName) + "21", containerClient2)
+//	_, err = blobURL21.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	_require.Nil(err)
 //
-//	_require.Equal(*(found[0].Name), blobName)
-//	_require.Len(found[0].BlobTags.BlobTagSet, 3)
-//	for _, blobTag := range found[0].BlobTags.BlobTagSet {
-//		_require.Equal(blobTagsMap[*blobTag.Key], *blobTag.Value)
+//	blobURL22 := getBlockBlobClient(generateBlobName(testName) + "22", containerClient2)
+//	_, err = blobURL22.Upload(ctx, bytes.NewReader([]byte("another random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
+//	_require.Nil(err)
+//
+//	blobURL31 := getBlockBlobClient(generateBlobName(testName) + "31", containerClient3)
+//	_, err = blobURL31.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	_require.Nil(err)
+//
+//	where := "\"tag4\"='fourthtag'"
+//	lResp, err := svcClient.FindBlobByTags(ctx, nil, nil, &where, Marker{}, nil)
+//	_require.Nil(err)
+//	_assert(lResp.Blobs, chk.HasLen, 0)
+//
+//	//where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND\"@container\"='"+ containerName1 + "'"
+//	//TODO: Figure out how to do a composite query based on container.
+//	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
+//
+//	lResp, err = svcClient.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
+//	_require.Nil(err)
+//
+//	for _, blob := range lResp.Blobs {
+//		_assert(blob.TagValue, chk.Equals, "firsttag")
 //	}
 //}
-//
-////nolint
-////func (s *azblobUnrecordedTestSuite) TestFindBlobsByTags() {
-////	_require := require.New(s.T())
-////	testName := s.T().Name()
-////	_context := getTestContext(testName)
-////	ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-////	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-////	if err != nil {
-////		s.Fail("Unable to fetch service client because " + err.Error())
-////	}
-////
-////	containerClient1 := createNewContainer(_require, generateContainerName(testName) + "1", svcClient)
-////	defer deleteContainer(_require, containerClient1)
-////
-////	containerClient2 := createNewContainer(_require, generateContainerName(testName) + "2", svcClient)
-////	defer deleteContainer(_require, containerClient2)
-////
-////	containerClient3 := createNewContainer(_require, generateContainerName(testName) + "3", svcClient)
-////	defer deleteContainer(_require, containerClient3)
-////
-////	blobTagsMap1 := map[string]string{
-////		"tag2": "tagsecond",
-////		"tag3": "tagthird",
-////	}
-////	blobTagsMap2 := map[string]string{
-////		"tag1": "firsttag",
-////		"tag2": "secondtag",
-////		"tag3": "thirdtag",
-////	}
-////
-////	blobURL11 := getBlockBlobClient(generateBlobName(testName) + "11", containerClient1)
-////	_, err = blobURL11.Upload(ctx, bytes.NewReader([]byte("random data")), &BlockBlobUploadOptions{
-////		Metadata: basicMetadata,
-////		BlobTags: blobTagsMap1,
-////	})
-////	_require.Nil(err)
-////
-////	blobURL12 := getBlockBlobClient(generateBlobName(testName) + "12", containerClient1)
-////	_, err = blobURL12.Upload(ctx, bytes.NewReader([]byte("another random data")), &BlockBlobUploadOptions{
-////		Metadata: basicMetadata,
-////		BlobTags: blobTagsMap2,
-////	})
-////	_require.Nil(err)
-////
-////	blobURL21 := getBlockBlobClient(generateBlobName(testName) + "21", containerClient2)
-////	_, err = blobURL21.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-////	_require.Nil(err)
-////
-////	blobURL22 := getBlockBlobClient(generateBlobName(testName) + "22", containerClient2)
-////	_, err = blobURL22.Upload(ctx, bytes.NewReader([]byte("another random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
-////	_require.Nil(err)
-////
-////	blobURL31 := getBlockBlobClient(generateBlobName(testName) + "31", containerClient3)
-////	_, err = blobURL31.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-////	_require.Nil(err)
-////
-////	where := "\"tag4\"='fourthtag'"
-////	lResp, err := svcClient.FindBlobByTags(ctx, nil, nil, &where, Marker{}, nil)
-////	_require.Nil(err)
-////	_assert(lResp.Blobs, chk.HasLen, 0)
-////
-////	//where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND\"@container\"='"+ containerName1 + "'"
-////	//TODO: Figure out how to do a composite query based on container.
-////	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
-////
-////	lResp, err = svcClient.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
-////	_require.Nil(err)
-////
-////	for _, blob := range lResp.Blobs {
-////		_assert(blob.TagValue, chk.Equals, "firsttag")
-////	}
-////}
-//
-////nolint
-////func (s *azblobUnrecordedTestSuite) TestFilterBlobsUsingAccountSAS() {
-////	accountName, accountKey := accountInfo()
-////	credential, err := NewSharedKeyCredential(accountName, accountKey)
-////	if err != nil {
-////		s.T().Fail()
-////	}
-////
-////	sasQueryParams, err := AccountSASSignatureValues{
-////		Protocol:      SASProtocolHTTPS,
-////		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
-////		Permissions:   AccountSASPermissions{Read: true, List: true, Write: true, DeletePreviousVersion: true, Tag: true, FilterByTags: true, Create: true}.String(),
-////		Services:      AccountSASServices{Blob: true}.String(),
-////		ResourceTypes: AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
-////	}.NewSASQueryParameters(credential)
-////	if err != nil {
-////		log.Fatal(err)
-////	}
-////
-////	qp := sasQueryParams.Encode()
-////	urlToSendToSomeone := fmt.Sprintf("https://%s.blob.core.windows.net?%s", accountName, qp)
-////	u, _ := url.Parse(urlToSendToSomeone)
-////	serviceURL := NewServiceURL(*u, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
-////
-////	containerName := generateContainerName()
-////	containerClient := serviceURL.NewcontainerClient(containerName)
-////	_, err = containerClient.Create(ctx, Metadata{}, PublicAccessNone)
-////	defer containerClient.Delete(ctx, BlobAccessConditions{})
-////	if err != nil {
-////		s.T().Fatal(err)
-////	}
-////
-////	blobClient := containerClient.NewBlockBlobURL("temp")
-////	_, err = blobClient.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-////	if err != nil {
-////		s.T().Fail()
-////	}
-////
-////	blobTagsMap := BlobTags{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
-////	setBlobTagsResp, err := blobClient.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
-////	_require.Nil(err)
-////	_assert(setBlobTagsResp.StatusCode(), chk.Equals, 204)
-////
-////	blobGetTagsResp, err := blobClient.GetTags(ctx, nil, nil, nil, nil, nil)
-////	_require.Nil(err)
-////	_assert(blobGetTagsResp.StatusCode(), chk.Equals, 200)
-////	_assert(blobGetTagsResp.BlobTagSet, chk.HasLen, 3)
-////	for _, blobTag := range blobGetTagsResp.BlobTagSet {
-////		_assert(blobTagsMap[blobTag.Key], chk.Equals, blobTag.Value)
-////	}
-////
-////	time.Sleep(30 * time.Second)
-////	where := "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND@container='" + containerName + "'"
-////	_, err = serviceURL.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
-////	_require.Nil(err)
-////}
-//
-//// nolint
-//func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+
+//nolint
+//func (s *azblobUnrecordedTestSuite) TestFilterBlobsUsingAccountSAS() {
+//	accountName, accountKey := accountInfo()
+//	credential, err := NewSharedKeyCredential(accountName, accountKey)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//		s.T().Fail()
 //	}
 //
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	pbClient := createNewPageBlob(_require, "src"+generateBlobName(testName), containerClient)
-//
-//	contentSize := 1 * 1024
-//	offset, count := int64(0), int64(contentSize)
-//	uploadPagesOptions := PageBlobUploadPagesOptions{
-//		PageRange: &HttpRange{offset, count},
-//	}
-//	putResp, err := pbClient.UploadPages(ctx, getReaderToGeneratedBytes(1024), &uploadPagesOptions)
-//	_require.Nil(err)
-//	//_require.Equal(putResp.RawResponse.StatusCode, 201)
-//	_require.Equal(putResp.LastModified.IsZero(), false)
-//	_require.NotEqual(putResp.ETag, "")
-//	_require.NotEqual(putResp.Version, "")
-//
-//	setTagsBlobOptions := BlobSetTagsOptions{
-//		BlobTags: basicBlobTagsMap,
-//	}
-//	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
-//	_require.Nil(err)
-//	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
-//
-//	gpResp, err := pbClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.NotNil(gpResp)
-//	_require.Equal(*gpResp.TagCount, int64(len(basicBlobTagsMap)))
-//
-//	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
-//	blobTagsSet := blobGetTagsResponse.BlobTagSet
-//	_require.NotNil(blobTagsSet)
-//	_require.Len(blobTagsSet, len(basicBlobTagsMap))
-//	for _, blobTag := range blobTagsSet {
-//		_require.Equal(basicBlobTagsMap[*blobTag.Key], *blobTag.Value)
-//	}
-//
-//	modifiedBlobTags := map[string]string{
-//		"a0z1u2r3e4": "b0l1o2b3",
-//		"b0l1o2b3":   "s0d1k2",
-//	}
-//
-//	setTagsBlobOptions2 := BlobSetTagsOptions{
-//		BlobTags: modifiedBlobTags,
-//	}
-//	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
-//	_require.Nil(err)
-//	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
-//
-//	gpResp, err = pbClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.NotNil(gpResp)
-//	_require.Equal(*gpResp.TagCount, int64(len(modifiedBlobTags)))
-//
-//	blobGetTagsResponse, err = pbClient.GetTags(ctx, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
-//	blobTagsSet = blobGetTagsResponse.BlobTagSet
-//	_require.NotNil(blobTagsSet)
-//	_require.Len(blobTagsSet, len(modifiedBlobTags))
-//	for _, blobTag := range blobTagsSet {
-//		_require.Equal(modifiedBlobTags[*blobTag.Key], *blobTag.Value)
-//	}
-//}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	sasQueryParams, err := AccountSASSignatureValues{
+//		Protocol:      SASProtocolHTTPS,
+//		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour),
+//		Permissions:   AccountSASPermissions{Read: true, List: true, Write: true, DeletePreviousVersion: true, Tag: true, FilterByTags: true, Create: true}.String(),
+//		Services:      AccountSASServices{Blob: true}.String(),
+//		ResourceTypes: AccountSASResourceTypes{Service: true, Container: true, Object: true}.String(),
+//	}.NewSASQueryParameters(credential)
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//		log.Fatal(err)
 //	}
 //
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
+//	qp := sasQueryParams.Encode()
+//	urlToSendToSomeone := fmt.Sprintf("https://%s.blob.core.windows.net?%s", accountName, qp)
+//	u, _ := url.Parse(urlToSendToSomeone)
+//	serviceURL := NewServiceURL(*u, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
 //
-//	pbClient := createNewPageBlob(_require, generateBlobName(testName), containerClient)
-//
-//	setTagsBlobOptions := BlobSetTagsOptions{
-//		BlobTags: specialCharBlobTagsMap,
-//	}
-//	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
-//	_require.Nil(err)
-//
-//	resp, err := pbClient.CreateSnapshot(ctx, nil)
-//	_require.Nil(err)
-//
-//	snapshotURL, _ := pbClient.WithSnapshot(*resp.Snapshot)
-//	resp2, err := snapshotURL.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//	_require.Equal(*resp2.TagCount, int64(len(specialCharBlobTagsMap)))
-//
-//	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
-//	blobTagsSet := blobGetTagsResponse.BlobTagSet
-//	_require.NotNil(blobTagsSet)
-//	_require.Len(blobTagsSet, len(specialCharBlobTagsMap))
-//	for _, blobTag := range blobTagsSet {
-//		_require.Equal(specialCharBlobTagsMap[*blobTag.Key], *blobTag.Value)
-//	}
-//}
-//
-////nolint
-//func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
-//	_require := require.New(s.T())
-//	testName := s.T().Name()
-//	// _context := getTestContext(testName)
-//	// ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	containerName := generateContainerName()
+//	containerClient := serviceURL.NewcontainerClient(containerName)
+//	_, err = containerClient.Create(ctx, Metadata{}, PublicAccessNone)
+//	defer containerClient.Delete(ctx, BlobAccessConditions{})
 //	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
+//		s.T().Fatal(err)
 //	}
 //
-//	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
-//	defer deleteContainer(_require, containerClient)
-//
-//	abClient := getAppendBlobClient(generateBlobName(testName), containerClient)
-//
-//	createAppendBlobOptions := AppendBlobCreateOptions{
-//		BlobTags: specialCharBlobTagsMap,
-//	}
-//	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)
-//	_require.Nil(err)
-//	_require.NotNil(createResp.VersionID)
-//
-//	_, err = abClient.GetProperties(ctx, nil)
-//	_require.Nil(err)
-//
-//	blobGetTagsResponse, err := abClient.GetTags(ctx, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
-//	blobTagsSet := blobGetTagsResponse.BlobTagSet
-//	_require.NotNil(blobTagsSet)
-//	_require.Len(blobTagsSet, len(specialCharBlobTagsMap))
-//	for _, blobTag := range blobTagsSet {
-//		_require.Equal(specialCharBlobTagsMap[*blobTag.Key], *blobTag.Value)
+//	blobClient := containerClient.NewBlockBlobURL("temp")
+//	_, err = blobClient.Upload(ctx, bytes.NewReader([]byte("random data")), HTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	if err != nil {
+//		s.T().Fail()
 //	}
 //
-//	resp, err := abClient.CreateSnapshot(ctx, nil)
+//	blobTagsMap := BlobTags{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
+//	setBlobTagsResp, err := blobClient.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
 //	_require.Nil(err)
+//	_assert(setBlobTagsResp.StatusCode(), chk.Equals, 204)
 //
-//	snapshotURL, _ := abClient.WithSnapshot(*resp.Snapshot)
-//	resp2, err := snapshotURL.GetProperties(ctx, nil)
+//	blobGetTagsResp, err := blobClient.GetTags(ctx, nil, nil, nil, nil, nil)
 //	_require.Nil(err)
-//	_require.Equal(*resp2.TagCount, int64(len(specialCharBlobTagsMap)))
-//
-//	blobGetTagsResponse, err = abClient.GetTags(ctx, nil)
-//	_require.Nil(err)
-//	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
-//	blobTagsSet = blobGetTagsResponse.BlobTagSet
-//	_require.NotNil(blobTagsSet)
-//	_require.Len(blobTagsSet, len(specialCharBlobTagsMap))
-//	for _, blobTag := range blobTagsSet {
-//		_require.Equal(specialCharBlobTagsMap[*blobTag.Key], *blobTag.Value)
+//	_assert(blobGetTagsResp.StatusCode(), chk.Equals, 200)
+//	_assert(blobGetTagsResp.BlobTagSet, chk.HasLen, 3)
+//	for _, blobTag := range blobGetTagsResp.BlobTagSet {
+//		_assert(blobTagsMap[blobTag.Key], chk.Equals, blobTag.Value)
 //	}
+//
+//	time.Sleep(30 * time.Second)
+//	where := "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND@container='" + containerName + "'"
+//	_, err = serviceURL.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
+//	_require.Nil(err)
 //}
+
+// nolint
+func (s *azblobUnrecordedTestSuite) TestCreatePageBlobWithTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	pbClient := createNewPageBlob(_require, "src"+generateBlobName(testName), containerClient)
+
+	contentSize := 1 * 1024
+	offset, count := int64(0), int64(contentSize)
+	putResp, err := pbClient.UploadPages(ctx, getReaderToGeneratedBytes(1024), &pageblob.UploadPagesOptions{
+		Offset: to.Ptr(offset), Count: to.Ptr(count)})
+	_require.Nil(err)
+	//_require.Equal(putResp.RawResponse.StatusCode, 201)
+	_require.Equal(putResp.LastModified.IsZero(), false)
+	_require.NotEqual(putResp.ETag, "")
+	_require.NotEqual(putResp.Version, "")
+
+	setTagsBlobOptions := blob.SetTagsOptions{
+		Tags: basicBlobTagsMap,
+	}
+	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
+	_require.Nil(err)
+	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
+
+	gpResp, err := pbClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.NotNil(gpResp)
+	_require.Equal(*gpResp.TagCount, int64(len(basicBlobTagsMap)))
+
+	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
+	_require.Nil(err)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	blobTagsSet := blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, len(basicBlobTagsMap))
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(basicBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	modifiedBlobTags := map[string]string{
+		"a0z1u2r3e4": "b0l1o2b3",
+		"b0l1o2b3":   "s0d1k2",
+	}
+
+	setTagsBlobOptions2 := blob.SetTagsOptions{
+		Tags: modifiedBlobTags,
+	}
+	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
+	_require.Nil(err)
+	//_require.Equal(setTagResp.RawResponse.StatusCode, 204)
+
+	gpResp, err = pbClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.NotNil(gpResp)
+	_require.Equal(*gpResp.TagCount, int64(len(modifiedBlobTags)))
+
+	blobGetTagsResponse, err = pbClient.GetTags(ctx, nil)
+	_require.Nil(err)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	blobTagsSet = blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, len(modifiedBlobTags))
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(modifiedBlobTags[*blobTag.Key], *blobTag.Value)
+	}
+}
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestPageBlobSetBlobTagForSnapshot() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	pbClient := createNewPageBlob(_require, generateBlobName(testName), containerClient)
+
+	setTagsBlobOptions := blob.SetTagsOptions{
+		Tags: specialCharBlobTagsMap,
+	}
+	_, err = pbClient.SetTags(ctx, &setTagsBlobOptions)
+	_require.Nil(err)
+
+	resp, err := pbClient.CreateSnapshot(ctx, nil)
+	_require.Nil(err)
+
+	snapshotURL, _ := pbClient.WithSnapshot(*resp.Snapshot)
+	resp2, err := snapshotURL.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.Equal(*resp2.TagCount, int64(len(specialCharBlobTagsMap)))
+
+	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
+	_require.Nil(err)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	blobTagsSet := blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, len(specialCharBlobTagsMap))
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(specialCharBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+}
+
+//nolint
+func (s *azblobUnrecordedTestSuite) TestCreateAppendBlobWithTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	// _context := getTestContext(testName)
+	// ignoreHeaders(_context.recording, []string{"x-ms-tags", "X-Ms-Tags"})
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := createNewContainer(_require, generateContainerName(testName), svcClient)
+	defer deleteContainer(_require, containerClient)
+
+	abClient := getAppendBlobClient(generateBlobName(testName), containerClient)
+
+	createAppendBlobOptions := appendblob.CreateOptions{
+		Tags: specialCharBlobTagsMap,
+	}
+	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)
+	_require.Nil(err)
+	_require.NotNil(createResp.VersionID)
+
+	_, err = abClient.GetProperties(ctx, nil)
+	_require.Nil(err)
+
+	blobGetTagsResponse, err := abClient.GetTags(ctx, nil)
+	_require.Nil(err)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	blobTagsSet := blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, len(specialCharBlobTagsMap))
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(specialCharBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+
+	resp, err := abClient.CreateSnapshot(ctx, nil)
+	_require.Nil(err)
+
+	snapshotURL, _ := abClient.WithSnapshot(*resp.Snapshot)
+	resp2, err := snapshotURL.GetProperties(ctx, nil)
+	_require.Nil(err)
+	_require.Equal(*resp2.TagCount, int64(len(specialCharBlobTagsMap)))
+
+	blobGetTagsResponse, err = abClient.GetTags(ctx, nil)
+	_require.Nil(err)
+	// _require.Equal(blobGetTagsResponse.RawResponse.StatusCode, 200)
+	blobTagsSet = blobGetTagsResponse.BlobTagSet
+	_require.NotNil(blobTagsSet)
+	_require.Len(blobTagsSet, len(specialCharBlobTagsMap))
+	for _, blobTag := range blobTagsSet {
+		_require.Equal(specialCharBlobTagsMap[*blobTag.Key], *blobTag.Value)
+	}
+}

@@ -327,3 +327,5 @@ func (o *CopyIncrementalOptions) format() (*generated.PageBlobClientCopyIncremen
 // ---------------------------------------------------------------------------------------------------------------------
 
 type PremiumPageBlobAccessTier = generated.PremiumPageBlobAccessTier
+
+type PageList = generated.PageList

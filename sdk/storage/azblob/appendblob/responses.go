@@ -13,3 +13,7 @@ import (
 type CreateResponse = generated.AppendBlobClientCreateResponse
 
 type AppendBlockResponse = generated.AppendBlobClientAppendBlockResponse
+
+type AppendBlockFromURLResponse = generated.AppendBlobClientAppendBlockFromURLResponse
+
+type SealResponse = generated.AppendBlobClientSealResponse

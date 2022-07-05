@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Mon, 04 Jul 2022 10:33:15 GMT
+      - Tue, 05 Jul 2022 06:13:50 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobgetpropsonmissingblob?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 04 Jul 2022 10:33:13 GMT
+      - Tue, 05 Jul 2022 06:13:49 GMT
       Etag:
-      - '"0x8DA5DA899890772"'
+      - '"0x8DA5E4D86F6B5E1"'
       Last-Modified:
-      - Mon, 04 Jul 2022 10:33:13 GMT
+      - Tue, 05 Jul 2022 06:13:49 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 32e4440e-701e-001d-5591-8f82c4000000
+      - 2029306a-001e-0017-2f36-902673000000
       X-Ms-Version:
       - "2020-10-02"
     status: 201 Created
@@ -48,7 +48,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Mon, 04 Jul 2022 10:33:16 GMT
+      - Tue, 05 Jul 2022 06:13:50 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobgetpropsonmissingblob/MISSING
@@ -57,13 +57,13 @@ interactions:
     body: ""
     headers:
       Date:
-      - Mon, 04 Jul 2022 10:33:13 GMT
+      - Tue, 05 Jul 2022 06:13:49 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - BlobNotFound
       X-Ms-Request-Id:
-      - 32e445ed-701e-001d-0f91-8f82c4000000
+      - 20293173-001e-0017-2336-902673000000
       X-Ms-Version:
       - "2020-10-02"
     status: 404 The specified blob does not exist.
@@ -80,7 +80,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.5.0 (go1.18.1; Windows_NT)
       X-Ms-Date:
-      - Mon, 04 Jul 2022 10:33:16 GMT
+      - Tue, 05 Jul 2022 06:13:50 GMT
       x-ms-version:
       - "2020-10-02"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobgetpropsonmissingblob?restype=container
@@ -91,11 +91,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 04 Jul 2022 10:33:14 GMT
+      - Tue, 05 Jul 2022 06:13:49 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 32e44737-701e-001d-3391-8f82c4000000
+      - 2029330e-001e-0017-2636-902673000000
       X-Ms-Version:
       - "2020-10-02"
     status: 202 Accepted

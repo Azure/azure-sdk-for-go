@@ -305,7 +305,7 @@ type SetTagsOptions struct {
 	// Optional header, Specifies the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
-	BlobTags map[string]string
+	Tags map[string]string
 
 	ModifiedAccessConditions *ModifiedAccessConditions
 	LeaseAccessConditions    *lease.AccessConditions
@@ -317,7 +317,7 @@ func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *Modifie
 	}
 
 	options := &generated.BlobClientSetTagsOptions{
-		Tags:                      shared.SerializeBlobTags(o.BlobTags),
+		Tags:                      shared.SerializeBlobTags(o.Tags),
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		VersionID:                 o.VersionID,

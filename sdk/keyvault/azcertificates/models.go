@@ -572,12 +572,6 @@ type OrganizationDetails struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// PendingCertificateSigningRequestResult - The pending certificate signing request result.
-type PendingCertificateSigningRequestResult struct {
-	// READ-ONLY; The pending certificate signing request as Base64 encoded string.
-	Value *string `json:"value,omitempty" azure:"ro"`
-}
-
 // RestoreCertificateParameters - The certificate restore parameters.
 type RestoreCertificateParameters struct {
 	// REQUIRED; The backup blob associated with a certificate bundle.

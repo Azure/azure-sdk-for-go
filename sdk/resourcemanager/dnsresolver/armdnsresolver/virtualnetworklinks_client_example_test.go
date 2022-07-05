@@ -17,33 +17,32 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Put.json
-func ExampleOutboundEndpointsClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Put.json
+func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewOutboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginCreateOrUpdate(ctx,
 		"sampleResourceGroup",
-		"sampleDnsResolver",
-		"sampleOutboundEndpoint",
-		armdnsresolver.OutboundEndpoint{
-			Location: to.Ptr("westus2"),
-			Tags: map[string]*string{
-				"key1": to.Ptr("value1"),
-			},
-			Properties: &armdnsresolver.OutboundEndpointProperties{
-				Subnet: &armdnsresolver.SubResource{
-					ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork/subnets/sampleSubnet"),
+		"sampleDnsForwardingRuleset",
+		"sampleVirtualNetworkLink",
+		armdnsresolver.VirtualNetworkLink{
+			Properties: &armdnsresolver.VirtualNetworkLinkProperties{
+				Metadata: map[string]*string{
+					"additionalProp1": to.Ptr("value1"),
+				},
+				VirtualNetwork: &armdnsresolver.SubResource{
+					ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
 				},
 			},
 		},
-		&armdnsresolver.OutboundEndpointsClientBeginCreateOrUpdateOptions{IfMatch: nil,
+		&armdnsresolver.VirtualNetworkLinksClientBeginCreateOrUpdateOptions{IfMatch: nil,
 			IfNoneMatch: nil,
 		})
 	if err != nil {
@@ -57,27 +56,29 @@ func ExampleOutboundEndpointsClient_BeginCreateOrUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Patch.json
-func ExampleOutboundEndpointsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Patch.json
+func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewOutboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginUpdate(ctx,
 		"sampleResourceGroup",
-		"sampleDnsResolver",
-		"sampleOutboundEndpoint",
-		armdnsresolver.OutboundEndpointPatch{
-			Tags: map[string]*string{
-				"key1": to.Ptr("value1"),
+		"sampleDnsForwardingRuleset",
+		"sampleVirtualNetworkLink",
+		armdnsresolver.VirtualNetworkLinkPatch{
+			Properties: &armdnsresolver.VirtualNetworkLinkPatchProperties{
+				Metadata: map[string]*string{
+					"additionalProp1": to.Ptr("value1"),
+				},
 			},
 		},
-		&armdnsresolver.OutboundEndpointsClientBeginUpdateOptions{IfMatch: nil})
+		&armdnsresolver.VirtualNetworkLinksClientBeginUpdateOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -89,22 +90,22 @@ func ExampleOutboundEndpointsClient_BeginUpdate() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Delete.json
-func ExampleOutboundEndpointsClient_BeginDelete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Delete.json
+func ExampleVirtualNetworkLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewOutboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := client.BeginDelete(ctx,
 		"sampleResourceGroup",
-		"sampleDnsResolver",
-		"sampleOutboundEndpoint",
-		&armdnsresolver.OutboundEndpointsClientBeginDeleteOptions{IfMatch: nil})
+		"sampleDnsForwardingRuleset",
+		"sampleVirtualNetworkLink",
+		&armdnsresolver.VirtualNetworkLinksClientBeginDeleteOptions{IfMatch: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -114,21 +115,21 @@ func ExampleOutboundEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_Get.json
-func ExampleOutboundEndpointsClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_Get.json
+func ExampleVirtualNetworkLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewOutboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := client.Get(ctx,
 		"sampleResourceGroup",
-		"sampleDnsResolver",
-		"sampleOutboundEndpoint",
+		"sampleDnsForwardingRuleset",
+		"sampleVirtualNetworkLink",
 		nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -137,20 +138,20 @@ func ExampleOutboundEndpointsClient_Get() {
 	_ = res
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/preview/2020-04-01-preview/examples/OutboundEndpoint_List.json
-func ExampleOutboundEndpointsClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnsresolver/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkLink_List.json
+func ExampleVirtualNetworkLinksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdnsresolver.NewOutboundEndpointsClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
+	client, err := armdnsresolver.NewVirtualNetworkLinksClient("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := client.NewListPager("sampleResourceGroup",
-		"sampleDnsResolver",
-		&armdnsresolver.OutboundEndpointsClientListOptions{Top: nil})
+		"sampleDnsForwardingRuleset",
+		&armdnsresolver.VirtualNetworkLinksClientListOptions{Top: nil})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

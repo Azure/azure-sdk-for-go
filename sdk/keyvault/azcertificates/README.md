@@ -110,8 +110,8 @@ Constructing the client also requires your vault's URL, which you can get from t
 
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
 )
 
 func main() {
@@ -120,10 +120,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azcertificates.NewClient("https://<TODO: your vault name>.vault.azure.net", credential, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azcertificates.NewClient("https://<TODO: your vault name>.vault.azure.net", credential, nil)
 }
 ```
 
@@ -141,25 +138,21 @@ illustrated in the [examples](#examples) below.
 This section contains code snippets covering common tasks:
 * [Create a Certificate](#create-a-certificate)
 * [Delete a Certificate](#delete-a-certificate)
-* [List Properties of Certificates](#list-properties-of-certificates)
+* [List Certificates](#list-certificates)
 * [Retrieve a Certificate](#retrieve-a-certificate)
-* [Update Properties of an existing Certificate](#update-properties-of-an-existing-certificate)
+* [Update Certificate Metadata](#update-certificate-metadata)
 
 ### Create a Certificate
 
-[BeginCreateCertificate](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.BeginCreateCertificate)
+[CreateCertificate](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.CreateCertificate)
 creates a certificate to be stored in the Azure Key Vault. If a certificate with the same name already exists, a new
-version of the certificate is created. Before creating a certificate, a management policy for the certificate can be
-created or our default policy will be used. This method returns a poller object that enables waiting for the operation
-to complete.
+version of the certificate is created.
 
 ```go
 import (
 	"context"
 	"fmt"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
@@ -170,34 +163,23 @@ func main() {
 	if err != nil {
 		// TODO: handle error
 	}
-	client, err := azcertificates.NewClient("https://<TODO: your vault name>.vault.azure.net", credential, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azcertificates.NewClient("https://<TODO: your vault name>.vault.azure.net", credential, nil)
 
-	resp, err := client.BeginCreateCertificate(context.TODO(), "certificateName", azcertificates.Policy{
-		IssuerParameters: &azcertificates.IssuerParameters{
-			IssuerName: to.Ptr("Self"),
+	createParams := azcertificates.CreateCertificateParameters{
+		// this policy is suitable for a self-signed certificate
+		CertificatePolicy: &azcertificates.CertificatePolicy{
+			IssuerParameters:          &azcertificates.IssuerParameters{Name: (*string)(to.Ptr("self"))},
+			X509CertificateProperties: &azcertificates.X509CertificateProperties{Subject: to.Ptr("CN=DefaultPolicy")},
 		},
-		X509Properties: &azcertificates.X509CertificateProperties{
-			Subject: to.Ptr("CN=DefaultPolicy"),
-		},
-	}, nil)
+	}
+	resp, err := client.CreateCertificate(context.TODO(), "certificateName", createParams, nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	finalResponse, err := resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		// TODO: handle error
-	}
-
-	fmt.Println("Created a certificate with ID: ", *finalResponse.ID)
+	fmt.Println("Created a certificate with ID:", *resp.ID)
 }
 ```
-If you would like to check the status of your certificate creation, you can call `Poll(ctx context.Context)` on the poller or
-[GetCertificateOperation](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.GetCertificateOperation)
-with the name of the certificate.
 
 ### Retrieve a Certificate
 
@@ -207,9 +189,10 @@ retrieves the latest version of a certificate previously stored in the Key Vault
 ```go
 import (
 	"context"
+	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
 )
 
 func main() {
@@ -223,24 +206,20 @@ func main() {
 		// TODO: handle error
 	}
 
-	resp, err := client.GetCertificate(context.TODO(), "myCertName", nil)
+	// passing an empty string for the version gets the latest version of the certificate
+	resp, err := client.GetCertificate(context.TODO(), "certName", "", nil)
 	if err != nil {
 		// TODO: handle error
 	}
-
-	// optionally you can get a specific version
-	resp, err = client.GetCertificate(context.TODO(), "myCertName", &azcertificates.GetCertificateOptions{Version: "myCertVersion"})
-	if err != nil {
-		// TODO: handle error
-	}
+	fmt.Println(*resp.ID)
 }
 ```
 
 
-### Update properties of an existing Certificate
+### Update Certificate metadata
 
-[UpdateCertificateProperties](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.UpdateCertificateProperties)
-updates a certificate previously stored in the Key Vault.
+[UpdateCertificate](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.UpdateCertificate)
+updates a certificate's metadata.
 
 ```go
 import (
@@ -263,32 +242,27 @@ func main() {
 		// TODO: handle error
 	}
 
-	resp, err := client.GetCertificate(context.TODO(), "myCertName", nil)
+	updateParams := azcertificates.UpdateCertificateParameters{
+		CertificateAttributes: &azcertificates.CertificateAttributes{Enabled: to.Ptr(false)},
+	}
+	// passing an empty string for the version updates the latest version of the certificate
+	resp, err := client.UpdateCertificate(context.TODO(), "certName", "", updateParams, nil)
 	if err != nil {
 		// TODO: handle error
 	}
-
-	resp.Properties.Enabled = to.Ptr(false)
-	updateResp, err := client.UpdateCertificateProperties(context.TODO(), *resp.Properties, nil)
-	if err != nil {
-		// TODO: handle error
-	}
-	fmt.Printf("Set Enabled to %v for certificate with name %s\n", *&updateResp.Properties.Enabled, *resp.ID)
+	fmt.Println(*resp.ID)
 }
 ```
 
 ### Delete a Certificate
 
-[BeginDeleteCertificate](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.BeginDeleteCertificate)
-requests Key Vault delete a certificate, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when you want to purge (permanently delete) the certificate as soon as possible.
+[DeleteCertificate](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.DeleteCertificate) requests that Key Vault delete a certificate. It returns when Key Vault has begun deleting the certificate. Deletion can take several seconds to complete, so it may be necessary to wait before performing other operations on the deleted certificate.
 
 ```go
 import (
 	"context"
 	"fmt"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azcertificates"
 )
@@ -304,22 +278,22 @@ func main() {
 		// TODO: handle error
 	}
 
-	pollerResp, err := client.BeginDeleteCertificate(context.TODO(), "certToDelete", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-	finalResp, err := pollerResp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
+	// DeleteCertificate returns when Key Vault has begun deleting the certificate. That can take several
+	// seconds to complete, so it may be necessary to wait before performing other operations on the
+	// deleted certificate.
+	resp, err := client.DeleteCertificate(context.TODO(), "certName", nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	fmt.Println("Deleted certificate with ID: ", *finalResp.ID)
+	// In a soft-delete enabled vault, deleted resources can be recovered until they're purged (permanently deleted).
+	fmt.Printf("Certificate will be purged at %v", *resp.ScheduledPurgeDate)
 }
 ```
 
 ### List Certificates
 
-[NewListPropertiesOfCertificatesPager](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.NewListPropertiesOfCertificatesPager) creates a pager that lists the properties of all certificates in the client's vault.
+[NewListCertificatesPager](https://aka.ms/azsdk/go/keyvault-certificates/docs#Client.NewListCertificatesPager) creates a pager that lists all certificates in the vault.
 
 ```go
 import (
@@ -341,13 +315,13 @@ func main() {
 		// TODO: handle error
 	}
 
-	pager := client.NewListPropertiesOfCertificatesPager(nil)
+	pager := client.NewListCertificatesPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			// TODO: handle error
 		}
-		for _, cert := range page.Certificates {
+		for _, cert := range page.Value {
 			fmt.Println(*cert.ID)
 		}
 	}

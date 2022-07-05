@@ -1,0 +1,211 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakevault/keys/testreleasekey2353464635/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "97",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:15 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://vault.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "cc4098ee-16bb-4237-a4c5-84632640a9c7"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Unauthorized",
+          "message": "AKV10000: Request is missing a Bearer or PoP token."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/keys/testreleasekey2353464635/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "265",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "attributes": {
+          "exportable": true
+        },
+        "crv": "P-256K",
+        "kty": "EC-HSM",
+        "release_policy": {
+          "data": "eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dLCJhdXRob3JpdHkiOiJodHRwczovL2Zha2VhdHRlc3RhdGlvbiJ9XSwidmVyc2lvbiI6IjEuMC4wIn0",
+          "immutable": true
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "706",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:17 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=112;da_age=6557;rd_age=6557;brd_age=23044;ra_notif_age=402;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "ffb825e0-9660-469a-8e9f-e1d5e452f6da"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://fakevault/keys/testreleasekey2353464635/4907cabe966c4cc1899314b55303cbd2",
+          "kty": "EC-HSM",
+          "key_ops": [
+            "sign",
+            "verify"
+          ],
+          "crv": "P-256K",
+          "x": "e6-6rePvUNGinU6TY8yXwTQLPY1hAkm2VWBCH6LJcro",
+          "y": "5uB7hMOt8Q_Dm10BLNYnStUIkRw9UDCMKlqXN7eULxQ"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1656356475,
+          "updated": 1656356475,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7,
+          "exportable": true
+        },
+        "release_policy": {
+          "contentType": "application/json; charset=utf-8",
+          "data": "eyJ2ZXJzaW9uIjoiMS4wLjAiLCJhbnlPZiI6W3siYXV0aG9yaXR5IjoiaHR0cHM6Ly9jaGxvd2VhemtleXNzaXRlLmF6dXJld2Vic2l0ZXMubmV0IiwiYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dfV19",
+          "immutable": true
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakeattestation/generate-test-token",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept-Encoding": "gzip",
+        "User-Agent": "Go-http-client/1.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "20",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:18 GMT",
+        "ETag": "W/\u0022502-w7AKoa1z42VrLvEsZo7HOdajwBQ\u0022",
+        "X-Powered-By": "Express"
+      },
+      "ResponseBody": {
+        "token": "redacted"
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/keys/testreleasekey2353464635//release?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "target": "redacted"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "10996",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:20 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=116;da_age=6560;rd_age=6560;brd_age=23048;ra_notif_age=406;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "24fbba01-e7d1-49ab-8786-a6b8e4d4b9cd"
+      },
+      "ResponseBody": {
+        "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkU1MEM3RTBDN0M1NTUwQTAwRjYwMTg1MTNDNUJEOTBEMDg5QUQ1MjgiLCJ4NXQiOiI1UXgtREh4VlVLQVBZQmhSUEZ2WkRRaWExU2ciLCJ0eXAiOiJKV1QiLCJ4NXQjUzI1NiI6IkYweTBHYlBJSDQ3dlNGWV90VXFnOTlRMUdnMDkyZEs1bTdqb29jSTJHY28iLCJ4NWMiOlsiTUlJSU16Q0NCaHVnQXdJQkFnSVRFZ0F0VWtFMXF0OStTMG1ZdHdBQUFDMVNRVEFOQmdrcWhraUc5dzBCQVFzRkFEQlBNUXN3Q1FZRFZRUUdFd0pWVXpFZU1Cd0dBMVVFQ2hNVlRXbGpjbTl6YjJaMElFTnZjbkJ2Y21GMGFXOXVNU0F3SGdZRFZRUURFeGROYVdOeWIzTnZablFnVWxOQklGUk1VeUJEUVNBd01UQWVGdzB5TWpBMk1Ua3hNakF4TlRaYUZ3MHlNekEyTVRreE1qQXhOVFphTUJveEdEQVdCZ05WQkFNVEQzWmhkV3gwTG1GNmRYSmxMbTVsZERDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTWM3TzNWNGlldFFUYzRRZmhZVmY2anhHcEVZMnpqUWRiMXlqOFBkTG1zQkV1R2RjMWhtZkZyamlTUEhyZUhxeWFIbHBoQVhNU1NDRDJMaGM2cEhSSi9XTkNXVEljMythR3hXc2NRaUl2aks1eW5JTUQ3RVZ4aFQ2SDZnV05hQVBjL01iV1dBMHVZczdvMDlxdWRkeVhTQ25rZUdXUjdJMGthUEJSYnc5YWg4QzEzcjk5ZVJrelY5MkhFSjZiQnhoSEVLSTZTYmsrdm1RZGIrUDI5OGRmWkNCRCtHUzZhU0VGYVQ5YXdlMXp0c1M5NDV5Z1N2dmVZMTIwU1JLUXlzY2NHQWdyWElWQjNyMnJHOG9LQmFKc25PVVVJV3hEZENVSkNvYmlQTENnaFZRdmlHZnR6QVFESUpIUHNkaFZ5UVhmcVQ0bFYzS0loenNtUTM2blhHSjZVQ0F3RUFBYU9DQkRzd2dnUTNNSUlCZndZS0t3WUJCQUhXZVFJRUFnU0NBVzhFZ2dGckFXa0FkZ0RvUHREYVB2VUdOVExuVnlpOGlXdkpBOVBMMFJGcjdPdHA0WGQ5YlFhOWJnQUFBWUY3NElZUUFBQUVBd0JITUVVQ0lCUG96TFFHU09Wdm5uaUpCTjV2cHBISDRRVXZ5ZVl6amV2MVFpZWN0cWNiQWlFQThHTjJHNDExVjhwR1pVVVVOUHRKalJhaktvemxMRHg4RG9EUk9hRkJSY3dBZGdDemMzY0g0WVJRK0dPRzFnV3AzQkVKU25rdHNXY01DNGZjOEFNT2VUYWxtZ0FBQVlGNzRJWkdBQUFFQXdCSE1FVUNJUUNqM0ZlSFN4VllvTHlGNVFsNzR5dEJ4b012ZmkwUjh1NHNlQnpxczBjWWVnSWdmUEpaaDBNTHgyKzV2SC9vY2tkN0NDUnIwKzRRdDdxQnlmbkgwcWtoUzJzQWR3QjZNb3hVMkxjdHRpRHFPT0JTSHVtRUZuQXlFNFZOTzlJcndUcFhvMUxyVWdBQUFZRjc0SVZjQUFBRUF3QklNRVlDSVFESnVsNyt1My91RXZxVC9LNHQ0UTNLNzk0Q2RZd0Z3VDNYTlE5YjdhZWdlQUloQUxMVFNDbU9mMjZMVWtYbVROMHVjaDJIZGVseFdTV0dmZFhvc3N5L0p3akZNQ2NHQ1NzR0FRUUJnamNWQ2dRYU1CZ3dDZ1lJS3dZQkJRVUhBd0V3Q2dZSUt3WUJCUVVIQXdJd1BnWUpLd1lCQkFHQ054VUhCREV3THdZbkt3WUJCQUdDTnhVSWg5cUdkWVB1MlFHQ3lZVWJnYldlWVlYMDYyQ0JYWVdHamtHSHdwaFFBZ0ZrQWdFbk1JR0hCZ2dyQmdFRkJRY0JBUVI3TUhrd1V3WUlLd1lCQlFVSE1BS0dSMmgwZEhBNkx5OTNkM2N1YldsamNtOXpiMlowTG1OdmJTOXdhMmt2YlhOamIzSndMMDFwWTNKdmMyOW1kQ1V5TUZKVFFTVXlNRlJNVXlVeU1FTkJKVEl3TURFdVkzSjBNQ0lHQ0NzR0FRVUZCekFCaGhab2RIUndPaTh2YjJOemNDNXRjMjlqYzNBdVkyOXRNQjBHQTFVZERnUVdCQlNTRktJekx5eEJ6R0p2Rm5welowM2c1VWRyNnpBT0JnTlZIUThCQWY4RUJBTUNCTEF3UkFZRFZSMFJCRDB3TzRJUGRtRjFiSFF1WVhwMWNtVXVibVYwZ2hFcUxuWmhkV3gwTG1GNmRYSmxMbTVsZElJVktpNTJZWFZzZEdOdmNtVXVZWHAxY21VdWJtVjBNSUd3QmdOVkhSOEVnYWd3Z2FVd2dhS2dnWitnZ1p5R1RXaDBkSEE2THk5dGMyTnliQzV0YVdOeWIzTnZablF1WTI5dEwzQnJhUzl0YzJOdmNuQXZZM0pzTDAxcFkzSnZjMjltZENVeU1GSlRRU1V5TUZSTVV5VXlNRU5CSlRJd01ERXVZM0pzaGt0b2RIUndPaTh2WTNKc0xtMXBZM0p2YzI5bWRDNWpiMjB2Y0d0cEwyMXpZMjl5Y0M5amNtd3ZUV2xqY205emIyWjBKVEl3VWxOQkpUSXdWRXhUSlRJd1EwRWxNakF3TVM1amNtd3dWd1lEVlIwZ0JGQXdUakJDQmdrckJnRUVBWUkzS2dFd05UQXpCZ2dyQmdFRkJRY0NBUlluYUhSMGNEb3ZMM2QzZHk1dGFXTnliM052Wm5RdVkyOXRMM0JyYVM5dGMyTnZjbkF2WTNCek1BZ0dCbWVCREFFQ0FUQWZCZ05WSFNNRUdEQVdnQlMxZGd3d0VjN0hra0pOVE1kY0xNaXBET2dMWkRBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUlLd1lCQlFVSEF3SXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnSUJBSUgrbnYxZjI2UlJ1WUUwNGFBQlI4S0lPL1luTWQ5ZTc2am1uVkRVY1hYbytaL053TmtWVnNZVWZhRU1QVEp0U2lVQnlPYiszdEwvU0djUE93L25nWVp2ZXVveHM4NUZRRmVEb0YyNktxRFlmeWNMU2tWc3FOZ0grb3YvRGd3VFNVd1l2bktyU2pGQ3d3ZFRPeExBUG9FSDMzcDhoblptaTR2bFRCOW5OWUJaVkl3U3hmeE1oeHo4Wm9tdTFFM3NRL3ZZaWdiY2JJeEkxSHlPWCtYMkJsc3JsL1FsUitoN2dSUnlQVy93YXJINlJxV1RKZ2U2K1FUVW5EMXkzcDRiTC8vUGdNc0dlYzZwRUIwbVUzM3VTZG1iMU13MS9CcGEzY3ZDV3J3MTk3Ti9kOStpTEo3dnNoNWRRVjZNOFUxT2ZqMnJ3OGNJZU0vTUdjcDF4M0xBNDhZdVJRRkdheVJqUDFWYTBUaXNodGVmd2U5dzZXZG1oK0RlMVVTTEFlQzVFTjg3eXE4dkZlK1hpZmMwcy95b2x5bkRkaEhoYkVaRmlIOTlSb3V4VmloRVBiQzkrdGF3bWNNQ1BNUTByaTNBaURYV1pUYzZTR0pRblhWR2haL0RDVlhxZEZya2p0NmsrV1dVRThMNVJMamZVU3lwQ0pPWXpzMW0wQWs0RDhQajlxbUEwb2V4ZHUxNU9wNXlXWWFBbEhPMXJlMHJSUHFtOFAvaFplZ0YvUDhNUXZmZk9hbzBEdXlpK3A4SmxpM3cySnFHWXZ1UlFIck5FbWpQSGhJL05ZNm5aYnJQcWhYVGNOVXZxZXZjSTNBQjBrb2hldDJ5WS9CaVNoK2dkRm1GVGZwV0V3K0NUYW9HYXZoK2ZMTXNYbXNMdmNieGhkbFE5QmZVSWVPczRtL2oiLCJNSUlGV2pDQ0JFS2dBd0lCQWdJUUR4U1dYeUFnYVpsUDFjZXNlSWxCNGpBTkJna3Foa2lHOXcwQkFRc0ZBREJhTVFzd0NRWURWUVFHRXdKSlJURVNNQkFHQTFVRUNoTUpRbUZzZEdsdGIzSmxNUk13RVFZRFZRUUxFd3BEZVdKbGNsUnlkWE4wTVNJd0lBWURWUVFERXhsQ1lXeDBhVzF2Y21VZ1EzbGlaWEpVY25WemRDQlNiMjkwTUI0WERUSXdNRGN5TVRJek1EQXdNRm9YRFRJME1UQXdPREEzTURBd01Gb3dUekVMTUFrR0ExVUVCaE1DVlZNeEhqQWNCZ05WQkFvVEZVMXBZM0p2YzI5bWRDQkRiM0p3YjNKaGRHbHZiakVnTUI0R0ExVUVBeE1YVFdsamNtOXpiMlowSUZKVFFTQlVURk1nUTBFZ01ERXdnZ0lpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElDRHdBd2dnSUtBb0lDQVFDcVluZlBtbU95Qm9UemtEYjBtZk1VVWF2cWxRbzdSZ2I5RVVFZi9sc0dXTWs0YmdqOFQwUkl6VHFrOTcwZW91S1Z1TDVSSU1XL3NuQmpYWGdNUThBcHpXUkpDWmJhcjg3OUJWOHJLcEhvQVc0dUdKc3NuTkFCZjJuMTdqOVRpRnk2Qld5K0loVm5GSUx5TE5LK1cyTTN6SzlnaGVpV2EydUFDS2h1dmdDY2E1VncvT1FZRXJFZEc3TEJFekZuTXpUbUpjbGlXMWlDZFhieS92SS9PeGJmcWtLRDR6SnRtNDVESnZDOURoK2hwenF2TE1pSzV1by8rYVhTSlkrU3Fob0lFcHorckVySHcrdUFsS3VIRnRFalNlZWt1OGVSMytaNU5EOUJTcWM2SnRMcWIwYmpPSFBtNWRTUnJndDRubmlsNzViamM5ajNsV1hwQmI5UFhQOVNwL25QQ0srblRRbVp3SEdqVW5xbE85ZWJBVlFENDdaaXNGb25uREFtanJaTlZxRVhGM3A3bGFFSHJGTXh0dFl1RDgxQmRPenhBYkw5UmIvOE1lRkdRakUyUXg2NXFnVmZoSCtSc1l1dUQ5ZFV3LzN3WkFocTA1eU82bmswN0FNOWMrQWJOdFJvRWNkWmNMQ0hmTURjYmtYS05zNURKbmNDcVhBTjZMaFhWRVJDdy91c0cyTW1DTUxTSXg5L2t3dDhid2hVbWl0T1hjNmZwVDdTbUZ2UkF0dnhnODR3VWtnNFkvR3grKzBqMHo2U3RTZU4wRUp6MTUwamFIRzZXVjRIVXFhV1RiOThUbTkwSWdYQVU0QVcyR0JPbHpGUGlVNUlZOWp0K2VYQzJRNnlDL1pwVEwxTEFjbkwzUWEvT2dMckhOMHdpdzFLRkdENTFXUlBRMFNoN1FJREFRQUJvNElCSlRDQ0FTRXdIUVlEVlIwT0JCWUVGTFYyRERBUnpzZVNRazFNeDF3c3lLa002QXRrTUI4R0ExVWRJd1FZTUJhQUZPV2RXVENDUjFqTXJQb0lWRGFHZXpxMUJFM3dNQTRHQTFVZER3RUIvd1FFQXdJQmhqQWRCZ05WSFNVRUZqQVVCZ2dyQmdFRkJRY0RBUVlJS3dZQkJRVUhBd0l3RWdZRFZSMFRBUUgvQkFnd0JnRUIvd0lCQURBMEJnZ3JCZ0VGQlFjQkFRUW9NQ1l3SkFZSUt3WUJCUVVITUFHR0dHaDBkSEE2THk5dlkzTndMbVJwWjJsalpYSjBMbU52YlRBNkJnTlZIUjhFTXpBeE1DK2dMYUFyaGlsb2RIUndPaTh2WTNKc015NWthV2RwWTJWeWRDNWpiMjB2VDIxdWFYSnZiM1F5TURJMUxtTnliREFxQmdOVkhTQUVJekFoTUFnR0JtZUJEQUVDQVRBSUJnWm5nUXdCQWdJd0N3WUpLd1lCQkFHQ055b0JNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUNmSzc2U1oxdmFlNHF0NlArZFRRVU83YllORlVIUjVoWGNBMkQ1OUNKV25FajVuYTdhS3p5b3dLdlF1cFc0eU1IOWZHTnh0c2g2aUpzd1JxT09mWllDNC9naUJPL2dOc0J2d3I4dURXN3QxbllvRFlHSFBwdm5weENNMm1ZZlFGSHE1NzYvVG1lWXUxUlpZMjlDNHc4eFlCbGtBQThtREpmUmhNQ21laGs3Y041Rkp0eVdSajJjWmovaE9vSTQ1VFlEQkNoWHBPbExaS0lZaUcxZ2lZMTZ2aENSaTZ6bVB6RXd2K3RrMTU2TjZjR1NWbTQ0alRRL3JzMXNhMEpTWWp6VWFZbmdvRmRaQzRPZnhuSWtRdlVJQTRUT0ZtUHpOUEVGZGpjWnNnYmVFejRUY0dIVEJQSzRSMjhGNDRxSU1DdEhSVjU1Vk1YNTNldjZQM2hSZGRKYiIsIk1JSURkekNDQWwrZ0F3SUJBZ0lFQWdBQXVUQU5CZ2txaGtpRzl3MEJBUVVGQURCYU1Rc3dDUVlEVlFRR0V3SkpSVEVTTUJBR0ExVUVDaE1KUW1Gc2RHbHRiM0psTVJNd0VRWURWUVFMRXdwRGVXSmxjbFJ5ZFhOME1TSXdJQVlEVlFRREV4bENZV3gwYVcxdmNtVWdRM2xpWlhKVWNuVnpkQ0JTYjI5ME1CNFhEVEF3TURVeE1qRTRORFl3TUZvWERUSTFNRFV4TWpJek5Ua3dNRm93V2pFTE1Ba0dBMVVFQmhNQ1NVVXhFakFRQmdOVkJBb1RDVUpoYkhScGJXOXlaVEVUTUJFR0ExVUVDeE1LUTNsaVpYSlVjblZ6ZERFaU1DQUdBMVVFQXhNWlFtRnNkR2x0YjNKbElFTjVZbVZ5VkhKMWMzUWdVbTl2ZERDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBS01FdXlLcm1EMVg2Q1p5bXJWNTFDbmk0ZWlWZ0xHdzQxdU9LeW1hWk4raFhlMndDUVZ0MnlndXptS2lZdjYwaU5vUzZ6anJJWjNBUVNzQlVudUlkOU1jajhlNnVZaTFhZ25uYytnUlFLZlJ6TXBpalMzbGp3dW1VTktvVU1NbzZ2V3JKWWVLbXBZY3FXZTRQd3pWOS9sU0V5L0NHOVZ3Y1BDUHdCTEtCc3VhNGRuS00zcDMxdmpzdWZGb1JFSklFOUxBd3FTdVhtRCt0cVlGL0xUZEIxa0MxRmtZbUdQMXBXUGdrQXg5WGJJR2V2T0Y2dXZVQTY1ZWhENWYveFh0YWJ6NU9UWnlkYzkzVWszenlaQXN1VDNseVNOVFB4OGttQ0ZjQjVrcHZjWTY3T2R1aGpwcmwzUmpNNzFvR0RId2VJMTJ2L3llamwwcWhxZE5rTnduR2prQ0F3RUFBYU5GTUVNd0hRWURWUjBPQkJZRUZPV2RXVENDUjFqTXJQb0lWRGFHZXpxMUJFM3dNQklHQTFVZEV3RUIvd1FJTUFZQkFmOENBUU13RGdZRFZSMFBBUUgvQkFRREFnRUdNQTBHQ1NxR1NJYjNEUUVCQlFVQUE0SUJBUUNGREYyTzVHOVJhRUlGb04yN1R5Y2xoQU85OTJUOUxkY3c0NlFRRit2YUtTbTJlVDkyOWhrVEk3Z1FDdmxZcE5SaGNMMEVZV29TaWhmVkNyM0Z2REI4MXVrTUpZMkdRRS9zektOK09NWTNFVS90M1dneGprelNzd0YwN3I1MVhnZElHbjl3L3haY2hNQjVoYmdGL1grK1pSR2pEOEFDdFBoU056a0UxYWt4ZWhpL29DcjBFcG4zbzBXQzR6eGU5WjJldGNpZWZDN0lwSjVPQ0JSTGJmMXdiV3NhWTcxazVoKzN6dkR5bnk2N0c3ZnlVSWh6a3NMaTR4YU5taklDcTQ0WTNla1FFZTUrTmF1UXJ6NHdsSHJRTXoyblpRLzEvSTZlWXM5SFJDd0JYYnNkdFRMU1I5STRMdEQrZ2R3eWFoNjE3anpWL09lQkhSbkRKRUxxWXptcCJdfQ.eyJyZXF1ZXN0Ijp7ImFwaS12ZXJzaW9uIjoiNy4zIiwiZW5jIjoiQ0tNX1JTQV9BRVNfS0VZX1dSQVAiLCJraWQiOiJodHRwczovL2NobG93ZWF6a2V5cy52YXVsdC5henVyZS5uZXQva2V5cy90ZXN0cmVsZWFzZWtleTIzNTM0NjQ2MzUifSwicmVzcG9uc2UiOnsia2V5Ijp7ImtleSI6eyJraWQiOiJodHRwczovL2NobG93ZWF6a2V5cy52YXVsdC5henVyZS5uZXQva2V5cy90ZXN0cmVsZWFzZWtleTIzNTM0NjQ2MzUvNDkwN2NhYmU5NjZjNGNjMTg5OTMxNGI1NTMwM2NiZDIiLCJrdHkiOiJFQy1IU00iLCJrZXlfb3BzIjpbInNpZ24iLCJ2ZXJpZnkiXSwiY3J2IjoiUC0yNTZLIiwieCI6ImU2LTZyZVB2VU5HaW5VNlRZOHlYd1RRTFBZMWhBa20yVldCQ0g2TEpjcm8iLCJ5IjoiNXVCN2hNT3Q4UV9EbTEwQkxOWW5TdFVJa1J3OVVEQ01LbHFYTjdlVUx4USIsImtleV9oc20iOiJleUp6WTJobGJXRmZkbVZ5YzJsdmJpSTZJakV1TUNJc0ltaGxZV1JsY2lJNmV5SnJhV1FpT2lKbVlXdGxMWEpsYkdWaGMyVXRhMlY1SWl3aVlXeG5Jam9pWkdseUlpd2laVzVqSWpvaVEwdE5YMUpUUVY5QlJWTmZTMFZaWDFkU1FWQWlmU3dpWTJsd2FHVnlkR1Y0ZENJNklsVmhNREZIVDNWUmEwZG9NV2cwYmxkckxTMU9NMWgxUmpoa05reGpTRlk0ZURkS1ZHdERhRGRST0U5TU1HcFRRVTl2VVdkek4xVlBVa056WTJ0blJXOUJZWEZYVlVWbVNWWmxORUZGU0hkM2Vrd3pNMVpEUnpOR1pGbHFjbTlUZUVaa09FWkNWbGg0V214M01FazBjVzh0U0hSYUxVZDJORmxwY2xaMVptZGpaelJSZVZoU2JEaEVUaTEzTmxZNFdXOXNSVVZyU2tjMmVVbEhlbWRzZDFSU01HdDJkRmc0Um5jeE1uWmpiMk5mVWtSd01HTkRNMkZqWkRWWVlUTkNXSE5ZWTBjMFRrSmlSWGRaY2tadWVVNVhSRGR2WTAxT1QxRk5TVGgyUkVOaVIzTXhReTFqWW5KT2R6VjRkMjU0VUhCSVNXWjBNRWQxTm5sVlIyUnpNWFZCWldGMFVsOXFlSE5DZDJJMWEyRm5SM0UyUXpaU2VYSjFNVVYyTUhOcE5uRmZNbGN5UjFWT1dXWjJkVU5UUTNJdFUzbDRhVGhHWmxKT1lXdHNWbWhSWkd4M2NFTlNVbTR4YUY5Sk5WUk9WalExYTJkbWJ6ZFBTMlpVWjJaWU1GVjJWVWxFUlZKZmFHWjVWVVJ0U3pGNmFEVjFWVTlpZVdnMFEyVk5jWEEzYWpsR1JsazBVM3A0ZVZOUFVtSjZaVGhqWWtwaE0zVkNURWRGTmtKQmJuWkhVMWR6ZURad1QydHpUM2t5VW0xNVJtcHNPV05vZFdWT2N6WnBjMVZmTUhOT00wdFZkR1pEWVZseGMyOXlTVmRsYWpOQ2RIQktWV2wzZVhGdWRtaDVkRVpvVFhGall6TnNXV3hmTWpGcGJtdHlaazl2TFY5eGJuSnVSVkJ3WkU5QmRYaFNlbVZLZFV0dFZtZExiV1JMTlVSR1EyaDFOVXRXV1cxNk1FZzNPRTFQVFVwNVltUjZUbFJmV0V3ek9UUmZhMVpaUXpaSVJHbFdUbVEzVDFoSVRXeDFSekYyU0ZkU2NGaDVhSFZ0YVdwc1VtRlhWbGhTVDJoMFZtVmZTSGg2T1d4Q2RXTldSVFZZVDFaNFQzbzVRMU5GUzBJelN6SktObU4wVWxkR1NuUnNPVU5rTFZwZlQxZDROSGR2ZWpoM2MwRmhWMlV5VFRaWFV6VjZkME5xYVRCQlJWbEtUemRWT1dWUGFrVXRaM2t6U2pZMVpFVTJNMjFFTlRGNFYwMXhZbXhvZUdFMFNWbHRhRGMxVVZaSE5XOURTVzVLUVZoV2RWaFJRMEZ3WVZVaWZRIn0sImF0dHJpYnV0ZXMiOnsiZW5hYmxlZCI6dHJ1ZSwiY3JlYXRlZCI6MTY1NjM1NjQ3NSwidXBkYXRlZCI6MTY1NjM1NjQ3NSwicmVjb3ZlcnlMZXZlbCI6IkN1c3RvbWl6ZWRSZWNvdmVyYWJsZStQdXJnZWFibGUiLCJyZWNvdmVyYWJsZURheXMiOjcsImV4cG9ydGFibGUiOnRydWV9LCJyZWxlYXNlX3BvbGljeSI6eyJkYXRhIjoiZXlKMlpYSnphVzl1SWpvaU1TNHdMakFpTENKaGJubFBaaUk2VzNzaVlYVjBhRzl5YVhSNUlqb2lhSFIwY0hNNkx5OWphR3h2ZDJWaGVtdGxlWE56YVhSbExtRjZkWEpsZDJWaWMybDBaWE11Ym1WMElpd2lZVzU1VDJZaU9sdDdJbU5zWVdsdElqb2ljMlJyTFhSbGMzUWlMQ0psY1hWaGJITWlPaUowY25WbEluMWRmVjE5IiwiaW1tdXRhYmxlIjp0cnVlfX19fQ.fUqEJWOCy7Fe9OkPdHyxuuiappM8A57s-z8ZcnNt04mLJ1ohbnpFk5NpAbABBBnd0_ZgeWbmWHArwmcT117NahRWDUKMqdi7xNe1LiGtAQxllKcofOOchSDfOUxoO1DtRDqM7BuBCAXTy77nlM7wS3_qDEPvlrJ00bu372hI7AasNLm90SkqJxwf5Bsi0aXd7dI6yDhY0LvLYafTGhNirU6KAK6oj8DYL1tkBtqYlzG4LeiAszj3ltSN4WDm7XTW7cu2FHUHjQAmIXe5kRtImbzzg8xJ7P8Iv9VCi4h-ccsXWH2XIPY_SmPDaPjyYXfhD5IAwFaQv7O-EIItZEUZRw"
+      }
+    },
+    {
+      "RequestUri": "https://fakevault/keys/testreleasekey2353464635?api-version=7.3",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "575",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 27 Jun 2022 19:01:21 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-rbac-assignment-id": "584380d7-2275-597d-851a-67f10d5739f1",
+        "x-ms-keyvault-rbac-cache": "ra_age=118;da_age=6562;rd_age=6562;brd_age=23050;ra_notif_age=408;dec_lev=1;",
+        "x-ms-keyvault-region": "uksouth",
+        "x-ms-keyvault-service-version": "1.9.444.2",
+        "x-ms-request-id": "217886d4-cf29-473c-8688-aebee4cbc7c4"
+      },
+      "ResponseBody": {
+        "recoveryId": "https://fakevault/deletedkeys/testreleasekey2353464635",
+        "deletedDate": 1656356481,
+        "scheduledPurgeDate": 1656961281,
+        "key": {
+          "kid": "https://fakevault/keys/testreleasekey2353464635/4907cabe966c4cc1899314b55303cbd2",
+          "kty": "EC-HSM",
+          "key_ops": [
+            "sign",
+            "verify"
+          ],
+          "crv": "P-256K",
+          "x": "e6-6rePvUNGinU6TY8yXwTQLPY1hAkm2VWBCH6LJcro",
+          "y": "5uB7hMOt8Q_Dm10BLNYnStUIkRw9UDCMKlqXN7eULxQ"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1656356475,
+          "updated": 1656356475,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7,
+          "exportable": true
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

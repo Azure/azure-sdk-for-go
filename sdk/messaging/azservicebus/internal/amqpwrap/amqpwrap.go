@@ -16,7 +16,7 @@ type AMQPReceiver interface {
 	IssueCredit(credit uint32) error
 	DrainCredit(ctx context.Context) error
 	Receive(ctx context.Context) (*amqp.Message, error)
-	Prefetched() (*amqp.Message, error)
+	Prefetched() *amqp.Message
 
 	// settlement functions
 	AcceptMessage(ctx context.Context, msg *amqp.Message) error
@@ -51,8 +51,8 @@ type AMQPSenderCloser interface {
 // It exists only so we can return AMQPReceiver/AMQPSender interfaces.
 type AMQPSession interface {
 	Close(ctx context.Context) error
-	NewReceiver(ctx context.Context, opts ...amqp.LinkOption) (AMQPReceiverCloser, error)
-	NewSender(ctx context.Context, opts ...amqp.LinkOption) (AMQPSenderCloser, error)
+	NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error)
+	NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (AMQPSenderCloser, error)
 }
 
 type AMQPClient interface {
@@ -91,8 +91,8 @@ func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
 	return w.Inner.Close(ctx)
 }
 
-func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
-	receiver, err := w.Inner.NewReceiver(ctx, opts...)
+func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
+	receiver, err := w.Inner.NewReceiver(ctx, source, opts)
 
 	if err != nil {
 		return nil, err
@@ -101,8 +101,8 @@ func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, opts ...amqp.LinkO
 	return receiver, nil
 }
 
-func (w *AMQPSessionWrapper) NewSender(ctx context.Context, opts ...amqp.LinkOption) (AMQPSenderCloser, error) {
-	sender, err := w.Inner.NewSender(ctx, opts...)
+func (w *AMQPSessionWrapper) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (AMQPSenderCloser, error) {
+	sender, err := w.Inner.NewSender(ctx, target, opts)
 
 	if err != nil {
 		return nil, err

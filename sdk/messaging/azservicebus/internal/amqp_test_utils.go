@@ -33,7 +33,7 @@ type FakeAMQPSender struct {
 type FakeAMQPSession struct {
 	amqpwrap.AMQPSession
 
-	NewReceiverFn func(ctx context.Context, opts ...amqp.LinkOption) (AMQPReceiverCloser, error)
+	NewReceiverFn func(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error)
 
 	closed int
 }
@@ -76,10 +76,7 @@ type FakeAMQPReceiver struct {
 		E error
 	}
 
-	PrefetchResults []struct {
-		M *amqp.Message
-		E error
-	}
+	PrefetchResults []*amqp.Message
 }
 
 type FakeRPCLink struct {
@@ -146,17 +143,16 @@ func (r *FakeAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 
 // Prefetched will return the next reuslt from PrefetchedResults or, if the PrefetchedResults
 // is empty will return nil, nil.
-func (r *FakeAMQPReceiver) Prefetched() (*amqp.Message, error) {
+func (r *FakeAMQPReceiver) Prefetched() *amqp.Message {
 	r.PrefetchedCalled++
 
 	if len(r.PrefetchResults) == 0 {
-		return nil, nil
+		return nil
 	}
 
 	res := r.PrefetchResults[0]
-	r.ReceiveResults = r.PrefetchResults[1:]
-
-	return res.M, res.E
+	r.PrefetchResults = r.PrefetchResults[1:]
+	return res
 }
 
 func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
@@ -216,8 +212,8 @@ func (s *FakeAMQPSender) Close(ctx context.Context) error {
 	return nil
 }
 
-func (s *FakeAMQPSession) NewReceiver(ctx context.Context, opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
-	return s.NewReceiverFn(ctx, opts...)
+func (s *FakeAMQPSession) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
+	return s.NewReceiverFn(ctx, source, opts)
 }
 
 func (s *FakeAMQPSession) Close(ctx context.Context) error {

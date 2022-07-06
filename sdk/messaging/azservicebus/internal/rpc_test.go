@@ -195,11 +195,11 @@ func (c *rpcTesterClient) NewSession(ctx context.Context, opts *amqp.SessionOpti
 
 func (c *rpcTesterClient) Close() error { return nil }
 
-func (tester *rpcTester) NewReceiver(ctx context.Context, opts ...amqp.LinkOption) (AMQPReceiverCloser, error) {
+func (tester *rpcTester) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
 	return tester, nil
 }
 
-func (tester *rpcTester) NewSender(ctx context.Context, opts ...amqp.LinkOption) (AMQPSenderCloser, error) {
+func (tester *rpcTester) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (AMQPSenderCloser, error) {
 	return tester, nil
 }
 

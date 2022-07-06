@@ -162,8 +162,8 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 }
 
 func (r *Receiver) newReceiverLink(ctx context.Context, session amqpwrap.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
-	linkOptions := createLinkOptions(r.receiveMode, r.entityPath)
-	link, err := session.NewReceiver(ctx, linkOptions...)
+	linkOptions := createLinkOptions(r.receiveMode)
+	link, err := session.NewReceiver(ctx, r.entityPath, linkOptions)
 	return nil, link, err
 }
 
@@ -483,10 +483,9 @@ func flushPrefetchedMessages(receiver internal.AMQPReceiver, messages *[]*Receiv
 	}()
 
 	for {
-		am, err := receiver.Prefetched()
+		am := receiver.Prefetched()
 
-		// we've removed any code of consequence from Prefetched.
-		if am == nil || err != nil {
+		if am == nil {
 			return
 		}
 
@@ -533,25 +532,24 @@ func (e *entity) SetSubQueue(subQueue SubQueue) error {
 	return fmt.Errorf("unknown SubQueue %d", subQueue)
 }
 
-func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
+func createLinkOptions(mode ReceiveMode) *amqp.ReceiverOptions {
 	receiveMode := amqp.ModeSecond
 
 	if mode == ReceiveModeReceiveAndDelete {
 		receiveMode = amqp.ModeFirst
 	}
 
-	opts := []amqp.LinkOption{
-		amqp.LinkSourceAddress(entityPath),
-		amqp.LinkReceiverSettle(receiveMode),
-		amqp.LinkWithManualCredits(),
-		amqp.LinkCredit(defaultLinkRxBuffer),
+	receiverOpts := &amqp.ReceiverOptions{
+		SettlementMode: receiveMode.Ptr(),
+		ManualCredits:  true,
+		Credit:         defaultLinkRxBuffer,
 	}
 
 	if mode == ReceiveModeReceiveAndDelete {
-		opts = append(opts, amqp.LinkSenderSettle(amqp.ModeSettled))
+		receiverOpts.RequestedSenderSettleMode = amqp.ModeSettled.Ptr()
 	}
 
-	return opts
+	return receiverOpts
 }
 
 func checkReceiverMode(receiveMode ReceiveMode) error {

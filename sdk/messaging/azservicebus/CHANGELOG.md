@@ -12,7 +12,7 @@
 
 ### Bugs Fixed
 
-- Settlement of a message could hang if the link had been detached/closed. (#TBD)
+- Settlement of a message could hang if the link had been detached/closed. (#18532)
 
 ## 1.0.1 (2022-06-07)
 

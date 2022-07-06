@@ -1,34 +1,15 @@
 # Release History
 
-## 0.6.0 (Unreleased)
-
-### Features Added
-* Added `NewCryptoClient()` to `azkeys.Client` to simplify access to the crypto client.
-* `UpdateKeyProperties()` can set a key's allowed operations
+## 0.6.0 (2022-07-07)
 
 ### Breaking Changes
-* Renamed methods which return `Pager[T]`:
-  * `ListDeletedKeys` to `NewListDeletedKeysPager`
-  * `ListPropertiesOfKeys` to `NewListPropertiesOfKeysPager`
-  * `ListPropertiesOfKeyVersions` to `NewListPropertiesOfKeyVersionsPager`
-* Removed types `DeleteKeyPoller` and `RecoverDeletedKeyPoller`.
-* Methods `BeginDeleteKey` and `BeginRecoverDeletedKey` now return a `*runtime.Poller[T]` with their respective response types.
-* Option types with a `ResumeToken` field now take the token by value.
-* Renamed `CreateECKeyOptions.CurveName` to `.Curve`
-* Renamed `ReleaseKeyOptions.Enc` to `.Algorithm`
-* Removed redundant fields `DeletedKeyItem.Managed`. and `.Tags`, and `ImportKeyOptions.Tags`.
-  Use the `DeletedKeyItem.Properties` and `ImportKeyOptions.Properties` fields of the same name instead.
-* Changed type of key `Tags` to `map[string]*string`
-* Changed type of `ListPropertiesOfKeyVersionsResponse.Keys` to `[]*KeyItem`
-* Changed type of `JSONWebKey.KeyOps` to `[]*Operation`
-* Removed JSON tags from models
-* Moved `Key.ReleasePolicy` to `Key.Properties.ReleasePolicy`
-* `UpdateKeyProperties()` has a `Properties` parameter instead of a `Key` parameter
-
-### Bugs Fixed
-* `ReleaseKey()` returns an error when no key version is specified
+* The `Client` API now corresponds more directly to the Key Vault REST API.
+  Most method signatures and types have changed. See the
+  [module documentation](https://aka.ms/azsdk/go/keyvault-keys/docs)
+  for updated code examples and more details.
 
 ### Other Changes
+* Upgrade to latest `azcore`
 
 ## 0.5.1 (2022-05-12)
 

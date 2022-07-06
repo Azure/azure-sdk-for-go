@@ -9,245 +9,139 @@ package azsecrets_test
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
 
+var client azsecrets.Client
+
 func ExampleNewClient() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	vaultURL := "https://<TODO: your vault name>.vault.azure.net"
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
+	client := azsecrets.NewClient(vaultURL, cred, nil)
 	_ = client
 }
 
 func ExampleClient_SetSecret() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	secret := "mySecret"
+	name := "mySecret"
 	value := "mySecretValue"
-
-	resp, err := client.SetSecret(context.TODO(), secret, value, nil)
+	resp, err := client.SetSecret(context.TODO(), name, azsecrets.SetSecretParameters{Value: &value}, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	fmt.Printf("Set secret %s", *resp.Secret.ID)
+	fmt.Printf("Set secret %s", resp.ID.Name())
 }
 
 func ExampleClient_GetSecret() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	// an empty string gets the latest version of the secret
+	version := ""
+	resp, err := client.GetSecret(context.TODO(), "mySecretName", version, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := client.GetSecret(context.TODO(), "mySecretName", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("Secret Name: %s\tSecret Value: %s", *resp.Secret.ID, *resp.Secret.Value)
+	fmt.Printf("Secret Name: %s\tSecret Value: %s", resp.ID.Name(), *resp.Value)
 }
 
-func ExampleClient_BeginDeleteSecret() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+func ExampleClient_DeleteSecret() {
+	// DeleteSecret returns when Key Vault has begun deleting the secret. That can take several
+	// seconds to complete, so it may be necessary to wait before performing other operations
+	// on the deleted secret.
+	resp, err := client.DeleteSecret(context.TODO(), "secretToDelete", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := client.BeginDeleteSecret(context.TODO(), "secretToDelete", nil)
-	if err != nil {
-		panic(err)
-	}
-	// This is optional if you don't care when the secret is deleted
-	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		panic(err)
-	}
+	fmt.Println("deleted secret", resp.ID.Name())
 }
 
-func ExampleClient_NewListPropertiesOfSecretsPager() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	pager := client.NewListPropertiesOfSecretsPager(nil)
+func ExampleClient_NewListSecretsPager() {
+	pager := client.NewListSecretsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
-			panic(err)
+			// TODO: handle error
 		}
-		for _, v := range page.Secrets {
-			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Properties.Tags)
+		for _, secret := range page.Value {
+			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", secret.ID.Name(), secret.Tags)
 		}
 	}
 }
 
-func ExampleClient_RestoreSecretBackup() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+func ExampleClient_BackupSecret() {
+	backup, err := client.BackupSecret(context.TODO(), "mySecret", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	restoreResp, err := client.RestoreSecret(context.TODO(), azsecrets.RestoreSecretParameters{SecretBundleBackup: backup.Value}, nil)
 	if err != nil {
-		panic(err)
-	}
-
-	resp, err := client.BackupSecret(context.TODO(), "mySecret", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	restoreResp, err := client.RestoreSecretBackup(context.TODO(), resp.Value, nil)
-	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
 	fmt.Printf("Restored ID %s\n", *restoreResp.ID)
 }
 
-func ExampleClient_BackupSecret() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+func ExampleClient_RestoreSecret() {
+	backup, err := client.BackupSecret(context.TODO(), "mySecret", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	restoreResp, err := client.RestoreSecret(context.TODO(), azsecrets.RestoreSecretParameters{SecretBundleBackup: backup.Value}, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
 
-	resp, err := client.BackupSecret(context.TODO(), "mySecret", nil)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("Backup secret byte value: %v", resp.Value)
+	fmt.Printf("Restored ID %s\n", *restoreResp.ID)
 }
 
 func ExampleClient_PurgeDeletedSecret() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := client.BeginDeleteSecret(context.TODO(), "mySecretName", nil)
-	if err != nil {
-		panic(err)
-	}
-	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		panic(err)
-	}
-
-	_, err = client.PurgeDeletedSecret(context.TODO(), "mySecretName", nil)
-	if err != nil {
-		panic(err)
+	// this loop purges all the deleted secrets in the vault
+	pager := client.NewListDeletedSecretsPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			// TODO: handle error
+		}
+		for _, secret := range page.Value {
+			_, err := client.PurgeDeletedSecret(context.TODO(), secret.ID.Name(), nil)
+			if err != nil {
+				// TODO: handle error
+			}
+		}
 	}
 }
 
-func ExampleClient_BeginRecoverDeletedSecret() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+func ExampleClient_RecoverDeletedSecret() {
+	resp, err := client.RecoverDeletedSecret(context.TODO(), "myDeletedSecret", nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
-
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	resp, err := client.BeginRecoverDeletedSecret(context.TODO(), "myDeletedSecret", nil)
-	if err != nil {
-		panic(err)
-	}
-	_, err = resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		panic(err)
-	}
+	fmt.Println("recovered deleted secret", resp.ID.Name())
 }
 
-func ExampleClient_UpdateSecretProperties() {
-	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+func ExampleClient_UpdateSecret() {
+	updateParams := azsecrets.UpdateSecretParameters{
+		SecretAttributes: &azsecrets.SecretAttributes{
+			Expires: to.Ptr(time.Now().Add(48 * time.Hour)),
+		},
+		// Key Vault doesn't interpret tags. The keys and values are up to your application.
+		Tags: map[string]*string{"expiraton-extended": to.Ptr("true")},
+	}
+	// an empty version updates the latest version of the secret
+	version := ""
+	resp, err := client.UpdateSecret(context.Background(), "mySecretName", version, updateParams, nil)
 	if err != nil {
-		panic(err)
+		// TODO: handle error
 	}
-
-	client, err := azsecrets.NewClient(vaultURL, cred, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	getResp, err := client.GetSecret(context.TODO(), "secret-to-update", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	if getResp.Secret.Properties == nil {
-		getResp.Secret.Properties = &azsecrets.Properties{}
-	}
-	getResp.Secret.Properties = &azsecrets.Properties{
-		Enabled:     to.Ptr(true),
-		ExpiresOn:   to.Ptr(time.Now().Add(48 * time.Hour)),
-		NotBefore:   to.Ptr(time.Now().Add(-24 * time.Hour)),
-		ContentType: to.Ptr("password"),
-		Tags:        map[string]*string{"Tag1": to.Ptr("Tag1Value")},
-		// Remember to preserve the name and version
-		Name:    getResp.Secret.Properties.Name,
-		Version: getResp.Secret.Properties.Version,
-	}
-	resp, err := client.UpdateSecretProperties(context.Background(), *getResp.Secret.Properties, nil)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("Updated secret with ID: %s\n", *resp.Secret.ID)
+	fmt.Println("Updated secret", resp.ID.Name())
 }

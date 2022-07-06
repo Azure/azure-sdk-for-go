@@ -1,0 +1,153 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakemhsm/keys/key4206922229/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "60ae16be-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "1"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/key4206922229/create?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "49",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "key_ops": [
+          "encrypt",
+          "decrypt"
+        ],
+        "kty": "RSA-HSM"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "677",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "60b6a8ce-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "285"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1656356414,
+          "enabled": true,
+          "exportable": false,
+          "recoverableDays": 7,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "updated": 1656356414
+        },
+        "key": {
+          "e": "AQAB",
+          "key_ops": [
+            "encrypt",
+            "decrypt"
+          ],
+          "kid": "https://fakemhsm/keys/key4206922229/2ce6590d3c0700d899785a28faed7daa",
+          "kty": "RSA-HSM",
+          "n": "mMayCwr8--WIeNIjWczeeHTs6d1A6Z72CCPDw4BeA5baExbbv7P9-tWw4l3vQI88dArELawTm26fMPVwCC8H6vZTg59FS4O4Sj0Np3ISPaHKtQbIgB3lAYrP9GCtqd0_9HNmRIYZnglxXEE93l4wDhEAhfdsmvK1P8ggz5zBfQjsJ0aKzlgJ2qqKFOKGvx-06QNUdox2R1Y37BvolUuLNXsDCP87Mg4fDFg2k0fmg-yCcN6TlYGqmVphvwG5H8NGgXsd-9vyE8OvasKACsfvO1Hp-3UFTxJR77MoXzCmOj1uINM_sVS-bWHlZUgY-dfT_MqVk5SagGisuJnd_3P0UQ"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/key4206922229/2ce6590d3c0700d899785a28faed7daa/encrypt?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "45",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "alg": "RSA-OAEP-256",
+        "value": "cGxhaW50ZXh0"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "474",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "60fadd46-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "115"
+      },
+      "ResponseBody": {
+        "alg": "RSA-OAEP-256",
+        "kid": "https://fakemhsm/keys/key4206922229/2ce6590d3c0700d899785a28faed7daa",
+        "value": "RlnblFMCiLrpMow8kpI1clBzs4KTaJwW6jaY8v9O6uyARuSX8hhENxOlBtBkzy-k-mJ5ZiNAX_TGl9uqxfPV92sCxvSEGCxlQ5S6zV3VOX6nVgIeFCaSwy0JLe1LBs7ecm5jO1DMtMaPEWZ3D3Rdp6mmtOAlL34YdEgYOslUGMl2ERy1MfyumyjJKkIo_ZrJj7IlYxMehmMUljKX9kuTjbmuK4Se-7a4RyleWLRs-OUT68E1bqrmeV8v37bd_gVYJWjUU5cjY6IV7DcK2E2TJXX4nxSQa8d969N8hhY6mALhGeXCxIKGFxssWlqefPKnPyGx3_G7ZAo6nQ__ZiGBDg"
+      }
+    },
+    {
+      "RequestUri": "https://fakemhsm/keys/key4206922229//decrypt?api-version=7.3",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "375",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-azkeys/v0.6.0 (go1.18; linux)"
+      },
+      "RequestBody": {
+        "alg": "RSA-OAEP-256",
+        "value": "RlnblFMCiLrpMow8kpI1clBzs4KTaJwW6jaY8v9O6uyARuSX8hhENxOlBtBkzy-k-mJ5ZiNAX_TGl9uqxfPV92sCxvSEGCxlQ5S6zV3VOX6nVgIeFCaSwy0JLe1LBs7ecm5jO1DMtMaPEWZ3D3Rdp6mmtOAlL34YdEgYOslUGMl2ERy1MfyumyjJKkIo_ZrJj7IlYxMehmMUljKX9kuTjbmuK4Se-7a4RyleWLRs-OUT68E1bqrmeV8v37bd_gVYJWjUU5cjY6IV7DcK2E2TJXX4nxSQa8d969N8hhY6mALhGeXCxIKGFxssWlqefPKnPyGx3_G7ZAo6nQ__ZiGBDg"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "144",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "westus3",
+        "x-ms-request-id": "6119f384-f64b-11ec-b395-6045bd86d5ca",
+        "x-ms-server-latency": "2"
+      },
+      "ResponseBody": {
+        "alg": "RSA-OAEP-256",
+        "kid": "https://fakemhsm/keys/key4206922229/2ce6590d3c0700d899785a28faed7daa",
+        "value": "cGxhaW50ZXh0"
+      }
+    }
+  ],
+  "Variables": {}
+}

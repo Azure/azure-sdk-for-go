@@ -111,8 +111,8 @@ Constructing the client also requires your vault's URL, which you can get from t
 
 ```go
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
 func main() {
@@ -121,10 +121,7 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 }
 ```
 
@@ -148,15 +145,15 @@ This section contains code snippets covering common tasks:
 
 ### Create a key
 
-[`CreateRSAKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.CreateRSAKey) and
-[`CreateECKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.CreateECKey) create RSA and elliptic curve keys in the vault, respectively. If a key with the same name already exists, a new version of that key is created.
+[`CreateKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.CreateKey) creates keys in the vault. If a key with the same name already exists, a new version of that key is created.
 
 ```go
 import (
+	"context"
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
 
 func main() {
@@ -165,26 +162,29 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
 	// Create RSA Key
-	resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{Size: to.Ptr(int32(2048))})
+	rsaParams := azkeys.CreateKeyParameters{
+		KeySize: to.Ptr(int32(2048)),
+		Kty:     to.Ptr(azkeys.JSONWebKeyTypeRSA),
+	}
+	resp, err := client.CreateKey(context.TODO(), "new-rsa-key", rsaParams, nil)
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println(*resp.Key.JSONWebKey.ID)
-	fmt.Println(*resp.Key.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.KID)
 
 	// Create EC Key
-	resp, err := client.CreateECKey(context.TODO(), "new-ec-key", &azkeys.CreateECKeyOptions{CurveName: to.Ptr(azkeys.CurveNameP256)})
+	ecParams := azkeys.CreateKeyParameters{
+		Curve: to.Ptr(azkeys.JSONWebKeyCurveNameP256K),
+		Kty:   to.Ptr(azkeys.JSONWebKeyTypeEC),
+	}
+	resp, err = client.CreateKey(context.TODO(), "new-ec-key", ecParams, nil)
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println(*resp.Key.JSONWebKey.ID)
-	fmt.Println(*resp.Key.JSONWebKey.KeyType)
+	fmt.Println(*resp.Key.KID)
 }
 ```
 
@@ -194,6 +194,7 @@ func main() {
 
 ```go
 import (
+	"context"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -206,22 +207,21 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
-	resp, err := client.GetKey(context.TODO(), "key-name", nil)
+	// passing an empty string for the version parameter gets the latest version of the key
+	version := ""
+	resp, err := client.GetKey(context.TODO(), "key-name", version, nil)
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println(*resp.Key.JSONWebKey.ID)
+	fmt.Println(*resp.Key.KID)
 }
 ```
 
 ### Update an existing key
 
-[`UpdateKeyProperties`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.UpdateKeyProperties)
+[`UpdateKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.UpdateKey)
 updates the properties of a key previously stored in the Key Vault.
 
 ```go
@@ -240,38 +240,33 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+
+	params := azkeys.UpdateKeyParameters{
+		KeyAttributes: &azkeys.KeyAttributes{
+			Expires: to.Ptr(time.Now().Add(48 * time.Hour)),
+		},
+		// Key Vault doesn't interpret tags. The keys and values are up to your application.
+		Tags: map[string]*string{"expiraton-extended": to.Ptr("true")},
+	}
+	// passing an empty string for the version parameter updates the latest version of the key
+	updateResp, err := client.UpdateKey(context.TODO(), "key-name", "", params, nil)
 	if err != nil {
 		// TODO: handle error
 	}
-
-	resp, err := client.GetKey(context.TODO(), "key-to-update", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	resp.Key.Properties.Tags = map[string]*string{"Tag1": to.Ptr("val1")}
-	resp.Key.Properties.Enabled = to.Ptr(true)
-
-	updateResp, err := client.UpdateKeyProperties(context.TODO(), resp.Key, nil)
-	if err != nil {
-		// TODO: handle error
-	}
-	fmt.Printf("Enabled: %v\tTag1: %s\n", *updateResp.Key.Properties.Enabled, *updateResp.Key.Properties.Tags["Tag1"])
+	fmt.Printf("Updated key %s", *updateResp.Key.KID)
 }
 ```
 
 ### Delete a key
 
-[`BeginDeleteKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.BeginDeleteKey) requests Key Vault delete a key, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when you want to purge (permanently delete) the key as soon as possible.
+[`DeleteKey`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.DeleteKey) requests that Key Vault delete a key. It returns when Key Vault has begun deleting the key. Deletion can take several seconds to complete, so it may be necessary to wait before performing other operations on the deleted key.
 
 ```go
 import (
 	"context"
 	"fmt"
-	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 )
@@ -282,27 +277,25 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
+
+	// DeleteKey returns when Key Vault has begun deleting the key. That can take several
+	// seconds to complete, so it may be necessary to wait before performing other operations
+	// on the deleted key.
+	resp, err := client.DeleteKey(context.TODO(), "key-name", nil)
 	if err != nil {
 		// TODO: handle error
 	}
 
-	resp, err := client.BeginDeleteKey(context.TODO(), "key-to-delete", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-	pollResp, err := resp.PollUntilDone(context.TODO(), &runtime.PollUntilDoneOptions{Frequency: time.Second})
-	if err != nil {
-		// TODO: handle error
-	}
-	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
+	// In a soft-delete enabled vault, deleted keys can be recovered until they're purged (permanently deleted).
+	fmt.Printf("Key will be purged at %v", resp.ScheduledPurgeDate)
 }
 ```
 
 ### Configure automatic key rotation
 
-`UpdateKeyRotationPolicy` allows you to configure automatic key rotation for a key by specifying a rotation policy.
-In addition, `RotateKey` allows you to rotate a key on-demand by creating a new version of the given key.
+`UpdateKeyRotationPolicy` allows you to configure automatic key rotation for a key by specifying a rotation policy, and
+`RotateKey` allows you to rotate a key on demand. See [Azure Key Vault documentation](https://docs.microsoft.com/azure/key-vault/keys/how-to-configure-key-rotation) for more information about key rotation policies.
 
 ```go
 import (
@@ -320,44 +313,32 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
-	getResp, err := client.GetKeyRotationPolicy(context.TODO(), "key-name", nil)
-	if err != nil {
-		// TODO: handle error
-	}
-
-	getResp.Attributes.ExpiresIn = to.Ptr("P90D")
-	getResp.LifetimeActions = []*azkeys.LifetimeActions{
-		{
-			Action: &azkeys.LifetimeActionsType{
-				Type: to.Ptr(azkeys.RotationActionNotify),
-			},
-			Trigger: &azkeys.LifetimeActionsTrigger{
-				TimeBeforeExpiry: to.Ptr("P30D"),
+	// this policy rotates the key every 18 months
+	policy := azkeys.KeyRotationPolicy{
+		LifetimeActions: []*azkeys.LifetimeActions{
+			{
+				Action: &azkeys.LifetimeActionsType{
+					Type: to.Ptr(azkeys.ActionTypeRotate),
+				},
+				Trigger: &azkeys.LifetimeActionsTrigger{
+					TimeAfterCreate: to.Ptr("P18M"),
+				},
 			},
 		},
 	}
-
-	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-name", getResp.RotationPolicy, nil)
+	resp, err := client.UpdateKeyRotationPolicy(context.TODO(), "key-name", policy, nil)
 	if err != nil {
 		// TODO: handle error
 	}
-	fmt.Println("Updated key rotation policy for: ", *resp.ID)
-
-	_, err = client.RotateKey(context.TODO(), "key-name", nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	fmt.Printf("Updated key rotation policy at: %v", resp.Attributes.Updated)
 }
 ```
 
 ### List keys
 
-[`NewListPropertiesOfKeysPager`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.NewListPropertiesOfKeysPager) creates a pager that lists the properties of all of the keys in the client's vault.
+[`NewListKeysPager`](https://aka.ms/azsdk/go/keyvault-keys/docs#Client.NewListKeysPager) creates a pager that lists all keys in the client's vault.
 
 ```go
 import (
@@ -374,19 +355,16 @@ func main() {
 		// TODO: handle error
 	}
 
-	client, err := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
-	if err != nil {
-		// TODO: handle error
-	}
+	client := azkeys.NewClient("https://<TODO: your vault name>.vault.azure.net", cred, nil)
 
-	pager := client.NewListPropertiesOfKeysPager(nil)
+	pager := client.NewListKeysPager(nil)
 	for pager.More() {
 		resp, err := pager.NextPage(context.TODO())
 		if err != nil {
 			// TODO: handle error
 		}
-		for _, key := range resp.Keys {
-			fmt.Println(*key.ID)
+		for _, key := range resp.Value {
+			fmt.Println(*key.KID)
 		}
 	}
 }

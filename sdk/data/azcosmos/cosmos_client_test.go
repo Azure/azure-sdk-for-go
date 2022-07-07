@@ -17,9 +17,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func TestNewClientWithConnStrReturnErrorOnWrongDelimiter(t *testing.T) {
+func TestNewClientFromConnStrReturnErrorOnWrongDelimiter(t *testing.T) {
 	invalidStr := "invalid_connection_string"
-	_, err := NewClientWithConnectionString(invalidStr, nil)
+	_, err := NewClientFromConnectionString(invalidStr, nil)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -31,9 +31,9 @@ func TestNewClientWithConnStrReturnErrorOnWrongDelimiter(t *testing.T) {
 	}
 }
 
-func TestNewClientWithConnStrReturnErrorOnWrongAccEnpoint(t *testing.T) {
+func TestNewClientFromConnStrReturnErrorOnWrongAccEnpoint(t *testing.T) {
 	invalidStr := "invalid_str;AccountKey=dG9fYmFzZV82NA=="
-	_, err := NewClientWithConnectionString(invalidStr, nil)
+	_, err := NewClientFromConnectionString(invalidStr, nil)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -45,9 +45,9 @@ func TestNewClientWithConnStrReturnErrorOnWrongAccEnpoint(t *testing.T) {
 	}
 }
 
-func TestNewClientWithConnStrReturnErrorOnWrongAccKey(t *testing.T) {
+func TestNewClientFromConnStrReturnErrorOnWrongAccKey(t *testing.T) {
 	invalidStr := "AccountEndpoint=http://127.0.0.1:80;invalid_str"
-	_, err := NewClientWithConnectionString(invalidStr, nil)
+	_, err := NewClientFromConnectionString(invalidStr, nil)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -59,9 +59,9 @@ func TestNewClientWithConnStrReturnErrorOnWrongAccKey(t *testing.T) {
 	}
 }
 
-func TestNewClientWithConnStrSuccess(t *testing.T) {
+func TestNewClientFromConnStrSuccess(t *testing.T) {
 	connStr := "AccountEndpoint=http://127.0.0.1:80;AccountKey=dG9fYmFzZV82NA==;"
-	client, err := NewClientWithConnectionString(connStr, nil)
+	client, err := NewClientFromConnectionString(connStr, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

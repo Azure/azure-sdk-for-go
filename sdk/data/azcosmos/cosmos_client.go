@@ -50,10 +50,10 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	return &Client{endpoint: endpoint, pipeline: newPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o)}, nil
 }
 
-// NewClientWithConnectionString creates a new instance of Cosmos client with connection string. It uses the default pipeline configuration.
+// NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
 // connectionString - The cosmos service connection string.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
-func NewClientWithConnectionString(connectionString string, o *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, o *ClientOptions) (*Client, error) {
 	const (
 		accountEndpoint = "AccountEndpoint"
 		accountKey      = "AccountKey"

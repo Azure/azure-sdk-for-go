@@ -21,7 +21,7 @@ type StubAMQPReceiver struct {
 	stubDrainCreditCalled           int
 	stubReceive                     func(inner internal.AMQPReceiverCloser, ctx context.Context) (*amqp.Message, error)
 	stubReceiveCalled               int
-	stubPrefetched                  func(inner internal.AMQPReceiverCloser) (*amqp.Message, error)
+	stubPrefetched                  func(inner internal.AMQPReceiverCloser) *amqp.Message
 	stubPrefetchedCalled            int
 	stubAcceptMessage               func(inner internal.AMQPReceiverCloser, ctx context.Context, msg *amqp.Message) error
 	stubAcceptMessageCalled         int
@@ -70,7 +70,7 @@ func (r *StubAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	return r.inner.Receive(ctx)
 }
 
-func (r *StubAMQPReceiver) Prefetched() (*amqp.Message, error) {
+func (r *StubAMQPReceiver) Prefetched() *amqp.Message {
 	r.stubPrefetchedCalled++
 	if r.stubPrefetched != nil {
 		return r.stubPrefetched(r.inner)

@@ -73,41 +73,161 @@ type link struct {
 	msg                   Message             // current message being decoded
 }
 
-func newLink(s *Session, r *Receiver, opts []LinkOption) (*link, error) {
+// newSendingLink creates a new sending link and attaches it to the session
+func newSendingLink(target string, s *Session, opts *SenderOptions) (*link, error) {
 	l := &link{
-		Key:                      linkKey{randString(40), encoding.Role(r != nil)},
+		Key:                      linkKey{randString(40), encoding.RoleSender},
 		Session:                  s,
-		receiver:                 r,
 		close:                    make(chan struct{}),
 		Detached:                 make(chan struct{}),
 		ReceiverReady:            make(chan struct{}, 1),
 		detachOnDispositionError: true,
+		Target:                   &frames.Target{Address: target},
+		Source:                   new(frames.Source),
 	}
 
-	// configure options
-	for _, o := range opts {
-		err := o(l)
-		if err != nil {
+	if opts == nil {
+		return l, nil
+	}
+
+	for _, v := range opts.Capabilities {
+		l.Source.Capabilities = append(l.Source.Capabilities, encoding.Symbol(v))
+	}
+	if opts.Durability > DurabilityUnsettledState {
+		return nil, fmt.Errorf("invalid Durability %d", opts.Durability)
+	}
+	l.Source.Durable = opts.Durability
+	if opts.DynamicAddress {
+		l.Target.Address = ""
+		l.dynamicAddr = opts.DynamicAddress
+	}
+	if opts.ExpiryPolicy != "" {
+		if err := encoding.ValidateExpiryPolicy(opts.ExpiryPolicy); err != nil {
 			return nil, err
 		}
+		l.Source.ExpiryPolicy = opts.ExpiryPolicy
 	}
-
-	// sending unsettled messages when the receiver is in mode-second is currently
-	// broken and causes a hang after sending, so just disallow it for now.
-	if r == nil && senderSettleModeValue(l.SenderSettleMode) != ModeSettled && receiverSettleModeValue(l.ReceiverSettleMode) == ModeSecond {
-		return nil, errors.New("sender does not support exactly-once guarantee")
+	l.Source.Timeout = opts.ExpiryTimeout
+	l.detachOnDispositionError = !opts.IgnoreDispositionErrors
+	if opts.Name != "" {
+		l.Key.name = opts.Name
 	}
+	if opts.Properties != nil {
+		l.properties = make(map[encoding.Symbol]interface{})
+		for k, v := range opts.Properties {
+			if k == "" {
+				return nil, errors.New("link property key must not be empty")
+			}
+			l.properties[encoding.Symbol(k)] = v
+		}
+	}
+	if opts.RequestedReceiverSettleMode != nil {
+		if rsm := *opts.RequestedReceiverSettleMode; rsm > ModeSecond {
+			return nil, fmt.Errorf("invalid RequestedReceiverSettleMode %d", rsm)
+		}
+		l.ReceiverSettleMode = opts.RequestedReceiverSettleMode
+	}
+	if opts.SettlementMode != nil {
+		if ssm := *opts.SettlementMode; ssm > ModeMixed {
+			return nil, fmt.Errorf("invalid SettlementMode %d", ssm)
+		}
+		l.SenderSettleMode = opts.SettlementMode
+	}
+	l.Source.Address = opts.SourceAddress
 	return l, nil
 }
 
-// attachLink is used by Receiver and Sender to create new links
-func attachLink(ctx context.Context, s *Session, r *Receiver, opts []LinkOption) (*link, error) {
-	l, err := newLink(s, r, opts)
-	if err != nil {
-		return nil, err
+func newReceivingLink(source string, s *Session, r *Receiver, opts *ReceiverOptions) (*link, error) {
+	l := &link{
+		Key:           linkKey{randString(40), encoding.RoleReceiver},
+		Session:       s,
+		receiver:      r,
+		close:         make(chan struct{}),
+		Detached:      make(chan struct{}),
+		ReceiverReady: make(chan struct{}, 1),
+		Source:        &frames.Source{Address: source},
+		Target:        new(frames.Target),
 	}
 
-	isReceiver := r != nil
+	if opts == nil {
+		return l, nil
+	}
+
+	l.receiver.batching = opts.Batching
+	if opts.BatchMaxAge > 0 {
+		l.receiver.batchMaxAge = opts.BatchMaxAge
+	}
+	for _, v := range opts.Capabilities {
+		l.Target.Capabilities = append(l.Target.Capabilities, encoding.Symbol(v))
+	}
+	if opts.Credit > 0 {
+		l.receiver.maxCredit = opts.Credit
+	}
+	if opts.Durability > DurabilityUnsettledState {
+		return nil, fmt.Errorf("invalid Durability %d", opts.Durability)
+	}
+	l.Target.Durable = opts.Durability
+	if opts.DynamicAddress {
+		l.Source.Address = ""
+		l.dynamicAddr = opts.DynamicAddress
+	}
+	if opts.ExpiryPolicy != "" {
+		if err := encoding.ValidateExpiryPolicy(opts.ExpiryPolicy); err != nil {
+			return nil, err
+		}
+		l.Target.ExpiryPolicy = opts.ExpiryPolicy
+	}
+	l.Target.Timeout = opts.ExpiryTimeout
+	if opts.Filters != nil {
+		l.Source.Filter = make(encoding.Filter)
+		for _, f := range opts.Filters {
+			f(l.Source.Filter)
+		}
+	}
+	if opts.ManualCredits {
+		l.receiver.manualCreditor = &manualCreditor{}
+	}
+	if opts.MaxMessageSize > 0 {
+		l.MaxMessageSize = opts.MaxMessageSize
+	}
+	if opts.Name != "" {
+		l.Key.name = opts.Name
+	}
+	if opts.Properties != nil {
+		l.properties = make(map[encoding.Symbol]interface{})
+		for k, v := range opts.Properties {
+			if k == "" {
+				return nil, errors.New("link property key must not be empty")
+			}
+			l.properties[encoding.Symbol(k)] = v
+		}
+	}
+	if opts.RequestedSenderSettleMode != nil {
+		if rsm := *opts.RequestedSenderSettleMode; rsm > ModeMixed {
+			return nil, fmt.Errorf("invalid RequestedSenderSettleMode %d", rsm)
+		}
+		l.SenderSettleMode = opts.RequestedSenderSettleMode
+	}
+	if opts.SettlementMode != nil {
+		if rsm := *opts.SettlementMode; rsm > ModeSecond {
+			return nil, fmt.Errorf("invalid SettlementMode %d", rsm)
+		}
+		l.ReceiverSettleMode = opts.SettlementMode
+	}
+	l.Target.Address = opts.TargetAddress
+	return l, nil
+}
+
+// attach sends the Attach performative to establish the link with its parent session.
+// this is automatically called by the new*Link constructors.
+func (l *link) attach(ctx context.Context, s *Session) error {
+	// sending unsettled messages when the receiver is in mode-second is currently
+	// broken and causes a hang after sending, so just disallow it for now.
+	if l.receiver == nil && senderSettleModeValue(l.SenderSettleMode) != ModeSettled && receiverSettleModeValue(l.ReceiverSettleMode) == ModeSecond {
+		return errors.New("sender does not support exactly-once guarantee")
+	}
+
+	isReceiver := l.receiver != nil
 
 	// buffer rx to linkCredit so that conn.mux won't block
 	// attempting to send to a slow reader
@@ -124,24 +244,25 @@ func attachLink(ctx context.Context, s *Session, r *Receiver, opts []LinkOption)
 	// request handle from Session.mux
 	select {
 	case <-ctx.Done():
-		return nil, ctx.Err()
+		return ctx.Err()
 	case <-s.done:
-		return nil, s.err
+		return s.err
 	case s.allocateHandle <- l:
 	}
 
 	// wait for handle allocation
 	select {
 	case <-ctx.Done():
-		return nil, ctx.Err()
+		// TODO: this _might_ leak l's handle
+		return ctx.Err()
 	case <-s.done:
-		return nil, s.err
+		return s.err
 	case <-l.RX:
 	}
 
 	// check for link request error
 	if l.err != nil {
-		return nil, l.err
+		return l.err
 	}
 
 	attach := &frames.PerformAttach{
@@ -177,15 +298,16 @@ func attachLink(ctx context.Context, s *Session, r *Receiver, opts []LinkOption)
 	var fr frames.FrameBody
 	select {
 	case <-ctx.Done():
-		return nil, ctx.Err()
+		// TODO: this leaks l's handle
+		return ctx.Err()
 	case <-s.done:
-		return nil, s.err
+		return s.err
 	case fr = <-l.RX:
 	}
 	log.Debug(3, "RX (attachLink): %s", fr)
 	resp, ok := fr.(*frames.PerformAttach)
 	if !ok {
-		return nil, fmt.Errorf("unexpected attach response: %#v", fr)
+		return fmt.Errorf("unexpected attach response: %#v", fr)
 	}
 
 	// If the remote encounters an error during the attach it returns an Attach
@@ -201,15 +323,16 @@ func attachLink(ctx context.Context, s *Session, r *Receiver, opts []LinkOption)
 		// wait for detach
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			// TODO: this leaks l's handle
+			return ctx.Err()
 		case <-s.done:
-			return nil, s.err
+			return s.err
 		case fr = <-l.RX:
 		}
 
 		detach, ok := fr.(*frames.PerformDetach)
 		if !ok {
-			return nil, fmt.Errorf("unexpected frame while waiting for detach: %#v", fr)
+			return fmt.Errorf("unexpected frame while waiting for detach: %#v", fr)
 		}
 
 		// send return detach
@@ -221,9 +344,9 @@ func attachLink(ctx context.Context, s *Session, r *Receiver, opts []LinkOption)
 		_ = s.txFrame(fr, nil)
 
 		if detach.Error == nil {
-			return nil, fmt.Errorf("received detach with no error specified")
+			return fmt.Errorf("received detach with no error specified")
 		}
-		return nil, detach.Error
+		return detach.Error
 	}
 
 	if l.MaxMessageSize == 0 || resp.MaxMessageSize < l.MaxMessageSize {
@@ -258,15 +381,14 @@ func attachLink(ctx context.Context, s *Session, r *Receiver, opts []LinkOption)
 		l.Transfers = make(chan frames.PerformTransfer)
 	}
 
-	err = l.setSettleModes(resp)
-	if err != nil {
+	if err := l.setSettleModes(resp); err != nil {
 		l.muxDetach()
-		return nil, err
+		return err
 	}
 
 	go l.mux()
 
-	return l, nil
+	return nil
 }
 
 func (l *link) addUnsettled(msg *Message) {

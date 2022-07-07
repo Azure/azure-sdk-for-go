@@ -15,18 +15,6 @@ type AMQPReceiverCloser = amqpwrap.AMQPReceiverCloser
 type AMQPSender = amqpwrap.AMQPSender
 type AMQPSenderCloser = amqpwrap.AMQPSenderCloser
 
-// AMQPSession is implemented by *amqp.Session
-type AMQPSession interface {
-	NewReceiver(opts ...amqp.LinkOption) (*amqp.Receiver, error)
-	NewSender(opts ...amqp.LinkOption) (*amqp.Sender, error)
-}
-
-// AMQPSessionCloser is implemented by *amqp.Session
-type AMQPSessionCloser interface {
-	AMQPSession
-	Close(ctx context.Context) error
-}
-
 // RPCLink is implemented by *rpc.Link
 type RPCLink interface {
 	Close(ctx context.Context) error

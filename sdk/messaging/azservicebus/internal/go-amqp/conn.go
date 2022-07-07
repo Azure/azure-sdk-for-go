@@ -124,7 +124,7 @@ type conn struct {
 
 	// conn state
 	errMu sync.Mutex    // mux holds errMu from start until shutdown completes; operations are sequential before mux is started
-	err   error         // error to be returned to client; internal *except* for SASL auth methods
+	err   error         // error to be returned to client
 	Done  chan struct{} // indicates the connection is done
 
 	// mux
@@ -306,14 +306,14 @@ func (c *conn) Start() error {
 
 	// run connection establishment state machine
 	for state := c.negotiateProto; state != nil; {
-		state = state()
-	}
-
-	// check if err occurred
-	if c.err != nil {
-		close(c.txDone) // close here since connWriter hasn't been started yet
-		_ = c.Close()
-		return c.err
+		var err error
+		state, err = state()
+		// check if err occurred
+		if err != nil {
+			close(c.txDone) // close here since connWriter hasn't been started yet
+			_ = c.Close()
+			return err
+		}
 	}
 
 	// start multiplexor and writer
@@ -760,11 +760,11 @@ func (c *conn) SendFrame(fr frames.Frame) error {
 //
 // The state is advanced by returning the next state.
 // The state machine concludes when nil is returned.
-type stateFunc func() stateFunc
+type stateFunc func() (stateFunc, error)
 
 // negotiateProto determines which proto to negotiate next.
 // used externally by SASL only.
-func (c *conn) negotiateProto() stateFunc {
+func (c *conn) negotiateProto() (stateFunc, error) {
 	// in the order each must be negotiated
 	switch {
 	case c.tlsNegotiation && !c.tlsComplete:
@@ -787,36 +787,32 @@ const (
 
 // exchangeProtoHeader performs the round trip exchange of protocol
 // headers, validation, and returns the protoID specific next state.
-func (c *conn) exchangeProtoHeader(pID protoID) stateFunc {
+func (c *conn) exchangeProtoHeader(pID protoID) (stateFunc, error) {
 	// write the proto header
-	c.err = c.writeProtoHeader(pID)
-	if c.err != nil {
-		return nil
+	if err := c.writeProtoHeader(pID); err != nil {
+		return nil, err
 	}
 
 	// read response header
 	p, err := c.readProtoHeader()
 	if err != nil {
-		c.err = err
-		return nil
+		return nil, err
 	}
 
 	if pID != p.ProtoID {
-		c.err = fmt.Errorf("unexpected protocol header %#00x, expected %#00x", p.ProtoID, pID)
-		return nil
+		return nil, fmt.Errorf("unexpected protocol header %#00x, expected %#00x", p.ProtoID, pID)
 	}
 
 	// go to the proto specific state
 	switch pID {
 	case protoAMQP:
-		return c.openAMQP
+		return c.openAMQP, nil
 	case protoTLS:
-		return c.startTLS
+		return c.startTLS, nil
 	case protoSASL:
-		return c.negotiateSASL
+		return c.negotiateSASL, nil
 	default:
-		c.err = fmt.Errorf("unknown protocol ID %#02x", p.ProtoID)
-		return nil
+		return nil, fmt.Errorf("unknown protocol ID %#02x", p.ProtoID)
 	}
 }
 
@@ -840,13 +836,15 @@ func (c *conn) readProtoHeader() (protoHeader, error) {
 }
 
 // startTLS wraps the conn with TLS and returns to Client.negotiateProto
-func (c *conn) startTLS() stateFunc {
+func (c *conn) startTLS() (stateFunc, error) {
 	c.initTLSConfig()
 
-	done := make(chan struct{})
+	// buffered so connReaderRun won't block
+	done := make(chan error, 1)
 
 	// this function will be executed by connReader
 	c.connReaderRun <- func() {
+		defer close(done)
 		_ = c.net.SetReadDeadline(time.Time{}) // clear timeout
 
 		// wrap existing net.Conn and perform TLS handshake
@@ -854,30 +852,27 @@ func (c *conn) startTLS() stateFunc {
 		if c.connectTimeout != 0 {
 			_ = tlsConn.SetWriteDeadline(time.Now().Add(c.connectTimeout))
 		}
-		c.err = tlsConn.Handshake()
+		done <- tlsConn.Handshake()
+		// TODO: return?
 
 		// swap net.Conn
 		c.net = tlsConn
 		c.tlsComplete = true
-
-		close(done)
 	}
 
 	// set deadline to interrupt connReader
 	_ = c.net.SetReadDeadline(time.Time{}.Add(1))
 
-	<-done
-
-	if c.err != nil {
-		return nil
+	if err := <-done; err != nil {
+		return nil, err
 	}
 
 	// go to next protocol
-	return c.negotiateProto
+	return c.negotiateProto, nil
 }
 
 // openAMQP round trips the AMQP open performative
-func (c *conn) openAMQP() stateFunc {
+func (c *conn) openAMQP() (stateFunc, error) {
 	// send open frame
 	open := &frames.PerformOpen{
 		ContainerID:  c.containerID,
@@ -888,25 +883,23 @@ func (c *conn) openAMQP() stateFunc {
 		Properties:   c.properties,
 	}
 	log.Debug(1, "TX (openAMQP): %s", open)
-	c.err = c.writeFrame(frames.Frame{
+	err := c.writeFrame(frames.Frame{
 		Type:    frameTypeAMQP,
 		Body:    open,
 		Channel: 0,
 	})
-	if c.err != nil {
-		return nil
+	if err != nil {
+		return nil, err
 	}
 
 	// get the response
 	fr, err := c.readFrame()
 	if err != nil {
-		c.err = err
-		return nil
+		return nil, err
 	}
 	o, ok := fr.Body.(*frames.PerformOpen)
 	if !ok {
-		c.err = fmt.Errorf("openAMQP: unexpected frame type %T", fr.Body)
-		return nil
+		return nil, fmt.Errorf("openAMQP: unexpected frame type %T", fr.Body)
 	}
 	log.Debug(1, "RX (openAMQP): %s", o)
 
@@ -923,35 +916,32 @@ func (c *conn) openAMQP() stateFunc {
 	}
 
 	// connection established, exit state machine
-	return nil
+	return nil, nil
 }
 
 // negotiateSASL returns the SASL handler for the first matched
 // mechanism specified by the server
-func (c *conn) negotiateSASL() stateFunc {
+func (c *conn) negotiateSASL() (stateFunc, error) {
 	// read mechanisms frame
 	fr, err := c.readFrame()
 	if err != nil {
-		c.err = err
-		return nil
+		return nil, err
 	}
 	sm, ok := fr.Body.(*frames.SASLMechanisms)
 	if !ok {
-		c.err = fmt.Errorf("negotiateSASL: unexpected frame type %T", fr.Body)
-		return nil
+		return nil, fmt.Errorf("negotiateSASL: unexpected frame type %T", fr.Body)
 	}
 	log.Debug(1, "RX (negotiateSASL): %s", sm)
 
 	// return first match in c.saslHandlers based on order received
 	for _, mech := range sm.Mechanisms {
 		if state, ok := c.saslHandlers[mech]; ok {
-			return state
+			return state, nil
 		}
 	}
 
 	// no match
-	c.err = fmt.Errorf("no supported auth mechanism (%v)", sm.Mechanisms) // TODO: send "auth not supported" frame?
-	return nil
+	return nil, fmt.Errorf("no supported auth mechanism (%v)", sm.Mechanisms) // TODO: send "auth not supported" frame?
 }
 
 // saslOutcome processes the SASL outcome frame and return Client.negotiateProto
@@ -960,29 +950,26 @@ func (c *conn) negotiateSASL() stateFunc {
 // SASL handlers return this stateFunc when the mechanism specific negotiation
 // has completed.
 // used externally by SASL only.
-func (c *conn) saslOutcome() stateFunc {
+func (c *conn) saslOutcome() (stateFunc, error) {
 	// read outcome frame
 	fr, err := c.readFrame()
 	if err != nil {
-		c.err = err
-		return nil
+		return nil, err
 	}
 	so, ok := fr.Body.(*frames.SASLOutcome)
 	if !ok {
-		c.err = fmt.Errorf("saslOutcome: unexpected frame type %T", fr.Body)
-		return nil
+		return nil, fmt.Errorf("saslOutcome: unexpected frame type %T", fr.Body)
 	}
 	log.Debug(1, "RX (saslOutcome): %s", so)
 
 	// check if auth succeeded
 	if so.Code != encoding.CodeSASLOK {
-		c.err = fmt.Errorf("SASL PLAIN auth failed with code %#00x: %s", so.Code, so.AdditionalData) // implement Stringer for so.Code
-		return nil
+		return nil, fmt.Errorf("SASL PLAIN auth failed with code %#00x: %s", so.Code, so.AdditionalData) // implement Stringer for so.Code
 	}
 
 	// return to c.negotiateProto
 	c.saslComplete = true
-	return c.negotiateProto
+	return c.negotiateProto, nil
 }
 
 // readFrame is used during connection establishment to read a single frame.

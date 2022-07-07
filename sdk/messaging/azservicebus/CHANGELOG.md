@@ -10,6 +10,10 @@
   - AMQP messages can be scheduled using `Sender.ScheduleAMQPAnnotatedMessages`.
   - Access the full set of AMQP message properties when receiving using the `ReceivedMessage.RawAMQPMessage` property. 
 
+### Bugs Fixed
+
+- Settlement of a message could hang if the link had been detached/closed. (#18532)
+
 ## 1.0.1 (2022-06-07)
 
 ### Features Added

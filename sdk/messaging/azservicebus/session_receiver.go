@@ -91,15 +91,15 @@ func (r *SessionReceiver) newLink(ctx context.Context, session amqpwrap.AMQPSess
 	const sessionFilterName = "com.microsoft:session-filter"
 	const code = uint64(0x00000137000000C)
 
-	linkOptions := createLinkOptions(r.inner.receiveMode, r.inner.amqpLinks.EntityPath())
+	linkOptions := createLinkOptions(r.inner.receiveMode)
 
 	if r.sessionID == nil {
-		linkOptions = append(linkOptions, amqp.LinkSourceFilter(sessionFilterName, code, nil))
+		linkOptions.Filters = append(linkOptions.Filters, amqp.LinkFilterSource(sessionFilterName, code, nil))
 	} else {
-		linkOptions = append(linkOptions, amqp.LinkSourceFilter(sessionFilterName, code, r.sessionID))
+		linkOptions.Filters = append(linkOptions.Filters, amqp.LinkFilterSource(sessionFilterName, code, r.sessionID))
 	}
 
-	link, err := session.NewReceiver(ctx, linkOptions...)
+	link, err := session.NewReceiver(ctx, r.inner.amqpLinks.EntityPath(), linkOptions)
 
 	if err != nil {
 		return nil, nil, err

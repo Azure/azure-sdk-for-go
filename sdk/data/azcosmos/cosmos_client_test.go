@@ -60,7 +60,7 @@ func TestNewClientWithConnStrReturnErrorOnWrongAccKey(t *testing.T) {
 }
 
 func TestNewClientWithConnStrSuccess(t *testing.T) {
-	connStr := "AccountEndpoint=http://127.0.0.1:80;AccountKey=dG9fYmFzZV82NA=="
+	connStr := "AccountEndpoint=http://127.0.0.1:80;AccountKey=dG9fYmFzZV82NA==;"
 	client, err := NewClientWithConnectionString(connStr, nil)
 	if err != nil {
 		t.Fatal(err)

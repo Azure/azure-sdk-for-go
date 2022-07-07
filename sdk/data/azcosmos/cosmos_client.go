@@ -59,8 +59,8 @@ func NewClientWithConnectionString(connectionString string, o *ClientOptions) (*
 		accountKey      = "AccountKey"
 	)
 
-	splits := strings.Split(connectionString, ";")
-	if len(splits) != 2 {
+	splits := strings.SplitN(connectionString, ";", 2)
+	if len(splits) < 2 {
 		return nil, errors.New("failed parsing connection string due to it not consist of two parts separated by ';'")
 	}
 
@@ -75,7 +75,7 @@ func NewClientWithConnectionString(connectionString string, o *ClientOptions) (*
 		case strings.EqualFold(accountEndpoint, keyVal[0]):
 			endpoint = keyVal[1]
 		case strings.EqualFold(accountKey, keyVal[0]):
-			c, err := NewKeyCredential(keyVal[1])
+			c, err := NewKeyCredential(strings.TrimSuffix(keyVal[1], ";"))
 			if err != nil {
 				return nil, err
 			}

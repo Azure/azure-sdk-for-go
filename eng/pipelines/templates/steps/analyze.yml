@@ -4,6 +4,7 @@ parameters:
   LintVersion: ''
   NonShipping: false
   LicenseCheck: true
+  IsSdkLibrary: true
 
 
 steps:
@@ -16,7 +17,7 @@ steps:
       pwsh: true
       workingDirectory: $(Pipeline.Workspace)
     displayName: Dump Package properties
-    condition: succeeded()
+    condition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 

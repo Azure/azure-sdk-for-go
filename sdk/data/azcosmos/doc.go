@@ -33,6 +33,13 @@ To create a client, you will need the account's endpoint URL and a key credentia
 	handle(err)
 
 
+Using connection string
+To create a client, you will need the account's connection string.
+
+	client, err := azcosmos.NewClientFromConnectionString("myConnectionString", nil)
+	handle(err)
+
+
 Key Concepts
 
 The following are relevant concepts for the usage of the client:

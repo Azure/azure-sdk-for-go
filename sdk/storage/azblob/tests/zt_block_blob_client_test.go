@@ -560,7 +560,7 @@ import (
 //	content := make([]byte, 0)
 //	body := bytes.NewReader(content)
 //	_, err = bbClient.Upload(ctx, NopCloser(body), &BlockBlobUploadOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
@@ -598,7 +598,7 @@ import (
 //	rsc := NopCloser(body)
 //
 //	uploadBlockBlobOptions := BlockBlobUploadOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfModifiedSince: &currentTime,
 //			},
@@ -639,7 +639,7 @@ import (
 //	rsc := NopCloser(body)
 //
 //	uploadBlockBlobOptions := BlockBlobUploadOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
@@ -675,7 +675,7 @@ import (
 //	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
 //
 //	uploadBlockBlobOptions := BlockBlobUploadOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfUnmodifiedSince: &currentTime,
 //			},
@@ -711,7 +711,7 @@ import (
 //	rsc := NopCloser(body)
 //
 //	_, err = bbClient.Upload(ctx, rsc, &BlockBlobUploadOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfMatch: resp.ETag,
 //			},
@@ -746,7 +746,7 @@ import (
 //
 //	ifMatch := "garbage"
 //	uploadBlockBlobOptions := BlockBlobUploadOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfMatch: &ifMatch,
 //			},
@@ -782,7 +782,7 @@ import (
 //
 //	ifNoneMatch := "garbage"
 //	uploadBlockBlobOptions := BlockBlobUploadOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfNoneMatch: &ifNoneMatch,
 //			},
@@ -819,7 +819,7 @@ import (
 //	rsc := NopCloser(body)
 //
 //	_, err = bbClient.Upload(ctx, rsc, &BlockBlobUploadOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{
 //				IfNoneMatch: resp.ETag,
 //			},
@@ -862,7 +862,7 @@ import (
 //	defer deleteContainer(_require, containerClient)
 //
 //	_, err := bbClient.CommitBlockList(ctx, blockIDs, &BlockBlobCommitBlockListOptions{
-//		BlobHTTPHeaders: &blob.HTTPHeaders{BlobContentDisposition: &blobContentDisposition},
+//		HTTPHeaders: &blob.HTTPHeaders{BlobContentDisposition: &blobContentDisposition},
 //	})
 //	_require.Nil(err)
 //
@@ -888,7 +888,7 @@ import (
 //	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 //
 //	_, err = bbClient.CommitBlockList(ctx, blockIDs, &BlockBlobCommitBlockListOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 //	})
 //	_require.Nil(err)
@@ -910,7 +910,7 @@ import (
 //	currentTime := getRelativeTimeFromAnchor(getPropertyResp.Date, 10)
 //
 //	_, err = bbClient.CommitBlockList(ctx, blockIDs, &BlockBlobCommitBlockListOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
 //	})
 //	_ = err
@@ -932,7 +932,7 @@ import (
 //	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, 10)
 //
 //	commitBlockListOptions := BlockBlobCommitBlockListOptions{
-//		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
+//		AccessConditions: &AccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 //	}
 //	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 //	_require.Nil(err)
@@ -954,7 +954,7 @@ import (
 //	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
 //
 //	commitBlockListOptions := BlockBlobCommitBlockListOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 //	}
 //	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
@@ -973,7 +973,7 @@ import (
 //	_require.Nil(err)
 //
 //	_, err = bbClient.CommitBlockList(ctx, blockIDs, &BlockBlobCommitBlockListOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}},
 //	})
 //	_require.Nil(err)
@@ -993,7 +993,7 @@ import (
 //
 //	eTag := "garbage"
 //	commitBlockListOptions := BlockBlobCommitBlockListOptions{
-//		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag}},
+//		AccessConditions: &AccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag}},
 //	}
 //	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 //
@@ -1012,7 +1012,7 @@ import (
 //
 //	eTag := "garbage"
 //	commitBlockListOptions := BlockBlobCommitBlockListOptions{
-//		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
+//		AccessConditions: &AccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
 //	}
 //	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 //	_require.Nil(err)
@@ -1031,7 +1031,7 @@ import (
 //	_require.Nil(err)
 //
 //	commitBlockListOptions := BlockBlobCommitBlockListOptions{
-//		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
+//		AccessConditions: &AccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
 //	}
 //	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 //

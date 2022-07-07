@@ -34,7 +34,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewServiceClient(serviceURL, pl)), nil
 }
@@ -43,7 +43,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
 	conOptions := exported.GetConnectionOptions(options)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewServiceClient(serviceURL, pl)), nil
 }
@@ -54,7 +54,7 @@ func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, option
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewServiceClient(serviceURL, pl)), nil
 }

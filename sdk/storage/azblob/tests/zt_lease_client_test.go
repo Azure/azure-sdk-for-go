@@ -242,7 +242,7 @@ package azblob_test
 //
 //	leaseID := blobLeaseClient.leaseID
 //	_, err = blobLeaseClient.Delete(ctx, &BlobDeleteOptions{
-//		BlobAccessConditions: &BlobAccessConditions{
+//		AccessConditions: &AccessConditions{
 //			AccessConditions: &AccessConditions{
 //				LeaseID: leaseID,
 //			},

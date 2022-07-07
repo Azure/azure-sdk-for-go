@@ -1086,7 +1086,7 @@ package azblob_test
 //	downloadResp, err := blockBlob.Download(
 //		context.TODO(),
 //		&azblob.BlobDownloadOptions{
-//			BlobAccessConditions: &azblob.BlobAccessConditions{
+//			AccessConditions: &azblob.AccessConditions{
 //				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{
 //					IfModifiedSince: upload.LastModified,
 //				},
@@ -1099,7 +1099,7 @@ package azblob_test
 //	downloadResp, err = blockBlob.Download(
 //		context.TODO(),
 //		&azblob.BlobDownloadOptions{
-//			BlobAccessConditions: &azblob.BlobAccessConditions{
+//			AccessConditions: &azblob.AccessConditions{
 //				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{
 //					IfUnmodifiedSince: to.Ptr(time.Now().UTC().Add(time.Hour * -24))},
 //			},
@@ -1112,7 +1112,7 @@ package azblob_test
 //		context.TODO(),
 //		streaming.NopCloser(strings.NewReader("Text-2")),
 //		&azblob.BlockBlobUploadOptions{
-//			BlobAccessConditions: &azblob.BlobAccessConditions{
+//			AccessConditions: &azblob.AccessConditions{
 //				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfMatch: upload.ETag},
 //			},
 //		},
@@ -1122,7 +1122,7 @@ package azblob_test
 //	downloadResp, err = blockBlob.Download(
 //		context.TODO(),
 //		&azblob.BlobDownloadOptions{
-//			BlobAccessConditions: &azblob.BlobAccessConditions{
+//			AccessConditions: &azblob.AccessConditions{
 //				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: upload.ETag}},
 //		})
 //	showResult(&downloadResp, err)
@@ -1132,7 +1132,7 @@ package azblob_test
 //		context.TODO(),
 //		streaming.NopCloser(strings.NewReader("Text-3")),
 //		&azblob.BlockBlobUploadOptions{
-//			BlobAccessConditions: &azblob.BlobAccessConditions{
+//			AccessConditions: &azblob.AccessConditions{
 //				ModifiedAccessConditions: &azblob.ModifiedAccessConditions{IfNoneMatch: to.Ptr(string(azcore.ETagAny))},
 //			},
 //		}))

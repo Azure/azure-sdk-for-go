@@ -99,6 +99,52 @@ func (o *DownloadOptions) format() (*generated.BlobClientDownloadOptions, *gener
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// DownloadToWriterAtOptions identifies options used by the DownloadToBuffer and DownloadToFile functions.
+type DownloadToWriterAtOptions struct {
+	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
+	BlockSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
+	AccessConditions *AccessConditions
+
+	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
+	CpkInfo      *CpkInfo
+	CpkScopeInfo *CpkScopeInfo
+
+	// Parallelism indicates the maximum number of blocks to download in parallel (0=default)
+	Parallelism uint16
+
+	// RetryReaderOptionsPerBlock is used when downloading each block.
+	RetryReaderOptionsPerBlock RetryReaderOptions
+}
+
+func (o *DownloadToWriterAtOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
+	return &GetPropertiesOptions{
+		AccessConditions: o.AccessConditions,
+		CpkInfo:          o.CpkInfo,
+	}
+}
+
+func (o *DownloadToWriterAtOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadOptions {
+	return &DownloadOptions{
+		AccessConditions:   o.AccessConditions,
+		CpkInfo:            o.CpkInfo,
+		CpkScopeInfo:       o.CpkScopeInfo,
+		Offset:             &offSet,
+		Count:              &count,
+		RangeGetContentMD5: rangeGetContentMD5,
+	}
+}
+
+type DownloadToBufferOptions = DownloadToWriterAtOptions
+
+type DownloadToFileOptions = DownloadToWriterAtOptions
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 type DeleteOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
@@ -403,3 +449,5 @@ func (o *CopyFromURLOptions) format() (*generated.BlobClientCopyFromURLOptions, 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.BlobAccessConditions)
 	return options, o.SourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions
 }
+
+// ---------------------------------------------------------------------------------------------------------------------

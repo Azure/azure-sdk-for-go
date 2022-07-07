@@ -269,7 +269,7 @@ func getPageBlobClient(pageBlobName string, containerClient *container.Client) *
 }
 
 func createNewPageBlob(_require *require.Assertions, pageBlobName string, containerClient *container.Client) *pageblob.Client {
-	return createNewPageBlobWithSize(_require, pageBlobName, containerClient, azblob.PageBlobPageBytes*10)
+	return createNewPageBlobWithSize(_require, pageBlobName, containerClient, pageblob.PageBytes*10)
 }
 
 func createNewPageBlobWithSize(_require *require.Assertions, pageBlobName string, containerClient *container.Client, sizeInBytes int64) *pageblob.Client {

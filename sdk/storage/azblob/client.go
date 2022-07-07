@@ -8,14 +8,11 @@ package azblob
 
 import (
 	"context"
-	"fmt"
-	"io"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	blobrt "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 )
 
@@ -105,33 +102,34 @@ func (c *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager
 	return c.svc.NewListContainersPager(o)
 }
 
-func (c *Client) Upload(ctx context.Context, containerName string, blobName string, data io.Reader, o *UploadOptions) (UploadResponse, error) {
-	o = shared.CopyOptions(o)
-	if o.TransferManager == nil {
-		// create a default transfer manager
-		if o.MaxBuffers == 0 {
-			o.MaxBuffers = 1
-		}
-		if o.BufferSize < blobrt.OneMB {
-			o.BufferSize = blobrt.OneMB
-		}
-		var err error
-		o.TransferManager, err = blobrt.NewStaticBuffer(o.BufferSize, o.MaxBuffers)
-		if err != nil {
-			return UploadResponse{}, fmt.Errorf("failed to create default transfer manager: %s", err)
-		}
-	} else {
-		// wrap in nop closer so we don't close caller's TM (caller is responsible for closing it)
-		o.TransferManager = &nopClosingTransferManager{o.TransferManager}
-	}
-
-	bb := c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName)
-	result, err := blobrt.ConcurrentUpload(ctx, data, bb, o)
-	if err != nil {
-		return UploadResponse{}, err
-	}
-	return result, nil
-}
+// TODO: Come here and expose highlevel functions here
+//func (c *Client) Upload(ctx context.Context, containerName string, blobName string, data io.Reader, o *UploadOptions) (UploadResponse, error) {
+//	o = shared.CopyOptions(o)
+//	if o.TransferManager == nil {
+//		// create a default transfer manager
+//		if o.MaxBuffers == 0 {
+//			o.MaxBuffers = 1
+//		}
+//		if o.BufferSize < blobrt.OneMB {
+//			o.BufferSize = blobrt.OneMB
+//		}
+//		var err error
+//		o.TransferManager, err = blobrt.NewStaticBuffer(o.BufferSize, o.MaxBuffers)
+//		if err != nil {
+//			return UploadResponse{}, fmt.Errorf("failed to create default transfer manager: %s", err)
+//		}
+//	} else {
+//		// wrap in nop closer so we don't close caller's TM (caller is responsible for closing it)
+//		o.TransferManager = &nopClosingTransferManager{o.TransferManager}
+//	}
+//
+//	bb := c.svc.NewContainerClient(containerName).NewBlockBlobClient(blobName)
+//	result, err := blockblob.Upload .ConcurrentUpload(ctx, data, bb, o)
+//	if err != nil {
+//		return UploadResponse{}, err
+//	}
+//	return result, nil
+//}
 
 func (c *Client) Download(ctx context.Context, containerName string, blobName string, o *DownloadOptions) (DownloadResponse, error) {
 	o = shared.CopyOptions(o)

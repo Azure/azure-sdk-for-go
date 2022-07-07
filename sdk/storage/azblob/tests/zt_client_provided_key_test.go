@@ -272,7 +272,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 //	_, err = destBlob.BlobClient.Download(ctx, nil)
 //	_require.NotNil(err)
 //
-//	downloadBlobOptions := blob.DownloadOptions{
+//	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
@@ -385,7 +385,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 //	_require.NotNil(blockList.BlockList.CommittedBlocks)
 //	_require.Len(blockList.BlockList.CommittedBlocks, 2)
 //
-//	downloadBlobOptions := blob.DownloadOptions{
+//	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
@@ -683,14 +683,14 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
-//	downloadBlobOptions := blob.DownloadOptions{
+//	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
 //	_, err = destBlob.Download(ctx, &downloadBlobOptions)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
-//	downloadBlobOptions = blob.DownloadOptions{
+//	downloadBlobOptions = blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
@@ -788,7 +788,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //	_require.Equal((*appendFromURLResp.Date).IsZero(), false)
 //	_require.Equal(*appendFromURLResp.IsServerEncrypted, true)
 //
-//	downloadBlobOptions := blob.DownloadOptions{
+//	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
@@ -984,14 +984,14 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //	_, err = destBlob.Download(ctx, nil)
 //	_require.NotNil(err)
 //
-//	downloadBlobOptions := blob.DownloadOptions{
+//	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
 //	_, err = destBlob.Download(ctx, &downloadBlobOptions)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
-//	downloadBlobOptions = blob.DownloadOptions{
+//	downloadBlobOptions = blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
@@ -1067,7 +1067,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //	_require.EqualValues(resp.EncryptionScope, testCPKByScope.EncryptionScope)
 //
 //	// Download blob to do data integrity check.
-//	downloadBlobOptions := blob.DownloadOptions{
+//	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	downloadResp, err := dstPBBlob.Download(ctx, &downloadBlobOptions)
@@ -1145,14 +1145,14 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockWithCPKScope() {
 //	_, err = destPBClient.Download(ctx, nil)
 //	_require.NotNil(err)
 //
-//	downloadBlobOptions := blob.DownloadOptions{
+//	downloadBlobOptions := blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
 //	_, err = destPBClient.Download(ctx, &downloadBlobOptions)
 //	_require.NotNil(err)
 //
 //	// Download blob to do data integrity check.
-//	downloadBlobOptions = blob.DownloadOptions{
+//	downloadBlobOptions = blob.DownloadToWriterAtOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err := destPBClient.Download(ctx, &downloadBlobOptions)
@@ -1486,7 +1486,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 //	}
 //
 //	// Download the blob to verify
-//	downloadResponse, err := bbClient.Download(ctx, &blob.DownloadOptions{CpkInfo: &testCPKByValue})
+//	downloadResponse, err := bbClient.Download(ctx, &blob.DownloadToWriterAtOptions{CpkInfo: &testCPKByValue})
 //	_require.NoError(err)
 //
 //	// Assert that the content is correct
@@ -1551,7 +1551,7 @@ func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 //	}
 //
 //	// Download the blob to verify
-//	downloadResponse, err := bbClient.Download(ctx, &blob.DownloadOptions{CpkScopeInfo: &testCPKByScope})
+//	downloadResponse, err := bbClient.Download(ctx, &blob.DownloadToWriterAtOptions{CpkScopeInfo: &testCPKByScope})
 //	_require.NoError(err)
 //
 //	// Assert that the content is correct

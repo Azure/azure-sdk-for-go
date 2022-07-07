@@ -33,7 +33,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewAppendBlobClient(blobURL, pl)), nil
 }
@@ -41,7 +41,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 // NewClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := exported.GetConnectionOptions(options)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewAppendBlobClient(blobURL, pl)), nil
 }
@@ -51,7 +51,7 @@ func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewAppendBlobClient(blobURL, pl)), nil
 }

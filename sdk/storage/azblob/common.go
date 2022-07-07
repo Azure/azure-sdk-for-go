@@ -3,7 +3,6 @@ package azblob
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/runtime"
 	"net"
 	"net/url"
 	"strings"
@@ -23,14 +22,6 @@ type ParsedConnectionString = shared.ParsedConnectionString
 
 func ParseConnectionString(connectionString string) (ParsedConnectionString, error) {
 	return shared.ParseConnectionString(connectionString)
-}
-
-type nopClosingTransferManager struct {
-	runtime.TransferManager
-}
-
-func (n *nopClosingTransferManager) Close() {
-	// do nothing
 }
 
 const (

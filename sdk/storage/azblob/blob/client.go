@@ -10,11 +10,15 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
+	"io"
+	"os"
+	"sync"
 )
 
 // Client represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -25,7 +29,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewBlobClient(blobURL, pl)), nil
 }
@@ -33,7 +37,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := exported.GetConnectionOptions(options)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewBlobClient(blobURL, pl)), nil
 }
@@ -43,7 +47,7 @@ func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewBlobClient(blobURL, pl)), nil
 }
@@ -276,3 +280,114 @@ func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *Co
 //		ExpiryTime: expiry.UTC(),
 //	}.NewSASQueryParameters(b.sharedKey)
 //}
+
+// Concurrent Download Functions -----------------------------------------------------------------------------------------
+
+// DownloadToWriterAt downloads an Azure blob to a WriterAt in parallel.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (b *Client) DownloadToWriterAt(ctx context.Context, offset, count int64, writer io.WriterAt, o *DownloadToWriterAtOptions) error {
+	if o.BlockSize == 0 {
+		o.BlockSize = DefaultDownloadBlockSize
+	}
+
+	if count == CountToEnd { // If size not specified, calculate it
+		// If we don't have the length at all, get it
+		downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
+		dr, err := b.Download(ctx, downloadBlobOptions)
+		if err != nil {
+			return err
+		}
+		count = *dr.ContentLength - offset
+	}
+
+	if count <= 0 {
+		// The file is empty, there is nothing to download.
+		return nil
+	}
+
+	// Prepare and do parallel download.
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
+
+	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
+		OperationName: "downloadBlobToWriterAt",
+		TransferSize:  count,
+		ChunkSize:     o.BlockSize,
+		Parallelism:   o.Parallelism,
+		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
+
+			downloadBlobOptions := o.getDownloadBlobOptions(chunkStart+offset, count, nil)
+			dr, err := b.Download(ctx, downloadBlobOptions)
+			if err != nil {
+				return err
+			}
+			body := dr.BodyReader(&o.RetryReaderOptionsPerBlock)
+			if o.Progress != nil {
+				rangeProgress := int64(0)
+				body = streaming.NewResponseProgress(
+					body,
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - rangeProgress
+						rangeProgress = bytesTransferred
+						progressLock.Lock()
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
+			}
+			_, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body)
+			if err != nil {
+				return err
+			}
+			err = body.Close()
+			return err
+		},
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DownloadToBuffer downloads an Azure blob to a buffer with parallel.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (b *Client) DownloadToBuffer(ctx context.Context, offset, count int64, _bytes []byte, o *DownloadToBufferOptions) error {
+	return b.DownloadToWriterAt(ctx, offset, count, shared.NewBytesWriter(_bytes), o)
+}
+
+// DownloadToFile downloads an Azure blob to a local file.
+// The file would be truncated if the size doesn't match.
+// Offset and count are optional, pass 0 for both to download the entire blob.
+func (b *Client) DownloadToFile(ctx context.Context, offset, count int64, file *os.File, o *DownloadToFileOptions) error {
+	// 1. Calculate the size of the destination file
+	var size int64
+
+	if count == CountToEnd {
+		// Try to get Azure blob's size
+		getBlobPropertiesOptions := o.getBlobPropertiesOptions()
+		props, err := b.GetProperties(ctx, getBlobPropertiesOptions)
+		if err != nil {
+			return err
+		}
+		size = *props.ContentLength - offset
+	} else {
+		size = count
+	}
+
+	// 2. Compare and try to resize local file's size if it doesn't match Azure blob's size.
+	stat, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	if stat.Size() != size {
+		if err = file.Truncate(size); err != nil {
+			return err
+		}
+	}
+
+	if size > 0 {
+		return b.DownloadToWriterAt(ctx, offset, size, file, o)
+	} else { // if the blob's size is 0, there is no need in downloading it
+		return nil
+	}
+}

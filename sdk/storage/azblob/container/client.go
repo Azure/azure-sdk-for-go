@@ -37,7 +37,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewContainerClient(containerURL, pl)), nil
 }
@@ -45,7 +45,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
 func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Client, error) {
 	conOptions := exported.GetConnectionOptions(options)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewContainerClient(containerURL, pl)), nil
 }
@@ -55,7 +55,7 @@ func NewClientWithSharedKey(containerURL string, cred *SharedKeyCredential, opti
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewContainerClient(containerURL, pl)), nil
 }

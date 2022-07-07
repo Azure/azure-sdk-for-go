@@ -8,9 +8,7 @@ package azblob
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 )
 
@@ -21,9 +19,7 @@ type DeleteContainerOptions = service.DeleteContainerOptions
 
 type DeleteBlobOptions = blob.DeleteOptions
 
-type UploadOptions = runtime.ConcurrentUploadOptions
-
-type BlobUploadOptions = blockblob.UploadOptions
+//type UploadOptions = blockblob.ConcurrentUploadOptions
 
 type DownloadOptions struct {
 	BlobOptions *BlobDownloadOptions

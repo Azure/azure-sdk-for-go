@@ -4,14 +4,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package runtime
+package shared
 
 import (
 	"fmt"
 	"sync"
 )
 
-const OneMB = 1024 * 1024
+const _1MiB = 1024 * 1024
 
 // TransferManager provides a buffer and thread pool manager for certain transfer options.
 // It is undefined behavior if code outside this package call any of these methods.
@@ -50,7 +50,7 @@ func NewStaticBuffer(size, max int) (TransferManager, error) {
 		return nil, fmt.Errorf("cannot be called with size or max set to < 1")
 	}
 
-	if size < OneMB {
+	if size < _1MiB {
 		return nil, fmt.Errorf("cannot have size < 1MiB")
 	}
 
@@ -81,7 +81,7 @@ func (s staticBuffer) Get() []byte {
 func (s staticBuffer) Put(b []byte) { // nolint
 	select {
 	case s.buffers <- b:
-	default: // This shouldn't happen, but just in case they call Put() with their own buffer.
+	default: // This shouldn't happen, but just in case they call Put() with there own buffer.
 	}
 }
 
@@ -111,7 +111,7 @@ func NewSyncPool(size, concurrency int) (TransferManager, error) {
 		return nil, fmt.Errorf("cannot be called with size or max set to < 1")
 	}
 
-	if size < OneMB {
+	if size < _1MiB {
 		return nil, fmt.Errorf("cannot have size < 1MiB")
 	}
 

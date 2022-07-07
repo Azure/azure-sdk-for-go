@@ -7,18 +7,24 @@
 package blockblob
 
 import (
+	"bytes"
 	"context"
-	"io"
-
+	"encoding/base64"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
+	"io"
+	"os"
+	"sync"
 )
 
 // ClientOptions adds additional client options while constructing connection
@@ -35,7 +41,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewBlockBlobClient(blobURL, pl)), nil
 }
@@ -43,7 +49,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 // NewClientWithNoCredential creates a Client object using the specified URL and options.
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := exported.GetConnectionOptions(options)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewBlockBlobClient(blobURL, pl)), nil
 }
@@ -53,7 +59,7 @@ func NewClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := exported.GetConnectionOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
-	pl := runtime.NewPipeline(shared.ModuleName, shared.ModuleVersion, runtime.PipelineOptions{}, conOptions)
+	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, conOptions)
 
 	return (*Client)(base.NewBlockBlobClient(blobURL, pl)), nil
 }
@@ -229,8 +235,8 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 			TransactionalContentMD5:   options.TransactionalContentMD5,
 		}
 
-		headers = options.BlobHTTPHeaders
-		leaseAccess, modifiedAccess = exported.FormatBlobAccessConditions(options.BlobAccessConditions)
+		headers = options.HTTPHeaders
+		leaseAccess, modifiedAccess = exported.FormatBlobAccessConditions(options.AccessConditions)
 		cpkInfo = options.CpkInfo
 		cpkScope = options.CpkScopeInfo
 	}
@@ -334,4 +340,136 @@ func (bb *Client) GetTags(ctx context.Context, o *blob.GetTagsOptions) (blob.Get
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
 func (bb *Client) CopyFromURL(ctx context.Context, copySource string, o *blob.CopyFromURLOptions) (blob.CopyFromURLResponse, error) {
 	return bb.blobClient().CopyFromURL(ctx, copySource, o)
+}
+
+// Concurrent Upload Functions -----------------------------------------------------------------------------------------
+
+// uploadReaderAtToBlockBlob uploads a buffer in blocks to a block blob.
+func (bb *Client) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o UploadReaderAtToBlockBlobOption) (UploadReaderAtResponse, error) {
+	if o.BlockSize == 0 {
+		// If bufferSize > (MaxStageBlockBytes * MaxBlocks), then error
+		if readerSize > MaxStageBlockBytes*MaxBlocks {
+			return UploadReaderAtResponse{}, errors.New("buffer is too large to upload to a block blob")
+		}
+		// If bufferSize <= MaxUploadBlobBytes, then Upload should be used with just 1 I/O request
+		if readerSize <= MaxUploadBlobBytes {
+			o.BlockSize = MaxUploadBlobBytes // Default if unspecified
+		} else {
+			o.BlockSize = readerSize / MaxBlocks             // buffer / max blocks = block size to use all 50,000 blocks
+			if o.BlockSize < blob.DefaultDownloadBlockSize { // If the block size is smaller than 4MB, round up to 4MB
+				o.BlockSize = blob.DefaultDownloadBlockSize
+			}
+			// StageBlock will be called with blockSize blocks and a Parallelism of (BufferSize / BlockSize).
+		}
+	}
+
+	if readerSize <= MaxUploadBlobBytes {
+		// If the size can fit in 1 Upload call, do it this way
+		var body io.ReadSeeker = io.NewSectionReader(reader, 0, readerSize)
+		if o.Progress != nil {
+			body = streaming.NewRequestProgress(shared.NopCloser(body), o.Progress)
+		}
+
+		uploadBlockBlobOptions := o.getUploadBlockBlobOptions()
+		resp, err := bb.Upload(ctx, shared.NopCloser(body), uploadBlockBlobOptions)
+
+		return toUploadReaderAtResponseFromUploadResponse(resp), err
+	}
+
+	var numBlocks = uint16(((readerSize - 1) / o.BlockSize) + 1)
+
+	blockIDList := make([]string, numBlocks) // Base-64 encoded block IDs
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
+
+	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
+		OperationName: "uploadReaderAtToBlockBlob",
+		TransferSize:  readerSize,
+		ChunkSize:     o.BlockSize,
+		Parallelism:   o.Parallelism,
+		Operation: func(offset int64, count int64, ctx context.Context) error {
+			// This function is called once per block.
+			// It is passed this block's offset within the buffer and its count of bytes
+			// Prepare to read the proper block/section of the buffer
+			var body io.ReadSeeker = io.NewSectionReader(reader, offset, count)
+			blockNum := offset / o.BlockSize
+			if o.Progress != nil {
+				blockProgress := int64(0)
+				body = streaming.NewRequestProgress(shared.NopCloser(body),
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - blockProgress
+						blockProgress = bytesTransferred
+						progressLock.Lock() // 1 goroutine at a time gets progress report
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
+			}
+
+			// Block IDs are unique values to avoid issue if 2+ clients are uploading blocks
+			// at the same time causing PutBlockList to get a mix of blocks from all the clients.
+			generatedUuid, err := uuid.New()
+			if err != nil {
+				return err
+			}
+			blockIDList[blockNum] = base64.StdEncoding.EncodeToString([]byte(generatedUuid.String()))
+			stageBlockOptions := o.getStageBlockOptions()
+			_, err = bb.StageBlock(ctx, blockIDList[blockNum], shared.NopCloser(body), stageBlockOptions)
+			return err
+		},
+	})
+	if err != nil {
+		return UploadReaderAtResponse{}, err
+	}
+	// All put blocks were successful, call Put Block List to finalize the blob
+	commitBlockListOptions := o.getCommitBlockListOptions()
+	resp, err := bb.CommitBlockList(ctx, blockIDList, commitBlockListOptions)
+
+	return toUploadReaderAtResponseFromCommitBlockListResponse(resp), err
+}
+
+// UploadBuffer uploads a buffer in blocks to a block blob.
+func (bb *Client) UploadBuffer(ctx context.Context, b []byte, o *UploadReaderAtToBlockBlobOption) (UploadReaderAtResponse, error) {
+	uploadOptions := UploadReaderAtToBlockBlobOption{}
+	if o != nil {
+		uploadOptions = *o
+	}
+	return bb.uploadReaderAtToBlockBlob(ctx, bytes.NewReader(b), int64(len(b)), uploadOptions)
+}
+
+// UploadFile uploads a file in blocks to a block blob.
+func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadReaderAtToBlockBlobOption) (UploadReaderAtResponse, error) {
+	stat, err := file.Stat()
+	if err != nil {
+		return UploadReaderAtResponse{}, err
+	}
+	uploadOptions := UploadReaderAtToBlockBlobOption{}
+	if o != nil {
+		uploadOptions = *o
+	}
+	return bb.uploadReaderAtToBlockBlob(ctx, file, stat.Size(), uploadOptions)
+}
+
+// UploadStream copies the file held in io.Reader to the Blob at blockBlobClient.
+// A Context deadline or cancellation will cause this to error.
+func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStreamOptions) (CommitBlockListResponse, error) {
+	if err := o.format(); err != nil {
+		return CommitBlockListResponse{}, err
+	}
+
+	if o == nil {
+		o = &UploadStreamOptions{}
+	}
+
+	// If we used the default manager, we need to close it.
+	if o.transferMangerNotSet {
+		defer o.TransferManager.Close()
+	}
+
+	result, err := copyFromReader(ctx, body, bb, *o)
+	if err != nil {
+		return CommitBlockListResponse{}, err
+	}
+
+	return result, nil
 }

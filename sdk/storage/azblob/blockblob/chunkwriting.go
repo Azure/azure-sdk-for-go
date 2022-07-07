@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package runtime
+package blockblob
 
 import (
 	"bytes"
@@ -13,40 +13,22 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"io"
 	"sync"
 	"sync/atomic"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 )
 
-type BlobUploadOptions = blockblob.UploadOptions
-
-// BlockWriter provides methods to upload blocks that represent a file to a server and commit them.
+// blockWriter provides methods to upload blocks that represent a file to a server and commit them.
 // This allows us to provide a local implementation that fakes the server for hermetic testing.
-type BlockWriter interface {
-	StageBlock(context.Context, string, io.ReadSeekCloser, *blockblob.StageBlockOptions) (blockblob.StageBlockResponse, error)
-	CommitBlockList(context.Context, []string, *blockblob.CommitBlockListOptions) (blockblob.CommitBlockListResponse, error)
+type blockWriter interface {
+	StageBlock(context.Context, string, io.ReadSeekCloser, *StageBlockOptions) (StageBlockResponse, error)
+	CommitBlockList(context.Context, []string, *CommitBlockListOptions) (CommitBlockListResponse, error)
 }
 
-type ConcurrentUploadOptions struct {
-	// TransferManager provides a TransferManager that controls buffer allocation/reuse and
-	// concurrency. This overrides BufferSize and MaxBuffers if set.
-	TransferManager TransferManager
-
-	// BufferSize sizes the buffer used to read data from source. If < 1 MiB, defaults to 1 MiB.
-	BufferSize int
-
-	// MaxBuffers defines the number of simultaneous uploads will be performed to upload the file.
-	MaxBuffers int
-
-	BlobOptions *BlobUploadOptions
-}
-
-// ConcurrentUpload copies a source io.Reader to blob storage using concurrent uploads.
+// copyFromReader copies a source io.Reader to blob storage using concurrent uploads.
 // TODO(someone): The existing model provides a buffer size and buffer limit as limiting factors.  The buffer size is probably
 // useless other than needing to be above some number, as the network stack is going to hack up the buffer over some size. The
 // max buffers is providing a cap on how much memory we use (by multiplying it times the buffer size) and how many go routines can upload
@@ -54,14 +36,18 @@ type ConcurrentUploadOptions struct {
 // well, 4 MiB or 8 MiB, and auto-scale to as many goroutines within the memory limit. This gives a single dial to tweak and we can
 // choose a max value for the memory setting based on internal transfers within Azure (which will give us the maximum throughput model).
 // We can even provide a utility to dial this number in for customer networks to optimize their copies.
-func ConcurrentUpload(ctx context.Context, from io.Reader, to BlockWriter, o *ConcurrentUploadOptions) (blockblob.CommitBlockListResponse, error) {
+func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o UploadStreamOptions) (CommitBlockListResponse, error) {
+	if err := o.format(); err != nil {
+		return CommitBlockListResponse{}, err
+	}
+
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	var err error
 	generatedUuid, err := uuid.New()
 	if err != nil {
-		return blockblob.CommitBlockListResponse{}, err
+		return CommitBlockListResponse{}, err
 	}
 
 	cp := &copier{
@@ -82,12 +68,12 @@ func ConcurrentUpload(ctx context.Context, from io.Reader, to BlockWriter, o *Co
 	}
 	// If the error is not EOF, then we have a problem.
 	if err != nil && !errors.Is(err, io.EOF) {
-		return blockblob.CommitBlockListResponse{}, err
+		return CommitBlockListResponse{}, err
 	}
 
 	// Close out our upload.
 	if err := cp.close(); err != nil {
-		return blockblob.CommitBlockListResponse{}, err
+		return CommitBlockListResponse{}, err
 	}
 
 	return cp.result, nil
@@ -104,10 +90,10 @@ type copier struct {
 	// reader is the source to be written to storage.
 	reader io.Reader
 	// to is the location we are writing our chunks to.
-	to BlockWriter
+	to blockWriter
 
 	// o contains our options for uploading.
-	o *ConcurrentUploadOptions
+	o UploadStreamOptions
 
 	// id provides the ids for each chunk.
 	id *id
@@ -123,7 +109,7 @@ type copier struct {
 	wg sync.WaitGroup
 
 	// result holds the final result from blob storage after we have submitted all chunks.
-	result blockblob.CommitBlockListResponse
+	result CommitBlockListResponse
 }
 
 type copierChunk struct {
@@ -191,15 +177,8 @@ func (c *copier) write(chunk copierChunk) {
 	if err := c.ctx.Err(); err != nil {
 		return
 	}
-
-	leaseAccessConditions, _ := exported.FormatBlobAccessConditions(c.o.BlobOptions.AccessConditions)
-	stageBlockOptions := &blockblob.StageBlockOptions{
-		CpkInfo:               c.o.BlobOptions.CpkInfo,
-		CpkScopeInfo:          c.o.BlobOptions.CpkScopeInfo,
-		LeaseAccessConditions: leaseAccessConditions,
-	}
-
-	_, err := c.to.StageBlock(c.ctx, chunk.id, streaming.NopCloser(bytes.NewReader(chunk.buffer[:chunk.length])), stageBlockOptions)
+	stageBlockOptions := c.o.getStageBlockOptions()
+	_, err := c.to.StageBlock(c.ctx, chunk.id, shared.NopCloser(bytes.NewReader(chunk.buffer[:chunk.length])), stageBlockOptions)
 	if err != nil {
 		c.errCh <- fmt.Errorf("write error: %w", err)
 		return
@@ -214,17 +193,8 @@ func (c *copier) close() error {
 		return err
 	}
 
-	commitBlockListOptions := &blockblob.CommitBlockListOptions{
-		Tags:                 c.o.BlobOptions.Tags,
-		Metadata:             c.o.BlobOptions.Metadata,
-		Tier:                 c.o.BlobOptions.Tier,
-		BlobHTTPHeaders:      c.o.BlobOptions.HTTPHeaders,
-		CpkInfo:              c.o.BlobOptions.CpkInfo,
-		CpkScopeInfo:         c.o.BlobOptions.CpkScopeInfo,
-		BlobAccessConditions: c.o.BlobOptions.AccessConditions,
-	}
-
 	var err error
+	commitBlockListOptions := c.o.getCommitBlockListOptions()
 	c.result, err = c.to.CommitBlockList(c.ctx, c.id.issued(), commitBlockListOptions)
 	return err
 }

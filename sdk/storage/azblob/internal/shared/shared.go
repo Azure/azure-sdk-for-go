@@ -220,3 +220,16 @@ func validateSeekableStreamAt0(body io.ReadSeeker) error {
 func RangeToString(offset, count int64) string {
 	return "bytes=" + strconv.FormatInt(offset, 10) + "-" + strconv.FormatInt(offset+count-1, 10)
 }
+
+type nopCloser struct {
+	io.ReadSeeker
+}
+
+func (n nopCloser) Close() error {
+	return nil
+}
+
+// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
+func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
+	return nopCloser{rs}
+}

@@ -1,30 +1,15 @@
 # Release History
 
-## 0.8.0 (Unreleased)
-
-### Features Added
+## 0.8.0 (2022-07-07)
 
 ### Breaking Changes
-* Deleted types `DeleteSecretPoller` and `RecoverDeletedSecretPoller`
-* Methods `BeginDeleteSecret` and `BeginRecoverDeletedSecret` now return a `*runtime.Poller[T]` with their respective response types.
-* Options types with a `ResumeToken` field now take the token by value.
-* Renamed methods which return `Pager[T]`:
-  * `ListDeletedSecrets` to `NewListDeletedSecretsPager`
-  * `ListPropertiesOfSecrets` to `NewListPropertiesOfSecretsPager`
-  * `NewListPropertiesOfSecretVersionsPager` to `NewListPropertiesOfSecretVersionsPager`
-* Renamed `ListSecretVersionsOptions` to `ListPropertiesOfSecretVersionsOptions` and
-  `ListSecretsOptions` to `ListPropertiesOfSecretsOptions`
-* Renamed `Properties.IsManaged` to `.Managed`
-* Deleted redundant fields `ContentType`, `IsManaged` and `Tags` from several types. These fields are available via the types'
-  `Properties` fields, for example `SecretItem.Properties`.
-* Changed paged API content values to pointer types. For example, `ListPropertiesOfSecretsResponse.Secrets`
-  changed type from `[]SecretItem` to `[]*SecretItem`.
-* Removed JSON tags from models
-* `UpdateSecretProperties()` has a `Properties` parameter instead of a `Secret` parameter
-
-### Bugs Fixed
+* The `Client` API now corresponds more directly to the Key Vault REST API.
+  Most method signatures and types have changed. See the
+  [module documentation](https://aka.ms/azsdk/go/keyvault-secrets/docs)
+  for updated code examples and more details.
 
 ### Other Changes
+* Upgrade to latest `azcore`
 
 ## 0.7.1 (2022-05-12)
 

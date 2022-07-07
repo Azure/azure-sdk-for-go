@@ -1,24 +1,15 @@
 # Release History
 
-## 0.5.0 (2022-05-16)
+## 0.5.0 (2022-07-07)
 
 ### Breaking Changes
-* Removed types `CreateCertificatePoller`, `DeleteCertificatePoller`, and `RecoverDeletedCertificatePoller`.
-* Methods `BeginCreateCertificate`, `BeginDeleteCertificate`, and `BeginRecoverDeletedCertificate` now return a `*runtime.Poller[T]` with their respective response types.
-* Options types with a `ResumeToken` field now take the token by value.
-* The poller for `BeginCreateCertificate` now returns the created certificate from its `PollUntilDone` method.
-* Changed type of certificate `Tags` to `map[string]*string`
-* Deleted `UpdateCertificatePropertiesOptions` fields
-* Renamed types
-  * `ListIssuersPropertiesOfIssuersResponse` to `ListPropertiesOfIssuersResponse`
-  * `ListCertificatesOptions` to `ListPropertiesOfCertificatesOptions`
-  * `ListCertificateVersionsOptions` to `ListPropertiesOfCertificateVersionsOptions`
-* Renamed `ListDeletedCertificatesResponse.Certificates` to `.DeletedCertificates`
-* `UpdateCertificateProperties()` has a `Properties` parameter instead of a `string` parameter
-* Removed JSON tags from models
+* The `Client` API now corresponds more directly to the Key Vault REST API.
+  Most method signatures and types have changed. See the
+  [module documentation](https://aka.ms/azsdk/go/keyvault-certificates/docs)
+  for updated code examples and more details.
 
-### Bugs Fixed
-* LROs now correctly exit the polling loop in `PollUntilDone()` when the operations reach a terminal state.
+### Other Changes
+* Upgrade to latest `azcore`
 
 ## 0.4.1 (2022-05-12)
 

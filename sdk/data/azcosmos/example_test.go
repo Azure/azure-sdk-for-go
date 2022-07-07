@@ -64,6 +64,20 @@ func ExampleNewClientWithKey() {
 	fmt.Println(client)
 }
 
+func ExampleNewClientFromConnectionString() {
+	connectionString, ok := os.LookupEnv("AZURE_COSMOS_CONNECTION_STRING")
+	if !ok {
+		panic("AZURE_COSMOS_CONNECTION_STRING could not be found")
+	}
+
+	client, err := azcosmos.NewClientFromConnectionString(connectionString, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(client)
+}
+
 func ExampleClient_CreateDatabase() {
 	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {

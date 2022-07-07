@@ -11,7 +11,7 @@ package armnetworkfunction
 
 const (
 	moduleName    = "armnetworkfunction"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )
 
 // CreatedByType - The type of identity that created the resource.

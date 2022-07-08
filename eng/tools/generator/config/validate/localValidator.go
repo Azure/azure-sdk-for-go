@@ -86,12 +86,9 @@ func getReadmeGoFromReadme(readme string) string {
 	return strings.ReplaceAll(readme, readmeFilename, goReadmeFilename)
 }
 
-func findModuleName(content []byte) bool {
-	return regexp.MustCompile(goReadmeModuleName).Match(content)
-}
-
 func GetModuleName(content []byte) (string, string) {
-	if findModuleName(content) {
+	moduleExist := regexp.MustCompile(goReadmeModuleName).Match(content)
+	if moduleExist {
 		moduleName := regexp.MustCompile(goReadmeModuleName).FindString(string(content))
 		s := strings.Split(moduleName, "/")
 		if len(s) == 4 {

@@ -123,7 +123,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	}
 
 	if path.Ext(c.rpName) == ".json" {
-		return c.generate2(sdkRepo, specRepoParam, specCommitHash)
+		return c.generateFromRequest(sdkRepo, specRepoParam, specCommitHash)
 	} else {
 		return c.generate(sdkRepo, specCommitHash)
 	}
@@ -175,15 +175,9 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 	return nil
 }
 
-func (c *commandContext) generate2(sdkRepo repo.SDKRepository, specRepoParam, specCommitHash string) error {
-	//ctx := context.Background()
+func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRepoParam, specCommitHash string) error {
 	var pullRequestUrls = make(map[string]string)
 	var pushBranch = make(map[string]string)
-	//var info = query.Info{
-	//	UserInfo: query.UserInfo{Username: "", Password: ""},
-	//	Token:    c.flags.Token,
-	//}
-	//githubClient := query.Login(ctx, info)
 	forkRemote, err := repo.GetForkRemote(sdkRepo)
 	if err != nil {
 		return err
@@ -249,18 +243,6 @@ func (c *commandContext) generate2(sdkRepo repo.SDKRepository, specRepoParam, sp
 			if githubUserName == "" {
 				return errors.New("github user name not exist")
 			}
-			//log.Printf("%s: create pull request...\n", branchName)
-			//pullRequests, _, err := repo.CreatePullRequest(ctx, githubClient.Client, link.SpecOwner, link.SDKRepo, githubUserName, branchName, issue)
-			//if err != nil {
-			//	return err
-			//}
-			//pullRequestUrls[branchName] = *pullRequests.HTMLURL
-			//
-			//log.Printf("Leave a comment in %s...\n", link.ReleaseIssueRepo)
-			//_, err = repo.AddIssueComment(ctx, githubClient.Client, link.SpecOwner, link.ReleaseIssueRepo, issue, *pullRequests.HTMLURL)
-			//if err != nil {
-			//	return err
-			//}
 
 			log.Printf("%s: create pull request...\n", branchName)
 			pullRequestUrl, err := common.ExecuteCreatePullRequest(sdkRepo.Root(), link.SpecOwner, link.SDKRepo, githubUserName, branchName, repo.ReleaseTitle(branchName), issue, c.flags.Token)
@@ -271,7 +253,13 @@ func (c *commandContext) generate2(sdkRepo repo.SDKRepository, specRepoParam, sp
 
 			log.Printf("Leave a comment in %s...\n", issue)
 			issueNumber := strings.Split(issue, "/")
-			err = common.ExecuteAddIssueComment(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], pullRequestUrl, c.flags.Token)
+			err = common.ExecuteAddIssueComment(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], fmt.Sprintf(confirmComment, pullRequestUrl), c.flags.Token)
+			if err != nil {
+				return err
+			}
+
+			log.Printf("Add Labels...\n")
+			err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready"})
 			if err != nil {
 				return err
 			}
@@ -279,7 +267,7 @@ func (c *commandContext) generate2(sdkRepo repo.SDKRepository, specRepoParam, sp
 	}
 
 	if len(pullRequestUrls) != 0 {
-		log.Println("Fixes:\nBranch : Pull request")
+		log.Println("Fixes:")
 		for branch, url := range pullRequestUrls {
 			log.Printf("%s : %s", branch, url)
 		}
@@ -287,3 +275,5 @@ func (c *commandContext) generate2(sdkRepo repo.SDKRepository, specRepoParam, sp
 
 	return nil
 }
+
+var confirmComment = "Hi author, the release [PR](%s) is ready. Please check whether the package works well. If you are not a Golang User, you can mainly check whether the changelog meets your requirements."

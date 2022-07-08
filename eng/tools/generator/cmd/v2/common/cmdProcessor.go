@@ -80,12 +80,29 @@ func ExecuteCreatePullRequest(path, repoOwner, repoName, prOwner, prBranch, prTi
 }
 
 func ExecuteAddIssueComment(path, repoOwner, repoName, issueNumber, comment, authToken string) error {
-	cmd := exec.Command("pwsh", "./eng/common/scripts/Add-IssueComment.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-IssueNumber", issueNumber, "-Comment", comment, "-AuthToken", authToken, "PR ready")
+	cmd := exec.Command("pwsh", "./eng/common/scripts/Add-IssueComment.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-IssueNumber", issueNumber, "-Comment", comment, "-AuthToken", authToken)
 	cmd.Dir = path
 	output, err := cmd.CombinedOutput()
 	log.Printf("Result of `pwsh Add-IssueComment` execution: \n%s", string(output))
 	if err != nil {
 		return fmt.Errorf("failed to execute `pwsh Add-IssueComment` '%s': %+v", string(output), err)
+	}
+	return nil
+}
+
+func ExecuteAddIssueLabels(path, repoOwner, repoName, issueNumber, authToken string, labels []string) error {
+	var l string
+	if len(labels) == 1 {
+		l = labels[0]
+	} else {
+		l = strings.Join(labels, ",")
+	}
+	cmd := exec.Command("pwsh", "./eng/common/scripts/Add-IssueLabels.ps1", "-RepoOwner", repoOwner, "-RepoName", repoName, "-IssueNumber", issueNumber, "-Labels", l, "-AuthToken", authToken)
+	cmd.Dir = path
+	output, err := cmd.CombinedOutput()
+	log.Printf("Result of `pwsh Add-IssueLabels` execution: \n%s", string(output))
+	if err != nil {
+		return fmt.Errorf("failed to execute `pwsh Add-IssueLabels` '%s': %+v", string(output), err)
 	}
 	return nil
 }

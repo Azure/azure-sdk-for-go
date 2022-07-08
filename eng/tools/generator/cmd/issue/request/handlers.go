@@ -53,7 +53,7 @@ func getTrack(issue ReleaseRequestIssue) Track {
 func PRIsReady(issue github.Issue) bool {
 	flag := false
 	for _, l := range issue.Labels {
-		if strings.Contains(l.GetName(), "PR ready") {
+		if strings.Contains(l.GetName(), "PRready") {
 			flag = true
 		}
 	}

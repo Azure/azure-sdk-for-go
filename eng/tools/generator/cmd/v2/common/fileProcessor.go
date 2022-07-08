@@ -255,7 +255,13 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 	var newVersion semver.Version
 	if version.Major() == 0 {
 		// preview version calculation
-		if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
+		if !isCurrentPreview {
+			newVersion2, err := semver.NewVersion("1.0.0")
+			if err != nil {
+				return nil, err
+			}
+			newVersion = *newVersion2
+		} else if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
 		} else {
 			newVersion = version.IncPatch()

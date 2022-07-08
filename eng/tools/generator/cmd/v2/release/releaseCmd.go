@@ -227,7 +227,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 		}
 	}
 
-	for branch, _ := range pushBranch {
+	for branch := range pushBranch {
 		log.Printf("Fixes: %s\n", branch)
 	}
 

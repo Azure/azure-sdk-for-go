@@ -32,7 +32,7 @@ func NewRemoteValidator(ctx context.Context, client *query.Client) Validator {
 func ParseTrack2(config *config.Config, specRoot string) (armServices map[string][]string, errResult error) {
 	var i int
 	armServices = make(map[string][]string)
-	for readme, _ := range config.Track2Requests {
+	for readme := range config.Track2Requests {
 		contentOfReadmeGo, err := getReadmeContent(specRoot, getReadmeGoFromReadme(readme))
 		if err != nil {
 			errResult = multierror.Append(errResult, fmt.Errorf("cannot get readme.go.md content: %+v", err))

@@ -220,6 +220,11 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 				return nil, err
 			}
 
+			log.Printf("Replace version in CHANGELOG.md...")
+			if err = UpdateOnboardChangelogVersion(packagePath, version.String()); err != nil {
+				return nil, err
+			}
+
 			log.Printf("Replace version in autorest.md and constants...")
 			if err = ReplaceVersion(packagePath, version.String()); err != nil {
 				return nil, err

@@ -388,7 +388,7 @@ func TestSendQuery(t *testing.T) {
 		resourceAddress: "",
 	}
 
-	_, err := client.sendQueryRequest("/", context.Background(), "SELECT * FROM c", operationContext, &DeleteDatabaseOptions{}, nil)
+	_, err := client.sendQueryRequest("/", context.Background(), "SELECT * FROM c", []QueryParameter{}, operationContext, &DeleteDatabaseOptions{}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -407,6 +407,48 @@ func TestSendQuery(t *testing.T) {
 
 	if verifier.requests[0].body != "{\"query\":\"SELECT * FROM c\"}" {
 		t.Errorf("Expected %v, but got %v", "{\"query\":\"SELECT * FROM c\"}", verifier.requests[0].body)
+	}
+}
+
+func TestSendQueryWithParameters(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200))
+	verifier := pipelineVerifier{}
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	client := &Client{endpoint: srv.URL(), pipeline: pl}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	parameters := []QueryParameter{
+		{"@id", "1"},
+		{"@status", "enabled"},
+	}
+
+	_, err := client.sendQueryRequest("/", context.Background(), "SELECT * FROM c WHERE c.id = @id and c.status = @status", parameters, operationContext, &DeleteDatabaseOptions{}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if verifier.requests[0].method != http.MethodPost {
+		t.Errorf("Expected %v, but got %v", http.MethodPost, verifier.requests[0].method)
+	}
+
+	if verifier.requests[0].isQuery != true {
+		t.Errorf("Expected %v, but got %v", true, verifier.requests[0].isQuery)
+	}
+
+	if verifier.requests[0].contentType != cosmosHeaderValuesQuery {
+		t.Errorf("Expected %v, but got %v", cosmosHeaderValuesQuery, verifier.requests[0].contentType)
+	}
+
+	expectedSerializedQuery := "{\"query\":\"SELECT * FROM c WHERE c.id = @id and c.status = @status\",\"parameters\":[{\"name\":\"@id\",\"value\":\"1\"},{\"name\":\"@status\",\"value\":\"enabled\"}]}"
+
+	if verifier.requests[0].body != expectedSerializedQuery {
+		t.Errorf("Expected %v, but got %v", expectedSerializedQuery, verifier.requests[0].body)
 	}
 }
 

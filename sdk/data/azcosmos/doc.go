@@ -144,6 +144,26 @@ Querying items
 		}
 	}
 
+Querying items with parametrized queries
+	&opt := azcosmos.QueryOptions{
+		azcosmos.QueryParameters: []QueryParameter{
+			{"@value", "2"},
+		},
+	}
+	pk := azcosmos.NewPartitionKeyString("myPartitionKeyValue")
+	queryPager := container.NewQueryItemsPager("select * from docs c where c.value = @value", pk, opt)
+	for queryPager.More() {
+		queryResponse, err := queryPager.NextPage(context)
+		if err != nil {
+			handle(err)
+		}
+
+		for _, item := range queryResponse.Items {
+			var itemResponseBody map[string]interface{}
+			json.Unmarshal(item, &itemResponseBody)
+		}
+	}
+
 Using Transactional batch
 
 	pk := azcosmos.NewPartitionKeyString("myPartitionKeyValue")
